@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.util.SliceInputStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -134,8 +133,11 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        try {
-            FileChannel fileChannel = FileChannel.open(file);
+        /*
+         * A mapping, once established, is not dependent upon the file channel that was used to create it.
+         * Closing the channel, in particular, has no effect upon the validity of the mapping.
+         */
+        try (FileChannel fileChannel = FileChannel.open(file)) {
             return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));

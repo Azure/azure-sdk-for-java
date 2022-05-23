@@ -1,20 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
+package com.azure.core.implementation.util;
+
+import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.Objects;
 
 /**
  * An {@link InputStream} that gives access to a slice of underlying {@link InputStream}.
  */
 public final class SliceInputStream extends InputStream {
 
+    private static final ClientLogger LOGGER = new ClientLogger(SliceInputStream.class);
+
     private final InputStream innerStream;
     private final long startOfSlice;
     private final long endOfSlice;
-    private long currentPosition = 0;
+    private long innerPosition = 0;
+    private long mark = -1;
 
     /**
      * Creates {@link SliceInputStream}.
@@ -23,7 +30,13 @@ public final class SliceInputStream extends InputStream {
      * @param count Maximum amount of bytes to read from the slice.
      */
     public SliceInputStream(InputStream inputStream, long position, long count) {
-        this.innerStream = inputStream;
+        this.innerStream = Objects.requireNonNull(inputStream, "'inputStream' cannot be null");
+        if (position < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be negative"));
+        }
+        if (count < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'count' cannot be negative"));
+        }
         this.startOfSlice = position;
         this.endOfSlice = position + count;
     }
@@ -33,12 +46,14 @@ public final class SliceInputStream extends InputStream {
         if (ensureInWindow() < 0) {
             return 0;
         }
-        if (currentPosition > endOfSlice) {
+        if (innerPosition > endOfSlice) {
             return 0;
         }
 
-        long toSkip = Math.min(n, endOfSlice);
-        return innerStream.skip(toSkip);
+        long toSkip = Math.min(n, Math.max(0, endOfSlice - innerPosition));
+        long skipped = innerStream.skip(toSkip);
+        innerPosition += skipped;
+        return skipped;
     }
 
     @Override
@@ -48,7 +63,7 @@ public final class SliceInputStream extends InputStream {
         }
         int nextByte = innerStream.read();
         if (nextByte >= 0) {
-            currentPosition++;
+            innerPosition++;
         }
         return nextByte;
     }
@@ -60,34 +75,39 @@ public final class SliceInputStream extends InputStream {
         }
         int read = innerStream.read(b, off, len);
         if (read > 0) {
-            currentPosition += read;
-            if (currentPosition > endOfSlice) {
-                return (int) (read - (currentPosition - endOfSlice));
+            innerPosition += read;
+            if (innerPosition > endOfSlice) {
+                return (int) (read - (innerPosition - endOfSlice));
             }
         }
         return read;
     }
 
     private long ensureInWindow() throws IOException {
-        if (currentPosition > endOfSlice) {
+        if (startOfSlice == endOfSlice) {
+            // empty window
+            return -1;
+        }
+        if (innerPosition >= endOfSlice) {
             return -1;
         }
 
         long totalSkipped = 0;
-        while (currentPosition < startOfSlice) {
-            long skipped = innerStream.skip(startOfSlice - currentPosition);
+        while (innerPosition < startOfSlice) {
+            long skipped = innerStream.skip(startOfSlice - innerPosition);
             totalSkipped += skipped;
-            currentPosition += skipped;
+            innerPosition += skipped;
             if (skipped == 0) {
                 int nextByte = innerStream.read();
                 if (nextByte < 0) {
                     return -1;
                 } else {
                     totalSkipped += 1;
-                    currentPosition += 1;
+                    innerPosition += 1;
                 }
             }
         }
+
         return totalSkipped;
     }
 
@@ -103,11 +123,18 @@ public final class SliceInputStream extends InputStream {
 
     @Override
     public synchronized void mark(int readlimit) {
+        try {
+            ensureInWindow();
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
         innerStream.mark(readlimit);
+        mark = innerPosition;
     }
 
     @Override
     public synchronized void reset() throws IOException {
         innerStream.reset();
+        innerPosition = mark;
     }
 }
