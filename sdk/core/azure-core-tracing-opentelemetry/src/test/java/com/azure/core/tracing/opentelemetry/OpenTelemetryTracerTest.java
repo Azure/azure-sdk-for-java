@@ -870,7 +870,7 @@ public class OpenTelemetryTracerTest {
     public void suppressNestedInterleavedClientSpan() {
         Context outer = openTelemetryTracer.getSharedSpanBuilder("outer", Context.NONE);
         openTelemetryTracer.addLink(outer.addData(SPAN_CONTEXT_KEY, TEST_CONTEXT));
-        outer = openTelemetryTracer.start("innerSuppressed", outer, ProcessKind.SEND);
+        outer = openTelemetryTracer.start("outer", outer, ProcessKind.SEND);
 
         Context inner1Suppressed = openTelemetryTracer.start("innerSuppressed", outer);
         Context inner1NotSuppressed = openTelemetryTracer.start("innerNotSuppressed", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), inner1Suppressed);
@@ -888,6 +888,20 @@ public class OpenTelemetryTracerTest {
         SpanData outerSpan = testExporter.getSpans().get(1);
         assertEquals(innerNotSuppressedSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
         assertEquals(innerNotSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
+    }
+
+    @Test
+    public void suppressNestedMultipleLayersSpan() {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        Context inner1Suppressed = openTelemetryTracer.start("innerSuppressed", outer);
+        Context inner2Suppressed = openTelemetryTracer.start("inner2Suppressed", inner1Suppressed);
+
+        openTelemetryTracer.end("ok", null, inner2Suppressed);
+        openTelemetryTracer.end("ok", null, inner1Suppressed);
+        assertEquals(0, testExporter.getSpans().size());
+
+        openTelemetryTracer.end("ok", null, outer);
+        assertEquals(1, testExporter.getSpans().size());
     }
 
     @ParameterizedTest

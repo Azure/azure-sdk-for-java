@@ -582,14 +582,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     private static boolean shouldSuppress(SpanKind kind, Context context) {
-        if (isClientCall(kind)) {
-            boolean suppress = getBoolean(CLIENT_METHOD_CALL_FLAG, context);
-            boolean suppressed = getBoolean(SUPPRESSED_SPAN_FLAG, context);
-
-            return suppress && !suppressed;
-        }
-
-        return false;
+        return isClientCall(kind) && getBoolean(CLIENT_METHOD_CALL_FLAG, context);
     }
 
     private static Context unsuppress(Context context) {
