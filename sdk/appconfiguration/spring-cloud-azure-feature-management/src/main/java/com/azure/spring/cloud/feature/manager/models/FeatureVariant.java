@@ -4,11 +4,6 @@ package com.azure.spring.cloud.feature.manager.models;
 
 import java.util.LinkedHashMap;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,19 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A variant of a feature.
  */
-@Validated
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class FeatureVariant {
 
-    @NotBlank
     @JsonProperty("name")
     private String name;
 
-    @NotNull
     @JsonProperty("default")
     private Boolean isDefault = false;
 
-    @NotBlank
     @JsonProperty("configuration-reference")
     @JsonAlias({"configurationReference", "configuration-reference"})
     private String configurationReference;

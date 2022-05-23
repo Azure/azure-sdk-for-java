@@ -266,13 +266,6 @@
         },
         {
           "regex": true,
-          "code": "java.annotation.attributeValueChanged",
-          "old": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",
-          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\..*",
-          "justification": "Part of a new major release, this is moved to another location to enabled clarity and was a non-documented public api."
-        },
-        {
-          "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.DynamicFeatureManager",
           "justification": "Public API from another library, not sure why it is flagged."
@@ -288,124 +281,6 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.entities\\.FeatureFilterEvaluationContext",
           "justification": "Public API from another library, not sure why it is flagged."
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.FeatureManagementConfigProperties",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.FeatureManagementConfiguration",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.entities.Feature",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.targeting.Audience",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.targeting.GroupRollout",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "old": "method void com.azure.spring.cloud.feature.manager.FilterNotFoundException::<init>(java.lang.String, java.lang.Throwable, com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext)",
-          "new": "method void com.azure.spring.cloud.feature.manager.FilterNotFoundException::<init>(java.lang.String, java.lang.Throwable, com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext)",
-          "oldVisibility": "public",
-          "newVisibility": "package",
-          "justification": "Not a public API, cleaning up for new major version"
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.FilterNotFoundException",
-          "new": "class com.azure.spring.cloud.feature.manager.FilterNotFoundException",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.TargetingException",
-          "new": "class com.azure.spring.cloud.feature.manager.TargetingException",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.FilterParameters",
-          "new": "class com.azure.spring.cloud.feature.manager.FilterParameters",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext",
-          "new": "class com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.feature.filters.AlwaysOnFilter",
-          "new": "class com.azure.spring.cloud.feature.manager.feature.filters.AlwaysOnFilter",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.feature.filters.PercentageFilter",
-          "new": "class com.azure.spring.cloud.feature.manager.feature.filters.PercentageFilter",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.feature.filters.TimeWindowFilter",
-          "new": "class com.azure.spring.cloud.feature.manager.feature.filters.TimeWindowFilter",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.targeting.TargetingContext",
-          "new": "class com.azure.spring.cloud.feature.manager.targeting.TargetingContext",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions",
-          "new": "class com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions",
-          "justification": "Should be final, updating as it will be a new major version."
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.FeatureConfig",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "regex": true,
-          "code": "java.class.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.FeatureManagementWebConfiguration",
-          "justification": "This is a non public API, moved into implementation folder"
-        },
-        {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "old": "class com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot",
-          "new": "class com.azure.spring.cloud.feature.manager.FeatureManagerSnapshot",
-          "annotation": "@org.springframework.context.annotation.Configuration",
-          "justification": "Shouldn't have been marked ask @Configuration, wasn't doing anything with it."
         },
         {
           "regex": true,
