@@ -118,64 +118,32 @@
           </archive>
         </configuration>
         <!-- START: Empty Java Doc & Sources -->
-        <!-- The following code will generate an empty javadoc/sources with just a README.md. This is necessary
-             to pass the required checks on Maven. The way this works is by setting the classesDirectory
-             to a directory that only contains the README.md, which we need to copy. If the classesDirectory
-             is set to the root, where the README.md lives, it still won't have javadocs/sources but the jar file
-             will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
-             and recreated with the README.md being copied every time to guarantee that, when building locally,
-             it'll have the latest copy of the README.md file.
-        -->
+        <!-- The following code will generate an empty javadoc/sources.
+             This is necessary to pass the required checks on Maven. -->
         <executions>
           <execution>
-            <id>empty-javadoc-jar-with-readme</id>
+            <id>empty-javadoc-jar</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
             <configuration>
               <classifier>javadoc</classifier>
-              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
             </configuration>
           </execution>
           <execution>
-            <id>empty-source-jar-with-readme</id>
+            <id>empty-source-jar</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
             <configuration>
               <classifier>sources</classifier>
-              <classesDirectory>${project.basedir}/sourceTemp</classesDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>copy-readme-to-javadocTemp-and-sourceTemp</id>
-            <phase>prepare-package</phase>
-            <configuration>
-              <target>
-                <echo>Deleting existing ${project.basedir}/javadocTemp and
-                  ${project.basedir}/sourceTemp</echo>
-                <delete includeEmptyDirs="true" quiet="true">
-                  <fileset dir="${project.basedir}/javadocTemp"/>
-                  <fileset dir="${project.basedir}/sourceTemp"/>
-                </delete>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
       <!-- END: Empty Java Doc & Sources -->
-      </plugin>
     </plugins>
   </build>
 
