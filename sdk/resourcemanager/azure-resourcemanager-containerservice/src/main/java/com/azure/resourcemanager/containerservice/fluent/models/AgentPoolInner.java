@@ -509,11 +509,14 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
+     * Get the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @return the orchestratorVersion value.
@@ -523,11 +526,14 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
+     * Set the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -539,6 +545,18 @@ public final class AgentPoolInner extends SubResource {
         }
         this.innerProperties().withOrchestratorVersion(orchestratorVersion);
         return this;
+    }
+
+    /**
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
+     *
+     * @return the currentOrchestratorVersion value.
+     */
+    public String currentOrchestratorVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentOrchestratorVersion();
     }
 
     /**

@@ -361,8 +361,7 @@ public final class CosmosContainerProperties {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
                 @Override
@@ -376,4 +375,6 @@ public final class CosmosContainerProperties {
                 }
             });
     }
+
+    static { initialize(); }
 }

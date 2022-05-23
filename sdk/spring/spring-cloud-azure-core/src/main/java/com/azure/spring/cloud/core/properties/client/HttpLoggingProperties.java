@@ -20,11 +20,11 @@ public final class HttpLoggingProperties implements HttpLoggingOptionsProvider.H
      */
     private HttpLogDetailLevel level;
     /**
-     * The whitelisted headers that should be logged.
+     * The allowlist headers that should be logged.
      */
     private final Set<String> allowedHeaderNames = new HashSet<>();
     /**
-     * The whitelisted query parameters.
+     * The allowlist query parameters.
      */
     private final Set<String> allowedQueryParamNames = new HashSet<>();
     /**

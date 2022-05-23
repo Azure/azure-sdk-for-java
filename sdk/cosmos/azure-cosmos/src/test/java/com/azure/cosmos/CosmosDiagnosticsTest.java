@@ -856,9 +856,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         try {
 
             DirectConnectionConfig connectionConfig = DirectConnectionConfig.getDefaultConfig();
-            if (connectionStateListenerEnabled) {
-                connectionConfig.setConnectionEndpointRediscoveryEnabled(true);
-            }
+            connectionConfig.setConnectionEndpointRediscoveryEnabled(connectionStateListenerEnabled);
 
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)

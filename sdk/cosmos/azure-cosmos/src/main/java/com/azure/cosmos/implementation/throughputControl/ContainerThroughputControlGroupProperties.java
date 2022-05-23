@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.throughputControl;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -36,7 +38,7 @@ public class ContainerThroughputControlGroupProperties {
      *
      * @return the total size of distinct throughput control groups enabled on the container.
      */
-    public int enableThroughputControlGroup(ThroughputControlGroupInternal group) {
+    public Pair<Integer, Boolean> enableThroughputControlGroup(ThroughputControlGroupInternal group) {
         checkNotNull(group, "Throughput control group should not be null");
 
         if (group.isDefault()) {
@@ -51,15 +53,36 @@ public class ContainerThroughputControlGroupProperties {
             this.supressInitErrorGroupSet.add(group.getGroupName());
         }
 
+        final AtomicBoolean updatedGroupConfig = new AtomicBoolean(false);
+
         // Only throw when two different groups are using the same id (databaseId + containerId + groupName)
-        if (this.throughputControlGroupSet.stream()
-                .anyMatch(existingGroup -> Objects.equals(existingGroup.getId(), group.getId()) && !existingGroup.equals(group))) {
-            throw new IllegalArgumentException("Throughput control group with id " + group.getId() + " already exists");
-        }
+        this
+            .throughputControlGroupSet
+            .stream()
+            .forEach(existingGroup -> {
+                if (Objects.equals(existingGroup.getIdPrefix(), group.getIdPrefix()) &&
+                    !existingGroup.equals(group)) {
+
+                    if (existingGroup.isDefault() != group.isDefault() ||
+                        existingGroup.isContinueOnInitError() != group.isContinueOnInitError()) {
+                        throw new IllegalArgumentException(
+                            "Throughput control group with id " + group.getId() + " already exists with different " +
+                                "setting for isDefault or isContinueOnInitError - these properties are immutable and " +
+                                "cannot be changed.");
+                    }
+
+                    this.throughputControlGroupSet.remove(existingGroup);
+                    logger.info(
+                        "Throughput control group with id-prefix {} already exists with different config. " +
+                            "Will update config.",
+                        group.getIdPrefix());
+                    updatedGroupConfig.set(true);
+                }
+            });
 
         this.throughputControlGroupSet.add(group);
 
-        return this.throughputControlGroupSet.size();
+        return Pair.of(this.throughputControlGroupSet.size(), updatedGroupConfig.get());
     }
 
     public Set<ThroughputControlGroupInternal> getThroughputControlGroupSet() {

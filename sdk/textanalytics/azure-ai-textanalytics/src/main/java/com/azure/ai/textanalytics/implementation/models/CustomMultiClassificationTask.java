@@ -14,7 +14,7 @@ public final class CustomMultiClassificationTask {
      * The parameters property.
      */
     @JsonProperty(value = "parameters")
-    private CustomMultiClassificationTaskParameters parameters;
+    private CustomMultiLabelClassificationTaskParameters parameters;
 
     /*
      * The taskName property.
@@ -27,7 +27,7 @@ public final class CustomMultiClassificationTask {
      *
      * @return the parameters value.
      */
-    public CustomMultiClassificationTaskParameters getParameters() {
+    public CustomMultiLabelClassificationTaskParameters getParameters() {
         return this.parameters;
     }
 
@@ -37,7 +37,7 @@ public final class CustomMultiClassificationTask {
      * @param parameters the parameters value to set.
      * @return the CustomMultiClassificationTask object itself.
      */
-    public CustomMultiClassificationTask setParameters(CustomMultiClassificationTaskParameters parameters) {
+    public CustomMultiClassificationTask setParameters(CustomMultiLabelClassificationTaskParameters parameters) {
         this.parameters = parameters;
         return this;
     }

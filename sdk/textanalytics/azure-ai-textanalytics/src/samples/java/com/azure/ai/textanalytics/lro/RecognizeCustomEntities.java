@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -50,7 +51,7 @@ public class RecognizeCustomEntities {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setRecognizeCustomEntitiesActions(
-                        new com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction("{project_name}", "{deployment_name}")),
+                        new RecognizeCustomEntitiesAction("{project_name}", "{deployment_name}")),
                 "en",
                 null);
 

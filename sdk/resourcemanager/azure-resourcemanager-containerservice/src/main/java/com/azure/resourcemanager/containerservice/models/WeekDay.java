@@ -42,7 +42,11 @@ public final class WeekDay extends ExpandableStringEnum<WeekDay> {
         return fromString(name, WeekDay.class);
     }
 
-    /** @return known WeekDay values. */
+    /**
+     * Gets known WeekDay values.
+     *
+     * @return known WeekDay values.
+     */
     public static Collection<WeekDay> values() {
         return values(WeekDay.class);
     }
