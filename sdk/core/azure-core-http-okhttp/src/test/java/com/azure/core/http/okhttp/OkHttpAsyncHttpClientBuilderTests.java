@@ -284,6 +284,17 @@ public class OkHttpAsyncHttpClientBuilderTests {
     }
 
     /**
+     * Tests building a client with negative callTimeout.
+     */
+    @Test
+    public void throwsWithNegativeCallTimeout() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new OkHttpAsyncHttpClientBuilder()
+                .callTimeout(Duration.ofSeconds(-1));
+        });
+    }
+
+    /**
      * Tests building a client with default timeouts.
      */
     @Test

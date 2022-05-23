@@ -29,6 +29,8 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  */
 public class OkHttpAsyncHttpClientBuilder {
 
+    private static final ClientLogger LOGGER = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
+
     private final okhttp3.OkHttpClient okHttpClient;
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
@@ -183,6 +185,9 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder callTimeout(Duration callTimeout) {
         // callTimeout can be null
+        if (callTimeout != null && callTimeout.isNegative()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'callTimeout' cannot be negative"));
+        }
         this.callTimeout = callTimeout;
         return this;
     }

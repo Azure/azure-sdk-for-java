@@ -144,7 +144,7 @@ public class OkHttpAsyncHttpClientTests {
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
+            .expectErrorMatches(e -> e.getMessage().contains("boo"))
             .verify();
     }
 
@@ -162,7 +162,7 @@ public class OkHttpAsyncHttpClientTests {
 
         try {
             StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
+                .expectErrorMatches(e -> e.getMessage().contains("boo"))
                 .verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
@@ -232,7 +232,10 @@ public class OkHttpAsyncHttpClientTests {
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
-                    .doOnNext(buffer -> md.update(buffer.duplicate()))
+                    .map(buffer -> {
+                        md.update(buffer.duplicate());
+                        return buffer;
+                    })
                     .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest(), "wrong digest!"));
             }))
             .sequential()
