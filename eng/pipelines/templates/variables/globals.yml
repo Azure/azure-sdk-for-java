@@ -40,3 +40,4 @@ variables:
 
   skipComponentGovernanceDetection: true
   Package.EnableSBOMSigning: true
+  useEsrpRelease: false
