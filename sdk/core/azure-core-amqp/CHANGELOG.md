@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed get link from session check it is disposed or not. ([#25718](https://github.com/Azure/azure-sdk-for-java/issues/25718))
+- Fixed client may get disposed links from session. ([#25718](https://github.com/Azure/azure-sdk-for-java/issues/25718))
 
 ### Other Changes
 
