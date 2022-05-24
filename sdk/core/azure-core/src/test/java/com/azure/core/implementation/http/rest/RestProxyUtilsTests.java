@@ -1,0 +1,91 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.implementation.http.rest;
+
+import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.util.FluxUtil;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+
+import java.nio.ByteBuffer;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class RestProxyUtilsTests {
+
+    private static final byte[] EXPECTED = new byte[]{0, 1, 2, 3, 4};
+
+    @Test
+    public void expectedBodyLength() {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            .setBody(EXPECTED)
+            .setHeader("Content-Length", "5");
+
+        RestProxyUtils.validateLength(httpRequest);
+
+        StepVerifier.create(
+                FluxUtil.collectBytesInByteBufferStream(httpRequest.getBody()))
+            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .verifyComplete();
+    }
+
+    @Test
+    public void emptyRequestBody() {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
+
+        RestProxyUtils.validateLength(httpRequest);
+
+        assertNull(httpRequest.getBody());
+        assertNull(httpRequest.getBodyAsBinaryData());
+    }
+
+    @Test
+    public void unexpectedBodyLength() {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            .setBody(EXPECTED);
+
+        RestProxyUtils.validateLength(httpRequest);
+
+        StepVerifier.create(
+                FluxUtil.collectBytesInByteBufferStream(
+                    httpRequest.setHeader("Content-Length", "4").getBody()))
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof UnexpectedLengthException);
+                assertEquals("Request body emitted 5 bytes, more than the expected 4 bytes.", throwable.getMessage());
+            });
+
+        StepVerifier.create(
+                FluxUtil.collectBytesInByteBufferStream(
+                    httpRequest.setHeader("Content-Length", "6").getBody()))
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof UnexpectedLengthException);
+                assertEquals("Request body emitted 5 bytes, less than the expected 6 bytes.", throwable.getMessage());
+            });
+    }
+
+    @Test
+    public void multipleSubscriptionsToCheckBodyLength() {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            .setBody(EXPECTED)
+            .setHeader("Content-Length", "5");
+
+        RestProxyUtils.validateLength(httpRequest);
+
+        Flux<ByteBuffer> verifierFlux = httpRequest.getBody();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
+            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .verifyComplete();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
+            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .verifyComplete();
+    }
+}

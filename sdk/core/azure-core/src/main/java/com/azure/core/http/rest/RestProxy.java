@@ -23,6 +23,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
@@ -63,9 +64,6 @@ import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.s
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
-    private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
-    private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
-    private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
     private static final String MUST_IMPLEMENT_PAGE_ERROR =
         "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
 
@@ -140,9 +138,7 @@ public final class RestProxy implements InvocationHandler {
                 options.getRequestCallback().accept(request);
             }
 
-            if (request.getBody() != null) {
-                request.setBody(validateLength(request));
-            }
+            RestProxyUtils.validateLength(request);
 
             final Mono<HttpResponse> asyncResponse = send(request, context);
 
@@ -175,43 +171,6 @@ public final class RestProxy implements InvocationHandler {
         }
 
         return context;
-    }
-
-    static Flux<ByteBuffer> validateLength(final HttpRequest request) {
-        final Flux<ByteBuffer> bbFlux = request.getBody();
-        if (bbFlux == null) {
-            return Flux.empty();
-        }
-
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-
-        return Flux.defer(() -> {
-            final long[] currentTotalLength = new long[1];
-            return Flux.concat(bbFlux, Flux.just(VALIDATION_BUFFER)).handle((buffer, sink) -> {
-                if (buffer == null) {
-                    return;
-                }
-
-                if (buffer == VALIDATION_BUFFER) {
-                    if (expectedLength != currentTotalLength[0]) {
-                        sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    } else {
-                        sink.complete();
-                    }
-                    return;
-                }
-
-                currentTotalLength[0] += buffer.remaining();
-                if (currentTotalLength[0] > expectedLength) {
-                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    return;
-                }
-
-                sink.next(buffer);
-            });
-        });
     }
 
     /**
