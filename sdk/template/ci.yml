@@ -39,9 +39,6 @@ pr:
       - sdk/template/azure-sdk-template-three/pom.xml
       - sdk/template/azure-template-perf/pom.xml
 
-variables:
-  useEsrpRelease: 'true'
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -62,3 +59,4 @@ extends:
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
+    UseEsrpRelease: true

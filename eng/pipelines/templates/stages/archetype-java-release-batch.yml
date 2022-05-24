@@ -20,6 +20,9 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
+  - name: UseEsrpRelease
+    type: boolean
+    default: false
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -210,7 +213,7 @@ stages:
                   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                   - ${{ each artifact in parameters.Artifacts }}:
                     - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                      - ${{ if eq(variables.useEsrpRelease, 'true') }}:
+                      - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
                         - template: /eng/pipelines/templates/steps/java-publishing.yml
                           parameters:
                             ArtifactID: ${{artifact.name}}
