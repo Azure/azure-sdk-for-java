@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Runs a shell script during the customization phase (Linux). Corresponds to Packer shell provisioner. Exactly one of
- * 'scriptUri' or 'inline' can be specified.
+ * Runs the specified shell script during the validation phase (Linux). Corresponds to Packer shell provisioner. Exactly
+ * one of 'scriptUri' or 'inline' can be specified.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Shell")
 @Fluent
-public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer {
+public final class ImageTemplateShellValidator extends ImageTemplateInVMValidator {
     /*
-     * URI of the shell script to be run for customizing. It can be a github
-     * link, SAS URI for Azure Storage, etc
+     * URI of the shell script to be run for validation. It can be a github
+     * link, Azure Storage URI, etc
      */
     @JsonProperty(value = "scriptUri")
     private String scriptUri;
@@ -38,8 +38,8 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
     private List<String> inline;
 
     /**
-     * Get the scriptUri property: URI of the shell script to be run for customizing. It can be a github link, SAS URI
-     * for Azure Storage, etc.
+     * Get the scriptUri property: URI of the shell script to be run for validation. It can be a github link, Azure
+     * Storage URI, etc.
      *
      * @return the scriptUri value.
      */
@@ -48,13 +48,13 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
     }
 
     /**
-     * Set the scriptUri property: URI of the shell script to be run for customizing. It can be a github link, SAS URI
-     * for Azure Storage, etc.
+     * Set the scriptUri property: URI of the shell script to be run for validation. It can be a github link, Azure
+     * Storage URI, etc.
      *
      * @param scriptUri the scriptUri value to set.
-     * @return the ImageTemplateShellCustomizer object itself.
+     * @return the ImageTemplateShellValidator object itself.
      */
-    public ImageTemplateShellCustomizer withScriptUri(String scriptUri) {
+    public ImageTemplateShellValidator withScriptUri(String scriptUri) {
         this.scriptUri = scriptUri;
         return this;
     }
@@ -72,9 +72,9 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
      * Set the sha256Checksum property: SHA256 checksum of the shell script provided in the scriptUri field.
      *
      * @param sha256Checksum the sha256Checksum value to set.
-     * @return the ImageTemplateShellCustomizer object itself.
+     * @return the ImageTemplateShellValidator object itself.
      */
-    public ImageTemplateShellCustomizer withSha256Checksum(String sha256Checksum) {
+    public ImageTemplateShellValidator withSha256Checksum(String sha256Checksum) {
         this.sha256Checksum = sha256Checksum;
         return this;
     }
@@ -92,16 +92,16 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
      * Set the inline property: Array of shell commands to execute.
      *
      * @param inline the inline value to set.
-     * @return the ImageTemplateShellCustomizer object itself.
+     * @return the ImageTemplateShellValidator object itself.
      */
-    public ImageTemplateShellCustomizer withInline(List<String> inline) {
+    public ImageTemplateShellValidator withInline(List<String> inline) {
         this.inline = inline;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ImageTemplateShellCustomizer withName(String name) {
+    public ImageTemplateShellValidator withName(String name) {
         super.withName(name);
         return this;
     }

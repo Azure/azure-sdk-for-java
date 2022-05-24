@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.implementation;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplate;
@@ -13,6 +12,7 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParameters;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
@@ -56,10 +56,6 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this.innerModel().identity();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public ImageTemplateSource source() {
         return this.innerModel().source();
     }
@@ -71,6 +67,10 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ImageTemplatePropertiesValidate validate() {
+        return this.innerModel().validate();
     }
 
     public List<ImageTemplateDistributor> distribute() {
@@ -102,12 +102,24 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this.innerModel().vmProfile();
     }
 
+    public String stagingResourceGroup() {
+        return this.innerModel().stagingResourceGroup();
+    }
+
+    public String exactStagingResourceGroup() {
+        return this.innerModel().exactStagingResourceGroup();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ImageTemplateInner innerModel() {
@@ -260,6 +272,11 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this;
     }
 
+    public ImageTemplateImpl withValidate(ImageTemplatePropertiesValidate validate) {
+        this.innerModel().withValidate(validate);
+        return this;
+    }
+
     public ImageTemplateImpl withDistribute(List<ImageTemplateDistributor> distribute) {
         this.innerModel().withDistribute(distribute);
         return this;
@@ -272,6 +289,11 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
 
     public ImageTemplateImpl withVmProfile(ImageTemplateVmProfile vmProfile) {
         this.innerModel().withVmProfile(vmProfile);
+        return this;
+    }
+
+    public ImageTemplateImpl withStagingResourceGroup(String stagingResourceGroup) {
+        this.innerModel().withStagingResourceGroup(stagingResourceGroup);
         return this;
     }
 

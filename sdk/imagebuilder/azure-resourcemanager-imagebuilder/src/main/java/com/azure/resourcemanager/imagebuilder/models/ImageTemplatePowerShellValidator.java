@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Runs the specified PowerShell on the VM (Windows). Corresponds to Packer powershell provisioner. Exactly one of
- * 'scriptUri' or 'inline' can be specified.
+ * Runs the specified PowerShell script during the validation phase (Windows). Corresponds to Packer powershell
+ * provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PowerShell")
 @Fluent
-public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustomizer {
+public final class ImageTemplatePowerShellValidator extends ImageTemplateInVMValidator {
     /*
-     * URI of the PowerShell script to be run for customizing. It can be a
-     * github link, SAS URI for Azure Storage, etc
+     * URI of the PowerShell script to be run for validation. It can be a
+     * github link, Azure Storage URI, etc
      */
     @JsonProperty(value = "scriptUri")
     private String scriptUri;
@@ -59,8 +59,8 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     private List<Integer> validExitCodes;
 
     /**
-     * Get the scriptUri property: URI of the PowerShell script to be run for customizing. It can be a github link, SAS
-     * URI for Azure Storage, etc.
+     * Get the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link, Azure
+     * Storage URI, etc.
      *
      * @return the scriptUri value.
      */
@@ -69,13 +69,13 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
     }
 
     /**
-     * Set the scriptUri property: URI of the PowerShell script to be run for customizing. It can be a github link, SAS
-     * URI for Azure Storage, etc.
+     * Set the scriptUri property: URI of the PowerShell script to be run for validation. It can be a github link, Azure
+     * Storage URI, etc.
      *
      * @param scriptUri the scriptUri value to set.
-     * @return the ImageTemplatePowerShellCustomizer object itself.
+     * @return the ImageTemplatePowerShellValidator object itself.
      */
-    public ImageTemplatePowerShellCustomizer withScriptUri(String scriptUri) {
+    public ImageTemplatePowerShellValidator withScriptUri(String scriptUri) {
         this.scriptUri = scriptUri;
         return this;
     }
@@ -93,9 +93,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      * Set the sha256Checksum property: SHA256 checksum of the power shell script provided in the scriptUri field above.
      *
      * @param sha256Checksum the sha256Checksum value to set.
-     * @return the ImageTemplatePowerShellCustomizer object itself.
+     * @return the ImageTemplatePowerShellValidator object itself.
      */
-    public ImageTemplatePowerShellCustomizer withSha256Checksum(String sha256Checksum) {
+    public ImageTemplatePowerShellValidator withSha256Checksum(String sha256Checksum) {
         this.sha256Checksum = sha256Checksum;
         return this;
     }
@@ -113,9 +113,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      * Set the inline property: Array of PowerShell commands to execute.
      *
      * @param inline the inline value to set.
-     * @return the ImageTemplatePowerShellCustomizer object itself.
+     * @return the ImageTemplatePowerShellValidator object itself.
      */
-    public ImageTemplatePowerShellCustomizer withInline(List<String> inline) {
+    public ImageTemplatePowerShellValidator withInline(List<String> inline) {
         this.inline = inline;
         return this;
     }
@@ -133,9 +133,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      * Set the runElevated property: If specified, the PowerShell script will be run with elevated privileges.
      *
      * @param runElevated the runElevated value to set.
-     * @return the ImageTemplatePowerShellCustomizer object itself.
+     * @return the ImageTemplatePowerShellValidator object itself.
      */
-    public ImageTemplatePowerShellCustomizer withRunElevated(Boolean runElevated) {
+    public ImageTemplatePowerShellValidator withRunElevated(Boolean runElevated) {
         this.runElevated = runElevated;
         return this;
     }
@@ -155,9 +155,9 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      * Local System user. Can only be true when the runElevated field above is set to true.
      *
      * @param runAsSystem the runAsSystem value to set.
-     * @return the ImageTemplatePowerShellCustomizer object itself.
+     * @return the ImageTemplatePowerShellValidator object itself.
      */
-    public ImageTemplatePowerShellCustomizer withRunAsSystem(Boolean runAsSystem) {
+    public ImageTemplatePowerShellValidator withRunAsSystem(Boolean runAsSystem) {
         this.runAsSystem = runAsSystem;
         return this;
     }
@@ -175,16 +175,16 @@ public final class ImageTemplatePowerShellCustomizer extends ImageTemplateCustom
      * Set the validExitCodes property: Valid exit codes for the PowerShell script. [Default: 0].
      *
      * @param validExitCodes the validExitCodes value to set.
-     * @return the ImageTemplatePowerShellCustomizer object itself.
+     * @return the ImageTemplatePowerShellValidator object itself.
      */
-    public ImageTemplatePowerShellCustomizer withValidExitCodes(List<Integer> validExitCodes) {
+    public ImageTemplatePowerShellValidator withValidExitCodes(List<Integer> validExitCodes) {
         this.validExitCodes = validExitCodes;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ImageTemplatePowerShellCustomizer withName(String name) {
+    public ImageTemplatePowerShellValidator withName(String name) {
         super.withName(name);
         return this;
     }
