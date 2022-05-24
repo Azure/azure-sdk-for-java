@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static com.azure.core.http.rest.RestProxyUtil.*;
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 /**
@@ -118,7 +119,7 @@ public final class RestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        validateResumeOperationIsNotPresent(method);
+        RestProxyUtil.validateResumeOperationIsNotPresent(method, LOGGER);
 
         try {
             final SwaggerMethodParser methodParser = getMethodParser(method);
@@ -151,28 +152,6 @@ public final class RestProxy implements InvocationHandler {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    void validateResumeOperationIsNotPresent(Method method) {
-        // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
-        // marked as deprecated.
-        if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
-        }
-    }
-
-    static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
-        if (options == null) {
-            return context;
-        }
-
-        Context optionsContext = options.getContext();
-        if (optionsContext != null && optionsContext != Context.NONE) {
-            context = CoreUtils.mergeContexts(context, optionsContext);
-        }
-
-        return context;
     }
 
     static Flux<ByteBuffer> validateLength(final HttpRequest request) {
@@ -368,35 +347,6 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser, RequestOptions options) {
         return asyncDecodedResponse
             .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, options));
-    }
-
-    private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final String contentType = httpResponse.getHeaderValue("Content-Type");
-        final String bodyRepresentation;
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
-        } else {
-            bodyRepresentation = responseContent == null || responseContent.length == 0
-                ? "(empty body)"
-                : "\"" + new String(responseContent, StandardCharsets.UTF_8) + "\"";
-        }
-
-        Exception result;
-        try {
-            final Constructor<? extends HttpResponseException> exceptionConstructor = exception.getExceptionType()
-                .getConstructor(String.class, HttpResponse.class, exception.getExceptionBodyType());
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse, responseDecodedContent);
-        } catch (ReflectiveOperationException e) {
-            String message = "Status code " + responseStatusCode + ", but an instance of "
-                + exception.getExceptionType().getCanonicalName() + " cannot be created."
-                + " Response body: " + bodyRepresentation;
-
-            result = new IOException(message, e);
-        }
-        return result;
     }
 
     /**
@@ -658,31 +608,6 @@ public final class RestProxy implements InvocationHandler {
         }
 
         TracerProxy.end(statusCode, throwable, tracingContext.get());
-    }
-
-    /**
-     * Create an instance of the default serializer.
-     *
-     * @return the default serializer
-     */
-    private static SerializerAdapter createDefaultSerializer() {
-        return JacksonAdapter.createDefaultSerializerAdapter();
-    }
-
-    /**
-     * Create the default HttpPipeline.
-     *
-     * @return the default HttpPipeline
-     */
-    private static HttpPipeline createDefaultPipeline() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new CookiePolicy());
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
     }
 
     /**

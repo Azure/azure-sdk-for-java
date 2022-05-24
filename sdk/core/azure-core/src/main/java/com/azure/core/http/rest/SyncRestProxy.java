@@ -56,6 +56,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.core.http.rest.RestProxyUtil.*;
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 //TODO (g2vinay): Address any Pending comments from this PR: https://github.com/Azure/azure-sdk-for-java/pull/27911/
@@ -121,7 +122,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        validateResumeOperationIsNotPresent(method);
+        RestProxyUtil.validateResumeOperationIsNotPresent(method, LOGGER);
 
         final SwaggerMethodParser methodParser = getMethodParser(method);
         HttpRequest request;
@@ -165,28 +166,6 @@ public final class SyncRestProxy implements InvocationHandler {
                 endTracingSpan(decodedResponse, throwable, context);
             }
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    void validateResumeOperationIsNotPresent(Method method) {
-        // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
-        // marked as deprecated.
-        if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
-        }
-    }
-
-    static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
-        if (options == null) {
-            return context;
-        }
-
-        Context optionsContext = options.getContext();
-        if (optionsContext != null && optionsContext != Context.NONE) {
-            context = CoreUtils.mergeContexts(context, optionsContext);
-        }
-
-        return context;
     }
 
     static BinaryData validateLengthSync(final HttpRequest request) {
@@ -361,13 +340,7 @@ public final class SyncRestProxy implements InvocationHandler {
                 serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
                 request.setHeader("Content-Length", String.valueOf(stream.size()));
-//                request.setContent(BinaryData.fromBytes(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()).array()));
-
-//                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
-
                 request.setBody(BinaryData.fromStream(new ByteArrayInputStream(stream.toByteArray(), 0, stream.size())));
-//                request.setContent(BinaryData.fromBytes(stream.toByteArray()));
-
             } else if (bodyContentObject instanceof byte[]) {
                 request.setBody((byte[]) bodyContentObject);
             } else if (bodyContentObject instanceof String) {
@@ -387,35 +360,6 @@ public final class SyncRestProxy implements InvocationHandler {
         }
 
         return request;
-    }
-
-    private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final String contentType = httpResponse.getHeaderValue("Content-Type");
-        final String bodyRepresentation;
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
-        } else {
-            bodyRepresentation = responseContent == null || responseContent.length == 0
-                ? "(empty body)"
-                : "\"" + new String(responseContent, StandardCharsets.UTF_8) + "\"";
-        }
-
-        Exception result;
-        try {
-            final Constructor<? extends HttpResponseException> exceptionConstructor = exception.getExceptionType()
-                .getConstructor(String.class, HttpResponse.class, exception.getExceptionBodyType());
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse, responseDecodedContent);
-        } catch (ReflectiveOperationException e) {
-            String message = "Status code " + responseStatusCode + ", but an instance of "
-                + exception.getExceptionType().getCanonicalName() + " cannot be created."
-                + " Response body: " + bodyRepresentation;
-
-            result = new IOException(message, e);
-        }
-        return result;
     }
 
     /**
@@ -636,31 +580,6 @@ public final class SyncRestProxy implements InvocationHandler {
             }
         }
         TracerProxy.end(statusCode, throwable, tracingContext);
-    }
-
-    /**
-     * Create an instance of the default serializer.
-     *
-     * @return the default serializer
-     */
-    private static SerializerAdapter createDefaultSerializer() {
-        return JacksonAdapter.createDefaultSerializerAdapter();
-    }
-
-    /**
-     * Create the default HttpPipeline.
-     *
-     * @return the default HttpPipeline
-     */
-    private static HttpPipeline createDefaultPipeline() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new CookiePolicy());
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
     }
 
     /**
