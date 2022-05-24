@@ -163,13 +163,14 @@ public class VertxAsyncHttpClientBuilder {
      * @return A new Vert.x backed {@link HttpClient} instance.
      */
     public HttpClient build() {
+        Vertx configuredVertx = this.vertx;
         boolean shutdownHookRequired = false;
-        if (this.vertx == null) {
+        if (configuredVertx == null) {
             ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class, VertxProvider.class.getClassLoader());
             Iterator<VertxProvider> iterator = vertxProviders.iterator();
             if (iterator.hasNext()) {
                 VertxProvider provider = iterator.next();
-                this.vertx = provider.createVertx();
+                configuredVertx = provider.createVertx();
                 LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
 
                 while (iterator.hasNext()) {
@@ -178,7 +179,7 @@ public class VertxAsyncHttpClientBuilder {
                         ignoredProvider.getClass().getName());
                 }
             } else {
-                this.vertx = Vertx.vertx();
+                configuredVertx = Vertx.vertx();
                 shutdownHookRequired = true;
             }
         }
@@ -252,11 +253,11 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         if (shutdownHookRequired) {
-            Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable()));
+            Runtime.getRuntime().addShutdownHook(new Thread(getVertxCloseRunnable(configuredVertx)));
         }
 
-        io.vertx.core.http.HttpClient client = this.vertx.createHttpClient(this.httpClientOptions);
-        return new VertxAsyncHttpClient(client, this.vertx);
+        io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(this.httpClientOptions);
+        return new VertxAsyncHttpClient(client, configuredVertx);
     }
 
     /**
@@ -280,13 +281,14 @@ public class VertxAsyncHttpClientBuilder {
     /**
      * Gets a {@link Runnable} to close the embedded {@link Vertx} instance on shutdown.
      *
+     * @param vertxToClose The {@link Vertx} instance to close on shutdown
      * @return The {@link Runnable} action to close the embedded {@link Vertx} instance
      */
-    private Runnable getVertxCloseRunnable() {
+    private Runnable getVertxCloseRunnable(Vertx vertxToClose) {
         return () -> {
             CountDownLatch latch = new CountDownLatch(1);
-            if (vertx != null) {
-                vertx.close(event -> {
+            if (vertxToClose != null) {
+                vertxToClose.close(event -> {
                     if (event.failed() && event.cause() != null) {
                         LOGGER.logThrowableAsError(event.cause());
                     }
