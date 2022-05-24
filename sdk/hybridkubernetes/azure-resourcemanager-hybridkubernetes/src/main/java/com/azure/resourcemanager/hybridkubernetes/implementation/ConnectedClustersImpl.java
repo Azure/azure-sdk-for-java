@@ -16,10 +16,9 @@ import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusters;
 import com.azure.resourcemanager.hybridkubernetes.models.CredentialResults;
 import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectedClustersImpl implements ConnectedClusters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClustersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedClustersImpl.class);
 
     private final ConnectedClustersClient innerClient;
 
@@ -116,7 +115,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public ConnectedCluster getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public Response<ConnectedCluster> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,7 +144,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,7 +157,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +178,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         }
         String clusterName = Utils.getValueFromIdByName(id, "connectedClusters");
         if (clusterName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

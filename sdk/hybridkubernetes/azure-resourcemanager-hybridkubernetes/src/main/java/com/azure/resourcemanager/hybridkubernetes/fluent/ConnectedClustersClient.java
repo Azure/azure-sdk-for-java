@@ -27,7 +27,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
@@ -43,7 +43,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
@@ -104,7 +104,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectedClusterInner> updateWithResponse(
@@ -134,7 +134,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectedClusterInner> getByResourceGroupWithResponse(
@@ -148,7 +148,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName);
@@ -162,7 +162,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, Context context);
@@ -217,7 +217,8 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CredentialResultsInner> listClusterUserCredentialWithResponse(
@@ -230,7 +231,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName);
@@ -243,7 +244,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -253,7 +254,7 @@ public interface ConnectedClustersClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectedClusterInner> list();
@@ -265,7 +266,7 @@ public interface ConnectedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectedClusterInner> list(Context context);

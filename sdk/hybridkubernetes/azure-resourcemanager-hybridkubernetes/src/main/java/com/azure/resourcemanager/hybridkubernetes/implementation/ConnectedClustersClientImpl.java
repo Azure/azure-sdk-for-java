@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridkubernetes.fluent.ConnectedClustersClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConnectedClustersClient. */
 public final class ConnectedClustersClientImpl implements ConnectedClustersClient {
-    private final ClientLogger logger = new ClientLogger(ConnectedClustersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConnectedClustersService service;
 
@@ -205,7 +202,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -262,7 +259,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -315,7 +312,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link PollerFlux} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateAsync(
@@ -329,7 +326,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                 this.client.getHttpPipeline(),
                 ConnectedClusterInner.class,
                 ConnectedClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -342,7 +339,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link PollerFlux} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateAsync(
@@ -365,7 +362,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
@@ -383,7 +380,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
@@ -400,7 +397,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> createAsync(
@@ -420,7 +417,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> createAsync(
@@ -474,7 +471,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> updateWithResponseAsync(
@@ -531,7 +528,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> updateWithResponseAsync(
@@ -584,20 +581,13 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> updateAsync(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
         return updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch)
-            .flatMap(
-                (Response<ConnectedClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -627,7 +617,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedClusterInner> updateWithResponse(
@@ -644,7 +634,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> getByResourceGroupWithResponseAsync(
@@ -694,7 +684,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> getByResourceGroupWithResponseAsync(
@@ -740,19 +730,12 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName)
-            .flatMap(
-                (Response<ConnectedClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -781,7 +764,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedClusterInner> getByResourceGroupWithResponse(
@@ -797,7 +780,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
@@ -845,7 +828,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -890,14 +873,15 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -909,7 +893,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -929,7 +913,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
@@ -945,7 +929,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -961,7 +945,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
@@ -977,7 +961,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, Context context) {
@@ -1024,7 +1008,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CredentialResultsInner>> listClusterUserCredentialWithResponseAsync(
@@ -1080,7 +1065,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CredentialResultsInner>> listClusterUserCredentialWithResponseAsync(
@@ -1132,20 +1118,14 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CredentialResultsInner> listClusterUserCredentialAsync(
         String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
         return listClusterUserCredentialWithResponseAsync(resourceGroupName, clusterName, properties)
-            .flatMap(
-                (Response<CredentialResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1175,7 +1155,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialResultsInner> listClusterUserCredentialWithResponse(
@@ -1190,7 +1171,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1242,7 +1224,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupSinglePageAsync(
@@ -1291,7 +1274,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1308,7 +1291,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1324,7 +1307,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName) {
@@ -1339,7 +1322,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1351,7 +1334,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listSinglePageAsync() {
@@ -1397,7 +1381,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listSinglePageAsync(Context context) {
@@ -1438,7 +1423,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listAsync() {
@@ -1453,7 +1438,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listAsync(Context context) {
@@ -1466,7 +1451,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> list() {
@@ -1480,7 +1465,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> list(Context context) {
@@ -1494,7 +1479,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1531,7 +1517,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupNextSinglePageAsync(
@@ -1567,7 +1554,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1604,7 +1592,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listBySubscriptionNextSinglePageAsync(

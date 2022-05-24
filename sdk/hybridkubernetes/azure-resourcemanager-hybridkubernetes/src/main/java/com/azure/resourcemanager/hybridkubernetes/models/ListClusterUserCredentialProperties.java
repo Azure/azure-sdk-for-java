@@ -6,14 +6,11 @@ package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ListClusterUserCredentialProperties model. */
 @Fluent
 public final class ListClusterUserCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListClusterUserCredentialProperties.class);
-
     /*
      * The mode of client authentication.
      */
@@ -74,10 +71,12 @@ public final class ListClusterUserCredentialProperties {
      */
     public void validate() {
         if (authenticationMethod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationMethod in model ListClusterUserCredentialProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ListClusterUserCredentialProperties.class);
 }

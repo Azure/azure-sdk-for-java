@@ -27,7 +27,11 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
         return fromString(name, AuthenticationMethod.class);
     }
 
-    /** @return known AuthenticationMethod values. */
+    /**
+     * Gets known AuthenticationMethod values.
+     *
+     * @return known AuthenticationMethod values.
+     */
     public static Collection<AuthenticationMethod> values() {
         return values(AuthenticationMethod.class);
     }

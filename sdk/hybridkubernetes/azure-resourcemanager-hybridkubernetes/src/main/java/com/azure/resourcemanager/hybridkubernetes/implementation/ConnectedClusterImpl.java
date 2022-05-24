@@ -115,6 +115,10 @@ public final class ConnectedClusterImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectedClusterInner innerModel() {
         return this.innerObject;
     }

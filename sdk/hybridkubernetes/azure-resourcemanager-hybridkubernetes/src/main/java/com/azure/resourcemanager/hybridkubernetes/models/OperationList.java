@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of connected cluster API operations. */
 @Fluent
 public final class OperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationList.class);
-
     /*
      * The list of connected cluster API operations.
      */

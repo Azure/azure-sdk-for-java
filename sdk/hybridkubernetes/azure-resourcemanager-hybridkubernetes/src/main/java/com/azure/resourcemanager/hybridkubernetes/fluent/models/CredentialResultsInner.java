@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.hybridkubernetes.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.models.CredentialResult;
 import com.azure.resourcemanager.hybridkubernetes.models.HybridConnectionConfig;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of credential result response. */
 @Immutable
 public final class CredentialResultsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResultsInner.class);
-
     /*
      * Contains the REP (rendezvous endpoint) and “Sender” access token.
      */
