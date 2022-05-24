@@ -215,7 +215,11 @@ public final class AutomationRulePropertyConditionSupportedProperty
         return fromString(name, AutomationRulePropertyConditionSupportedProperty.class);
     }
 
-    /** @return known AutomationRulePropertyConditionSupportedProperty values. */
+    /**
+     * Gets known AutomationRulePropertyConditionSupportedProperty values.
+     *
+     * @return known AutomationRulePropertyConditionSupportedProperty values.
+     */
     public static Collection<AutomationRulePropertyConditionSupportedProperty> values() {
         return values(AutomationRulePropertyConditionSupportedProperty.class);
     }

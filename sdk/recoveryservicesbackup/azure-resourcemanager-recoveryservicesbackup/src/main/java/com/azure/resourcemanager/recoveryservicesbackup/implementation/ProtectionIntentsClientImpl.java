@@ -238,15 +238,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreValidateEnableBackupResponseInner> validateAsync(
         String azureRegion, PreValidateEnableBackupRequest parameters) {
-        return validateWithResponseAsync(azureRegion, parameters)
-            .flatMap(
-                (Response<PreValidateEnableBackupResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -421,14 +413,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
     private Mono<ProtectionIntentResourceInner> getAsync(
         String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName)
-            .flatMap(
-                (Response<ProtectionIntentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -632,14 +617,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         String intentObjectName,
         ProtectionIntentResourceInner parameters) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName, parameters)
-            .flatMap(
-                (Response<ProtectionIntentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -820,7 +798,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
     private Mono<Void> deleteAsync(
         String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

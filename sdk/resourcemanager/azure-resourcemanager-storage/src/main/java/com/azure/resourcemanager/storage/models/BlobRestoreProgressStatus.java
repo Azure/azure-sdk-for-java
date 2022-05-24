@@ -30,7 +30,11 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
         return fromString(name, BlobRestoreProgressStatus.class);
     }
 
-    /** @return known BlobRestoreProgressStatus values. */
+    /**
+     * Gets known BlobRestoreProgressStatus values.
+     *
+     * @return known BlobRestoreProgressStatus values.
+     */
     public static Collection<BlobRestoreProgressStatus> values() {
         return values(BlobRestoreProgressStatus.class);
     }

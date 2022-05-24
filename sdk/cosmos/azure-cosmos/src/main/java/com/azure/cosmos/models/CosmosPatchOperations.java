@@ -262,15 +262,11 @@ public final class CosmosPatchOperations {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosPatchOperationsHelper.setCosmosPatchOperationsAccessor(
-            new ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor() {
-                @Override
-                public List<PatchOperation> getPatchOperations(CosmosPatchOperations cosmosPatchOperations) {
-                    return cosmosPatchOperations.getPatchOperations();
-                }
-            }
+            cosmosPatchOperations -> cosmosPatchOperations.getPatchOperations()
         );
     }
+
+    static { initialize(); }
 }

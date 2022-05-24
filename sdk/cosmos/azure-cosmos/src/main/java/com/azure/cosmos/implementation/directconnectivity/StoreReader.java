@@ -258,7 +258,7 @@ public class StoreReader {
                         }
 
                     } catch (Exception e) {
-                        // TODO: what to do on exception?
+                        logger.error("Error occurred while adding store results to resultCollector", e);
                     }
                 }
 
@@ -485,6 +485,9 @@ public class StoreReader {
                             SessionTokenHelper.setOriginalSessionToken(entity, originalSessionToken);
                         } catch (Throwable throwable) {
                             logger.error("Unexpected failure in handling orig [{}]: new [{}]", arg, throwable.getMessage(), throwable);
+                            if (throwable instanceof Error) {
+                                throw (Error) throwable;
+                            }
                         }
                     }
         );

@@ -66,6 +66,10 @@ public final class ChannelImpl implements Channel, Channel.Definition, Channel.U
         return this.innerModel().expirationTimeIfNotActivatedUtc();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ChannelInner innerModel() {
         return this.innerObject;
     }

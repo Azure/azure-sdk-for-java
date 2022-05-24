@@ -264,14 +264,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
     public Mono<BlobInventoryPolicyInner> getAsync(
         String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName)
-            .flatMap(
-                (Response<BlobInventoryPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -477,14 +470,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         BlobInventoryPolicyName blobInventoryPolicyName,
         BlobInventoryPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, properties)
-            .flatMap(
-                (Response<BlobInventoryPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -674,7 +660,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
     public Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -3,45 +3,36 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
+import com.azure.ai.textanalytics.implementation.Utility;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextPiiEntitiesRecognitionInput;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.PiiResult;
+import com.azure.ai.textanalytics.implementation.models.PiiDomain;
+import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
-import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
-import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -51,15 +42,16 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create a {@link RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
-     * recognize Personally Identifiable Information entity endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl service) {
+    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
+    }
+
+    RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.legacyService = null;
         this.service = service;
     }
 
@@ -138,60 +130,6 @@ class RecognizePiiEntityAsyncClient {
     }
 
     /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link Response} which contains
-     * {@link RecognizePiiEntitiesResultCollection}.
-     *
-     * @param response the {@link Response} of {@link EntitiesResult} returned by the service.
-     *
-     * @return A {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
-     */
-    private Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse(
-        final Response<PiiResult> response) {
-        final PiiResult piiEntitiesResult = response.getValue();
-        // List of documents results
-        final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
-        piiEntitiesResult.getDocuments().forEach(documentEntities -> {
-            // Pii entities list
-            final List<PiiEntity> piiEntities =
-                documentEntities.getEntities().stream().map(
-                    entity -> {
-                        final PiiEntity piiEntity = new PiiEntity();
-                        PiiEntityPropertiesHelper.setText(piiEntity, entity.getText());
-                        PiiEntityPropertiesHelper.setCategory(piiEntity,
-                            PiiEntityCategory.fromString(entity.getCategory()));
-                        PiiEntityPropertiesHelper.setSubcategory(piiEntity, entity.getSubcategory());
-                        PiiEntityPropertiesHelper.setConfidenceScore(piiEntity, entity.getConfidenceScore());
-                        PiiEntityPropertiesHelper.setOffset(piiEntity, entity.getOffset());
-                        PiiEntityPropertiesHelper.setLength(piiEntity, entity.getLength());
-                        return piiEntity;
-                    })
-                    .collect(Collectors.toList());
-            // Warnings
-            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream().map(
-                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-
-            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
-                documentEntities.getId(),
-                documentEntities.getStatistics() == null ? null
-                    : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null,
-                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
-                    new IterableStream<>(warnings))
-            ));
-        });
-        // Document errors
-        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
-            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
-        }
-
-        return new SimpleResponse<>(response,
-            new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, piiEntitiesResult.getModelVersion(),
-                piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics())
-            ));
-    }
-
-    /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} that contains
      * {@link RecognizePiiEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
@@ -205,15 +143,52 @@ class RecognizePiiEntityAsyncClient {
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
-        return service.entitiesRecognitionPiiWithResponseAsync(
+        final Context finalContext = getNotNullContext(context)
+            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
+        final String finalModelVersion = options.getModelVersion();
+        final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+        final boolean finalIncludeStatistics = options.isIncludeStatistics();
+
+        final String finalDomainFilter = options.getDomainFilter() != null
+                                             ? options.getDomainFilter().toString() : null;
+        if (service != null) {
+            return service
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextPiiEntitiesRecognitionInput()
+                               .setParameters(
+                                   (PiiTaskParameters) new PiiTaskParameters()
+                                                           .setDomain(PiiDomain.fromString(finalDomainFilter))
+                                                           .setPiiCategories(
+                                                               toCategoriesFilter(options.getCategoriesFilter()))
+                                                           .setStringIndexType(finalStringIndexType)
+                                                           .setModelVersion(finalModelVersion)
+                                                           .setLoggingOptOut(finalLoggingOptOut))
+                               .setAnalysisInput(new MultiLanguageAnalysisInput()
+                                                     .setDocuments(toMultiLanguageInput(documents))),
+                           finalIncludeStatistics,
+                           finalContext)
+                       .doOnSubscribe(ignoredValue -> logger.info(
+                           "Start recognizing Personally Identifiable Information entities for a batch of documents."))
+                       .doOnSuccess(response -> logger.info(
+                           "Successfully recognized Personally Identifiable Information entities for a batch"
+                               + " of documents."
+                       ))
+                       .doOnError(error -> logger.warning(
+                           "Failed to recognize Personally Identifiable Information entities - {}", error))
+                       .map(Utility::toRecognizePiiEntitiesResultCollectionResponse2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
+        return legacyService.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(),
-            options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
-            StringIndexType.UTF16CODE_UNIT,
+            finalModelVersion,
+            finalIncludeStatistics,
+            finalLoggingOptOut,
+            finalDomainFilter,
+            finalStringIndexType,
             toCategoriesFilter(options.getCategoriesFilter()),
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            finalContext)
                    .doOnSubscribe(ignoredValue -> logger.info(
                        "Start recognizing Personally Identifiable Information entities for a batch of documents."))
                    .doOnSuccess(response -> logger.info(
@@ -221,7 +196,7 @@ class RecognizePiiEntityAsyncClient {
                    ))
                    .doOnError(error -> logger.warning(
                        "Failed to recognize Personally Identifiable Information entities - {}", error))
-                   .map(this::toRecognizePiiEntitiesResultCollectionResponse)
-                   .onErrorMap(throwable -> mapToHttpResponseExceptionIfExists(throwable));
+                   .map(Utility::toRecognizePiiEntitiesResultCollectionResponse)
+                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

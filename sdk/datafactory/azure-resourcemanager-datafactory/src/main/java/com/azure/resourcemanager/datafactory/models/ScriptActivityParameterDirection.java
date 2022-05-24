@@ -30,7 +30,11 @@ public final class ScriptActivityParameterDirection extends ExpandableStringEnum
         return fromString(name, ScriptActivityParameterDirection.class);
     }
 
-    /** @return known ScriptActivityParameterDirection values. */
+    /**
+     * Gets known ScriptActivityParameterDirection values.
+     *
+     * @return known ScriptActivityParameterDirection values.
+     */
     public static Collection<ScriptActivityParameterDirection> values() {
         return values(ScriptActivityParameterDirection.class);
     }

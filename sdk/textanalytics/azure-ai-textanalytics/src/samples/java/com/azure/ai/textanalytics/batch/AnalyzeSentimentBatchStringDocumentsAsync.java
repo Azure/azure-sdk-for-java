@@ -47,7 +47,7 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
         AtomicInteger counter = new AtomicInteger();
         client.analyzeSentimentBatch(documents, "en", requestOptions).subscribe(
             sentimentBatchResultCollection -> {
-                System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
+                System.out.printf("Results of \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = sentimentBatchResultCollection.getStatistics();

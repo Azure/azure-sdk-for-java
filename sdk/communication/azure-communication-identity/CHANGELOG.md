@@ -6,6 +6,20 @@
 - Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`.
 - Added `retryOptions` to `CommunicationIdentityClientBuilder`.
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.9 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+
 ## 1.1.8 (2022-04-08)
 
 ### Other Changes

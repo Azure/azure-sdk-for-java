@@ -6,7 +6,7 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                                           @AlexGhiondea @jsquire
+/.github/                                           @jsquire
 
 ###########
 # SDK
@@ -44,7 +44,7 @@
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
 # PRLabel: %Communication - Calling Server
-/sdk/communication/sdk/communication/azure-communication-callingserver/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
 # PRLabel: %Communication - Chat
 /sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
@@ -96,13 +96,13 @@
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms @brycewang-microsoft
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak

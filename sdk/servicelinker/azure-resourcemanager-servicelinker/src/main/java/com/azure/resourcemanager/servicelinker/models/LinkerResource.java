@@ -313,9 +313,9 @@ public interface LinkerResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation result for a linker.
+     * @return the validation operation result for a linker.
      */
-    ValidateResult validate();
+    ValidateOperationResult validate();
 
     /**
      * Validate a link.
@@ -324,9 +324,9 @@ public interface LinkerResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validation result for a linker.
+     * @return the validation operation result for a linker.
      */
-    ValidateResult validate(Context context);
+    ValidateOperationResult validate(Context context);
 
     /**
      * list source configurations for a linker.

@@ -33,7 +33,11 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
         return fromString(name, SharingUpdateOperationTypes.class);
     }
 
-    /** @return known SharingUpdateOperationTypes values. */
+    /**
+     * Gets known SharingUpdateOperationTypes values.
+     *
+     * @return known SharingUpdateOperationTypes values.
+     */
     public static Collection<SharingUpdateOperationTypes> values() {
         return values(SharingUpdateOperationTypes.class);
     }

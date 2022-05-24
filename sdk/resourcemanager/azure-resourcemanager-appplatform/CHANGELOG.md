@@ -11,6 +11,7 @@
 - Supported `Java_17` runtime for all tiers.
 - Supported `jvmOptions()` in `SpringAppDeployment` for all tiers.
 - Supported Enterprise Tier `runtimeVersion()` in `SpringAppDeployment`.
+- Supported Enterprise Tier binding `Spring App` to `Service Registry`.
 
 ### Breaking Changes
 

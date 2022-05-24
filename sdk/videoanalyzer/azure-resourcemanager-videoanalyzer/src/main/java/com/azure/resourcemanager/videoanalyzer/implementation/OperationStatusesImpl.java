@@ -12,10 +12,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerPrivateEndpointConnectionOperationStatusInner;
 import com.azure.resourcemanager.videoanalyzer.models.OperationStatuses;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerPrivateEndpointConnectionOperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationStatusesImpl implements OperationStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationStatusesImpl.class);
 
     private final OperationStatusesClient innerClient;
 

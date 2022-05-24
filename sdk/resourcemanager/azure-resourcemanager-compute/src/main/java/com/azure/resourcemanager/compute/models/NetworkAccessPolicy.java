@@ -30,7 +30,11 @@ public final class NetworkAccessPolicy extends ExpandableStringEnum<NetworkAcces
         return fromString(name, NetworkAccessPolicy.class);
     }
 
-    /** @return known NetworkAccessPolicy values. */
+    /**
+     * Gets known NetworkAccessPolicy values.
+     *
+     * @return known NetworkAccessPolicy values.
+     */
     public static Collection<NetworkAccessPolicy> values() {
         return values(NetworkAccessPolicy.class);
     }

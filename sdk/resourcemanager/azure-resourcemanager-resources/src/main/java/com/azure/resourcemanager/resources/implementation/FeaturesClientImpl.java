@@ -578,14 +578,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
         return getWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -731,14 +724,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -884,14 +870,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

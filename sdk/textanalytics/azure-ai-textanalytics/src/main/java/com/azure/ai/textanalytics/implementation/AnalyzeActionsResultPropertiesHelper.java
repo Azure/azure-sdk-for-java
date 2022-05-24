@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
@@ -33,6 +34,8 @@ public final class AnalyzeActionsResultPropertiesHelper {
             IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults);
         void setRecognizePiiEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults);
+        void setAnalyzeHealthcareEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults);
         void setExtractKeyPhrasesResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults);
         void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
@@ -70,6 +73,11 @@ public final class AnalyzeActionsResultPropertiesHelper {
     public static void setRecognizePiiEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults) {
         accessor.setRecognizePiiEntitiesResults(analyzeActionsResult, recognizePiiEntitiesResults);
+    }
+
+    public static void setAnalyzeHealthcareEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults) {
+        accessor.setAnalyzeHealthcareEntitiesResults(analyzeActionsResult, analyzeHealthcareEntitiesActionResults);
     }
 
     public static void setExtractKeyPhrasesResults(AnalyzeActionsResult analyzeActionsResult,

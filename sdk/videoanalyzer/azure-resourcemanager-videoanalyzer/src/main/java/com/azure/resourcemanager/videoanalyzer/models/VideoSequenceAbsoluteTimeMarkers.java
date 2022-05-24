@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.VideoSequenceAbsoluteTimeMarkers")
 @Fluent
 public final class VideoSequenceAbsoluteTimeMarkers extends TimeSequenceBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoSequenceAbsoluteTimeMarkers.class);
-
     /*
      * The sequence of datetime ranges. Example: '[["2021-10-05T03:30:00Z",
      * "2021-10-05T03:40:00Z"]]'.
@@ -59,10 +56,12 @@ public final class VideoSequenceAbsoluteTimeMarkers extends TimeSequenceBase {
     public void validate() {
         super.validate();
         if (ranges() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ranges in model VideoSequenceAbsoluteTimeMarkers"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VideoSequenceAbsoluteTimeMarkers.class);
 }

@@ -1046,14 +1046,7 @@ public final class ImagesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1070,14 +1063,7 @@ public final class ImagesClientImpl
     public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName) {
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageName, expand)
-            .flatMap(
-                (Response<ImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

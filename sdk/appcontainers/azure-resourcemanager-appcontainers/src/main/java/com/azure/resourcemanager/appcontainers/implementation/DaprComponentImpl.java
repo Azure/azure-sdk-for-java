@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponent;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
+import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.util.Collections;
 import java.util.List;
@@ -175,6 +177,16 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
                 .getWithResponse(resourceGroupName, environmentName, name, context)
                 .getValue();
         return this;
+    }
+
+    public DaprSecretsCollection listSecrets() {
+        return serviceManager.daprComponents().listSecrets(resourceGroupName, environmentName, name);
+    }
+
+    public Response<DaprSecretsCollection> listSecretsWithResponse(Context context) {
+        return serviceManager
+            .daprComponents()
+            .listSecretsWithResponse(resourceGroupName, environmentName, name, context);
     }
 
     public DaprComponentImpl withComponentType(String componentType) {

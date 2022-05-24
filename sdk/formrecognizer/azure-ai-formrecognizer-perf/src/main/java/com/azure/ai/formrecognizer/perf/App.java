@@ -10,7 +10,8 @@ import com.azure.perf.test.core.PerfStressProgram;
  * <p>
  * Test scenarios:
  * <ul>
- *     <li>Use labeled custom model for extracting details on a custom form</li>
+ *     <li>Use prebuilt receipt model to perform analysis of a receipt document</li>
+ *     <li>Build a document model for analysis of custom documents</li>
  * </ul>
  * To run performance tests from the command line, package the project into an uber jar using {@code mvn clean
  * package}. Then run the program using {@code java -jar compiled-jar-with-dependencies-path}
@@ -27,6 +28,6 @@ public class App {
      */
     public static void main(String[] args) {
         PerfStressProgram.run(
-            new Class<?>[]{DocumentModelAnalysisTest.class}, args);
+            new Class<?>[]{DocumentModelAnalysisTest.class, BuildDocumentModelTest.class}, args);
     }
 }

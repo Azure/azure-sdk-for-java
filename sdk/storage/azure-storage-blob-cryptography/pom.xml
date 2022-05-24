@@ -39,6 +39,8 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      <!-- Blob Cryptography uses Identity in tests which loads NettyAsyncHttpClient from unnamed module in "from source" core runs -->
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
       --add-opens com.azure.storage.blob.cryptography/com.azure.storage.blob.specialized.cryptography=ALL-UNNAMED
@@ -121,7 +123,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -112,11 +113,17 @@ public class ThroughputControlStore {
                 throughputControlContainerProperties = new ContainerThroughputControlGroupProperties();
             }
 
-            int groupSize = throughputControlContainerProperties.enableThroughputControlGroup(group);
+            int groupSizeBefore = throughputControlContainerProperties.getThroughputControlGroupSet().size();
+            Pair<Integer, Boolean> stateAfterEnabling =
+                throughputControlContainerProperties.enableThroughputControlGroup(group);
 
-            if (groupSize == 1) {
-                // This is the first enabled group for the target container
-                // Clean the current cache in case we have built EmptyThroughputContainerController.
+            int groupSizeAfter = stateAfterEnabling.getLeft();
+            boolean wasGroupConfigUpdated = stateAfterEnabling.getRight();
+
+            if ((groupSizeAfter > groupSizeBefore && groupSizeAfter == 1) || wasGroupConfigUpdated) {
+                // This is the first enabled group for the target container or an existing group was modified
+                // Clean the current cache in case we have built EmptyThroughputContainerController or an existing
+                // group was modified
                 this.containerControllerCache.remove(containerNameLink);
             }
 

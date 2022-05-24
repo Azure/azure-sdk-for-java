@@ -39,7 +39,11 @@ public final class ResourceProvisioningState extends ExpandableStringEnum<Resour
         return fromString(name, ResourceProvisioningState.class);
     }
 
-    /** @return known ResourceProvisioningState values. */
+    /**
+     * Gets known ResourceProvisioningState values.
+     *
+     * @return known ResourceProvisioningState values.
+     */
     public static Collection<ResourceProvisioningState> values() {
         return values(ResourceProvisioningState.class);
     }

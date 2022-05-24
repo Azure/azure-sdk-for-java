@@ -44,6 +44,7 @@
       --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
       --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
       --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.model.implementation=ALL-UNNAMED
 
       --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.msi/com.azure.resourcemanager.msi=ALL-UNNAMED
@@ -121,7 +122,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.16.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.16.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -180,7 +181,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>

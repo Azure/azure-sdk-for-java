@@ -27,7 +27,11 @@ public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
         return fromString(name, OSDiskType.class);
     }
 
-    /** @return known OSDiskType values. */
+    /**
+     * Gets known OSDiskType values.
+     *
+     * @return known OSDiskType values.
+     */
     public static Collection<OSDiskType> values() {
         return values(OSDiskType.class);
     }

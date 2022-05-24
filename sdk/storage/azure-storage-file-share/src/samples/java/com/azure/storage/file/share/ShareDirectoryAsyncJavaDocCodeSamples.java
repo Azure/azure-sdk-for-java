@@ -7,7 +7,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
-import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
@@ -768,7 +767,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#deleteFileIfExists(String)},
      * {@link ShareDirectoryAsyncClient#deleteFileIfExistsWithResponse(String)} and
-     * {@link ShareDirectoryAsyncClient#deleteFileIfExistsWithResponse(String, ShareDeleteOptions)}
+     * {@link ShareDirectoryAsyncClient#deleteFileIfExistsWithResponse(String, ShareRequestConditions)}
      */
     public void deleteFileIfExistsCodeSnippets() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
@@ -792,17 +791,16 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         });
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string
 
-        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
-        ShareDeleteOptions options = new ShareDeleteOptions().setRequestConditions(requestConditions);
 
-        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile", options).subscribe(response -> {
+        shareDirectoryAsyncClient.deleteFileIfExistsWithResponse("myfile", requestConditions).subscribe(response -> {
             if (response.getStatusCode() == 404) {
                 System.out.println("Does not exist.");
             } else {
                 System.out.println("successfully deleted.");
             }
         });
-        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareDeleteOptions
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions
     }
 }

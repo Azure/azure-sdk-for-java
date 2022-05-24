@@ -249,19 +249,17 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
 
-        List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
         SpringService service = appPlatformManager.springServices().define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
-            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
             .create();
 
         String deploymentName = generateRandomResourceName("deploy", 15);
 
         List<String> apiGatewayConfigFilePatterns = Arrays.asList("api-gateway");
         String appName = "api-gateway";
-        SpringApp app = service.apps().define(appName)
+        SpringApp gatewayApp = service.apps().define(appName)
             .defineActiveDeployment(deploymentName)
             .withJarFile(jarFile)
             .withInstance(2)
@@ -271,12 +269,18 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             .attach()
             .withDefaultPublicEndpoint()
             .withConfigurationServiceBinding()
+            .withServiceRegistryBinding()
             .create();
 
-        SpringAppDeployment deployment = app.deployments().getByName(deploymentName);
+        SpringAppDeployment deployment = gatewayApp.deployments().getByName(deploymentName);
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
         String jvmOptions = deployment.jvmOptions();
         Assertions.assertEquals(jvmOptions, "-DskipTests=true");
+
+        List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
+        service.update()
+            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
+            .apply();
 
         deployment.update()
             .withConfigFilePatterns(apiGatewayConfigFilePatterns)
@@ -285,25 +289,26 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         deployment.refresh();
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
 
-        Assertions.assertNotNull(app.url());
-        Assertions.assertNotNull(app.activeDeploymentName());
-        Assertions.assertEquals(1, app.deployments().list().stream().count());
+        Assertions.assertNotNull(gatewayApp.url());
+        Assertions.assertNotNull(gatewayApp.activeDeploymentName());
+        Assertions.assertEquals(1, gatewayApp.deployments().list().stream().count());
 
         String appName2 = "customers-service";
-        String module = "spring-petclinic-customers-service";
+        String customerServiceModule = "spring-petclinic-customers-service";
         List<String> customerServiceConfigFilePatterns = Arrays.asList("customers-service");
-        SpringApp app2 = service.apps().define(appName2)
+        SpringApp customerServiceApp = service.apps().define(appName2)
             .defineActiveDeployment(deploymentName)
             .withSourceCodeTarGzFile(tarGzFile, customerServiceConfigFilePatterns)
-            .withTargetModule(module)
+            .withTargetModule(customerServiceModule)
             .attach()
             .withConfigurationServiceBinding()
+            .withServiceRegistryBinding()
             .create();
 
         // no public endpoint
-        Assertions.assertNull(app2.url());
+        Assertions.assertNull(customerServiceApp.url());
 
-        SpringAppDeployment customersDeployment = app2.deployments().getByName(deploymentName);
+        SpringAppDeployment customersDeployment = customerServiceApp.deployments().getByName(deploymentName);
         Assertions.assertEquals(customerServiceConfigFilePatterns, customersDeployment.configFilePatterns());
     }
 

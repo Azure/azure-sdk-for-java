@@ -84,7 +84,11 @@ public final class EntityKind extends ExpandableStringEnum<EntityKind> {
         return fromString(name, EntityKind.class);
     }
 
-    /** @return known EntityKind values. */
+    /**
+     * Gets known EntityKind values.
+     *
+     * @return known EntityKind values.
+     */
     public static Collection<EntityKind> values() {
         return values(EntityKind.class);
     }

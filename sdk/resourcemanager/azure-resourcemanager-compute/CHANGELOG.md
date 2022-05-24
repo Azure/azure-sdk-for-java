@@ -4,9 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported `DiskEncryptionSet` for disk encryption set.
 
 ### Other Changes
 
