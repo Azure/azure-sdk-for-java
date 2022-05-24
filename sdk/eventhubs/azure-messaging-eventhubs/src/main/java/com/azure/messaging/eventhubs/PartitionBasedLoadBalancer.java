@@ -99,6 +99,8 @@ final class PartitionBasedLoadBalancer {
         this.loadBalancingStrategy = loadBalancingStrategy;
         this.initializeError = th -> {
             ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, th);
+            isLoadBalancerRunning.set(false);
+            morePartitionsToClaim.set(false);
             clientInitializeError.accept(errorContext);
         };
     }
@@ -456,7 +458,6 @@ final class PartitionBasedLoadBalancer {
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()));
 
-        morePartitionsToClaim.set(true);
         checkpointStore
             .claimOwnership(partitionsToClaim)
             .doOnNext(partitionOwnership -> LOGGER.atInfo()
@@ -475,6 +476,7 @@ final class PartitionBasedLoadBalancer {
                 .doOnError(this.initializeError)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
+                morePartitionsToClaim.set(true);
                 ownedPartitionCheckpointsTuple.getT1()
                     .stream()
                     .forEach(po -> partitionPumpManager.startPartitionPump(po,

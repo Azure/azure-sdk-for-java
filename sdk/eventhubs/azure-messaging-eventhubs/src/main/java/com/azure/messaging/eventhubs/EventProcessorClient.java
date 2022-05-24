@@ -62,7 +62,8 @@ public class EventProcessorClient {
         }
         new ClientLogger(EventProcessorClient.class).error("Processor client running exception.", errorContext.getThrowable());
         runner.getAndSet(null).cancel(true);
-        scheduler.getAndSet(null).shutdown();
+        scheduler.getAndSet(null).shutdownNow();
+        stopProcessing();
     };
 
     /**
