@@ -27,7 +27,11 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
         return fromString(name, LicenseType.class);
     }
 
-    /** @return known LicenseType values. */
+    /**
+     * Gets known LicenseType values.
+     *
+     * @return known LicenseType values.
+     */
     public static Collection<LicenseType> values() {
         return values(LicenseType.class);
     }
