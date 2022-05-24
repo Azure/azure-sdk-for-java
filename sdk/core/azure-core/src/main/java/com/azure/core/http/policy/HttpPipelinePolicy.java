@@ -27,6 +27,17 @@ public interface HttpPipelinePolicy {
     Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next);
 
     /**
+     * Processes provided request context and invokes the next policy synchronously.
+     *
+     * @param context The request context.
+     * @param next The next policy to invoke.
+     * @return A publisher that initiates the request upon subscription and emits a response on completion.
+     */
+    default HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return this.process(context, next).block();
+    }
+
+    /**
      * Gets the position to place the policy.
      * <p>
      * By default pipeline policies are positioned {@link HttpPipelinePosition#PER_RETRY}.

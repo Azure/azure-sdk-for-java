@@ -19,20 +19,29 @@ import java.util.Locale;
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-            .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-            .withZone(ZoneOffset.UTC)
-            .withLocale(Locale.US);
+        .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+        .withZone(ZoneOffset.UTC)
+        .withLocale(Locale.US);
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.defer(() -> {
-            OffsetDateTime now = OffsetDateTime.now();
-            try {
-                context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
-            } catch (IllegalArgumentException ignored) {
-                context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
-            }
+            extracted(context);
             return next.process();
         });
+    }
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        extracted(context);
+        return next.processSync();
+    }
+
+    private void extracted(HttpPipelineCallContext context) {
+        OffsetDateTime now = OffsetDateTime.now();
+        try {
+            context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
+        } catch (IllegalArgumentException ignored) {
+            context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
+        }
     }
 }
