@@ -1,14 +1,11 @@
 # Release History
 
-## 4.0.0-beta.2 (Unreleased)
+## 4.0.0-beta.2 (2022-05-24)
 
-### Features Added
+#### Dependency Updates
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Upgrade azure-sdk related dependencies' version, make them align to azure-sdk-bom:1.2.2 managed versions.
+- Upgrade spring-cloud-azure related dependencies' version, make them align to spring-cloud-azure-dependencies:4.2.0 managed versions.
 
 ## 4.0.0-beta.1 (2022-05-10)
 
