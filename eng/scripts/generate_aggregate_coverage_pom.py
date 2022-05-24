@@ -49,7 +49,7 @@ jacoco_build = '''
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>{}</version>
         <configuration>
-          <outputDirectory>${{project.baseDir}}/target/site/test-coverage</outputDirectory>
+          <outputDirectory>target/site/test-coverage</outputDirectory>
           <excludes>
              <exclude>META-INF/**</exclude>
           </excludes>
