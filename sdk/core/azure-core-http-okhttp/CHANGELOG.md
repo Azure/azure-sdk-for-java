@@ -4,11 +4,16 @@
 
 ### Features Added
 
+- This client can now stream bodies larger than 2GB. The buffering for `Flux<ByteBuffer>` request bodies has been removed.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
 
 ## 1.9.0 (2022-05-06)
 

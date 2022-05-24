@@ -539,13 +539,21 @@ public class EventHubProducerAsyncClient implements Closeable {
         for (int i = 0; i < batch.getEvents().size(); i++) {
             final EventData event = batch.getEvents().get(i);
             if (isTracingEnabled) {
-                parentContext.set(event.getContext());
                 if (i == 0) {
-                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME,
-                        parentContext.get());
+                    sharedContext = event.getContext()
+                        .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
+                        .addData(ENTITY_PATH_KEY, eventHubName)
+                        .addData(HOST_NAME_KEY, fullyQualifiedNamespace);
+
+                    sharedContext = tracerProvider.getSharedSpanBuilder(ClientConstants.AZ_TRACING_SERVICE_NAME, sharedContext);
+                    tracerProvider.addSpanLinks(sharedContext);
+                } else {
+                    // TODO (lmolkova) we need better addSpanLinks - https://github.com/Azure/azure-sdk-for-java/issues/28953
+                    Object eventSpanContext = event.getContext().getData(SPAN_CONTEXT_KEY).orElse(Context.NONE);
+                    tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, eventSpanContext));
                 }
-                tracerProvider.addSpanLinks(sharedContext.addData(SPAN_CONTEXT_KEY, event.getContext()));
             }
+
             final Message message = messageSerializer.serialize(event);
 
             if (!CoreUtils.isNullOrEmpty(partitionKey)) {
@@ -559,14 +567,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         if (isTracingEnabled) {
-            final Context finalSharedContext = sharedContext == null
-                ? Context.NONE
-                : sharedContext
-                    .addData(ENTITY_PATH_KEY, eventHubName)
-                    .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
-                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
             // Start send span and store updated context
-            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
+            parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, sharedContext, ProcessKind.SEND));
         }
 
         final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
