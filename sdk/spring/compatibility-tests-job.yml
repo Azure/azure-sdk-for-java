@@ -44,7 +44,8 @@ jobs:
           pip install termcolor
         displayName: 'python module install'
       - script: |
-          eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py)
+#          eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py)
+          python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py
         displayName: 'set spring cloud version'
 
       - script: |
