@@ -17,6 +17,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -107,6 +109,14 @@ public class RestProxyTests {
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
+
+        @Post("my/url/path")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> testMethod(
+            @BodyParam("application/octet-stream") BinaryData data,
+            @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Length") Long contentLength
+        );
     }
 
     @Test
@@ -124,10 +134,30 @@ public class RestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
+    @Test
+    public void binaryDataIsPassthrough() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        byte[] bytes = "hello".getBytes();
+        BinaryData data = BinaryData.fromString("hello");
+        Response<Void> response = testInterface.testMethod(data,
+                "application/json", (long) bytes.length)
+            .block();
+        assertEquals(200, response.getStatusCode());
+        assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
+    }
+
     private static final class LocalHttpClient implements HttpClient {
+
+        private volatile HttpRequest lastHttpRequest;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
+            lastHttpRequest = request;
             boolean success = request.getHeaders()
                 .stream()
                 .filter(header -> header.getName().equals("Content-Type"))
@@ -135,6 +165,10 @@ public class RestProxyTests {
                 .anyMatch(contentType -> contentType.equals("application/json"));
             int statusCode = success ? 200 : 400;
             return Mono.just(new MockHttpResponse(request, statusCode));
+        }
+
+        public HttpRequest getLastHttpRequest() {
+            return lastHttpRequest;
         }
     }
 

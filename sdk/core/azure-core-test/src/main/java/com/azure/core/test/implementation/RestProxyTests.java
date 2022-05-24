@@ -1644,6 +1644,36 @@ public abstract class RestProxyTests {
         assertEquals("quick brown fox", response.getValue().data());
     }
 
+    @Host("http://localhost")
+    @ServiceInterface(name = "FluxUploadService")
+    interface BinaryDataUploadService {
+        @Put("/put")
+        Response<HttpBinJSON> put(@BodyParam("text/plain") BinaryData content,
+                                  @HeaderParam("Content-Length") long contentLength);
+    }
+
+    @Test
+    public void binaryDataUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        BinaryData data = BinaryData.fromFile(filePath);
+
+        final HttpClient httpClient = createHttpClient();
+        // Scenario: Log the body so that body buffering/replay behavior is exercised.
+        //
+        // Order in which policies applied will be the order in which they added to builder
+        //
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new PortPolicy(getWireMockPort(), true),
+                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .build();
+        //
+        Response<HttpBinJSON> response = RestProxy
+            .create(BinaryDataUploadService.class, httpPipeline).put(data, Files.size(filePath));
+
+        assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
+    }
+
     @Host("{url}")
     @ServiceInterface(name = "Service22")
     interface Service22 {
