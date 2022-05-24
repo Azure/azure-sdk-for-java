@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Updated processor client load balance occurs errors stop client asynchronously.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -15,7 +17,6 @@
 ## 5.12.0 (2022-05-16)
 
 ### Features Added
-- Updated checking checkpoint store available before starting processor client. Changed the behavior of starting processor client from __started but not working__ to __log error and stop__.
 
 - `EventData.setBodyAsBinaryData` is exposed.
 
