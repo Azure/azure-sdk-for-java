@@ -130,7 +130,18 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         fromSourcePom.write(pom_file_end)
 
     if set_pipeline_variable:
-        checkout_paths = list(set(sorted([p.directory_path for p in source_projects])))
+        # The directory_path is too granular. There are build rules for some libraries that
+        # create empty sources/javadocs jars using the README.md. Not every library
+        # has a README.md and, in these cases, it uses the README.md from the root service
+        # directory. This will also trim the number of paths down considerably.
+        service_directories: Set[str] = set()
+        for p in source_projects:
+            # get the service directory, which is one level up from the library's directory
+            service_directory = '/'.join(p.directory_path.split('/')[0:-1])
+            if not service_directory in service_directories:
+                service_directories.add(service_directory)
+
+        checkout_paths = list(set(sorted(service_directories)))
         print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(checkout_paths)))
 
     # Sets the DevOps variable that is used to skip certain projects during linting validation.
