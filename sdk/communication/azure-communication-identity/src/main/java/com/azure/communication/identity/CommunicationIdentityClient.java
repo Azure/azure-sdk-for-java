@@ -14,7 +14,6 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -236,8 +235,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
-        TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(options);
-        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
+        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(options);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
@@ -252,8 +250,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(options);
-        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
+        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(options, context)
             .block();
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
@@ -262,14 +259,6 @@ public final class CommunicationIdentityClient {
         return new SimpleResponse<AccessToken>(
             response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
-    }
-
-    private TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest(GetTokenForTeamsUserOptions options) {
-        TeamsUserExchangeTokenRequest requestBody = new TeamsUserExchangeTokenRequest();
-        requestBody.setToken(options.getTeamsUserAadToken());
-        requestBody.setAppId(options.getClientId());
-        requestBody.setUserId(options.getUserObjectId());
-        return requestBody;
     }
 
 }

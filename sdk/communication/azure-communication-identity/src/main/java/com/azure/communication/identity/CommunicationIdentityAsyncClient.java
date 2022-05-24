@@ -11,7 +11,6 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.IdentityError;
@@ -293,8 +292,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
         try {
-            TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(options);
-            return client.exchangeTeamsUserAccessTokenAsync(requestBody)
+            return client.exchangeTeamsUserAccessTokenAsync(options)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
@@ -313,8 +311,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options) {
         try {
-            TeamsUserExchangeTokenRequest requestBody = createTeamsUserExchangeTokenRequest(options);
-            return client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody)
+            return client.exchangeTeamsUserAccessTokenWithResponseAsync(options)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
                     AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
@@ -323,14 +320,6 @@ public final class CommunicationIdentityAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    private TeamsUserExchangeTokenRequest createTeamsUserExchangeTokenRequest(GetTokenForTeamsUserOptions options) {
-        TeamsUserExchangeTokenRequest requestBody = new TeamsUserExchangeTokenRequest();
-        requestBody.setToken(options.getTeamsUserAadToken());
-        requestBody.setAppId(options.getClientId());
-        requestBody.setUserId(options.getUserObjectId());
-        return requestBody;
     }
 
 }

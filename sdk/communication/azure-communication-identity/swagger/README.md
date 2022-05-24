@@ -27,9 +27,10 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2X
 tag: package-2022-06
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5b0818f55339dbff370a967e3f068e180c6ad5a1/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
-custom-types: CommunicationTokenScope
+custom-types: CommunicationTokenScope,TeamsUserExchangeTokenRequest
 custom-types-subpackage: models
 models-subpackage: implementation.models
+customization-class: src/main/java/TeamsUserExchangeTokenRequestCustomization.java
 ```
 
 ### Rename CommunicationIdentityTokenScope to CommunicationTokenScope

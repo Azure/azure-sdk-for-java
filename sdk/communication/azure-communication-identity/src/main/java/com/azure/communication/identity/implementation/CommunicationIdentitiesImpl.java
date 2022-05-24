@@ -9,7 +9,7 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.implementation.models.TeamsUserExchangeTokenRequest;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -92,7 +92,7 @@ public final class CommunicationIdentitiesImpl {
         Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessToken(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") TeamsUserExchangeTokenRequest body,
+                @BodyParam("application/json") GetTokenForTeamsUserOptions body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -417,7 +417,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
-            TeamsUserExchangeTokenRequest body) {
+            GetTokenForTeamsUserOptions body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -438,7 +438,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
-            TeamsUserExchangeTokenRequest body, Context context) {
+            GetTokenForTeamsUserOptions body, Context context) {
         final String accept = "application/json";
         return service.exchangeTeamsUserAccessToken(
                 this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
@@ -455,8 +455,7 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
-            TeamsUserExchangeTokenRequest body) {
+    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(GetTokenForTeamsUserOptions body) {
         return exchangeTeamsUserAccessTokenWithResponseAsync(body)
                 .flatMap(
                         (Response<CommunicationIdentityAccessToken> res) -> {
@@ -481,7 +480,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
-            TeamsUserExchangeTokenRequest body, Context context) {
+            GetTokenForTeamsUserOptions body, Context context) {
         return exchangeTeamsUserAccessTokenWithResponseAsync(body, context)
                 .flatMap(
                         (Response<CommunicationIdentityAccessToken> res) -> {
@@ -504,7 +503,7 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentityAccessToken exchangeTeamsUserAccessToken(TeamsUserExchangeTokenRequest body) {
+    public CommunicationIdentityAccessToken exchangeTeamsUserAccessToken(GetTokenForTeamsUserOptions body) {
         return exchangeTeamsUserAccessTokenAsync(body).block();
     }
 
@@ -521,7 +520,7 @@ public final class CommunicationIdentitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenWithResponse(
-            TeamsUserExchangeTokenRequest body, Context context) {
+            GetTokenForTeamsUserOptions body, Context context) {
         return exchangeTeamsUserAccessTokenWithResponseAsync(body, context).block();
     }
 
