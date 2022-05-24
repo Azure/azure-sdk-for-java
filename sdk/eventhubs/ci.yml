@@ -13,12 +13,14 @@ trigger:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/
     exclude:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
 
 pr:
   branches:
@@ -34,12 +36,14 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/
     exclude:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
