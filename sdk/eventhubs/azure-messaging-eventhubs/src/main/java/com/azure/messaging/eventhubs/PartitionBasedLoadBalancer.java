@@ -11,7 +11,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -64,6 +63,7 @@ final class PartitionBasedLoadBalancer {
     private final LoadBalancingStrategy loadBalancingStrategy;
     private final AtomicBoolean morePartitionsToClaim = new AtomicBoolean();
     private final AtomicReference<List<String>> partitionsCache = new AtomicReference<>(new ArrayList<>());
+    private final Consumer<Throwable> initializeError;
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
@@ -83,7 +83,8 @@ final class PartitionBasedLoadBalancer {
         final EventHubAsyncClient eventHubAsyncClient, final String fullyQualifiedNamespace,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager,
-        final Consumer<ErrorContext> processError, LoadBalancingStrategy loadBalancingStrategy) {
+        final Consumer<ErrorContext> processError, LoadBalancingStrategy loadBalancingStrategy,
+        final Consumer<ErrorContext> clientInitializeError) {
         this.checkpointStore = checkpointStore;
         this.eventHubAsyncClient = eventHubAsyncClient;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
@@ -96,6 +97,10 @@ final class PartitionBasedLoadBalancer {
         this.partitionAgnosticContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
             consumerGroupName, "NONE");
         this.loadBalancingStrategy = loadBalancingStrategy;
+        this.initializeError = th -> {
+            ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, th);
+            clientInitializeError.accept(errorContext);
+        };
     }
 
     /**
@@ -126,6 +131,7 @@ final class PartitionBasedLoadBalancer {
         final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = checkpointStore
             .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
             .timeout(Duration.ofMinutes(1))
+            .doOnError(this.initializeError)
             .collectMap(PartitionOwnership::getPartitionId, Function.identity());
 
         /*
@@ -290,91 +296,6 @@ final class PartitionBasedLoadBalancer {
         });
     }
 
-    /**
-     * This method make sure that checkpoint store works well and start processing messages of one partition.
-     */
-    Mono<Void> checkBlobStatus() {
-        /*
-         * If partition cache is not null, that means the processor has started successfully. And we don't need to check
-         * the checkpoint store blob.
-         */
-        if (!CoreUtils.isNullOrEmpty(partitionsCache.get())) {
-            return Mono.empty();
-        }
-
-        /*
-         * Retrieve current partition ownership details from the datastore.
-         */
-        final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = checkpointStore
-            .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
-            .timeout(Duration.ofMinutes(1))
-            .collectMap(PartitionOwnership::getPartitionId, Function.identity());
-
-        Mono<List<String>> partitionsMono = eventHubAsyncClient
-            .getPartitionIds()
-            .timeout(Duration.ofMinutes(1))
-            .collectList();
-
-        return Mono.zip(partitionOwnershipMono, partitionsMono)
-            .flatMap((Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) -> {
-                Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
-
-                List<String> partitionIds = tuple.getT2();
-
-                if (CoreUtils.isNullOrEmpty(partitionIds)) {
-                    // This may be due to an error when getting Event Hub metadata.
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(
-                        new IllegalStateException("There are no partitions in Event Hub " + eventHubName)));
-                }
-
-                if (!isValid(partitionOwnershipMap)) {
-                    // User data is corrupt.
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(
-                        new IllegalStateException("Invalid partitionOwnership data from CheckpointStore")));
-                }
-
-                partitionsCache.set(partitionIds);
-
-                /*
-                 * Remove all partitions' ownership that have not been modified for a configuration period of time. This
-                 * means that the previous EventProcessor that owned the partition is probably down and the partition is now
-                 * eligible to be claimed by other EventProcessors.
-                 */
-                Map<String, PartitionOwnership> activePartitionOwnershipMap = removeInactivePartitionOwnerships(
-                    partitionOwnershipMap);
-
-                /*
-                 * If there are active partition ownership, this means the checkpoint store claimed partition successfully,
-                 * we don't need to check it.
-                 */
-                if (!CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
-                    return Mono.empty();
-                }
-
-                /*
-                 * If there is no active partition ownership, claim a random partition and the other partitions will be
-                 * claimed in load balance.
-                 */
-                PartitionOwnership ownershipRequest = createPartitionOwnershipRequest(partitionOwnershipMap,
-                    partitionIds.get(RANDOM.nextInt(partitionIds.size())));
-                List<PartitionOwnership> partitionToClaim = Collections.singletonList(ownershipRequest);
-                return this.checkpointStore.claimOwnership(partitionToClaim)
-                    .collectList()
-                    .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
-                            consumerGroupName)
-                        .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
-                    .flatMap(ownedPartitionCheckpointsTuple -> {
-                        ownedPartitionCheckpointsTuple.getT1()
-                            .stream()
-                            .forEach(po -> partitionPumpManager.startPartitionPump(po,
-                                ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
-                        return Mono.empty();
-                    })
-                    .then();
-            });
-
-    }
-
     /*
      * Remove partition cache.
      */
@@ -410,6 +331,7 @@ final class PartitionBasedLoadBalancer {
             .subscribe(partitionPumpManager::verifyPartitionConnection,
                 ex -> {
                     LOGGER.error("Error renewing partition ownership", ex);
+                    this.initializeError.accept(ex);
                     isLoadBalancerRunning.set(false);
                 },
                 () -> isLoadBalancerRunning.set(false));
@@ -547,13 +469,17 @@ final class PartitionBasedLoadBalancer {
             .doOnNext(partitionOwnership -> LOGGER.atInfo()
                     .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
                     .log("Successfully claimed ownership."))
-            .doOnError(ex -> LOGGER
-                .atWarning()
-                .addKeyValue(PARTITION_ID_KEY, ownershipRequest.getPartitionId())
-                .log(Messages.FAILED_TO_CLAIM_OWNERSHIP, ex))
+            .doOnError(ex -> {
+                LOGGER
+                    .atWarning()
+                    .addKeyValue(PARTITION_ID_KEY, ownershipRequest.getPartitionId())
+                    .log(Messages.FAILED_TO_CLAIM_OWNERSHIP, ex);
+                this.initializeError.accept(ex);
+            })
             .collectList()
             .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
                 consumerGroupName)
+                .doOnError(this.initializeError)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
                 ownedPartitionCheckpointsTuple.getT1()

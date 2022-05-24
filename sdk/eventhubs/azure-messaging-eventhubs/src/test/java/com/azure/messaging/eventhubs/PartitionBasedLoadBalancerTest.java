@@ -345,7 +345,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
-        }, LoadBalancingStrategy.BALANCED);
+        }, LoadBalancingStrategy.BALANCED, ic -> { });
         loadBalancer.loadBalance();
         sleep(2);
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
@@ -370,7 +370,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
-        }, LoadBalancingStrategy.BALANCED);
+        }, LoadBalancingStrategy.BALANCED, ic -> { });
         loadBalancer.loadBalance();
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -396,7 +396,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
-        }, LoadBalancingStrategy.BALANCED);
+        }, LoadBalancingStrategy.BALANCED, ic -> { });
         loadBalancer.loadBalance();
         sleep(2);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -495,7 +495,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner1",
             TimeUnit.SECONDS.toSeconds(10), partitionPumpManager,
-            ec -> { }, LoadBalancingStrategy.BALANCED);
+            ec -> { }, LoadBalancingStrategy.BALANCED, ic -> { });
 
         partitionBasedLoadBalancer.loadBalance();
         // after first iteration, both partitions are owned by owner1, so both partitions should be renewed
@@ -626,6 +626,6 @@ public class PartitionBasedLoadBalancerTest {
         return new PartitionBasedLoadBalancer(checkpointStore, eventHubAsyncClient, fqNamespace,
             eventHubName, consumerGroupName, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager,
             ec -> {
-            }, loadBalancingStrategy);
+            }, loadBalancingStrategy, ic -> { });
     }
 }
