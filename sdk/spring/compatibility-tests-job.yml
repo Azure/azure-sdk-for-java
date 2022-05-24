@@ -1,7 +1,7 @@
 parameters:
   Matrix: ''
   MaxParallel: 10
-  SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true"
+  SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
   BuildParallelization: '2C'
 
 jobs:
