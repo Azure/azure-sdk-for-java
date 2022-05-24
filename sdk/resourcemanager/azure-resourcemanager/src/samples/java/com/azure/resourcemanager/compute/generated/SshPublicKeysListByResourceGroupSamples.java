@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SshPublicKeys ListByResourceGroup. */
 public final class SshPublicKeysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_ListByResourceGroup_MinimumSet_Gen.
@@ -27,7 +27,7 @@ public final class SshPublicKeysListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_ListByResourceGroup_MaximumSet_Gen.

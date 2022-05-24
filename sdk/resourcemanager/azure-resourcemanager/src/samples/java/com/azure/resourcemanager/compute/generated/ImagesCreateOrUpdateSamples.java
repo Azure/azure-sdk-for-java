@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for Images CreateOrUpdate. */
 public final class ImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromASnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromASnapshot.json
      */
     /**
      * Sample code: Create a virtual machine image from a snapshot.
@@ -51,7 +51,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromAManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromAManagedDisk.json
      */
     /**
      * Sample code: Create a virtual machine image from a managed disk.
@@ -85,7 +85,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromABlobWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromABlobWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a blob with DiskEncryptionSet resource.
@@ -119,7 +119,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromAManagedDiskWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromAManagedDiskWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a managed disk with DiskEncryptionSet resource.
@@ -142,10 +142,10 @@ public final class ImagesCreateOrUpdateSamples {
                         new ImageStorageProfile()
                             .withOsDisk(
                                 new ImageOSDisk()
-                                    .withManagedDisk(
+                                    .withSnapshot(
                                         new SubResource()
                                             .withId(
-                                                "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
+                                                "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
                                     .withDiskEncryptionSet(
                                         new DiskEncryptionSetParameters()
                                             .withId(
@@ -156,7 +156,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageThatIncludesADataDiskFromABlob.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Create_DataDiskFromABlobIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a blob.
@@ -194,7 +194,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromASnapshotWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromASnapshotWithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a virtual machine image from a snapshot with DiskEncryptionSet resource.
@@ -217,10 +217,10 @@ public final class ImagesCreateOrUpdateSamples {
                         new ImageStorageProfile()
                             .withOsDisk(
                                 new ImageOSDisk()
-                                    .withSnapshot(
+                                    .withManagedDisk(
                                         new SubResource()
                                             .withId(
-                                                "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot"))
+                                                "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myManagedDisk"))
                                     .withDiskEncryptionSet(
                                         new DiskEncryptionSetParameters()
                                             .withId(
@@ -231,7 +231,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageThatIncludesADataDiskFromASnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Create_DataDiskFromASnapshotIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a snapshot.
@@ -274,7 +274,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromABlob.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromABlob.json
      */
     /**
      * Sample code: Create a virtual machine image from a blob.
@@ -304,7 +304,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageFromAVM.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_CreateFromAVM.json
      */
     /**
      * Sample code: Create a virtual machine image from an existing virtual machine.
@@ -331,7 +331,7 @@ public final class ImagesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateAnImageThatIncludesADataDiskFromAManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Create_DataDiskFromAManagedDiskIncluded.json
      */
     /**
      * Sample code: Create a virtual machine image that includes a data disk from a managed disk.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineScaleSets ListByResourceGroup. */
 public final class VirtualMachineScaleSetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_List_MaximumSet_Gen.
@@ -26,7 +26,7 @@ public final class VirtualMachineScaleSetsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_List_MinimumSet_Gen.

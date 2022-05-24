@@ -41,7 +41,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=package-2021-12-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+    "args": "--tag=package-2022-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "compute-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
