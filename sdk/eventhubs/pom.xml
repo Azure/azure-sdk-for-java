@@ -55,11 +55,9 @@
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
         <module>azure-messaging-eventhubs-track1-perf</module>
         <module>azure-messaging-eventhubs-track2-perf</module>
+        <module>azure-messaging-eventhubs-stress</module>
       </modules>
     </profile>
   </profiles>
-  <modules>
-    <module>azure-messaging-eventhubs-stress</module>
-  </modules>
-
+  
 </project>
