@@ -321,7 +321,7 @@ public final class RestProxy implements InvocationHandler {
                 // sending the request to the service. There is no memory copy that happens here. Sources like
                 // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
                 // by the HttpClient implementations.
-                request.setBody(binaryData.toFluxByteBuffer());
+                request.setBody(binaryData);
                 return request;
             }
 
