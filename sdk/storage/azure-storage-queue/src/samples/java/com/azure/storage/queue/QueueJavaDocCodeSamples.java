@@ -596,7 +596,7 @@ public class QueueJavaDocCodeSamples {
         // END: com.azure.storage.queue.queueClient.createIfNotExists
 
         // BEGIN: com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context
-        Response<Void> response = client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"),
+        Response<Boolean> response = client.createIfNotExistsWithResponse(Collections.singletonMap("queue", "metadataMap"),
             Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
@@ -618,7 +618,7 @@ public class QueueJavaDocCodeSamples {
         // END: com.azure.storage.queue.queueClient.deleteIfExists
 
         // BEGIN: com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context
-        Response<Void> response = client.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Boolean> response = client.deleteIfExistsWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {

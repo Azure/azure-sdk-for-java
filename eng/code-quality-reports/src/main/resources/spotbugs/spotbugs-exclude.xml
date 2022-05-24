@@ -2666,6 +2666,16 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody"/>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody"/>
+    </Or>
+    <Method name="writeTo"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
   <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
   <Match>
     <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
@@ -2728,5 +2738,4 @@
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
-
 </FindBugsFilter>
