@@ -107,6 +107,28 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        extracted(context);
+        return next.process();
+    }
+
+    /**
+     * Updates the "User-Agent" header with the value supplied in the policy synchronously.
+     *
+     * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+     * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
+     * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+     *
+     * @param context request context
+     * @param next The next policy to invoke.
+     * @return A response on completion.
+     */
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        extracted(context);
+        return next.processSync();
+    }
+
+    private void extracted(HttpPipelineCallContext context) {
         String overrideUserAgent = (String) context.getData(OVERRIDE_USER_AGENT_CONTEXT_KEY).orElse(null);
         String appendUserAgent = (String) context.getData(APPEND_USER_AGENT_CONTEXT_KEY).orElse(null);
 
@@ -120,6 +142,5 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         }
 
         context.getHttpRequest().getHeaders().set(USER_AGENT, userAgentValue);
-        return next.process();
     }
 }

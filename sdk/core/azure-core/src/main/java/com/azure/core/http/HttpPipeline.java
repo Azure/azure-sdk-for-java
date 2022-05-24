@@ -105,6 +105,18 @@ public final class HttpPipeline {
     }
 
     /**
+     * Wraps the request in a context with additional metadata and sends it through the pipeline synchronously.
+     *
+     * @param request THe HTTP request to send.
+     * @param data Additional metadata to pass along with the request.
+     * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
+     * upon completion.
+     */
+    public HttpResponse sendSync(HttpRequest request, Context data) {
+        return this.sendSync(new HttpPipelineCallContext(request, data));
+    }
+
+    /**
      * Sends the context (containing an HTTP request) through pipeline.
      *
      * @param context The request context.

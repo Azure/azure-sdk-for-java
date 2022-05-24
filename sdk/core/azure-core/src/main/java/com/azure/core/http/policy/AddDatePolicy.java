@@ -26,22 +26,13 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.defer(() -> {
-            extracted(context);
+            OffsetDateTime now = OffsetDateTime.now();
+            try {
+                context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
+            } catch (IllegalArgumentException ignored) {
+                context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
+            }
             return next.process();
         });
-    }
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        extracted(context);
-        return next.processSync();
-    }
-
-    private void extracted(HttpPipelineCallContext context) {
-        OffsetDateTime now = OffsetDateTime.now();
-        try {
-            context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
-        } catch (IllegalArgumentException ignored) {
-            context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
-        }
     }
 }
