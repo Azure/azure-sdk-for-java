@@ -4,7 +4,6 @@
 package com.azure.core.amqp;
 
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
 
 import java.util.Objects;
@@ -13,8 +12,8 @@ import java.util.UUID;
 /**
  * A set of AMQP client options.
  */
-public class AmqpClientOptions extends ClientOptions {
-    private String identifier;
+public final class AmqpClientOptions extends ClientOptions {
+    private String identifier = UUID.randomUUID().toString();
 
     /** {@inheritDoc} **/
     @Override
@@ -35,7 +34,7 @@ public class AmqpClientOptions extends ClientOptions {
      * @return Amqp client identifier.
      */
     public String getIdentifier() {
-        return CoreUtils.isNullOrEmpty(identifier) ? UUID.randomUUID().toString() : identifier;
+        return identifier;
     }
 
     /**
