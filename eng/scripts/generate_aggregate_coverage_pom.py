@@ -50,6 +50,9 @@ jacoco_build = '''
         <version>{}</version>
         <configuration>
           <outputDirectory>${{project.reporting.outputDirectory}}/test-coverage</outputDirectory>
+          <excludes>
+             <exclude>META-INF/**</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
