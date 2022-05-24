@@ -116,7 +116,8 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token.
+     * @return a communication identity with access token along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessTokenResult>> createWithResponseAsync(
@@ -136,7 +137,8 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token.
+     * @return a communication identity with access token along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessTokenResult>> createWithResponseAsync(
@@ -153,19 +155,11 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token.
+     * @return a communication identity with access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessTokenResult> createAsync(CommunicationIdentityCreateRequest body) {
-        return createWithResponseAsync(body)
-                .flatMap(
-                        (Response<CommunicationIdentityAccessTokenResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -177,20 +171,12 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token.
+     * @return a communication identity with access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessTokenResult> createAsync(
             CommunicationIdentityCreateRequest body, Context context) {
-        return createWithResponseAsync(body, context)
-                .flatMap(
-                        (Response<CommunicationIdentityAccessTokenResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return createWithResponseAsync(body, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -217,7 +203,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity with access token.
+     * @return a communication identity with access token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessTokenResult> createWithResponse(
@@ -232,7 +218,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id) {
@@ -249,7 +235,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
@@ -264,11 +250,11 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String id) {
-        return deleteWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -279,11 +265,11 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String id, Context context) {
-        return deleteWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -307,7 +293,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String id, Context context) {
@@ -321,7 +307,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id) {
@@ -340,7 +326,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id, Context context) {
@@ -355,11 +341,11 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessTokensAsync(String id) {
-        return revokeAccessTokensWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return revokeAccessTokensWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -370,11 +356,11 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessTokensAsync(String id, Context context) {
-        return revokeAccessTokensWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return revokeAccessTokensWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -398,7 +384,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeAccessTokensWithResponse(String id, Context context) {
@@ -413,7 +399,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
@@ -434,7 +420,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
@@ -452,19 +438,11 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(GetTokenForTeamsUserOptions body) {
-        return exchangeTeamsUserAccessTokenWithResponseAsync(body)
-                .flatMap(
-                        (Response<CommunicationIdentityAccessToken> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return exchangeTeamsUserAccessTokenWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -476,20 +454,13 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
             GetTokenForTeamsUserOptions body, Context context) {
         return exchangeTeamsUserAccessTokenWithResponseAsync(body, context)
-                .flatMap(
-                        (Response<CommunicationIdentityAccessToken> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -516,7 +487,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenWithResponse(
@@ -532,7 +503,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(
@@ -553,7 +524,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(
@@ -571,20 +542,12 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessToken> issueAccessTokenAsync(
             String id, CommunicationIdentityAccessTokenRequest body) {
-        return issueAccessTokenWithResponseAsync(id, body)
-                .flatMap(
-                        (Response<CommunicationIdentityAccessToken> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return issueAccessTokenWithResponseAsync(id, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -596,20 +559,12 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationIdentityAccessToken> issueAccessTokenAsync(
             String id, CommunicationIdentityAccessTokenRequest body, Context context) {
-        return issueAccessTokenWithResponseAsync(id, body, context)
-                .flatMap(
-                        (Response<CommunicationIdentityAccessToken> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return issueAccessTokenWithResponseAsync(id, body, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -636,7 +591,7 @@ public final class CommunicationIdentitiesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an access token.
+     * @return an access token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationIdentityAccessToken> issueAccessTokenWithResponse(

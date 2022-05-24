@@ -4,10 +4,16 @@
 
 package com.azure.communication.identity.models;
 
+import com.azure.communication.identity.CommunicationIdentityAsyncClient;
+import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Options used to exchange an AAD access token of a Teams user for a new Communication Identity access token. */
+/**
+ * Options class for configuring the {@link
+ * CommunicationIdentityAsyncClient#getTokenForTeamsUser(GetTokenForTeamsUserOptions)} and {@link
+ * CommunicationIdentityClient#getTokenForTeamsUser(GetTokenForTeamsUserOptions)} methods.
+ */
 @Fluent
 public final class GetTokenForTeamsUserOptions {
     /*
@@ -32,13 +38,13 @@ public final class GetTokenForTeamsUserOptions {
     private String userObjectId;
 
     /**
-     * Creates a GetTokenForTeamsUserOptions object
+     * Constructor of {@link GetTokenForTeamsUserOptions}.
      *
      * @param teamsUserAadToken Azure AD access token of a Teams User.
-     * @param clientId Client ID of an Azure AD application to be verified
-     *                 against the appId claim in the Azure AD access token.
-     * @param userObjectId Object ID of an Azure AD user (Teams User)
-     *                     to be verified against the OID claim in the Azure AD access token.
+     * @param clientId Client ID of an Azure AD application to be verified against the appId claim in the Azure AD
+     *     access token.
+     * @param userObjectId Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure
+     *     AD access token.
      */
     public GetTokenForTeamsUserOptions(String teamsUserAadToken, String clientId, String userObjectId) {
         this.teamsUserAadToken = teamsUserAadToken;

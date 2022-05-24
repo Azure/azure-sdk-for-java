@@ -4,9 +4,6 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.MethodCustomization;
-import com.azure.autorest.customization.PropertyCustomization;
 import org.slf4j.Logger;
 /**
  * Customizations for ASC Identity CTE swagger code generation.
@@ -24,15 +21,18 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
         classCustomization = libraryCustomization.getPackage(MODELS_PACKAGE)
                 .getClass(CLASS_NAME);
         customizeClassDesc(classCustomization);
+        addConstructor(classCustomization);
         customizeTokenVariable(classCustomization);
         customizeAppIdVariable(classCustomization);
         customizeUserIdVariable(classCustomization);
-        addConstructor(classCustomization);
     }
 
     private void customizeClassDesc(ClassCustomization classCustomization){
-         classCustomization.getJavadoc()
-                 .setDescription("Options used to exchange an AAD access token of a Teams user for a new Communication Identity access token.");
+         classCustomization.addImports(
+                         "com.azure.communication.identity.CommunicationIdentityAsyncClient",
+                         "com.azure.communication.identity.CommunicationIdentityClient")
+                 .getJavadoc()
+                 .setDescription("Options class for configuring the {@link CommunicationIdentityAsyncClient#getTokenForTeamsUser(GetTokenForTeamsUserOptions)} and {@link CommunicationIdentityClient#getTokenForTeamsUser(GetTokenForTeamsUserOptions)} methods.");
     }
 
     private static String joinWithNewline(String... lines) {
@@ -40,12 +40,17 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
     }
 
     private void addConstructor(ClassCustomization classCustomization) {
-        /*classCustomization.addConstructor(joinWithNewline(
-                        "public GetTokenForTeamsUserOptions1(String teamsUserAadToken, String clientId, String userObjectId) {",
+        classCustomization.addConstructor(joinWithNewline(
+                        "public GetTokenForTeamsUserOptions(String teamsUserAadToken, String clientId, String userObjectId) {",
                         "    this.teamsUserAadToken = teamsUserAadToken;",
                         "    this.clientId = clientId;",
                         "    this.userObjectId = userObjectId;",
-                        "}")); */
+                        "}"))
+                .getJavadoc()
+                .setDescription("Constructor of {@link GetTokenForTeamsUserOptions}.")
+                .setParam("teamsUserAadToken", "Azure AD access token of a Teams User.")
+                .setParam("clientId", "Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access token.")
+                .setParam("userObjectId", "Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access token.");
     }
 
     private void customizeTokenVariable(ClassCustomization classCustomization) {
