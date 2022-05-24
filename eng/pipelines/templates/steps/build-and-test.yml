@@ -139,6 +139,11 @@ steps:
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
+  # List files in target directory
+  - pwsh: |
+      ls -r target
+    displayName: list all files in target directory
+
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@1
