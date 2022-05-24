@@ -85,7 +85,6 @@ steps:
 
   - ${{if eq(parameters.Target, 'EsrpRelease')}}:
     - task: PowerShell@2
-      name: gpgSign
       displayName: 'Gpg sign and hash packages'
       inputs:
         pwsh: true
@@ -105,7 +104,7 @@ steps:
           ConnectedServiceName: 'ESRP Release Service'
           Intent: 'PackageDistribution'
           ContentType: 'Maven'
-          PackageLocation: $(gpgSign.packageLocation)
+          PackageLocation: $(PackageLocation)
           Owners: 'wesh@microsoft.com'
           Approvers: 'pahallis@microsoft.com'
           ServiceEndpointUrl: 'https://api.esrp.microsoft.com'

@@ -170,7 +170,7 @@ foreach ($packageDetail in $packageDetails) {
     exit 1
   }
 
-  Write-Host "##vso[task.setvariable variable=packageLocation;isoutput=true]$signedArtifactPath"
+  Write-Host "##vso[task.setvariable variable=packageLocation]$signedArtifactPath"
   Write-Host ""
 }
 
