@@ -28,8 +28,8 @@ def get_spring_cloud_version_and_set_as_env(filepath):
                 # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(quote(spring_cloud_version)))
                 # print("export env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(spring_cloud_version))
                 # print("Spring-cloud version:" + spring_cloud_version)
-    print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(quote(spring_cloud_version)))
-    # print('echo"##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;isOutput=true]'+spring_cloud_version+'"')
+    # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(quote(spring_cloud_version)))
+    print('"##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;isOutput=true]'+spring_cloud_version+'"')
     # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={};".format(quote('456')))
 
 
