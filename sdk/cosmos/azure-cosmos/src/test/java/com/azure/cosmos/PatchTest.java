@@ -174,6 +174,7 @@ public class PatchTest extends TestSuiteBase {
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
         cosmosPatchOperations.set("/cost", 100);
+        cosmosPatchOperations.move("/cost", "/fullCost");
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
         options.setContentResponseOnWriteEnabled(false);

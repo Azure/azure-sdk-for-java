@@ -120,8 +120,7 @@ public final class CosmosPatchOperations {
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.REMOVE,
-                path,
-                null));
+                path));
 
         return this;
     }
@@ -158,6 +157,19 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    public <T> CosmosPatchOperations move(String from,String path) {
+
+        checkArgument(StringUtils.isNotEmpty(from), "Source path empty %s", from);
+        checkArgument(StringUtils.isNotEmpty(path), "Destination path empty %s", path);
+
+        this.patchOperations.add(
+            new PatchOperationCore<>(
+                PatchOperationType.MOVE,
+                from,
+                path));
+
+        return this;
+    }
     /**
      * This sets the value at the target location with a new value.
      *

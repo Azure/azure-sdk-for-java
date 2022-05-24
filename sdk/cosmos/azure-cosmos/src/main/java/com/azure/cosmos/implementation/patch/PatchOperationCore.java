@@ -13,6 +13,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class PatchOperationCore<T> extends PatchOperation {
 
     private final String path;
+
+    private final String from;
     private final T resource;
 
     /**
@@ -28,10 +30,34 @@ public final class PatchOperationCore<T> extends PatchOperation {
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
         this.path = path;
         this.resource = value;
+        this.from = null;
+    }
+
+    public PatchOperationCore(PatchOperationType operationType, String from, String path) {
+        super(operationType);
+
+        checkArgument(StringUtils.isNotEmpty(from), "path empty %s", from);
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+        this.from = from;
+        this.path = path;
+        this.resource = null;
+    }
+
+    public PatchOperationCore(PatchOperationType operationType, String path) {
+        super(operationType);
+
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+        this.path = path;
+        this.from = null;
+        this.resource = null;
     }
 
     public String getPath() {
         return path;
+    }
+
+    public String getFrom() {
+        return from;
     }
 
     public T getResource() {
