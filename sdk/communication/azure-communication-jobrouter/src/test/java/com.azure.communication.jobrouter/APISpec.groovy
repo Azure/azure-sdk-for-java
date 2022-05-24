@@ -14,12 +14,12 @@ class APISpec extends Specification {
 
     private InterceptorManager interceptorManager
 
-    JobRouterClient jrc
+    RouterClient jrc
 
     def setup() {
         def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
         interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-        jrc = new JobRouterClientBuilder()
+        jrc = new RouterClientBuilder()
             .connectionString(ENVIRONMENT.connectionString)
             .buildClient()
     }

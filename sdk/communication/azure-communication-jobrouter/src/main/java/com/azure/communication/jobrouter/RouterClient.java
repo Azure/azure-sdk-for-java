@@ -4,55 +4,50 @@ import com.azure.communication.jobrouter.models.*;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-import static com.azure.core.util.FluxUtil.*;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
-
 /**
- * Sync Client that supports chat operations.
+ * Sync Client that supports job router operations.
  *
  * <p><strong>Instantiating a synchronous JobRouter Client</strong></p>
  *
- * <!-- src_embed com.azure.communication.jobrouter.jobrouterclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.routerclient.instantiation -->
  * <pre>
  *
  * &#47;&#47; Initialize the job router client builder
- * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
+ * final RouterClientBuilder builder = new RouterClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;;
  *
  * &#47;&#47; Build the job router client
- * JobRouterClient chatClient = builder.buildClient&#40;&#41;;
+ * RouterClient routerClient = builder.buildClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.chat.chatclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.routerclient.instantiation -->
  *
- * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link RouterClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see JobRouterClientBuilder
+ * @see RouterClientBuilder
  */
-@ServiceClient(builder = JobRouterClientBuilder.class, isAsync = false)
-public class JobRouterClient {
+@ServiceClient(builder = RouterClientBuilder.class, isAsync = false)
+public class RouterClient {
 
-    private final ClientLogger logger = new ClientLogger(JobRouterClient.class);
+    private final ClientLogger logger = new ClientLogger(RouterClient.class);
 
-    private final JobRouterAsyncClient client;
+    private final RouterAsyncClient client;
 
     /**
-     * Creates a JobRouterClient that sends requests to the job router service at {@code serviceEndpoint}. Each
+     * Creates a RouterClient that sends requests to the job router service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param client The {@link JobRouterAsyncClient} that the client routes its request through.
+     * @param client The {@link RouterAsyncClient} that the client routes its request through.
      */
-    JobRouterClient(JobRouterAsyncClient client) {
+    RouterClient(RouterAsyncClient client) {
         this.client = client;
     }
 
