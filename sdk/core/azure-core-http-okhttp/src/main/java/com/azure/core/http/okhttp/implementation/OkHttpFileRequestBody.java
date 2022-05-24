@@ -27,7 +27,13 @@ public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileConte
         // FileChannel supports positional reads.
         try (FileChannel channel = FileChannel.open(content.getFile(), StandardOpenOption.READ)) {
             // FileContent.getLength always returs non-null.
-            channel.transferTo(content.getPosition(), content.getLength(), bufferedSink);
+            long pendingTransfer = content.getLength();
+            long position = content.getPosition();
+            do {
+                long transfered = channel.transferTo(position, pendingTransfer, bufferedSink);
+                position += transfered;
+                pendingTransfer -= transfered;
+            } while (pendingTransfer > 0);
         }
     }
 }
