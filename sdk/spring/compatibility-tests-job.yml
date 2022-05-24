@@ -44,7 +44,7 @@ jobs:
           pip install termcolor
         displayName: 'python module install'
       - script: |
-          eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py);echo $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
+          eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py)
         displayName: 'set spring cloud version'
 
       - script: |
@@ -58,7 +58,6 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          #          scripts: eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py);echo $SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}}
           ${{parameters.SkipOptions}}'
           mavenPomFile: sdk/spring/pom.xml
