@@ -57,9 +57,9 @@ public class ThroughputControlContainerManager {
         String encodedGroupId = Utils.encodeUrlBase64String(this.group.getId().getBytes(StandardCharsets.UTF_8));
 
         this.clientItemId = encodedGroupId + UUID.randomUUID();
-        this.clientItemPartitionKeyValue = this.group.getId() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
+        this.clientItemPartitionKeyValue = this.group.getIdPrefix() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
         this.configItemId = encodedGroupId + CONFIG_ITEM_ID_SUFFIX;
-        this.configItemPartitionKeyValue = this.group.getId() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
+        this.configItemPartitionKeyValue = this.group.getIdPrefix() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
     }
 
     public Mono<GlobalThroughputControlClientItem> createGroupClientItem(double loadFactor, double allocatedThroughput) {

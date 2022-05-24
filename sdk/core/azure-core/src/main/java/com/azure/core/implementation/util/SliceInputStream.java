@@ -42,7 +42,7 @@ public final class SliceInputStream extends InputStream {
     }
 
     @Override
-    public long skip(long n) throws IOException {
+    public synchronized long skip(long n) throws IOException {
         if (ensureInWindow() < 0) {
             return 0;
         }
@@ -57,7 +57,7 @@ public final class SliceInputStream extends InputStream {
     }
 
     @Override
-    public int read() throws IOException {
+    public synchronized int read() throws IOException {
         if (ensureInWindow() < 0) {
             return -1;
         }
@@ -69,7 +69,7 @@ public final class SliceInputStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public synchronized int read(byte[] b, int off, int len) throws IOException {
         if (ensureInWindow() < 0) {
             return -1;
         }
