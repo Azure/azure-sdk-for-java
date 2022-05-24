@@ -145,6 +145,6 @@ steps:
     condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
     inputs:
       codeCoverageTool: JaCoCo
-      summaryFileLocation: /target/site/test-coverage/jacoco.xml
-      reportDirectory: /target/site/test-coverage/
+      summaryFileLocation: target/site/test-coverage/jacoco.xml
+      reportDirectory: target/site/test-coverage/
       failIfCoverageEmpty: false
