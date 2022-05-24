@@ -22,36 +22,9 @@ from datetime import timedelta
 import os
 import time
 import json
-from typing import Dict, Iterable, List, Set
-import xml.etree.ElementTree as ET
+from typing import Dict, Iterable, Set
+from pom_helper import *
 
-class Project:
-    def __init__(self, identifier: str, directory_path: str, module_path: str, parent_pom: str):
-        self.identifier = identifier
-        self.directory_path = directory_path
-        self.module_path = module_path
-        self.parent_pom = parent_pom
-        self.dependencies: List[str] = []
-        self.dependents: List[str] = []
-
-    def add_dependency(self, dependency: str):
-        if dependency not in self.dependencies:
-            self.dependencies.append(dependency)
-
-    def add_dependent(self, dependent: str):
-        if dependent not in self.dependents:
-            self.dependents.append(dependent)
-
-class ArtifactVersion:
-    def __init__(self, dependency_version: str, current_version: str):
-        self.dependency_version = dependency_version
-        self.current_version = current_version
-
-    def matches_version(self, version: str, match_any_version: bool = False):
-        if match_any_version:
-            return version == self.dependency_version or version == self.current_version
-
-        return version == self.current_version
 
 default_project = Project(None, None, None, None)
 
@@ -71,24 +44,6 @@ client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_cli
 # File path where the aggregate POM will be written.
 client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
-# Beginning XML for the aggregate POM.
-pom_file_start = '''<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-sdk-from-source</artifactId>
-  <packaging>pom</packaging>
-  <version>1.0.0</version>
-  <modules>
-'''
-
-# Closing XML for the aggregate POM.
-pom_file_end = '''  </modules>
-</project>
-'''
-
-maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_skip_linting_projects: str, match_any_version: bool):
@@ -122,11 +77,13 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
 
     modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
-        fromSourcePom.write(pom_file_start)
+        fromSourcePom.write(pom_file_start.format('azure-sdk-from-source'))
+        fromSourcePom.write(start_modules)
 
         for module in modules:
             fromSourcePom.write('    <module>{}</module>\n'.format(module))
 
+        fromSourcePom.write(end_modules)
         fromSourcePom.write(pom_file_end)
 
     if set_pipeline_variable:
@@ -157,8 +114,10 @@ def load_client_artifact_identifiers() -> Dict[str, ArtifactVersion]:
             # Split the version line on ';' which should create 3 substrings of artifact identifier - released version - source version.
             splitVersionLine = stripped_line.split(";")
 
+            group_artifact = splitVersionLine[0].split(":")
+
             # From the split lines create the artifact identifier - source version map entry.
-            artifact_identifiers[splitVersionLine[0]] = ArtifactVersion(splitVersionLine[1], splitVersionLine[2])
+            artifact_identifiers[splitVersionLine[0]] = ArtifactVersion(group_artifact[0], group_artifact[1], splitVersionLine[1], splitVersionLine[2])
 
     return artifact_identifiers
 
@@ -253,15 +212,6 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
 
     return dependency_modules
 
-# Get parent POM.
-def get_parent_pom(tree_root: ET.Element):
-    parent_node = element_find(tree_root, 'parent')
-
-    if parent_node is None:
-        return None
-
-    return create_artifact_identifier(parent_node)
-
 # Determines if the passed POM XML is a Spring library.
 def is_spring_child_pom(tree_root: ET.Element):
     group_id_node = element_find(tree_root, 'groupId')
@@ -270,30 +220,6 @@ def is_spring_child_pom(tree_root: ET.Element):
            and not artifact_id_node is None \
            and artifact_id_node.text != 'spring-cloud-azure' \
            and artifact_id_node.text != 'spring-cloud-azure-experimental' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
-
-# Creates an artifacts identifier.
-def create_artifact_identifier(element: ET.Element):
-    group_id = element_find(element, 'groupId')
-
-    # POMs allow the groupId to be inferred from the parent POM.
-    # This is a guard to prevent this from raising an error.
-    if group_id is None:
-        group_id = element_find(element_find(element, 'parent'), 'groupId')
-
-    return group_id.text + ':' + element_find(element, 'artifactId').text
-
-# Gets the dependency version.
-def get_dependency_version(element: ET.Element):
-    dependency_version = element_find(element, 'version')
-
-    if dependency_version is None:
-        return None
-
-    return dependency_version.text
-
-# Helper function for finding an XML element which handles adding the namespace.
-def element_find(element: ET.Element, path: str):
-    return element.find(maven_xml_namespace + path)
 
 def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
     for project_identifier in project_identifiers:
