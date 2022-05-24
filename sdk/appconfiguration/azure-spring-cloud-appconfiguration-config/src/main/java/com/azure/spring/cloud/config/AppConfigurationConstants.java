@@ -31,6 +31,10 @@ public class AppConfigurationConstants {
      */
     public static final String FEATURE_MANAGEMENT_KEY_V2 = "feature-management.feature-flags";
     
+    public static final Integer FEATURE_MANAGEMENT_V1_SCHEMA = 1;
+    
+    public static final Integer FEATURE_MANAGEMENT_V2_SCHEMA = 2;
+    
     public static final String DYNAMIC_FEATURE_KEY = "feature-management.dynamic-features.";
 
     /**

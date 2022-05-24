@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
  */
 public class FeatureManagerSnapshot {
 
-    private FeatureManager featureManager;
+    private final FeatureManager featureManager;
 
-    private HashMap<String, Boolean> requestMap;
+    private final HashMap<String, Boolean> requestMap;
 
     /**
      * Used to evaluate whether a feature is enabled or disabled. When setup with the <code>@RequestScope</code> it will

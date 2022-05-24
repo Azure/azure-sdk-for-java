@@ -75,7 +75,7 @@ public final class TargetingEvaluator extends TargetingFilter implements IFeatur
 
 		validateVariantSettings(variants);
 
-		HashMap<String, Double> totalGroupPerentages = new HashMap<>();
+		Map<String, Double> totalGroupPercentages = new HashMap<>();
 		double totalDefaultPercentage = 0;
 
 		for (FeatureVariant variant : variants) {
@@ -89,7 +89,6 @@ public final class TargetingEvaluator extends TargetingFilter implements IFeatur
 				}
 
 				this.<String>updateValueFromMapToList(parameters, USERS);
-				updateValueFromMapToList(parameters, GROUPS);
 				
 				assignments.put(variant, OBJECT_MAPPER.convertValue(parameters, Audience.class));
 			}
@@ -117,13 +116,13 @@ public final class TargetingEvaluator extends TargetingFilter implements IFeatur
 						String audienceContextId = targetingContext.getUserId() + "\n" + featureDefinition.getName()
 								+ "\n" + group;
 
-						double chance = totalGroupPerentages.getOrDefault(group, (double) 0);
+						double chance = totalGroupPercentages.getOrDefault(group, (double) 0);
 
 						if (isTargetedPercentage(audienceContextId) < groupRollout.get().getRolloutPercentage()
 								+ chance) {
 							return Mono.just(assignment.getKey());
 						}
-						totalGroupPerentages.put(group, chance + groupRollout.get().getRolloutPercentage());
+						totalGroupPercentages.put(group, chance + groupRollout.get().getRolloutPercentage());
 					}
 				}
 			}

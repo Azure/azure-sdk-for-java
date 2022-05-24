@@ -13,9 +13,9 @@ import reactor.core.publisher.Mono;
  */
 public class DynamicFeatureManagerSnapshot {
 
-	private DynamicFeatureManager dynamicFeatureManager;
+	private final DynamicFeatureManager dynamicFeatureManager;
 
-	private Map<String, Object> requestMap;
+	private final Map<String, Object> requestMap;
 
 	/**
 	 * Used to evaluate whether a feature is enabled or disabled. When setup with

@@ -6,6 +6,8 @@ import static com.azure.spring.cloud.config.AppConfigurationConstants.DYNAMIC_FE
 import static com.azure.spring.cloud.config.AppConfigurationConstants.DYNAMIC_FEATURE_KEY;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V1;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V2;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_V1_SCHEMA;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_V2_SCHEMA;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
@@ -161,7 +163,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * @return Updated Feature Set from Property Source
      * @throws IOException Thrown when processing key/value failed when reading feature flags
      */
-    FeatureSet initProperties(FeatureSet featureSet) throws IOException {
+    void initProperties(FeatureSet featureSet) throws IOException {
         String storeName = configStore.getEndpoint();
         SettingSelector settingSelector = new SettingSelector();
 
@@ -205,7 +207,18 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 }
             }
         }
-        return addToFeatureSet(featureSet, features);
+        addToFeatureSet(featureSet, features);
+    }
+    
+    /**
+     * Initializes Feature Management configurations. Only one {@code AppConfigurationPropertySource} can call this, and
+     * it needs to be done after the rest have run initProperties.
+     *
+     * @param featureSet Feature Flag info to be set to this property source.
+     */
+    void initFeatures(FeatureSet featureSet) {
+        properties.put(getFeatureSchema(),
+            FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
     /**
@@ -246,17 +259,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         return secretValue;
     }
 
-    /**
-     * Initializes Feature Management configurations. Only one {@code AppConfigurationPropertySource} can call this, and
-     * it needs to be done after the rest have run initProperties.
-     *
-     * @param featureSet Feature Flag info to be set to this property source.
-     */
-    void initFeatures(FeatureSet featureSet) {
-        properties.put(getFeatureSchema(),
-            FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
-    }
-
     private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features)
         throws IOException {
         if (features == null) {
@@ -284,18 +286,18 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
         switch (StringUtils.hasText(version) ? version : "") {
             case "1":
-                return 1;
+                return FEATURE_MANAGEMENT_V1_SCHEMA;
             case "2":
-                return 2;
+                return FEATURE_MANAGEMENT_V2_SCHEMA;
             default:
-                return 1;
+                return FEATURE_MANAGEMENT_V1_SCHEMA;
         }
     }
 
     private String getFeatureSchema() {
-        Integer version = getFeatureSchemaVersion();
+        int version = getFeatureSchemaVersion();
 
-        if (version == 1) {
+        if (version == FEATURE_MANAGEMENT_V1_SCHEMA) {
             return FEATURE_MANAGEMENT_KEY_V1;
         } else {
             return FEATURE_MANAGEMENT_KEY_V2;

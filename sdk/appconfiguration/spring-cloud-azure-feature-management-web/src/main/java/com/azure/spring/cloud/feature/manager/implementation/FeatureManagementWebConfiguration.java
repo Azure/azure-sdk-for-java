@@ -65,7 +65,7 @@ public class FeatureManagementWebConfiguration {
     /**
      * Creates FeatureConfig
      * 
-     * @param featureHandler Intercepter for requests to check if then need to be blocked/redirected.
+     * @param featureHandler Interceptor for requests to check if then need to be blocked/redirected.
      * @return FeatureConfig
      */
     @Bean

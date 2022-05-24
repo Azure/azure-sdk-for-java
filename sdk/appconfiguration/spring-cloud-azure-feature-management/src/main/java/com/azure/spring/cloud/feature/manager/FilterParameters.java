@@ -6,6 +6,10 @@ package com.azure.spring.cloud.feature.manager;
  * Parameters for the predefined filters.
  */
 public final class FilterParameters {
+    
+    private FilterParameters() {
+        
+    }
 
     /**
      * Percentage value of the returning true in the Percentage filter.
