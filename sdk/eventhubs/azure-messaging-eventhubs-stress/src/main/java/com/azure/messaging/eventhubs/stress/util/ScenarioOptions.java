@@ -7,14 +7,11 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 public class ScenarioOptions {
-    private final ApplicationArguments args;
     @Autowired
     private Environment env;
 
     @Autowired
-    public ScenarioOptions(ApplicationArguments args) {
-        this.args = args;
-    }
+    private ApplicationArguments args;
 
     public String get(String name) {
         if (args.containsOption(name)) {

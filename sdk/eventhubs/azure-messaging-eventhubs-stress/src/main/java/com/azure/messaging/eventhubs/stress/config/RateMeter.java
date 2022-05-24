@@ -1,4 +1,4 @@
-package com.azure.messaging.eventhubs.stress.util;
+package com.azure.messaging.eventhubs.stress.config;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
