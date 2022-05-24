@@ -28,6 +28,7 @@ jobs:
         displayName: 'set spring cloud version'
       - bash: |
           echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;isOutput=true]2021.0.2"
+          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
       - script: |
           python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py
         displayName: 'insert dependency management'
