@@ -447,6 +447,13 @@ public abstract class RestProxyTests {
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        Mono<HttpBinJSON> putAsyncBodyAndContentLength(
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData body,
+            @HeaderParam("Content-Length") long contentLength);
+
+        @Put("put")
         @ExpectedResponses({201})
         HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
@@ -584,6 +591,50 @@ public abstract class RestProxyTests {
     public void asyncPutRequestWithBodyAndMoreThanContentLength() {
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(body, 3L))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("more than"));
+            });
+    }
+
+    @Test
+    public void asyncPutRequestWithBinaryDataBodyAndEqualContentLength() {
+        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 4L)))
+            .assertNext(json -> {
+                assertEquals("test", json.data());
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
+                assertEquals("4", json.getHeaderValue("Content-Length"));
+            }).verifyComplete();
+    }
+
+    @Test
+    public void asyncPutRequestWithBinaryDataBodyAndLessThanContentLength() {
+        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 5L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("less than"));
+            });
+    }
+
+    @Test
+    public void asyncPutRequestWithBinaryDataBodyAndMoreThanContentLength() {
+        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 3L)))
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
