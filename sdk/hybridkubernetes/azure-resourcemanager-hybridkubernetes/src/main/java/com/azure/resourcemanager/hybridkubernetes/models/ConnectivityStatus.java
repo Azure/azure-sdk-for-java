@@ -33,7 +33,11 @@ public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityS
         return fromString(name, ConnectivityStatus.class);
     }
 
-    /** @return known ConnectivityStatus values. */
+    /**
+     * Gets known ConnectivityStatus values.
+     *
+     * @return known ConnectivityStatus values.
+     */
     public static Collection<ConnectivityStatus> values() {
         return values(ConnectivityStatus.class);
     }

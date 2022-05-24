@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridkubernetes.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Connected cluster API operation. */
 @Immutable
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Operation name: {Microsoft.Kubernetes}/{resource}/{operation}
      */

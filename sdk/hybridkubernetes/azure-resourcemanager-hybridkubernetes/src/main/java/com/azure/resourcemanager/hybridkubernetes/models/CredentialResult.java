@@ -6,15 +6,11 @@ package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The credential result response. */
 @Immutable
 public final class CredentialResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResult.class);
-
     /*
      * The name of the credential.
      */

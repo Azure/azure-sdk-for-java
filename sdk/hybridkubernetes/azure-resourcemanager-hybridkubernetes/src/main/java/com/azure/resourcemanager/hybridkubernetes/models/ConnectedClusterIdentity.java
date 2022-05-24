@@ -6,14 +6,11 @@ package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the connected cluster. */
 @Fluent
 public class ConnectedClusterIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClusterIdentity.class);
-
     /*
      * The principal id of connected cluster identity. This property will only
      * be provided for a system assigned identity.
@@ -85,9 +82,11 @@ public class ConnectedClusterIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ConnectedClusterIdentity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedClusterIdentity.class);
 }

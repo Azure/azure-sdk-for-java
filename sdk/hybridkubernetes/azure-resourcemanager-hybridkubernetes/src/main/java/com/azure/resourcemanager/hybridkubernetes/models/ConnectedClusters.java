@@ -33,7 +33,7 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     Response<ConnectedCluster> getByResourceGroupWithResponse(
         String resourceGroupName, String clusterName, Context context);
@@ -85,7 +85,8 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response}.
      */
     Response<CredentialResults> listClusterUserCredentialWithResponse(
         String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context);
@@ -97,7 +98,7 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName);
 
@@ -109,7 +110,7 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -118,7 +119,7 @@ public interface ConnectedClusters {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> list();
 
@@ -129,7 +130,7 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectedCluster> list(Context context);
 
@@ -141,7 +142,7 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     ConnectedCluster getById(String id);
 
@@ -154,7 +155,7 @@ public interface ConnectedClusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response}.
      */
     Response<ConnectedCluster> getByIdWithResponse(String id, Context context);
 
