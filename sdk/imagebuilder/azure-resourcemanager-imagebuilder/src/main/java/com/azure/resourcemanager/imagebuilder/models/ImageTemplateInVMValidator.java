@@ -10,30 +10,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a unit of image customization. */
+/** Describes a unit of in-VM validation of image. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = ImageTemplateCustomizer.class)
-@JsonTypeName("ImageTemplateCustomizer")
+    defaultImpl = ImageTemplateInVMValidator.class)
+@JsonTypeName("ImageTemplateInVMValidator")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Shell", value = ImageTemplateShellCustomizer.class),
-    @JsonSubTypes.Type(name = "WindowsRestart", value = ImageTemplateRestartCustomizer.class),
-    @JsonSubTypes.Type(name = "WindowsUpdate", value = ImageTemplateWindowsUpdateCustomizer.class),
-    @JsonSubTypes.Type(name = "PowerShell", value = ImageTemplatePowerShellCustomizer.class),
-    @JsonSubTypes.Type(name = "File", value = ImageTemplateFileCustomizer.class)
+    @JsonSubTypes.Type(name = "Shell", value = ImageTemplateShellValidator.class),
+    @JsonSubTypes.Type(name = "PowerShell", value = ImageTemplatePowerShellValidator.class)
 })
 @Fluent
-public class ImageTemplateCustomizer {
+public class ImageTemplateInVMValidator {
     /*
-     * Friendly Name to provide context on what this customization step does
+     * Friendly Name to provide context on what this validation step does
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Get the name property: Friendly Name to provide context on what this customization step does.
+     * Get the name property: Friendly Name to provide context on what this validation step does.
      *
      * @return the name value.
      */
@@ -42,12 +39,12 @@ public class ImageTemplateCustomizer {
     }
 
     /**
-     * Set the name property: Friendly Name to provide context on what this customization step does.
+     * Set the name property: Friendly Name to provide context on what this validation step does.
      *
      * @param name the name value to set.
-     * @return the ImageTemplateCustomizer object itself.
+     * @return the ImageTemplateInVMValidator object itself.
      */
-    public ImageTemplateCustomizer withName(String name) {
+    public ImageTemplateInVMValidator withName(String name) {
         this.name = name;
         return this;
     }

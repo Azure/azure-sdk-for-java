@@ -6,17 +6,16 @@ package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningError;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +23,6 @@ import java.util.Map;
 /** Image template is an ARM resource managed by Microsoft.VirtualMachineImages provider. */
 @Fluent
 public final class ImageTemplateInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateInner.class);
-
     /*
      * The properties of the image template
      */
@@ -37,12 +34,6 @@ public final class ImageTemplateInner extends Resource {
      */
     @JsonProperty(value = "identity", required = true)
     private ImageTemplateIdentity identity;
-
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /**
      * Get the innerProperties property: The properties of the image template.
@@ -71,15 +62,6 @@ public final class ImageTemplateInner extends Resource {
     public ImageTemplateInner withIdentity(ImageTemplateIdentity identity) {
         this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -145,6 +127,29 @@ public final class ImageTemplateInner extends Resource {
     }
 
     /**
+     * Get the validate property: Configuration options and list of validations to be performed on the resulting image.
+     *
+     * @return the validate value.
+     */
+    public ImageTemplatePropertiesValidate validate() {
+        return this.innerProperties() == null ? null : this.innerProperties().validate();
+    }
+
+    /**
+     * Set the validate property: Configuration options and list of validations to be performed on the resulting image.
+     *
+     * @param validate the validate value to set.
+     * @return the ImageTemplateInner object itself.
+     */
+    public ImageTemplateInner withValidate(ImageTemplatePropertiesValidate validate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageTemplateProperties();
+        }
+        this.innerProperties().withValidate(validate);
+        return this;
+    }
+
+    /**
      * Get the distribute property: The distribution targets where the image output needs to go to.
      *
      * @return the distribute value.
@@ -195,8 +200,8 @@ public final class ImageTemplateInner extends Resource {
     }
 
     /**
-     * Get the buildTimeoutInMinutes property: Maximum duration to wait while building the image template. Omit or
-     * specify 0 to use the default (4 hours).
+     * Get the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
+     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @return the buildTimeoutInMinutes value.
      */
@@ -205,8 +210,8 @@ public final class ImageTemplateInner extends Resource {
     }
 
     /**
-     * Set the buildTimeoutInMinutes property: Maximum duration to wait while building the image template. Omit or
-     * specify 0 to use the default (4 hours).
+     * Set the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
+     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @param buildTimeoutInMinutes the buildTimeoutInMinutes value to set.
      * @return the ImageTemplateInner object itself.
@@ -243,6 +248,52 @@ public final class ImageTemplateInner extends Resource {
     }
 
     /**
+     * Get the stagingResourceGroup property: The staging resource group id in the same subscription as the image
+     * template that will be used to build the image. If this field is empty, a resource group with a random name will
+     * be created. If the resource group specified in this field doesn't exist, it will be created with the same name.
+     * If the resource group specified exists, it must be empty and in the same region as the image template. The
+     * resource group created will be deleted during template deletion if this field is empty or the resource group
+     * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
+     * will be deleted during template deletion and the resource group itself will remain.
+     *
+     * @return the stagingResourceGroup value.
+     */
+    public String stagingResourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().stagingResourceGroup();
+    }
+
+    /**
+     * Set the stagingResourceGroup property: The staging resource group id in the same subscription as the image
+     * template that will be used to build the image. If this field is empty, a resource group with a random name will
+     * be created. If the resource group specified in this field doesn't exist, it will be created with the same name.
+     * If the resource group specified exists, it must be empty and in the same region as the image template. The
+     * resource group created will be deleted during template deletion if this field is empty or the resource group
+     * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
+     * will be deleted during template deletion and the resource group itself will remain.
+     *
+     * @param stagingResourceGroup the stagingResourceGroup value to set.
+     * @return the ImageTemplateInner object itself.
+     */
+    public ImageTemplateInner withStagingResourceGroup(String stagingResourceGroup) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageTemplateProperties();
+        }
+        this.innerProperties().withStagingResourceGroup(stagingResourceGroup);
+        return this;
+    }
+
+    /**
+     * Get the exactStagingResourceGroup property: The staging resource group id in the same subscription as the image
+     * template that will be used to build the image. This read-only field differs from 'stagingResourceGroup' only if
+     * the value specified in the 'stagingResourceGroup' field is empty.
+     *
+     * @return the exactStagingResourceGroup value.
+     */
+    public String exactStagingResourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().exactStagingResourceGroup();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -252,11 +303,13 @@ public final class ImageTemplateInner extends Resource {
             innerProperties().validate();
         }
         if (identity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property identity in model ImageTemplateInner"));
         } else {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateInner.class);
 }
