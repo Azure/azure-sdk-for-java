@@ -214,11 +214,21 @@ public final class SyncRestProxy implements InvocationHandler {
                     throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
                         len, expectedLength), len, expectedLength);
                 }
+
+                if (len < expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                        len, expectedLength), len, expectedLength);
+                }
                 return BinaryData.fromBytes(b);
             }
         } else {
             if (length > expectedLength) {
                 throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                    length, expectedLength), length, expectedLength);
+            }
+
+            if (length < expectedLength) {
+                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
                     length, expectedLength), length, expectedLength);
             }
             return binaryData;
