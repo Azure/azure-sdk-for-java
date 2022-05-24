@@ -903,8 +903,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteIfExistsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -916,7 +915,7 @@ public class ShareFileClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = fileClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Boolean&gt; response = fileClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -935,7 +934,7 @@ public class ShareFileClient {
      * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
+    public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
         return this.deleteIfExistsWithResponse(null, timeout, context);
     }
 
@@ -949,7 +948,7 @@ public class ShareFileClient {
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Void&gt; res = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
+     * Response&lt;Boolean&gt; res = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
      *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -970,9 +969,9 @@ public class ShareFileClient {
      * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
+    public Response<Boolean> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
+        Mono<Response<Boolean>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

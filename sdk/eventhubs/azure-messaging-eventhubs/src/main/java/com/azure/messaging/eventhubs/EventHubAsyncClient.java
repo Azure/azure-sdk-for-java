@@ -118,7 +118,7 @@ class EventHubAsyncClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is
      * {@link EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param prefetchCount The set of options to apply when creating the consumer.
+     * @param prefetchCount The number of events to queue locally.
      * @return An new {@link EventHubConsumerAsyncClient} that receives events from the Event Hub.
      * @throws NullPointerException If {@code consumerGroup} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.

@@ -520,8 +520,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteIfExistsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -533,7 +532,7 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#Duration-Context -->
      * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Boolean&gt; response = shareClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -552,7 +551,7 @@ public class ShareClient {
      * was successfully deleted. If status code is 404, the share does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
+    public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
         return deleteIfExistsWithResponse(new ShareDeleteOptions(), timeout, context);
     }
 
@@ -565,7 +564,7 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteIfExistsWithResponse#ShareDeleteOptions-Duration-Context -->
      * <pre>
-     * Response&lt;Void&gt; res = shareClient.deleteIfExistsWithResponse&#40;new ShareDeleteOptions&#40;&#41;
+     * Response&lt;Boolean&gt; res = shareClient.deleteIfExistsWithResponse&#40;new ShareDeleteOptions&#40;&#41;
      *         .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
@@ -587,7 +586,7 @@ public class ShareClient {
      * was successfully deleted. If status code is 404, the share does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(ShareDeleteOptions options, Duration timeout, Context context) {
+    public Response<Boolean> deleteIfExistsWithResponse(ShareDeleteOptions options, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.deleteIfExistsWithResponse(options, context), timeout);
     }
 
@@ -1556,8 +1555,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteDirectoryIfExists(String directoryName) {
-        Response<Void> response = deleteDirectoryIfExistsWithResponse(directoryName, null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteDirectoryIfExistsWithResponse(directoryName, null, Context.NONE).getValue();
     }
 
     /**
@@ -1569,7 +1567,7 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteDirectoryIfExistsWithResponse#string-duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteDirectoryIfExistsWithResponse&#40;&quot;mydirectory&quot;,
+     * Response&lt;Boolean&gt; response = shareClient.deleteDirectoryIfExistsWithResponse&#40;&quot;mydirectory&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1592,7 +1590,7 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDirectoryIfExistsWithResponse(String directoryName, Duration timeout, Context context) {
+    public Response<Boolean> deleteDirectoryIfExistsWithResponse(String directoryName, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.deleteDirectoryIfExistsWithResponse(directoryName, context), timeout);
     }
 
@@ -1709,8 +1707,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteFileIfExists(String fileName) {
-        Response<Void> response = deleteFileIfExistsWithResponse(fileName, null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteFileIfExistsWithResponse(fileName, null, Context.NONE).getValue();
     }
 
     /**
@@ -1722,7 +1719,7 @@ public class ShareClient {
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileIfExistsWithResponse#string-duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
+     * Response&lt;Boolean&gt; response = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1744,7 +1741,7 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
         return this.deleteFileIfExistsWithResponse(fileName, null, timeout, context);
     }
 
@@ -1760,7 +1757,7 @@ public class ShareClient {
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
      * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; res = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options,
+     * Response&lt;Boolean&gt; res = shareClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1783,7 +1780,7 @@ public class ShareClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options,
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options,
         Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.deleteFileIfExistsWithResponse(fileName,
             options, context), timeout);

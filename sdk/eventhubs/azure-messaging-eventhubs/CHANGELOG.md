@@ -4,16 +4,23 @@
 
 ### Features Added
 
+- Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixes trace context propagation issue: links to *message* spans were not populated on *send* span. ([#28951](https://github.com/Azure/azure-sdk-for-java/pull/28951))  
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.6.0`.
 
 ## 5.12.0 (2022-05-16)
 
 ### Features Added
-- Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
 
 - `EventData.setBodyAsBinaryData` is exposed.
 
