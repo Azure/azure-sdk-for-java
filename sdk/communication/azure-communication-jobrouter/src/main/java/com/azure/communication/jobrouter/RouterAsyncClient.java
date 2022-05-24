@@ -17,9 +17,9 @@ import java.time.OffsetDateTime;
 import static com.azure.core.util.FluxUtil.*;
 
 /**
- * Async Client that supports chat operations.
+ * Async Client that supports job router operations.
  *
- * <p><strong>Instantiating an asynchronous Chat Client</strong></p>
+ * <p><strong>Instantiating an asynchronous job router Client</strong></p>
  *
  * <!-- src_embed com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
  * <pre>
@@ -29,23 +29,23 @@ import static com.azure.core.util.FluxUtil.*;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;;
  *
- * &#47;&#47; Build the chat client
+ * &#47;&#47; Build the job router client
  * JobRouterAsyncClient jobRouterClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
- * <!-- end com.azure.communication.chat.chatasyncclient.instantiation -->
+ * <!-- end com.azure.communication.jobrouter.routerasyncclient.instantiation -->
  *
- * <p>View {@link JobRouterClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link RouterClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see JobRouterClientBuilder
+ * @see RouterClientBuilder
  */
-@ServiceClient(builder = JobRouterClientBuilder.class, isAsync = true)
-public class JobRouterAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(JobRouterAsyncClient.class);
+@ServiceClient(builder = RouterClientBuilder.class, isAsync = true)
+public class RouterAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RouterAsyncClient.class);
 
     private JobRoutersImpl jobRouter;
 
-    JobRouterAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterService) {
+    RouterAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterService) {
         this.jobRouter = jobRouterService.getJobRouters();
     }
 

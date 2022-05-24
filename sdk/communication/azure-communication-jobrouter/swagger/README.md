@@ -1,9 +1,9 @@
-# Azure Communication Service chat client library for Java
+# Azure Communication Service Job Router client library for Java
 
 > see https://aka.ms/autorest
 ## Getting Started
 
-To build the SDK for Chat Client, simply Install AutoRest and in this folder, run:
+To build the SDK for Job Router Client, simply Install AutoRest and in this folder, run:
 
 ### Setup
 ```ps
@@ -24,7 +24,7 @@ cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
-## Update generated files for chat service
+## Update generated files for Job Router service
 To update generated files for JobRouter service, run the following command
 
 > autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442

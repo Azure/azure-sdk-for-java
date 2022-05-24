@@ -10,7 +10,6 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.*;
@@ -21,15 +20,14 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@ServiceClientBuilder(serviceClients = {JobRouterAsyncClient.class, JobRouterClient.class})
-public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClientBuilder>,
-    EndpointTrait<JobRouterClientBuilder>,
-    HttpTrait<JobRouterClientBuilder> {
-    private static final ClientLogger logger = new ClientLogger(JobRouterClientBuilder.class);
+@ServiceClientBuilder(serviceClients = {RouterAsyncClient.class, RouterClient.class})
+public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuilder>,
+    EndpointTrait<RouterClientBuilder>,
+    HttpTrait<RouterClientBuilder> {
+    private static final ClientLogger logger = new ClientLogger(RouterClientBuilder.class);
 
     private String endpoint;
     private HttpClient httpClient;
@@ -47,10 +45,10 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
     @Override
-    public JobRouterClientBuilder configuration(Configuration configuration) {
+    public RouterClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -59,10 +57,10 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * Set endpoint of the service
      *
      * @param endpoint url of the service
-     * @return the updated JobRouterClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
     @Override
-    public JobRouterClientBuilder endpoint(String endpoint) {
+    public RouterClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
@@ -78,10 +76,10 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param httpClient The {@link HttpClient} to use for requests.
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
     @Override
-    public JobRouterClientBuilder httpClient(HttpClient httpClient) {
+    public RouterClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
     }
@@ -90,9 +88,9 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * Set a connection string for authorization
      *
      * @param connectionString valid token credential as a string
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
-    public JobRouterClientBuilder connectionString(String connectionString) {
+    public RouterClientBuilder connectionString(String connectionString) {
         this.connectionString = new CommunicationConnectionString(connectionString);
         this.credential(new AzureKeyCredential(this.connectionString.getAccessKey()));
         this.endpoint(this.connectionString.getEndpoint());
@@ -103,9 +101,9 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * Set a key credential for authorization
      *
      * @param credential valid credential as a string
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
-    public JobRouterClientBuilder credential(AzureKeyCredential credential) {
+    public RouterClientBuilder credential(AzureKeyCredential credential) {
         this.credential = Objects.requireNonNull(
             credential, "'credential' cannot be null.");
         return this;
@@ -124,10 +122,10 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
      *
      * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
     @Override
-    public JobRouterClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public RouterClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
     }
@@ -143,11 +141,11 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param customPolicy A {@link HttpPipelinePolicy pipeline policy}.
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     @Override
-    public JobRouterClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public RouterClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
@@ -160,9 +158,9 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
-     * @return The updated ChatClientBuilder object.
+     * @return The updated RouterClientBuilder object.
      */
-    public JobRouterClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public RouterClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -180,10 +178,10 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
-     * @return The updated ChatClientBuilder object.
+     * @return The updated RouterClientBuilder object.
      */
     @Override
-    public JobRouterClientBuilder retryOptions(RetryOptions retryOptions) {
+    public RouterClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -201,10 +199,10 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
-     * @return the updated ChatClientBuilder object
+     * @return the updated RouterClientBuilder object
      */
     @Override
-    public JobRouterClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public RouterClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
@@ -224,41 +222,41 @@ public class JobRouterClientBuilder implements ConfigurationTrait<JobRouterClien
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @return The updated ChatClientBuilder object.
+     * @return The updated RouterClientBuilder object.
      * @see HttpClientOptions
      */
     @Override
-    public JobRouterClientBuilder clientOptions(ClientOptions clientOptions) {
+    public RouterClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
     /**
-     * Create synchronous JobRouter client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create synchronous router client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
-     * @return JobRouterClient instance
+     * @return RouterClient instance
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public JobRouterClient buildClient() {
-        JobRouterAsyncClient asyncClient = buildAsyncClient();
-        return new JobRouterClient(asyncClient);
+    public RouterClient buildClient() {
+        RouterAsyncClient asyncClient = buildAsyncClient();
+        return new RouterClient(asyncClient);
     }
 
     /**
-     * Create asynchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create asynchronous job router client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
-     * @return ChatAsyncClient instance
+     * @return RouterAsyncClient instance
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public JobRouterAsyncClient buildAsyncClient() {
+    public RouterAsyncClient buildAsyncClient() {
         AzureCommunicationRoutingServiceImpl internalClient = createInternalClient();
-        return new JobRouterAsyncClient(internalClient);
+        return new RouterAsyncClient(internalClient);
     }
 
     private AzureCommunicationRoutingServiceImpl createInternalClient() {
