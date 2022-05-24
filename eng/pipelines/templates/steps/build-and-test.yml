@@ -67,7 +67,7 @@ steps:
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
-    displayName: 'Generate directories variable for sparse checkout'
+    displayName: 'Generate pom for aggregate code coverage report'
     inputs:
       scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
       arguments: '--project-list $(ProjectList)'

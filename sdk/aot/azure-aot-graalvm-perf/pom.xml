@@ -16,7 +16,7 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-perf-test-parent</artifactId>
         <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
-        <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+        <relativePath>../../parents/azure-perf-test-parent</relativePath>
     </parent>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
