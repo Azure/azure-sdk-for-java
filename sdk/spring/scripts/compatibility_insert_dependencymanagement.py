@@ -10,7 +10,6 @@
 
 import os
 import time
-import json
 
 from log import log
 
@@ -88,18 +87,6 @@ def get_prop_content(pom_file_content):
 
 
 def add_dependency_management_for_file(file_path):
-    # print("no env")
-    # print(os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION"))
-    # print("env")
-    # print(os.getenv("env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION"))
-    spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
-    # spring_cloud_version = []
-    # with open("./sdk/spring/spring-cloud-azure-supported-spring.json", 'r') as file:
-    #     data = json.load(file)
-    # for entry in data:
-    #     for key in entry:
-    #         if spring_boot_version == entry[key]:
-    #             spring_cloud_version = entry["spring-cloud-version"]
     spring_cloud_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION")
     print(spring_cloud_version)
     log.info("Add dependency management for file: " + file_path)

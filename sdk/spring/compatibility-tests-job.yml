@@ -15,26 +15,6 @@ jobs:
     variables:
       - template: ../../eng/pipelines/templates/variables/globals.yml
     steps:
-#      - bash: |
-#          echo "##vso[task.setVariable variable=SpringCloudVersion;]2021.0.2"
-#          echo "$(SpringCloudVersion)"
-#      - bash: |
-#          echo "$(SpringCloudVersion)"
-#      - bash: |
-#          echo "##vso[task.setVariable variable=SpringCloudVersion2;isOutput=true]2021.0.2"
-#          echo "$(SpringCloudVersion2)"
-#      - bash: |
-#          echo "$(SpringCloudVersion2)"
-#      - bash: |
-#          echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;isOutput=true]2021.0.1"
-#          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
-#      - bash: |
-#          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
-#      - bash: |
-#          echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION1]2021.0.1"
-#          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION1)"
-#      - bash: |
-#          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION1)"
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
@@ -43,13 +23,11 @@ jobs:
       - script: |
           pip install termcolor
         displayName: 'python module install'
-#      - script: |
-##          eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py)
-#          python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py
-#        displayName: 'set spring cloud version'
       - bash: |
-          echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py)"
-          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
+          echo
+          "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]
+          $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py)"
+        displayName: 'set env'
       - script: |
           python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py
         displayName: 'insert dependency management'
@@ -58,6 +36,7 @@ jobs:
         displayName: 'remove unused version'
       - bash: |
           echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
+        displayName: 'spring cloud version'
       - task: Maven@3
         displayName: 'Run tests'
         inputs:

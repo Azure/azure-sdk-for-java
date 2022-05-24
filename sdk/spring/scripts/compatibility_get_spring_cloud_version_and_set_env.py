@@ -13,7 +13,6 @@ def change_to_root_dir():
 
 def get_spring_cloud_version_and_set_as_env(filepath):
     spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
-    # spring_boot_version = "2.6.8"
     spring_cloud_version = "1"
     with open(filepath, 'r') as file:
         data = json.load(file)
@@ -21,17 +20,10 @@ def get_spring_cloud_version_and_set_as_env(filepath):
         for key in entry:
             if spring_boot_version == entry[key]:
                 spring_cloud_version = entry["spring-cloud-version"]
-                # print(spring_cloud_version)
                 break
-                # os.environ['SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION'] = spring_cloud_version
-                # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={};".format("dsfg"))
-                # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(quote(spring_cloud_version)))
-                # print("export env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(spring_cloud_version))
-                # print("Spring-cloud version:" + spring_cloud_version)
-    # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={}".format(quote(spring_cloud_version)))
-    print("##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;]"+spring_cloud_version)
+    # print("##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;]"+spring_cloud_version)
+    print(spring_cloud_version)
     return spring_cloud_version
-    # print("export SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION={};".format(quote('456')))
 
 
 def main():
