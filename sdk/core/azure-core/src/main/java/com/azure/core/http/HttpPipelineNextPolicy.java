@@ -56,6 +56,8 @@ public class HttpPipelineNextPolicy {
      */
     public Mono<HttpResponse> process() {
         if (originatedFromSyncContext) {
+            LOGGER.warning("The pipeline switched from asynchronous to synchronous."
+                + " Check if all policies override HttpPipelinePolicy.processSync");
             return Mono.fromCallable(() ->
                 this.pipeline.getPolicy(this.currentPolicyIndex).processSync(this.context, this));
 
