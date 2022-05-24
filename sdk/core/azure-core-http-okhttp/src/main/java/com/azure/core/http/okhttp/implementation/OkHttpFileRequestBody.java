@@ -26,13 +26,16 @@ public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileConte
         // BufferedSink implements WritableByteChannel so we can leverage FileChannel as source.
         // FileChannel supports positional reads.
         try (FileChannel channel = FileChannel.open(content.getFile(), StandardOpenOption.READ)) {
-            // FileContent.getLength always returs non-null.
+            // FileContent.getLength always returns non-null.
             long pendingTransfer = content.getLength();
             long position = content.getPosition();
             do {
-                long transfered = channel.transferTo(position, pendingTransfer, bufferedSink);
-                position += transfered;
-                pendingTransfer -= transfered;
+                long transferred = channel.transferTo(position, pendingTransfer, bufferedSink);
+                if (transferred < 0) {
+                    break;
+                }
+                position += transferred;
+                pendingTransfer -= transferred;
             } while (pendingTransfer > 0);
         }
     }

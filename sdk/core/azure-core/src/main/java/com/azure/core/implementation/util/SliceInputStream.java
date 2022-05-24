@@ -28,6 +28,9 @@ public final class SliceInputStream extends InputStream {
      * @param inputStream An {@link InputStream} to be sliced.
      * @param position An offset of the slice.
      * @param count Maximum amount of bytes to read from the slice.
+     * @throws NullPointerException if {@code inputStream} is {@code null}.
+     * @throws IllegalArgumentException if {@code position} is negative.
+     * @throws IllegalArgumentException if {@code count} is negative.
      */
     public SliceInputStream(InputStream inputStream, long position, long count) {
         this.innerStream = Objects.requireNonNull(inputStream, "'inputStream' cannot be null");

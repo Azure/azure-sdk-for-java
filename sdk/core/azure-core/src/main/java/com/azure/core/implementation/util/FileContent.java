@@ -43,6 +43,9 @@ public final class FileContent extends BinaryDataContent {
      * @param length Total number of bytes to be read from the path.
      * @throws NullPointerException if {@code file} is null.
      * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
+     * @throws IllegalArgumentException if {@code position} is less than zero.
+     * @throws IllegalArgumentException if {@code length} is less than zero.
+     * @throws UncheckedIOException if file doesn't exist.
      */
     public FileContent(Path file, int chunkSize, Long position, Long length) {
         this.file = validateFile(file);
@@ -133,6 +136,11 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
+        if (length > Integer.MAX_VALUE) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("'length' cannot be greater than %d when mapping file to ByteBuffer.",
+                    Integer.MAX_VALUE)));
+        }
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
          * Closing the channel, in particular, has no effect upon the validity of the mapping.
@@ -189,7 +197,7 @@ public final class FileContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 String.format("'length' cannot be greater than %d when buffering content.",
                     MAX_ARRAY_SIZE)));
         }
