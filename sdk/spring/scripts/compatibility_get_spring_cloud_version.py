@@ -1,9 +1,12 @@
-# import time
+# Python version 3.4 or higher is required to run this script.
+#
+# This script is only used to return spring-cloud version during pipeline running.
+#
+# The script must be run at the root of azure-sdk-for-java.
+
+
 import os
 import json
-from pipes import quote
-
-# from log import log
 
 
 def change_to_root_dir():
@@ -13,7 +16,7 @@ def change_to_root_dir():
 
 def get_spring_cloud_version_and_set_as_env(filepath):
     spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
-    spring_cloud_version = "1"
+    spring_cloud_version = ""
     with open(filepath, 'r') as file:
         data = json.load(file)
     for entry in data:
@@ -21,18 +24,12 @@ def get_spring_cloud_version_and_set_as_env(filepath):
             if spring_boot_version == entry[key]:
                 spring_cloud_version = entry["spring-cloud-version"]
                 break
-    # print("##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;]"+spring_cloud_version)
-    print(spring_cloud_version)
     return spring_cloud_version
 
 
 def main():
-    # start_time = time.time()
     change_to_root_dir()
-    # log.debug('Current working directory = {}.'.format(os.getcwd()))
     get_spring_cloud_version_and_set_as_env("./sdk/spring/spring-cloud-azure-supported-spring.json")
-    # elapsed_time = time.time() - start_time
-    # log.info('elapsed_time = {}'.format(elapsed_time))
 
 
 if __name__ == '__main__':
