@@ -142,6 +142,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
                 service_directories.add(service_directory)
 
         checkout_paths = list(set(sorted(service_directories)))
+        print('setting env variable {} = {}'.format(set_pipeline_variable, checkout_paths))
         print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(checkout_paths)))
 
     # Sets the DevOps variable that is used to skip certain projects during linting validation.
@@ -150,7 +151,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         for maven_identifier in sorted([p.identifier for p in source_projects]):
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
-
+        print('setting env variable {} = {}'.format(set_skip_linting_projects, skip_linting_projects))
         print('##vso[task.setvariable variable={};]{}'.format(set_skip_linting_projects, ','.join(list(set(skip_linting_projects)))))
 
 
