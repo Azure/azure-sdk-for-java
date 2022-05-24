@@ -27,7 +27,11 @@ public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
         return fromString(name, ScaleDownMode.class);
     }
 
-    /** @return known ScaleDownMode values. */
+    /**
+     * Gets known ScaleDownMode values.
+     *
+     * @return known ScaleDownMode values.
+     */
     public static Collection<ScaleDownMode> values() {
         return values(ScaleDownMode.class);
     }

@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2021-10-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dc78bae8-142c-4653-899d-6f73def6d4a9",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
+      "x-ms-client-request-id" : "3f3718db-a26e-4ff8-976f-d02dbaf6581b",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1",
+      "content-length" : "101",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 11 Jun 2021 19:47:19 GMT",
+      "Date" : "Wed, 27 Oct 2021 06:22:30 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "80ms",
-      "MS-CV" : "Gc3JI5lzlEuWRSwkPrre1Q.0",
-      "X-Azure-Ref" : "0x73DYAAAAAAFwFhWdIpbR7rC2IwGQM99WVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_0000000a-9c7e-f836-290c-113a0d008365\"}}",
-      "x-ms-client-request-id" : "dc78bae8-142c-4653-899d-6f73def6d4a9",
+      "X-Processing-Time" : "95ms",
+      "MS-CV" : "ATUAaSb/REq5wJuGo04pSQ.0",
+      "X-Azure-Ref" : "0JvB4YQAAAAA+hLZR2uiaToOrlYo54/AETE9OMjFFREdFMDEyMABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-604b-bca6-e1fe-084822003613\"}}",
+      "x-ms-client-request-id" : "3f3718db-a26e-4ff8-976f-d02dbaf6581b",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

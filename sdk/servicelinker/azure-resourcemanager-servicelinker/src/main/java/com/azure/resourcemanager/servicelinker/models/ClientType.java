@@ -51,7 +51,11 @@ public final class ClientType extends ExpandableStringEnum<ClientType> {
         return fromString(name, ClientType.class);
     }
 
-    /** @return known ClientType values. */
+    /**
+     * Gets known ClientType values.
+     *
+     * @return known ClientType values.
+     */
     public static Collection<ClientType> values() {
         return values(ClientType.class);
     }

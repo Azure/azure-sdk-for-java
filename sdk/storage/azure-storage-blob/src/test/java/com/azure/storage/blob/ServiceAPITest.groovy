@@ -1132,6 +1132,7 @@ class ServiceAPITest extends APISpec {
         def response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
 
         then:
+        response.getValue()
         response.getStatusCode() == 202
     }
 

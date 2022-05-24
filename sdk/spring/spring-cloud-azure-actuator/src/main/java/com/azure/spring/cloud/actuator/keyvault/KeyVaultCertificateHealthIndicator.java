@@ -34,12 +34,8 @@ public class KeyVaultCertificateHealthIndicator extends AbstractHealthIndicator 
             this.certificateAsyncClient.getCertificateWithResponse("spring-cloud-azure-not-existing-certificate")
                 .block(timeout);
             builder.up();
-        } catch (Exception e) {
-            if (e instanceof ResourceNotFoundException) {
-                builder.up();
-            } else {
-                throw e;
-            }
+        } catch (ResourceNotFoundException e) {
+            builder.up();
         }
     }
 

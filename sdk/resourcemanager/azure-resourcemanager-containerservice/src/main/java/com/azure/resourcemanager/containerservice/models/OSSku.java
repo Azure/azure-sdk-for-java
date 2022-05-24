@@ -27,7 +27,11 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
         return fromString(name, OSSku.class);
     }
 
-    /** @return known OSSku values. */
+    /**
+     * Gets known OSSku values.
+     *
+     * @return known OSSku values.
+     */
     public static Collection<OSSku> values() {
         return values(OSSku.class);
     }
