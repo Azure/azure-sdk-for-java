@@ -56,7 +56,7 @@ public final class MetricNamespacesImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MetricsNamespacesCli")
-    private interface MetricNamespacesService {
+    public interface MetricNamespacesService {
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

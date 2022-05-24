@@ -49,9 +49,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
+
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final AtomicReference<List<Long>> messagesDeferred = new AtomicReference<>(new ArrayList<>());
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientIntegrationTest.class);
 
     private ServiceBusReceiverClient receiver;
     private ServiceBusSenderClient sender;
@@ -321,7 +322,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             case RELEASED:
                 break;
             default:
-                throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                     "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
@@ -630,7 +631,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage.getLockedUntil());
 
         final OffsetDateTime initialLock = receivedMessage.getLockedUntil();
-        logger.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
+        LOGGER.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
 
         // Assert & Act
         try {
@@ -640,7 +641,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
                     lockedUntil, initialLock));
         } finally {
-            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
+            LOGGER.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
             receiver.complete(receivedMessage);
             messagesPending.decrementAndGet();
         }
@@ -722,7 +723,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 receiver.complete(receivedDeferredMessage);
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
@@ -867,13 +868,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     private void sendMessages(List<ServiceBusMessage> messageList) {
         sender.sendMessages(messageList);
         int number = messagesPending.getAndSet(messageList.size());
-        logger.info("Number sent: {}", number);
+        LOGGER.info("Number sent: {}", number);
     }
 
     private void sendMessage(ServiceBusMessage message) {
         sender.sendMessage(message);
         int number = messagesPending.incrementAndGet();
-        logger.info("Number sent: {}", number);
+        LOGGER.info("Number sent: {}", number);
     }
 
     private int completeMessages(ServiceBusReceiverClient client, int totalMessages) {

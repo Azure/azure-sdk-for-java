@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.DaprComponentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponent;
 import com.azure.resourcemanager.appcontainers.models.DaprComponents;
+import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
 
 public final class DaprComponentsImpl implements DaprComponents {
     private static final ClientLogger LOGGER = new ClientLogger(DaprComponentsImpl.class);
@@ -70,6 +72,30 @@ public final class DaprComponentsImpl implements DaprComponents {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, name, context);
+    }
+
+    public DaprSecretsCollection listSecrets(String resourceGroupName, String environmentName, String name) {
+        DaprSecretsCollectionInner inner = this.serviceClient().listSecrets(resourceGroupName, environmentName, name);
+        if (inner != null) {
+            return new DaprSecretsCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<DaprSecretsCollection> listSecretsWithResponse(
+        String resourceGroupName, String environmentName, String name, Context context) {
+        Response<DaprSecretsCollectionInner> inner =
+            this.serviceClient().listSecretsWithResponse(resourceGroupName, environmentName, name, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new DaprSecretsCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DaprComponent getById(String id) {

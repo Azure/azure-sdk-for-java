@@ -28,6 +28,7 @@ title: DeviceUpdateClient
 generate-sync-async-clients: true
 generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 add-context-parameter: true
 artifact-id: azure-iot-deviceupdate
 data-plane: true

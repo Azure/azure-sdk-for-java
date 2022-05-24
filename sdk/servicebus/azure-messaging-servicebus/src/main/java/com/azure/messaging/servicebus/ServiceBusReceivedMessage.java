@@ -46,7 +46,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
  *     </a>
  */
 public final class ServiceBusReceivedMessage {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceivedMessage.class);
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
 
     private UUID lockToken;
@@ -103,10 +103,10 @@ public final class ServiceBusReceivedMessage {
                 return BinaryData.fromBytes(payload);
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "This body type not is supported: " + bodyType));
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
         }
     }
 

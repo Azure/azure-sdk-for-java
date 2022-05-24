@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -89,6 +90,11 @@ public class SharedTransportClient extends TransportClient {
     @Override
     protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return transportClient.invokeStoreAsync(physicalAddress, request);
+    }
+
+    @Override
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+        return this.transportClient.openConnection(addressUri);
     }
 
     public int getReferenceCounter() {

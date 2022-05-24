@@ -758,14 +758,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<BlobContainerInner> createAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         return createWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer)
-            .flatMap(
-                (Response<BlobContainerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -976,14 +969,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<BlobContainerInner> updateAsync(
         String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         return updateWithResponseAsync(resourceGroupName, accountName, containerName, blobContainer)
-            .flatMap(
-                (Response<BlobContainerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1168,14 +1154,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerInner> getAsync(String resourceGroupName, String accountName, String containerName) {
         return getWithResponseAsync(resourceGroupName, accountName, containerName)
-            .flatMap(
-                (Response<BlobContainerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1345,8 +1324,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String containerName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, containerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, containerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1541,14 +1519,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<LegalHoldInner> setLegalHoldAsync(
         String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
         return setLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold)
-            .flatMap(
-                (Response<LegalHoldInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1749,14 +1720,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<LegalHoldInner> clearLegalHoldAsync(
         String resourceGroupName, String accountName, String containerName, LegalHoldInner legalHold) {
         return clearLegalHoldWithResponseAsync(resourceGroupName, accountName, containerName, legalHold)
-            .flatMap(
-                (Response<LegalHoldInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1986,14 +1950,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         ImmutabilityPolicyInner parameters) {
         return createOrUpdateImmutabilityPolicyWithResponseAsync(
                 resourceGroupName, accountName, containerName, ifMatch, parameters)
-            .flatMap(
-                (BlobContainersCreateOrUpdateImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2020,14 +1977,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         final ImmutabilityPolicyInner parameters = null;
         return createOrUpdateImmutabilityPolicyWithResponseAsync(
                 resourceGroupName, accountName, containerName, ifMatch, parameters)
-            .flatMap(
-                (BlobContainersCreateOrUpdateImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2238,14 +2188,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
         return getImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, ifMatch)
-            .flatMap(
-                (BlobContainersGetImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2269,14 +2212,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String resourceGroupName, String accountName, String containerName) {
         final String ifMatch = null;
         return getImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, ifMatch)
-            .flatMap(
-                (BlobContainersGetImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2488,14 +2424,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
         return deleteImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, ifMatch)
-            .flatMap(
-                (BlobContainersDeleteImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2707,14 +2636,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<ImmutabilityPolicyInner> lockImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String ifMatch) {
         return lockImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, ifMatch)
-            .flatMap(
-                (BlobContainersLockImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2948,14 +2870,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         ImmutabilityPolicyInner parameters) {
         return extendImmutabilityPolicyWithResponseAsync(
                 resourceGroupName, accountName, containerName, ifMatch, parameters)
-            .flatMap(
-                (BlobContainersExtendImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2984,14 +2899,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         final ImmutabilityPolicyInner parameters = null;
         return extendImmutabilityPolicyWithResponseAsync(
                 resourceGroupName, accountName, containerName, ifMatch, parameters)
-            .flatMap(
-                (BlobContainersExtendImmutabilityPolicyResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3204,14 +3112,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     public Mono<LeaseContainerResponseInner> leaseAsync(
         String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
         return leaseWithResponseAsync(resourceGroupName, accountName, containerName, parameters)
-            .flatMap(
-                (Response<LeaseContainerResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3235,14 +3136,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
         String resourceGroupName, String accountName, String containerName) {
         final LeaseContainerRequest parameters = null;
         return leaseWithResponseAsync(resourceGroupName, accountName, containerName, parameters)
-            .flatMap(
-                (Response<LeaseContainerResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

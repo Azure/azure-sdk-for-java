@@ -70,6 +70,14 @@ public interface ManagedEnvironment {
     String daprAIInstrumentationKey();
 
     /**
+     * Gets the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service
+     * to Service communication telemetry.
+     *
+     * @return the daprAIConnectionString value.
+     */
+    String daprAIConnectionString();
+
+    /**
      * Gets the vnetConfiguration property: Vnet configuration for the environment.
      *
      * @return the vnetConfiguration value.
@@ -104,6 +112,13 @@ public interface ManagedEnvironment {
      * @return the appLogsConfiguration value.
      */
     AppLogsConfiguration appLogsConfiguration();
+
+    /**
+     * Gets the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
+     *
+     * @return the zoneRedundant value.
+     */
+    Boolean zoneRedundant();
 
     /**
      * Gets the region of the resource.
@@ -173,8 +188,10 @@ public interface ManagedEnvironment {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithDaprAIInstrumentationKey,
+                DefinitionStages.WithDaprAIConnectionString,
                 DefinitionStages.WithVnetConfiguration,
-                DefinitionStages.WithAppLogsConfiguration {
+                DefinitionStages.WithAppLogsConfiguration,
+                DefinitionStages.WithZoneRedundant {
             /**
              * Executes the create request.
              *
@@ -212,6 +229,18 @@ public interface ManagedEnvironment {
              */
             WithCreate withDaprAIInstrumentationKey(String daprAIInstrumentationKey);
         }
+        /** The stage of the ManagedEnvironment definition allowing to specify daprAIConnectionString. */
+        interface WithDaprAIConnectionString {
+            /**
+             * Specifies the daprAIConnectionString property: Application Insights connection string used by Dapr to
+             * export Service to Service communication telemetry.
+             *
+             * @param daprAIConnectionString Application Insights connection string used by Dapr to export Service to
+             *     Service communication telemetry.
+             * @return the next definition stage.
+             */
+            WithCreate withDaprAIConnectionString(String daprAIConnectionString);
+        }
         /** The stage of the ManagedEnvironment definition allowing to specify vnetConfiguration. */
         interface WithVnetConfiguration {
             /**
@@ -234,6 +263,16 @@ public interface ManagedEnvironment {
              */
             WithCreate withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
         }
+        /** The stage of the ManagedEnvironment definition allowing to specify zoneRedundant. */
+        interface WithZoneRedundant {
+            /**
+             * Specifies the zoneRedundant property: Whether or not this Managed Environment is zone-redundant..
+             *
+             * @param zoneRedundant Whether or not this Managed Environment is zone-redundant.
+             * @return the next definition stage.
+             */
+            WithCreate withZoneRedundant(Boolean zoneRedundant);
+        }
     }
     /**
      * Begins update for the ManagedEnvironment resource.
@@ -243,7 +282,8 @@ public interface ManagedEnvironment {
     ManagedEnvironment.Update update();
 
     /** The template for ManagedEnvironment update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration {
         /**
          * Executes the update request.
          *
@@ -264,12 +304,34 @@ public interface ManagedEnvironment {
         /** The stage of the ManagedEnvironment update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Application-specific metadata in the form of key-value pairs..
+             * Specifies the tags property: Resource tags..
              *
-             * @param tags Application-specific metadata in the form of key-value pairs.
+             * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify vnetConfiguration. */
+        interface WithVnetConfiguration {
+            /**
+             * Specifies the vnetConfiguration property: Vnet configuration for the environment.
+             *
+             * @param vnetConfiguration Vnet configuration for the environment.
+             * @return the next definition stage.
+             */
+            Update withVnetConfiguration(VnetConfiguration vnetConfiguration);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify appLogsConfiguration. */
+        interface WithAppLogsConfiguration {
+            /**
+             * Specifies the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+             * app logs to a destination. Currently only "log-analytics" is supported.
+             *
+             * @param appLogsConfiguration Cluster configuration which enables the log daemon to export app logs to a
+             *     destination. Currently only "log-analytics" is supported.
+             * @return the next definition stage.
+             */
+            Update withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
         }
     }
     /**

@@ -33,10 +33,12 @@ import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -197,16 +199,90 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void createFromFlux() {
+    public void createFromFluxEagerly() {
         // Arrange
         final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
-        final Flux<ByteBuffer> expectedFlux = Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data));
+        final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
+        final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
+        final long length = expected.length;
+
+        Arrays.asList(
+            BinaryData.fromFlux(dataFlux),
+            BinaryData.fromFlux(dataFlux, null),
+            BinaryData.fromFlux(dataFlux, length),
+            BinaryData.fromFlux(dataFlux, null, true),
+            BinaryData.fromFlux(dataFlux, length, true)
+        ).forEach(binaryDataMono -> {
+            // Act & Assert
+            StepVerifier.create(binaryDataMono)
+                .assertNext(actual -> {
+                    assertArrayEquals(expected, actual.toBytes());
+                    assertEquals(expected.length, actual.getLength());
+                })
+                .verifyComplete();
+
+            // Verify that data got buffered
+            StepVerifier.create(binaryDataMono
+                    .flatMapMany(BinaryData::toFluxByteBuffer)
+                    .count())
+                .assertNext(actual -> assertEquals(1, actual))
+                .verifyComplete();
+        });
+    }
+
+    @Test
+    public void createFromFluxLazy() {
+        final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
+        final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
 
         // Act & Assert
-        StepVerifier.create(BinaryData.fromFlux(expectedFlux))
-            .assertNext(actual -> Assertions.assertArrayEquals(expected, actual.toBytes()))
-            .verifyComplete();
+        Arrays.asList((long) expected.length, null).forEach(
+            providedLength -> {
+                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false))
+                    .assertNext(actual -> {
+                        assertArrayEquals(expected, actual.toBytes());
+                        // toBytes buffers and reveals length
+                        assertEquals(expected.length, actual.getLength());
+                    })
+                    .verifyComplete();
+
+                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false))
+                    .assertNext(actual -> {
+                        // Assert that length isn't computed eagerly.
+                        assertEquals(providedLength, actual.getLength());
+                    })
+                    .verifyComplete();
+
+                // Verify that data isn't buffered
+                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false)
+                        .flatMapMany(BinaryData::toFluxByteBuffer)
+                        .count())
+                    .assertNext(actual -> assertEquals(2, actual))
+                    .verifyComplete();
+            }
+        );
+    }
+
+    @Test
+    public void createFromFluxValidations() {
+        Stream.of(
+            BinaryData.fromFlux(null),
+            BinaryData.fromFlux(null, null),
+            BinaryData.fromFlux(null, null, false),
+            BinaryData.fromFlux(null, null, true)
+        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
+            .expectError(NullPointerException.class)
+            .verify());
+
+        Stream.of(
+            BinaryData.fromFlux(Flux.empty(), -1L),
+            BinaryData.fromFlux(Flux.empty(), -1L, false),
+            BinaryData.fromFlux(Flux.empty(), -1L, true),
+            BinaryData.fromFlux(Flux.empty(), Integer.MAX_VALUE - 7L, true)
+        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
+            .expectError(IllegalArgumentException.class)
+            .verify());
     }
 
     @Test
@@ -216,7 +292,7 @@ public class BinaryDataTest {
 
         // Act & Assert
         StepVerifier.create(BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)))
-            .assertNext(actual -> Assertions.assertArrayEquals(expected, actual.toBytes()))
+            .assertNext(actual -> assertArrayEquals(expected, actual.toBytes()))
             .verifyComplete();
     }
 
@@ -229,7 +305,7 @@ public class BinaryDataTest {
         // Act & Assert
         StepVerifier.create(BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER)
             .flatMap(binaryData -> binaryData.toObjectAsync(personTypeReference, CUSTOM_SERIALIZER)))
-            .assertNext(actual -> Assertions.assertEquals(expected, actual))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -344,7 +420,7 @@ public class BinaryDataTest {
         // Act & Assert
         StepVerifier.create(BinaryData.fromObjectAsync(expected)
             .flatMap(binaryData -> binaryData.toObjectAsync(TypeReference.createInstance(Person.class))))
-            .assertNext(actual -> Assertions.assertEquals(expected, actual))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The video scaling information. */
 @Fluent
 public final class VideoScale {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoScale.class);
-
     /*
      * The desired output video height.
      */

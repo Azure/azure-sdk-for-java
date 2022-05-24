@@ -27,7 +27,11 @@ public final class GallerySharingPermissionTypes extends ExpandableStringEnum<Ga
         return fromString(name, GallerySharingPermissionTypes.class);
     }
 
-    /** @return known GallerySharingPermissionTypes values. */
+    /**
+     * Gets known GallerySharingPermissionTypes values.
+     *
+     * @return known GallerySharingPermissionTypes values.
+     */
     public static Collection<GallerySharingPermissionTypes> values() {
         return values(GallerySharingPermissionTypes.class);
     }

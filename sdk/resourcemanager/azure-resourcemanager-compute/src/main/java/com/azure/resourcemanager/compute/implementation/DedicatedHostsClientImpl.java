@@ -1180,14 +1180,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     public Mono<DedicatedHostInner> getAsync(
         String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand) {
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap(
-                (Response<DedicatedHostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1205,14 +1198,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostname) {
         final InstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap(
-                (Response<DedicatedHostInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

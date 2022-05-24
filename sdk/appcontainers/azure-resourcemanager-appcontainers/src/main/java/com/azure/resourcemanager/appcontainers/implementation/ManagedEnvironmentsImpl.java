@@ -81,6 +81,15 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
         this.serviceClient().delete(resourceGroupName, name, context);
     }
 
+    public void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        this.serviceClient().update(resourceGroupName, name, environmentEnvelope);
+    }
+
+    public void update(
+        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        this.serviceClient().update(resourceGroupName, name, environmentEnvelope, context);
+    }
+
     public ManagedEnvironment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

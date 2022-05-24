@@ -58,7 +58,7 @@ public final class DataFlowsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientDataF")
-    private interface DataFlowsService {
+    public interface DataFlowsService {
         @Put("/dataflows/{dataFlowName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

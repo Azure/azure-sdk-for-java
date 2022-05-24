@@ -66,7 +66,7 @@ public final class DeviceUpdatesImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "DeviceUpdateClientDe")
-    private interface DeviceUpdatesService {
+    public interface DeviceUpdatesService {
         @Post("/deviceupdate/{instanceId}/updates")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(

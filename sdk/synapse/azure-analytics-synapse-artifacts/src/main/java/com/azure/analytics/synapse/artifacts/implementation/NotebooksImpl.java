@@ -58,7 +58,7 @@ public final class NotebooksImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientNoteb")
-    private interface NotebooksService {
+    public interface NotebooksService {
         @Get("/notebooks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

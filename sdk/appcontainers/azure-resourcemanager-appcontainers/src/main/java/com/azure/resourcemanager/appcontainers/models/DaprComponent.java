@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
@@ -331,4 +332,26 @@ public interface DaprComponent {
      * @return the refreshed resource.
      */
     DaprComponent refresh(Context context);
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource.
+     */
+    DaprSecretsCollection listSecrets();
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource along with {@link Response}.
+     */
+    Response<DaprSecretsCollection> listSecretsWithResponse(Context context);
 }

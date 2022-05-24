@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.ParameterDefinition;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineJobError;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineJobState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 /** Pipeline job properties. */
 @Fluent
 public final class PipelineJobProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineJobProperties.class);
-
     /*
      * Reference to an existing pipeline topology. When activated, this
      * pipeline job will process content according to the pipeline topology
@@ -166,7 +163,7 @@ public final class PipelineJobProperties {
      */
     public void validate() {
         if (topologyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property topologyName in model PipelineJobProperties"));
@@ -178,4 +175,6 @@ public final class PipelineJobProperties {
             parameters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineJobProperties.class);
 }

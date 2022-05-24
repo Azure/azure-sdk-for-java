@@ -14,6 +14,7 @@ java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.administration
 license-header: MICROSOFT_MIT_SMALL
+service-interface-as-public: true
 data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
@@ -33,6 +34,7 @@ java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.administration
 license-header: MICROSOFT_MIT_SMALL
+service-interface-as-public: true
 data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default

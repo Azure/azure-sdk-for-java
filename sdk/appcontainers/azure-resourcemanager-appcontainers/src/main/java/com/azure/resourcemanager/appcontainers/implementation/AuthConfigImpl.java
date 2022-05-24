@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner;
 import com.azure.resourcemanager.appcontainers.models.AuthConfig;
@@ -29,10 +28,6 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public AuthPlatform platform() {

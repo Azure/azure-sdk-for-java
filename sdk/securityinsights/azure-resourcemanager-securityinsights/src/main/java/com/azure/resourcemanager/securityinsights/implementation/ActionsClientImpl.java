@@ -467,14 +467,7 @@ public final class ActionsClientImpl implements ActionsClient {
     private Mono<ActionResponseInner> getAsync(
         String resourceGroupName, String workspaceName, String ruleId, String actionId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId)
-            .flatMap(
-                (Response<ActionResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -663,14 +656,7 @@ public final class ActionsClientImpl implements ActionsClient {
     private Mono<ActionResponseInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String ruleId, String actionId, ActionRequest action) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId, action)
-            .flatMap(
-                (Response<ActionResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -847,7 +833,7 @@ public final class ActionsClientImpl implements ActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String ruleId, String actionId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, ruleId, actionId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

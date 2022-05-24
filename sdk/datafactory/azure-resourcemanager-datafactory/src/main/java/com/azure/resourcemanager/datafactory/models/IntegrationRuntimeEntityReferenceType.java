@@ -30,7 +30,11 @@ public final class IntegrationRuntimeEntityReferenceType
         return fromString(name, IntegrationRuntimeEntityReferenceType.class);
     }
 
-    /** @return known IntegrationRuntimeEntityReferenceType values. */
+    /**
+     * Gets known IntegrationRuntimeEntityReferenceType values.
+     *
+     * @return known IntegrationRuntimeEntityReferenceType values.
+     */
     public static Collection<IntegrationRuntimeEntityReferenceType> values() {
         return values(IntegrationRuntimeEntityReferenceType.class);
     }

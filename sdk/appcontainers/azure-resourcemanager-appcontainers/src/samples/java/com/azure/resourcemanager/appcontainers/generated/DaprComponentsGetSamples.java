@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DaprComponents Get. */
 public final class DaprComponentsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-01-01-preview/examples/DaprComponents_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2022-03-01/examples/DaprComponents_Get.json
      */
     /**
      * Sample code: Get Dapr Component.

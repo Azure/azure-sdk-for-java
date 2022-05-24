@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import okhttp3.Dispatcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -143,7 +144,7 @@ public class OkHttpAsyncHttpClientTests {
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
+            .expectErrorMatches(e -> e.getMessage().contains("boo"))
             .verify();
     }
 
@@ -161,7 +162,7 @@ public class OkHttpAsyncHttpClientTests {
 
         try {
             StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
+                .expectErrorMatches(e -> e.getMessage().contains("boo"))
                 .verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
@@ -216,17 +217,25 @@ public class OkHttpAsyncHttpClientTests {
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
+        int concurrency = 10;
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequestsPerHost(concurrency); // this is 5 by default.
+        HttpClient client = new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(dispatcher)
+            .build();
         byte[] expectedDigest = digest(LONG_BODY);
         long expectedByteCount = (long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length;
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(10)
+            .parallel(concurrency)
             .runOn(Schedulers.boundedElastic())
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
-                    .doOnNext(buffer -> md.update(buffer.duplicate()))
+                    .map(buffer -> {
+                        md.update(buffer.duplicate());
+                        return buffer;
+                    })
                     .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest(), "wrong digest!"));
             }))
             .sequential()

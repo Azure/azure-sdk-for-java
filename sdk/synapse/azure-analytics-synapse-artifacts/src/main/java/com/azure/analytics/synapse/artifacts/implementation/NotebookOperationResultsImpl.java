@@ -48,7 +48,7 @@ public final class NotebookOperationResultsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientNoteb")
-    private interface NotebookOperationResultsService {
+    public interface NotebookOperationResultsService {
         @Get("/notebookOperationResults/{operationId}")
         @ExpectedResponses({200, 201, 202, 204})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

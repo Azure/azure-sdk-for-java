@@ -1617,4 +1617,11 @@ public interface AsyncDocumentClient {
      * @param group the throughput control group.
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group);
+
+    /***
+     *  Warming up the caches and connections to all replicas of the container for the current read region.
+     *
+     * @param containerLink the container link.
+     */
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
 }

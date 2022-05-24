@@ -1,18 +1,32 @@
 # Release History
 
-## 12.13.0-beta.1 (Unreleased)
+## 12.13.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for the 2021-06-08 service version.
-- Added support for setting the change time on directory/file create, set properties, and rename
-- Added support for setting content type on file rename.
-- Added support for FileLastWrittenMode.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.12.2 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-common` from `12.15.1` to version `12.15.2`.
+
+## 12.13.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for the 2021-06-08 service version.
+- Added support for setting the change time on directory/file create, set properties, and rename
+- Added support for setting content type on file rename.
+- Added support for FileLastWrittenMode.
 
 ## 12.12.1 (2022-04-07)
 

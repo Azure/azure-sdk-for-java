@@ -27,7 +27,11 @@ public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoA
         return fromString(name, PrestoAuthenticationType.class);
     }
 
-    /** @return known PrestoAuthenticationType values. */
+    /**
+     * Gets known PrestoAuthenticationType values.
+     *
+     * @return known PrestoAuthenticationType values.
+     */
     public static Collection<PrestoAuthenticationType> values() {
         return values(PrestoAuthenticationType.class);
     }

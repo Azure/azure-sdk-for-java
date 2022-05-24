@@ -27,7 +27,11 @@ public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssess
         return fromString(name, PatchAssessmentState.class);
     }
 
-    /** @return known PatchAssessmentState values. */
+    /**
+     * Gets known PatchAssessmentState values.
+     *
+     * @return known PatchAssessmentState values.
+     */
     public static Collection<PatchAssessmentState> values() {
         return values(PatchAssessmentState.class);
     }

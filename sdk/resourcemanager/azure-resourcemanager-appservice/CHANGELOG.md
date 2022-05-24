@@ -4,11 +4,11 @@
 
 ### Features Added
 
+- Supported `checkNameAvailability` method for `WebApps`.
+
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Behavior changed on `WebApps.list()` and `WebApps.listByResourceGroup()` method, that results include sites with `kind` be empty or `linux`.
 
 ## 2.14.0 (2022-04-11)
 

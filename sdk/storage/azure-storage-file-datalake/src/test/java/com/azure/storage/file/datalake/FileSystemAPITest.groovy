@@ -1,12 +1,12 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.util.Context
-import com.azure.core.util.DateTimeRfc1123
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.common.Utility
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
@@ -497,6 +497,8 @@ class FileSystemAPITest extends APISpec {
         !fsc.getBlobContainerClient().exists()
     }
 
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
     def "Delete if exists file system that was already deleted"() {
         setup:
         def fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
@@ -1476,7 +1478,6 @@ class FileSystemAPITest extends APISpec {
         def fileName = generatePathName()
         def fileClient = fsc.getFileClient(fileName)
         fileClient.create()
-        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)))
 
         when:
         def response = fsc.listPaths().iterator()
@@ -1491,8 +1492,6 @@ class FileSystemAPITest extends APISpec {
         dirPath.getPermissions()
 //        dirPath.getContentLength() // known issue with service
         dirPath.isDirectory()
-        dirPath.getCreationTime()
-        !dirPath.getExpiryTime()
 
         response.hasNext()
         def filePath = response.next()
@@ -1504,10 +1503,33 @@ class FileSystemAPITest extends APISpec {
         filePath.getPermissions()
 //        filePath.getContentLength() // known issue with service
         !filePath.isDirectory()
-        filePath.getCreationTime()
-        filePath.getExpiryTime()
 
         !response.hasNext()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    def "List paths expiry and creation"() {
+        setup:
+        def dirName = generatePathName()
+        fsc.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        def fileClient = fsc.getFileClient(fileName)
+        fileClient.create()
+        fileClient.scheduleDeletion(new FileScheduleDeletionOptions(OffsetDateTime.now().plusDays(2)))
+
+        when:
+        def response = fsc.listPaths().iterator()
+
+        then:
+        def dirPath = response.next()
+        dirPath.getName() == dirName
+        dirPath.getCreationTime()
+        !dirPath.getExpiryTime()
+
+        def filePath = response.next()
+        filePath.getExpiryTime()
+        filePath.getCreationTime()
     }
 
     def "List paths recursive"() {

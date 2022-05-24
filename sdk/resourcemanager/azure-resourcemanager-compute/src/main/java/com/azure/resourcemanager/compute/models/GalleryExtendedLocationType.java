@@ -27,7 +27,11 @@ public final class GalleryExtendedLocationType extends ExpandableStringEnum<Gall
         return fromString(name, GalleryExtendedLocationType.class);
     }
 
-    /** @return known GalleryExtendedLocationType values. */
+    /**
+     * Gets known GalleryExtendedLocationType values.
+     *
+     * @return known GalleryExtendedLocationType values.
+     */
     public static Collection<GalleryExtendedLocationType> values() {
         return values(GalleryExtendedLocationType.class);
     }

@@ -24,7 +24,11 @@ public final class DiffDiskOptions extends ExpandableStringEnum<DiffDiskOptions>
         return fromString(name, DiffDiskOptions.class);
     }
 
-    /** @return known DiffDiskOptions values. */
+    /**
+     * Gets known DiffDiskOptions values.
+     *
+     * @return known DiffDiskOptions values.
+     */
     public static Collection<DiffDiskOptions> values() {
         return values(DiffDiskOptions.class);
     }

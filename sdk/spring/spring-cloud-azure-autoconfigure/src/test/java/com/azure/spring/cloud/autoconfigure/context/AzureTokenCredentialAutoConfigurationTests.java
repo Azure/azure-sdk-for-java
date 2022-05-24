@@ -12,12 +12,16 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
+import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,6 +39,7 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -160,7 +165,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                Assertions.assertEquals(ClientSecretCredential.class, resolver.resolve(properties).getClass());
+                assertEquals(ClientSecretCredential.class, resolver.resolve(properties).getClass());
             });
     }
 
@@ -175,7 +180,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                Assertions.assertEquals(ClientCertificateCredential.class, resolver.resolve(properties).getClass());
+                assertEquals(ClientCertificateCredential.class, resolver.resolve(properties).getClass());
             });
     }
 
@@ -189,7 +194,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+                assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
             });
     }
 
@@ -202,7 +207,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+                assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
             });
     }
 
@@ -217,7 +222,7 @@ class AzureTokenCredentialAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                 AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                Assertions.assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
+                assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
             });
     }
 
@@ -259,6 +264,37 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
+            });
+    }
+
+    @Test
+    void defaultAzureCredentialSetToBuilderFactories() {
+        CosmosClientBuilderFactoryExt builderFactory = new CosmosClientBuilderFactoryExt(new AzureCosmosProperties());
+        contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilderFactoryExt.class, () -> builderFactory)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
+                assertThat(context).hasSingleBean(TokenCredential.class);
+
+                TokenCredential tokenCredential = context.getBean(TokenCredential.class);
+                assertTrue(tokenCredential instanceof DefaultAzureCredential);
+                assertEquals(builderFactory.getDefaultTokenCredential(), tokenCredential);
+            });
+    }
+
+    @Test
+    void defaultAzureCredentialResolverSetToBuilderFactories() {
+        CosmosClientBuilderFactoryExt builderFactory = new CosmosClientBuilderFactoryExt(new AzureCosmosProperties());
+        contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilderFactoryExt.class, () -> builderFactory)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+
+                AzureTokenCredentialResolver tokenCredentialResolver = context.getBean(AzureTokenCredentialResolver.class);
+                assertEquals(builderFactory.getAzureTokenCredentialResolver(), tokenCredentialResolver);
             });
     }
 
@@ -311,6 +347,34 @@ class AzureTokenCredentialAutoConfigurationTests {
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
 
+    }
+
+    private static class CosmosClientBuilderFactoryExt extends CosmosClientBuilderFactory {
+
+        private TokenCredential defaultTokenCredential;
+        private AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver;
+
+        CosmosClientBuilderFactoryExt(CosmosClientProperties cosmosClientProperties) {
+            super(cosmosClientProperties);
+        }
+
+        @Override
+        public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
+            this.defaultTokenCredential = defaultTokenCredential;
+        }
+
+        @Override
+        public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
+            this.azureTokenCredentialResolver = tokenCredentialResolver;
+        }
+
+        TokenCredential getDefaultTokenCredential() {
+            return defaultTokenCredential;
+        }
+
+        AzureCredentialResolver<TokenCredential> getAzureTokenCredentialResolver() {
+            return azureTokenCredentialResolver;
+        }
     }
 
 }

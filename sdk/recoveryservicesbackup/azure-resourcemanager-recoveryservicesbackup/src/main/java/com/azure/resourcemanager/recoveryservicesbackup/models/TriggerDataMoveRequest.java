@@ -6,15 +6,12 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Trigger DataMove Request. */
 @Fluent
 public final class TriggerDataMoveRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerDataMoveRequest.class);
-
     /*
      * ARM Id of source vault
      */
@@ -178,28 +175,30 @@ public final class TriggerDataMoveRequest {
      */
     public void validate() {
         if (sourceResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceResourceId in model TriggerDataMoveRequest"));
         }
         if (sourceRegion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceRegion in model TriggerDataMoveRequest"));
         }
         if (dataMoveLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataMoveLevel in model TriggerDataMoveRequest"));
         }
         if (correlationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property correlationId in model TriggerDataMoveRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerDataMoveRequest.class);
 }

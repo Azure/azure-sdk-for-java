@@ -27,7 +27,11 @@ public final class Version extends ExpandableStringEnum<Version> {
         return fromString(name, Version.class);
     }
 
-    /** @return known Version values. */
+    /**
+     * Gets known Version values.
+     *
+     * @return known Version values.
+     */
     public static Collection<Version> values() {
         return values(Version.class);
     }

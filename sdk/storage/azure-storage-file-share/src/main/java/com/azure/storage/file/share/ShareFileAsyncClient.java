@@ -438,7 +438,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
 
         return azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
@@ -1252,41 +1252,7 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
-    }
-
-    /**
-     * Deletes the file associate with the client if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the file</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
-     * <pre>
-     * shareFileAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     *
-     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file was
-     * successfully deleted. If status code is 404, the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() {
-        try {
-            return deleteIfExistsWithResponse(null);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1300,12 +1266,12 @@ public class ShareFileAsyncClient {
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
      * shareFileAsyncClient.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions -->
      *
@@ -1317,7 +1283,7 @@ public class ShareFileAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> this.deleteIfExistsWithResponse(requestConditions, context));
         } catch (RuntimeException ex) {
@@ -1325,15 +1291,17 @@ public class ShareFileAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
         try {
-            return deleteWithResponse(requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException
-                && ((ShareStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((ShareStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+            requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+            return deleteWithResponse(requestConditions, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((ShareStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1637,7 +1605,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.setFileChangeTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.getFiles()
@@ -3010,6 +2978,9 @@ public class ShareFileAsyncClient {
 
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
 
+        ShareFileHttpHeaders headers = options.getContentType() == null ? null
+            : new ShareFileHttpHeaders().setContentType(options.getContentType());
+
         String renameSource = this.getFileUrl();
         // TODO (rickle-msft): when support added to core
 //        String sasToken = this.extractSasToken();
@@ -3019,7 +2990,7 @@ public class ShareFileAsyncClient {
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-            destinationConditions, smbInfo, options.getHeaders(),
+            destinationConditions, smbInfo, headers,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }

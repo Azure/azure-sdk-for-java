@@ -22,7 +22,7 @@ from urllib.error import HTTPError
 from log import log
 from pom import Pom
 
-SPRING_BOOT_VERSION = '2.6.6'
+SPRING_BOOT_VERSION = '2.6.7'
 SPRING_CLOUD_VERSION = '2021.0.2'
 
 ROOT_POMS = [

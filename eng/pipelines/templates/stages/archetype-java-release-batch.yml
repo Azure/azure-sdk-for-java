@@ -1,0 +1,508 @@
+parameters:
+  - name: DependsOn
+    type: object
+  - name: ServiceDirectory
+    type: string
+  - name: SDKType
+    type: string
+  - name: Artifacts
+    type: object
+    default: []
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: ArtifactName
+    type: string
+    default: 'not-specified'
+  - name: TargetDocRepoName
+    type: string
+    default: ''
+  - name: EnableIntegrationStage
+    type: boolean
+    default: true
+
+stages:
+  # The signing stage is responsible for submitting binaries to ESRP for our official signing
+  # where appropriate and also meeting any other signing requirements for particular artifacts,
+  # in this case we do GPG signing in order to publish to Maven Central. At the moment signing
+  # is protected by an approval check but this may be removed in the future.
+  - stage: Signing
+    dependsOn: ${{parameters.DependsOn}}
+    jobs:
+      - deployment: SignPackage
+        environment: esrp
+        timeoutInMinutes: 20
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: none
+
+                - download: current
+                  displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                  artifact: ${{parameters.ArtifactName}}
+
+                - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+                  parameters:
+                    Artifacts: ${{parameters.Artifacts}}
+                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+
+                - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                  artifact: ${{parameters.ArtifactName}}-signed
+                  displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
+
+  # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
+  # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
+  # effectively burn the version number. For testing of packages prior to burning the version number -
+  # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
+  # pipeline completes.
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+    - stage:
+      displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
+      dependsOn: Signing
+      condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+      jobs:
+        - job: VerifyReleaseVersion
+          displayName: "Verify release versions"
+          condition: ne(variables['Skip.VersionVerification'], 'true')
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            vmImage: MMSUbuntu20.04
+
+          steps:
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                Paths:
+                  - '${{ parameters.ServiceDirectory }}'
+                  - '**/*.xml'
+                  - '!sdk/**/test-recordings'
+                  - '!sdk/**/session-records'
+
+            - task: UsePythonVersion@0
+              displayName: 'Use Python 3.6'
+              inputs:
+                versionSpec: '3.6'
+
+            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+              parameters:
+                PackageName: "azure-sdk-template"
+                ServiceDirectory: "template"
+                TestPipeline: ${{ parameters.TestPipeline }}
+
+            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+              parameters:
+                PackageName: "azure-sdk-template-two"
+                ServiceDirectory: "template"
+                TestPipeline: ${{ parameters.TestPipeline }}
+
+            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+              parameters:
+                PackageName: "azure-sdk-template-three"
+                ServiceDirectory: "template"
+                TestPipeline: ${{ parameters.TestPipeline }}
+
+            # Do all the verifications for all the artifacts after the sparce-checkout
+            - pwsh: |
+                $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                python --version
+                foreach($artifact in $ArtifactsList) {
+                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
+                }
+              displayName: 'Verify artifact versions for release'
+
+            # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
+            # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
+            # validation, so omit uberJars from the artifacts list to verify.
+            - pwsh: |
+                $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
+                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                python --version
+                foreach($artifact in $ArtifactsList) {
+                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                }
+              displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
+
+            - ${{ each artifact in parameters.Artifacts }}:
+              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
+                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                  parameters:
+                    PackageName: ${{artifact.name}}
+                    ServiceName: ${{parameters.ServiceDirectory}}
+                    ForRelease: true
+            # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
+            # This prevents us from releasing a library whose dependency is not being released.
+            # Note: Where-Object -Not "uberJar" skips verifiction of uberJars which would fail during creation. It's
+            #       also worth mentioning that because uberJar is on the Where-Object it also needs to be one of the
+            #       objects selected in Select-Object
+            - task: PowerShell@2
+              displayName: Verify Release Set
+              inputs:
+                pwsh: true
+                filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
+                arguments: >
+                  -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                  -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
+
+        - deployment: TagRepository
+          displayName: "Create release tag"
+          condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
+          environment: maven
+          dependsOn: VerifyReleaseVersion
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+          pool:
+            name: azsdk-pool-mms-win-2019-general
+            vmImage: windows-2019
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                  - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                  # No pattern, just download everything that's been signed
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                    artifact: ${{parameters.ArtifactName}}-signed
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                      parameters:
+                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                        PackageRepository: Maven
+                        ReleaseSha: $(Build.SourceVersion)
+
+        - deployment: PublishPackage
+          displayName: "Publish to Maven Central"
+          condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+          # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
+          # this is here to ensure larger areas (30+) libraries don't time out.
+          timeoutInMinutes: 120
+          environment: maven
+          dependsOn: TagRepository
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+          pool:
+            name: azsdk-pool-mms-win-2019-general
+            vmImage: windows-2019
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - checkout: azure-sdk-build-tools
+                    path: azure-sdk-build-tools
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    parameters:
+                      SkipDefaultCheckout: true
+                      Repositories:
+                        - Name: Azure/azure-sdk-for-java
+                          Commitish: $(Build.SourceVersion)
+                          WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                  - download: current
+                    displayName: 'Download Artifacts'
+                    artifact: ${{parameters.ArtifactName}}-signed
+                  - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - ${{if ne(artifact.skipPublishPackage, 'true')}}:
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
+                        parameters:
+                          ArtifactID: ${{artifact.name}}
+                          GroupID: ${{artifact.groupId}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          Target: MavenCentral
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                        parameters:
+                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
+                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
+                      # this is that the azure-sdk-for-java feed will have the package available immediately
+                      # whereas Maven can take several hours for the package to become available.
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
+                        parameters:
+                          ArtifactID: ${{artifact.name}}
+                          GroupID: ${{artifact.groupId}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+                          Target: JavaDevFeed
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                        parameters:
+                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
+                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+
+        - deployment: UpdatePackageVersion
+          displayName: "Update Package Version"
+          condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
+          environment: maven
+          dependsOn: PublishPackage
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+          pool:
+            name: azsdk-pool-mms-win-2019-general
+            vmImage: MMS2019
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - download: none
+
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    parameters:
+                      Paths:
+                        - '${{ parameters.ServiceDirectory }}'
+                        - '**/*.xml'
+                        - '!sdk/**/test-recordings'
+                        - '!sdk/**/session-records'
+
+                  - task: UsePythonVersion@0
+                    displayName: 'Use Python 3.6'
+                    inputs:
+                      versionSpec: '3.6'
+
+                  # Apply the version increment to each library, which only updates the version_client.txt file,
+                  # and then call to update_versions will then apply all of the updates.
+                  - pwsh: |
+                      $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+                      $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                      python --version
+                      foreach($artifact in $ArtifactsList) {
+                        python eng/versioning/set_versions.py --build-type ${{ parameters.SDKType }} --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
+                      }
+                    displayName: Increment package versions
+
+                  - script: |
+                      python --version
+                      python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
+                    displayName: Update pom files for incremented versions
+
+                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                    parameters:
+                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                      CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} releases"
+                      PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} releases"
+                      PRLabels: "auto-merge"
+                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+
+        - deployment: PublishDocsMs
+          displayName: Docs.MS Release
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          environment: maven
+          dependsOn: PublishPackage
+
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            vmImage: MMSUbuntu20.04
+
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+            - name: DocValidationImageId
+              value: azuresdkimages.azurecr.io/javarefautocr:latest
+
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    parameters:
+                      SkipDefaultCheckout: true
+                      Paths:
+                        - sdk
+                        - common/perf-test-core
+                        - .github/CODEOWNERS
+                        - '!sdk/**/test-recordings'
+                        - '!sdk/**/session-records'
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+                    artifact: ${{parameters.ArtifactName}}
+                  - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+                    parameters:
+                      PackageInfoLocations:
+                        - ${{ each artifact in parameters.Artifacts }}:
+                          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                            - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+                      WorkingDirectory: $(System.DefaultWorkingDirectory)
+                      TargetDocRepoOwner: 'Azure'
+                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      Language: 'java'
+                      SparseCheckoutPaths:
+                        - docs-ref-services/
+                        - metadata/
+                      DocValidationImageId: "$(DocValidationImageId)"
+
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                        parameters:
+                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
+                          ArtifactName: ${{artifact.name}}
+                          TargetBranch: $(TargetBranchName)
+                          DocRepoLocation: $(DocRepoLocation)
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          TargetDocRepoOwner: "Azure"
+
+        - deployment: PublishDocs
+          displayName: Publish Docs to GitHubIO Blob Storage
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          environment: maven
+          dependsOn: PublishPackage
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+          pool:
+            name: azsdk-pool-mms-win-2019-general
+            vmImage: MMS2019
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                    artifact: ${{parameters.ArtifactName}}-signed
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
+                      - pwsh: |
+                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                        workingDirectory: $(Pipeline.Workspace)
+                        displayName: Output Visible Artifacts
+                      - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
+                        parameters:
+                          FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
+                          BlobSASKey: '$(azure-sdk-docs-prod-sas)'
+                          BlobName: '$(azure-sdk-docs-prod-blob-name)'
+                          TargetLanguage: 'java'
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                          # we override the regular script path because we have cloned the build tools repo as a separate artifact.
+                          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
+
+  - ${{if ne(parameters.EnableIntegrationStage, false)}}:
+    - stage: Integration
+      dependsOn: Signing
+      jobs:
+      - job: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        displayName: Publish package to daily feed
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - name: RepositoryUrl
+            value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+
+        pool:
+          name: azsdk-pool-mms-win-2019-general
+          vmImage: windows-2019
+        steps:
+        - checkout: azure-sdk-build-tools
+          path: azure-sdk-build-tools
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            SkipDefaultCheckout: true
+            Repositories:
+              - Name: Azure/azure-sdk-for-java
+                Commitish: $(Build.SourceVersion)
+                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
+        - download: current
+          displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+          artifact: ${{parameters.ArtifactName}}-signed
+        - pwsh: |
+            # For safety default to publishing to the private feed.
+            # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+            if ('$(Build.Repository.Name)' -eq 'Azure/azure-sdk-for-java') {
+              # Publish to the public feed
+              # Publish to https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+              echo "##vso[task.setvariable variable=RepositoryUrl]https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+              echo "Using Java Public Dev Feed"
+            } else {
+              echo "Using Java Private Dev Feed"
+            }
+          displayName: Setup TargetFeed
+
+        - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+
+        - ${{ each artifact in parameters.Artifacts }}:
+          - ${{if ne(artifact.skipPublishDevFeed, 'true')}}:
+            - template: /eng/pipelines/templates/steps/java-publishing.yml
+              parameters:
+                ArtifactID: ${{artifact.name}}
+                GroupID: ${{artifact.groupId}}
+                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                RepositoryUrl: $(RepositoryUrl)
+                Target: JavaDevFeed
+                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+            - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+              parameters:
+                ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
+                ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+
+      - job: PublishDocsToNightlyBranch
+        dependsOn: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - name: DocValidationImageId
+            value: azuresdkimages.azurecr.io/javarefautocr:latest
+        steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipDefaultCheckout: true
+              Paths:
+                - sdk/**/*.md
+                - .github/CODEOWNERS
+          - download: current
+            displayName: 'Download Artifacts'
+            artifact: ${{parameters.ArtifactName}}
+          - pwsh: |
+              Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
+            displayName: Show visible artifacts
+          # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
+          # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
+          - powershell: |
+              # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
+              Get-Command mvn
+              if (!(Test-Path '~/.m2/')) {
+                mkdir ~/.m2/
+              }
+              if (Test-Path '~/.m2/setting.xml') {
+                Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
+              }
+              Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
+            displayName: 'Configure mvn'
+            workingDirectory: $(Build.SourcesDirectory)
+
+          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+            parameters:
+              PackageInfoLocations:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
+              TargetDocRepoOwner: "azure-sdk"
+              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              Language: 'java'
+              DailyDocsBuild: true
+              SparseCheckoutPaths:
+                - docs-ref-services/
+                - metadata/
+              DocValidationImageId: "$(DocValidationImageId)"
+
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                parameters:
+                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
+                  ArtifactName: ${{artifact.name}}
+                  TargetBranch: $(TargetBranchName)
+                  DocRepoLocation: $(DocRepoLocation)
+                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                  TargetDocRepoOwner: "azure-sdk"

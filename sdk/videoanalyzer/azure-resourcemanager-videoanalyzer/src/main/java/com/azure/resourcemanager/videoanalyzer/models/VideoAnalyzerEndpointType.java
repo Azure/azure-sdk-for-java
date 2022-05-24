@@ -24,7 +24,11 @@ public final class VideoAnalyzerEndpointType extends ExpandableStringEnum<VideoA
         return fromString(name, VideoAnalyzerEndpointType.class);
     }
 
-    /** @return known VideoAnalyzerEndpointType values. */
+    /**
+     * Gets known VideoAnalyzerEndpointType values.
+     *
+     * @return known VideoAnalyzerEndpointType values.
+     */
     public static Collection<VideoAnalyzerEndpointType> values() {
         return values(VideoAnalyzerEndpointType.class);
     }

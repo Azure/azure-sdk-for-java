@@ -38,7 +38,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.CustomHostnameAnalysisResultInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.SecretsCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppCollection;
-import com.azure.resourcemanager.appcontainers.models.ContainerAppPatch;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -143,15 +142,15 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
                 + "/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ContainerAppInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ContainerAppPatch containerAppEnvelope,
+            @BodyParam("application/json") ContainerAppInner containerAppEnvelope,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1158,19 +1157,19 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     }
 
     /**
-     * Patches a Container App. Currently only patching of tags is supported.
+     * Patches a Container App using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Container App.
-     * @param containerAppEnvelope Properties of a container app that need to be updated.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerAppInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, ContainerAppPatch containerAppEnvelope) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1214,20 +1213,20 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     }
 
     /**
-     * Patches a Container App. Currently only patching of tags is supported.
+     * Patches a Container App using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Container App.
-     * @param containerAppEnvelope Properties of a container app that need to be updated.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerAppInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, ContainerAppPatch containerAppEnvelope, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1268,62 +1267,151 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     }
 
     /**
-     * Patches a Container App. Currently only patching of tags is supported.
+     * Patches a Container App using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Container App.
-     * @param containerAppEnvelope Properties of a container app that need to be updated.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContainerAppInner> updateAsync(
-        String resourceGroupName, String name, ContainerAppPatch containerAppEnvelope) {
-        return updateWithResponseAsync(resourceGroupName, name, containerAppEnvelope)
-            .flatMap(
-                (Response<ContainerAppInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, containerAppEnvelope);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Patches a Container App. Currently only patching of tags is supported.
+     * Patches a Container App using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of the Container App.
-     * @param containerAppEnvelope Properties of a container app that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerAppInner update(String resourceGroupName, String name, ContainerAppPatch containerAppEnvelope) {
-        return updateAsync(resourceGroupName, name, containerAppEnvelope).block();
-    }
-
-    /**
-     * Patches a Container App. Currently only patching of tags is supported.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Container App.
-     * @param containerAppEnvelope Properties of a container app that need to be updated.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, name, containerAppEnvelope, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Patches a Container App using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Container App.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpdate(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
+        return beginUpdateAsync(resourceGroupName, name, containerAppEnvelope).getSyncPoller();
+    }
+
+    /**
+     * Patches a Container App using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Container App.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpdate(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
+        return beginUpdateAsync(resourceGroupName, name, containerAppEnvelope, context).getSyncPoller();
+    }
+
+    /**
+     * Patches a Container App using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Container App.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerAppInner> updateWithResponse(
-        String resourceGroupName, String name, ContainerAppPatch containerAppEnvelope, Context context) {
-        return updateWithResponseAsync(resourceGroupName, name, containerAppEnvelope, context).block();
+    private Mono<Void> updateAsync(String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
+        return beginUpdateAsync(resourceGroupName, name, containerAppEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patches a Container App using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Container App.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> updateAsync(
+        String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
+        return beginUpdateAsync(resourceGroupName, name, containerAppEnvelope, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patches a Container App using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Container App.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(String resourceGroupName, String name, ContainerAppInner containerAppEnvelope) {
+        updateAsync(resourceGroupName, name, containerAppEnvelope).block();
+    }
+
+    /**
+     * Patches a Container App using JSON Merge Patch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name Name of the Container App.
+     * @param containerAppEnvelope Properties of a Container App that need to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(String resourceGroupName, String name, ContainerAppInner containerAppEnvelope, Context context) {
+        updateAsync(resourceGroupName, name, containerAppEnvelope, context).block();
     }
 
     /**

@@ -30,7 +30,11 @@ public final class TemplateStatus extends ExpandableStringEnum<TemplateStatus> {
         return fromString(name, TemplateStatus.class);
     }
 
-    /** @return known TemplateStatus values. */
+    /**
+     * Gets known TemplateStatus values.
+     *
+     * @return known TemplateStatus values.
+     */
     public static Collection<TemplateStatus> values() {
         return values(TemplateStatus.class);
     }

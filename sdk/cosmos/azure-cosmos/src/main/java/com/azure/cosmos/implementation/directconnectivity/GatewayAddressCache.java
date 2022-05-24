@@ -7,7 +7,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -15,10 +17,12 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -53,6 +57,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +68,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class GatewayAddressCache implements IAddressCache {
     private final static Duration minDurationBeforeEnforcingCollectionRoutingMapRefresh = Duration.ofSeconds(30);
 
@@ -72,10 +79,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final static int DefaultSuboptimalPartitionForceRefreshIntervalInSeconds = 600;
     private final DiagnosticsClientContext clientContext;
-    private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
-    private final URI serviceEndpoint;
     private final URI addressEndpoint;
 
     private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
@@ -96,6 +101,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
     private final GlobalEndpointManager globalEndpointManager;
+    private IOpenConnectionsHandler openConnectionsHandler;
+    private final ConnectionPolicy connectionPolicy;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -107,7 +114,10 @@ public class GatewayAddressCache implements IAddressCache {
         long suboptimalPartitionForceRefreshIntervalInSeconds,
         boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
-        GlobalEndpointManager globalEndpointManager) {
+        GlobalEndpointManager globalEndpointManager,
+        ConnectionPolicy connectionPolicy,
+        IOpenConnectionsHandler openConnectionsHandler) {
+
         this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
@@ -117,7 +127,6 @@ public class GatewayAddressCache implements IAddressCache {
             throw new IllegalStateException(e);
         }
         this.tokenProvider = tokenProvider;
-        this.serviceEndpoint = serviceEndpoint;
         this.serverPartitionAddressCache = new AsyncCacheNonBlocking<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
         this.suboptimalMasterPartitionTimestamp = Instant.MAX;
@@ -149,6 +158,8 @@ public class GatewayAddressCache implements IAddressCache {
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
+        this.openConnectionsHandler = openConnectionsHandler;
+        this.connectionPolicy = connectionPolicy;
     }
 
     public GatewayAddressCache(
@@ -160,17 +171,21 @@ public class GatewayAddressCache implements IAddressCache {
         HttpClient httpClient,
         boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
-        GlobalEndpointManager globalEndpointManager) {
+        GlobalEndpointManager globalEndpointManager,
+        ConnectionPolicy connectionPolicy,
+        IOpenConnectionsHandler openConnectionsHandler) {
         this(clientContext,
-            serviceEndpoint,
-            protocol,
-            tokenProvider,
-            userAgent,
-            httpClient,
-            DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
-            tcpConnectionEndpointRediscoveryEnabled,
-            apiType,
-            globalEndpointManager);
+                serviceEndpoint,
+                protocol,
+                tokenProvider,
+                userAgent,
+                httpClient,
+                DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
+                tcpConnectionEndpointRediscoveryEnabled,
+                apiType,
+                globalEndpointManager,
+                connectionPolicy,
+                openConnectionsHandler);
     }
 
     @Override
@@ -307,6 +322,11 @@ public class GatewayAddressCache implements IAddressCache {
                 return Mono.error(unwrappedException);
             }
         });
+    }
+
+    @Override
+    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler) {
+        this.openConnectionsHandler = openConnectionsHandler;
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
@@ -449,10 +469,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce, this.globalEndpointManager);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
             return Mono.error(dce);
@@ -774,10 +791,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
 
             if (request.requestContext.cosmosDiagnostics != null) {
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce, this.globalEndpointManager);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, this.globalEndpointManager);
             }
 
             return Mono.error(dce);
@@ -824,52 +838,90 @@ public class GatewayAddressCache implements IAddressCache {
         return new AddressInformation(true, address.isPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
     }
 
-    public Mono<Void> openAsync(
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
+
+        checkNotNull(collection, "Argument 'collection' should not be null");
+        checkNotNull(partitionKeyRangeIdentities, "Argument 'partitionKeyRangeIdentities' should not be null");
+
         if (logger.isDebugEnabled()) {
-            logger.debug("openAsync collection: {}, partitionKeyRangeIdentities: {}", collection, JavaStreamUtils.toString(partitionKeyRangeIdentities, ","));
+            logger.debug(
+                    "openConnectionsAndInitCaches collection: {}, partitionKeyRangeIdentities: {}",
+                    collection.getResourceId(),
+                    JavaStreamUtils.toString(partitionKeyRangeIdentities, ","));
         }
+
         List<Flux<List<Address>>> tasks = new ArrayList<>();
         int batchSize = GatewayAddressCache.DefaultBatchSize;
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 this.clientContext,
                 OperationType.Read,
-                //    collection.AltLink,
                 collection.getResourceId(),
                 ResourceType.DocumentCollection,
-                //       AuthorizationTokenType.PrimaryMasterKey
                 Collections.emptyMap());
+
         for (int i = 0; i < partitionKeyRangeIdentities.size(); i += batchSize) {
 
             int endIndex = i + batchSize;
-            endIndex = endIndex < partitionKeyRangeIdentities.size()
-                    ? endIndex : partitionKeyRangeIdentities.size();
+            endIndex = Math.min(endIndex, partitionKeyRangeIdentities.size());
 
-            tasks.add(this.getServerAddressesViaGatewayAsync(
-                    request,
-                    collection.getResourceId(),
-
-                    partitionKeyRangeIdentities.subList(i, endIndex).
-                            stream().map(PartitionKeyRangeIdentity::getPartitionKeyRangeId).collect(Collectors.toList()),
-                    false).flux());
+            tasks.add(
+                    this.getServerAddressesViaGatewayWithRetry(
+                            request,
+                            collection.getResourceId(),
+                            partitionKeyRangeIdentities
+                                    .subList(i, endIndex)
+                                    .stream()
+                                    .map(PartitionKeyRangeIdentity::getPartitionKeyRangeId)
+                                    .collect(Collectors.toList()),
+                            false).flux());
         }
 
         return Flux.concat(tasks)
-                .doOnNext(list -> {
+                .flatMap(list -> {
                     List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos = list.stream()
                             .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
                             .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
                             .values().stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
                             .collect(Collectors.toList());
 
-                    for (Pair<PartitionKeyRangeIdentity, AddressInformation[]> addressInfo : addressInfos) {
-                        this.serverPartitionAddressCache.set(
-                                new PartitionKeyRangeIdentity(collection.getResourceId(), addressInfo.getLeft().getPartitionKeyRangeId()),
-                                addressInfo.getRight());
-                    }
-                }).then();
+                    return Flux.fromIterable(addressInfos)
+                            .flatMap(addressInfo -> {
+                                this.serverPartitionAddressCache.set(
+                                        new PartitionKeyRangeIdentity(
+                                                collection.getResourceId(),
+                                                addressInfo.getLeft().getPartitionKeyRangeId()),
+                                        addressInfo.getRight());
+
+                                if (this.openConnectionsHandler != null) {
+                                    return this.openConnectionsHandler.openConnections(
+                                            Arrays
+                                                .stream(addressInfo.getRight())
+                                                .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                .collect(Collectors.toList()));
+                                }
+
+                                logger.info("OpenConnectionHandler is null, can not open connections");
+                                return Flux.empty();
+                            });
+                });
+    }
+
+    private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(
+            RxDocumentServiceRequest request,
+            String collectionRid,
+            List<String> partitionKeyRangeIds,
+            boolean forceRefresh) {
+
+        OpenConnectionAndInitCachesRetryPolicy openConnectionAndInitCachesRetryPolicy =
+                new OpenConnectionAndInitCachesRetryPolicy(this.connectionPolicy.getThrottlingRetryOptions());
+
+        return BackoffRetryUtility.executeRetry(
+                () -> this.getServerAddressesViaGatewayAsync(request, collectionRid, partitionKeyRangeIds, forceRefresh),
+                openConnectionAndInitCachesRetryPolicy);
+
     }
 
     private boolean notAllReplicasAvailable(AddressInformation[] addressInformations) {

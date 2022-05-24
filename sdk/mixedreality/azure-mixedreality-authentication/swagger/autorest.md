@@ -21,6 +21,7 @@ java: true
 output-folder: ..\
 generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true

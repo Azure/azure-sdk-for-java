@@ -50,7 +50,7 @@ public final class TriggerRunsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientTrigg")
-    private interface TriggerRunsService {
+    public interface TriggerRunsService {
         @Post("/triggers/{triggerName}/triggerRuns/{runId}/rerun")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

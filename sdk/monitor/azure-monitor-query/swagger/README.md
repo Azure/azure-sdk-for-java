@@ -11,6 +11,7 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.log
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
@@ -35,6 +36,7 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.metrics
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
@@ -64,6 +66,7 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.metricsnamespaces
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
@@ -89,6 +92,7 @@ java: true
 output-folder: ../
 namespace: com.azure.monitor.query.metricsdefinitions
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true

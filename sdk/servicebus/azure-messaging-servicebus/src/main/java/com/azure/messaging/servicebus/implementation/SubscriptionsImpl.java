@@ -49,7 +49,7 @@ public final class SubscriptionsImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
-    private interface SubscriptionsService {
+    public interface SubscriptionsService {
         @Get("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)

@@ -27,7 +27,11 @@ public final class SalesforceSinkWriteBehavior extends ExpandableStringEnum<Sale
         return fromString(name, SalesforceSinkWriteBehavior.class);
     }
 
-    /** @return known SalesforceSinkWriteBehavior values. */
+    /**
+     * Gets known SalesforceSinkWriteBehavior values.
+     *
+     * @return known SalesforceSinkWriteBehavior values.
+     */
     public static Collection<SalesforceSinkWriteBehavior> values() {
         return values(SalesforceSinkWriteBehavior.class);
     }

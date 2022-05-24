@@ -33,7 +33,11 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
         return fromString(name, RestServiceAuthenticationType.class);
     }
 
-    /** @return known RestServiceAuthenticationType values. */
+    /**
+     * Gets known RestServiceAuthenticationType values.
+     *
+     * @return known RestServiceAuthenticationType values.
+     */
     public static Collection<RestServiceAuthenticationType> values() {
         return values(RestServiceAuthenticationType.class);
     }
