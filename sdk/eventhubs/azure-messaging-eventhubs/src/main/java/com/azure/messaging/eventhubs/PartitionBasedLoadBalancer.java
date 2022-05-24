@@ -297,13 +297,6 @@ final class PartitionBasedLoadBalancer {
     }
 
     /*
-     * Remove partition cache.
-     */
-    void removePartitionCache() {
-        partitionsCache.set(null);
-    }
-
-    /*
      * Closes the client used by load balancer to get the partitions.
      */
     private void closeClient() {

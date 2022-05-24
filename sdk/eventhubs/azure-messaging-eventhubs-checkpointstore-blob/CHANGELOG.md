@@ -3,7 +3,7 @@
 ## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
-- Updated return error when claim ownership occur an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
+- Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
 
 ### Breaking Changes
 

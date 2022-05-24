@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Updated processor client load balance occurs errors stop client asynchronously.
+- Updated processor client stop asynchronously when load balance occurs errors.
 
 ### Breaking Changes
 
