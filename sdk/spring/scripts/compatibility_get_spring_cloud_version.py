@@ -24,7 +24,7 @@ def get_spring_cloud_version_and_set_as_env(filepath):
             if spring_boot_version == entry[key]:
                 spring_cloud_version = entry["spring-cloud-version"]
                 break
-    return spring_cloud_version
+    print(spring_cloud_version)
 
 
 def main():
