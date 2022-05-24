@@ -88,6 +88,8 @@ def get_prop_content(pom_file_content):
 
 
 def add_dependency_management_for_file(file_path):
+    print(os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION"))
+    print(os.getenv("env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION"))
     spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
     spring_cloud_version = []
     with open("./sdk/spring/spring-cloud-azure-supported-spring.json", 'r') as file:
