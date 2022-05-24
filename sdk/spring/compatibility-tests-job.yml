@@ -27,8 +27,10 @@ jobs:
           eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py);echo $SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION
         displayName: 'set spring cloud version'
       - bash: |
-          echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION;isOutput=true]2021.0.2"
-          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
+          echo "##vso[task.setVariable variable=SpringCloudVersion;]2021.0.2"
+          echo "$(SpringCloudVersion)"
+      - bash: |
+          echo "$(SpringCloudVersion)"
       - script: |
           python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py
         displayName: 'insert dependency management'
@@ -37,6 +39,7 @@ jobs:
         displayName: 'remove unused version'
       - task: Maven@3
         displayName: 'Run tests'
+        env:
         inputs:
 #          scripts: eval $(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version_and_set_env.py);echo $SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}}
@@ -47,3 +50,4 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean test -Pdev '
+
