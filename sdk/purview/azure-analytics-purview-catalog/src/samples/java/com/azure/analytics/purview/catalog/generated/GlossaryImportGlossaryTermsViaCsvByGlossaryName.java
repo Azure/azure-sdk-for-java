@@ -13,19 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryImportGlossaryTermsViaCsvByGlossaryName {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossaryimportglossarytermsviacsvbyglossaryname.glossaryimportglossarytermsviacsvbyglossaryname
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossaryimportglossarytermsviacsvbyglossaryname.glossaryimportglossarytermsviacsvbyglossaryname
         BinaryData file = BinaryData.fromString("\"examplefile.csv\"");
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("includeTermHierarchy", "true");
         SyncPoller<BinaryData, BinaryData> response =
                 glossaryClient.beginImportGlossaryTermsViaCsvByGlossaryName("Glossary", file, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossaryimportglossarytermsviacsvbyglossaryname.glossaryimportglossarytermsviacsvbyglossaryname
+        // END:com.azure.analytics.purview.catalog.generated.glossaryimportglossarytermsviacsvbyglossaryname.glossaryimportglossarytermsviacsvbyglossaryname
     }
 }

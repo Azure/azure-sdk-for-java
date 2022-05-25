@@ -13,13 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityPartialUpdateEntityByUniqueAttributes {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entitypartialupdateentitybyuniqueattributes.entitypartialupdateentitybyuniqueattributes
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitypartialupdateentitybyuniqueattributes.entitypartialupdateentitybyuniqueattributes
         BinaryData atlasEntityWithExtInfo =
                 BinaryData.fromString(
                         "{\"entity\":{\"attributes\":{\"name\":\"ExampleNewName\",\"createTime\":0,\"owner\":\"ExampleOwner\",\"qualifiedName\":\"https://exampleaccount.core.windows.net\"},\"createTime\":1605766397985,\"createdBy\":\"8c062c84-5d25-449f-a990-9d8ab70b8ec7\",\"guid\":\"dc507ccf-0c57-4165-9327-f37b0d13fda0\",\"lastModifiedTS\":\"1\",\"relationshipAttributes\":{\"meanings\":[],\"services\":[]},\"status\":\"ACTIVE\",\"typeName\":\"azure_storage_account\",\"updateTime\":1605766397985,\"updatedBy\":\"8c062c84-5d25-449f-a990-9d8ab70b8ec7\",\"version\":0},\"referredEntities\":{}}");
@@ -28,7 +27,6 @@ public class EntityPartialUpdateEntityByUniqueAttributes {
         Response<BinaryData> response =
                 entityClient.partialUpdateEntityByUniqueAttributesWithResponse(
                         "azure_storage_account", atlasEntityWithExtInfo, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entitypartialupdateentitybyuniqueattributes.entitypartialupdateentitybyuniqueattributes
+        // END:com.azure.analytics.purview.catalog.generated.entitypartialupdateentitybyuniqueattributes.entitypartialupdateentitybyuniqueattributes
     }
 }

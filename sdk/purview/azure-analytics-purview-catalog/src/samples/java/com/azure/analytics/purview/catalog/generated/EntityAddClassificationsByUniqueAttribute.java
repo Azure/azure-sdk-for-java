@@ -13,13 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityAddClassificationsByUniqueAttribute {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entityaddclassificationsbyuniqueattribute.entityaddclassificationsbyuniqueattribute
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entityaddclassificationsbyuniqueattribute.entityaddclassificationsbyuniqueattribute
         BinaryData atlasClassificationArray =
                 BinaryData.fromString(
                         "[{\"typeName\":\"MICROSOFT.FINANCIAL.US.ABA_ROUTING_NUMBER\"},{\"typeName\":\"MICROSOFT.FINANCIAL.CREDIT_CARD_NUMBER\"}]");
@@ -28,7 +27,6 @@ public class EntityAddClassificationsByUniqueAttribute {
         Response<Void> response =
                 entityClient.addClassificationsByUniqueAttributeWithResponse(
                         "azure_storage_account", atlasClassificationArray, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entityaddclassificationsbyuniqueattribute.entityaddclassificationsbyuniqueattribute
+        // END:com.azure.analytics.purview.catalog.generated.entityaddclassificationsbyuniqueattribute.entityaddclassificationsbyuniqueattribute
     }
 }

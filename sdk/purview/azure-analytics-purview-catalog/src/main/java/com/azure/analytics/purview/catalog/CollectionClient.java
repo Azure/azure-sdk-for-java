@@ -19,16 +19,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = CollectionClientBuilder.class)
 public final class CollectionClient {
-    @Generated private final CollectionAsyncClient asyncClient;
+    @Generated private final CollectionAsyncClient client;
 
     /**
      * Initializes an instance of CollectionClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    CollectionClient(CollectionAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    CollectionClient(CollectionAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -206,7 +206,7 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateWithResponse(collection, entity, requestOptions).block();
+        return this.client.createOrUpdateWithResponse(collection, entity, requestOptions).block();
     }
 
     /**
@@ -386,7 +386,7 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateBulkWithResponse(
             String collection, BinaryData entities, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateBulkWithResponse(collection, entities, requestOptions).block();
+        return this.client.createOrUpdateBulkWithResponse(collection, entities, requestOptions).block();
     }
 
     /**
@@ -493,7 +493,7 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(
             String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .moveEntitiesToCollectionWithResponse(collection, moveEntitiesRequest, requestOptions)
                 .block();
     }

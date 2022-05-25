@@ -19,16 +19,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = LineageClientBuilder.class)
 public final class LineageClient {
-    @Generated private final LineageAsyncClient asyncClient;
+    @Generated private final LineageAsyncClient client;
 
     /**
      * Initializes an instance of LineageClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    LineageClient(LineageAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    LineageClient(LineageAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -144,7 +144,7 @@ public final class LineageClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getLineageGraphWithResponse(guid, requestOptions).block();
+        return this.client.getLineageGraphWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -260,6 +260,6 @@ public final class LineageClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.nextPageLineageWithResponse(guid, requestOptions).block();
+        return this.client.nextPageLineageWithResponse(guid, requestOptions).block();
     }
 }

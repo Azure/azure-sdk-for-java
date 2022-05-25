@@ -22,16 +22,16 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = GlossaryClientBuilder.class)
 public final class GlossaryClient {
-    @Generated private final GlossaryAsyncClient asyncClient;
+    @Generated private final GlossaryAsyncClient client;
 
     /**
      * Initializes an instance of GlossaryClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    GlossaryClient(GlossaryAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    GlossaryClient(GlossaryAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.listGlossariesWithResponse(requestOptions).block();
+        return this.client.listGlossariesWithResponse(requestOptions).block();
     }
 
     /**
@@ -255,7 +255,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
-        return this.asyncClient.createGlossaryWithResponse(atlasGlossary, requestOptions).block();
+        return this.client.createGlossaryWithResponse(atlasGlossary, requestOptions).block();
     }
 
     /**
@@ -403,7 +403,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.asyncClient.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions).block();
+        return this.client.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions).block();
     }
 
     /**
@@ -548,7 +548,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoryWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.asyncClient.createGlossaryCategoryWithResponse(glossaryCategory, requestOptions).block();
+        return this.client.createGlossaryCategoryWithResponse(glossaryCategory, requestOptions).block();
     }
 
     /**
@@ -628,7 +628,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.getGlossaryCategoryWithResponse(categoryGuid, requestOptions).block();
+        return this.client.getGlossaryCategoryWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -773,9 +773,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.asyncClient
-                .updateGlossaryCategoryWithResponse(categoryGuid, glossaryCategory, requestOptions)
-                .block();
+        return this.client.updateGlossaryCategoryWithResponse(categoryGuid, glossaryCategory, requestOptions).block();
     }
 
     /**
@@ -792,7 +790,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.deleteGlossaryCategoryWithResponse(categoryGuid, requestOptions).block();
+        return this.client.deleteGlossaryCategoryWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -883,7 +881,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .partialUpdateGlossaryCategoryWithResponse(categoryGuid, partialUpdates, requestOptions)
                 .block();
     }
@@ -929,7 +927,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedCategoriesWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listRelatedCategoriesWithResponse(categoryGuid, requestOptions).block();
+        return this.client.listRelatedCategoriesWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -973,7 +971,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listCategoryTermsWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listCategoryTermsWithResponse(categoryGuid, requestOptions).block();
+        return this.client.listCategoryTermsWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -1301,7 +1299,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.asyncClient.createGlossaryTermWithResponse(glossaryTerm, requestOptions).block();
+        return this.client.createGlossaryTermWithResponse(glossaryTerm, requestOptions).block();
     }
 
     /**
@@ -1477,7 +1475,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.asyncClient.getGlossaryTermWithResponse(termGuid, requestOptions).block();
+        return this.client.getGlossaryTermWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -1798,7 +1796,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryTermWithResponse(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.asyncClient.updateGlossaryTermWithResponse(termGuid, glossaryTerm, requestOptions).block();
+        return this.client.updateGlossaryTermWithResponse(termGuid, glossaryTerm, requestOptions).block();
     }
 
     /**
@@ -1815,7 +1813,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.asyncClient.deleteGlossaryTermWithResponse(termGuid, requestOptions).block();
+        return this.client.deleteGlossaryTermWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -2002,7 +2000,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryTermWithResponse(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return this.asyncClient.partialUpdateGlossaryTermWithResponse(termGuid, partialUpdates, requestOptions).block();
+        return this.client.partialUpdateGlossaryTermWithResponse(termGuid, partialUpdates, requestOptions).block();
     }
 
     /**
@@ -2334,7 +2332,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.asyncClient.createGlossaryTermsWithResponse(glossaryTerm, requestOptions).block();
+        return this.client.createGlossaryTermsWithResponse(glossaryTerm, requestOptions).block();
     }
 
     /**
@@ -2388,7 +2386,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions) {
-        return this.asyncClient.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions).block();
+        return this.client.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -2433,7 +2431,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return this.asyncClient.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions).block();
+        return this.client.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions).block();
     }
 
     /**
@@ -2478,7 +2476,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .removeTermAssignmentFromEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions)
                 .block();
     }
@@ -2525,7 +2523,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .deleteTermAssignmentFromEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions)
                 .block();
     }
@@ -2574,7 +2572,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listRelatedTermsWithResponse(termGuid, requestOptions).block();
+        return this.client.listRelatedTermsWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -2650,7 +2648,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.getGlossaryWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.getGlossaryWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2787,7 +2785,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryWithResponse(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
-        return this.asyncClient.updateGlossaryWithResponse(glossaryGuid, updatedGlossary, requestOptions).block();
+        return this.client.updateGlossaryWithResponse(glossaryGuid, updatedGlossary, requestOptions).block();
     }
 
     /**
@@ -2804,7 +2802,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.deleteGlossaryWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.deleteGlossaryWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2896,7 +2894,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2938,7 +2936,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3162,7 +3160,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDetailedGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.getDetailedGlossaryWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.getDetailedGlossaryWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3256,7 +3254,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryWithResponse(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return this.asyncClient.partialUpdateGlossaryWithResponse(glossaryGuid, partialUpdates, requestOptions).block();
+        return this.client.partialUpdateGlossaryWithResponse(glossaryGuid, partialUpdates, requestOptions).block();
     }
 
     /**
@@ -3437,7 +3435,7 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermsWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listGlossaryTermsWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.listGlossaryTermsWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3482,7 +3480,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
-        return this.asyncClient.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions).block();
+        return this.client.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3543,7 +3541,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.asyncClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions).getSyncPoller();
+        return this.client.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions).getSyncPoller();
     }
 
     /**
@@ -3604,7 +3602,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, requestOptions)
                 .getSyncPoller();
     }
@@ -3651,7 +3649,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImportCsvOperationStatusWithResponse(
             String operationGuid, RequestOptions requestOptions) {
-        return this.asyncClient.getImportCsvOperationStatusWithResponse(operationGuid, requestOptions).block();
+        return this.client.getImportCsvOperationStatusWithResponse(operationGuid, requestOptions).block();
     }
 
     /**
@@ -3693,7 +3691,7 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
-        return this.asyncClient.exportGlossaryTermsAsCsvWithResponse(glossaryGuid, termGuids, requestOptions).block();
+        return this.client.exportGlossaryTermsAsCsvWithResponse(glossaryGuid, termGuids, requestOptions).block();
     }
 
     /**
@@ -3875,6 +3873,6 @@ public final class GlossaryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions) {
-        return this.asyncClient.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions).block();
+        return this.client.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions).block();
     }
 }

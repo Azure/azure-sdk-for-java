@@ -13,16 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class RelationshipGet {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.relationshipget.relationshipget
         RelationshipClient relationshipClient =
                 new RelationshipClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.relationshipget.relationshipget
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("extendedInfo", "false");
         Response<BinaryData> response =
                 relationshipClient.getWithResponse("5cf8a9e5-c9fd-abe0-2e8c-d40024263dcb", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.relationshipget.relationshipget
+        // END:com.azure.analytics.purview.catalog.generated.relationshipget.relationshipget
     }
 }

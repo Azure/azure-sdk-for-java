@@ -19,16 +19,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = EntityClientBuilder.class)
 public final class EntityClient {
-    @Generated private final EntityAsyncClient asyncClient;
+    @Generated private final EntityAsyncClient client;
 
     /**
      * Initializes an instance of EntityClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    EntityClient(EntityAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    EntityClient(EntityAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -196,7 +196,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateWithResponse(entity, requestOptions).block();
+        return this.client.createOrUpdateWithResponse(entity, requestOptions).block();
     }
 
     /**
@@ -304,7 +304,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.listByGuidsWithResponse(requestOptions).block();
+        return this.client.listByGuidsWithResponse(requestOptions).block();
     }
 
     /**
@@ -474,7 +474,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateEntitiesWithResponse(BinaryData entities, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateEntitiesWithResponse(entities, requestOptions).block();
+        return this.client.createOrUpdateEntitiesWithResponse(entities, requestOptions).block();
     }
 
     /**
@@ -568,7 +568,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.deleteByGuidsWithResponse(requestOptions).block();
+        return this.client.deleteByGuidsWithResponse(requestOptions).block();
     }
 
     /**
@@ -616,7 +616,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.asyncClient.addClassificationWithResponse(request, requestOptions).block();
+        return this.client.addClassificationWithResponse(request, requestOptions).block();
     }
 
     /**
@@ -721,7 +721,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -826,7 +826,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
             String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.asyncClient.partialUpdateEntityAttributeByGuidWithResponse(guid, body, requestOptions).block();
+        return this.client.partialUpdateEntityAttributeByGuidWithResponse(guid, body, requestOptions).block();
     }
 
     /**
@@ -913,7 +913,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.deleteByGuidWithResponse(guid, requestOptions).block();
+        return this.client.deleteByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -958,7 +958,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationWithResponse(
             String guid, String classificationName, RequestOptions requestOptions) {
-        return this.asyncClient.getClassificationWithResponse(guid, classificationName, requestOptions).block();
+        return this.client.getClassificationWithResponse(guid, classificationName, requestOptions).block();
     }
 
     /**
@@ -977,7 +977,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationWithResponse(
             String guid, String classificationName, RequestOptions requestOptions) {
-        return this.asyncClient.deleteClassificationWithResponse(guid, classificationName, requestOptions).block();
+        return this.client.deleteClassificationWithResponse(guid, classificationName, requestOptions).block();
     }
 
     /**
@@ -1009,7 +1009,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationsWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getClassificationsWithResponse(guid, requestOptions).block();
+        return this.client.getClassificationsWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1056,7 +1056,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsWithResponse(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
-        return this.asyncClient.addClassificationsWithResponse(guid, classifications, requestOptions).block();
+        return this.client.addClassificationsWithResponse(guid, classifications, requestOptions).block();
     }
 
     /**
@@ -1103,7 +1103,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsWithResponse(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
-        return this.asyncClient.updateClassificationsWithResponse(guid, classifications, requestOptions).block();
+        return this.client.updateClassificationsWithResponse(guid, classifications, requestOptions).block();
     }
 
     /**
@@ -1215,7 +1215,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
-        return this.asyncClient.getByUniqueAttributesWithResponse(typeName, requestOptions).block();
+        return this.client.getByUniqueAttributesWithResponse(typeName, requestOptions).block();
     }
 
     /**
@@ -1396,7 +1396,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityByUniqueAttributesWithResponse(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .partialUpdateEntityByUniqueAttributesWithResponse(typeName, atlasEntityWithExtInfo, requestOptions)
                 .block();
     }
@@ -1496,7 +1496,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
-        return this.asyncClient.deleteByUniqueAttributeWithResponse(typeName, requestOptions).block();
+        return this.client.deleteByUniqueAttributeWithResponse(typeName, requestOptions).block();
     }
 
     /**
@@ -1523,7 +1523,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationByUniqueAttributeWithResponse(
             String typeName, String classificationName, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .deleteClassificationByUniqueAttributeWithResponse(typeName, classificationName, requestOptions)
                 .block();
     }
@@ -1580,7 +1580,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsByUniqueAttributeWithResponse(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .addClassificationsByUniqueAttributeWithResponse(typeName, atlasClassificationArray, requestOptions)
                 .block();
     }
@@ -1637,7 +1637,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsByUniqueAttributeWithResponse(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .updateClassificationsByUniqueAttributeWithResponse(typeName, atlasClassificationArray, requestOptions)
                 .block();
     }
@@ -1727,7 +1727,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setClassificationsWithResponse(
             BinaryData entityHeaders, RequestOptions requestOptions) {
-        return this.asyncClient.setClassificationsWithResponse(entityHeaders, requestOptions).block();
+        return this.client.setClassificationsWithResponse(entityHeaders, requestOptions).block();
     }
 
     /**
@@ -1848,7 +1848,7 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesByUniqueAttributesWithResponse(
             String typeName, RequestOptions requestOptions) {
-        return this.asyncClient.getEntitiesByUniqueAttributesWithResponse(typeName, requestOptions).block();
+        return this.client.getEntitiesByUniqueAttributesWithResponse(typeName, requestOptions).block();
     }
 
     /**
@@ -1923,6 +1923,6 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getHeaderWithResponse(guid, requestOptions).block();
+        return this.client.getHeaderWithResponse(guid, requestOptions).block();
     }
 }

@@ -19,16 +19,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = TypesClientBuilder.class)
 public final class TypesClient {
-    @Generated private final TypesAsyncClient asyncClient;
+    @Generated private final TypesAsyncClient client;
 
     /**
      * Initializes an instance of TypesClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    TypesClient(TypesAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    TypesClient(TypesAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -141,7 +141,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getClassificationDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getClassificationDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -254,7 +254,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getClassificationDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getClassificationDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -387,7 +387,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getEntityDefinitionByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -520,7 +520,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntityDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getEntityDefinitionByNameWithResponse(name, requestOptions).block();
+        return this.client.getEntityDefinitionByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -606,7 +606,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getEnumDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getEnumDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -692,7 +692,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getEnumDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getEnumDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -807,7 +807,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getRelationshipDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getRelationshipDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -922,7 +922,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getRelationshipDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getRelationshipDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1026,7 +1026,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getStructDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getStructDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1130,7 +1130,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getStructDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getStructDefByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1285,7 +1285,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getTypeDefinitionByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1440,7 +1440,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getTypeDefinitionByNameWithResponse(name, requestOptions).block();
+        return this.client.getTypeDefinitionByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1457,7 +1457,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.deleteTypeByNameWithResponse(name, requestOptions).block();
+        return this.client.deleteTypeByNameWithResponse(name, requestOptions).block();
     }
 
     /**
@@ -1743,7 +1743,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.getAllTypeDefinitionsWithResponse(requestOptions).block();
+        return this.client.getAllTypeDefinitionsWithResponse(requestOptions).block();
     }
 
     /**
@@ -2281,7 +2281,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.asyncClient.createTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.client.createTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -2819,7 +2819,7 @@ public final class TypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
-        return this.asyncClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.client.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -3096,7 +3096,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
-        return this.asyncClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions).block();
+        return this.client.deleteTypeDefinitionsWithResponse(typesDef, requestOptions).block();
     }
 
     /**
@@ -3135,7 +3135,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
-        return this.asyncClient.listTypeDefinitionHeadersWithResponse(requestOptions).block();
+        return this.client.listTypeDefinitionHeadersWithResponse(requestOptions).block();
     }
 
     /**
@@ -3247,7 +3247,7 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions).block();
+        return this.client.getTermTemplateDefByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -3359,6 +3359,6 @@ public final class TypesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
-        return this.asyncClient.getTermTemplateDefByNameWithResponse(name, requestOptions).block();
+        return this.client.getTermTemplateDefByNameWithResponse(name, requestOptions).block();
     }
 }
