@@ -12,16 +12,13 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.util.Beta;
-
-import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 /**
  * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
@@ -119,7 +118,6 @@ public class CosmosClientBuilder implements
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
-    private ClientTelemetryConnectionConfig clientTelemetryConnectionConfig;
     private ClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
 
@@ -132,7 +130,6 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.clientTelemetryConnectionConfig = ClientTelemetryConnectionConfig.getDefaultConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -668,19 +665,6 @@ public class CosmosClientBuilder implements
         return this;
     }
 
-    /***
-     * Set the client telemetry connection config.
-     *
-     * @param clientTelemetryConnectionConfig the {@link ClientTelemetryConnectionConfig}.
-     * @return the current CosmosClientBuilder.
-     */
-    public CosmosClientBuilder clientTelemetryConnectionConfig(ClientTelemetryConnectionConfig clientTelemetryConnectionConfig) {
-        checkNotNull(clientTelemetryConnectionConfig, "Argument 'clientTelemetryConnectionConfig' can not be null");
-        this.clientTelemetryConnectionConfig = clientTelemetryConnectionConfig;
-
-        return this;
-    }
-
     /**
      * Gets the GATEWAY connection configuration to be used.
      *
@@ -830,13 +814,7 @@ public class CosmosClientBuilder implements
     }
 
     private void buildClientTelemetryConfig() {
-        // There are two ways customer can enable the client telemetry:
-        // 1. Enable through CosmosClientBuilder
-        // 2. Enabled by system property
-
-        this.clientTelemetryConfig = new ClientTelemetryConfig(
-                Configs.isClientTelemetryEnabled(this.clientTelemetryEnabled),
-                this.clientTelemetryConnectionConfig);
+        this.clientTelemetryConfig = new ClientTelemetryConfig(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {

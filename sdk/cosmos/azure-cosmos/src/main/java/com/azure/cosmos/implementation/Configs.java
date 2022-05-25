@@ -41,9 +41,13 @@ public class Configs {
     private static final String HTTP_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTP_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
-    private static final String CLIENT_TELEMETRY_ENABLED = "COSMOS.CLIENT_TELEMETRY_ENABLED";
+
+    // In the future, the client telemetry related config will be part of the database account info
+    // Before that day comes, use JVM properties
     private static final String CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = "COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS";
     private static final String CLIENT_TELEMETRY_ENDPOINT = "COSMOS.CLIENT_TELEMETRY_ENDPOINT";
+    private static final String CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG = "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG";
+
     private static final String ENVIRONMENT_NAME = "COSMOS.ENVIRONMENT_NAME";
     private static final String QUERYPLAN_CACHING_ENABLED = "COSMOS.QUERYPLAN_CACHING_ENABLED";
 
@@ -221,12 +225,12 @@ public class Configs {
         return getJVMConfigAsInt(QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 
-    public static boolean isClientTelemetryEnabled(boolean defaultValue) {
-        return getJVMConfigAsBoolean(CLIENT_TELEMETRY_ENABLED, defaultValue);
-    }
-
     public static String getClientTelemetryEndpoint() {
         return System.getProperty(CLIENT_TELEMETRY_ENDPOINT);
+    }
+
+    public static String getClientTelemetryProxyOptionsConfig() {
+        return System.getProperty(CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG);
     }
 
     public static String getEnvironmentName() {

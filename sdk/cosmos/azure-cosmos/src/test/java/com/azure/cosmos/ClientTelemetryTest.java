@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -32,7 +31,6 @@ import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -109,7 +107,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
     }
 
 
-    @DataProvider(name = "useProxy")
+    @DataProvider(name = "useProxy", parallel = false)
     public static Object[][] useProxy() {
         return new Object[][]{
                 { true },
@@ -232,20 +230,6 @@ public class ClientTelemetryTest extends TestSuiteBase {
         }
     }
 
-    //Setting priority = 1 as system properties below interfering in other tests in this file
-    @Test(groups = {"unit"}, priority = 1)
-    public void clientTelemetryEnabledFlag() {
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
-        assertThat(cosmosClientBuilder.isClientTelemetryEnabled()).isFalse();
-        assertThat(Configs.isClientTelemetryEnabled(cosmosClientBuilder.isClientTelemetryEnabled())).isFalse();
-
-        System.setProperty("COSMOS.CLIENT_TELEMETRY_ENABLED", "true");
-        assertThat(Configs.isClientTelemetryEnabled(cosmosClientBuilder.isClientTelemetryEnabled())).isTrue();
-
-        System.setProperty("COSMOS.CLIENT_TELEMETRY_ENABLED", "false");// setting it back for other tests
-        assertThat(Configs.isClientTelemetryEnabled(cosmosClientBuilder.isClientTelemetryEnabled())).isFalse();
-    }
-
     @Test(groups = {"unit"})
     public void clientTelemetryScheduling() {
         assertThat(Configs.getClientTelemetrySchedulingInSec()).isEqualTo(600);
@@ -269,19 +253,19 @@ public class ClientTelemetryTest extends TestSuiteBase {
             String host = credentialList[0].substring("AccountEndpoint=".length());
             String key = credentialList[1].substring("AccountKey=".length());
 
+            if (useProxy) {
+                System.setProperty(
+                        "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG",
+                        String.format("{\"type\":\"HTTP\", \"host\": \"%s\", \"port\": %d}", this.httpProxyServer.getHost(), this.httpProxyServer.getPort()));
+            } else {
+                System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
+            }
+
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
                 .endpoint(host)
                 .key(key)
                 .clientTelemetryEnabled(true);
 
-            if (useProxy) {
-                ClientTelemetryConnectionConfig connectionConfig = ClientTelemetryConnectionConfig.getDefaultConfig();
-                connectionConfig.setProxy(
-                        new ProxyOptions(
-                                ProxyOptions.Type.HTTP,
-                                new InetSocketAddress(this.httpProxyServer.getHost(), this.httpProxyServer.getPort())));
-                clientBuilder.clientTelemetryConnectionConfig(connectionConfig);
-            }
             cosmosClient = clientBuilder.buildClient();
 
             String containerId = UUID.randomUUID().toString();
@@ -334,6 +318,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 cosmosClient.getDatabase(databaseId).delete();
             }
             safeCloseSyncClient(cosmosClient);
+
+            // clear system property
+            System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
         }
     }
 

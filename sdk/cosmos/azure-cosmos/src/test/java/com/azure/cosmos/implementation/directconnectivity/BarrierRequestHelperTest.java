@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.cosmos.ClientTelemetryConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.ClientTelemetryConfig;
@@ -27,7 +26,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Map;
@@ -161,10 +159,7 @@ public class BarrierRequestHelperTest {
     public void barrierWithAadAuthorizationTokenProviderType() throws URISyntaxException {
 
         TokenCredential tokenCredential = new AadSimpleTokenCredential(TestConfigurations.MASTER_KEY);
-        ClientTelemetryConfig clientTelemetryConfig = new ClientTelemetryConfig(
-                false,
-                ClientTelemetryConnectionConfig.getDefaultConfig()
-        );
+        ClientTelemetryConfig clientTelemetryConfig = new ClientTelemetryConfig(false);
         IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(
                 new URI(TestConfigurations.HOST),
                 null,

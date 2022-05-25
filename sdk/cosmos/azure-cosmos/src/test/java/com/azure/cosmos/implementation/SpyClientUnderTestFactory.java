@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.cosmos.ClientTelemetryConnectionConfig;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
