@@ -893,6 +893,7 @@
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/dnsresolver</module>
+        <module>sdk/dynatrace</module>
         <module>sdk/edgeorder</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
