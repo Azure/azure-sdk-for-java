@@ -32,6 +32,9 @@ public interface QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +42,7 @@ public interface QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryResultInner usage(String scope, QueryDefinition parameters);
+    QueryResultInner usage(String scope, String skiptoken, QueryDefinition parameters);
 
     /**
      * Query the usage data for scope defined.
@@ -59,6 +62,9 @@ public interface QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +73,7 @@ public interface QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryResultInner> usageWithResponse(String scope, QueryDefinition parameters, Context context);
+    Response<QueryResultInner> usageWithResponse(String scope, String skiptoken, QueryDefinition parameters, Context context);
 
     /**
      * Query the usage data for external cloud provider type defined.
@@ -77,6 +83,9 @@ public interface QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,6 +96,7 @@ public interface QueriesClient {
     QueryResultInner usageByExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters);
 
     /**
@@ -97,6 +107,9 @@ public interface QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,6 +121,7 @@ public interface QueriesClient {
     Response<QueryResultInner> usageByExternalCloudProviderTypeWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters,
         Context context);
 }

@@ -29,8 +29,8 @@ public final class QueriesImpl implements Queries {
         this.serviceManager = serviceManager;
     }
 
-    public QueryResult usage(String scope, QueryDefinition parameters) {
-        QueryResultInner inner = this.serviceClient().usage(scope, parameters);
+    public QueryResult usage(String scope, String skiptoken, QueryDefinition parameters) {
+        QueryResultInner inner = this.serviceClient().usage(scope, skiptoken, parameters);
         if (inner != null) {
             return new QueryResultImpl(inner, this.manager());
         } else {
@@ -38,8 +38,8 @@ public final class QueriesImpl implements Queries {
         }
     }
 
-    public Response<QueryResult> usageWithResponse(String scope, QueryDefinition parameters, Context context) {
-        Response<QueryResultInner> inner = this.serviceClient().usageWithResponse(scope, parameters, context);
+    public Response<QueryResult> usageWithResponse(String scope, String skiptoken, QueryDefinition parameters, Context context) {
+        Response<QueryResultInner> inner = this.serviceClient().usageWithResponse(scope, skiptoken, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -54,11 +54,12 @@ public final class QueriesImpl implements Queries {
     public QueryResult usageByExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters) {
         QueryResultInner inner =
             this
                 .serviceClient()
-                .usageByExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, parameters);
+                .usageByExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, skiptoken, parameters);
         if (inner != null) {
             return new QueryResultImpl(inner, this.manager());
         } else {
@@ -69,13 +70,14 @@ public final class QueriesImpl implements Queries {
     public Response<QueryResult> usageByExternalCloudProviderTypeWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters,
         Context context) {
         Response<QueryResultInner> inner =
             this
                 .serviceClient()
                 .usageByExternalCloudProviderTypeWithResponse(
-                    externalCloudProviderType, externalCloudProviderId, parameters, context);
+                    externalCloudProviderType, externalCloudProviderId, skiptoken, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

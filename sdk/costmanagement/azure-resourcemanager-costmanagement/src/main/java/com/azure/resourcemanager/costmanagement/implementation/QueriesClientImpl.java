@@ -64,6 +64,7 @@ public final class QueriesClientImpl implements QueriesClient {
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skiptoken") String skiptoken,
             @BodyParam("application/json") QueryDefinition parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -77,6 +78,7 @@ public final class QueriesClientImpl implements QueriesClient {
             @PathParam("externalCloudProviderType") ExternalCloudProviderType externalCloudProviderType,
             @PathParam("externalCloudProviderId") String externalCloudProviderId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skiptoken") String skiptoken,
             @BodyParam("application/json") QueryDefinition parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -100,6 +102,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -107,7 +112,7 @@ public final class QueriesClientImpl implements QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> usageWithResponseAsync(String scope, QueryDefinition parameters) {
+    private Mono<Response<QueryResultInner>> usageWithResponseAsync(String scope, String skiptoken, QueryDefinition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -128,7 +133,7 @@ public final class QueriesClientImpl implements QueriesClient {
                 context ->
                     service
                         .usage(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+                            this.client.getEndpoint(), scope, this.client.getApiVersion(), skiptoken, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -150,6 +155,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +167,7 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResultInner>> usageWithResponseAsync(
-        String scope, QueryDefinition parameters, Context context) {
+        String scope, String skiptoken, QueryDefinition parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -177,7 +185,7 @@ public final class QueriesClientImpl implements QueriesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .usage(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
+            .usage(this.client.getEndpoint(), scope, this.client.getApiVersion(), skiptoken, parameters, accept, context);
     }
 
     /**
@@ -198,6 +206,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -205,8 +216,8 @@ public final class QueriesClientImpl implements QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<QueryResultInner> usageAsync(String scope, QueryDefinition parameters) {
-        return usageWithResponseAsync(scope, parameters)
+    private Mono<QueryResultInner> usageAsync(String scope, String skiptoken, QueryDefinition parameters) {
+        return usageWithResponseAsync(scope, skiptoken, parameters)
             .flatMap(
                 (Response<QueryResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -235,6 +246,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,8 +256,8 @@ public final class QueriesClientImpl implements QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultInner usage(String scope, QueryDefinition parameters) {
-        return usageAsync(scope, parameters).block();
+    public QueryResultInner usage(String scope, String skiptoken, QueryDefinition parameters) {
+        return usageAsync(scope, skiptoken, parameters).block();
     }
 
     /**
@@ -264,6 +278,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     for invoiceSection scope, and
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
      *     partners.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,8 +289,8 @@ public final class QueriesClientImpl implements QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResultInner> usageWithResponse(String scope, QueryDefinition parameters, Context context) {
-        return usageWithResponseAsync(scope, parameters, context).block();
+    public Response<QueryResultInner> usageWithResponse(String scope, String skiptoken, QueryDefinition parameters, Context context) {
+        return usageWithResponseAsync(scope, skiptoken, parameters, context).block();
     }
 
     /**
@@ -284,6 +301,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -294,6 +314,7 @@ public final class QueriesClientImpl implements QueriesClient {
     private Mono<Response<QueryResultInner>> usageByExternalCloudProviderTypeWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -326,6 +347,7 @@ public final class QueriesClientImpl implements QueriesClient {
                             this.client.getEndpoint(),
                             externalCloudProviderType,
                             externalCloudProviderId,
+                            skiptoken,
                             this.client.getApiVersion(),
                             parameters,
                             accept,
@@ -341,6 +363,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,6 +377,7 @@ public final class QueriesClientImpl implements QueriesClient {
     private Mono<Response<QueryResultInner>> usageByExternalCloudProviderTypeWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -383,6 +409,7 @@ public final class QueriesClientImpl implements QueriesClient {
                 this.client.getEndpoint(),
                 externalCloudProviderType,
                 externalCloudProviderId,
+                skiptoken,
                 this.client.getApiVersion(),
                 parameters,
                 accept,
@@ -397,6 +424,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -407,9 +437,10 @@ public final class QueriesClientImpl implements QueriesClient {
     private Mono<QueryResultInner> usageByExternalCloudProviderTypeAsync(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters) {
         return usageByExternalCloudProviderTypeWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters)
+                externalCloudProviderType, externalCloudProviderId, skiptoken, parameters)
             .flatMap(
                 (Response<QueryResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -428,6 +459,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -438,8 +472,9 @@ public final class QueriesClientImpl implements QueriesClient {
     public QueryResultInner usageByExternalCloudProviderType(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters) {
-        return usageByExternalCloudProviderTypeAsync(externalCloudProviderType, externalCloudProviderId, parameters)
+        return usageByExternalCloudProviderTypeAsync(externalCloudProviderType, externalCloudProviderId, skiptoken, parameters)
             .block();
     }
 
@@ -451,6 +486,9 @@ public final class QueriesClientImpl implements QueriesClient {
      *     account.
      * @param externalCloudProviderId This can be '{externalSubscriptionId}' for linked account or
      *     '{externalBillingAccountId}' for consolidated account used with dimension/query operations.
+     * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls.
      * @param parameters Parameters supplied to the CreateOrUpdate Query Config operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -462,10 +500,11 @@ public final class QueriesClientImpl implements QueriesClient {
     public Response<QueryResultInner> usageByExternalCloudProviderTypeWithResponse(
         ExternalCloudProviderType externalCloudProviderType,
         String externalCloudProviderId,
+        String skiptoken,
         QueryDefinition parameters,
         Context context) {
         return usageByExternalCloudProviderTypeWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters, context)
+                externalCloudProviderType, externalCloudProviderId, skiptoken, parameters, context)
             .block();
     }
 }

@@ -34,6 +34,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -64,6 +65,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -114,6 +116,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -144,6 +147,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -174,6 +178,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -204,6 +209,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -254,6 +260,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -304,6 +311,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/100/departments/123",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -354,6 +362,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/70664866",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -384,6 +393,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -434,6 +444,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -484,6 +495,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -534,6 +546,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -564,6 +577,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/70664866",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -614,6 +628,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -664,6 +679,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyMgId",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -714,6 +730,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/100/departments/123",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -744,6 +761,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -774,6 +792,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)
@@ -804,6 +823,7 @@ public final class QueryUsageSamples {
             .queries()
             .usageWithResponse(
                 "providers/Microsoft.Management/managementGroups/MyMgId",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.THE_LAST_MONTH)

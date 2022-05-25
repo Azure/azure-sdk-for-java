@@ -30,6 +30,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
             .usageByExternalCloudProviderTypeWithResponse(
                 ExternalCloudProviderType.EXTERNAL_SUBSCRIPTIONS,
                 "100",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
@@ -81,6 +82,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
             .usageByExternalCloudProviderTypeWithResponse(
                 ExternalCloudProviderType.EXTERNAL_BILLING_ACCOUNTS,
                 "100",
+                null,
                 new QueryDefinition()
                     .withType(ExportType.USAGE)
                     .withTimeframe(TimeframeType.MONTH_TO_DATE)
