@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** exportPolicy Set of export policy rules. */
 @Fluent
 public final class VolumePropertiesExportPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePropertiesExportPolicy.class);
-
     /*
      * Export policy rule
      */

@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -36,6 +38,7 @@ import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.VaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
+import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Accounts;
@@ -50,6 +53,7 @@ import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.azure.resourcemanager.netapp.models.Subvolumes;
 import com.azure.resourcemanager.netapp.models.Vaults;
 import com.azure.resourcemanager.netapp.models.VolumeGroups;
+import com.azure.resourcemanager.netapp.models.VolumeQuotaRules;
 import com.azure.resourcemanager.netapp.models.Volumes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -81,6 +85,8 @@ public final class NetAppFilesManager {
     private AccountBackups accountBackups;
 
     private BackupPolicies backupPolicies;
+
+    private VolumeQuotaRules volumeQuotaRules;
 
     private Vaults vaults;
 
@@ -116,6 +122,19 @@ public final class NetAppFilesManager {
     }
 
     /**
+     * Creates an instance of NetAppFiles service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the NetAppFiles service API instance.
+     */
+    public static NetAppFilesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new NetAppFilesManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create NetAppFilesManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -126,13 +145,14 @@ public final class NetAppFilesManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -194,15 +214,30 @@ public final class NetAppFilesManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -224,7 +259,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.8");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -242,10 +277,15 @@ public final class NetAppFilesManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -276,7 +316,11 @@ public final class NetAppFilesManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -284,7 +328,11 @@ public final class NetAppFilesManager {
         return operations;
     }
 
-    /** @return Resource collection API of NetAppResources. */
+    /**
+     * Gets the resource collection API of NetAppResources.
+     *
+     * @return Resource collection API of NetAppResources.
+     */
     public NetAppResources netAppResources() {
         if (this.netAppResources == null) {
             this.netAppResources = new NetAppResourcesImpl(clientObject.getNetAppResources(), this);
@@ -292,7 +340,11 @@ public final class NetAppFilesManager {
         return netAppResources;
     }
 
-    /** @return Resource collection API of NetAppResourceQuotaLimits. */
+    /**
+     * Gets the resource collection API of NetAppResourceQuotaLimits.
+     *
+     * @return Resource collection API of NetAppResourceQuotaLimits.
+     */
     public NetAppResourceQuotaLimits netAppResourceQuotaLimits() {
         if (this.netAppResourceQuotaLimits == null) {
             this.netAppResourceQuotaLimits =
@@ -301,7 +353,11 @@ public final class NetAppFilesManager {
         return netAppResourceQuotaLimits;
     }
 
-    /** @return Resource collection API of Accounts. */
+    /**
+     * Gets the resource collection API of Accounts. It manages NetAppAccount.
+     *
+     * @return Resource collection API of Accounts.
+     */
     public Accounts accounts() {
         if (this.accounts == null) {
             this.accounts = new AccountsImpl(clientObject.getAccounts(), this);
@@ -309,7 +365,11 @@ public final class NetAppFilesManager {
         return accounts;
     }
 
-    /** @return Resource collection API of Pools. */
+    /**
+     * Gets the resource collection API of Pools. It manages CapacityPool.
+     *
+     * @return Resource collection API of Pools.
+     */
     public Pools pools() {
         if (this.pools == null) {
             this.pools = new PoolsImpl(clientObject.getPools(), this);
@@ -317,7 +377,11 @@ public final class NetAppFilesManager {
         return pools;
     }
 
-    /** @return Resource collection API of Volumes. */
+    /**
+     * Gets the resource collection API of Volumes. It manages Volume.
+     *
+     * @return Resource collection API of Volumes.
+     */
     public Volumes volumes() {
         if (this.volumes == null) {
             this.volumes = new VolumesImpl(clientObject.getVolumes(), this);
@@ -325,7 +389,11 @@ public final class NetAppFilesManager {
         return volumes;
     }
 
-    /** @return Resource collection API of Snapshots. */
+    /**
+     * Gets the resource collection API of Snapshots. It manages Snapshot.
+     *
+     * @return Resource collection API of Snapshots.
+     */
     public Snapshots snapshots() {
         if (this.snapshots == null) {
             this.snapshots = new SnapshotsImpl(clientObject.getSnapshots(), this);
@@ -333,7 +401,11 @@ public final class NetAppFilesManager {
         return snapshots;
     }
 
-    /** @return Resource collection API of SnapshotPolicies. */
+    /**
+     * Gets the resource collection API of SnapshotPolicies. It manages SnapshotPolicy.
+     *
+     * @return Resource collection API of SnapshotPolicies.
+     */
     public SnapshotPolicies snapshotPolicies() {
         if (this.snapshotPolicies == null) {
             this.snapshotPolicies = new SnapshotPoliciesImpl(clientObject.getSnapshotPolicies(), this);
@@ -341,7 +413,11 @@ public final class NetAppFilesManager {
         return snapshotPolicies;
     }
 
-    /** @return Resource collection API of Backups. */
+    /**
+     * Gets the resource collection API of Backups. It manages Backup.
+     *
+     * @return Resource collection API of Backups.
+     */
     public Backups backups() {
         if (this.backups == null) {
             this.backups = new BackupsImpl(clientObject.getBackups(), this);
@@ -349,7 +425,11 @@ public final class NetAppFilesManager {
         return backups;
     }
 
-    /** @return Resource collection API of AccountBackups. */
+    /**
+     * Gets the resource collection API of AccountBackups.
+     *
+     * @return Resource collection API of AccountBackups.
+     */
     public AccountBackups accountBackups() {
         if (this.accountBackups == null) {
             this.accountBackups = new AccountBackupsImpl(clientObject.getAccountBackups(), this);
@@ -357,7 +437,11 @@ public final class NetAppFilesManager {
         return accountBackups;
     }
 
-    /** @return Resource collection API of BackupPolicies. */
+    /**
+     * Gets the resource collection API of BackupPolicies. It manages BackupPolicy.
+     *
+     * @return Resource collection API of BackupPolicies.
+     */
     public BackupPolicies backupPolicies() {
         if (this.backupPolicies == null) {
             this.backupPolicies = new BackupPoliciesImpl(clientObject.getBackupPolicies(), this);
@@ -365,7 +449,23 @@ public final class NetAppFilesManager {
         return backupPolicies;
     }
 
-    /** @return Resource collection API of Vaults. */
+    /**
+     * Gets the resource collection API of VolumeQuotaRules. It manages VolumeQuotaRule.
+     *
+     * @return Resource collection API of VolumeQuotaRules.
+     */
+    public VolumeQuotaRules volumeQuotaRules() {
+        if (this.volumeQuotaRules == null) {
+            this.volumeQuotaRules = new VolumeQuotaRulesImpl(clientObject.getVolumeQuotaRules(), this);
+        }
+        return volumeQuotaRules;
+    }
+
+    /**
+     * Gets the resource collection API of Vaults.
+     *
+     * @return Resource collection API of Vaults.
+     */
     public Vaults vaults() {
         if (this.vaults == null) {
             this.vaults = new VaultsImpl(clientObject.getVaults(), this);
@@ -373,7 +473,11 @@ public final class NetAppFilesManager {
         return vaults;
     }
 
-    /** @return Resource collection API of VolumeGroups. */
+    /**
+     * Gets the resource collection API of VolumeGroups. It manages VolumeGroupDetails.
+     *
+     * @return Resource collection API of VolumeGroups.
+     */
     public VolumeGroups volumeGroups() {
         if (this.volumeGroups == null) {
             this.volumeGroups = new VolumeGroupsImpl(clientObject.getVolumeGroups(), this);
@@ -381,7 +485,11 @@ public final class NetAppFilesManager {
         return volumeGroups;
     }
 
-    /** @return Resource collection API of Subvolumes. */
+    /**
+     * Gets the resource collection API of Subvolumes. It manages SubvolumeInfo.
+     *
+     * @return Resource collection API of Subvolumes.
+     */
     public Subvolumes subvolumes() {
         if (this.subvolumes == null) {
             this.subvolumes = new SubvolumesImpl(clientObject.getSubvolumes(), this);

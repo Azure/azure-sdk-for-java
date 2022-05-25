@@ -7,15 +7,12 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Snapshot of a Volume. */
 @Fluent
 public final class SnapshotInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
-
     /*
      * Resource location
      */
@@ -91,7 +88,7 @@ public final class SnapshotInner extends ProxyResource {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model SnapshotInner"));
         }
@@ -99,4 +96,6 @@ public final class SnapshotInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotInner.class);
 }
