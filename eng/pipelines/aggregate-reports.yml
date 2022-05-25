@@ -90,13 +90,13 @@ stages:
           displayName: 'Generate Aggregate JaCoCo coverage report'
           inputs:
             mavenPomFile: aggregate-coverage-pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Pjacoco -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
-            goals: 'verify jacoco:report-aggregate'
+            goals: 'jacoco:report-aggregate'
 
         - task: PublishTestResults@2
           condition: succeededOrFailed()
