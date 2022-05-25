@@ -33,7 +33,11 @@ public final class SupportedRuntimeValue extends ExpandableStringEnum<SupportedR
         return fromString(name, SupportedRuntimeValue.class);
     }
 
-    /** @return known SupportedRuntimeValue values. */
+    /**
+     * Gets known SupportedRuntimeValue values.
+     *
+     * @return known SupportedRuntimeValue values.
+     */
     public static Collection<SupportedRuntimeValue> values() {
         return values(SupportedRuntimeValue.class);
     }
