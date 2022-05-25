@@ -59,7 +59,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
-                           .setMaxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
                            .build();
     }

@@ -713,7 +713,7 @@ public class CosmosTemplateIT {
     @Test
     public void queryWithMaxDegreeOfParallelism() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
-            .setMaxDegreeOfParallelism(20)
+            .maxDegreeOfParallelism(20)
             .build();
         final CosmosTemplate maxDegreeOfParallelismCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
 
