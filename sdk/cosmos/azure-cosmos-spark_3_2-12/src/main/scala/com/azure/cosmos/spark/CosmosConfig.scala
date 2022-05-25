@@ -44,6 +44,7 @@ private[spark] object CosmosConfigNames {
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
   val PreferredRegions = "spark.cosmos.preferredRegions"
+  val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
@@ -98,6 +99,7 @@ private[spark] object CosmosConfigNames {
     Container,
     PreferredRegionsList,
     PreferredRegions,
+    DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
     UseGatewayMode,
     ReadCustomQuery,
@@ -239,6 +241,7 @@ private case class CosmosAccountConfig(endpoint: String,
                                        applicationName:
                                        Option[String],
                                        useGatewayMode: Boolean,
+                                       disableTcpConnectionEndpointRediscovery: Boolean,
                                        preferredRegionsList: Option[Array[String]])
 
 private object CosmosAccountConfig {
@@ -307,12 +310,23 @@ private object CosmosAccountConfig {
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
 
+  private val DisableTcpConnectionEndpointRediscovery =
+    CosmosConfigEntry[Boolean](
+      key = CosmosConfigNames.DisableTcpConnectionEndpointRediscovery,
+      mandatory = false,
+      defaultValue = Some(false),
+      parseFromStringFunction = disableEndpointRediscovery => disableEndpointRediscovery.toBoolean,
+      helpMessage = "Disables TCP connection endpoint rediscovery. TCP connection endpoint " +
+        "rediscovery should only be disabled when using custom domain names with private endpoints"
+    )
+
   def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+    val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
 
     // parsing above already validated these assertions
@@ -341,7 +355,14 @@ private object CosmosAccountConfig {
       })
     }
 
-    CosmosAccountConfig(endpointOpt.get, key.get, accountName.get, applicationName, useGatewayMode.get, preferredRegionsListOpt)
+    CosmosAccountConfig(
+      endpointOpt.get,
+      key.get,
+      accountName.get,
+      applicationName,
+      useGatewayMode.get,
+      disableTcpConnectionEndpointRediscovery.get,
+      preferredRegionsListOpt)
   }
 }
 
