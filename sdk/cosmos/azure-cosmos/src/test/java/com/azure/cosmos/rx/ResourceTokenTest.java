@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
@@ -255,9 +256,14 @@ public class ResourceTokenTest extends TestSuiteBase {
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(permission);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(new ClientTelemetryConfig(false))
+                            .build();
             Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientResourceToken
                     .readCollection(collectionUrl, null);
 
@@ -282,9 +288,14 @@ public class ResourceTokenTest extends TestSuiteBase {
             permissionFeed.add(permission);
             ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
             defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(defaultPolicy)
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(new ClientTelemetryConfig(false))
+                            .build();
             RequestOptions options = new RequestOptions();
             if (StringUtils.isNotEmpty(partitionKey)) {
                 options.setPartitionKey(new PartitionKey(partitionKey));
@@ -310,10 +321,14 @@ public class ResourceTokenTest extends TestSuiteBase {
     public void readDocumentFromResouceToken(String resourceToken) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withMasterKeyOrResourceToken(resourceToken)
-                    .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy()).withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withMasterKeyOrResourceToken(resourceToken)
+                            .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(new ClientTelemetryConfig(false))
+                            .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(PartitionKey.NONE);
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -340,9 +355,14 @@ public class ResourceTokenTest extends TestSuiteBase {
             permissionFeed.add(collPermission2);
             ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
             defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(defaultPolicy)
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(new ClientTelemetryConfig(false))
+                            .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -369,9 +389,14 @@ public class ResourceTokenTest extends TestSuiteBase {
             permissionFeed.add(permission);
             ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
             defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(defaultPolicy)
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(new ClientTelemetryConfig(false))
+                            .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -400,6 +425,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withPermissionFeed(permissionFeed)
+                .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                 .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
@@ -425,6 +451,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withMasterKeyOrResourceToken(permission.getToken())
+                .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                 .build();
 
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();

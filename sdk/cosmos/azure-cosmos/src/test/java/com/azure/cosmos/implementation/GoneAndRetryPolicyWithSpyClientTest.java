@@ -69,7 +69,8 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .withConnectionPolicy(connectionPolicy)
             .withConsistencyLevel(ConsistencyLevel.SESSION)
             .withContentResponseOnWriteEnabled(true)
-            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY);
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+            .withClientTelemetryConfig(new ClientTelemetryConfig(false));
     }
 
     @Factory(dataProvider = "directClientBuilder")

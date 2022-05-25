@@ -238,6 +238,7 @@ public class BarrierRequestHelperTest {
                 new AsyncDocumentClient.Builder()
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withServiceEndpoint(TestConfigurations.HOST)
+                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
     }
 

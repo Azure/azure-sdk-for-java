@@ -4,6 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.ThrottlingRetryOptions;
@@ -26,11 +27,13 @@ public class Utils {
         options.setMaxRetryAttemptsOnThrottledRequests(100);
         options.setMaxRetryWaitTime(Duration.ofSeconds(60));
         connectionPolicy.setThrottlingRetryOptions(options);
-        return new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                                                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                                                .withConnectionPolicy(connectionPolicy)
-                                                .withContentResponseOnWriteEnabled(true)
-                                                .build();
+        return new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
+                        .build();
     }
 
     public static String getCollectionLink(Database db, DocumentCollection collection) {

@@ -904,10 +904,13 @@ public class TestSuiteBase extends DocumentClientTest {
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setThrottlingRetryOptions(options);
-        return new Builder().withServiceEndpoint(TestConfigurations.HOST)
+        return new Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true);
+                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withContentResponseOnWriteEnabled(true)
+                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
@@ -915,11 +918,13 @@ public class TestSuiteBase extends DocumentClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setMultipleWriteRegionsEnabled(multiMasterEnabled);
         connectionPolicy.setPreferredRegions(preferredLocations);
-        return new Builder().withServiceEndpoint(TestConfigurations.HOST)
-                            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                            .withConnectionPolicy(connectionPolicy)
-                            .withConsistencyLevel(consistencyLevel)
-                            .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        return new Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
     }
 
     static protected Builder createGatewayRxDocumentClient() {
@@ -944,12 +949,15 @@ public class TestSuiteBase extends DocumentClientTest {
         Configs configs = Mockito.spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
-        return new Builder().withServiceEndpoint(TestConfigurations.HOST)
-                            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                            .withConnectionPolicy(connectionPolicy)
-                            .withConsistencyLevel(consistencyLevel)
-                            .withConfigs(configs)
-                            .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        return new Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withConfigs(configs)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
+
     }
 
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {
