@@ -118,7 +118,8 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($jarFilePath, $tempLocation)
-    Get-ChildItem $tempDirectory -Recurse
+    Write-Host $tempLocation
+    Get-ChildItem $tempLocation
     if (Test-Path "$tempLocation/element-list") {
         # Rename and move to location
         Write-Host "Copying the element-list to $destination..."
