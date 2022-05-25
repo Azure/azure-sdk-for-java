@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.stress.scenarios;
 
 import com.azure.messaging.eventhubs.EventData;
@@ -28,6 +31,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * Process events with options from application arguments. <br/>
+ * Required options: <br/>
+ *      --UPDATE_CHECKPOINT=YES/NO <br/>
+ *      --NEED_SEND_EVENT_HUB=YES/NO <br/>
+ */
 @Service("ProcessEventsWithOptions")
 public class ProcessEventsWithOptions extends EventHubsScenario {
     private Logger logger = LoggerFactory.getLogger(ProcessEventsWithOptions.class);

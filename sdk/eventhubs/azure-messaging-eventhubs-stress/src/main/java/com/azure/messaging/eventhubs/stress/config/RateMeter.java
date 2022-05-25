@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.stress.config;
 
 import com.microsoft.applicationinsights.TelemetryClient;
@@ -16,6 +19,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Send metric telemetry periodically
+ */
 public class RateMeter {
     Logger logger = LoggerFactory.getLogger(RateMeter.class);
     private final Map<String, AtomicInteger> rateMap = new ConcurrentHashMap<>();

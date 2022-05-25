@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.stress;
 
 import com.azure.messaging.eventhubs.stress.scenarios.EventHubsScenario;
@@ -10,7 +13,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-
+/**
+ * Runner for the Event Hubs stress tests.
+ */
 @SpringBootApplication
 public class EventHubsScenarioRunner implements ApplicationRunner {
 
@@ -24,6 +29,11 @@ public class EventHubsScenarioRunner implements ApplicationRunner {
         SpringApplication.run(EventHubsScenarioRunner.class, args);
     }
 
+    /**
+     * Run test scenario class.
+     *
+     * @param args the application arguments. it should contain "--TEST_CLASS='your scenarios class name'".
+     */
     @Override
     public void run(ApplicationArguments args) {
         String scenarioName = options.get(Constants.TEST_CLASS);
