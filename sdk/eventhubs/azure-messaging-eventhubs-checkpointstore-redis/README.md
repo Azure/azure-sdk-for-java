@@ -1,4 +1,4 @@
-# Azure Event Hubs Checkpoint Store client library for Java using Storage Blobs
+# Azure Event Hubs Checkpoint Store client library for Java using Redis
 ## Getting started
 ## Key concepts
 ## Examples
