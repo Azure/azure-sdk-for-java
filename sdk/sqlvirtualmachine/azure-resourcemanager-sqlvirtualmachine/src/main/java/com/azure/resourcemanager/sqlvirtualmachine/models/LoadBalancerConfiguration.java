@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A load balancer configuration for an availability group listener. */
 @Fluent
 public final class LoadBalancerConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerConfiguration.class);
-
     /*
      * Private IP address.
      */

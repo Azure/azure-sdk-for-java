@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Availability group configuration. */
 @Immutable
 public final class AgConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgConfiguration.class);
-
     /*
      * Replica configurations.
      */

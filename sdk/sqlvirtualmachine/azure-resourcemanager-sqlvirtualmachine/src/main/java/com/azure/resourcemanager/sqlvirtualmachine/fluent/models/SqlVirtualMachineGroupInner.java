@@ -7,21 +7,17 @@ package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterManagerType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ScaleType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVmGroupImageSku;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A SQL virtual machine group. */
 @Fluent
 public final class SqlVirtualMachineGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineGroupInner.class);
-
     /*
      * Resource properties.
      */

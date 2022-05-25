@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ClusterManagerType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ScaleType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVmGroupImageSku;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a SQL virtual machine group. */
 @Fluent
 public final class SqlVirtualMachineGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineGroupProperties.class);
-
     /*
      * Provisioning state to track the async operation status.
      */

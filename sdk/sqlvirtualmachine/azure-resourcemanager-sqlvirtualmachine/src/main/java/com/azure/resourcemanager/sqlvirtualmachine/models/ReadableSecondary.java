@@ -30,7 +30,11 @@ public final class ReadableSecondary extends ExpandableStringEnum<ReadableSecond
         return fromString(name, ReadableSecondary.class);
     }
 
-    /** @return known ReadableSecondary values. */
+    /**
+     * Gets known ReadableSecondary values.
+     *
+     * @return known ReadableSecondary values.
+     */
     public static Collection<ReadableSecondary> values() {
         return values(ReadableSecondary.class);
     }

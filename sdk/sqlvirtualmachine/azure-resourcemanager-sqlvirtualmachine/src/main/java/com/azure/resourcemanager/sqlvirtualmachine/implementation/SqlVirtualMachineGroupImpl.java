@@ -89,6 +89,10 @@ public final class SqlVirtualMachineGroupImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SqlVirtualMachineGroupInner innerModel() {
         return this.innerObject;
     }

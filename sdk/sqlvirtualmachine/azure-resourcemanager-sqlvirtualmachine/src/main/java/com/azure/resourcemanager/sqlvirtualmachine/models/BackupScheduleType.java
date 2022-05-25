@@ -27,7 +27,11 @@ public final class BackupScheduleType extends ExpandableStringEnum<BackupSchedul
         return fromString(name, BackupScheduleType.class);
     }
 
-    /** @return known BackupScheduleType values. */
+    /**
+     * Gets known BackupScheduleType values.
+     *
+     * @return known BackupScheduleType values.
+     */
     public static Collection<BackupScheduleType> values() {
         return values(BackupScheduleType.class);
     }

@@ -24,7 +24,11 @@ public final class ClusterManagerType extends ExpandableStringEnum<ClusterManage
         return fromString(name, ClusterManagerType.class);
     }
 
-    /** @return known ClusterManagerType values. */
+    /**
+     * Gets known ClusterManagerType values.
+     *
+     * @return known ClusterManagerType values.
+     */
     public static Collection<ClusterManagerType> values() {
         return values(ClusterManagerType.class);
     }

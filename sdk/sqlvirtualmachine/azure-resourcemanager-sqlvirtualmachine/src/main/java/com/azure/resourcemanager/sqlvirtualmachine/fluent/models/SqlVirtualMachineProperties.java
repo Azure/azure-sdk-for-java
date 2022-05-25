@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
@@ -16,14 +15,11 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlManagementMode;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlServerLicenseType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainCredentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SQL virtual machine properties. */
 @Fluent
 public final class SqlVirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineProperties.class);
-
     /*
      * ARM Resource id of underlying virtual machine created from SQL
      * marketplace image.

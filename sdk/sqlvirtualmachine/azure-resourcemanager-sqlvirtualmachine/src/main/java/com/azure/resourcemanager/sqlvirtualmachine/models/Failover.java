@@ -27,7 +27,11 @@ public final class Failover extends ExpandableStringEnum<Failover> {
         return fromString(name, Failover.class);
     }
 
-    /** @return known Failover values. */
+    /**
+     * Gets known Failover values.
+     *
+     * @return known Failover values.
+     */
     public static Collection<Failover> values() {
         return values(Failover.class);
     }

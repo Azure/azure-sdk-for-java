@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineGroupsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlVirtualMachineGroupsClient. */
 public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachineGroupsClient {
-    private final ClientLogger logger = new ClientLogger(SqlVirtualMachineGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlVirtualMachineGroupsService service;
 
@@ -294,14 +291,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
     private Mono<SqlVirtualMachineGroupInner> getByResourceGroupAsync(
         String resourceGroupName, String sqlVirtualMachineGroupName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName)
-            .flatMap(
-                (Response<SqlVirtualMachineGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

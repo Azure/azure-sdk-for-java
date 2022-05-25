@@ -84,6 +84,13 @@ public interface AvailabilityGroupListener {
     AgConfiguration availabilityGroupConfiguration();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner object.
      *
      * @return the inner object.

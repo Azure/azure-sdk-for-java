@@ -27,7 +27,11 @@ public final class FullBackupFrequencyType extends ExpandableStringEnum<FullBack
         return fromString(name, FullBackupFrequencyType.class);
     }
 
-    /** @return known FullBackupFrequencyType values. */
+    /**
+     * Gets known FullBackupFrequencyType values.
+     *
+     * @return known FullBackupFrequencyType values.
+     */
     public static Collection<FullBackupFrequencyType> values() {
         return values(FullBackupFrequencyType.class);
     }

@@ -7,18 +7,14 @@ package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AgConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A SQL Server availability group listener. */
 @Fluent
 public final class AvailabilityGroupListenerInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenerInner.class);
-
     /*
      * Resource properties.
      */

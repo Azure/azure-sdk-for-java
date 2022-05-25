@@ -30,7 +30,11 @@ public final class DiskConfigurationType extends ExpandableStringEnum<DiskConfig
         return fromString(name, DiskConfigurationType.class);
     }
 
-    /** @return known DiskConfigurationType values. */
+    /**
+     * Gets known DiskConfigurationType values.
+     *
+     * @return known DiskConfigurationType values.
+     */
     public static Collection<DiskConfigurationType> values() {
         return values(DiskConfigurationType.class);
     }

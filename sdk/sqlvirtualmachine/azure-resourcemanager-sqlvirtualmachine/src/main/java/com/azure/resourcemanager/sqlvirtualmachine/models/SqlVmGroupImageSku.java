@@ -27,7 +27,11 @@ public final class SqlVmGroupImageSku extends ExpandableStringEnum<SqlVmGroupIma
         return fromString(name, SqlVmGroupImageSku.class);
     }
 
-    /** @return known SqlVmGroupImageSku values. */
+    /**
+     * Gets known SqlVmGroupImageSku values.
+     *
+     * @return known SqlVmGroupImageSku values.
+     */
     public static Collection<SqlVmGroupImageSku> values() {
         return values(SqlVmGroupImageSku.class);
     }

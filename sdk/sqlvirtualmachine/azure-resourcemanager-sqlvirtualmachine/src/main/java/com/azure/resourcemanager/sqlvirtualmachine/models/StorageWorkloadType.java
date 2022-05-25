@@ -30,7 +30,11 @@ public final class StorageWorkloadType extends ExpandableStringEnum<StorageWorkl
         return fromString(name, StorageWorkloadType.class);
     }
 
-    /** @return known StorageWorkloadType values. */
+    /**
+     * Gets known StorageWorkloadType values.
+     *
+     * @return known StorageWorkloadType values.
+     */
     public static Collection<StorageWorkloadType> values() {
         return values(StorageWorkloadType.class);
     }

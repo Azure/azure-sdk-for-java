@@ -30,7 +30,11 @@ public final class SqlServerLicenseType extends ExpandableStringEnum<SqlServerLi
         return fromString(name, SqlServerLicenseType.class);
     }
 
-    /** @return known SqlServerLicenseType values. */
+    /**
+     * Gets known SqlServerLicenseType values.
+     *
+     * @return known SqlServerLicenseType values.
+     */
     public static Collection<SqlServerLicenseType> values() {
         return values(SqlServerLicenseType.class);
     }

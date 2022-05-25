@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Azure Active Directory identity configuration for a resource. */
 @Fluent
 public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
     /*
      * The Azure Active Directory principal id.
      */

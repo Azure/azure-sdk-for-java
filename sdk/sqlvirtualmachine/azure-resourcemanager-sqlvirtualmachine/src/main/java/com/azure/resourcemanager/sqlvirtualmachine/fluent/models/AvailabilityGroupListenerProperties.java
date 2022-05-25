@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AgConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of an availability group listener. */
 @Fluent
 public final class AvailabilityGroupListenerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenerProperties.class);
-
     /*
      * Provisioning state to track the async operation status.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set a patching window during which Windows and SQL patches will be applied. */
 @Fluent
 public final class AutoPatchingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPatchingSettings.class);
-
     /*
      * Enable or disable autopatching on SQL virtual machine.
      */

@@ -24,7 +24,11 @@ public final class ScaleType extends ExpandableStringEnum<ScaleType> {
         return fromString(name, ScaleType.class);
     }
 
-    /** @return known ScaleType values. */
+    /**
+     * Gets known ScaleType values.
+     *
+     * @return known ScaleType values.
+     */
     public static Collection<ScaleType> values() {
         return values(ScaleType.class);
     }

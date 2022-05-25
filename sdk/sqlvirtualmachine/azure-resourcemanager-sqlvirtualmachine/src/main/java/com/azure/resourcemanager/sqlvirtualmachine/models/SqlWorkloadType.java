@@ -30,7 +30,11 @@ public final class SqlWorkloadType extends ExpandableStringEnum<SqlWorkloadType>
         return fromString(name, SqlWorkloadType.class);
     }
 
-    /** @return known SqlWorkloadType values. */
+    /**
+     * Gets known SqlWorkloadType values.
+     *
+     * @return known SqlWorkloadType values.
+     */
     public static Collection<SqlWorkloadType> values() {
         return values(SqlWorkloadType.class);
     }

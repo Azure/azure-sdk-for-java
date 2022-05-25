@@ -30,7 +30,11 @@ public final class ConnectivityType extends ExpandableStringEnum<ConnectivityTyp
         return fromString(name, ConnectivityType.class);
     }
 
-    /** @return known ConnectivityType values. */
+    /**
+     * Gets known ConnectivityType values.
+     *
+     * @return known ConnectivityType values.
+     */
     public static Collection<ConnectivityType> values() {
         return values(ConnectivityType.class);
     }

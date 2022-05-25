@@ -64,6 +64,10 @@ public final class AvailabilityGroupListenerImpl
         return this.innerModel().availabilityGroupConfiguration();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AvailabilityGroupListenerInner innerModel() {
         return this.innerObject;
     }

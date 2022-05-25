@@ -7,11 +7,8 @@ package com.azure.resourcemanager.sqlvirtualmachine.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DayOfWeek. */
-public enum DayOfWeek {
-    /** Enum value Everyday. */
-    EVERYDAY("Everyday"),
-
+/** Defines values for AssessmentDayOfWeek. */
+public enum AssessmentDayOfWeek {
     /** Enum value Monday. */
     MONDAY("Monday"),
 
@@ -33,23 +30,23 @@ public enum DayOfWeek {
     /** Enum value Sunday. */
     SUNDAY("Sunday");
 
-    /** The actual serialized value for a DayOfWeek instance. */
+    /** The actual serialized value for a AssessmentDayOfWeek instance. */
     private final String value;
 
-    DayOfWeek(String value) {
+    AssessmentDayOfWeek(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a DayOfWeek instance.
+     * Parses a serialized value to a AssessmentDayOfWeek instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed DayOfWeek object, or null if unable to parse.
+     * @return the parsed AssessmentDayOfWeek object, or null if unable to parse.
      */
     @JsonCreator
-    public static DayOfWeek fromString(String value) {
-        DayOfWeek[] items = DayOfWeek.values();
-        for (DayOfWeek item : items) {
+    public static AssessmentDayOfWeek fromString(String value) {
+        AssessmentDayOfWeek[] items = AssessmentDayOfWeek.values();
+        for (AssessmentDayOfWeek item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

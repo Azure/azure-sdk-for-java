@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.resourcemanager.sqlvirtualmachine.models.AdditionalFeaturesServerConfigurations;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentDayOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupDaysOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.BackupScheduleType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ConnectivityType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DayOfWeek;
-import com.azure.resourcemanager.sqlvirtualmachine.models.DaysOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DiskConfigurationType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.FullBackupFrequencyType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.KeyVaultCredentialSettings;
@@ -125,7 +126,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withBackupSystemDbs(true)
                     .withBackupScheduleType(BackupScheduleType.MANUAL)
                     .withFullBackupFrequency(FullBackupFrequencyType.WEEKLY)
-                    .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.FRIDAY))
+                    .withDaysOfWeek(Arrays.asList(AutoBackupDaysOfWeek.MONDAY, AutoBackupDaysOfWeek.FRIDAY))
                     .withFullBackupStartTime(6)
                     .withFullBackupWindowHours(11)
                     .withLogBackupFrequency(10))
@@ -263,7 +264,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                         new Schedule()
                             .withEnable(true)
                             .withWeeklyInterval(1)
-                            .withDayOfWeek(DayOfWeek.SUNDAY)
+                            .withDayOfWeek(AssessmentDayOfWeek.SUNDAY)
                             .withStartTime("23:17")))
             .create();
     }

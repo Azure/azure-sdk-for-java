@@ -24,7 +24,11 @@ public final class ClusterConfiguration extends ExpandableStringEnum<ClusterConf
         return fromString(name, ClusterConfiguration.class);
     }
 
-    /** @return known ClusterConfiguration values. */
+    /**
+     * Gets known ClusterConfiguration values.
+     *
+     * @return known ClusterConfiguration values.
+     */
     public static Collection<ClusterConfiguration> values() {
         return values(ClusterConfiguration.class);
     }

@@ -30,7 +30,11 @@ public final class SqlManagementMode extends ExpandableStringEnum<SqlManagementM
         return fromString(name, SqlManagementMode.class);
     }
 
-    /** @return known SqlManagementMode values. */
+    /**
+     * Gets known SqlManagementMode values.
+     *
+     * @return known SqlManagementMode values.
+     */
     public static Collection<SqlManagementMode> values() {
         return values(SqlManagementMode.class);
     }

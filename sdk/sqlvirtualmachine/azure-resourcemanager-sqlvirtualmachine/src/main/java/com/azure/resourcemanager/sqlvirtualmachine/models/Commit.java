@@ -27,7 +27,11 @@ public final class Commit extends ExpandableStringEnum<Commit> {
         return fromString(name, Commit.class);
     }
 
-    /** @return known Commit values. */
+    /**
+     * Gets known Commit values.
+     *
+     * @return known Commit values.
+     */
     public static Collection<Commit> values() {
         return values(Commit.class);
     }

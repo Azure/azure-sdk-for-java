@@ -36,7 +36,11 @@ public final class SqlImageSku extends ExpandableStringEnum<SqlImageSku> {
         return fromString(name, SqlImageSku.class);
     }
 
-    /** @return known SqlImageSku values. */
+    /**
+     * Gets known SqlImageSku values.
+     *
+     * @return known SqlImageSku values.
+     */
     public static Collection<SqlImageSku> values() {
         return values(SqlImageSku.class);
     }

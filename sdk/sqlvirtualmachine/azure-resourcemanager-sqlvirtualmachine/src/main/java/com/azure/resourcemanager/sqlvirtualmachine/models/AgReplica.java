@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Availability group replica configuration. */
 @Fluent
 public final class AgReplica {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgReplica.class);
-
     /*
      * Sql VirtualMachine Instance Id.
      */
