@@ -24,6 +24,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * @param requestedPartitionOwnerships List of partition ownerships from the current instance
      * @return Null
      */
+    @Override
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
         return null;
     }
@@ -36,6 +37,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * @param consumerGroup The consumer group name associated with the checkpoint
      * @return Null
      */
+    @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return null;
     }
@@ -46,6 +48,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * @param consumerGroup The consumer group name associated with the checkpoint
      * @return Null
      */
+    @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return null;
     }
@@ -54,6 +57,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * @param checkpoint Checkpoint information for this partition
      * @return Null
      */
+    @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         return null;
     }
