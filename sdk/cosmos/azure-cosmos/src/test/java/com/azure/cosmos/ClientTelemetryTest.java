@@ -261,12 +261,11 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
             }
 
-            CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+            cosmosClient = new CosmosClientBuilder()
                 .endpoint(host)
                 .key(key)
-                .clientTelemetryEnabled(true);
-
-            cosmosClient = clientBuilder.buildClient();
+                .clientTelemetryEnabled(true)
+                .buildClient();
 
             String containerId = UUID.randomUUID().toString();
             cosmosClient.createDatabase(databaseId);

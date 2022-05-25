@@ -65,12 +65,6 @@ public class ClientTelemetryConfig {
                     throw new IllegalArgumentException("Only http proxy type is supported.");
                 }
 
-                logger.info(
-                        "Enable proxy with type {}, host {}, port {}",
-                        type,
-                        proxyOptionsConfig.host,
-                        proxyOptionsConfig.port);
-
                 if (logger.isDebugEnabled()) {
                     logger.debug(
                             "Enable proxy with type {}, host {}, port {}",
