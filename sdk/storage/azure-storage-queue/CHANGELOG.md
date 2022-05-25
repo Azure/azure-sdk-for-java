@@ -1,15 +1,9 @@
 # Release History
 
-## 12.13.0-beta.2 (Unreleased)
-
-### Features Added
-- Added support for 2021-06-08 service version.
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.13.0 (2022-05-25)
 
 ### Other Changes
+- GA release for STG 82
 
 ## 12.12.2 (2022-05-12)
 
