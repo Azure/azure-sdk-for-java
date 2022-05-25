@@ -3,6 +3,7 @@
 ### 4.11.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added ability to disable endpoint rediscovery when using custom domain names in combination with private endpoints from a custom (on-premise) Spark environment (neither Databricks nor Synapse). - See [PR 29027](https://github.com/Azure/azure-sdk-for-java/pull/29027)
 
 #### Breaking Changes
 
