@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -78,6 +79,32 @@ public class PathClientJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#createWithResponse(DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Long duration = 15L;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
+            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+
+        Response<PathInfo> response = client.createWithResponse(options, timeout, new Context(key1, value1));
+        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#DataLakePathCreateOptions-Duration-Context
     }
 
     /**

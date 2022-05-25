@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -145,6 +146,45 @@ public final class PathsReadHeaders {
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PathsReadHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PathsReadHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        this.xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        this.xMsContentMd5 = rawHeaders.getValue("x-ms-content-md5");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        this.xMsProperties = rawHeaders.getValue("x-ms-properties");
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.xMsResourceType = rawHeaders.getValue("x-ms-resource-type");
+        this.contentMD5 = rawHeaders.getValue("Content-MD5");
+        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        if (rawHeaders.getValue("Content-Length") != null) {
+            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        this.contentType = rawHeaders.getValue("Content-Type");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

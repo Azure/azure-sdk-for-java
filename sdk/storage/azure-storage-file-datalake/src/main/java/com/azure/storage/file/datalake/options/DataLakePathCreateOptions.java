@@ -4,8 +4,14 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.datalake.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,15 +25,24 @@ public class DataLakePathCreateOptions {
     private PathHttpHeaders headers;
     private Map<String, String> metadata;
     private DataLakeRequestConditions requestConditions;
+    private List<PathAccessControlEntry> accessControlEntryList;
+    private String owner;
+    private String group;
+    private String sourceLeaseId;
+    private String proposedLeaseId;
+    private Long leaseDuration;
+    private PathExpiryOptions expiryOptions;
+    private OffsetDateTime expiresOn;
+    private Duration timeToExpire;
 
     /**
-     * Constructs a {@link DataLakePathCreateOptions}.
+     * Optional parameters for creating a file or directory.
      */
     public DataLakePathCreateOptions() {
     }
 
     /**
-     * Gets the permissions.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account.
      *
      * @return the permissions
      */
@@ -36,7 +51,10 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Sets the permissions.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access
+     * permissions for the file owner, the file owning group, and others. Each class may be granted read,
+     * write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit
+     * octal notation (e.g. 0766) are supported.
      *
      * @param permissions The permissions.
      * @return the updated options.
@@ -47,7 +65,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Gets the umask.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account.
      *
      * @return the umask.
      */
@@ -56,7 +74,13 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Sets the umask.
+     * Optional and only valid if Hierarchical Namespace is enabled for the account.
+     * When creating a file or directory and the parent folder does not have a default ACL,
+     * the umask restricts the permissions of the file or directory to be created. The resulting
+     * permission is given by p bitwise-and ^u, where p is the permission and u is the umask. For example,
+     * if p is 0777 and u is 0057, then the resulting permission is 0720. The default permission is
+     * 0777 for a directory and 0666 for a file. The default umask is 0027. The umask must be specified
+     * in 4-digit octal notation (e.g. 0766).
      *
      * @param umask The umask.
      * @return the updated options.
@@ -67,7 +91,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Gets the http headers.
+     * Gets the http header properties.
      *
      * @return the http headers.
      */
@@ -76,7 +100,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Sets the umask.
+     * Optional standard HTTP header properties that can be set for the new file or directory.
      *
      * @param headers The http headers.
      * @return the updated options.
@@ -87,13 +111,15 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * @return Metadata to associate with the datalake path.
+     * @return Metadata associated with the datalake path.
      */
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
+     * Optional custom metadata to set for this file or directory.
+     *
      * @param metadata Metadata to associate with the datalake path. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
@@ -104,7 +130,7 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Gets the request conditions.
+     * Optional {@link DataLakeRequestConditions} conditions on the creation of this file or directory.
      *
      * @return the request conditions.
      */
@@ -113,13 +139,174 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Optional {@link DataLakeRequestConditions} conditions on the creation of this file or directory.
      * Sets the request conditions.
      *
      * @param requestConditions The request conditions.
-     * @return the updated FileQueryOptions object.
+     * @return The updated options.
      */
     public DataLakePathCreateOptions setRequestConditions(DataLakeRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * @return the POSIX access control list for the file/directory.
+     */
+    public List<PathAccessControlEntry> getAccessControlList() {
+        return accessControlEntryList;
+    }
+
+    /**
+     * Optional. The POSIX access control list for the file or directory.
+     *
+     * @param accessControl The access control list.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setAccessControlList(List<PathAccessControlEntry> accessControl) {
+        this.accessControlEntryList = accessControl;
+        return this;
+    }
+
+    /**
+     * @return the name of owner of the file/directory.
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
+     * Optional. Sets the owner of the file/directory.
+     * @param owner the new owner.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setOwner(String owner) {
+        this.owner = owner;
+        return this;
+    }
+
+    /**
+     * @return the name of owning group of the file/directory.
+     */
+    public String getGroup() {
+        return group;
+    }
+
+    /**
+     * Optional. Sets the owning group of the file/directory.
+     * @param group the new owning group.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setGroup(String group) {
+        this.group = group;
+        return this;
+    }
+
+    /**
+     * @return the source lease ID
+     */
+    public String getSourceLeaseId() {
+        return sourceLeaseId;
+    }
+
+    /**
+     * Sets the source lease ID.
+     * @param leaseId the source lease ID.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setSourceLeaseId(String leaseId) {
+        sourceLeaseId = leaseId;
+        return this;
+    }
+
+    /**
+     * @return the proposed lease ID.
+     */
+    public String getProposedLeaseId() {
+        return proposedLeaseId;
+    }
+
+    /**
+     * Optional. Sets proposed lease ID.
+     * Does not apply to directories.
+     *
+     * @param leaseId the proposed lease ID.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setProposedLeaseId(String leaseId) {
+        proposedLeaseId = leaseId;
+        return this;
+    }
+
+    /**
+     * @return the lease duration in seconds.
+     */
+    public Long getLeaseDuration() {
+        return leaseDuration;
+    }
+
+    /**
+     * Optional.  Specifies the duration of the lease, in seconds, or specify -1 for a lease that never expires.
+     * A non-infinite lease can be between 15 and 60 seconds.
+     * Does not apply to directories.
+     *
+     * Sets the lease duration.
+     * @param duration the new duration.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setLeaseDuration(Long duration) {
+        leaseDuration = duration;
+        return this;
+    }
+
+    /**
+     * @return the expiry options.
+     */
+    public PathExpiryOptions getExpiryOptions() {
+        return expiryOptions;
+    }
+
+    /**
+     * Sets the expiry options.
+     * @param options the new expiry options.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setExpiryOptions(PathExpiryOptions options) {
+        expiryOptions = options;
+        return this;
+    }
+
+    /**
+     * @return the expiry date.
+     */
+    public OffsetDateTime getExpiresOn() {
+        return expiresOn;
+    }
+
+    /**
+     * Sets the expiry date.
+     * @param expiresOn sets the expiry date.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
+        return this;
+    }
+
+    /**
+     * @return the time to expire.
+     */
+    public Duration getTimeToExpire() {
+        return timeToExpire;
+    }
+
+    /**
+     * Sets the expiry date.
+     * @param expiryTime sets the expiry date.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setTimeToExpire(Duration expiryTime) {
+        timeToExpire = expiryTime;
         return this;
     }
 

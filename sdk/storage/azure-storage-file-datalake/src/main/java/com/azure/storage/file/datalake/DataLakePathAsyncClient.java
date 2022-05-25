@@ -14,6 +14,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -33,7 +34,8 @@ import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAc
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
-import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
+import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
@@ -353,7 +355,7 @@ public class DataLakePathAsyncClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
+        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -394,17 +396,63 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(permissions, umask, pathResourceType,
-                headers, metadata, requestConditions, context));
+            DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions)
+                .setUmask(umask).setPathHttpHeaders(headers).setMetadata(metadata)
+                .setRequestConditions(requestConditions);
+            return withContext(context -> createWithResponse(options));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathResourceType resourceType,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-        Context context) {
-        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Long duration = 15L;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     *
+     * client.createWithResponse&#40;options&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathItem}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options) {
+        try {
+            return withContext(context -> createWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options, Context context) {
+        options = options == null ? new DataLakePathCreateOptions() : options;
+        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
@@ -413,14 +461,47 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        String acl = options.getAccessControlList() != null ? PathAccessControlEntry
+            .serializeList(options.getAccessControlList()) : null;
+        String expiresOnString = setFieldsIfNull(options);
+
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null, customerProvidedKey,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
+                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
+                options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
+                options.getLeaseDuration(), options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
+                lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
                 response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
                 response.getDeserializedHeaders().getXMsEncryptionKeySha256())));
+    }
+
+    String setFieldsIfNull(DataLakePathCreateOptions options) {
+        if (pathResourceType == PathResourceType.DIRECTORY) {
+            if (options.getProposedLeaseId() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
+            }
+            if (options.getLeaseDuration() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
+            }
+            if (options.getTimeToExpire() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
+            }
+            if (options.getExpiresOn() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
+            }
+        }
+        if (options.getTimeToExpire() != null && options.getExpiresOn() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
+        }
+        String expiresOn = null;
+        if (options.getTimeToExpire() != null) {
+            expiresOn = Long.toString(options.getTimeToExpire().toMillis());
+        } else if (options.getExpiresOn() != null) {
+            expiresOn = DateTimeRfc1123.toRfc1123String(options.getExpiresOn());
+        }
+        return expiresOn;
     }
 
     /**
@@ -495,8 +576,7 @@ public class DataLakePathAsyncClient {
             options = options == null ? new DataLakePathCreateOptions() : options;
             options.setRequestConditions(new DataLakeRequestConditions()
                 .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-            return createWithResponse(options.getPermissions(), options.getUmask(), pathResourceType,
-                options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions(), context)
+            return createWithResponse(options, context)
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                         && ((DataLakeStorageException) t).getStatusCode() == 409,
                     t -> {
@@ -1301,7 +1381,7 @@ public class DataLakePathAsyncClient {
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
-        PathsSetAccessControlRecursiveResponse response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
+        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
         AtomicInteger filesSuccessfulCount, AtomicInteger failureCount, AtomicInteger batchesCount,
         Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
@@ -1536,11 +1616,12 @@ public class DataLakePathAsyncClient {
         renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
-            null /* request id */, null /* timeout */, null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
-            null /* metadata */, null /* permissions */, null /* umask */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions, customerProvidedKey,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null /* request id */, null /* timeout */, null /* pathResourceType */,
+                null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
+                null /* metadata */, null /* permissions */, null /* umask */,
+                null /* pathHttpHeaders */, null, null, null, null, null, null,
+                null, destLac, destMac, sourceConditions, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 

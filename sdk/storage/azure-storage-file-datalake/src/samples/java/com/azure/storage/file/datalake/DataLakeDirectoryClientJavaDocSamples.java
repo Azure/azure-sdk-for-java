@@ -13,6 +13,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeDirectoryClient}
@@ -97,6 +98,33 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeDirectoryClient#createFileWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createFileWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Long duration = 15L;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
+            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, options, timeout,
+            new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+
+    }
+
+    /**
      * Code snippets for {@link DataLakeDirectoryClient#deleteFile(String)} and
      * {@link DataLakeDirectoryClient#deleteFileWithResponse(String, DataLakeRequestConditions, Duration, Context)}
      */
@@ -142,6 +170,34 @@ public class DataLakeDirectoryClientJavaDocSamples {
             permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, timeout,
             new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeDirectoryClient#createSubdirectoryWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createSubdirectoryWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Long duration = 15L;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
+            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubdirectoryWithResponse(directoryName,
+            options, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context
+
+
     }
 
     /**

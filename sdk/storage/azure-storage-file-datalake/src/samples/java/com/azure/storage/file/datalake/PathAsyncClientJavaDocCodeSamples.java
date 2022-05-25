@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -68,6 +69,32 @@ public class PathAsyncClientJavaDocCodeSamples {
             requestConditions)
             .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#createWithResponse(DataLakePathCreateOptions)}
+     */
+    public void createWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Long duration = 15L;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
+            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+
+        client.createWithResponse(options).subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions
     }
 
     /**
