@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachines InstanceView. */
 public final class VirtualMachinesInstanceViewSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachineInstanceView.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
      */
     /**
      * Sample code: Get Virtual Machine Instance View.
@@ -26,7 +26,7 @@ public final class VirtualMachinesInstanceViewSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachineInstanceViewAutoPlacedOnDedicatedHostGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get instance view of a virtual machine placed on a dedicated host group through automatic placement.

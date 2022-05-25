@@ -28,13 +28,11 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(
-        String resourceGroupName,
-        String managedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         CheckNameAvailabilityResponseInner inner =
             this
                 .serviceClient()
-                .checkNameAvailability(resourceGroupName, managedEnvironmentName, checkNameAvailabilityRequest);
+                .checkNameAvailability(resourceGroupName, environmentName, checkNameAvailabilityRequest);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -44,14 +42,14 @@ public final class NamespacesImpl implements Namespaces {
 
     public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
         String resourceGroupName,
-        String managedEnvironmentName,
+        String environmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest,
         Context context) {
         Response<CheckNameAvailabilityResponseInner> inner =
             this
                 .serviceClient()
                 .checkNameAvailabilityWithResponse(
-                    resourceGroupName, managedEnvironmentName, checkNameAvailabilityRequest, context);
+                    resourceGroupName, environmentName, checkNameAvailabilityRequest, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

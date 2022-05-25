@@ -117,15 +117,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationListResultInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<OperationListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

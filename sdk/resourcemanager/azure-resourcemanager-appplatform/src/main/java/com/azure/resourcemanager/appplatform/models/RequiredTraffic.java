@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Required inbound or outbound traffic for Azure Spring Cloud instance. */
+/** Required inbound or outbound traffic for Azure Spring Apps resource. */
 @Immutable
 public final class RequiredTraffic {
     /*
