@@ -6,14 +6,16 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.CatalystTypeConverters.convertToCatalyst
+import org.apache.spark.sql.catalyst.{CatalystTypeConverters, InternalRow}
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, Uuid}
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
+import java.time.temporal.ChronoUnit
+import java.time.{Instant, LocalDate, LocalDateTime, OffsetDateTime, ZoneOffset}
 import java.util.UUID
 import scala.util.Random
 
@@ -28,13 +30,44 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
   val objectMapper = new ObjectMapper()
   private[this] val defaultRowConverter =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.Always))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
+  private[this] val alwaysEpochMsRowConverter =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.AlwaysEpochMilliseconds
+      )
+    )
+
+
   private[this] val rowConverterInclusionNonNull =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonNull))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonNull,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
+
   private[this] val rowConverterInclusionNonDefault =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonDefault))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonDefault,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
+
   private[this] val rowConverterInclusionNonEmpty =
-    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonEmpty))
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonEmpty,
+        SerializationDateTimeConversionModes.Default
+      )
+    )
 
   "basic spark row" should "translate to ObjectNode" in {
 
@@ -421,6 +454,42 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName2).asLong() shouldEqual currentMillis
     objectNode.get(colName3).asInt() shouldEqual colVal3
     objectNode.get(colName4).asInt() shouldEqual colVal3
+  }
+
+  "date and time in spark row" should "should honor dateTimeConversionMode config" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+
+    val testDate = LocalDate.of(1945, 12, 12)
+    val testTimestamp = new java.sql.Timestamp(
+      46, 11, 12, 12, 12, 12, 0).toInstant()
+
+    // Catalyst optimizer will convert java.sql.Date into LocalDate.toEpochDay
+    val colVal1Raw = new Date(45, 11, 12)
+    convertToCatalyst(colVal1Raw).isInstanceOf[Int] shouldEqual true
+    val colVal1= convertToCatalyst(colVal1Raw).asInstanceOf[Int]
+    colVal1 shouldEqual -8786
+    colVal1 shouldEqual testDate.toEpochDay
+
+    // Catalyst optimizer will convert java.sql.Timestamp into epoch Microseconds
+    val colVal2Raw = Timestamp.from(testTimestamp)
+    convertToCatalyst(colVal2Raw).isInstanceOf[Long] shouldEqual true
+    val colVal2= convertToCatalyst(colVal2Raw).asInstanceOf[Long]
+    colVal2 shouldEqual -727530468000000L
+    colVal2 shouldEqual ChronoUnit.MICROS.between(Instant.EPOCH, testTimestamp)
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2),
+      StructType(Seq(StructField(colName1, DateType),
+        StructField(colName2, TimestampType))))
+
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asLong() shouldEqual colVal1
+    objectNode.get(colName2).asLong() shouldEqual colVal2
+
+    objectNode = alwaysEpochMsRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
+    objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
   }
 
   "numeric types in spark row" should "translate to ObjectNode" in {
