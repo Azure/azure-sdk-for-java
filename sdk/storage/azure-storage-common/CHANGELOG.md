@@ -2,7 +2,12 @@
 
 ## 12.16.0 (2022-05-25)
 
+### Other Changes
+- GA release for STG 82
+
 ## 12.15.2 (2022-05-12)
+
+### Other Changes
 
 #### Dependency Updates
 
