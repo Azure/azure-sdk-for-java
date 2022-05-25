@@ -188,7 +188,7 @@ public class BlobUploadFromUrlOptions {
     /**
      * @return The copy source tags mode.
      */
-    public BlobCopySourceTagsMode getCopySourceTags() {
+    public BlobCopySourceTagsMode getCopySourceTagsMode() {
         return copySourceTags;
     }
 
@@ -198,7 +198,7 @@ public class BlobUploadFromUrlOptions {
      * @param copySourceTags Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */
-    public BlobUploadFromUrlOptions setCopySourceTags(BlobCopySourceTagsMode copySourceTags) {
+    public BlobUploadFromUrlOptions setCopySourceTagsMode(BlobCopySourceTagsMode copySourceTags) {
         this.copySourceTags = copySourceTags;
         return this;
     }

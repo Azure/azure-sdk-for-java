@@ -297,14 +297,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public Mono<CustomDomainResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String domainName) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, domainName)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

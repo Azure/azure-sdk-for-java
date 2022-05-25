@@ -66,7 +66,11 @@ public final class ArcSettingAggregateState extends ExpandableStringEnum<ArcSett
         return fromString(name, ArcSettingAggregateState.class);
     }
 
-    /** @return known ArcSettingAggregateState values. */
+    /**
+     * Gets known ArcSettingAggregateState values.
+     *
+     * @return known ArcSettingAggregateState values.
+     */
     public static Collection<ArcSettingAggregateState> values() {
         return values(ArcSettingAggregateState.class);
     }
