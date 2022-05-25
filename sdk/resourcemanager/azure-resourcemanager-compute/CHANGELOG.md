@@ -4,11 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported `DiskEncryptionSet` for disk encryption set.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
 
 ## 2.14.0 (2022-04-11)
 

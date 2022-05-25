@@ -184,6 +184,17 @@ jobs:
           publishJUnitResults: false
 
       - task: PowerShell@2
+        displayName: 'Verify Required Maven Artifacts'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
+          arguments: >
+            -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
+            -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+            -InformationAction Continue
+
+      - task: PowerShell@2
         displayName: 'Copy artifacts to staging'
         inputs:
           pwsh: true

@@ -42,21 +42,21 @@ public interface ContainerAppsAuthConfigs {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a AuthConfig of a Container App.
      */
-    AuthConfig get(String resourceGroupName, String containerAppName, String name);
+    AuthConfig get(String resourceGroupName, String containerAppName, String authConfigName);
 
     /**
      * Get a AuthConfig of a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -65,27 +65,27 @@ public interface ContainerAppsAuthConfigs {
      * @return a AuthConfig of a Container App along with {@link Response}.
      */
     Response<AuthConfig> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context);
+        String resourceGroupName, String containerAppName, String authConfigName, Context context);
 
     /**
-     * Description for Delete a Container App AuthConfig.
+     * Delete a Container App AuthConfig.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String containerAppName, String name);
+    void delete(String resourceGroupName, String containerAppName, String authConfigName);
 
     /**
-     * Description for Delete a Container App AuthConfig.
+     * Delete a Container App AuthConfig.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -93,7 +93,8 @@ public interface ContainerAppsAuthConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String containerAppName, String name, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String containerAppName, String authConfigName, Context context);
 
     /**
      * Get a AuthConfig of a Container App.
@@ -121,7 +122,7 @@ public interface ContainerAppsAuthConfigs {
     Response<AuthConfig> getByIdWithResponse(String id, Context context);
 
     /**
-     * Description for Delete a Container App AuthConfig.
+     * Delete a Container App AuthConfig.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +133,7 @@ public interface ContainerAppsAuthConfigs {
     void deleteById(String id);
 
     /**
-     * Description for Delete a Container App AuthConfig.
+     * Delete a Container App AuthConfig.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

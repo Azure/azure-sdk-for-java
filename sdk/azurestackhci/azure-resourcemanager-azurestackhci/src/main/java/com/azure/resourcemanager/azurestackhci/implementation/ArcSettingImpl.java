@@ -4,26 +4,25 @@
 
 package com.azure.resourcemanager.azurestackhci.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ArcSettingInner;
+import com.azure.resourcemanager.azurestackhci.models.ArcIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.ArcSettingsPatch;
+import com.azure.resourcemanager.azurestackhci.models.PasswordCredential;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition {
+public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, ArcSetting.Update {
     private ArcSettingInner innerObject;
 
     private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
-
-    ArcSettingImpl(
-        ArcSettingInner innerObject, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -49,6 +48,22 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition {
         return this.innerModel().arcInstanceResourceGroup();
     }
 
+    public String arcApplicationClientId() {
+        return this.innerModel().arcApplicationClientId();
+    }
+
+    public String arcApplicationTenantId() {
+        return this.innerModel().arcApplicationTenantId();
+    }
+
+    public String arcServicePrincipalObjectId() {
+        return this.innerModel().arcServicePrincipalObjectId();
+    }
+
+    public String arcApplicationObjectId() {
+        return this.innerModel().arcApplicationObjectId();
+    }
+
     public ArcSettingAggregateState aggregateState() {
         return this.innerModel().aggregateState();
     }
@@ -60,6 +75,14 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public Object connectivityProperties() {
+        return this.innerModel().connectivityProperties();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ArcSettingInner innerModel() {
@@ -75,6 +98,8 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition {
     private String clusterName;
 
     private String arcSettingName;
+
+    private ArcSettingsPatch updateArcSetting;
 
     public ArcSettingImpl withExistingCluster(String resourceGroupName, String clusterName) {
         this.resourceGroupName = resourceGroupName;
@@ -108,6 +133,40 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition {
         this.arcSettingName = name;
     }
 
+    public ArcSettingImpl update() {
+        this.updateArcSetting = new ArcSettingsPatch();
+        return this;
+    }
+
+    public ArcSetting apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getArcSettings()
+                .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ArcSetting apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getArcSettings()
+                .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, context)
+                .getValue();
+        return this;
+    }
+
+    ArcSettingImpl(
+        ArcSettingInner innerObject, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.arcSettingName = Utils.getValueFromIdByName(innerObject.id(), "arcSettings");
+    }
+
     public ArcSetting refresh() {
         this.innerObject =
             serviceManager
@@ -128,8 +187,65 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition {
         return this;
     }
 
+    public PasswordCredential generatePassword() {
+        return serviceManager.arcSettings().generatePassword(resourceGroupName, clusterName, arcSettingName);
+    }
+
+    public Response<PasswordCredential> generatePasswordWithResponse(Context context) {
+        return serviceManager
+            .arcSettings()
+            .generatePasswordWithResponse(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public ArcIdentityResponse createIdentity() {
+        return serviceManager.arcSettings().createIdentity(resourceGroupName, clusterName, arcSettingName);
+    }
+
+    public ArcIdentityResponse createIdentity(Context context) {
+        return serviceManager.arcSettings().createIdentity(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
     public ArcSettingImpl withArcInstanceResourceGroup(String arcInstanceResourceGroup) {
         this.innerModel().withArcInstanceResourceGroup(arcInstanceResourceGroup);
         return this;
+    }
+
+    public ArcSettingImpl withArcApplicationClientId(String arcApplicationClientId) {
+        this.innerModel().withArcApplicationClientId(arcApplicationClientId);
+        return this;
+    }
+
+    public ArcSettingImpl withArcApplicationTenantId(String arcApplicationTenantId) {
+        this.innerModel().withArcApplicationTenantId(arcApplicationTenantId);
+        return this;
+    }
+
+    public ArcSettingImpl withArcServicePrincipalObjectId(String arcServicePrincipalObjectId) {
+        this.innerModel().withArcServicePrincipalObjectId(arcServicePrincipalObjectId);
+        return this;
+    }
+
+    public ArcSettingImpl withArcApplicationObjectId(String arcApplicationObjectId) {
+        this.innerModel().withArcApplicationObjectId(arcApplicationObjectId);
+        return this;
+    }
+
+    public ArcSettingImpl withConnectivityProperties(Object connectivityProperties) {
+        if (isInCreateMode()) {
+            this.innerModel().withConnectivityProperties(connectivityProperties);
+            return this;
+        } else {
+            this.updateArcSetting.withConnectivityProperties(connectivityProperties);
+            return this;
+        }
+    }
+
+    public ArcSettingImpl withTags(Map<String, String> tags) {
+        this.updateArcSetting.withTags(tags);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }
