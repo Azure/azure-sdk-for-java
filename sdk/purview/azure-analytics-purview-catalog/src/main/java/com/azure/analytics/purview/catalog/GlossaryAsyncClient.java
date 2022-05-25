@@ -44,10 +44,10 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -902,8 +902,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -947,8 +947,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -993,7 +993,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1322,7 +1322,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1837,7 +1837,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2024,7 +2024,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2357,8 +2357,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2550,8 +2550,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2827,8 +2827,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2921,8 +2921,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2964,7 +2964,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3190,7 +3190,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3284,9 +3284,9 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3467,8 +3467,8 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3513,8 +3513,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -3522,7 +3521,6 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3552,6 +3550,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3562,8 +3561,9 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions);
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        return this.serviceClient.importGlossaryTermsViaCsvWithResponseAsync(
+                glossaryGuid, file, contentLength, requestOptions);
     }
 
     /**
@@ -3574,8 +3574,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -3583,7 +3582,6 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3613,6 +3611,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3623,8 +3622,9 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions);
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvAsync(
+                glossaryGuid, file, contentLength, requestOptions);
     }
 
     /**
@@ -3635,8 +3635,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -3644,7 +3643,6 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3674,6 +3672,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3684,9 +3683,9 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
         return this.serviceClient.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                glossaryName, file, requestOptions);
+                glossaryName, file, contentLength, requestOptions);
     }
 
     /**
@@ -3697,8 +3696,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -3706,7 +3704,6 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3736,6 +3733,7 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3746,20 +3744,13 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions);
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
+                glossaryName, file, contentLength, requestOptions);
     }
 
     /**
      * Get the status of import csv operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3803,8 +3794,7 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3845,10 +3835,9 @@ public final class GlossaryAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>

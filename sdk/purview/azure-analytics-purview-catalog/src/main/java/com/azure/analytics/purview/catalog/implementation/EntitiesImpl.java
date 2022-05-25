@@ -8,11 +8,13 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -27,6 +29,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Entities. */
@@ -69,6 +74,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entity,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -85,7 +91,11 @@ public final class EntitiesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByGuids(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam(value = "guid", multipleQueryParams = true) List<String> guids,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/entity/bulk")
         @ExpectedResponses({200})
@@ -102,6 +112,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> createOrUpdateEntities(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entities,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -118,7 +129,11 @@ public final class EntitiesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteByGuids(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam(value = "guid", multipleQueryParams = true) List<String> guids,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/entity/bulk/classification")
         @ExpectedResponses({204})
@@ -135,6 +150,7 @@ public final class EntitiesImpl {
         Mono<Response<Void>> addClassification(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData request,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -153,6 +169,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -171,7 +188,9 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @QueryParam("name") String name,
                 @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -190,6 +209,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> deleteByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -209,6 +229,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @PathParam("classificationName") String classificationName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -228,6 +249,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @PathParam("classificationName") String classificationName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -246,6 +268,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -265,6 +288,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @BodyParam("application/json") BinaryData classifications,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -284,6 +308,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @BodyParam("application/json") BinaryData classifications,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -302,6 +327,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -321,6 +347,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasEntityWithExtInfo,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -339,6 +366,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> deleteByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -358,6 +386,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @PathParam("classificationName") String classificationName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -377,6 +406,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasClassificationArray,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -396,6 +426,7 @@ public final class EntitiesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasClassificationArray,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -414,6 +445,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> setClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entityHeaders,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -432,6 +464,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getEntitiesByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -450,6 +483,7 @@ public final class EntitiesImpl {
         Mono<Response<BinaryData>> getHeader(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -619,8 +653,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context));
+                context -> service.createOrUpdate(this.client.getEndpoint(), entity, accept, requestOptions, context));
     }
 
     /**
@@ -789,7 +824,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions, Context context) {
-        return service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context);
+        final String accept = "application/json";
+        return service.createOrUpdate(this.client.getEndpoint(), entity, accept, requestOptions, context);
     }
 
     /**
@@ -967,10 +1003,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1054,6 +1089,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1062,8 +1098,14 @@ public final class EntitiesImpl {
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.listByGuids(this.client.getEndpoint(), requestOptions, context));
+    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(List<String> guids, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil.withContext(
+                context ->
+                        service.listByGuids(
+                                this.client.getEndpoint(), guidsConverted, accept, requestOptions, context));
     }
 
     /**
@@ -1074,10 +1116,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1161,6 +1202,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1170,8 +1212,12 @@ public final class EntitiesImpl {
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.listByGuids(this.client.getEndpoint(), requestOptions, context);
+    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(
+            List<String> guids, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.listByGuids(this.client.getEndpoint(), guidsConverted, accept, requestOptions, context);
     }
 
     /**
@@ -1182,10 +1228,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1269,6 +1314,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1277,8 +1323,8 @@ public final class EntitiesImpl {
      * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
-        return listByGuidsWithResponseAsync(requestOptions).block();
+    public Response<BinaryData> listByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return listByGuidsWithResponseAsync(guids, requestOptions).block();
     }
 
     /**
@@ -1448,9 +1494,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context));
+                        service.createOrUpdateEntities(
+                                this.client.getEndpoint(), entities, accept, requestOptions, context));
     }
 
     /**
@@ -1621,7 +1669,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions, Context context) {
-        return service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context);
+        final String accept = "application/json";
+        return service.createOrUpdateEntities(this.client.getEndpoint(), entities, accept, requestOptions, context);
     }
 
     /**
@@ -1801,7 +1850,6 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1874,6 +1922,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1882,9 +1931,15 @@ public final class EntitiesImpl {
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(
+            List<String> guids, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
-                context -> service.deleteByGuids(this.client.getEndpoint(), requestOptions, context));
+                context ->
+                        service.deleteByGuids(
+                                this.client.getEndpoint(), guidsConverted, accept, requestOptions, context));
     }
 
     /**
@@ -1895,7 +1950,6 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1968,6 +2022,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1977,8 +2032,12 @@ public final class EntitiesImpl {
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.deleteByGuids(this.client.getEndpoint(), requestOptions, context);
+    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(
+            List<String> guids, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.deleteByGuids(this.client.getEndpoint(), guidsConverted, accept, requestOptions, context);
     }
 
     /**
@@ -1989,7 +2048,6 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2062,6 +2120,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2070,8 +2129,8 @@ public final class EntitiesImpl {
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
-        return deleteByGuidsWithResponseAsync(requestOptions).block();
+    public Response<BinaryData> deleteByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return deleteByGuidsWithResponseAsync(guids, requestOptions).block();
     }
 
     /**
@@ -2118,8 +2177,10 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationWithResponseAsync(BinaryData request, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.addClassification(this.client.getEndpoint(), request, requestOptions, context));
+                context ->
+                        service.addClassification(this.client.getEndpoint(), request, accept, requestOptions, context));
     }
 
     /**
@@ -2168,7 +2229,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationWithResponseAsync(
             BinaryData request, RequestOptions requestOptions, Context context) {
-        return service.addClassification(this.client.getEndpoint(), request, requestOptions, context);
+        final String accept = "application/json";
+        return service.addClassification(this.client.getEndpoint(), request, accept, requestOptions, context);
     }
 
     /**
@@ -2226,8 +2288,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2320,8 +2382,9 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.getByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2332,8 +2395,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2428,7 +2491,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -2439,8 +2503,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2545,7 +2609,6 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2625,6 +2688,7 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2635,11 +2699,12 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponseAsync(
-            String guid, BinaryData body, RequestOptions requestOptions) {
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateEntityAttributeByGuid(
-                                this.client.getEndpoint(), guid, body, requestOptions, context));
+                                this.client.getEndpoint(), guid, name, body, accept, requestOptions, context));
     }
 
     /**
@@ -2652,7 +2717,6 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2732,6 +2796,7 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -2743,9 +2808,10 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponseAsync(
-            String guid, BinaryData body, RequestOptions requestOptions, Context context) {
+            String guid, String name, BinaryData body, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateEntityAttributeByGuid(
-                this.client.getEndpoint(), guid, body, requestOptions, context);
+                this.client.getEndpoint(), guid, name, body, accept, requestOptions, context);
     }
 
     /**
@@ -2758,7 +2824,6 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2838,6 +2903,7 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2848,8 +2914,8 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions) {
-        return partialUpdateEntityAttributeByGuidWithResponseAsync(guid, body, requestOptions).block();
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        return partialUpdateEntityAttributeByGuidWithResponseAsync(guid, name, body, requestOptions).block();
     }
 
     /**
@@ -2935,8 +3001,9 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.deleteByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -3024,7 +3091,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.deleteByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -3154,10 +3222,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getClassification(
-                                this.client.getEndpoint(), guid, classificationName, requestOptions, context));
+                                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context));
     }
 
     /**
@@ -3202,7 +3271,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        return service.getClassification(this.client.getEndpoint(), guid, classificationName, requestOptions, context);
+        final String accept = "application/json";
+        return service.getClassification(
+                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context);
     }
 
     /**
@@ -3264,10 +3335,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteClassification(
-                                this.client.getEndpoint(), guid, classificationName, requestOptions, context));
+                                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context));
     }
 
     /**
@@ -3286,8 +3358,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteClassification(
-                this.client.getEndpoint(), guid, classificationName, requestOptions, context);
+                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context);
     }
 
     /**
@@ -3336,8 +3409,10 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getClassifications(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getClassifications(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -3370,7 +3445,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getClassifications(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getClassifications(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -3447,10 +3523,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.addClassifications(
-                                this.client.getEndpoint(), guid, classifications, requestOptions, context));
+                                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context));
     }
 
     /**
@@ -3497,7 +3574,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return service.addClassifications(this.client.getEndpoint(), guid, classifications, requestOptions, context);
+        final String accept = "application/json";
+        return service.addClassifications(
+                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context);
     }
 
     /**
@@ -3589,10 +3668,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateClassifications(
-                                this.client.getEndpoint(), guid, classifications, requestOptions, context));
+                                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context));
     }
 
     /**
@@ -3639,7 +3719,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return service.updateClassifications(this.client.getEndpoint(), guid, classifications, requestOptions, context);
+        final String accept = "application/json";
+        return service.updateClassifications(
+                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context);
     }
 
     /**
@@ -3700,8 +3782,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
@@ -3798,8 +3880,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context));
+                context ->
+                        service.getByUniqueAttributes(
+                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
     }
 
     /**
@@ -3814,8 +3899,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
@@ -3913,7 +3998,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        return service.getByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context);
+        final String accept = "application/json";
+        return service.getByUniqueAttributes(this.client.getEndpoint(), typeName, accept, requestOptions, context);
     }
 
     /**
@@ -3928,8 +4014,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
@@ -4204,10 +4290,16 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponseAsync(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateEntityByUniqueAttributes(
-                                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, requestOptions, context));
+                                this.client.getEndpoint(),
+                                typeName,
+                                atlasEntityWithExtInfo,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -4388,8 +4480,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponseAsync(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateEntityByUniqueAttributes(
-                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, accept, requestOptions, context);
     }
 
     /**
@@ -4668,9 +4761,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context));
+                        service.deleteByUniqueAttribute(
+                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
     }
 
     /**
@@ -4769,7 +4864,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        return service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, accept, requestOptions, context);
     }
 
     /**
@@ -4892,10 +4988,16 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationByUniqueAttributeWithResponseAsync(
             String typeName, String classificationName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteClassificationByUniqueAttribute(
-                                this.client.getEndpoint(), typeName, classificationName, requestOptions, context));
+                                this.client.getEndpoint(),
+                                typeName,
+                                classificationName,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -4922,8 +5024,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationByUniqueAttributeWithResponseAsync(
             String typeName, String classificationName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteClassificationByUniqueAttribute(
-                this.client.getEndpoint(), typeName, classificationName, requestOptions, context);
+                this.client.getEndpoint(), typeName, classificationName, accept, requestOptions, context);
     }
 
     /**
@@ -5004,12 +5107,14 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.addClassificationsByUniqueAttribute(
                                 this.client.getEndpoint(),
                                 typeName,
                                 atlasClassificationArray,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5066,8 +5171,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.addClassificationsByUniqueAttribute(
-                this.client.getEndpoint(), typeName, atlasClassificationArray, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasClassificationArray, accept, requestOptions, context);
     }
 
     /**
@@ -5176,12 +5282,14 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateClassificationsByUniqueAttribute(
                                 this.client.getEndpoint(),
                                 typeName,
                                 atlasClassificationArray,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5238,8 +5346,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.updateClassificationsByUniqueAttribute(
-                this.client.getEndpoint(), typeName, atlasClassificationArray, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasClassificationArray, accept, requestOptions, context);
     }
 
     /**
@@ -5383,9 +5492,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.setClassifications(this.client.getEndpoint(), entityHeaders, requestOptions, context));
+                        service.setClassifications(
+                                this.client.getEndpoint(), entityHeaders, accept, requestOptions, context));
     }
 
     /**
@@ -5474,7 +5585,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
-        return service.setClassifications(this.client.getEndpoint(), entityHeaders, requestOptions, context);
+        final String accept = "application/json";
+        return service.setClassifications(this.client.getEndpoint(), entityHeaders, accept, requestOptions, context);
     }
 
     /**
@@ -5584,8 +5696,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
@@ -5681,10 +5793,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEntitiesByUniqueAttributes(
-                                this.client.getEndpoint(), typeName, requestOptions, context));
+                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
     }
 
     /**
@@ -5707,8 +5820,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
@@ -5805,7 +5918,9 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        return service.getEntitiesByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEntitiesByUniqueAttributes(
+                this.client.getEndpoint(), typeName, accept, requestOptions, context);
     }
 
     /**
@@ -5828,8 +5943,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
@@ -5999,8 +6114,9 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getHeader(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.getHeader(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -6076,7 +6192,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getHeader(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getHeader(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**

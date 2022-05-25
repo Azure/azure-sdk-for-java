@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -70,6 +71,7 @@ public final class RelationshipsImpl {
         Mono<Response<BinaryData>> create(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData relationship,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -88,6 +90,7 @@ public final class RelationshipsImpl {
         Mono<Response<BinaryData>> update(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData relationship,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,6 +109,7 @@ public final class RelationshipsImpl {
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -124,6 +128,7 @@ public final class RelationshipsImpl {
         Mono<Response<Void>> delete(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -201,8 +206,9 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.create(this.client.getEndpoint(), relationship, requestOptions, context));
+                context -> service.create(this.client.getEndpoint(), relationship, accept, requestOptions, context));
     }
 
     /**
@@ -280,7 +286,8 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(
             BinaryData relationship, RequestOptions requestOptions, Context context) {
-        return service.create(this.client.getEndpoint(), relationship, requestOptions, context);
+        final String accept = "application/json";
+        return service.create(this.client.getEndpoint(), relationship, accept, requestOptions, context);
     }
 
     /**
@@ -432,8 +439,9 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.update(this.client.getEndpoint(), relationship, requestOptions, context));
+                context -> service.update(this.client.getEndpoint(), relationship, accept, requestOptions, context));
     }
 
     /**
@@ -511,7 +519,8 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(
             BinaryData relationship, RequestOptions requestOptions, Context context) {
-        return service.update(this.client.getEndpoint(), relationship, requestOptions, context);
+        final String accept = "application/json";
+        return service.update(this.client.getEndpoint(), relationship, accept, requestOptions, context);
     }
 
     /**
@@ -598,7 +607,7 @@ public final class RelationshipsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>extendedInfo</td><td>String</td><td>No</td><td>Limits whether includes extended information.</td></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -699,7 +708,9 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), guid, requestOptions, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.get(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -710,7 +721,7 @@ public final class RelationshipsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>extendedInfo</td><td>String</td><td>No</td><td>Limits whether includes extended information.</td></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -813,7 +824,8 @@ public final class RelationshipsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.get(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.get(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -824,7 +836,7 @@ public final class RelationshipsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>extendedInfo</td><td>String</td><td>No</td><td>Limits whether includes extended information.</td></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -940,8 +952,9 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.delete(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.delete(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -958,7 +971,8 @@ public final class RelationshipsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions, Context context) {
-        return service.delete(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.delete(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**

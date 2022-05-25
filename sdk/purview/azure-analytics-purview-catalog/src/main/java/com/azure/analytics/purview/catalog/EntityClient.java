@@ -15,6 +15,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import java.util.List;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = EntityClientBuilder.class)
@@ -207,10 +208,9 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -294,6 +294,7 @@ public final class EntityClient {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -303,8 +304,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.client.listByGuidsWithResponse(requestOptions).block();
+    public Response<BinaryData> listByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return this.client.listByGuidsWithResponse(guids, requestOptions).block();
     }
 
     /**
@@ -485,7 +486,6 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -558,6 +558,7 @@ public final class EntityClient {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -567,8 +568,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.client.deleteByGuidsWithResponse(requestOptions).block();
+    public Response<BinaryData> deleteByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return this.client.deleteByGuidsWithResponse(guids, requestOptions).block();
     }
 
     /**
@@ -627,8 +628,8 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -734,7 +735,6 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -814,6 +814,7 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -825,8 +826,8 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.client.partialUpdateEntityAttributeByGuidWithResponse(guid, body, requestOptions).block();
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        return this.client.partialUpdateEntityAttributeByGuidWithResponse(guid, name, body, requestOptions).block();
     }
 
     /**
@@ -1118,8 +1119,8 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
@@ -1750,8 +1751,8 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *

@@ -20,6 +20,5 @@ generate-client-as-impl: true
 add-context-parameter: true
 context-client-method-parameter: true
 generate-sync-async-clients: true
-generate-samples: true
 polling: {}
 ```

@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -76,7 +77,10 @@ public final class GlossariesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listGlossaries(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary")
         @ExpectedResponses({200})
@@ -93,6 +97,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData atlasGlossary,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -111,6 +116,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -129,6 +135,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -147,6 +154,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -166,6 +174,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
                 @BodyParam("application/json") BinaryData glossaryCategory,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -184,6 +193,7 @@ public final class GlossariesImpl {
         Mono<Response<Void>> deleteGlossaryCategory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -203,6 +213,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
                 @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -221,6 +232,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listRelatedCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -239,6 +251,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listCategoryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("categoryGuid") String categoryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -257,6 +270,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -275,6 +289,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -294,6 +309,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -312,6 +328,7 @@ public final class GlossariesImpl {
         Mono<Response<Void>> deleteGlossaryTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -331,6 +348,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -349,6 +367,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> createGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData glossaryTerm,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -367,6 +386,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -386,6 +406,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -405,6 +426,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -424,6 +446,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
                 @BodyParam("application/json") BinaryData relatedObjectIds,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -442,6 +465,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listRelatedTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("termGuid") String termGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -460,6 +484,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -479,6 +504,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @BodyParam("application/json") BinaryData updatedGlossary,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -497,6 +523,7 @@ public final class GlossariesImpl {
         Mono<Response<Void>> deleteGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -515,6 +542,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryCategories(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -533,6 +561,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryCategoriesHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -551,6 +580,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> getDetailedGlossary(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -570,6 +600,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @BodyParam("application/json") BinaryData partialUpdates,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -588,6 +619,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryTerms(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -606,6 +638,7 @@ public final class GlossariesImpl {
         Mono<Response<BinaryData>> listGlossaryTermHeaders(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryGuid") String glossaryGuid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -627,6 +660,8 @@ public final class GlossariesImpl {
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("multipart/form-data") BinaryData file,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -648,6 +683,8 @@ public final class GlossariesImpl {
                 @PathParam("glossaryName") String glossaryName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("multipart/form-data") BinaryData file,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -667,6 +704,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("operationGuid") String operationGuid,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -687,6 +725,7 @@ public final class GlossariesImpl {
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData termGuids,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -706,6 +745,7 @@ public final class GlossariesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("glossaryName") String glossaryName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -718,10 +758,10 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -795,8 +835,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listGlossaries(this.client.getEndpoint(), requestOptions, context));
+                context -> service.listGlossaries(this.client.getEndpoint(), accept, requestOptions, context));
     }
 
     /**
@@ -807,10 +848,10 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -885,7 +926,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.listGlossaries(this.client.getEndpoint(), requestOptions, context);
+        final String accept = "application/json";
+        return service.listGlossaries(this.client.getEndpoint(), accept, requestOptions, context);
     }
 
     /**
@@ -896,10 +938,10 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1108,8 +1150,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponseAsync(
             BinaryData atlasGlossary, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createGlossary(this.client.getEndpoint(), atlasGlossary, requestOptions, context));
+                context ->
+                        service.createGlossary(
+                                this.client.getEndpoint(), atlasGlossary, accept, requestOptions, context));
     }
 
     /**
@@ -1246,7 +1291,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponseAsync(
             BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
-        return service.createGlossary(this.client.getEndpoint(), atlasGlossary, requestOptions, context);
+        final String accept = "application/json";
+        return service.createGlossary(this.client.getEndpoint(), atlasGlossary, accept, requestOptions, context);
     }
 
     /**
@@ -1529,10 +1575,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createGlossaryCategories(
-                                this.client.getEndpoint(), glossaryCategory, requestOptions, context));
+                                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, context));
     }
 
     /**
@@ -1681,7 +1728,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryCategories(this.client.getEndpoint(), glossaryCategory, requestOptions, context);
+        final String accept = "application/json";
+        return service.createGlossaryCategories(
+                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, context);
     }
 
     /**
@@ -1972,10 +2021,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createGlossaryCategory(
-                                this.client.getEndpoint(), glossaryCategory, requestOptions, context));
+                                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, context));
     }
 
     /**
@@ -2120,7 +2170,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponseAsync(
             BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryCategory(this.client.getEndpoint(), glossaryCategory, requestOptions, context);
+        final String accept = "application/json";
+        return service.createGlossaryCategory(
+                this.client.getEndpoint(), glossaryCategory, accept, requestOptions, context);
     }
 
     /**
@@ -2345,9 +2397,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                        service.getGlossaryCategory(
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -2429,7 +2483,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -2652,10 +2707,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponseAsync(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateGlossaryCategory(
-                                this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context));
+                                this.client.getEndpoint(),
+                                categoryGuid,
+                                glossaryCategory,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -2800,8 +2861,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponseAsync(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.updateGlossaryCategory(
-                this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context);
+                this.client.getEndpoint(), categoryGuid, glossaryCategory, accept, requestOptions, context);
     }
 
     /**
@@ -2962,10 +3024,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteGlossaryCategory(
-                                this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -2983,7 +3046,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.deleteGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteGlossaryCategory(this.client.getEndpoint(), categoryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -3089,10 +3153,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponseAsync(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateGlossaryCategory(
-                                this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context));
+                                this.client.getEndpoint(),
+                                categoryGuid,
+                                partialUpdates,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -3183,8 +3253,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponseAsync(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateGlossaryCategory(
-                this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context);
+                this.client.getEndpoint(), categoryGuid, partialUpdates, accept, requestOptions, context);
     }
 
     /**
@@ -3286,8 +3357,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3319,10 +3390,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listRelatedCategories(
-                                this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -3334,8 +3406,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3368,7 +3440,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.listRelatedCategories(this.client.getEndpoint(), categoryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listRelatedCategories(this.client.getEndpoint(), categoryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -3380,8 +3453,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3422,8 +3495,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3456,8 +3529,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                context ->
+                        service.listCategoryTerms(
+                                this.client.getEndpoint(), categoryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -3468,8 +3544,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3503,7 +3579,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
             String categoryGuid, RequestOptions requestOptions, Context context) {
-        return service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -3514,8 +3591,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3557,7 +3634,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3874,9 +3951,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
+                        service.createGlossaryTerm(
+                                this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context));
     }
 
     /**
@@ -3887,7 +3966,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4205,7 +4284,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context);
+        final String accept = "application/json";
+        return service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context);
     }
 
     /**
@@ -4216,7 +4296,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4543,7 +4623,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4708,8 +4788,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
+                context ->
+                        service.getGlossaryTerm(this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -4720,7 +4802,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4887,7 +4969,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
-        return service.getGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getGlossaryTerm(this.client.getEndpoint(), termGuid, accept, requestOptions, context);
     }
 
     /**
@@ -4898,7 +4981,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5382,10 +5465,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponseAsync(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateGlossaryTerm(
-                                this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context));
+                                this.client.getEndpoint(), termGuid, glossaryTerm, accept, requestOptions, context));
     }
 
     /**
@@ -5706,7 +5790,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponseAsync(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return service.updateGlossaryTerm(this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context);
+        final String accept = "application/json";
+        return service.updateGlossaryTerm(
+                this.client.getEndpoint(), termGuid, glossaryTerm, accept, requestOptions, context);
     }
 
     /**
@@ -6042,8 +6128,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
+                context ->
+                        service.deleteGlossaryTerm(
+                                this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -6061,7 +6150,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
-        return service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, accept, requestOptions, context);
     }
 
     /**
@@ -6088,7 +6178,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -6263,10 +6353,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponseAsync(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateGlossaryTerm(
-                                this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context));
+                                this.client.getEndpoint(), termGuid, partialUpdates, accept, requestOptions, context));
     }
 
     /**
@@ -6277,7 +6368,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -6453,8 +6544,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponseAsync(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateGlossaryTerm(
-                this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context);
+                this.client.getEndpoint(), termGuid, partialUpdates, accept, requestOptions, context);
     }
 
     /**
@@ -6465,7 +6557,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -6651,7 +6743,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -6972,9 +7064,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
+                        service.createGlossaryTerms(
+                                this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context));
     }
 
     /**
@@ -6985,7 +7079,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -7307,7 +7401,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
             BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context);
+        final String accept = "application/json";
+        return service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, accept, requestOptions, context);
     }
 
     /**
@@ -7318,7 +7413,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -7649,8 +7744,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -7692,10 +7787,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEntitiesAssignedWithTerm(
-                                this.client.getEndpoint(), termGuid, requestOptions, context));
+                                this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -7706,8 +7802,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -7750,7 +7846,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
-        return service.getEntitiesAssignedWithTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEntitiesAssignedWithTerm(
+                this.client.getEndpoint(), termGuid, accept, requestOptions, context);
     }
 
     /**
@@ -7761,8 +7859,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -7847,10 +7945,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.assignTermToEntities(
-                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                                this.client.getEndpoint(),
+                                termGuid,
+                                relatedObjectIds,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -7895,8 +7999,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.assignTermToEntities(
-                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
+                this.client.getEndpoint(), termGuid, relatedObjectIds, accept, requestOptions, context);
     }
 
     /**
@@ -7984,10 +8089,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.removeTermAssignmentFromEntities(
-                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                                this.client.getEndpoint(),
+                                termGuid,
+                                relatedObjectIds,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -8032,8 +8143,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.removeTermAssignmentFromEntities(
-                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
+                this.client.getEndpoint(), termGuid, relatedObjectIds, accept, requestOptions, context);
     }
 
     /**
@@ -8121,10 +8233,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteTermAssignmentFromEntities(
-                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                                this.client.getEndpoint(),
+                                termGuid,
+                                relatedObjectIds,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -8169,8 +8287,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteTermAssignmentFromEntities(
-                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
+                this.client.getEndpoint(), termGuid, relatedObjectIds, accept, requestOptions, context);
     }
 
     /**
@@ -8226,8 +8345,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -8262,8 +8381,10 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
             String termGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listRelatedTerms(this.client.getEndpoint(), termGuid, requestOptions, context));
+                context ->
+                        service.listRelatedTerms(this.client.getEndpoint(), termGuid, accept, requestOptions, context));
     }
 
     /**
@@ -8275,8 +8396,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -8312,7 +8433,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
             String termGuid, RequestOptions requestOptions, Context context) {
-        return service.listRelatedTerms(this.client.getEndpoint(), termGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listRelatedTerms(this.client.getEndpoint(), termGuid, accept, requestOptions, context);
     }
 
     /**
@@ -8324,8 +8446,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -8433,8 +8555,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                context ->
+                        service.getGlossary(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -8511,7 +8635,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.getGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getGlossary(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -8722,10 +8847,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponseAsync(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateGlossary(
-                                this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context));
+                                this.client.getEndpoint(),
+                                glossaryGuid,
+                                updatedGlossary,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -8862,8 +8993,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponseAsync(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.updateGlossary(
-                this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context);
+                this.client.getEndpoint(), glossaryGuid, updatedGlossary, accept, requestOptions, context);
     }
 
     /**
@@ -9015,8 +9147,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                context ->
+                        service.deleteGlossary(
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9034,7 +9169,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -9061,8 +9197,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -9143,10 +9279,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listGlossaryCategories(
-                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9157,8 +9294,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -9240,7 +9377,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryCategories(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listGlossaryCategories(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -9251,8 +9389,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -9342,8 +9480,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -9373,10 +9511,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listGlossaryCategoriesHeaders(
-                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9387,8 +9526,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -9419,7 +9558,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryCategoriesHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listGlossaryCategoriesHeaders(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -9430,8 +9571,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -9471,7 +9612,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -9685,9 +9826,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                        service.getDetailedGlossary(
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -9698,7 +9841,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -9913,7 +10056,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -9924,7 +10068,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -10147,7 +10291,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -10229,10 +10373,16 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponseAsync(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateGlossary(
-                                this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context));
+                                this.client.getEndpoint(),
+                                glossaryGuid,
+                                partialUpdates,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -10243,7 +10393,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -10326,8 +10476,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponseAsync(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateGlossary(
-                this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context);
+                this.client.getEndpoint(), glossaryGuid, partialUpdates, accept, requestOptions, context);
     }
 
     /**
@@ -10338,7 +10489,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -10431,9 +10582,9 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -10602,8 +10753,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                context ->
+                        service.listGlossaryTerms(
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -10614,9 +10768,9 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -10786,7 +10940,8 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -10797,9 +10952,9 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -10977,8 +11132,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -11011,10 +11166,11 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listGlossaryTermHeaders(
-                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context));
     }
 
     /**
@@ -11025,8 +11181,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -11060,7 +11216,9 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
             String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return service.listGlossaryTermHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
+        final String accept = "application/json";
+        return service.listGlossaryTermHeaders(
+                this.client.getEndpoint(), glossaryGuid, accept, requestOptions, context);
     }
 
     /**
@@ -11071,8 +11229,8 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -11115,8 +11273,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11124,7 +11281,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11154,6 +11310,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11163,7 +11320,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importGlossaryTermsViaCsv(
@@ -11171,6 +11329,8 @@ public final class GlossariesImpl {
                                 glossaryGuid,
                                 this.client.getServiceVersion().getVersion(),
                                 file,
+                                contentLength,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11183,8 +11343,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11192,7 +11351,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11222,6 +11380,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11232,12 +11391,15 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.importGlossaryTermsViaCsv(
                 this.client.getEndpoint(),
                 glossaryGuid,
                 this.client.getServiceVersion().getVersion(),
                 file,
+                contentLength,
+                accept,
                 requestOptions,
                 context);
     }
@@ -11250,8 +11412,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11259,7 +11420,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11289,6 +11449,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11298,10 +11459,12 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions),
+                () ->
+                        this.importGlossaryTermsViaCsvWithResponseAsync(
+                                glossaryGuid, file, contentLength, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11320,8 +11483,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11329,7 +11491,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11359,6 +11520,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11369,10 +11531,12 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions, context),
+                () ->
+                        this.importGlossaryTermsViaCsvWithResponseAsync(
+                                glossaryGuid, file, contentLength, requestOptions, context),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11391,8 +11555,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11400,7 +11563,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11430,6 +11592,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11439,8 +11602,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions).getSyncPoller();
+            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, contentLength, requestOptions)
+                .getSyncPoller();
     }
 
     /**
@@ -11451,8 +11615,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11460,7 +11623,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11490,6 +11652,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11499,7 +11662,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importGlossaryTermsViaCsvByGlossaryName(
@@ -11507,6 +11671,8 @@ public final class GlossariesImpl {
                                 glossaryName,
                                 this.client.getServiceVersion().getVersion(),
                                 file,
+                                contentLength,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11519,8 +11685,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11528,7 +11693,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11558,6 +11722,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11568,12 +11733,15 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.importGlossaryTermsViaCsvByGlossaryName(
                 this.client.getEndpoint(),
                 glossaryName,
                 this.client.getServiceVersion().getVersion(),
                 file,
+                contentLength,
+                accept,
                 requestOptions,
                 context);
     }
@@ -11586,8 +11754,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11595,7 +11762,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11625,6 +11791,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11634,10 +11801,12 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(glossaryName, file, requestOptions),
+                () ->
+                        this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
+                                glossaryName, file, contentLength, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11656,8 +11825,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11665,7 +11833,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11695,6 +11862,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11705,12 +11873,12 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
                         this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                                glossaryName, file, requestOptions, context),
+                                glossaryName, file, contentLength, requestOptions, context),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11729,8 +11897,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -11738,7 +11905,6 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11768,6 +11934,7 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
+     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11777,21 +11944,13 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions)
+            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+        return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, contentLength, requestOptions)
                 .getSyncPoller();
     }
 
     /**
      * Get the status of import csv operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -11823,26 +11982,20 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
             String operationGuid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getImportCsvOperationStatus(
                                 this.client.getEndpoint(),
                                 operationGuid,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get the status of import csv operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -11875,24 +12028,18 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
             String operationGuid, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getImportCsvOperationStatus(
                 this.client.getEndpoint(),
                 operationGuid,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get the status of import csv operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -11935,8 +12082,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -11965,6 +12111,7 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
+        final String accept = "text/csv";
         return FluxUtil.withContext(
                 context ->
                         service.exportGlossaryTermsAsCsv(
@@ -11972,6 +12119,7 @@ public final class GlossariesImpl {
                                 glossaryGuid,
                                 this.client.getServiceVersion().getVersion(),
                                 termGuids,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -11984,8 +12132,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -12015,11 +12162,13 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
+        final String accept = "text/csv";
         return service.exportGlossaryTermsAsCsv(
                 this.client.getEndpoint(),
                 glossaryGuid,
                 this.client.getServiceVersion().getVersion(),
                 termGuids,
+                accept,
                 requestOptions,
                 context);
     }
@@ -12032,8 +12181,7 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -12073,10 +12221,9 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -12243,12 +12390,14 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
             String glossaryName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listTermsByGlossaryName(
                                 this.client.getEndpoint(),
                                 glossaryName,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -12261,10 +12410,9 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -12432,10 +12580,12 @@ public final class GlossariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
             String glossaryName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listTermsByGlossaryName(
                 this.client.getEndpoint(),
                 glossaryName,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -12448,10 +12598,9 @@ public final class GlossariesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>

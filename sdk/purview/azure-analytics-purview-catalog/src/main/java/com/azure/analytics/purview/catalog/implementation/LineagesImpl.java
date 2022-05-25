@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -66,6 +67,8 @@ public final class LineagesImpl {
         Mono<Response<BinaryData>> getLineageGraph(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @QueryParam("direction") String direction,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -84,7 +87,9 @@ public final class LineagesImpl {
         Mono<Response<BinaryData>> nextPageLineage(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @QueryParam("direction") String direction,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -97,11 +102,10 @@ public final class LineagesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>String</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>String</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>includeParent</td><td>String</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
+     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -192,6 +196,7 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -201,9 +206,13 @@ public final class LineagesImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(String guid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(
+            String guid, String direction, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getLineageGraph(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getLineageGraph(
+                                this.client.getEndpoint(), guid, direction, accept, requestOptions, context));
     }
 
     /**
@@ -214,11 +223,10 @@ public final class LineagesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>String</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>String</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>includeParent</td><td>String</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
+     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -309,6 +317,7 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -320,8 +329,9 @@ public final class LineagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLineageGraphWithResponseAsync(
-            String guid, RequestOptions requestOptions, Context context) {
-        return service.getLineageGraph(this.client.getEndpoint(), guid, requestOptions, context);
+            String guid, String direction, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        return service.getLineageGraph(this.client.getEndpoint(), guid, direction, accept, requestOptions, context);
     }
 
     /**
@@ -332,11 +342,10 @@ public final class LineagesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>String</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>String</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>includeParent</td><td>String</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
+     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -427,6 +436,7 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -435,8 +445,9 @@ public final class LineagesImpl {
      * @return lineage info of the entity specified by GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
-        return getLineageGraphWithResponseAsync(guid, requestOptions).block();
+    public Response<BinaryData> getLineageGraphWithResponse(
+            String guid, String direction, RequestOptions requestOptions) {
+        return getLineageGraphWithResponseAsync(guid, direction, requestOptions).block();
     }
 
     /**
@@ -447,11 +458,9 @@ public final class LineagesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -542,6 +551,7 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -550,13 +560,17 @@ public final class LineagesImpl {
      * @return atlasLineageInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(String guid, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(
+            String guid, String direction, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.nextPageLineage(
                                 this.client.getEndpoint(),
                                 guid,
+                                direction,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -569,11 +583,9 @@ public final class LineagesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -664,6 +676,7 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -674,9 +687,16 @@ public final class LineagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> nextPageLineageWithResponseAsync(
-            String guid, RequestOptions requestOptions, Context context) {
+            String guid, String direction, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.nextPageLineage(
-                this.client.getEndpoint(), guid, this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                guid,
+                direction,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -687,11 +707,9 @@ public final class LineagesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -782,6 +800,7 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -790,7 +809,8 @@ public final class LineagesImpl {
      * @return atlasLineageInfo along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {
-        return nextPageLineageWithResponseAsync(guid, requestOptions).block();
+    public Response<BinaryData> nextPageLineageWithResponse(
+            String guid, String direction, RequestOptions requestOptions) {
+        return nextPageLineageWithResponseAsync(guid, direction, requestOptions).block();
     }
 }
