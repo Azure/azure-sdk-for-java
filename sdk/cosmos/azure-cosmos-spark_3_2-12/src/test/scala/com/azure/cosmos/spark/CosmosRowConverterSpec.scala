@@ -44,6 +44,13 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       )
     )
 
+  private[this] val alwaysEpochMsRowConverterNonNull =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonNull,
+        SerializationDateTimeConversionModes.AlwaysEpochMilliseconds
+      )
+    )
 
   private[this] val rowConverterInclusionNonNull =
     CosmosRowConverter.get(
@@ -462,7 +469,8 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
     val testDate = LocalDate.of(1945, 12, 12)
     val testTimestamp = new java.sql.Timestamp(
-      46, 11, 12, 12, 12, 12, 0).toInstant()
+      46, 11, 12, 12, 12, 12, 0)
+      .toLocalDateTime.toInstant(ZoneOffset.UTC)
 
     // Catalyst optimizer will convert java.sql.Date into LocalDate.toEpochDay
     val colVal1Raw = new Date(45, 11, 12)
@@ -488,6 +496,10 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName2).asLong() shouldEqual colVal2
 
     objectNode = alwaysEpochMsRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
+    objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+
+    objectNode = alwaysEpochMsRowConverterNonNull.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
     objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
   }

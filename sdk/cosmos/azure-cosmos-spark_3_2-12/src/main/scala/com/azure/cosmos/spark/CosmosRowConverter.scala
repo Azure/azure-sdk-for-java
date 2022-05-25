@@ -318,16 +318,30 @@ private[cosmos] class CosmosRowConverter(
         case TimestampType if rowData.isInstanceOf[java.lang.Long] =>
           serializationConfig.serializationDateTimeConversionMode match {
             case SerializationDateTimeConversionModes.Default =>
-              convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
+              convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Long])
             case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
-              convertToJsonNodeConditionally(rowData.asInstanceOf[Long].asInstanceOf[Instant].toEpochMilli)
+              val microsSinceEpoch = rowData.asInstanceOf[java.lang.Long]
+              convertToJsonNodeConditionally(
+                Instant.ofEpochSecond(
+                  TimeUnit.MICROSECONDS.toSeconds(microsSinceEpoch),
+                  TimeUnit.MICROSECONDS.toNanos(
+                    Math.floorMod(microsSinceEpoch, TimeUnit.SECONDS.toMicros(1))
+                  )
+                ).toEpochMilli)
           }
         case TimestampType if rowData.isInstanceOf[java.lang.Integer] =>
           serializationConfig.serializationDateTimeConversionMode match {
             case SerializationDateTimeConversionModes.Default =>
               convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Integer])
             case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
-              convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Integer].asInstanceOf[Instant].toEpochMilli)
+              val microsSinceEpoch = rowData.asInstanceOf[java.lang.Integer].longValue()
+              convertToJsonNodeConditionally(
+                Instant.ofEpochSecond(
+                  TimeUnit.MICROSECONDS.toSeconds(microsSinceEpoch),
+                  TimeUnit.MICROSECONDS.toNanos(
+                    Math.floorMod(microsSinceEpoch, TimeUnit.SECONDS.toMicros(1))
+                  )
+                ).toEpochMilli)
           }
         case TimestampType => convertToJsonNodeConditionally(rowData.asInstanceOf[Timestamp].getTime)
         case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] =>
