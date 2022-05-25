@@ -112,7 +112,7 @@ org.postgresql:postgresql;42.3.4
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
-redis.clients:jedis;3.7.1
+redis.clients:jedis;4.2.3
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.6.7
