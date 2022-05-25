@@ -27,7 +27,11 @@ public final class ImdsAttestation extends ExpandableStringEnum<ImdsAttestation>
         return fromString(name, ImdsAttestation.class);
     }
 
-    /** @return known ImdsAttestation values. */
+    /**
+     * Gets known ImdsAttestation values.
+     *
+     * @return known ImdsAttestation values.
+     */
     public static Collection<ImdsAttestation> values() {
         return values(ImdsAttestation.class);
     }

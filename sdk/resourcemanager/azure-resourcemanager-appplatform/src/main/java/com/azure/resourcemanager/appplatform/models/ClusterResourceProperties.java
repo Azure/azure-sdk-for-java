@@ -35,12 +35,6 @@ public final class ClusterResourceProperties {
     private String serviceId;
 
     /*
-     * Power state of the Service
-     */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
-    private PowerState powerState;
-
-    /*
      * The zoneRedundant property.
      */
     @JsonProperty(value = "zoneRedundant")
@@ -97,15 +91,6 @@ public final class ClusterResourceProperties {
      */
     public String serviceId() {
         return this.serviceId;
-    }
-
-    /**
-     * Get the powerState property: Power state of the Service.
-     *
-     * @return the powerState value.
-     */
-    public PowerState powerState() {
-        return this.powerState;
     }
 
     /**

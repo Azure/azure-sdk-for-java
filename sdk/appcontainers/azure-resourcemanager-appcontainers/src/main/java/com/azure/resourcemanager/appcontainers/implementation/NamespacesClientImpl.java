@@ -56,14 +56,14 @@ public final class NamespacesClientImpl implements NamespacesClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{managedEnvironmentName}/checkNameAvailability")
+                + "/managedEnvironments/{environmentName}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedEnvironmentName") String managedEnvironmentName,
+            @PathParam("environmentName") String environmentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityRequest checkNameAvailabilityRequest,
             @HeaderParam("Accept") String accept,
@@ -74,7 +74,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -83,9 +83,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String managedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -102,10 +100,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (managedEnvironmentName == null) {
+        if (environmentName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter managedEnvironmentName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (checkNameAvailabilityRequest == null) {
             return Mono
@@ -124,7 +121,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            managedEnvironmentName,
+                            environmentName,
                             this.client.getApiVersion(),
                             checkNameAvailabilityRequest,
                             accept,
@@ -136,7 +133,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +144,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
         String resourceGroupName,
-        String managedEnvironmentName,
+        String environmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -166,10 +163,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (managedEnvironmentName == null) {
+        if (environmentName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter managedEnvironmentName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (checkNameAvailabilityRequest == null) {
             return Mono
@@ -186,7 +182,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                managedEnvironmentName,
+                environmentName,
                 this.client.getApiVersion(),
                 checkNameAvailabilityRequest,
                 accept,
@@ -197,7 +193,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -206,26 +202,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(
-        String resourceGroupName,
-        String managedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        return checkNameAvailabilityWithResponseAsync(
-                resourceGroupName, managedEnvironmentName, checkNameAvailabilityRequest)
-            .flatMap(
-                (Response<CheckNameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, environmentName, checkNameAvailabilityRequest)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -234,18 +220,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(
-        String resourceGroupName,
-        String managedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        return checkNameAvailabilityAsync(resourceGroupName, managedEnvironmentName, checkNameAvailabilityRequest)
-            .block();
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        return checkNameAvailabilityAsync(resourceGroupName, environmentName, checkNameAvailabilityRequest).block();
     }
 
     /**
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,11 +239,11 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
         String resourceGroupName,
-        String managedEnvironmentName,
+        String environmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest,
         Context context) {
         return checkNameAvailabilityWithResponseAsync(
-                resourceGroupName, managedEnvironmentName, checkNameAvailabilityRequest, context)
+                resourceGroupName, environmentName, checkNameAvailabilityRequest, context)
             .block();
     }
 }

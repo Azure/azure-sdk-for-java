@@ -78,7 +78,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -104,9 +104,9 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Added this dependency to include necessary annotations used 
-            by reactor core. Without this dependency, javadoc throws a warning as it 
-            cannot find enum When.MAYBE which is used in @Nullable annotation in reactor 
+        <!-- Added this dependency to include necessary annotations used
+            by reactor core. Without this dependency, javadoc throws a warning as it
+            cannot find enum When.MAYBE which is used in @Nullable annotation in reactor
             core classes -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
