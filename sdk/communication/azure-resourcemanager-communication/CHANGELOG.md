@@ -8,8 +8,6 @@
 
 * `models.ProvisioningState` was removed
 
-* `models.Status` was removed
-
 * `models.LocationResource` was removed
 
 * `models.CommunicationServicesDeleteResponse` was removed
@@ -18,32 +16,20 @@
 
 * `models.CommunicationServicesCreateOrUpdateHeaders` was removed
 
-* `models.OperationStatus` was removed
-
 * `models.NameAvailability` was removed
 
 * `models.CommunicationServicesCreateOrUpdateResponse` was removed
 
-* `models.OperationStatuses` was removed
-
 #### `models.CommunicationServiceResource` was modified
 
-* `models.ProvisioningState provisioningState()` -> `models.CommunicationServicesProvisioningState provisioningState()`
+* `regenerateKeyWithResponse(models.RegenerateKeyParameters,com.azure.core.util.Context)` was removed
 * `systemData()` was removed
-
-#### `CommunicationManager` was modified
-
-* `operationStatuses()` was removed
+* `models.ProvisioningState provisioningState()` -> `models.CommunicationServicesProvisioningState provisioningState()`
 
 #### `models.CommunicationServices` was modified
 
-* `regenerateKeyWithResponse(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was removed
-* `update(java.lang.String,java.lang.String)` was removed
-* `updateWithResponse(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner,com.azure.core.util.Context)` was removed
-* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner)` was removed
-* `createOrUpdate(java.lang.String,java.lang.String)` was removed
-* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner,com.azure.core.util.Context)` was removed
 * `checkNameAvailability()` was removed
+* `regenerateKeyWithResponse(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was removed
 
 #### `models.NameAvailabilityParameters` was modified
 
@@ -53,8 +39,6 @@
 ### Features Added
 
 * `models.DomainsProvisioningState` was added
-
-* `models.CommunicationServiceResource$DefinitionStages` was added
 
 * `models.VerificationStatusRecord` was added
 
@@ -106,12 +90,6 @@
 
 * `models.DomainPropertiesVerificationRecords` was added
 
-* `models.CommunicationServiceResource$Update` was added
-
-* `models.CommunicationServiceResource$UpdateStages` was added
-
-* `models.CommunicationServiceResource$Definition` was added
-
 * `models.DomainResource$DefinitionStages` was added
 
 * `models.CommunicationServiceResourceUpdate` was added
@@ -126,48 +104,37 @@
 
 #### `models.CommunicationServiceResource` was modified
 
-* `linkNotificationHub()` was added
-* `regionName()` was added
-* `update()` was added
-* `refresh(com.azure.core.util.Context)` was added
-* `name()` was added
-* `regenerateKey(models.RegenerateKeyParameters)` was added
 * `regenerateKey(models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
-* `listKeysWithResponse(com.azure.core.util.Context)` was added
-* `region()` was added
-* `type()` was added
-* `resourceGroupName()` was added
-* `listKeys()` was added
 * `linkedDomains()` was added
-* `linkNotificationHubWithResponse(models.LinkNotificationHubParameters,com.azure.core.util.Context)` was added
-* `refresh()` was added
-* `id()` was added
+* `resourceGroupName()` was added
 
 #### `CommunicationManager` was modified
 
-* `emailServices()` was added
-* `domains()` was added
 * `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+* `domains()` was added
+* `emailServices()` was added
 
 #### `CommunicationManager$Configurable` was modified
 
 * `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
-* `withScope(java.lang.String)` was added
 
 #### `models.CommunicationServices` was modified
 
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `checkNameAvailability(models.NameAvailabilityParameters)` was added
 * `regenerateKey(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
-* `define(java.lang.String)` was added
-* `deleteById(java.lang.String)` was added
-* `getById(java.lang.String)` was added
 
 #### `models.NameAvailabilityParameters` was modified
 
-* `withName(java.lang.String)` was added
 * `withType(java.lang.String)` was added
+* `withName(java.lang.String)` was added
+
+#### `models.CommunicationServiceResource$Update` was modified
+
+* `withLinkedDomains(java.util.List)` was added
+
+#### `models.CommunicationServiceResource$Definition` was modified
+
+* `withLinkedDomains(java.util.List)` was added
 
 ## 1.1.0-beta.1 (2022-01-24)
 
