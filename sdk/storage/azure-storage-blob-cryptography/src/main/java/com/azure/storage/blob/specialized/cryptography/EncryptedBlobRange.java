@@ -40,6 +40,7 @@ final class EncryptedBlobRange {
      * Must be greater than or equal to 0 if specified.
      */
     private Long adjustedDownloadCount;
+    private long amountPlaintextToSkip;
 
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange, EncryptionData encryptionData) {
         // Null case
@@ -107,11 +108,16 @@ final class EncryptedBlobRange {
                     this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE
                         - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
                 }
+                this.amountPlaintextToSkip = offsetAdjustment;
                 break;
             case ENCRYPTION_PROTOCOL_V2:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
                 long regionNumber = originalRange.getOffset() / GCM_ENCRYPTION_REGION_LENGTH;
+
+                // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
+                // It is effectively the amount of extra plaintext we grabbed.
+                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
                 long regionStartOffset = regionNumber
                     * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
 
@@ -145,6 +151,10 @@ final class EncryptedBlobRange {
      */
     int getOffsetAdjustment() {
         return this.offsetAdjustment;
+    }
+
+    int getAmountPlaintextToSkip() {
+        return (int) this.amountPlaintextToSkip; // Casting is fine as an encryption region is 4mb
     }
 
     /**

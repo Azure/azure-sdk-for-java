@@ -152,8 +152,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         def dataSize = 20 * 1024 * 1024
         def data = getRandomData(dataSize)
-        def offset = 5000000
-        def endRange = 12000000
+        def offset = 5003000
+        def endRange = 6000000
         def dataDuplicate = data.duplicate().position(offset).limit(endRange)
 
         // 3000 passes
@@ -165,10 +165,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
         // Seems anything over one encryption region struggles
         // ranges?
         // 3000000-12000000. Passes
-        // 5000000-12000000. Middle of regions, middle of blob
-        // 3000000-18000000. Middle of regions, expands to whole blob
-        // 0-20mb. Whole blob
-        // 4mb-8mb. Exact boundary
+        // 5000000-12000000. Middle of regions, middle of blob. Passes.
+        // 5000000-15000000. Middle of regions, middle of blob with one full region in the middle.passes
+        // 3000000-18000000. Middle of regions, expands to whole blob. passes
+        // 0-20mb. Whole blob. passes
+        // 4mb-8mb. Exact boundary. passes.
         // 5003000-6000000. All in one region
         // Have to update logic around adjusting ranges. If there's a range adjust it, otherwise still try decrypting cus it could've been an empty (full) range
         when:

@@ -188,6 +188,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                             if (encryptedBlobRange.getOffsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
                                 iv = encryptionDataV1.getContentEncryptionIV();
                             } else {
+                                // Rather than try to buffer just the 16 bytes of the iv, we "decrypt" them with this garbage iv.
+                                // This makes counting easier.
+                                // We end up throwing that garbage decrypted data away when we trim the cipher uses the ciphertext as the iv
+                                // for the data we actually want.
                                 iv = new byte[ENCRYPTION_BLOCK_SIZE];
                             }
 
@@ -285,7 +289,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
              * somewhere in either the IV or the range adjustment to align on a block boundary. We should
              * advance the position so the customer does not read this data.
              */
-            if (totalOutputBytes.longValue() <= encryptedBlobRange.getOffsetAdjustment()) {
+            if (totalOutputBytes.longValue() <= encryptedBlobRange.getAmountPlaintextToSkip()) {
                 /*
                  * Note that the cast is safe because of the bounds on offsetAdjustment (see encryptedBlobRange
                  * for details), which here upper bounds totalInputBytes.
@@ -294,13 +298,15 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * offsetAdjustment, so when we do reach customer-requested data, advancing the position by
                  * the whole offsetAdjustment would be too much.
                  */
-                int remainingAdjustment = encryptedBlobRange.getOffsetAdjustment()
+                int remainingAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
                     - (int) totalOutputBytes.longValue();
 
                 /*
                  * Setting the position past the limit will throw. This is in the case of very small
                  * ByteBuffers that are entirely contained within the offsetAdjustment.
                  */
+                // Problem is that the amount we adjust the range by to get everything we need is different than the amount we need to trim because nonce and tag disappear.
+                // Split into offsetAdjustment and extraPlaintextRetrieved. It'll be the same for v1 but not for v2.
                 int newPosition = Math.min(remainingAdjustment, plaintextByteBuffer.limit());
                 plaintextByteBuffer.position(newPosition);
             }
@@ -322,7 +328,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 beginningOfEndAdjustment = Long.MAX_VALUE;
             } else {
                 // Calculate the end of the user-requested data so we can trim anything after.
-                beginningOfEndAdjustment = encryptedBlobRange.getOffsetAdjustment()
+                beginningOfEndAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
                     + encryptedBlobRange.getOriginalRange().getCount();
             }
 
@@ -343,7 +349,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 int newLimit = totalOutputBytes.longValue() <= beginningOfEndAdjustment
                     ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
                 plaintextByteBuffer.limit(newLimit);
-            } else if (decryptedBytes + totalOutputBytes.longValue() > encryptedBlobRange.getOffsetAdjustment()) {
+            } else if (decryptedBytes + totalOutputBytes.longValue() > encryptedBlobRange.getAmountPlaintextToSkip()) {
                 /*
                  * The end of this Cipher output is before the end adjustment and after the offset adjustment, so
                  * it will lie somewhere in customer requested data. It is possible we allocated a ByteBuffer that

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
+// TODO: Access conditions, leases, etc from the download call that need to be applied to this request
 public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     private static final ClientLogger LOGGER = new ClientLogger(FetchEncryptionVersionPolicy.class);
