@@ -231,144 +231,144 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-  - job: 'Analyze'
-    condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+  # - job: 'Analyze'
+  #   condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
-    variables:
-      - template: ../variables/globals.yml
+  #   variables:
+  #     - template: ../variables/globals.yml
 
-    pool:
-      name: azsdk-pool-mms-ubuntu-2004-general
-      vmImage: MMSUbuntu20.04
+  #   pool:
+  #     name: azsdk-pool-mms-ubuntu-2004-general
+  #     vmImage: MMSUbuntu20.04
 
-    steps:
-      - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
-        inputs:
-          versionSpec: '3.6'
+  #   steps:
+  #     - task: UsePythonVersion@0
+  #       displayName: 'Use Python 3.6'
+  #       inputs:
+  #         versionSpec: '3.6'
 
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
-            - '**/*.md'
-            - '.vscode/cspell.json'
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+  #     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+  #       parameters:
+  #         Paths:
+  #           - 'sdk/${{ parameters.ServiceDirectory }}'
+  #           - '**/*.xml'
+  #           - '**/*.md'
+  #           - '.vscode/cspell.json'
+  #           - '!sdk/**/test-recordings'
+  #           - '!sdk/**/session-records'
 
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
+  #     - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+  #       parameters:
+  #         CspellConfigPath: .vscode/cspell.json
 
-      - task: PowerShell@2
-        displayName: 'Verify versions in POM files'
-        inputs:
-          pwsh: true
-          workingDirectory: $(Agent.BuildDirectory)
-          filePath: eng/versioning/pom_file_version_scanner.ps1
-          arguments: -Debug:$$(IsDebug)
+  #     - task: PowerShell@2
+  #       displayName: 'Verify versions in POM files'
+  #       inputs:
+  #         pwsh: true
+  #         workingDirectory: $(Agent.BuildDirectory)
+  #         filePath: eng/versioning/pom_file_version_scanner.ps1
+  #         arguments: -Debug:$$(IsDebug)
 
-      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-        parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          JobType: 'Analyze'
+  #     - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+  #       parameters:
+  #         Artifacts: ${{ parameters.Artifacts }}
+  #         AdditionalModules: ${{ parameters.AdditionalModules }}
+  #         JobType: 'Analyze'
 
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
-        inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
+  #     - task: PythonScript@0
+  #       displayName: 'Generate directories variable for sparse checkout'
+  #       inputs:
+  #         scriptPath: 'eng/scripts/generate_from_source_pom.py'
+  #         arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+  #         workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths: $(CheckoutDirectories)
-          SkipDefaultCheckout: true
+  #     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+  #       parameters:
+  #         Paths: $(CheckoutDirectories)
+  #         SkipDefaultCheckout: true
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+  #     - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+  #       parameters:
+  #         PackageName: "azure-sdk-template"
+  #         ServiceDirectory: "template"
+  #         TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template-two"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+  #     - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+  #       parameters:
+  #         PackageName: "azure-sdk-template-two"
+  #         ServiceDirectory: "template"
+  #         TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageName: "azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+  #     - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+  #       parameters:
+  #         PackageName: "azure-sdk-template-three"
+  #         ServiceDirectory: "template"
+  #         TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-        parameters:
-          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+  #     - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+  #       parameters:
+  #         ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
-      - template: /eng/common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: ''
-            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: sdk/${{ parameters.ServiceDirectory }}
-          CheckLinkGuidance: $true
+  #     - template: /eng/common/pipelines/templates/steps/verify-links.yml
+  #       parameters:
+  #         ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  #           Directory: ''
+  #           Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+  #         ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+  #           Directory: sdk/${{ parameters.ServiceDirectory }}
+  #         CheckLinkGuidance: $true
 
-      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  #     - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+  #       parameters:
+  #         ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
-      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
-      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
-        parameters:
-          SourceDirectory: $(Build.SourcesDirectory)
-          BasePathLength: 38
+  #     # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+  #     - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+  #       parameters:
+  #         SourceDirectory: $(Build.SourcesDirectory)
+  #         BasePathLength: 38
 
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ each artifact in parameters.Artifacts }}:
-          - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-            - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-              parameters:
-                PackageName: ${{artifact.name}}
-                ServiceName: ${{parameters.ServiceDirectory}}
-                ForRelease: false
+  #     - ${{if ne(parameters.SDKType, 'data')}}:
+  #       - ${{ each artifact in parameters.Artifacts }}:
+  #         - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+  #           - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+  #             parameters:
+  #               PackageName: ${{artifact.name}}
+  #               ServiceName: ${{parameters.ServiceDirectory}}
+  #               ForRelease: false
 
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: ../steps/install-reporting-tools.yml
+  #     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+  #     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+  #     - template: ../steps/install-reporting-tools.yml
 
-      # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
-      - task: Maven@3
-        displayName: 'Build and Install'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
+  #     # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
+  #     - task: Maven@3
+  #       displayName: 'Build and Install'
+  #       inputs:
+  #         mavenPomFile: pom.xml
+  #         goals: 'install'
+  #         options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
+  #         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+  #         javaHomeOption: 'JDKVersion'
+  #         jdkVersionOption: $(JavaBuildVersion)
+  #         jdkArchitectureOption: 'x64'
+  #         publishJUnitResults: false
 
-      - task: Maven@3
-        displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
-        inputs:
-          mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
-          mavenOptions: '$(MemoryOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'verify'
+  #     - task: Maven@3
+  #       displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+  #       inputs:
+  #         mavenPomFile: pom.xml
+  #         options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
+  #         mavenOptions: '$(MemoryOptions)'
+  #         javaHomeOption: 'JDKVersion'
+  #         jdkVersionOption: $(JavaBuildVersion)
+  #         jdkArchitectureOption: 'x64'
+  #         publishJUnitResults: false
+  #         goals: 'verify'
 
-      - template: ../steps/upload-repository-on-failure.yml
+  #     - template: ../steps/upload-repository-on-failure.yml
 
-      - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+  #     - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   - job: Compliance
     pool:
@@ -380,25 +380,25 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
 
-  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-    parameters:
-      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-      MatrixConfigs: ${{ parameters.MatrixConfigs }}
-      MatrixFilters: ${{ parameters.MatrixFilters }}
-      MatrixReplace: ${{ parameters.MatrixReplace }}
-      CloudConfig:
-        Cloud: Public
-      AdditionalParameters:
-        SDKType: ${{ parameters.SDKType }}
-        ServiceDirectory: ${{ parameters.ServiceDirectory }}
-        TestPipeline: ${{ parameters.TestPipeline }}
-        Artifacts: ${{ parameters.Artifacts }}
-        AdditionalModules: ${{ parameters.AdditionalModules }}
-        PreTestSteps: ${{ parameters.PreTestSteps }}
-        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-        PreBuildSteps: ${{ parameters.PreBuildSteps }}
-        TestGoals: ${{ parameters.TestGoals }}
-        TestOptions: ${{ parameters.TestOptions }}
-        AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
-        TestParallelization: ${{ parameters.TestParallelization }}
-        BuildParallelization: ${{ parameters.BuildParallelization }}
+  # - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+  #   parameters:
+  #     JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+  #     MatrixConfigs: ${{ parameters.MatrixConfigs }}
+  #     MatrixFilters: ${{ parameters.MatrixFilters }}
+  #     MatrixReplace: ${{ parameters.MatrixReplace }}
+  #     CloudConfig:
+  #       Cloud: Public
+  #     AdditionalParameters:
+  #       SDKType: ${{ parameters.SDKType }}
+  #       ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  #       TestPipeline: ${{ parameters.TestPipeline }}
+  #       Artifacts: ${{ parameters.Artifacts }}
+  #       AdditionalModules: ${{ parameters.AdditionalModules }}
+  #       PreTestSteps: ${{ parameters.PreTestSteps }}
+  #       SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+  #       PreBuildSteps: ${{ parameters.PreBuildSteps }}
+  #       TestGoals: ${{ parameters.TestGoals }}
+  #       TestOptions: ${{ parameters.TestOptions }}
+  #       AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+  #       TestParallelization: ${{ parameters.TestParallelization }}
+  #       BuildParallelization: ${{ parameters.BuildParallelization }}
