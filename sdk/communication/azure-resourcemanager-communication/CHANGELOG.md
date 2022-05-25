@@ -1,14 +1,173 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2022-05-25)
 
-### Features Added
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Azure Communication Services. Package tag package-2021-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.ProvisioningState` was removed
 
-### Other Changes
+* `models.Status` was removed
+
+* `models.LocationResource` was removed
+
+* `models.CommunicationServicesDeleteResponse` was removed
+
+* `models.CommunicationServicesDeleteHeaders` was removed
+
+* `models.CommunicationServicesCreateOrUpdateHeaders` was removed
+
+* `models.OperationStatus` was removed
+
+* `models.NameAvailability` was removed
+
+* `models.CommunicationServicesCreateOrUpdateResponse` was removed
+
+* `models.OperationStatuses` was removed
+
+#### `models.CommunicationServiceResource` was modified
+
+* `models.ProvisioningState provisioningState()` -> `models.CommunicationServicesProvisioningState provisioningState()`
+* `systemData()` was removed
+
+#### `CommunicationManager` was modified
+
+* `operationStatuses()` was removed
+
+#### `models.CommunicationServices` was modified
+
+* `regenerateKeyWithResponse(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String)` was removed
+* `updateWithResponse(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner,com.azure.core.util.Context)` was removed
+* `checkNameAvailability()` was removed
+
+#### `models.NameAvailabilityParameters` was modified
+
+* `type()` was removed
+* `name()` was removed
+
+### Features Added
+
+* `models.DomainsProvisioningState` was added
+
+* `models.CommunicationServiceResource$DefinitionStages` was added
+
+* `models.VerificationStatusRecord` was added
+
+* `models.DomainPropertiesVerificationStates` was added
+
+* `models.UpdateDomainRequestParameters` was added
+
+* `models.DomainResourceList` was added
+
+* `models.DomainResource$Definition` was added
+
+* `models.EmailServiceResource` was added
+
+* `models.EmailServicesProvisioningState` was added
+
+* `models.EmailServiceResourceUpdate` was added
+
+* `models.DomainResource$Update` was added
+
+* `models.CheckNameAvailabilityReason` was added
+
+* `models.EmailServices` was added
+
+* `models.VerificationParameter` was added
+
+* `models.EmailServiceResource$Update` was added
+
+* `models.DomainManagement` was added
+
+* `models.Domains` was added
+
+* `models.VerificationStatus` was added
+
+* `models.DomainResource` was added
+
+* `models.CommunicationServicesProvisioningState` was added
+
+* `models.UserEngagementTracking` was added
+
+* `models.VerificationType` was added
+
+* `models.EmailServiceResourceList` was added
+
+* `models.EmailServiceResource$UpdateStages` was added
+
+* `models.CheckNameAvailabilityRequest` was added
+
+* `models.CheckNameAvailabilityResponse` was added
+
+* `models.DomainPropertiesVerificationRecords` was added
+
+* `models.CommunicationServiceResource$Update` was added
+
+* `models.CommunicationServiceResource$UpdateStages` was added
+
+* `models.CommunicationServiceResource$Definition` was added
+
+* `models.DomainResource$DefinitionStages` was added
+
+* `models.CommunicationServiceResourceUpdate` was added
+
+* `models.EmailServiceResource$Definition` was added
+
+* `models.DomainResource$UpdateStages` was added
+
+* `models.EmailServiceResource$DefinitionStages` was added
+
+* `models.DnsRecord` was added
+
+#### `models.CommunicationServiceResource` was modified
+
+* `linkNotificationHub()` was added
+* `regionName()` was added
+* `update()` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `name()` was added
+* `regenerateKey(models.RegenerateKeyParameters)` was added
+* `regenerateKey(models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
+* `listKeysWithResponse(com.azure.core.util.Context)` was added
+* `region()` was added
+* `type()` was added
+* `resourceGroupName()` was added
+* `listKeys()` was added
+* `linkedDomains()` was added
+* `linkNotificationHubWithResponse(models.LinkNotificationHubParameters,com.azure.core.util.Context)` was added
+* `refresh()` was added
+* `id()` was added
+
+#### `CommunicationManager` was modified
+
+* `emailServices()` was added
+* `domains()` was added
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `CommunicationManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+* `withScope(java.lang.String)` was added
+
+#### `models.CommunicationServices` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `checkNameAvailability(models.NameAvailabilityParameters)` was added
+* `regenerateKey(java.lang.String,java.lang.String,models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+
+#### `models.NameAvailabilityParameters` was modified
+
+* `withName(java.lang.String)` was added
+* `withType(java.lang.String)` was added
 
 ## 1.1.0-beta.1 (2022-01-24)
 
