@@ -79,8 +79,8 @@ public final class AnomalyDetectorClient {
     }
 
     /**
-     * This operation generates a model using points before the latest one. With this method, only historical points are
-     * used to determine whether the target point is an anomaly. The latest point detecting operation matches the
+     * This operation generates a model using the data points that you sent to the API, and based on all data 
+     * to determine whether the last point is an anomalous. The latest point detecting operation matches the
      * scenario of real-time monitoring of business metrics.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
@@ -95,8 +95,8 @@ public final class AnomalyDetectorClient {
     }
 
     /**
-     * This operation generates a model using points before the latest one. With this method, only historical points are
-     * used to determine whether the target point is an anomaly. The latest point detecting operation matches the
+     * This operation generates a model using the data points that you sent to the API, and based on all data 
+     * to determine whether the last point is an anomalous. The latest point detecting operation matches the
      * scenario of real-time monitoring of business metrics.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
