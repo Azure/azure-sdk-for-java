@@ -17,34 +17,25 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.iot.deviceupdate.implementation.DeviceManagementsImpl;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceManagementClientBuilder.class)
 public final class DeviceManagementClient {
-    @Generated private final DeviceManagementsImpl serviceClient;
+    @Generated private final DeviceManagementAsyncClient client;
 
     /**
-     * Initializes an instance of DeviceManagements client.
+     * Initializes an instance of DeviceManagementClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    DeviceManagementClient(DeviceManagementsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    DeviceManagementClient(DeviceManagementAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -78,19 +69,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceClasses(RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceClasses(requestOptions);
+        return new PagedIterable<>(this.client.listDeviceClasses(requestOptions));
     }
 
     /**
      * Gets the properties of a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -119,19 +102,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceClassWithResponse(deviceClassId, requestOptions);
+        return this.client.getDeviceClassWithResponse(deviceClassId, requestOptions).block();
     }
 
     /**
      * Gets a list of installable updates for a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -160,7 +135,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listInstallableUpdatesForDeviceClass(
             String deviceClassId, RequestOptions requestOptions) {
-        return this.serviceClient.listInstallableUpdatesForDeviceClass(deviceClassId, requestOptions);
+        return new PagedIterable<>(this.client.listInstallableUpdatesForDeviceClass(deviceClassId, requestOptions));
     }
 
     /**
@@ -172,7 +147,6 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on device GroupId or DeviceClassId.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -227,7 +201,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDevices(RequestOptions requestOptions) {
-        return this.serviceClient.listDevices(requestOptions);
+        return new PagedIterable<>(this.client.listDevices(requestOptions));
     }
 
     /**
@@ -238,8 +212,6 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Devices action.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -248,6 +220,7 @@ public final class DeviceManagementClient {
      * String(Devices/Modules/All)
      * }</pre>
      *
+     * @param action Devices action.
      * @param importType The types of devices to import.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -258,20 +231,13 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginImportDevices(BinaryData importType, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportDevices(importType, requestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginImportDevices(
+            String action, BinaryData importType, RequestOptions requestOptions) {
+        return this.client.beginImportDevices(action, importType, requestOptions).getSyncPoller();
     }
 
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -321,20 +287,12 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceWithResponse(String deviceId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceWithResponse(deviceId, requestOptions);
+        return this.client.getDeviceWithResponse(deviceId, requestOptions).block();
     }
 
     /**
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -386,20 +344,12 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceModuleWithResponse(
             String deviceId, String moduleId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceModuleWithResponse(deviceId, moduleId, requestOptions);
+        return this.client.getDeviceModuleWithResponse(deviceId, moduleId, requestOptions).block();
     }
 
     /**
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -423,19 +373,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getUpdateComplianceWithResponse(requestOptions);
+        return this.client.getUpdateComplianceWithResponse(requestOptions).block();
     }
 
     /**
      * Gets a list of available group device tags for all devices connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -462,19 +404,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceTags(RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceTags(requestOptions);
+        return new PagedIterable<>(this.client.listDeviceTags(requestOptions));
     }
 
     /**
      * Gets a count of how many devices have a device tag.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -496,19 +430,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceTagWithResponse(String tagName, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceTagWithResponse(tagName, requestOptions);
+        return this.client.getDeviceTagWithResponse(tagName, requestOptions).block();
     }
 
     /**
      * Gets a list of all device groups.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -541,19 +467,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listGroups(RequestOptions requestOptions) {
-        return this.serviceClient.listGroups(requestOptions);
+        return new PagedIterable<>(this.client.listGroups(requestOptions));
     }
 
     /**
      * Gets the properties of a group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -582,19 +500,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.getGroupWithResponse(groupId, requestOptions);
+        return this.client.getGroupWithResponse(groupId, requestOptions).block();
     }
 
     /**
      * Create or update a device group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -641,19 +551,11 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateGroupWithResponse(
             String groupId, BinaryData group, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateGroupWithResponse(groupId, group, requestOptions);
+        return this.client.createOrUpdateGroupWithResponse(groupId, group, requestOptions).block();
     }
 
     /**
      * Deletes a device group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -666,20 +568,12 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteGroupWithResponse(groupId, requestOptions);
+        return this.client.deleteGroupWithResponse(groupId, requestOptions).block();
     }
 
     /**
      * Get group update compliance information such as how many devices are on their latest update, how many need new
      * updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -704,7 +598,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupUpdateComplianceWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.getGroupUpdateComplianceWithResponse(groupId, requestOptions);
+        return this.client.getGroupUpdateComplianceWithResponse(groupId, requestOptions).block();
     }
 
     /**
@@ -716,7 +610,6 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -749,7 +642,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listBestUpdatesForGroup(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.listBestUpdatesForGroup(groupId, requestOptions);
+        return new PagedIterable<>(this.client.listBestUpdatesForGroup(groupId, requestOptions));
     }
 
     /**
@@ -761,7 +654,6 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>Restricts the set of deployments returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -771,7 +663,7 @@ public final class DeviceManagementClient {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             updateId: {
      *                 provider: String
      *                 name: String
@@ -797,26 +689,18 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentsForGroup(String groupId, RequestOptions requestOptions) {
-        return this.serviceClient.listDeploymentsForGroup(groupId, requestOptions);
+        return new PagedIterable<>(this.client.listDeploymentsForGroup(groupId, requestOptions));
     }
 
     /**
      * Gets the properties of a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     updateId: {
      *         provider: String
      *         name: String
@@ -841,26 +725,18 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeploymentWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.getDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
      * Creates or updates a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     updateId: {
      *         provider: String
      *         name: String
@@ -877,7 +753,7 @@ public final class DeviceManagementClient {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     updateId: {
      *         provider: String
      *         name: String
@@ -903,20 +779,13 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateDeploymentWithResponse(
             String deploymentId, String groupId, BinaryData deployment, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDeploymentWithResponse(
-                deploymentId, groupId, deployment, requestOptions);
+        return this.client
+                .createOrUpdateDeploymentWithResponse(deploymentId, groupId, deployment, requestOptions)
+                .block();
     }
 
     /**
      * Deletes a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
@@ -931,20 +800,12 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteDeploymentWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.deleteDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -973,7 +834,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentStatusWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeploymentStatusWithResponse(groupId, deploymentId, requestOptions);
+        return this.client.getDeploymentStatusWithResponse(groupId, deploymentId, requestOptions).block();
     }
 
     /**
@@ -985,7 +846,6 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1019,19 +879,11 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentDevices(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.listDeploymentDevices(groupId, deploymentId, requestOptions);
+        return new PagedIterable<>(this.client.listDeploymentDevices(groupId, deploymentId, requestOptions));
     }
 
     /**
      * Retrieve operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1060,11 +912,11 @@ public final class DeviceManagementClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
+     *     lastActionDateTime: OffsetDateTime
+     *     createdDateTime: OffsetDateTime
      *     etag: String
      * }
      * }</pre>
@@ -1080,7 +932,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponse(operationId, requestOptions);
+        return this.client.getOperationWithResponse(operationId, requestOptions).block();
     }
 
     /**
@@ -1092,8 +944,7 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>$filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>$top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>$top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1117,11 +968,11 @@ public final class DeviceManagementClient {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -1139,19 +990,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperations(requestOptions);
+        return new PagedIterable<>(this.client.listOperations(requestOptions));
     }
 
     /**
      * Start the device diagnostics log collection operation on specified devices.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1202,19 +1045,11 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> collectLogsWithResponse(
             String operationId, BinaryData logCollectionRequest, RequestOptions requestOptions) {
-        return this.serviceClient.collectLogsWithResponse(operationId, logCollectionRequest, requestOptions);
+        return this.client.collectLogsWithResponse(operationId, logCollectionRequest, requestOptions).block();
     }
 
     /**
      * Get the device diagnostics log collection operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1246,19 +1081,11 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionOperationWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getLogCollectionOperationWithResponse(operationId, requestOptions);
+        return this.client.getLogCollectionOperationWithResponse(operationId, requestOptions).block();
     }
 
     /**
      * Get all device diagnostics log collection operations.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1293,19 +1120,11 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listLogCollectionOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listLogCollectionOperations(requestOptions);
+        return new PagedIterable<>(this.client.listLogCollectionOperations(requestOptions));
     }
 
     /**
      * Get device diagnostics log collection operation with detailed status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1341,7 +1160,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionOperationDetailedStatusWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getLogCollectionOperationDetailedStatusWithResponse(operationId, requestOptions);
+        return this.client.getLogCollectionOperationDetailedStatusWithResponse(operationId, requestOptions).block();
     }
 
     /**
@@ -1352,8 +1171,6 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Cancel deployment action.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1361,7 +1178,7 @@ public final class DeviceManagementClient {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     updateId: {
      *         provider: String
      *         name: String
@@ -1375,6 +1192,7 @@ public final class DeviceManagementClient {
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
+     * @param action Cancel deployment action.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1385,8 +1203,8 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopDeploymentWithResponse(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.stopDeploymentWithResponse(groupId, deploymentId, requestOptions);
+            String groupId, String deploymentId, String action, RequestOptions requestOptions) {
+        return this.client.stopDeploymentWithResponse(groupId, deploymentId, action, requestOptions).block();
     }
 
     /**
@@ -1397,8 +1215,6 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Retry deployment action.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1406,7 +1222,7 @@ public final class DeviceManagementClient {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     updateId: {
      *         provider: String
      *         name: String
@@ -1420,6 +1236,7 @@ public final class DeviceManagementClient {
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
+     * @param action Retry deployment action.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1430,7 +1247,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retryDeploymentWithResponse(
-            String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.retryDeploymentWithResponse(groupId, deploymentId, requestOptions);
+            String groupId, String deploymentId, String action, RequestOptions requestOptions) {
+        return this.client.retryDeploymentWithResponse(groupId, deploymentId, action, requestOptions).block();
     }
 }
