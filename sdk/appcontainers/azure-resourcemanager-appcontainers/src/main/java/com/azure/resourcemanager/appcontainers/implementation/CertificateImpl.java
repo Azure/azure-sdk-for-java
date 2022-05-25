@@ -60,6 +60,10 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CertificateInner innerModel() {
         return this.innerObject;
     }
@@ -70,15 +74,15 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
 
     private String resourceGroupName;
 
-    private String managedEnvironmentName;
+    private String environmentName;
 
-    private String name;
+    private String certificateName;
 
     private CertificatePatch updateCertificateEnvelope;
 
-    public CertificateImpl withExistingManagedEnvironment(String resourceGroupName, String managedEnvironmentName) {
+    public CertificateImpl withExistingManagedEnvironment(String resourceGroupName, String environmentName) {
         this.resourceGroupName = resourceGroupName;
-        this.managedEnvironmentName = managedEnvironmentName;
+        this.environmentName = environmentName;
         return this;
     }
 
@@ -88,7 +92,7 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
                 .serviceClient()
                 .getCertificates()
                 .createOrUpdateWithResponse(
-                    resourceGroupName, managedEnvironmentName, name, this.innerModel(), Context.NONE)
+                    resourceGroupName, environmentName, certificateName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -98,7 +102,8 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
             serviceManager
                 .serviceClient()
                 .getCertificates()
-                .createOrUpdateWithResponse(resourceGroupName, managedEnvironmentName, name, this.innerModel(), context)
+                .createOrUpdateWithResponse(
+                    resourceGroupName, environmentName, certificateName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -106,7 +111,7 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
     CertificateImpl(String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new CertificateInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.certificateName = name;
     }
 
     public CertificateImpl update() {
@@ -120,7 +125,7 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
                 .serviceClient()
                 .getCertificates()
                 .updateWithResponse(
-                    resourceGroupName, managedEnvironmentName, name, updateCertificateEnvelope, Context.NONE)
+                    resourceGroupName, environmentName, certificateName, updateCertificateEnvelope, Context.NONE)
                 .getValue();
         return this;
     }
@@ -130,7 +135,8 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
             serviceManager
                 .serviceClient()
                 .getCertificates()
-                .updateWithResponse(resourceGroupName, managedEnvironmentName, name, updateCertificateEnvelope, context)
+                .updateWithResponse(
+                    resourceGroupName, environmentName, certificateName, updateCertificateEnvelope, context)
                 .getValue();
         return this;
     }
@@ -140,8 +146,8 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.managedEnvironmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
+        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "certificates");
     }
 
     public Certificate refresh() {
@@ -149,7 +155,7 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
             serviceManager
                 .serviceClient()
                 .getCertificates()
-                .getWithResponse(resourceGroupName, managedEnvironmentName, name, Context.NONE)
+                .getWithResponse(resourceGroupName, environmentName, certificateName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -159,7 +165,7 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
             serviceManager
                 .serviceClient()
                 .getCertificates()
-                .getWithResponse(resourceGroupName, managedEnvironmentName, name, context)
+                .getWithResponse(resourceGroupName, environmentName, certificateName, context)
                 .getValue();
         return this;
     }
