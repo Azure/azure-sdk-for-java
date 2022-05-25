@@ -293,8 +293,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [docker]: https://docs.docker.com/get-docker/
 [kubectl]: https://kubernetes.io/docs/tasks/tools/#kubectl
 [helm]: https://helm.sh/docs/intro/install/
-[azure_cli]: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
-[powershell]: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7 
+[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
+[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7 
 [azure_sdk_tools]: https://github.com/Azure/azure-sdk-tools
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
-[java_agent_jar]: https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent
+[java_agent_jar]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent
