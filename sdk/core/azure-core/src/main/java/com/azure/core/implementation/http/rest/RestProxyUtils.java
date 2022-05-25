@@ -5,6 +5,7 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -22,10 +23,10 @@ public final class RestProxyUtils {
     }
 
     public static void validateLength(final HttpRequest request) {
-        final Flux<ByteBuffer> bbFlux = request.getBody();
-        if (bbFlux != null) {
+        final BinaryData body = request.getBodyAsBinaryData();
+        if (body != null) {
             final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-            request.setBody(validateFluxLength(bbFlux, expectedLength));
+            request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
         }
     }
 

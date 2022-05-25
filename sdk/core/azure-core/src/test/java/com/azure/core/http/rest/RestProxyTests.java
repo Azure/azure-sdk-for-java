@@ -83,7 +83,7 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        BinaryData data = BinaryData.fromString("hello");
+        BinaryData data = BinaryData.fromBytes(bytes);
         Response<Void> response = testInterface.testMethod(data,
                 "application/json", (long) bytes.length)
             .block();

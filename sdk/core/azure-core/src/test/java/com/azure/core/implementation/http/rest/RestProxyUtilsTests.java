@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
@@ -48,22 +49,20 @@ public class RestProxyUtilsTests {
 
     @Test
     public void unexpectedBodyLength() {
+
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED);
-
-        RestProxyUtils.validateLength(httpRequest);
-
-        StepVerifier.create(
-                FluxUtil.collectBytesInByteBufferStream(
-                    httpRequest.setHeader("Content-Length", "4").getBody()))
+            .setBody(EXPECTED)
+            .setHeader("Content-Length", "4");
+        StepVerifier.create(validateAndCollectRequest(httpRequest))
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof UnexpectedLengthException);
                 assertEquals("Request body emitted 5 bytes, more than the expected 4 bytes.", throwable.getMessage());
             });
 
-        StepVerifier.create(
-                FluxUtil.collectBytesInByteBufferStream(
-                    httpRequest.setHeader("Content-Length", "6").getBody()))
+        httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            .setBody(EXPECTED)
+            .setHeader("Content-Length", "6");
+        StepVerifier.create(validateAndCollectRequest(httpRequest))
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof UnexpectedLengthException);
                 assertEquals("Request body emitted 5 bytes, less than the expected 6 bytes.", throwable.getMessage());
@@ -87,5 +86,11 @@ public class RestProxyUtilsTests {
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
             .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
             .verifyComplete();
+    }
+
+    private static Mono<byte[]> validateAndCollectRequest(HttpRequest request) {
+        return Mono.fromCallable(() ->  { RestProxyUtils.validateLength(request);
+                return request;})
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody()));
     }
 }
