@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +76,9 @@ public class ClientTelemetryConfig {
                 }
 
                 return new ProxyOptions(type, new InetSocketAddress(proxyOptionsConfig.host, proxyOptionsConfig.port));
-            } catch (Exception e) {
+            } catch (JsonMappingException e) {
+                logger.error("Failed to parse client telemetry proxy option config", e);
+            } catch (JsonProcessingException e) {
                 logger.error("Failed to parse client telemetry proxy option config", e);
             }
         }
