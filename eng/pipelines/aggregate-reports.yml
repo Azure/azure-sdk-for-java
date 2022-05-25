@@ -66,7 +66,6 @@ stages:
             publishJUnitResults: false
             goals: 'clean package'
 
-
         - task: Maven@3
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
@@ -79,10 +78,19 @@ stages:
             publishJUnitResults: false
             goals: 'javadoc:aggregate'
 
+         # Generate the pom file with all the modules required for creating an aggregate code coverage report
+        - task: PythonScript@0
+          displayName: 'Generate pom for aggregate code coverage report'
+          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+          inputs:
+            scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
+            arguments: '--groups com.azure'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+
         - task: Maven@3
           displayName: 'Generate Aggregate JaCoCo coverage report'
           inputs:
-            mavenPomFile: pom.xml
+            mavenPomFile: aggregate-coverage-pom.xml
             options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Pjacoco -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
