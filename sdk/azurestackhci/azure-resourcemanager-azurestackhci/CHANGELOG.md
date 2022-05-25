@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,92 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2022-05-25)
+
+- Azure Resource Manager AzureStackHci client library for Java. This package contains Microsoft Azure SDK for AzureStackHci Management SDK. Azure Stack HCI management service. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Clusters` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+### Features Added
+
+* `models.UploadCertificateRequest` was added
+
+* `models.ClusterIdentityResponse` was added
+
+* `models.ArcSetting$UpdateStages` was added
+
+* `models.ArcSettingsPatch` was added
+
+* `models.ArcSetting$Update` was added
+
+* `models.ArcIdentityResponse` was added
+
+* `models.PasswordCredential` was added
+
+* `models.RawCertificateData` was added
+
+#### `models.Extension` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Cluster` was modified
+
+* `resourceGroupName()` was added
+* `serviceEndpoint()` was added
+* `aadServicePrincipalObjectId()` was added
+* `aadApplicationObjectId()` was added
+* `createIdentity(com.azure.core.util.Context)` was added
+* `uploadCertificate(models.UploadCertificateRequest,com.azure.core.util.Context)` was added
+* `uploadCertificate(models.UploadCertificateRequest)` was added
+* `createIdentity()` was added
+
+#### `models.ArcSetting$Definition` was modified
+
+* `withArcApplicationClientId(java.lang.String)` was added
+* `withArcServicePrincipalObjectId(java.lang.String)` was added
+* `withConnectivityProperties(java.lang.Object)` was added
+* `withArcApplicationObjectId(java.lang.String)` was added
+* `withArcApplicationTenantId(java.lang.String)` was added
+
+#### `models.Clusters` was modified
+
+* `createIdentity(java.lang.String,java.lang.String)` was added
+* `uploadCertificate(java.lang.String,java.lang.String,models.UploadCertificateRequest)` was added
+* `uploadCertificate(java.lang.String,java.lang.String,models.UploadCertificateRequest,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `createIdentity(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ArcSetting` was modified
+
+* `arcServicePrincipalObjectId()` was added
+* `createIdentity(com.azure.core.util.Context)` was added
+* `generatePassword()` was added
+* `resourceGroupName()` was added
+* `arcApplicationTenantId()` was added
+* `createIdentity()` was added
+* `connectivityProperties()` was added
+* `arcApplicationClientId()` was added
+* `update()` was added
+* `arcApplicationObjectId()` was added
+* `generatePasswordWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withAadApplicationObjectId(java.lang.String)` was added
+* `withAadServicePrincipalObjectId(java.lang.String)` was added
+
+#### `models.ArcSettings` was modified
+
+* `generatePassword(java.lang.String,java.lang.String,java.lang.String)` was added
+* `createIdentity(java.lang.String,java.lang.String,java.lang.String)` was added
+* `createIdentity(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `generatePasswordWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.2 (2022-04-12)
 

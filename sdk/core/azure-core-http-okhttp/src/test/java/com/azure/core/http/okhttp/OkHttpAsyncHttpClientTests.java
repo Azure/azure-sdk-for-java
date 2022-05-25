@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import okhttp3.Dispatcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -141,7 +142,7 @@ public class OkHttpAsyncHttpClientTests {
             .setBody(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
+            .expectErrorMatches(e -> e.getMessage().contains("boo"))
             .verify();
     }
 
@@ -159,7 +160,7 @@ public class OkHttpAsyncHttpClientTests {
 
         try {
             StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
+                .expectErrorMatches(e -> e.getMessage().contains("boo"))
                 .verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
@@ -211,10 +212,15 @@ public class OkHttpAsyncHttpClientTests {
     @Test
     public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
+        int concurrency = 10;
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequestsPerHost(concurrency); // this is 5 by default.
+        HttpClient client = new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(dispatcher)
+            .build();
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
-            .parallel(25)
+            .parallel(concurrency)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> getResponse(client, "/long")
                 .flatMapMany(HttpResponse::getBodyAsByteArray)
