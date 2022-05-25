@@ -110,6 +110,9 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
+        # Ignore sdk/resourcemanagerhybrid
+        if 'resourcemanagerhybrid' in root:
+            continue
 
         for file_name in files:
             file_path = root + os.sep + file_name
