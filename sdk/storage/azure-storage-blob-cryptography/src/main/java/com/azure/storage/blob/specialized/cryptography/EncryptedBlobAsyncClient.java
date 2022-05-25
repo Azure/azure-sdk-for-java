@@ -657,8 +657,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                             // Build EncryptionData
                             encryptionData = new EncryptionDataV2()
                                 .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
-                                    EncryptionAlgorithm.AES_CBC_256))
+                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V2,
+                                    EncryptionAlgorithm.AES_GMC_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setAuthenticationBlockInfo(new AuthenticationRegionInfo(
                                     CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH + "",

@@ -7,6 +7,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRange;
 
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
@@ -73,7 +74,7 @@ final class EncryptedBlobRange {
         this.adjustedDownloadCount = this.originalRange.getCount();
 
         switch (encryptionData.getEncryptionAgent().getProtocol()) {
-            case CryptographyConstants.ENCRYPTION_PROTOCOL_V1:
+            case ENCRYPTION_PROTOCOL_V1:
                 // Calculate offsetAdjustment.
                 if (originalRange.getOffset() != 0) {
 
@@ -124,8 +125,9 @@ final class EncryptedBlobRange {
 
                 // Offset adjustment is difference in two starting values
                 this.offsetAdjustment = (int) (originalRange.getOffset() - regionStartOffset);
-                // adjusted download count is the difference in size of the two ranges
-                this.adjustedDownloadCount = (regionEndOffset - regionStartOffset) - originalRange.getCount();
+                // adjusted download count is the difference in the end and start of the range.
+                this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
+                break;
             default:
                 throw new IllegalArgumentException();
         }

@@ -107,7 +107,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // 3000 passes
         // 5 * 1024 * 1024 - 10 passes
-        // 16 * 1024 * 1024 - 10 passes
+        // 20 * 1024 * 1024 - 10 passes
         when:
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
 
@@ -143,6 +143,44 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
+    }
+
+    def "v2 Download test"() {
+        setup:
+        def encryptedBlobClient = new EncryptedBlobClient(beac)
+        def blobClient = cc.getBlobClient(beac.getBlobName())
+
+        def dataSize = 20 * 1024 * 1024
+        def data = getRandomData(dataSize)
+        def offset = 5000000
+        def endRange = 12000000
+        def dataDuplicate = data.duplicate().position(offset).limit(endRange)
+
+        // 3000 passes
+        // 5 * 1024 * 1024 - 10 passes
+        // 20 * 1024 * 1024 - 10 passes
+        // 4 * 1024 * 1024 passes
+        // 4 * 1024 * 1024 - 10 passes
+        // 8 * 1024 * 1024 passes
+        // Seems anything over one encryption region struggles
+        // ranges?
+        // 3000000-12000000. Passes
+        // 5000000-12000000. Middle of regions, middle of blob
+        // 3000000-18000000. Middle of regions, expands to whole blob
+        // 0-20mb. Whole blob
+        // 4mb-8mb. Exact boundary
+        // 5003000-6000000. All in one region
+        // Have to update logic around adjusting ranges. If there's a range adjust it, otherwise still try decrypting cus it could've been an empty (full) range
+        when:
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
+
+        def plaintextOut = new ByteArrayOutputStream()
+        encryptedBlobClient.downloadStreamWithResponse(plaintextOut, new BlobRange(offset, endRange-offset), null, null, false, null, null)
+
+        then:
+        // Shouldn't have to duplicate data, but something weird was happening around having to flip the data when I used the original source
+        // <= 4mb and I had to flip. Otherwise I had  not flip?
+        dataDuplicate == ByteBuffer.wrap(plaintextOut.toByteArray())
     }
 
     // Key and key resolver null

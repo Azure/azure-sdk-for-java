@@ -32,6 +32,10 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy nextPolicy) {
         // Assumption: Download is the only API on an encrypted client that sets x-ms-range.
         // If not a download call, this policy is a no-op.
+        // TODO: Find another way to make this a no-op if it's not a download. May have to override download methods to add a context
+        // Or if no range is specified, it's the whole blob anyway, so we'll have everything we need already
+        // So maybe we just only expand the range if it's present. And we'd only have to do a getProperties if we see there's a range header
+        // Otherwise decryption can take care of it
         if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) == null) {
             return nextPolicy.process();
         } else {
@@ -46,6 +50,7 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
                 })
                 .then(Mono.defer(nextPolicy::process));
         }
+
     }
 
     /**

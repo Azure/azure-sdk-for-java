@@ -6,8 +6,10 @@ package com.azure.storage.common.implementation;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class provides ability buffer data chunks that are larger than single {@link ByteBuffer} size.
@@ -67,4 +69,26 @@ public final class BufferAggregator {
     public Flux<ByteBuffer> asFlux() {
         return Flux.fromIterable(this.buffers);
     }
+
+    /**
+     * Returns the first n bytes of this aggregator. When asFlux is called later, they will not be returned again. This
+     * is generally intended to buffer negligible amounts of data such as the nonce in GMC encryption, which is 12 bytes
+     * @return
+     */
+    public byte[] getFirstNBytes(int numBytes) {
+        // Should probably add more checks to make it safer even though this is an internal method
+        // numBytes < less than aggregator size, etc.
+        ByteBuffer data = ByteBuffer.allocate(numBytes);
+        Iterator<ByteBuffer> bufferIterator = buffers.iterator();
+        while(data.hasRemaining()) {
+            ByteBuffer source = bufferIterator.next(); // Should check hasNext
+            while(source.hasRemaining() && data.hasRemaining()) {
+                data.put(source.get());
+            }
+        }
+
+        return data.flip().array();
+    }
+
+
 }
