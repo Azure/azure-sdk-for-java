@@ -1,6 +1,6 @@
 # Release History
 
-## 12.17.0-beta.2 (2022-05-24)
+## 12.17.0 (2022-05-25)
 
 ### Other Changes
 - Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output
