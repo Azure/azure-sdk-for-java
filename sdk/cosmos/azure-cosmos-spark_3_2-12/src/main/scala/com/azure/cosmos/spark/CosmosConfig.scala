@@ -13,6 +13,7 @@ import com.azure.cosmos.spark.CosmosPredicates.{assertNotNullOrEmpty, requireNot
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
+import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
@@ -89,6 +90,8 @@ private[spark] object CosmosConfigNames {
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
   val SerializationInclusionMode =
     "spark.cosmos.serialization.inclusionMode"
+  val SerializationDateTimeConversionMode =
+    "spark.cosmos.serialization.dateTimeConversionMode"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -140,7 +143,8 @@ private[spark] object CosmosConfigNames {
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
     ThroughputControlGlobalControlExpireIntervalInMS,
-    SerializationInclusionMode
+    SerializationInclusionMode,
+    SerializationDateTimeConversionMode
   )
 
   def validateConfigName(name: String): Unit = {
@@ -803,7 +807,18 @@ private object SerializationInclusionModes extends Enumeration {
   val NonDefault: SerializationInclusionModes.Value = Value("NonDefault")
 }
 
-private case class CosmosSerializationConfig(serializationInclusionMode: SerializationInclusionMode)
+private object SerializationDateTimeConversionModes extends Enumeration {
+  type SerializationDateTimeConversionMode = Value
+
+  val Default: SerializationDateTimeConversionModes.Value = Value("Default")
+  val AlwaysEpochMilliseconds: SerializationDateTimeConversionModes.Value = Value("AlwaysEpochMilliseconds")
+}
+
+private case class CosmosSerializationConfig
+(
+  serializationInclusionMode: SerializationInclusionMode,
+  serializationDateTimeConversionMode: SerializationDateTimeConversionMode
+)
 
 private object CosmosSerializationConfig {
   private val inclusionMode = CosmosConfigEntry[SerializationInclusionMode](
@@ -815,14 +830,29 @@ private object CosmosSerializationConfig {
       " When serializing json documents this setting determines whether json properties will be emitted" +
       " for columns in the RDD that are null/empty. The default value is `Always`.")
 
+  private val dateTimeConversionMode = CosmosConfigEntry[SerializationDateTimeConversionMode](
+    key = CosmosConfigNames.SerializationDateTimeConversionMode,
+    mandatory = false,
+    defaultValue = Some(SerializationDateTimeConversionModes.Default),
+    parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SerializationDateTimeConversionModes),
+    helpMessage = "The date/time conversion mode (`Default`, `AlwaysEpochMilliseconds`). " +
+      "With `Default` the standard Spark 3.* behavior is used (`java.sql.Date`/`java.time.LocalDate` are converted " +
+      "to EpochDay, `java.sql.Timestamp`/`java.time.Instant` are converted to MicrosecondsFromEpoch). With " +
+      "`AlwaysEpochMilliseconds` the same behavior the Cosmos DB connector for Spark 2.4 used is applied - " +
+      "`java.sql.Date`, `java.time.LocalDate`, `java.sql.Timestamp` and `java.time.Instant` are converted " +
+      "to MillisecondsFromEpoch.")
+
   def parseSerializationConfig(cfg: Map[String, String]): CosmosSerializationConfig = {
     val inclusionModeOpt = CosmosConfigEntry.parse(cfg, inclusionMode)
+    val dateTimeConversionModeOpt = CosmosConfigEntry.parse(cfg, dateTimeConversionMode)
 
     // parsing above already validated this
     assert(inclusionModeOpt.isDefined)
+    assert(dateTimeConversionModeOpt.isDefined)
 
     CosmosSerializationConfig(
-      serializationInclusionMode = inclusionModeOpt.get
+      serializationInclusionMode = inclusionModeOpt.get,
+      serializationDateTimeConversionMode = dateTimeConversionModeOpt.get
     )
   }
 }

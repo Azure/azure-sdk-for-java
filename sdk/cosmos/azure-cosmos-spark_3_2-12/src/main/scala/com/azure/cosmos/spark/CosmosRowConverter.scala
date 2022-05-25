@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{Constants, Utils}
+import com.azure.cosmos.spark.CosmosConfigNames.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -18,8 +19,9 @@ import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMa
 import org.apache.spark.sql.catalyst.util.ArrayData
 
 import java.io.IOException
-import java.time.{OffsetDateTime, ZoneOffset}
+import java.time.{Instant, LocalDate, OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
@@ -293,14 +295,54 @@ private[cosmos] class CosmosRowConverter(
         case DecimalType() =>
           convertToJsonNodeConditionally(rowData.asInstanceOf[java.math.BigDecimal])
         case DateType if rowData.isInstanceOf[java.lang.Long] =>
-          convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
+          serializationConfig.serializationDateTimeConversionMode match {
+            case SerializationDateTimeConversionModes.Default =>
+              convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
+            case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+              convertToJsonNodeConditionally(LocalDate
+                .ofEpochDay(rowData.asInstanceOf[Long])
+                .atStartOfDay()
+                .toInstant(ZoneOffset.UTC).toEpochMilli)
+          }
         case DateType if rowData.isInstanceOf[java.lang.Integer] =>
-          convertToJsonNodeConditionally(rowData.asInstanceOf[Integer])
+          serializationConfig.serializationDateTimeConversionMode match {
+            case SerializationDateTimeConversionModes.Default =>
+              convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Integer])
+            case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+              convertToJsonNodeConditionally(LocalDate
+                .ofEpochDay(rowData.asInstanceOf[java.lang.Integer].longValue())
+                .atStartOfDay()
+                .toInstant(ZoneOffset.UTC).toEpochMilli)
+          }
         case DateType => convertToJsonNodeConditionally(rowData.asInstanceOf[Date].getTime)
         case TimestampType if rowData.isInstanceOf[java.lang.Long] =>
-          convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
+          serializationConfig.serializationDateTimeConversionMode match {
+            case SerializationDateTimeConversionModes.Default =>
+              convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Long])
+            case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+              val microsSinceEpoch = rowData.asInstanceOf[java.lang.Long]
+              convertToJsonNodeConditionally(
+                Instant.ofEpochSecond(
+                  TimeUnit.MICROSECONDS.toSeconds(microsSinceEpoch),
+                  TimeUnit.MICROSECONDS.toNanos(
+                    Math.floorMod(microsSinceEpoch, TimeUnit.SECONDS.toMicros(1))
+                  )
+                ).toEpochMilli)
+          }
         case TimestampType if rowData.isInstanceOf[java.lang.Integer] =>
-          convertToJsonNodeConditionally(rowData.asInstanceOf[Integer])
+          serializationConfig.serializationDateTimeConversionMode match {
+            case SerializationDateTimeConversionModes.Default =>
+              convertToJsonNodeConditionally(rowData.asInstanceOf[java.lang.Integer])
+            case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+              val microsSinceEpoch = rowData.asInstanceOf[java.lang.Integer].longValue()
+              convertToJsonNodeConditionally(
+                Instant.ofEpochSecond(
+                  TimeUnit.MICROSECONDS.toSeconds(microsSinceEpoch),
+                  TimeUnit.MICROSECONDS.toNanos(
+                    Math.floorMod(microsSinceEpoch, TimeUnit.SECONDS.toMicros(1))
+                  )
+                ).toEpochMilli)
+          }
         case TimestampType => convertToJsonNodeConditionally(rowData.asInstanceOf[Timestamp].getTime)
         case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] =>
           val arrayDataValue = rowData.asInstanceOf[ArrayData]
@@ -365,11 +407,62 @@ private[cosmos] class CosmosRowConverter(
             case DecimalType() if rowData.isInstanceOf[Decimal] => objectMapper.convertValue(rowData.asInstanceOf[Decimal].toJavaBigDecimal, classOf[JsonNode])
             case DecimalType() if rowData.isInstanceOf[Long] => objectMapper.convertValue(new java.math.BigDecimal(rowData.asInstanceOf[java.lang.Long]), classOf[JsonNode])
             case DecimalType() => objectMapper.convertValue(rowData.asInstanceOf[java.math.BigDecimal], classOf[JsonNode])
-            case DateType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
-            case DateType if rowData.isInstanceOf[java.lang.Integer] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
+            case DateType if rowData.isInstanceOf[java.lang.Long] =>
+              serializationConfig.serializationDateTimeConversionMode match {
+                case SerializationDateTimeConversionModes.Default =>
+                  objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
+                case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+                  objectMapper.convertValue(
+                    LocalDate
+                      .ofEpochDay(rowData.asInstanceOf[java.lang.Long])
+                      .atStartOfDay()
+                      .toInstant(ZoneOffset.UTC).toEpochMilli,
+                    classOf[JsonNode])
+              }
+
+            case DateType if rowData.isInstanceOf[java.lang.Integer] =>
+              serializationConfig.serializationDateTimeConversionMode match {
+                case SerializationDateTimeConversionModes.Default =>
+                  objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
+                case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+                  objectMapper.convertValue(
+                    LocalDate
+                      .ofEpochDay(rowData.asInstanceOf[java.lang.Integer].longValue())
+                      .atStartOfDay()
+                      .toInstant(ZoneOffset.UTC).toEpochMilli,
+                    classOf[JsonNode])
+              }
             case DateType => objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
-            case TimestampType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
-            case TimestampType if rowData.isInstanceOf[java.lang.Integer] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
+            case TimestampType if rowData.isInstanceOf[java.lang.Long] =>
+              serializationConfig.serializationDateTimeConversionMode match {
+                case SerializationDateTimeConversionModes.Default =>
+                  objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
+                case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+                  val microsSinceEpoch = rowData.asInstanceOf[java.lang.Long]
+                  objectMapper.convertValue(
+                    Instant.ofEpochSecond(
+                      TimeUnit.MICROSECONDS.toSeconds(microsSinceEpoch),
+                      TimeUnit.MICROSECONDS.toNanos(
+                        Math.floorMod(microsSinceEpoch, TimeUnit.SECONDS.toMicros(1))
+                      )
+                    ).toEpochMilli,
+                    classOf[JsonNode])
+              }
+            case TimestampType if rowData.isInstanceOf[java.lang.Integer] =>
+              serializationConfig.serializationDateTimeConversionMode match {
+                case SerializationDateTimeConversionModes.Default =>
+                  objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
+                case SerializationDateTimeConversionModes.AlwaysEpochMilliseconds =>
+                  val microsSinceEpoch = rowData.asInstanceOf[java.lang.Integer].longValue()
+                  objectMapper.convertValue(
+                    Instant.ofEpochSecond(
+                      TimeUnit.MICROSECONDS.toSeconds(microsSinceEpoch),
+                      TimeUnit.MICROSECONDS.toNanos(
+                        Math.floorMod(microsSinceEpoch, TimeUnit.SECONDS.toMicros(1))
+                      )
+                    ).toEpochMilli,
+                    classOf[JsonNode])
+              }
             case TimestampType => objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
             case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[ArrayData])
             case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])
