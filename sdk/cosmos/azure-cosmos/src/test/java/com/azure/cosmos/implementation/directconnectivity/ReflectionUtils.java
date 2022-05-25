@@ -186,10 +186,6 @@ public class ReflectionUtils {
         invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildConnectionPolicy");
     }
 
-    public static void buildClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder) {
-        invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildClientTelemetryConfig");
-    }
-
     public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
     }

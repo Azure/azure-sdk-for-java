@@ -223,7 +223,6 @@ public class ConnectionConfigTest extends TestSuiteBase {
                 .clientTelemetryEnabled(true);
 
         ReflectionUtils.buildConnectionPolicy(cosmosClientBuilder);
-        ReflectionUtils.buildClientTelemetryConfig(cosmosClientBuilder);
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(cosmosClientBuilder);
         assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
