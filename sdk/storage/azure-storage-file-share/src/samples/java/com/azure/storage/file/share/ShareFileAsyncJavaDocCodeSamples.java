@@ -1157,16 +1157,6 @@ public class ShareFileAsyncJavaDocCodeSamples {
         });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
 
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
-        shareFileAsyncClient.deleteIfExistsWithResponse().subscribe(response -> {
-            if (response.getStatusCode() == 404) {
-                System.out.println("Does not exist.");
-            } else {
-                System.out.println("successfully deleted.");
-            }
-        });
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse
-
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
         ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
         shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {

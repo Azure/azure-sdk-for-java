@@ -262,21 +262,11 @@ public final class CosmosPatchOperations {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Should not be called form user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() {}
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosPatchOperationsHelper.setCosmosPatchOperationsAccessor(
-            new ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor() {
-                @Override
-                public List<PatchOperation> getPatchOperations(CosmosPatchOperations cosmosPatchOperations) {
-                    return cosmosPatchOperations.getPatchOperations();
-                }
-            }
+            cosmosPatchOperations -> cosmosPatchOperations.getPatchOperations()
         );
     }
+
+    static { initialize(); }
 }

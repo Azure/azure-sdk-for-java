@@ -478,7 +478,7 @@
       </build>
     </profile>
 
-    <!-- Customise the javadoc plugin to not include module directories in links. We don't
+    <!-- Customize the javadoc plugin to not include module directories in links. We don't
          currently use modules, so search results were being directed to an 'undefined'
          directory (for an 'undefined' module). This no-module-directories flag fixes
          this, but it is only required for JDK 9+ -->

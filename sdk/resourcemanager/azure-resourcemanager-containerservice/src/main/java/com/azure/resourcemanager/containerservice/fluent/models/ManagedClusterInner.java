@@ -21,6 +21,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
@@ -167,11 +168,14 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the kubernetesVersion property: The version of Kubernetes the Managed Cluster is running. When you upgrade a
-     * supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed,
-     * however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Get the kubernetesVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor
+     * versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+     * upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not
+     * allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      *
      * @return the kubernetesVersion value.
      */
@@ -180,11 +184,14 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the kubernetesVersion property: The version of Kubernetes the Managed Cluster is running. When you upgrade a
-     * supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed,
-     * however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Set the kubernetesVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor
+     * versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+     * upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not
+     * allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterInner object itself.
@@ -195,6 +202,18 @@ public final class ManagedClusterInner extends Resource {
         }
         this.innerProperties().withKubernetesVersion(kubernetesVersion);
         return this;
+    }
+
+    /**
+     * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running. If
+     * kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
+     *
+     * @return the currentKubernetesVersion value.
+     */
+    public String currentKubernetesVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentKubernetesVersion();
     }
 
     /**
@@ -755,6 +774,29 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
+     * Get the storageProfile property: Storage profile for the managed cluster.
+     *
+     * @return the storageProfile value.
+     */
+    public ManagedClusterStorageProfile storageProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
+    }
+
+    /**
+     * Set the storageProfile property: Storage profile for the managed cluster.
+     *
+     * @param storageProfile the storageProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withStorageProfile(ManagedClusterStorageProfile storageProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 

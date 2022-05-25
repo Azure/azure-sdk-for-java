@@ -76,6 +76,18 @@ public final class VirtualMachineScaleSetDataDisk {
     @JsonProperty(value = "diskMBpsReadWrite")
     private Long diskMBpsReadWrite;
 
+    /*
+     * Specifies whether data disk should be deleted or detached upon VMSS Flex
+     * deletion (This feature is available for VMSS with Flexible
+     * OrchestrationMode only).<br><br> Possible values: <br><br> **Delete** If
+     * this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.<br><br> **Detach** If this value is used, the data disk is
+     * retained after VMSS Flex VM is deleted.<br><br> The default value is set
+     * to **Delete**.
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
+
     /**
      * Get the name property: The disk name.
      *
@@ -271,6 +283,34 @@ public final class VirtualMachineScaleSetDataDisk {
      */
     public VirtualMachineScaleSetDataDisk withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
         this.diskMBpsReadWrite = diskMBpsReadWrite;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only).&lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is retained after VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; The default value is set to **Delete**.
+     *
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only).&lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is retained after VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; The default value is set to **Delete**.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
+     */
+    public VirtualMachineScaleSetDataDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 
