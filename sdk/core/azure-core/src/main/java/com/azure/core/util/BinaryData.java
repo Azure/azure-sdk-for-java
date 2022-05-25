@@ -664,6 +664,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
@@ -711,6 +713,8 @@ public final class BinaryData {
      * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
      *
      * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
      * <pre>
