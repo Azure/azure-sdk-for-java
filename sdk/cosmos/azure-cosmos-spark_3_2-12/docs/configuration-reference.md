@@ -18,6 +18,7 @@
 | `spark.cosmos.applicationName`      | None    | Application name  |
 | `spark.cosmos.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true). Please note that you can also use `spark.cosmos.preferredRegions` as alias |
 | `spark.cosmos.diagnostics`      | None    | Can be used to enable more verbose diagnostics. Currently the only supported option is to set this property to `simple` - which will result in additional logs being emitted as `INFO` logs in the Driver and Executor logs.|
+| `spark.cosmos.disableTcpConnectionEndpointRediscovery`      | None    | Can be used to disable TCP connection endpoint rediscovery. TCP connection endpoint rediscovery should only be disabled when using custom domain names with private endpoints when using a custom Spark environment. When using Azure Databricks or Azure Synapse as Spark runtime it should never be required to disable endpoint rediscovery.|
 
 ### Write Config
 | Config Property Name      | Default | Description |
