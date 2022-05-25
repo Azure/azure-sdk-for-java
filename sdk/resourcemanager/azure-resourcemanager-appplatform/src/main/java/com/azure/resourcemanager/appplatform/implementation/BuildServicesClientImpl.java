@@ -634,14 +634,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<BuildServiceInner> getBuildServiceAsync(
         String resourceGroupName, String serviceName, String buildServiceName) {
         return getBuildServiceWithResponseAsync(resourceGroupName, serviceName, buildServiceName)
-            .flatMap(
-                (Response<BuildServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1024,14 +1017,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<BuildInner> getBuildAsync(
         String resourceGroupName, String serviceName, String buildServiceName, String buildName) {
         return getBuildWithResponseAsync(resourceGroupName, serviceName, buildServiceName, buildName)
-            .flatMap(
-                (Response<BuildInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1228,14 +1214,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<BuildInner> createOrUpdateBuildAsync(
         String resourceGroupName, String serviceName, String buildServiceName, String buildName, BuildInner build) {
         return createOrUpdateBuildWithResponseAsync(resourceGroupName, serviceName, buildServiceName, buildName, build)
-            .flatMap(
-                (Response<BuildInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1673,14 +1652,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
         String buildResultName) {
         return getBuildResultWithResponseAsync(
                 resourceGroupName, serviceName, buildServiceName, buildName, buildResultName)
-            .flatMap(
-                (Response<BuildResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1900,14 +1872,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
         String buildResultName) {
         return getBuildResultLogWithResponseAsync(
                 resourceGroupName, serviceName, buildServiceName, buildName, buildResultName)
-            .flatMap(
-                (Response<BuildResultLogInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2090,14 +2055,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(
         String resourceGroupName, String serviceName, String buildServiceName) {
         return getResourceUploadUrlWithResponseAsync(resourceGroupName, serviceName, buildServiceName)
-            .flatMap(
-                (Response<ResourceUploadDefinition> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2262,14 +2220,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<SupportedBuildpacksCollectionInner> listSupportedBuildpacksAsync(
         String resourceGroupName, String serviceName, String buildServiceName) {
         return listSupportedBuildpacksWithResponseAsync(resourceGroupName, serviceName, buildServiceName)
-            .flatMap(
-                (Response<SupportedBuildpacksCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2445,14 +2396,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<SupportedBuildpackResourceInner> getSupportedBuildpackAsync(
         String resourceGroupName, String serviceName, String buildServiceName, String buildpackName) {
         return getSupportedBuildpackWithResponseAsync(resourceGroupName, serviceName, buildServiceName, buildpackName)
-            .flatMap(
-                (Response<SupportedBuildpackResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2620,14 +2564,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<SupportedStacksCollectionInner> listSupportedStacksAsync(
         String resourceGroupName, String serviceName, String buildServiceName) {
         return listSupportedStacksWithResponseAsync(resourceGroupName, serviceName, buildServiceName)
-            .flatMap(
-                (Response<SupportedStacksCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2802,14 +2739,7 @@ public final class BuildServicesClientImpl implements BuildServicesClient {
     public Mono<SupportedStackResourceInner> getSupportedStackAsync(
         String resourceGroupName, String serviceName, String buildServiceName, String stackName) {
         return getSupportedStackWithResponseAsync(resourceGroupName, serviceName, buildServiceName, stackName)
-            .flatMap(
-                (Response<SupportedStackResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

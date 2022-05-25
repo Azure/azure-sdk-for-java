@@ -39,12 +39,10 @@ import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInn
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceCollection;
 import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
 import java.nio.ByteBuffer;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -453,14 +451,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public Mono<DeploymentResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap(
-                (Response<DeploymentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1564,12 +1555,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         List<String> versionConverted =
-            Optional
-                .ofNullable(version)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -1638,12 +1626,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         List<String> versionConverted =
-            Optional
-                .ofNullable(version)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1810,12 +1795,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         List<String> versionConverted =
-            Optional
-                .ofNullable(version)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -1879,12 +1861,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         }
         final String accept = "application/json";
         List<String> versionConverted =
-            Optional
-                .ofNullable(version)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .listForCluster(
@@ -2988,14 +2967,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public Mono<LogFileUrlResponseInner> getLogFileUrlAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return getLogFileUrlWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap(
-                (Response<LogFileUrlResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
