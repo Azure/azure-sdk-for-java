@@ -118,8 +118,11 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($jarFilePath, $tempLocation)
+    Write-Host (Test-Path $jarFilePath)
+    Write-Host (Test-Path $tempLocation)
+    Write-Host $jarFilePath
     Write-Host $tempLocation
-    $f = Get-ChildItem $tempLocation
+    $f = Get-ChildItem -Path $tempLocation
     foreach($c in $f) {
         Write-Host $c
     }
