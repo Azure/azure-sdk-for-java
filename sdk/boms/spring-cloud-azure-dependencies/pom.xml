@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;dependency} -->
+  <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;dependency} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
