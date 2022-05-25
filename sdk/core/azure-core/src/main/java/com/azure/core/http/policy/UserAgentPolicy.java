@@ -107,7 +107,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        extracted(context);
+        setUserAgent(context);
         return next.process();
     }
 
@@ -124,11 +124,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        extracted(context);
+        setUserAgent(context);
         return next.processSync();
     }
 
-    private void extracted(HttpPipelineCallContext context) {
+    private void setUserAgent(HttpPipelineCallContext context) {
         String overrideUserAgent = (String) context.getData(OVERRIDE_USER_AGENT_CONTEXT_KEY).orElse(null);
         String appendUserAgent = (String) context.getData(APPEND_USER_AGENT_CONTEXT_KEY).orElse(null);
 

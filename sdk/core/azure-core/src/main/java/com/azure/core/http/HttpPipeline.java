@@ -113,18 +113,8 @@ public final class HttpPipeline {
      * upon completion.
      */
     public HttpResponse sendSync(HttpRequest request, Context data) {
-        return this.sendSync(new HttpPipelineCallContext(request, data));
-    }
-
-    /**
-     * Sends the context (containing an HTTP request) through pipeline.
-     *
-     * @param context The request context.
-     * @return A publisher upon subscription flows the context through policies, sends the request and emits response
-     * upon completion.
-     */
-    public HttpResponse sendSync(HttpPipelineCallContext context) {
-        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context, true);
+        HttpPipelineNextPolicy next
+            = new HttpPipelineNextPolicy(this, new HttpPipelineCallContext(request, data), true);
         return next.processSync();
     }
 }

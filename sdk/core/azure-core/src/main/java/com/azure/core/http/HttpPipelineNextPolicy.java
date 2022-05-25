@@ -19,7 +19,6 @@ public class HttpPipelineNextPolicy {
 
     /**
      * Package Private ctr.
-     * <p>
      * Creates HttpPipelineNextPolicy.
      *
      * @param pipeline the pipeline
@@ -34,7 +33,6 @@ public class HttpPipelineNextPolicy {
 
     /**
      * Package Private ctr.
-     * <p>
      * Creates HttpPipelineNextPolicy.
      *
      * @param pipeline the pipeline
@@ -58,9 +56,7 @@ public class HttpPipelineNextPolicy {
         if (originatedFromSyncContext) {
             LOGGER.warning("The pipeline switched from asynchronous to synchronous."
                 + " Check if all policies override HttpPipelinePolicy.processSync");
-            return Mono.fromCallable(() ->
-                this.pipeline.getPolicy(this.currentPolicyIndex).processSync(this.context, this));
-
+            return Mono.fromCallable(this::processSync);
         } else {
             final int size = this.pipeline.getPolicyCount();
             if (this.currentPolicyIndex > size) {

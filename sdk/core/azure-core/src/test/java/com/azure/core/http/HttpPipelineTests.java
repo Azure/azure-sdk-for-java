@@ -4,11 +4,13 @@
 package com.azure.core.http;
 
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.PortPolicy;
 import com.azure.core.http.policy.ProtocolPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -143,6 +145,55 @@ public class HttpPipelineTests {
             .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void sendSyncWithUserAgentPolicy(HttpPipelinePolicy policy) throws MalformedURLException {
+        final HttpMethod expectedHttpMethod = HttpMethod.GET;
+        final String expectedUserAgent = "my-user-agent";
+        final URL expectedUrl = new URL("http://my.site.com/1");
+        final HttpClient httpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                assertEquals(1, request.getHeaders().getSize());
+                assertEquals(expectedUserAgent, request.getHeaders().getValue("User-Agent"));
+                assertEquals(expectedHttpMethod, request.getHttpMethod());
+                assertEquals(expectedUrl, request.getUrl());
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        };
+
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(policy)
+            .build();
+
+        final HttpResponse response =
+            httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void sendSyncWithPolicies() throws MalformedURLException {
+        final HttpMethod expectedHttpMethod = HttpMethod.GET;
+        final URL expectedUrl = new URL("http://my.site.com");
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    assertEquals(0, request.getHeaders().getSize());
+                    assertEquals(expectedHttpMethod, request.getHttpMethod());
+                    assertEquals(expectedUrl, request.getUrl());
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        final HttpResponse response
+            = httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
