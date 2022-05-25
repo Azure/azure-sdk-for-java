@@ -117,8 +117,7 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
-    private boolean clientTelemetryEnabled = false;
-    private ClientTelemetryConfig clientTelemetryConfig;
+    private final ClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
 
     /**
@@ -130,6 +129,7 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.clientTelemetryConfig = ClientTelemetryConfig.getDefaultConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -642,7 +642,7 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        this.clientTelemetryConfig.setClientTelemetryEnabled(clientTelemetryEnabled);
         return this;
     }
 
@@ -744,7 +744,7 @@ public class CosmosClientBuilder implements
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return this.clientTelemetryEnabled;
+        return this.clientTelemetryConfig.isClientTelemetryEnabled();
     }
 
     /**
@@ -776,7 +776,6 @@ public class CosmosClientBuilder implements
 
         validateConfig();
         buildConnectionPolicy();
-        buildClientTelemetryConfig();
         return new CosmosAsyncClient(this);
     }
 
@@ -789,7 +788,6 @@ public class CosmosClientBuilder implements
 
         validateConfig();
         buildConnectionPolicy();
-        buildClientTelemetryConfig();
         return new CosmosClient(this);
     }
 
@@ -811,10 +809,6 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
-    }
-
-    private void buildClientTelemetryConfig() {
-        this.clientTelemetryConfig = new ClientTelemetryConfig(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {

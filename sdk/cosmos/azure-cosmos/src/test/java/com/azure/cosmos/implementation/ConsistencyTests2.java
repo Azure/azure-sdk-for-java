@@ -37,7 +37,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -47,7 +46,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
@@ -67,7 +65,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -77,7 +74,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
@@ -183,7 +179,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         // Client locked to replica for pause/resume
         RxDocumentClientImpl readSecondaryClient =
@@ -193,7 +188,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         try {
             // CREATE collection
@@ -251,7 +245,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         try {

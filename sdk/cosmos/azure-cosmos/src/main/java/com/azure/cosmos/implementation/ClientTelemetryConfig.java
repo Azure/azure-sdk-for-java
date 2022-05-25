@@ -16,23 +16,31 @@ import java.time.Duration;
 
 public class ClientTelemetryConfig {
     private static Logger logger = LoggerFactory.getLogger(ClientTelemetryConfig.class);
-
+    private static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
-    private final boolean clientTelemetryEnabled;
+    private boolean clientTelemetryEnabled;
     private final Duration httpNetworkRequestTimeout;
     private final int maxConnectionPoolSize;
     private final Duration idleHttpConnectionTimeout;
     private final ProxyOptions proxy;
 
-    public ClientTelemetryConfig(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
+    public ClientTelemetryConfig() {
+        this.clientTelemetryEnabled = DEFAULT_CLIENT_TELEMETRY_ENABLED;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.proxy = this.getProxyOptions();
+    }
+
+    public static ClientTelemetryConfig getDefaultConfig() {
+        return new ClientTelemetryConfig();
+    }
+
+    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
     }
 
     public boolean isClientTelemetryEnabled() {

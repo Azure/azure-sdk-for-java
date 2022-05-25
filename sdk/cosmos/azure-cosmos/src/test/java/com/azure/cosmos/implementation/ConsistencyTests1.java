@@ -34,7 +34,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.STRONG)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -44,7 +43,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.STRONG)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         User userDefinition = getUserDefinition();
         userDefinition.setId(userDefinition.getId() + "validateStrongConsistencyOnSyncReplication");
@@ -64,7 +62,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -73,7 +70,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         validateConsistentLSN();
     }
@@ -87,7 +83,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -96,7 +91,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         validateConsistentLSN();
     }
@@ -112,7 +106,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -121,7 +114,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         validateConsistentLSNAndQuorumAckedLSN();
     }
@@ -153,7 +145,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -162,7 +153,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         validateConsistentLSNAndQuorumAckedLSN();
     }
@@ -204,7 +194,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -214,7 +203,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         User user = safeCreateUser(this.initClient, createdDatabase.getId(), getUserDefinition());
         boolean readLagging = validateConsistentPrefix(user);
@@ -235,7 +223,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
 
         this.readClient =
@@ -245,7 +232,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         Document documentDefinition = getDocumentDefinition();
         Document document = createDocument(this.initClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
@@ -295,7 +281,6 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
         try {
             DocumentCollection documentCollection = new DocumentCollection();

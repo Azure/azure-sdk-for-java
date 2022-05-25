@@ -4,17 +4,16 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +31,6 @@ public class Utils {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
     }
 

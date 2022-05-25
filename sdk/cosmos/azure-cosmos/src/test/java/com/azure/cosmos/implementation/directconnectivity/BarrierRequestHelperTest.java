@@ -159,7 +159,6 @@ public class BarrierRequestHelperTest {
     public void barrierWithAadAuthorizationTokenProviderType() throws URISyntaxException {
 
         TokenCredential tokenCredential = new AadSimpleTokenCredential(TestConfigurations.MASTER_KEY);
-        ClientTelemetryConfig clientTelemetryConfig = new ClientTelemetryConfig(false);
         IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(
                 new URI(TestConfigurations.HOST),
                 null,
@@ -175,7 +174,7 @@ public class BarrierRequestHelperTest {
                 false,
                 null,
                 null,
-                clientTelemetryConfig);
+                ClientTelemetryConfig.getDefaultConfig());
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;
@@ -238,7 +237,6 @@ public class BarrierRequestHelperTest {
                 new AsyncDocumentClient.Builder()
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withServiceEndpoint(TestConfigurations.HOST)
-                        .withClientTelemetryConfig(new ClientTelemetryConfig(false))
                         .build();
     }
 

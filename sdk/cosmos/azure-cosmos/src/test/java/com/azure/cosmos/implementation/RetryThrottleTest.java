@@ -48,8 +48,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(policy)
                 .withConsistencyLevel(ConsistencyLevel.EVENTUAL)
-                .withContentResponseOnWriteEnabled(true)
-                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
+                .withContentResponseOnWriteEnabled(true);
 
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
 

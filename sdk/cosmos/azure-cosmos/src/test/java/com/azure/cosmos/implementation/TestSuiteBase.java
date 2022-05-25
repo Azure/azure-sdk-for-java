@@ -909,8 +909,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
-                .withContentResponseOnWriteEnabled(true)
-                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
+                .withContentResponseOnWriteEnabled(true);
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
@@ -923,8 +922,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(consistencyLevel)
-                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
     }
 
     static protected Builder createGatewayRxDocumentClient() {
@@ -955,9 +953,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(consistencyLevel)
                 .withConfigs(configs)
-                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                .withClientTelemetryConfig(new ClientTelemetryConfig(false));
-
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
     }
 
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {
