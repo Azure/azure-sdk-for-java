@@ -559,7 +559,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-integration-servicebus</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-integration-servicebus;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-integration-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
