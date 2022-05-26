@@ -179,7 +179,7 @@ com.azure.spring:spring-cloud-azure-starter-active-directory-b2c;4.2.0;4.3.0-bet
 com.azure.spring:spring-cloud-azure-starter-actuator;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-appconfiguration;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-cosmos;4.2.0;4.3.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-data-cosmos;4.1.0;4.2.0
+com.azure.spring:spring-cloud-azure-starter-data-cosmos;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventhubs;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;4.1.0;4.2.0
