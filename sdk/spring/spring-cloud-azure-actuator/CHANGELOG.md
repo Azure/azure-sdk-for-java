@@ -2,7 +2,7 @@
 
 ## 4.2.0 (2022-05-26)
 
-Please refer to [CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/6ff7d81c97763ac2d23ffd469b7841639492069b/sdk/spring/CHANGELOG.md#420-2022-05-25) for more details.
+Please refer to [CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/661f96907492dde46c4939bed587999d4d6979f2/sdk/spring/CHANGELOG.md#420-2022-05-26) for more details.
 
 ## 4.1.0 (2022-05-05)
 
