@@ -190,7 +190,7 @@ com.azure.spring:spring-cloud-azure-starter-storage-file-share;4.2.0;4.3.0-beta.
 com.azure.spring:spring-cloud-azure-starter-storage-queue;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-integration-eventhubs;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-integration-servicebus;4.2.0;4.3.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-integration-storage-queue;4.1.0;4.2.0
+com.azure.spring:spring-cloud-azure-starter-integration-storage-queue;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-stream-eventhubs;4.1.0;4.2.0
 com.azure.spring:spring-cloud-azure-starter-stream-servicebus;4.1.0;4.2.0
 com.azure.spring:spring-cloud-azure-starter;4.2.0;4.3.0-beta.1
