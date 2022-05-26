@@ -10,10 +10,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-/*
-Added this file so that an execuatable jar is produced for the build.
- */
-
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
  */
