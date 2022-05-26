@@ -53,6 +53,13 @@ public class HttpPipelineNextSyncPolicy {
         return new HttpPipelineNextSyncPolicy(this.state.clone());
     }
 
+    /**
+     * Method to convert a {@link HttpPipelineNextSyncPolicy} to a {@link HttpPipelineNextPolicy} for supporting the
+     * default implementation of
+     * {@link HttpPipelinePolicy#processSync(HttpPipelineCallContext, HttpPipelineNextSyncPolicy)}.
+     *
+     * @return the converted {@link HttpPipelineNextSyncPolicy}.
+     */
     HttpPipelineNextPolicy toAsyncPolicy() {
         return new HttpPipelineNextPolicy(this.state, true);
     }
