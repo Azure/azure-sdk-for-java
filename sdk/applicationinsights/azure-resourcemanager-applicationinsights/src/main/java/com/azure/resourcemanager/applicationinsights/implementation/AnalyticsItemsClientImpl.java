@@ -295,14 +295,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         ItemTypeParameter type,
         Boolean includeContent) {
         return listWithResponseAsync(resourceGroupName, resourceName, scopePath, scope, type, includeContent)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentAnalyticsItemInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -325,14 +318,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final ItemTypeParameter type = null;
         final Boolean includeContent = null;
         return listWithResponseAsync(resourceGroupName, resourceName, scopePath, scope, type, includeContent)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentAnalyticsItemInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -529,14 +515,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> getAsync(
         String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name) {
         return getWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -558,14 +537,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String id = null;
         final String name = null;
         return getWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -780,14 +752,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         ApplicationInsightsComponentAnalyticsItemInner itemProperties,
         Boolean overrideItem) {
         return putWithResponseAsync(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -813,14 +778,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
         final Boolean overrideItem = null;
         return putWithResponseAsync(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1012,7 +970,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1032,7 +990,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String id = null;
         final String name = null;
         return deleteWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -31,7 +31,11 @@ public final class IngestionMode extends ExpandableStringEnum<IngestionMode> {
         return fromString(name, IngestionMode.class);
     }
 
-    /** @return known IngestionMode values. */
+    /**
+     * Gets known IngestionMode values.
+     *
+     * @return known IngestionMode values.
+     */
     public static Collection<IngestionMode> values() {
         return values(IngestionMode.class);
     }
