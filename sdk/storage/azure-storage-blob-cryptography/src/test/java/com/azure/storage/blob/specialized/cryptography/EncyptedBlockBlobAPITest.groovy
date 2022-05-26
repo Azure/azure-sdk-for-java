@@ -170,7 +170,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         // 3000000-18000000. Middle of regions, expands to whole blob. passes
         // 0-20mb. Whole blob. passes
         // 4mb-8mb. Exact boundary. passes.
-        // 5003000-6000000. All in one region
+        // 5003000-6000000. All in one region. passes
         // Have to update logic around adjusting ranges. If there's a range adjust it, otherwise still try decrypting cus it could've been an empty (full) range
         when:
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
@@ -180,7 +180,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         // Shouldn't have to duplicate data, but something weird was happening around having to flip the data when I used the original source
-        // <= 4mb and I had to flip. Otherwise I had  not flip?
+        // <= 4mb and I had to flip. Otherwise I had to not flip?
         dataDuplicate == ByteBuffer.wrap(plaintextOut.toByteArray())
     }
 
