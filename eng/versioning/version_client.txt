@@ -186,7 +186,7 @@ com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-servicebus-jms;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-servicebus;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-storage-blob;4.2.0;4.3.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-storage-file-share;4.1.0;4.2.0
+com.azure.spring:spring-cloud-azure-starter-storage-file-share;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-storage-queue;4.1.0;4.2.0
 com.azure.spring:spring-cloud-azure-starter-integration-eventhubs;4.1.0;4.2.0
 com.azure.spring:spring-cloud-azure-starter-integration-servicebus;4.1.0;4.2.0
