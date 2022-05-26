@@ -36,7 +36,11 @@ public final class BuildServiceProvisioningState extends ExpandableStringEnum<Bu
         return fromString(name, BuildServiceProvisioningState.class);
     }
 
-    /** @return known BuildServiceProvisioningState values. */
+    /**
+     * Gets known BuildServiceProvisioningState values.
+     *
+     * @return known BuildServiceProvisioningState values.
+     */
     public static Collection<BuildServiceProvisioningState> values() {
         return values(BuildServiceProvisioningState.class);
     }

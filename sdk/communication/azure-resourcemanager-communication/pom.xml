@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-communication</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-communication;current} -->
+  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-communication;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Communication Management</name>
-  <description>This package contains Microsoft Azure SDK for Communication Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST API for Azure Communication Services. Package tag package-2020-08-20.</description>
+  <description>This package contains Microsoft Azure SDK for Communication Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST API for Azure Communication Services. Package tag package-2021-10-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

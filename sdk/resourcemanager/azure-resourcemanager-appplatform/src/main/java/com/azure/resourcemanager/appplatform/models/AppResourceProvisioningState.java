@@ -36,7 +36,11 @@ public final class AppResourceProvisioningState extends ExpandableStringEnum<App
         return fromString(name, AppResourceProvisioningState.class);
     }
 
-    /** @return known AppResourceProvisioningState values. */
+    /**
+     * Gets known AppResourceProvisioningState values.
+     *
+     * @return known AppResourceProvisioningState values.
+     */
     public static Collection<AppResourceProvisioningState> values() {
         return values(AppResourceProvisioningState.class);
     }

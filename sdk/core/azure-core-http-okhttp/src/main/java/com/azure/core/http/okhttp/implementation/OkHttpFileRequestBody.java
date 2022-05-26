@@ -22,17 +22,21 @@ public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileConte
 
     @Override
     public void writeTo(BufferedSink bufferedSink) throws IOException {
-        long count = effectiveContentLength;
-        if (count < 0) {
-            // OkHttp marks chunked encoding as -1.
-            // The content length is not specified so sending all remaining content.
-            count = Long.MAX_VALUE;
-        }
         // RequestBody.create(File) does not support position and length.
         // BufferedSink implements WritableByteChannel so we can leverage FileChannel as source.
         // FileChannel supports positional reads.
         try (FileChannel channel = FileChannel.open(content.getFile(), StandardOpenOption.READ)) {
-            channel.transferTo(0, count, bufferedSink);
+            // FileContent.getLength always returns non-null.
+            long pendingTransfer = content.getLength();
+            long position = content.getPosition();
+            do {
+                long transferred = channel.transferTo(position, pendingTransfer, bufferedSink);
+                if (transferred < 0) {
+                    break;
+                }
+                position += transferred;
+                pendingTransfer -= transferred;
+            } while (pendingTransfer > 0);
         }
     }
 }

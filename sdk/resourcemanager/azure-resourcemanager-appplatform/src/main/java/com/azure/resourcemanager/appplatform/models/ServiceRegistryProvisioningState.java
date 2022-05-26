@@ -36,7 +36,11 @@ public final class ServiceRegistryProvisioningState extends ExpandableStringEnum
         return fromString(name, ServiceRegistryProvisioningState.class);
     }
 
-    /** @return known ServiceRegistryProvisioningState values. */
+    /**
+     * Gets known ServiceRegistryProvisioningState values.
+     *
+     * @return known ServiceRegistryProvisioningState values.
+     */
     public static Collection<ServiceRegistryProvisioningState> values() {
         return values(ServiceRegistryProvisioningState.class);
     }

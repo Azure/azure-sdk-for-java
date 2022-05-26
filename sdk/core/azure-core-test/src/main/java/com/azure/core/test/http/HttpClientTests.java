@@ -32,6 +32,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -279,6 +280,13 @@ public abstract class HttpClientTests {
                     Files.write(wholeFile, bytes);
                     BinaryData fileData = BinaryData.fromFile(wholeFile);
 
+                    Path sliceFile = Files.createTempFile("http-client-tests", null);
+                    sliceFile.toFile().deleteOnExit();
+                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+                    Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
+                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+                    BinaryData sliceFileData = BinaryData.fromFile(sliceFile, Long.valueOf(size), Long.valueOf(size));
+
 
                     return Stream.of(
                         Arguments.of(Named.named("byte[]", byteArrayData), Named.named("" + size, bytes)),
@@ -291,7 +299,8 @@ public abstract class HttpClientTests {
                         Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Object", objectBinaryData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes))
+                        Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("File slice", sliceFileData), Named.named("" + size, bytes))
                     );
                 } catch (IOException e) {
                     throw new RuntimeException(e);
