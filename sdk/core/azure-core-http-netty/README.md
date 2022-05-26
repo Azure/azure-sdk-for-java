@@ -66,14 +66,7 @@ The following sections provide several code snippets covering some of the most c
 Create a Netty HttpClient that uses port 80 and has no proxy.
 
 ```java readme-sample-createBasicClient
-SdkMeterProvider otelMeterProvider = SdkMeterProvider.builder()
-            .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
-            .build();
-
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-            .setMeterProvider(otelMeterProvider)
-            .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
-            .buildAndRegisterGlobal();
+HttpClient client = new NettyAsyncHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy

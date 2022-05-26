@@ -28,7 +28,6 @@
         <module>azure-core-test</module>
         <module>azure-core-tracing-opentelemetry</module>
         <module>azure-core-metrics-opentelemetry</module>
-        <module>azure-core-metrics-micrometer</module>
       </modules>
 
       <dependencies>
@@ -101,11 +100,6 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-core-metrics-opentelemetry</artifactId>
           <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-metrics-micrometer</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-metrics-micrometer;current} -->
         </dependency>
       </dependencies>
 

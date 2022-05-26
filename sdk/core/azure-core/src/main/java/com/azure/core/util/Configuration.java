@@ -152,7 +152,7 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /**
-     * Disables tracing.
+     * Disables metrics.
      */
     public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
 
