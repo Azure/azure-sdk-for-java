@@ -5,13 +5,13 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 @Fluent
-public final class JsonFlattenWithJsonInfoDiscriminator implements JsonCapable<JsonFlattenWithJsonInfoDiscriminator> {
+public final class JsonFlattenWithJsonInfoDiscriminator implements JsonSerializable<JsonFlattenWithJsonInfoDiscriminator> {
     private String jsonFlattenDiscriminator;
 
     public JsonFlattenWithJsonInfoDiscriminator setJsonFlattenDiscriminator(String jsonFlattenDiscriminator) {

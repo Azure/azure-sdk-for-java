@@ -3,7 +3,7 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -259,8 +259,8 @@ public final class JsonUtils {
             return jsonWriter.writeBinary((byte[]) value).flush();
         } else if (value instanceof CharSequence) {
             return jsonWriter.writeString(String.valueOf(value)).flush();
-        } else if (value instanceof JsonCapable<?>) {
-            return ((JsonCapable<?>) value).toJson(jsonWriter).flush();
+        } else if (value instanceof JsonSerializable<?>) {
+            return ((JsonSerializable<?>) value).toJson(jsonWriter).flush();
         } else if (value.getClass() == Object.class) {
             return jsonWriter.writeStartObject().writeEndObject().flush();
         } else {

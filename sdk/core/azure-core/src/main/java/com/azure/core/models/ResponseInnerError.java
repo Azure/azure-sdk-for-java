@@ -5,7 +5,7 @@ package com.azure.core.models;
 
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 /**
  * The inner error of a {@link ResponseError}.
  */
-final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
+final class ResponseInnerError implements JsonSerializable<ResponseInnerError> {
     private String code;
     private ResponseInnerError innerError;
 
@@ -61,7 +61,7 @@ final class ResponseInnerError implements JsonCapable<ResponseInnerError> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject()
             .writeStringField("code", code)
-            .writeJsonCapableField("innererror", innerError, false)
+            .writeJsonField("innererror", innerError, false)
             .writeEndObject()
             .flush();
     }

@@ -4,14 +4,14 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.List;
 
-public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
+public class ComposeTurtles implements JsonSerializable<ComposeTurtles> {
     private String description;
     private TurtleWithTypeIdContainingDot turtlesSet1Lead;
     private List<TurtleWithTypeIdContainingDot> turtlesSet1;
@@ -67,16 +67,16 @@ public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
             .writeStringField("description", description, false)
-            .writeJsonCapableField("turtlesSet1Lead", turtlesSet1Lead, false);
+            .writeJsonField("turtlesSet1Lead", turtlesSet1Lead, false);
 
         if (turtlesSet1 != null) {
-            JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, JsonWriter::writeJsonCapable);
+            JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, JsonWriter::writeJson);
         }
 
-        jsonWriter.writeJsonCapableField("turtlesSet2Lead", turtlesSet2Lead, false);
+        jsonWriter.writeJsonField("turtlesSet2Lead", turtlesSet2Lead, false);
 
         if (turtlesSet2 != null) {
-            JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, JsonWriter::writeJsonCapable);
+            JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, JsonWriter::writeJson);
         }
 
         return jsonWriter.writeEndObject().flush();

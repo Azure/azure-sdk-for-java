@@ -14,7 +14,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -36,7 +36,7 @@ import java.util.Optional;
 
 class ResponseConstructorsCacheBenchMarkTestData {
     // Model type for Http content
-    static final class Foo implements JsonCapable<Foo> {
+    static final class Foo implements JsonSerializable<Foo> {
         private String name;
 
         public Foo setName(String name) {
@@ -72,7 +72,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     // Model type for custom Http headers
-    static final class FooHeader implements JsonCapable<FooHeader> {
+    static final class FooHeader implements JsonSerializable<FooHeader> {
         private String customHdr;
 
         public String getCustomHdr() {

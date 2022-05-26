@@ -6,7 +6,7 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Assertions;
@@ -125,10 +125,10 @@ public class AdditionalPropertiesSerializerTests {
         Assertions.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\",\"foo\":{\"$type\":\"foo\",\"properties\":{\"bar\":\"bye.world\"},\"name\":\"Sushi\"}}", serialized);
     }
 
-    private static String writeJson(JsonCapable<?> jsonCapable) {
+    private static String writeJson(JsonSerializable<?> jsonSerializable) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
-        writer.writeJsonCapable(jsonCapable);
+        writer.writeJson(jsonSerializable);
 
         return outputStream.toString(StandardCharsets.UTF_8);
     }

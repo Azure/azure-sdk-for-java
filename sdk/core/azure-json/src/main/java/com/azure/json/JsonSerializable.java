@@ -10,19 +10,19 @@ package com.azure.json;
  * class has a static method {@code fromJson(JsonReader)} that deserializes an instance of that class. The contract for
  * reading JSON from {@link JsonReader} is that the initial state of the reader on call will either be a null
  * {@link JsonToken} or be the {@link JsonToken} after the {@link JsonToken#FIELD_NAME} for the object. So, for objects
- * calling out to other {@link JsonCapable} objects for deserialization, they'll pass the reader pointing to the token
+ * calling out to other {@link JsonSerializable} objects for deserialization, they'll pass the reader pointing to the token
  * after the {@link JsonToken#FIELD_NAME}. This way objects reading JSON will be self-encapsulated for reading properly
  * formatted JSON. And, if an error occurs during deserialization an {@link IllegalStateException} should be thrown.
  *
  * @param <T> The type of the object that is JSON capable.
  */
-public interface JsonCapable<T extends JsonCapable<T>> {
+public interface JsonSerializable<T extends JsonSerializable<T>> {
     /**
      * Writes the object to the passed {@link JsonWriter}.
      * <p>
      * The contract for writing JSON to {@link JsonWriter} is that the object being written will handle opening and
-     * closing its own JSON object. So, for objects calling out to other {@link JsonCapable} objects for serialization,
-     * they'll write the field name only then pass the {@link JsonWriter} to the other {@link JsonCapable} object. This
+     * closing its own JSON object. So, for objects calling out to other {@link JsonSerializable} objects for serialization,
+     * they'll write the field name only then pass the {@link JsonWriter} to the other {@link JsonSerializable} object. This
      * way objects writing JSON will be self-encapsulated for writing properly formatted JSON.
      *
      * @param jsonWriter Where the object's JSON will be written.
@@ -33,14 +33,14 @@ public interface JsonCapable<T extends JsonCapable<T>> {
     /**
      * Reads a JSON stream into an object.
      * <p>
-     * Implementations of {@link JsonCapable} must define this method, otherwise an
+     * Implementations of {@link JsonSerializable} must define this method, otherwise an
      * {@link UnsupportedOperationException} will be thrown.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param <T> The type of the object.
      * @return The object that the JSON stream represented, may return null.
      */
-    static <T extends JsonCapable<T>> T fromJson(JsonReader jsonReader) {
+    static <T extends JsonSerializable<T>> T fromJson(JsonReader jsonReader) {
         throw new UnsupportedOperationException("Subclass of JsonCapable must define this factory method.");
     }
 }

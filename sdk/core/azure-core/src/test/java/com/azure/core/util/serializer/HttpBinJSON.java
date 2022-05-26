@@ -3,7 +3,7 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Maps to the JSON return values from <a href="http://httpbin.org">http://httpbin.org</a>.
  */
-public class HttpBinJSON implements JsonCapable<HttpBinJSON> {
+public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
     private String url;
     private Map<String, String> headers;
     private Object data;

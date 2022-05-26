@@ -39,7 +39,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 
 import java.lang.annotation.Annotation;
@@ -532,10 +532,10 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             return (String) value;
         } else if (value instanceof ExpandableStringEnum<?>) {
             return value.toString();
-        } else if (value instanceof JsonCapable<?>) {
+        } else if (value instanceof JsonSerializable<?>) {
             AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
             JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream);
-            ((JsonCapable<?>) value).toJson(jsonWriter);
+            ((JsonSerializable<?>) value).toJson(jsonWriter);
             String toReturn = outputStream.toString(StandardCharsets.UTF_8);
 
             if (toReturn.startsWith("\"") && toReturn.endsWith("\"")) {

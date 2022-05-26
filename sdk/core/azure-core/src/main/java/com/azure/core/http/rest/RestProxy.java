@@ -38,7 +38,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -339,10 +339,10 @@ public final class RestProxy implements InvocationHandler {
                 }
             }
 
-            if (bodyContentObject instanceof JsonCapable<?>) {
+            if (bodyContentObject instanceof JsonSerializable<?>) {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
-                    jsonWriter.writeJsonCapable((JsonCapable<?>) bodyContentObject);
+                    jsonWriter.writeJson((JsonSerializable<?>) bodyContentObject);
                 }
 
                 request.setBody(outputStream.toByteArray());

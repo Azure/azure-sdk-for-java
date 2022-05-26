@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,7 +18,7 @@ import java.util.Map;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public final class VirtualMachineIdentity implements JsonCapable<VirtualMachineIdentity> {
+public final class VirtualMachineIdentity implements JsonSerializable<VirtualMachineIdentity> {
     private List<String> type;
     private Map<String, Object> userAssignedIdentities;
 

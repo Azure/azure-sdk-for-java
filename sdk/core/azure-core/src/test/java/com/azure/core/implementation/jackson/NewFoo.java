@@ -4,7 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * Class for testing serialization.
  */
-public class NewFoo implements JsonCapable<NewFoo> {
+public class NewFoo implements JsonSerializable<NewFoo> {
     private String bar;
     private List<String>  baz;
     private Map<String, String> qux;

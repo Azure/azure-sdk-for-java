@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public class JsonFlattenNestedInner implements JsonCapable<JsonFlattenNestedInner> {
+public class JsonFlattenNestedInner implements JsonSerializable<JsonFlattenNestedInner> {
     private VirtualMachineIdentity identity;
 
     public VirtualMachineIdentity getIdentity() {
@@ -28,7 +28,7 @@ public class JsonFlattenNestedInner implements JsonCapable<JsonFlattenNestedInne
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject()
-            .writeJsonCapableField("identity", identity, false)
+            .writeJsonField("identity", identity, false)
             .writeEndObject()
             .flush();
     }

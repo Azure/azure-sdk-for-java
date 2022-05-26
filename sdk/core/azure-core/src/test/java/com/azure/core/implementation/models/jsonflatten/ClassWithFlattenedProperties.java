@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing JSON flattening.
  */
 @Immutable
-public final class ClassWithFlattenedProperties implements JsonCapable<ClassWithFlattenedProperties> {
+public final class ClassWithFlattenedProperties implements JsonSerializable<ClassWithFlattenedProperties> {
     private final String odataType;
     private final String odataETag;
 

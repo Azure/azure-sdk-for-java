@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public final class VirtualMachineScaleSetVMProfile implements JsonCapable<VirtualMachineScaleSetVMProfile> {
+public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<VirtualMachineScaleSetVMProfile> {
     private VirtualMachineScaleSetNetworkProfile networkProfile;
 
     public VirtualMachineScaleSetVMProfile setNetworkProfile(VirtualMachineScaleSetNetworkProfile networkProfile) {
@@ -28,7 +28,7 @@ public final class VirtualMachineScaleSetVMProfile implements JsonCapable<Virtua
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject()
-            .writeJsonCapableField("networkProfile", networkProfile, false)
+            .writeJsonField("networkProfile", networkProfile, false)
             .writeEndObject()
             .flush();
     }

@@ -4,14 +4,14 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
 /**
  * Model used for testing JSON flattening.
  */
-public class Student implements JsonCapable<Student> {
+public class Student implements JsonSerializable<Student> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject().writeEndObject().flush();

@@ -108,19 +108,19 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeFieldName(String fieldName);
 
     /**
-     * Writes a {@link JsonCapable} object.
+     * Writes a {@link JsonSerializable} object.
      * <p>
      * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
      * must be null guarded.
      * <p>
-     * This API is used instead of {@link #writeJsonCapableField(String, JsonCapable)} when the value needs to be
+     * This API is used instead of {@link #writeJsonField(String, JsonSerializable)} when the value needs to be
      * written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
-     * @param value {@link JsonCapable} object to write.
+     * @param value {@link JsonSerializable} object to write.
      * @return The updated JsonWriter object.
      */
-    public final JsonWriter writeJsonCapable(JsonCapable<?> value) {
+    public final JsonWriter writeJson(JsonSerializable<?> value) {
         return (value == null) ? writeNull() : value.toJson(this);
     }
 
@@ -339,39 +339,39 @@ public abstract class JsonWriter implements Closeable {
     public abstract JsonWriter writeRawValue(String value);
 
     /**
-     * Writes a {@link JsonCapable} field.
+     * Writes a {@link JsonSerializable} field.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeJsonCapable(JsonCapable)} to simplify adding a
+     * Combines {@link #writeFieldName(String)} and {@link #writeJson(JsonSerializable)} to simplify adding a
      * key-value to a JSON object.
      * <p>
      * A value is always written no matter whether {@code value} is null, if null shouldn't be written this API call
-     * must be null guarded. Or, use {@link #writeJsonCapableField(String, JsonCapable, boolean)} to indicate whether
+     * must be null guarded. Or, use {@link #writeJsonField(String, JsonSerializable, boolean)} to indicate whether
      * null should be written.
      *
      * @param fieldName The field name.
-     * @param value {@link JsonCapable} object to write.
+     * @param value {@link JsonSerializable} object to write.
      * @return The updated JsonWriter object.
      */
-    public final JsonWriter writeJsonCapableField(String fieldName, JsonCapable<?> value) {
-        return writeJsonCapableField(fieldName, value, true);
+    public final JsonWriter writeJsonField(String fieldName, JsonSerializable<?> value) {
+        return writeJsonField(fieldName, value, true);
     }
 
     /**
-     * Writes a {@link JsonCapable} field.
+     * Writes a {@link JsonSerializable} field.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeJsonCapable(JsonCapable)} to simplify adding a
+     * Combines {@link #writeFieldName(String)} and {@link #writeJson(JsonSerializable)} to simplify adding a
      * key-value to a JSON object.
      * <p>
      * If {@code writeNull} is false and {@code value} is null neither a field name or a field value will be written,
      * effectively treating the call as a no-op.
      *
      * @param fieldName The field name.
-     * @param value {@link JsonCapable} object to write.
+     * @param value {@link JsonSerializable} object to write.
      * @param writeNull Whether a null field should be written.
      * @return The updated JsonWriter object, or if {@code writeNull} is false and {@code value} is null the unmodified
      * JsonWriter.
      */
-    public final JsonWriter writeJsonCapableField(String fieldName, JsonCapable<?> value, boolean writeNull) {
+    public final JsonWriter writeJsonField(String fieldName, JsonSerializable<?> value, boolean writeNull) {
         if (!writeNull && value == null) {
             return this;
         }
