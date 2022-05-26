@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.util;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,7 +16,7 @@ import static com.azure.core.implementation.http.rest.RestProxyUtils.BODY_TOO_SM
  * An {@link InputStream} decorator that tracks the number of bytes read from an inner {@link InputStream} and throws
  * an exception if the number of bytes read doesn't match what was expected.
  */
-public final class LengthValidatingInputStream extends InputStream {
+final class LengthValidatingInputStream extends InputStream {
     private final InputStream inner;
     private final long expectedReadSize;
 
@@ -28,7 +28,7 @@ public final class LengthValidatingInputStream extends InputStream {
      * @param inputStream The {@link InputStream} being decorated.
      * @param expectedReadSize The expected number of bytes to be read from the inner {@code inputStream}.
      */
-    public LengthValidatingInputStream(InputStream inputStream, long expectedReadSize) {
+    LengthValidatingInputStream(InputStream inputStream, long expectedReadSize) {
         this.inner = Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
 
         if (expectedReadSize < 0) {
