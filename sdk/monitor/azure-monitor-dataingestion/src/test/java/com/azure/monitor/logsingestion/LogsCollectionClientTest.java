@@ -1,20 +1,22 @@
-package com.azure.monitor.logingestion;
+package com.azure.monitor.logsingestion;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.monitor.logingestion.implementation.DataCollectionRulesImpl;
-import com.azure.monitor.logingestion.implementation.IngestionUsingDataCollectionRulesImplBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.monitor.logsingestion.implementation.DataCollectionRulesImpl;
+import com.azure.monitor.logsingestion.implementation.IngestionUsingDataCollectionRulesImplBuilder;
+import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class LogsCollectionClientTest {
 
-    public static void main(String[] args) {
+    @Test
+    public void testSendLogs() {
         DataCollectionRulesImpl dataCollectionRules = new IngestionUsingDataCollectionRulesImplBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://srnagar-logsingestion-dcr-lrz3.westus2-1.ingest.monitor.azure.com")

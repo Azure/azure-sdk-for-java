@@ -4,4 +4,4 @@
 /**
  *
  */
-package com.azure.monitor.logingestion;
+package com.azure.monitor.logsingestion;

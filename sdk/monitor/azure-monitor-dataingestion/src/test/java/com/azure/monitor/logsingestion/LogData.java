@@ -1,4 +1,4 @@
-package com.azure.monitor.logingestion;
+package com.azure.monitor.logsingestion;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
