@@ -20,6 +20,8 @@ import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.ShareServiceVersion;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -35,20 +37,22 @@ class AzureStorageFileShareAutoConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
 
-    @Test
-    void configureWithoutShareServiceClientBuilder() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void configureWithoutShareServiceClientBuilder(String property) {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ShareServiceClientBuilder.class))
-            .withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=sa")
+            .withPropertyValues(property)
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class));
     }
 
-    @Test
-    void configureWithStorageFileShareDisabled() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void configureWithStorageFileShareDisabled(String property) {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.storage.fileshare.enabled=false",
-                "spring.cloud.azure.storage.fileshare.account-name=sa"
+                property
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class));
     }
@@ -69,15 +73,16 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void shareNameSetShouldConfigureShareClient() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void shareNameSetShouldConfigureShareClient(String property) {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(mock(ShareClient.class));
         ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
         when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(mock(ShareAsyncClient.class));
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                property,
                 "spring.cloud.azure.storage.fileshare.share-name=share1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -89,12 +94,11 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void shareNameNotSetShouldNotConfigureShareClient() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void shareNameNotSetShouldNotConfigureShareClient(String property) {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sa"
-            )
+            .withPropertyValues(property)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(ShareServiceClient.class, () -> mock(ShareServiceClient.class))
             .withBean(ShareServiceAsyncClient.class, () -> mock(ShareServiceAsyncClient.class))
@@ -104,8 +108,9 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void filePathSetShouldConfigureFileClient() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void filePathSetShouldConfigureFileClient(String property) {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         ShareClient shareClient = mock(ShareClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(shareClient);
@@ -117,7 +122,7 @@ class AzureStorageFileShareAutoConfigurationTests {
         when(shareAsyncClient.getFileClient("directory1/file1")).thenReturn(mock(ShareFileAsyncClient.class));
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                property,
                 "spring.cloud.azure.storage.fileshare.share-name=share1",
                 "spring.cloud.azure.storage.fileshare.file-path=directory1/file1"
             )
@@ -130,8 +135,9 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void filePathNotSetShouldNotConfigureFileClient() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void filePathNotSetShouldNotConfigureFileClient(String property) {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(mock(ShareClient.class));
 
@@ -140,7 +146,7 @@ class AzureStorageFileShareAutoConfigurationTests {
 
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                property,
                 "spring.cloud.azure.storage.fileshare.share-name=share1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -152,8 +158,9 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void directoryPathSetShouldConfigureDirectoryClient() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void directoryPathSetShouldConfigureDirectoryClient(String property) {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         ShareClient shareClient = mock(ShareClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(shareClient);
@@ -165,7 +172,7 @@ class AzureStorageFileShareAutoConfigurationTests {
         when(shareAsyncClient.getDirectoryClient("directory1/directory2")).thenReturn(mock(ShareDirectoryAsyncClient.class));
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                property,
                 "spring.cloud.azure.storage.fileshare.share-name=share1",
                 "spring.cloud.azure.storage.fileshare.directory-path=directory1/directory2"
             )
@@ -178,8 +185,9 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void directoryNameNotSetShouldNotConfigureDirectoryClient() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void directoryNameNotSetShouldNotConfigureDirectoryClient(String property) {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(mock(ShareClient.class));
 
@@ -188,7 +196,7 @@ class AzureStorageFileShareAutoConfigurationTests {
 
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                property,
                 "spring.cloud.azure.storage.fileshare.share-name=share1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -200,23 +208,25 @@ class AzureStorageFileShareAutoConfigurationTests {
             });
     }
 
-    @Test
-    void customizerShouldBeCalled() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void customizerShouldBeCalled(String property) {
         ShareServiceClientBuilderCustomizer customizer = new ShareServiceClientBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=sa")
+            .withPropertyValues(property)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", ShareServiceClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", ShareServiceClientBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
     }
 
-    @Test
-    void otherCustomizerShouldNotBeCalled() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void otherCustomizerShouldNotBeCalled(String property) {
         ShareServiceClientBuilderCustomizer customizer = new ShareServiceClientBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=sa")
+            .withPropertyValues(property)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", ShareServiceClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", ShareServiceClientBuilderCustomizer.class, () -> customizer)
@@ -257,6 +267,31 @@ class AzureStorageFileShareAutoConfigurationTests {
                 assertEquals("test-share", properties.getShareName());
                 assertEquals("test-file-path", properties.getFilePath());
                 assertEquals("test-directory-path", properties.getDirectoryPath());
+            });
+    }
+
+    @Test
+    void configurationPropertiesShouldBindWithGlobalConfig() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        String endpoint = String.format("https://%s.file.core.windows.net", accountName);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.endpoint=" + endpoint,
+                "spring.cloud.azure.storage.account-key=test-key",
+                "spring.cloud.azure.storage.sas-token=test-sas-token",
+                "spring.cloud.azure.storage.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.account-name=test-account-name"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageFileShareProperties.class);
+                AzureStorageFileShareProperties properties = context.getBean(AzureStorageFileShareProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertEquals("test-key", properties.getAccountKey());
+                assertEquals("test-sas-token", properties.getSasToken());
+                assertEquals(connectionString, properties.getConnectionString());
+                assertEquals(accountName, properties.getAccountName());
             });
     }
 

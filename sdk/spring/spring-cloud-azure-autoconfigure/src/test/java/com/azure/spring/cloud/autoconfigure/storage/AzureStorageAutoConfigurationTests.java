@@ -6,9 +6,19 @@ package com.azure.spring.cloud.autoconfigure.storage;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.file.share.ShareServiceAsyncClient;
+import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.queue.QueueServiceAsyncClient;
+import com.azure.storage.queue.QueueServiceClient;
+import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -21,11 +31,12 @@ class AzureStorageAutoConfigurationTests {
     private static final String STORAGE_CONNECTION_STRING_PATTERN = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class));
 
 
     @Test
-    void blobConfigShouldWorkWithFileShareConfig() {
+    void blobConfigShouldWorkWithFileShareConfigAndQueueConfig() {
         String accountName = "test-account-name";
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
         this.contextRunner
@@ -33,17 +44,65 @@ class AzureStorageAutoConfigurationTests {
                 "spring.cloud.azure.storage.blob.connection-string=" + connectionString,
                 "spring.cloud.azure.storage.blob.account-name=test-account-name",
                 "spring.cloud.azure.storage.fileshare.connection-string=" + connectionString,
-                "spring.cloud.azure.storage.fileshare.account-name=test-account-name"
+                "spring.cloud.azure.storage.fileshare.account-name=test-account-name",
+                "spring.cloud.azure.storage.queue.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.queue.account-name=test-account-name"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
                 assertNotNull(context.getBean("staticStorageFileShareConnectionStringProvider"));
+                assertNotNull(context.getBean("staticStorageQueueConnectionStringProvider"));
 
                 assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
                 assertThat(context).hasSingleBean(ShareServiceClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(QueueServiceClientBuilderFactory.class);
 
                 assertThat(context).hasSingleBean(BlobServiceClient.class);
+                assertThat(context).hasSingleBean(ShareServiceClient.class);
+                assertThat(context).hasSingleBean(QueueServiceClient.class);
+
+                assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
+                assertThat(context).hasSingleBean(ShareServiceAsyncClient.class);
+                assertThat(context).hasSingleBean(QueueServiceAsyncClient.class);
+
+                assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
+                assertThat(context).hasSingleBean(ShareServiceClientBuilder.class);
+                assertThat(context).hasSingleBean(QueueServiceClientBuilder.class);
             });
     }
+
+    @Test
+    void StorageAllServiceShouldWorkWithGlobalConfig() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.account-name=test-account-name"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
+                assertNotNull(context.getBean("staticStorageFileShareConnectionStringProvider"));
+                assertNotNull(context.getBean("staticStorageQueueConnectionStringProvider"));
+
+                assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(ShareServiceClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(QueueServiceClientBuilderFactory.class);
+
+                assertThat(context).hasSingleBean(BlobServiceClient.class);
+                assertThat(context).hasSingleBean(ShareServiceClient.class);
+                assertThat(context).hasSingleBean(QueueServiceClient.class);
+
+                assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
+                assertThat(context).hasSingleBean(ShareServiceAsyncClient.class);
+                assertThat(context).hasSingleBean(QueueServiceAsyncClient.class);
+
+                assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
+                assertThat(context).hasSingleBean(ShareServiceClientBuilder.class);
+                assertThat(context).hasSingleBean(QueueServiceClientBuilder.class);
+            });
+    }
+
 }

@@ -32,15 +32,15 @@ class OnAnyPropertyCondition extends PropertyCondition {
         if (matchingProperties.isEmpty()) {
             if (!missingProperties.isEmpty()) {
                 return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnAnyProperty.class, spec)
-                                                                .didNotFind("property", "properties")
-                                                                .items(ConditionMessage.Style.QUOTE, missingProperties));
+                    .didNotFind("property", "properties")
+                    .items(ConditionMessage.Style.QUOTE, missingProperties));
             }
             if (!nonMatchingProperties.isEmpty()) {
                 return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnAnyProperty.class, spec)
-                                                                .found("different value in property", "different "
-                                                                    + "value in properties")
-                                                                .items(ConditionMessage.Style.QUOTE,
-                                                                    nonMatchingProperties));
+                    .found("different value in property", "different "
+                        + "value in properties")
+                    .items(ConditionMessage.Style.QUOTE,
+                        nonMatchingProperties));
             }
         }
 
@@ -52,6 +52,8 @@ class OnAnyPropertyCondition extends PropertyCondition {
 
         private final String prefix;
 
+        private final String[] prefixes;
+
         private final String havingValue;
 
         private final String[] names;
@@ -61,6 +63,7 @@ class OnAnyPropertyCondition extends PropertyCondition {
         Spec(AnnotationAttributes annotationAttributes) {
             String prefixAttr = annotationAttributes.getString("prefix");
             prefix = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
+            this.prefixes = getPrefixes(annotationAttributes);
             this.havingValue = annotationAttributes.getString("havingValue");
             this.names = getNames(annotationAttributes);
             this.matchIfMissing = annotationAttributes.getBoolean("matchIfMissing");
@@ -74,6 +77,14 @@ class OnAnyPropertyCondition extends PropertyCondition {
             Assert.state(value.length == 0 || name.length == 0,
                 "The name and value attributes of @ConditionalOnAnyProperty are exclusive");
             return (value.length > 0) ? value : name;
+        }
+
+        private String[] getPrefixes(Map<String, Object> annotationAttributes) {
+            String[] prefixesAttr = (String[]) annotationAttributes.get("prefixes");
+            for(int i = 0; i < prefixesAttr.length; i++){
+                prefixesAttr[i] = AzureStringUtils.ensureEndsWithSuffix(prefixesAttr[i].trim(), PROPERTY_SUFFIX);
+            }
+            return prefixesAttr;
         }
 
         private void collectProperties(PropertyResolver resolver, List<String> missing, List<String> nonMatching,
@@ -94,6 +105,24 @@ class OnAnyPropertyCondition extends PropertyCondition {
                     }
                 }
             }
+            for (String prefix : this.prefixes) {
+                for (String name : this.names) {
+                    String key = prefix + name;
+                    if (resolver.containsProperty(key)) {
+                        if (!isMatch(resolver.getProperty(key), this.havingValue)) {
+                            nonMatching.add(name);
+                        } else {
+                            matching.add(name);
+                        }
+                    } else {
+                        if (!this.matchIfMissing) {
+                            missing.add(name);
+                        } else {
+                            matching.add(name);
+                        }
+                    }
+                }
+            }
         }
 
         private boolean isMatch(String value, String requiredValue) {
@@ -107,7 +136,17 @@ class OnAnyPropertyCondition extends PropertyCondition {
         public String toString() {
             StringBuilder result = new StringBuilder();
             result.append("(");
-            result.append(this.prefix);
+            if (this.prefix.length() > 1) {
+                result.append(this.prefix);
+            } else if (this.prefixes.length > 0) {
+                if (this.prefixes.length == 1) {
+                    result.append(this.prefixes[0]);
+                } else {
+                    result.append("[");
+                    result.append(StringUtils.arrayToCommaDelimitedString(this.prefixes));
+                    result.append("]");
+                }
+            }
             if (this.names.length == 1) {
                 result.append(this.names[0]);
             } else {
