@@ -2,7 +2,7 @@
 
 ## 4.2.0 (2022-05-25)
 
-- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.8. (Note: 2.5.x (x>14) and 2.6.y (y>8) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.8, 2.7.0. (Note: 2.5.x (x>14), 2.6.y (y>8) and 2.7.z (z>0) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.5, 2021.0.0-2021.0.2. (Note: 2020.0.x (x>5) and 2021.0.y (y>2) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Dependencies (BOM)
