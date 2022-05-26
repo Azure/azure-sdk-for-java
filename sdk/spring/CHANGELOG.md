@@ -30,6 +30,16 @@
 
 ### Other Changes
 
+## 1.0.0 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.2.0 (2022-05-26)
 
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.8, 2.7.0. (Note: 2.5.x (x>14), 2.6.y (y>8) and 2.7.z (z>0) should be supported, but they aren't tested with this release.)

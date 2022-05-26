@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-  <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
 
   <name>Spring Cloud Azure Trace on Sleuth</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
