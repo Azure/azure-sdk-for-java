@@ -32,15 +32,15 @@ class OnAnyPropertyCondition extends PropertyCondition {
         if (matchingProperties.isEmpty()) {
             if (!missingProperties.isEmpty()) {
                 return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnAnyProperty.class, spec)
-                    .didNotFind("property", "properties")
-                    .items(ConditionMessage.Style.QUOTE, missingProperties));
+                                                                .didNotFind("property", "properties")
+                                                                .items(ConditionMessage.Style.QUOTE, missingProperties));
             }
             if (!nonMatchingProperties.isEmpty()) {
                 return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnAnyProperty.class, spec)
-                    .found("different value in property", "different "
-                        + "value in properties")
-                    .items(ConditionMessage.Style.QUOTE,
-                        nonMatchingProperties));
+                                                                .found("different value in property", "different "
+                                                                    + "value in properties")
+                                                                .items(ConditionMessage.Style.QUOTE,
+                                                                    nonMatchingProperties));
             }
         }
 
