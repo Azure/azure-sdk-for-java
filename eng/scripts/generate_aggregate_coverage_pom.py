@@ -6,7 +6,8 @@
 # Use case: Creates an aggregate POM which contains all modules for which aggregate code coverage will be reported.
 #
 # Flags
-#   --project-list/--pl: List of projects included in the aggregate coverage report.
+#   --project-list/--pl: List of projects included in the generated pom. If no projects are specified all projects defined in version_client.txt will be included
+#   --groups/--g: List of comma-separate Maven groups to include in generated pom. If no groups are specified all track 2 groups (com.azure, com.azure.resourcemanager and com.azure.spring) will be included.
 #
 # For example: To create an aggregate POM for Azure Storage
 #    python eng/scripts/generate_aggregate_coverage_pom.py --pl com.azure:azure-storage-blob,com.azure:azure-storage-common,...
@@ -86,11 +87,12 @@ def create_aggregate_coverage_pom(project_list: str, groups: str):
         aggregateCoveragePom.write(pom_file_start.format('azure-sdk-aggregate-coverage'))
         aggregateCoveragePom.write(start_modules)
         dependencies = ''
-        for project_id in project_list_identifiers:
-            if project_id not in projects:
+
+        for project in sorted(projects.values(), key=lambda x: x.module_path):
+            project_id = project.identifier
+            if project_id not in project_list_identifiers:
                 continue
 
-            project = projects[project_id]
             aggregateCoveragePom.write('    <module>{}</module>\n'.format(project.module_path))
 
             dependency_id = artifact_identifier_to_version[project_id]
@@ -191,10 +193,10 @@ def load_external_dependency_version() -> Dict[str, str]:
 def main():
     parser = argparse.ArgumentParser(description='Generated a POM for creating an aggregate code coverage report.')
     parser.add_argument('--project-list', '--pl', type=str)
-    parser.add_argument('--group', '--g', type=str)
+    parser.add_argument('--groups', '--g', type=str)
     args = parser.parse_args()
     start_time = time.time()
-    create_aggregate_coverage_pom(args.project_list, args.group)
+    create_aggregate_coverage_pom(args.project_list, args.groups)
     elapsed_time = time.time() - start_time
 
     print('Effective POM File for aggregate code coverage')
