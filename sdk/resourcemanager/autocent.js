@@ -4,6 +4,7 @@ const request = require('request-promise');
 
 // mapping for services with different spec folder names
 const specs = {
+  'appcontainers': 'app',
   'avs': 'vmware',
   'cosmos': 'cosmos-db',
   'costmanagement': 'cost-management',
@@ -31,7 +32,7 @@ async function autocent() {
   console.log('[INFO] Automation task to update the mapping of services and API version tags.');
 
   await getArtifacts();
-  
+
   writeMarkdown();
 }
 
@@ -49,7 +50,7 @@ async function getArtifacts() {
     promises.push(readMetadata(artifacts[i]))
   }
   artiRegEx.lastIndex = 0;
-  
+
   await Promise.all(promises)
 }
 
@@ -67,7 +68,7 @@ async function readMetadata(artifact) {
     promises.push(readPom(artifact, versions[i]))
   }
   verRegEx.lastIndex = 0;
-  
+
   await Promise.all(promises)
 }
 

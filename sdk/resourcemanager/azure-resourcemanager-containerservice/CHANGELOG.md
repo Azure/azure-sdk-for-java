@@ -1,6 +1,6 @@
 # Release History
 
-## 2.15.0-beta.1 (Unreleased)
+## 2.15.0 (2022-05-25)
 
 ### Breaking Changes
 
