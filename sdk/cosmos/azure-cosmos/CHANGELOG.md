@@ -11,7 +11,6 @@
 #### Other Changes
 
 ### 4.30.0 (2022-05-20)
-
 #### Bugs Fixed
 * Fixed bubbling of Errors in case of any `java.lang.Error` - See [PR 28620](https://github.com/Azure/azure-sdk-for-java/pull/28620)
 * Fixed an issue with creating new Throughput control client item when `enableThroughputControlGroup` is being called multiple times with the same throughput control group. - See [PR 28905](https://github.com/Azure/azure-sdk-for-java/pull/28905)
