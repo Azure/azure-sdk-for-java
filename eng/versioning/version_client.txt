@@ -210,7 +210,7 @@ com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.14.0;2.15.0
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.15.0;2.16.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.15.0;2.16.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.15.0;2.16.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.14.0;2.15.0
+com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.15.0;2.16.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.15.0;2.16.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.14.0;2.15.0
 com.azure.resourcemanager:azure-resourcemanager-msi;2.15.0;2.16.0-beta.1
