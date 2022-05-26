@@ -283,7 +283,7 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
             policies.add(0, new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
 
             return new HttpPipelineBuilder()
@@ -298,7 +298,7 @@ public final class EncryptedBlobClientBuilder implements
             List<HttpPipelinePolicy> policies = new ArrayList<>();
 
             policies.add(new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
-            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
             String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
                 : logOptions.getApplicationId();
             policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));

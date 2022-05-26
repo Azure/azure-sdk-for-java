@@ -17,9 +17,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 // TODO: Access conditions, leases, etc from the download call that need to be applied to this request
+// TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
 public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
-
-    private static final ClientLogger LOGGER = new ClientLogger(FetchEncryptionVersionPolicy.class);
 
     private final BlobAsyncClient blobClient;
     private final boolean requiresEncryption;
@@ -31,18 +30,26 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy nextPolicy) {
-        // Assumption: Download is the only API on an encrypted client that sets x-ms-range.
+        //
         // If not a download call, this policy is a no-op.
         // TODO: Find another way to make this a no-op if it's not a download. May have to override download methods to add a context
         // Or if no range is specified, it's the whole blob anyway, so we'll have everything we need already
         // So maybe we just only expand the range if it's present. And we'd only have to do a getProperties if we see there's a range header
         // Otherwise decryption can take care of it
+        /*
+         * If there's a range header, we'll need to know how much to expand the range in the decryption policy, which
+         * requires fetching the encryption version first.
+         * If there's no range, it's either not a download request, in which case we don't need the properties, or it's
+         * a full blob download in which case we'll get the entire blob anyway. Therefore, we won't need to expand the
+         * range at all, and we'll get the properties/EncryptionData for free with the download request.
+         * Assumption: Download is the only API on an encrypted client that sets x-ms-range.
+         */
         if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) == null) {
             return nextPolicy.process();
         } else {
             return this.blobClient.getProperties().map(props -> {
-                    EncryptionData encryptionData = getAndValidateEncryptionData(
-                        props.getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY));
+                    EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+                        props.getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY), requiresEncryption);
 
                     context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
 
@@ -50,45 +57,6 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
                     // if the blob is not encrypted and no encryption data is present, we'll skip parsing in the next policy
                 })
                 .then(Mono.defer(nextPolicy::process));
-        }
-
-    }
-
-    /**
-     * Gets and validates {@link EncryptionDataV1} from a Blob's metadata
-     *
-     * @param encryptionDataString {@code String} of encrypted metadata
-     * @return {@link EncryptionData}
-     */
-    private EncryptionData getAndValidateEncryptionData(String encryptionDataString) {
-        if (encryptionDataString == null) {
-            if (requiresEncryption) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
-                    + "downloaded data is not encrypted."));
-            }
-            return null;
-        }
-
-        try {
-            EncryptionData encryptionData;
-            if (encryptionDataString.contains("\"Protocol\":\"1.0\",")) {
-                    encryptionData = EncryptionData.fromJsonString(encryptionDataString, EncryptionDataV1.class);
-                Objects.requireNonNull(((EncryptionDataV1) encryptionData).getContentEncryptionIV(),
-                    "contentEncryptionIV in encryptionData cannot be null");
-                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
-                    + "encryptionData.wrappedContentKey cannot be null");
-            } else if (encryptionDataString.contains("\"Protocol\":\"2.0\",")) {
-                    encryptionData = EncryptionData.fromJsonString(encryptionDataString, EncryptionDataV2.class);
-            } else {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-                    "Invalid Encryption Agent. This version of the client library does not understand the "
-                        + "Encryption Agent set on the blob message: %s",
-                    encryptionDataString)));
-            }
-
-            return encryptionData;
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
