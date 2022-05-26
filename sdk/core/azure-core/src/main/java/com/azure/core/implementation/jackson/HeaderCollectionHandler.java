@@ -15,15 +15,15 @@ import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /*
  * Internal helper class that helps manage converting headers into their header collection.
  */
 final class HeaderCollectionHandler {
     private static final int CACHE_SIZE_LIMIT = 10000;
-    private static final Map<Field, MethodHandle> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Field, Optional<MethodHandle>> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
     private final String prefix;
     private final int prefixLength;
     private final Map<String, String> values;
@@ -83,52 +83,14 @@ final class HeaderCollectionHandler {
         final String clazzSimpleName = clazz.getSimpleName();
         final String fieldName = declaringField.getName();
 
-        MethodHandle setterHandler = getFromCache(declaringField, field -> {
-            MethodHandles.Lookup lookupToUse;
-            try {
-                lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
-            } catch (Exception ex) {
-                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
-                return null;
-            }
+        Optional<MethodHandle> setterHandler = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
 
-            String setterName = getPotentialSetterName(fieldName);
-
-            try {
-                MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
-                    MethodType.methodType(clazz, Map.class));
-
-                logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
-
-                return handle;
-            } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName, ex);
-            }
-
-            try {
-                Method setterMethod = deserializedHeaders.getClass()
-                    .getDeclaredMethod(setterName, Map.class);
-                MethodHandle handle = lookupToUse.unreflect(setterMethod);
-
-                logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName);
-
-                return handle;
-            } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName, ex);
-            }
-
-            return null;
-        });
-
-        if (setterHandler == null) {
+        if (!setterHandler.isPresent()) {
             return false;
         }
 
         try {
-            setterHandler.invokeWithArguments(deserializedHeaders, values);
+            setterHandler.get().invokeWithArguments(deserializedHeaders, values);
             logger.verbose("Set header collection {} on class {} using MethodHandle.", fieldName, clazzSimpleName);
 
             return true;
@@ -147,11 +109,49 @@ final class HeaderCollectionHandler {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
     }
 
-    private static MethodHandle getFromCache(Field key, Function<Field, MethodHandle> compute) {
+    private static Optional<MethodHandle> getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
+        String fieldName, ClientLogger logger) {
         if (FIELD_TO_SETTER_CACHE.size() >= CACHE_SIZE_LIMIT) {
             FIELD_TO_SETTER_CACHE.clear();
         }
 
-        return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, compute);
+        return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, field -> {
+            MethodHandles.Lookup lookupToUse;
+            try {
+                lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
+            } catch (Exception ex) {
+                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
+                return Optional.empty();
+            }
+
+            String setterName = getPotentialSetterName(fieldName);
+
+            try {
+                MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
+                    MethodType.methodType(clazz, Map.class));
+
+                logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
+
+                return Optional.of(handle);
+            } catch (ReflectiveOperationException ex) {
+                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}.", setterName,
+                    clazzSimpleName, ex);
+            }
+
+            try {
+                Method setterMethod = clazz.getDeclaredMethod(setterName, Map.class);
+                MethodHandle handle = lookupToUse.unreflect(setterMethod);
+
+                logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
+                    clazzSimpleName);
+
+                return Optional.of(handle);
+            } catch (ReflectiveOperationException ex) {
+                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}.", setterName,
+                    clazzSimpleName, ex);
+            }
+
+            return Optional.empty();
+        });
     }
 }

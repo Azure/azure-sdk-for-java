@@ -509,11 +509,7 @@ public final class RestProxy implements InvocationHandler {
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
         // body as an Object.
         MethodHandle constructorHandle = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
-        if (constructorHandle == null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
-        } else {
-            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorHandle, response, bodyAsObject);
-        }
+        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorHandle, response, bodyAsObject);
     }
 
     private static Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
