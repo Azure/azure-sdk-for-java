@@ -68,7 +68,7 @@ public class ClientTelemetryConfig {
 
         if (StringUtils.isNotEmpty(config)) {
             try {
-                ProxyOptionsConfig proxyOptionsConfig = Utils.getSimpleObjectMapper().readValue(config, ProxyOptionsConfig.class);
+                JsonProxyOptionsConfig proxyOptionsConfig = Utils.getSimpleObjectMapper().readValue(config, JsonProxyOptionsConfig.class);
                 ProxyOptions.Type type = ProxyOptions.Type.valueOf(proxyOptionsConfig.type);
 
                 if (type != ProxyOptions.Type.HTTP) {
@@ -84,8 +84,6 @@ public class ClientTelemetryConfig {
                 }
 
                 return new ProxyOptions(type, new InetSocketAddress(proxyOptionsConfig.host, proxyOptionsConfig.port));
-            } catch (JsonMappingException e) {
-                logger.error("Failed to parse client telemetry proxy option config", e);
             } catch (JsonProcessingException e) {
                 logger.error("Failed to parse client telemetry proxy option config", e);
             }
@@ -94,7 +92,7 @@ public class ClientTelemetryConfig {
         return null;
     }
 
-    private static class ProxyOptionsConfig {
+    private static class JsonProxyOptionsConfig {
         @JsonProperty
         private String host;
         @JsonProperty
@@ -102,8 +100,8 @@ public class ClientTelemetryConfig {
         @JsonProperty
         private String type;
 
-        private ProxyOptionsConfig() {}
-        private ProxyOptionsConfig(String host, int port, String type) {
+        private JsonProxyOptionsConfig() {}
+        private JsonProxyOptionsConfig(String host, int port, String type) {
             this.host = host;
             this.port = port;
             this.type = type;

@@ -42,6 +42,9 @@ public class Configs {
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
 
+    // Example for customer how to setup the proxy:
+    // System.setProperty(
+    //  "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG","{\"type\":\"HTTP\", \"host\": \"localhost\", \"port\": 8080}")
     private static final String CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG = "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG";
     // In the future, the following two client telemetry related configs will be part of the database account info
     // Before that day comes, use JVM properties

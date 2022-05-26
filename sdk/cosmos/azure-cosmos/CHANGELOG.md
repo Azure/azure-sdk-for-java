@@ -9,7 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Added support for config Proxy for `ClientTelemetry` - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
 
 ### 4.30.0 (2022-05-20)
 #### Bugs Fixed
