@@ -49,6 +49,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
@@ -628,10 +629,48 @@ public abstract class RestProxyTests {
             });
     }
 
+    /**
+     * LengthValidatingInputStream in rest proxy relies on reader
+     * reaching EOF. This test specifically targets InputStream to assert this behavior.
+     */
+    @Test
+    public void asyncPutRequestWithStreamBinaryDataBodyAndLessThanContentLength() {
+        Mono<BinaryData> bodyMono = Mono.just(BinaryData.fromStream(
+            new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 5L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("less than"));
+            });
+    }
+
     @Test
     public void asyncPutRequestWithBinaryDataBodyAndMoreThanContentLength() {
         Mono<BinaryData> bodyMono = BinaryData.fromFlux(
             Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 3L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("more than"));
+            });
+    }
+
+    /**
+     * LengthValidatingInputStream in rest proxy relies on reader
+     * reaching EOF. This test specifically targets InputStream to assert this behavior.
+     */
+    @Test
+    public void asyncPutRequestWithStreamBinaryDataBodyAndMoreThanContentLength() {
+        Mono<BinaryData> bodyMono = Mono.just(BinaryData.fromStream(
+            new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
         StepVerifier.create(
                 bodyMono.flatMap(body ->
                     createService(Service9.class).putAsyncBodyAndContentLength(body, 3L)))

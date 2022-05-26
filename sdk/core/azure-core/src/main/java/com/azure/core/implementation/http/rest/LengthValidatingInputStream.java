@@ -15,6 +15,8 @@ import static com.azure.core.implementation.http.rest.RestProxyUtils.BODY_TOO_SM
 /**
  * An {@link InputStream} decorator that tracks the number of bytes read from an inner {@link InputStream} and throws
  * an exception if the number of bytes read doesn't match what was expected.
+ *
+ * This implementation assumes that reader is going to read until EOF.
  */
 final class LengthValidatingInputStream extends InputStream {
     private final InputStream inner;
