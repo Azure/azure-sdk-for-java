@@ -116,8 +116,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * We will need to know the total size of the data to know when to finalize the decryption. If it was
                  * not set originally with the intent of downloading the whole blob, update it here.
                  */
-                encryptedRange.setAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(
-                    CONTENT_LENGTH)));
+                encryptedRange.setAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
                 /*
                  * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
                  * block size. Padding is only ever present in track 1.
@@ -126,8 +125,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     encryptionData == null ? EncryptionData.getAndValidateEncryptionData(
                         httpResponse.getHeaderValue("x-ms-meta-" + ENCRYPTION_DATA_KEY), requiresEncryption)
                         : encryptionData;
-                boolean padding = encryptionDataFinal.getEncryptionAgent().getProtocol()
-                    .equals(ENCRYPTION_PROTOCOL_V1)
+                boolean padding = encryptionDataFinal.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
                     && (encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
@@ -162,8 +160,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         if (encryptionData == null) {
             dataToTrim = encryptedFlux;
         } else {
-            // For v2. Get everything in aggregators that are 4mb + 12 +16. Then get the first n bytes of that as the iv. Then
-            // get the rest asFlux and do basically what we did in encryption
             dataToTrim = getKeyEncryptionKey(encryptionData)
                 .flatMapMany(contentEncryptionKey -> {
                     switch (encryptionData.getEncryptionAgent().getProtocol()) {
@@ -307,8 +303,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * Setting the position past the limit will throw. This is in the case of very small
                  * ByteBuffers that are entirely contained within the offsetAdjustment.
                  */
-                // Problem is that the amount we adjust the range by to get everything we need is different than the amount we need to trim because nonce and tag disappear.
-                // Split into offsetAdjustment and extraPlaintextRetrieved. It'll be the same for v1 but not for v2.
                 int newPosition = Math.min(remainingAdjustment, plaintextByteBuffer.limit());
                 plaintextByteBuffer.position(newPosition);
             }

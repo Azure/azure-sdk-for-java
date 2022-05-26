@@ -57,6 +57,12 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_PKCS5PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -659,33 +665,24 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                                     EncryptionAlgorithm.AES_GMC_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setAuthenticationBlockInfo(new AuthenticationRegionInfo(
-                                    CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH + "",
-                                    CryptographyConstants.NONCE_LENGTH + ""))
+                                    GCM_ENCRYPTION_REGION_LENGTH + "", NONCE_LENGTH + ""))
                                 .setWrappedContentKey(wrappedKey);
 
-                            /*
-                            This introduces an extra layer of buffering that is undesirable. Now, we allocate buffers
-                            to get to 4mb chunks. And the cipher will also allocate buffers to do the encryption.
-
-                            Perhaps we can introduce an
-                            internal option that allows us to skip buffering and chunking if we know it's already done?
-                            This would require us to set the staging area size to 4mb-28 here so that it emits 4mb.
-                            It also couples the encryption and the upload.
-                             */
                             BufferStagingArea stagingArea =
-                                new BufferStagingArea(CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH,
-                                    CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH);
+                                new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH, GCM_ENCRYPTION_REGION_LENGTH);
 
                             encryptedTextFlux =
                                 UploadUtils.chunkSource(plainTextFlux,
                                     new com.azure.storage.common.ParallelTransferOptions()
-                                        .setBlockSizeLong((long) CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH))
+                                        .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH))
                                     .flatMapSequential(stagingArea::write)
                                     .concatWith(Flux.defer(stagingArea::flush))
                                     .index()
                                     .flatMapSequential(tuple -> {
                                         Cipher gmcCipher;
                                         try {
+                                            // We use the index as the nonce as a counter guarantees each nonce is used
+                                            // only once with a given key.
                                             gmcCipher = generateGMCCipher(aesKey, tuple.getT1());
                                         } catch (NoSuchPaddingException | NoSuchAlgorithmException
                                             | InvalidAlgorithmParameterException | InvalidKeyException e) {
@@ -695,8 +692,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                                         // Expected size of each encryption region after calling doFinal. Last one may
                                         // be less, will never be more.
                                         ByteBuffer encryptedRegion = ByteBuffer.allocate(
-                                            CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH
-                                                + CryptographyConstants.TAG_LENGTH);
+                                            GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
 
                                         // Each flux is at most 1 BufferAggregator of 4mb
                                         Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()
@@ -743,7 +739,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     Cipher generateCBCCipher(SecretKey aesKey) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
+        Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
 
         // Generate content encryption key
         cipher.init(Cipher.ENCRYPT_MODE, aesKey);
@@ -753,10 +749,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     Cipher generateGMCCipher(SecretKey aesKey, long index) throws NoSuchPaddingException, NoSuchAlgorithmException,
         InvalidAlgorithmParameterException, InvalidKeyException {
-        Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_GCM_NO_PADDING);
+        Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
         byte[] iv = ByteBuffer.allocate(12).putLong(index).array(); // standard gcm nonce is 12 bytes per James' doc
 
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(CryptographyConstants.TAG_LENGTH * 8, iv));
+        cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
         return cipher;
     }
 
@@ -771,8 +767,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         Map<String, String> metadata) {
         return this.encryptBlob(plainText).flatMapMany(encryptedBlob -> {
             try {
-                metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY,
-                    encryptedBlob.getEncryptionData().toJsonString());
+                metadata.put(ENCRYPTION_DATA_KEY, encryptedBlob.getEncryptionData().toJsonString());
                 return encryptedBlob.getCiphertextFlux();
             } catch (JsonProcessingException e) {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));

@@ -30,12 +30,6 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy nextPolicy) {
-        //
-        // If not a download call, this policy is a no-op.
-        // TODO: Find another way to make this a no-op if it's not a download. May have to override download methods to add a context
-        // Or if no range is specified, it's the whole blob anyway, so we'll have everything we need already
-        // So maybe we just only expand the range if it's present. And we'd only have to do a getProperties if we see there's a range header
-        // Otherwise decryption can take care of it
         /*
          * If there's a range header, we'll need to know how much to expand the range in the decryption policy, which
          * requires fetching the encryption version first.
@@ -54,7 +48,6 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
                     context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
 
                     return props;
-                    // if the blob is not encrypted and no encryption data is present, we'll skip parsing in the next policy
                 })
                 .then(Mono.defer(nextPolicy::process));
         }

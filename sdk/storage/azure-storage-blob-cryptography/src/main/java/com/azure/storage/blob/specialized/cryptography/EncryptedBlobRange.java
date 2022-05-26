@@ -108,6 +108,8 @@ final class EncryptedBlobRange {
                     this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE
                         - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
                 }
+                // These values are the same here because, barring padding, which is irrelevant here, the cipher text
+                // length is the same as the plaintext length.
                 this.amountPlaintextToSkip = offsetAdjustment;
                 break;
             case ENCRYPTION_PROTOCOL_V2:
@@ -115,11 +117,13 @@ final class EncryptedBlobRange {
                 // Get the start of the encryption region for the original offset
                 long regionNumber = originalRange.getOffset() / GCM_ENCRYPTION_REGION_LENGTH;
 
-                // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
-                // It is effectively the amount of extra plaintext we grabbed.
-                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
                 long regionStartOffset = regionNumber
                     * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+
+                // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
+                // It is effectively the amount of extra plaintext we grabbed. This is necessary because the nonces and tags
+                // are stored in the data, which skews our counting.
+                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
 
                 // Get the end of the encryption region for the end of the original range
                 regionNumber = (originalRange.getOffset() + originalRange.getCount())

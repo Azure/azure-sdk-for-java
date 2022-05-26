@@ -76,19 +76,18 @@ public final class BufferAggregator {
      * @return
      */
     public byte[] getFirstNBytes(int numBytes) {
-        // Should probably add more checks to make it safer even though this is an internal method
-        // numBytes < less than aggregator size, etc.
+        if (numBytes < 0 || numBytes > this.length) {
+            throw new IllegalArgumentException("numBytes is outside the range of this aggregator");
+        }
         ByteBuffer data = ByteBuffer.allocate(numBytes);
         Iterator<ByteBuffer> bufferIterator = buffers.iterator();
         while(data.hasRemaining()) {
-            ByteBuffer source = bufferIterator.next(); // Should check hasNext
+            // No need to check hasNext as we already guaranteed the aggregator was big enough to fill the request.
+            ByteBuffer source = bufferIterator.next();
             while(source.hasRemaining() && data.hasRemaining()) {
                 data.put(source.get());
             }
         }
-
-        return data.flip().array();
+        return data.array(); // No need to flip as we're just going straight to the underlying array
     }
-
-
 }
