@@ -81,7 +81,7 @@ class OnAnyPropertyCondition extends PropertyCondition {
 
         private String[] getPrefixes(Map<String, Object> annotationAttributes) {
             String[] prefixesAttr = (String[]) annotationAttributes.get("prefixes");
-            for(int i = 0; i < prefixesAttr.length; i++){
+            for (int i = 0; i < prefixesAttr.length; i++) {
                 prefixesAttr[i] = AzureStringUtils.ensureEndsWithSuffix(prefixesAttr[i].trim(), PROPERTY_SUFFIX);
             }
             return prefixesAttr;

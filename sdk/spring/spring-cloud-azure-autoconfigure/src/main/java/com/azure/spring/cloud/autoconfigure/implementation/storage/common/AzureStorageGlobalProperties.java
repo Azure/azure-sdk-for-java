@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.storage.common;
 
 /**
- * Global Properties for all Azure Storage services.
+ * Global Properties for Azure Storage services.
  */
 public class AzureStorageGlobalProperties extends AzureStorageProperties {
 

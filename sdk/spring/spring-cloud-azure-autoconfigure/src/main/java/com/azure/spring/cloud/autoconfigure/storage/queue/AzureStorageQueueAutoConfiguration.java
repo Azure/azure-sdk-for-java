@@ -39,14 +39,14 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties
 @ConditionalOnClass(QueueServiceClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.storage.queue.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefixes ={ "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" }, name = { "account-name", "endpoint", "connection-string" })
+@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" }, name = { "account-name", "endpoint", "connection-string" })
 @Import(AzureStorageConfiguration.class)
 public class AzureStorageQueueAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
     AzureStorageQueueProperties azureStorageQueueProperties(AzureStorageGlobalProperties storageGlobalProperties) {
-        return AzureServicePropertiesUtils.loadStorageProperties(storageGlobalProperties, new AzureStorageQueueProperties());
+        return AzureServicePropertiesUtils.loadServiceProperties(storageGlobalProperties, new AzureStorageQueueProperties());
     }
 
     /**

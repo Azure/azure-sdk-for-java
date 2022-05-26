@@ -73,7 +73,7 @@ class AzureStorageAutoConfigurationTests {
     }
 
     @Test
-    void StorageAllServiceShouldWorkWithGlobalConfig() {
+    void storageAllServiceShouldWorkWithGlobalConfig() {
         String accountName = "test-account-name";
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
         this.contextRunner
