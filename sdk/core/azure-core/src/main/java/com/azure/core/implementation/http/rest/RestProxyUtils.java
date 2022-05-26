@@ -5,10 +5,15 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.LengthValidatingInputStream;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -17,8 +22,8 @@ import java.nio.ByteBuffer;
 public final class RestProxyUtils {
 
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
-    private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
-    private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
+    public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
+    public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
 
     private RestProxyUtils() {
     }
@@ -30,22 +35,30 @@ public final class RestProxyUtils {
             return Mono.just(request);
         }
 
-        Long bodyLength = body.getLength();
-        long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-        if (bodyLength != null) {
-            if (bodyLength < expectedLength) {
-                return Mono.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                    bodyLength, expectedLength), bodyLength, expectedLength));
-            } else if (bodyLength > expectedLength) {
-                return Mono.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                    bodyLength, expectedLength), bodyLength, expectedLength));
+        return Mono.fromCallable(() -> {
+            Long bodyLength = body.getLength();
+            long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+            if (bodyLength != null) {
+                if (bodyLength < expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                        bodyLength, expectedLength), bodyLength, expectedLength);
+                } else if (bodyLength > expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        bodyLength, expectedLength), bodyLength, expectedLength);
+                }
             } else {
-                return Mono.just(request);
+                BinaryDataContent content = BinaryDataHelper.getContent(body);
+                if (content instanceof InputStreamContent) {
+                    InputStream validatingInputStream = new LengthValidatingInputStream(
+                        content.toStream(), expectedLength);
+                    request.setBody(BinaryData.fromStream(validatingInputStream));
+                } else {
+                    request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
+                }
             }
-        } else {
-            request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
-            return Mono.just(request);
-        }
+
+            return request;
+        });
     }
 
     private static Flux<ByteBuffer> validateFluxLength(Flux<ByteBuffer> bbFlux, long expectedLength) {
