@@ -13,11 +13,11 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @anuchandy @conniey @pallavit @lmolkova @jonathangiles
+/sdk/                                               @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
 # PRLabel: %bom
-/sdk/boms/azure-sdk-bom/                            @pallavit @alzimmermsft @jonathangiles @srnagar @anuchandy
+/sdk/boms/azure-sdk-bom/                            @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
 /sdk/boms/spring-cloud-azure-dependencies/          @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
@@ -71,10 +71,10 @@
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Container Registry
-/sdk/containerregistry/                             @pallavit @alzimmermsft
+/sdk/containerregistry/                             @lmolkova @alzimmermsft
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
+/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
@@ -136,7 +136,7 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @kryalama @ramthi @heyams
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query                    @srnagar @pallavit
+/sdk/monitor/azure-monitor-query                    @srnagar @lmolkova
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
@@ -148,7 +148,7 @@
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
+/sdk/search/                                        @alzimmermsft @mssfang @samvaity
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
@@ -744,7 +744,7 @@
 /eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
 /eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
 /eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
-/eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar @jonathangiles
+/eng/bomgenerator                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 
 /**/tests.yml                                       @hallipr
