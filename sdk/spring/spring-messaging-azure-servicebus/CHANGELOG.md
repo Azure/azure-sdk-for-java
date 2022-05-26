@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0 (2022-05-25)
+## 4.2.0 (2022-05-26)
 
 Please refer to [CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/6ff7d81c97763ac2d23ffd469b7841639492069b/sdk/spring/CHANGELOG.md#420-2022-05-25) for more details.
 
