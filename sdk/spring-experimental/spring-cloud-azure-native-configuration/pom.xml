@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
+      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>

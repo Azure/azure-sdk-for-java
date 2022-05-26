@@ -170,7 +170,7 @@ com.azure.spring:spring-integration-azure-storage-queue;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-core;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-actuator-autoconfigure;4.1.0;4.2.0
 com.azure.spring:spring-cloud-azure-actuator;4.2.0;4.3.0-beta.1
-com.azure.spring:spring-cloud-azure-autoconfigure;4.1.0;4.2.0
+com.azure.spring:spring-cloud-azure-autoconfigure;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-native-configuration;4.0.0-beta.1;4.0.0-beta.2
 com.azure.spring:spring-cloud-azure-resourcemanager;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-service;4.2.0;4.3.0-beta.1
