@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
-  <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;current} -->
 
   <name>Spring Cloud Azure Stream Binder Service Bus Core</name>
   <description>Spring Cloud Azure Stream Binder Service Bus Core</description>
