@@ -187,25 +187,18 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
         @Override
         public void onMessage(ServiceBusReceivedMessageContext messageContext) {
-            Checkpointer checkpointer = new AzureCheckpointer(() -> Mono.fromRunnable(messageContext::complete),
-                () -> Mono.fromRunnable(messageContext::abandon));
             Map<String, Object> headers = new HashMap<>();
             headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext);
 
             if (!isAutoComplete) {
+                Checkpointer checkpointer = new AzureCheckpointer(() -> Mono.fromRunnable(messageContext::complete),
+                    () -> Mono.fromRunnable(messageContext::abandon));
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
             Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
                 payloadType);
             sendMessage(message);
-
-            if (isAutoComplete) {
-                checkpointer.success()
-                            .doOnSuccess(t -> LOGGER.debug("Settled {} with autocomplete enabled.", message))
-                            .doOnError(t -> LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
-                            .block();
-            }
         }
 
     }
