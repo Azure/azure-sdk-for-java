@@ -59,7 +59,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps"
-                + "/{containerAppName}/revisions/{revisionName}/replicas/{name}")
+                + "/{containerAppName}/revisions/{revisionName}/replicas/{replicaName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ReplicaInner>> getReplica(
@@ -68,7 +68,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
             @PathParam("revisionName") String revisionName,
-            @PathParam("name") String name,
+            @PathParam("replicaName") String replicaName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -96,7 +96,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @param name Name of the Container App Revision Replica.
+     * @param replicaName Name of the Container App Revision Replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +105,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReplicaInner>> getReplicaWithResponseAsync(
-        String resourceGroupName, String containerAppName, String revisionName, String name) {
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -129,8 +129,8 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
         if (revisionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (replicaName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -143,7 +143,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
                             resourceGroupName,
                             containerAppName,
                             revisionName,
-                            name,
+                            replicaName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -156,7 +156,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @param name Name of the Container App Revision Replica.
+     * @param replicaName Name of the Container App Revision Replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -166,7 +166,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReplicaInner>> getReplicaWithResponseAsync(
-        String resourceGroupName, String containerAppName, String revisionName, String name, Context context) {
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -190,8 +190,8 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
         if (revisionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (replicaName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -202,7 +202,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
                 resourceGroupName,
                 containerAppName,
                 revisionName,
-                name,
+                replicaName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -214,7 +214,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @param name Name of the Container App Revision Replica.
+     * @param replicaName Name of the Container App Revision Replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,16 +222,9 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReplicaInner> getReplicaAsync(
-        String resourceGroupName, String containerAppName, String revisionName, String name) {
-        return getReplicaWithResponseAsync(resourceGroupName, containerAppName, revisionName, name)
-            .flatMap(
-                (Response<ReplicaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
+        return getReplicaWithResponseAsync(resourceGroupName, containerAppName, revisionName, replicaName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -240,7 +233,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @param name Name of the Container App Revision Replica.
+     * @param replicaName Name of the Container App Revision Replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,8 +241,8 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner getReplica(
-        String resourceGroupName, String containerAppName, String revisionName, String name) {
-        return getReplicaAsync(resourceGroupName, containerAppName, revisionName, name).block();
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName) {
+        return getReplicaAsync(resourceGroupName, containerAppName, revisionName, replicaName).block();
     }
 
     /**
@@ -258,7 +251,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @param name Name of the Container App Revision Replica.
+     * @param replicaName Name of the Container App Revision Replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -267,8 +260,9 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaInner> getReplicaWithResponse(
-        String resourceGroupName, String containerAppName, String revisionName, String name, Context context) {
-        return getReplicaWithResponseAsync(resourceGroupName, containerAppName, revisionName, name, context).block();
+        String resourceGroupName, String containerAppName, String revisionName, String replicaName, Context context) {
+        return getReplicaWithResponseAsync(resourceGroupName, containerAppName, revisionName, replicaName, context)
+            .block();
     }
 
     /**
@@ -394,14 +388,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
     private Mono<ReplicaCollectionInner> listReplicasAsync(
         String resourceGroupName, String containerAppName, String revisionName) {
         return listReplicasWithResponseAsync(resourceGroupName, containerAppName, revisionName)
-            .flatMap(
-                (Response<ReplicaCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

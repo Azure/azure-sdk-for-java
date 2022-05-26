@@ -296,7 +296,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         IlrRequestResource parameters) {
         return provisionWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -550,7 +550,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         String recoveryPointId) {
         return revokeWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

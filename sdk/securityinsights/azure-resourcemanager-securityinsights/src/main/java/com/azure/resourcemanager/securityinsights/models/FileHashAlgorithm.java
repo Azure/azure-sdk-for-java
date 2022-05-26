@@ -36,7 +36,11 @@ public final class FileHashAlgorithm extends ExpandableStringEnum<FileHashAlgori
         return fromString(name, FileHashAlgorithm.class);
     }
 
-    /** @return known FileHashAlgorithm values. */
+    /**
+     * Gets known FileHashAlgorithm values.
+     *
+     * @return known FileHashAlgorithm values.
+     */
     public static Collection<FileHashAlgorithm> values() {
         return values(FileHashAlgorithm.class);
     }

@@ -10,111 +10,30 @@ import java.util.List;
 
 /** The HealthcareResult model. */
 @Fluent
-public final class HealthcareResult {
+public final class HealthcareResult extends PreBuiltResult {
     /*
-     * Response by document
+     * The documents property.
      */
     @JsonProperty(value = "documents", required = true)
-    private List<DocumentHealthcareEntities> documents;
-
-    /*
-     * Errors by document id.
-     */
-    @JsonProperty(value = "errors", required = true)
-    private List<DocumentError> errors;
-
-    /*
-     * if showStats=true was specified in the request this field will contain
-     * information about the request payload.
-     */
-    @JsonProperty(value = "statistics")
-    private RequestStatistics statistics;
-
-    /*
-     * This field indicates which model is used for scoring.
-     */
-    @JsonProperty(value = "modelVersion", required = true)
-    private String modelVersion;
+    private List<HealthcareResultDocumentsItem> documents;
 
     /**
-     * Get the documents property: Response by document.
+     * Get the documents property: The documents property.
      *
      * @return the documents value.
      */
-    public List<DocumentHealthcareEntities> getDocuments() {
+    public List<HealthcareResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
     /**
-     * Set the documents property: Response by document.
+     * Set the documents property: The documents property.
      *
      * @param documents the documents value to set.
      * @return the HealthcareResult object itself.
      */
-    public HealthcareResult setDocuments(List<DocumentHealthcareEntities> documents) {
+    public HealthcareResult setDocuments(List<HealthcareResultDocumentsItem> documents) {
         this.documents = documents;
-        return this;
-    }
-
-    /**
-     * Get the errors property: Errors by document id.
-     *
-     * @return the errors value.
-     */
-    public List<DocumentError> getErrors() {
-        return this.errors;
-    }
-
-    /**
-     * Set the errors property: Errors by document id.
-     *
-     * @param errors the errors value to set.
-     * @return the HealthcareResult object itself.
-     */
-    public HealthcareResult setErrors(List<DocumentError> errors) {
-        this.errors = errors;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @return the statistics value.
-     */
-    public RequestStatistics getStatistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Set the statistics property: if showStats=true was specified in the request this field will contain information
-     * about the request payload.
-     *
-     * @param statistics the statistics value to set.
-     * @return the HealthcareResult object itself.
-     */
-    public HealthcareResult setStatistics(RequestStatistics statistics) {
-        this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: This field indicates which model is used for scoring.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the HealthcareResult object itself.
-     */
-    public HealthcareResult setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
         return this;
     }
 }

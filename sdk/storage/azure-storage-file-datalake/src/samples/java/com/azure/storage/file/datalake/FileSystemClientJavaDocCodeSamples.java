@@ -560,7 +560,8 @@ public class FileSystemClientJavaDocCodeSamples {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
-        Response<Void> response = client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context);
+        Response<Boolean> response = client.createIfNotExistsWithResponse(metadata, PublicAccessType.CONTAINER, timeout,
+            context);
         if (response.getStatusCode() == 409) {
             System.out.println("Already existed.");
         } else {
@@ -586,7 +587,7 @@ public class FileSystemClientJavaDocCodeSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, context);
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, context);
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
@@ -637,7 +638,8 @@ public class FileSystemClientJavaDocCodeSamples {
             .setLeaseId(leaseId);
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout, new Context(key1, value1));
+        Response<Boolean> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout,
+            new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
@@ -691,7 +693,7 @@ public class FileSystemClientJavaDocCodeSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteDirectoryIfExistsWithResponse(directoryName, options,
+        Response<Boolean> response = client.deleteDirectoryIfExistsWithResponse(directoryName, options,
             timeout, new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");

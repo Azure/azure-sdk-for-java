@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
 ## 1.12.0 (2022-05-06)
 
 ### Features Added

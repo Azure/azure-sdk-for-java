@@ -39,7 +39,11 @@ public final class PartnerNamespaceProvisioningState extends ExpandableStringEnu
         return fromString(name, PartnerNamespaceProvisioningState.class);
     }
 
-    /** @return known PartnerNamespaceProvisioningState values. */
+    /**
+     * Gets known PartnerNamespaceProvisioningState values.
+     *
+     * @return known PartnerNamespaceProvisioningState values.
+     */
     public static Collection<PartnerNamespaceProvisioningState> values() {
         return values(PartnerNamespaceProvisioningState.class);
     }

@@ -28,7 +28,11 @@ public final class ActiveDirectoryPropertiesAccountType
         return fromString(name, ActiveDirectoryPropertiesAccountType.class);
     }
 
-    /** @return known ActiveDirectoryPropertiesAccountType values. */
+    /**
+     * Gets known ActiveDirectoryPropertiesAccountType values.
+     *
+     * @return known ActiveDirectoryPropertiesAccountType values.
+     */
     public static Collection<ActiveDirectoryPropertiesAccountType> values() {
         return values(ActiveDirectoryPropertiesAccountType.class);
     }

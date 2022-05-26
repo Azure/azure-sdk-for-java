@@ -293,14 +293,7 @@ public final class TablesClientImpl implements TablesClient {
     public Mono<TableInner> createAsync(
         String resourceGroupName, String accountName, String tableName, TableInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
-            .flatMap(
-                (Response<TableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -322,14 +315,7 @@ public final class TablesClientImpl implements TablesClient {
     public Mono<TableInner> createAsync(String resourceGroupName, String accountName, String tableName) {
         final TableInner parameters = null;
         return createWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
-            .flatMap(
-                (Response<TableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -516,14 +502,7 @@ public final class TablesClientImpl implements TablesClient {
     public Mono<TableInner> updateAsync(
         String resourceGroupName, String accountName, String tableName, TableInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
-            .flatMap(
-                (Response<TableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -545,14 +524,7 @@ public final class TablesClientImpl implements TablesClient {
     public Mono<TableInner> updateAsync(String resourceGroupName, String accountName, String tableName) {
         final TableInner parameters = null;
         return updateWithResponseAsync(resourceGroupName, accountName, tableName, parameters)
-            .flatMap(
-                (Response<TableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -727,14 +699,7 @@ public final class TablesClientImpl implements TablesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableInner> getAsync(String resourceGroupName, String accountName, String tableName) {
         return getWithResponseAsync(resourceGroupName, accountName, tableName)
-            .flatMap(
-                (Response<TableInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -904,8 +869,7 @@ public final class TablesClientImpl implements TablesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String tableName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, tableName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, tableName).flatMap(ignored -> Mono.empty());
     }
 
     /**

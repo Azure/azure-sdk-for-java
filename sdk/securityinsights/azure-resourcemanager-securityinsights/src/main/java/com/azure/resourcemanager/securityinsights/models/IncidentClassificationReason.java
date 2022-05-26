@@ -33,7 +33,11 @@ public final class IncidentClassificationReason extends ExpandableStringEnum<Inc
         return fromString(name, IncidentClassificationReason.class);
     }
 
-    /** @return known IncidentClassificationReason values. */
+    /**
+     * Gets known IncidentClassificationReason values.
+     *
+     * @return known IncidentClassificationReason values.
+     */
     public static Collection<IncidentClassificationReason> values() {
         return values(IncidentClassificationReason.class);
     }

@@ -19,9 +19,9 @@ public class RotateAzureKeyCredential {
     public static void main(String[] args) {
         AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .credential(credential)
-            .endpoint("{endpoint}")
-            .buildClient();
+                                         .credential(credential)
+                                         .endpoint("{endpoint}")
+                                         .buildClient();
 
         // The document that needs be analyzed.
         String document = "My cat might need to see a veterinarian.";

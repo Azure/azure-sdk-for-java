@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
-import com.azure.cosmos.implementation.caches.SizeLimitingLRUCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -39,7 +38,6 @@ import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
-import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.PipelinedQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
@@ -49,8 +47,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContext;
-import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -372,7 +370,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
-            this.queryPlanCache = Collections.synchronizedMap(new SizeLimitingLRUCache(Constants.QUERYPLAN_CACHE_SIZE));
+            this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
@@ -4129,6 +4127,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.throughputControlStore.enableThroughputControlGroup(group);
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
+
+        return this.storeModel.openConnectionsAndInitCaches(containerLink);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

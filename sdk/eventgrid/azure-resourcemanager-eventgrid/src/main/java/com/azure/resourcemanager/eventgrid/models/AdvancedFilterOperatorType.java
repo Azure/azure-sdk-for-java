@@ -79,7 +79,11 @@ public final class AdvancedFilterOperatorType extends ExpandableStringEnum<Advan
         return fromString(name, AdvancedFilterOperatorType.class);
     }
 
-    /** @return known AdvancedFilterOperatorType values. */
+    /**
+     * Gets known AdvancedFilterOperatorType values.
+     *
+     * @return known AdvancedFilterOperatorType values.
+     */
     public static Collection<AdvancedFilterOperatorType> values() {
         return values(AdvancedFilterOperatorType.class);
     }

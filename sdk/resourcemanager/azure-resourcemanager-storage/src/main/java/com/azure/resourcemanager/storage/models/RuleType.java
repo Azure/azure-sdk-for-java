@@ -24,7 +24,11 @@ public final class RuleType extends ExpandableStringEnum<RuleType> {
         return fromString(name, RuleType.class);
     }
 
-    /** @return known RuleType values. */
+    /**
+     * Gets known RuleType values.
+     *
+     * @return known RuleType values.
+     */
     public static Collection<RuleType> values() {
         return values(RuleType.class);
     }

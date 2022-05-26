@@ -8,11 +8,11 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -334,25 +334,23 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             return contentObservable
                        .map(content -> {
-                               //Adding transport client request timeline to diagnostics
+                               // Capture transport client request timeline
                                ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
-                                   BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
-                                       reactorNettyRequestRecord.takeTimelineSnapshot());
                                }
 
                                // If there is any error in the header response this throws exception
-                               // TODO: potential performance improvement: return Observable.error(exception) on failure instead of throwing Exception
                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
-                               // transforms to Observable<StoreResponse>
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                                   HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
+                                   HttpUtils.unescape(httpResponseHeaders.toMap()),
                                    content);
-                               DirectBridgeInternal.setRequestTimeline(rsp, reactorNettyRequestRecord.takeTimelineSnapshot());
+                               if (reactorNettyRequestRecord != null) {
+                                   rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+                               }
                                if (request.requestContext.cosmosDiagnostics != null) {
-                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, null, globalEndpointManager);
+                                   BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
                                }
                                return rsp;
                        })
@@ -409,13 +407,11 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           if (BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics).getGatewayRequestTimeline() == null && httpRequest.reactorNettyRequestRecord() != null) {
-                               BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
-                                   httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+                           if (httpRequest.reactorNettyRequestRecord() != null) {
+                               BridgeInternal.setRequestTimeline(dce, httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
                            }
 
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce, globalEndpointManager);
-                           BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
                        }
 
                        return Mono.error(dce);
@@ -507,8 +503,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                     }
 
                     if (Exceptions.isThroughputControlRequestRateTooLargeException(dce)) {
-                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce, globalEndpointManager);
-                        BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                        if (request.requestContext.cosmosDiagnostics != null) {
+                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
+                        }
                     }
 
                     return Mono.error(dce);
@@ -522,6 +519,11 @@ class RxGatewayStoreModel implements RxStoreModel {
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
         // no-op
         // Disable throughput control for gateway mode
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return Flux.empty();
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {

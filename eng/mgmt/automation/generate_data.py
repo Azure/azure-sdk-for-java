@@ -151,7 +151,7 @@ def generate(
         sdk_root,
         'sdk', service, module
     )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
+    # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
@@ -161,7 +161,7 @@ def generate(
         # use readme from spec repo
         readme_file_path = readme
 
-        require_sdk_integration = not os.path.exists(output_dir)
+        require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
@@ -269,7 +269,9 @@ def get_generate_parameters(
     if readme_file_path:
         # try readme.java.md, it must contain 'output-folder' and
         # match pattern $(java-sdks-folder)/sdk/<service>/<module>
-        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
+        java_readme_file_path = readme_file_path
+        if not java_readme_file_path.endswith('.java.md'):
+            java_readme_file_path = readme_file_path.replace('.md', '.java.md')
         if uri_file_exists(java_readme_file_path):
             content = uri_file_read(java_readme_file_path)
             if content:

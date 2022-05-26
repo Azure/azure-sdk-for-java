@@ -39,7 +39,11 @@ public final class VMGuestPatchRebootStatus extends ExpandableStringEnum<VMGuest
         return fromString(name, VMGuestPatchRebootStatus.class);
     }
 
-    /** @return known VMGuestPatchRebootStatus values. */
+    /**
+     * Gets known VMGuestPatchRebootStatus values.
+     *
+     * @return known VMGuestPatchRebootStatus values.
+     */
     public static Collection<VMGuestPatchRebootStatus> values() {
         return values(VMGuestPatchRebootStatus.class);
     }

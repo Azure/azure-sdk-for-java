@@ -30,7 +30,11 @@ public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<Imm
         return fromString(name, ImmutabilityPolicyUpdateType.class);
     }
 
-    /** @return known ImmutabilityPolicyUpdateType values. */
+    /**
+     * Gets known ImmutabilityPolicyUpdateType values.
+     *
+     * @return known ImmutabilityPolicyUpdateType values.
+     */
     public static Collection<ImmutabilityPolicyUpdateType> values() {
         return values(ImmutabilityPolicyUpdateType.class);
     }

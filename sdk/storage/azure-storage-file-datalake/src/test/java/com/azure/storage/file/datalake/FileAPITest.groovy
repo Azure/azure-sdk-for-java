@@ -15,11 +15,9 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.sas.AccountSasPermission
-import com.azure.storage.common.sas.AccountSasResourceType
-import com.azure.storage.common.sas.AccountSasService
-import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
@@ -3962,6 +3960,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
+    @PlaybackOnly(expiryTime = "2022-05-18")
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()

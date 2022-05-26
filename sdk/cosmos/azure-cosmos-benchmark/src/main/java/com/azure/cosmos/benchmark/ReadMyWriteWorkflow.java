@@ -153,6 +153,9 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         } catch (Throwable error) {
             concurrencyControlSemaphore.release();
             logger.error("subscription failed due to ", error);
+            if (error instanceof Error) {
+                throw (Error) error;
+            }
         }
     }
 

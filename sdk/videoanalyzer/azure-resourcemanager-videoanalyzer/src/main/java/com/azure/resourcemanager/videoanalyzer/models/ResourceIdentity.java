@@ -6,14 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The user assigned managed identity to use when accessing a resource. */
 @Fluent
 public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
     /*
      * The user assigned managed identity's resource identifier to use when
      * accessing a resource.
@@ -50,10 +47,12 @@ public class ResourceIdentity {
      */
     public void validate() {
         if (userAssignedIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property userAssignedIdentity in model ResourceIdentity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceIdentity.class);
 }

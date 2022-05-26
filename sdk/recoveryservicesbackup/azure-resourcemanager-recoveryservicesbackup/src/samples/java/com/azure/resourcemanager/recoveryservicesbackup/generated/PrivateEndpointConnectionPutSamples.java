@@ -15,7 +15,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProvisioningState
 /** Samples for PrivateEndpointConnection Put. */
 public final class PrivateEndpointConnectionPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: Update PrivateEndpointConnection.

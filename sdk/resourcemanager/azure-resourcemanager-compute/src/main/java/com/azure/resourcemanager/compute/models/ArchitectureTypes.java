@@ -27,7 +27,11 @@ public final class ArchitectureTypes extends ExpandableStringEnum<ArchitectureTy
         return fromString(name, ArchitectureTypes.class);
     }
 
-    /** @return known ArchitectureTypes values. */
+    /**
+     * Gets known ArchitectureTypes values.
+     *
+     * @return known ArchitectureTypes values.
+     */
     public static Collection<ArchitectureTypes> values() {
         return values(ArchitectureTypes.class);
     }

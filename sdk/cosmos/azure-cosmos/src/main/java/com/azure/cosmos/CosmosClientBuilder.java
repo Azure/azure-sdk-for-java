@@ -860,8 +860,7 @@ public class CosmosClientBuilder implements
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
             new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {
 
@@ -902,4 +901,6 @@ public class CosmosClientBuilder implements
                 }
             });
     }
+
+    static { initialize(); }
 }

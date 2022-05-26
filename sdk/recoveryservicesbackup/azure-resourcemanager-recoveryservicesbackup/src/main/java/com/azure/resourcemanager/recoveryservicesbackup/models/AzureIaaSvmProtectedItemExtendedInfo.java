@@ -12,28 +12,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class AzureIaaSvmProtectedItemExtendedInfo {
     /*
-     * The oldest backup copy available for this backup item across all tiers.
+     * The oldest backup copy available for this backup item.
      */
     @JsonProperty(value = "oldestRecoveryPoint")
     private OffsetDateTime oldestRecoveryPoint;
-
-    /*
-     * The oldest backup copy available for this backup item in vault tier
-     */
-    @JsonProperty(value = "oldestRecoveryPointInVault")
-    private OffsetDateTime oldestRecoveryPointInVault;
-
-    /*
-     * The oldest backup copy available for this backup item in archive tier
-     */
-    @JsonProperty(value = "oldestRecoveryPointInArchive")
-    private OffsetDateTime oldestRecoveryPointInArchive;
-
-    /*
-     * The latest backup copy available for this backup item in archive tier
-     */
-    @JsonProperty(value = "newestRecoveryPointInArchive")
-    private OffsetDateTime newestRecoveryPointInArchive;
 
     /*
      * Number of backup copies available for this backup item.
@@ -49,7 +31,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
     private Boolean policyInconsistent;
 
     /**
-     * Get the oldestRecoveryPoint property: The oldest backup copy available for this backup item across all tiers.
+     * Get the oldestRecoveryPoint property: The oldest backup copy available for this backup item.
      *
      * @return the oldestRecoveryPoint value.
      */
@@ -58,80 +40,13 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
     }
 
     /**
-     * Set the oldestRecoveryPoint property: The oldest backup copy available for this backup item across all tiers.
+     * Set the oldestRecoveryPoint property: The oldest backup copy available for this backup item.
      *
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
     public AzureIaaSvmProtectedItemExtendedInfo withOldestRecoveryPoint(OffsetDateTime oldestRecoveryPoint) {
         this.oldestRecoveryPoint = oldestRecoveryPoint;
-        return this;
-    }
-
-    /**
-     * Get the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
-     *
-     * @return the oldestRecoveryPointInVault value.
-     */
-    public OffsetDateTime oldestRecoveryPointInVault() {
-        return this.oldestRecoveryPointInVault;
-    }
-
-    /**
-     * Set the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
-     *
-     * @param oldestRecoveryPointInVault the oldestRecoveryPointInVault value to set.
-     * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
-     */
-    public AzureIaaSvmProtectedItemExtendedInfo withOldestRecoveryPointInVault(
-        OffsetDateTime oldestRecoveryPointInVault) {
-        this.oldestRecoveryPointInVault = oldestRecoveryPointInVault;
-        return this;
-    }
-
-    /**
-     * Get the oldestRecoveryPointInArchive property: The oldest backup copy available for this backup item in archive
-     * tier.
-     *
-     * @return the oldestRecoveryPointInArchive value.
-     */
-    public OffsetDateTime oldestRecoveryPointInArchive() {
-        return this.oldestRecoveryPointInArchive;
-    }
-
-    /**
-     * Set the oldestRecoveryPointInArchive property: The oldest backup copy available for this backup item in archive
-     * tier.
-     *
-     * @param oldestRecoveryPointInArchive the oldestRecoveryPointInArchive value to set.
-     * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
-     */
-    public AzureIaaSvmProtectedItemExtendedInfo withOldestRecoveryPointInArchive(
-        OffsetDateTime oldestRecoveryPointInArchive) {
-        this.oldestRecoveryPointInArchive = oldestRecoveryPointInArchive;
-        return this;
-    }
-
-    /**
-     * Get the newestRecoveryPointInArchive property: The latest backup copy available for this backup item in archive
-     * tier.
-     *
-     * @return the newestRecoveryPointInArchive value.
-     */
-    public OffsetDateTime newestRecoveryPointInArchive() {
-        return this.newestRecoveryPointInArchive;
-    }
-
-    /**
-     * Set the newestRecoveryPointInArchive property: The latest backup copy available for this backup item in archive
-     * tier.
-     *
-     * @param newestRecoveryPointInArchive the newestRecoveryPointInArchive value to set.
-     * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
-     */
-    public AzureIaaSvmProtectedItemExtendedInfo withNewestRecoveryPointInArchive(
-        OffsetDateTime newestRecoveryPointInArchive) {
-        this.newestRecoveryPointInArchive = newestRecoveryPointInArchive;
         return this;
     }
 

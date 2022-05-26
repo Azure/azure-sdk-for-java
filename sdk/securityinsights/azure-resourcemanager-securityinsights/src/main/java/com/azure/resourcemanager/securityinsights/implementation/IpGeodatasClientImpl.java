@@ -172,15 +172,7 @@ public final class IpGeodatasClientImpl implements IpGeodatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnrichmentIpGeodataInner> getAsync(String resourceGroupName, String ipAddress) {
-        return getWithResponseAsync(resourceGroupName, ipAddress)
-            .flatMap(
-                (Response<EnrichmentIpGeodataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, ipAddress).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

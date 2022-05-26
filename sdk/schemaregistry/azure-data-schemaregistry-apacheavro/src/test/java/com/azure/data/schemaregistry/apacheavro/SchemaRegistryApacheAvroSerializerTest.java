@@ -50,16 +50,12 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.AVRO_MIME_TYPE;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_ENDPOINT;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_TEST_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +71,8 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link SchemaRegistryApacheAvroSerializer}.
  */
 public class SchemaRegistryApacheAvroSerializerTest {
+    private static final int SCHEMA_ID_SIZE = 32;
+
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
     private static final String MOCK_SCHEMA_GROUP = "mock-group";
     private static final int MOCK_CACHE_SIZE = 128;
@@ -446,61 +444,6 @@ public class SchemaRegistryApacheAvroSerializerTest {
         StepVerifier.create(serializer.serializeAsync(playingCard, typeReference))
             .expectError(IllegalStateException.class)
             .verify();
-    }
-
-    /**
-     * Test that the original preamble payload can be deserialized.
-     */
-    @Test
-    public void backwardsCompatiblePreamble() throws IOException {
-        // Arrange
-        final PlayingCard expected = PlayingCard.newBuilder()
-            .setIsFaceCard(true)
-            .setCardValue(15)
-            .setPlayingCardSuit(PlayingCardSuit.SPADES)
-            .build();
-
-        final SchemaProperties schemaProperties = mock(SchemaProperties.class);
-        when(schemaProperties.getGroupName()).thenReturn(MOCK_SCHEMA_GROUP);
-        when(schemaProperties.getName()).thenReturn(PlayingCard.getClassSchema().getFullName());
-        when(schemaProperties.getId()).thenReturn(MOCK_GUID);
-
-        final SchemaRegistrySchema schemaResponse = new SchemaRegistrySchema(schemaProperties,
-            expected.getSchema().toString());
-        final AvroSerializer avroSerializer = new AvroSerializer(true, ENCODER_FACTORY,
-            DECODER_FACTORY);
-        final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
-            serializerOptions);
-
-        when(client.getSchema(MOCK_GUID)).thenReturn(Mono.just(schemaResponse));
-
-        // Manually serialize the data with the preamble.
-        final BinaryData binaryData;
-        final byte[] serializedCard = avroSerializer.serialize(expected, MOCK_GUID);
-        final int size = RECORD_FORMAT_INDICATOR_SIZE + SCHEMA_ID_SIZE + serializedCard.length;
-        final byte[] guidBytes = MOCK_GUID.getBytes(StandardCharsets.UTF_8);
-
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(size)) {
-            outputStream.write(RECORD_FORMAT_INDICATOR, 0, RECORD_FORMAT_INDICATOR.length);
-            outputStream.write(guidBytes, 0, guidBytes.length);
-            outputStream.write(serializedCard, 0, serializedCard.length);
-            outputStream.flush();
-
-            binaryData = BinaryData.fromBytes(outputStream.toByteArray());
-        }
-
-        final MockMessage message = new MockMessage();
-        message.setBodyAsBinaryData(binaryData);
-
-        // Act
-        final PlayingCard actual = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
-
-        // Assert
-        assertNotNull(actual);
-        assertEquals(expected.getCardValue(), actual.getCardValue());
-        assertEquals(expected.getIsFaceCard(), actual.getIsFaceCard());
-        assertEquals(expected.getPlayingCardSuit(), actual.getPlayingCardSuit());
     }
 
     private static MockMessage getPayload(PlayingCard card) throws IOException {

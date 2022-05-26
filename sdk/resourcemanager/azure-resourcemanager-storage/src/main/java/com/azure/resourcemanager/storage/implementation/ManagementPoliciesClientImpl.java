@@ -234,14 +234,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
     public Mono<ManagementPolicyInner> getAsync(
         String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
-            .flatMap(
-                (Response<ManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -437,14 +430,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         ManagementPolicyName managementPolicyName,
         ManagementPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, properties)
-            .flatMap(
-                (Response<ManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -620,7 +606,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
     public Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

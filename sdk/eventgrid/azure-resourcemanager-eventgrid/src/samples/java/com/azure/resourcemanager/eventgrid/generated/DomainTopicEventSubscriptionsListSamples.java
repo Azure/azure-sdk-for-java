@@ -19,6 +19,6 @@ public final class DomainTopicEventSubscriptionsListSamples {
     public static void domainTopicEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .domainTopicEventSubscriptions()
-            .list("examplerg", "exampleDomain1", "exampleDomainTopic1", Context.NONE);
+            .list("examplerg", "exampleDomain1", "exampleDomainTopic1", null, null, Context.NONE);
     }
 }
