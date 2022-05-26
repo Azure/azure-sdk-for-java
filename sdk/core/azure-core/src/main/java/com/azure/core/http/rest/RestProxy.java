@@ -10,7 +10,6 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.TooManyRedirectsException;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -138,9 +137,9 @@ public final class RestProxy implements InvocationHandler {
                 options.getRequestCallback().accept(request);
             }
 
-            RestProxyUtils.validateLength(request);
-
-            final Mono<HttpResponse> asyncResponse = send(request, context);
+            Context finalContext = context;
+            final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
+                .flatMap(r -> send(r, finalContext));
 
             Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
 

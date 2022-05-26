@@ -29,10 +29,9 @@ public class RestProxyUtilsTests {
             .setBody(EXPECTED)
             .setHeader("Content-Length", "5");
 
-        RestProxyUtils.validateLength(httpRequest);
-
         StepVerifier.create(
-                FluxUtil.collectBytesInByteBufferStream(httpRequest.getBody()))
+                RestProxyUtils.validateLengthAsync(httpRequest)
+                        .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
             .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
             .verifyComplete();
     }
@@ -41,7 +40,7 @@ public class RestProxyUtilsTests {
     public void emptyRequestBody() {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
-        RestProxyUtils.validateLength(httpRequest);
+        httpRequest = RestProxyUtils.validateLengthAsync(httpRequest).block();
 
         assertNull(httpRequest.getBody());
         assertNull(httpRequest.getBodyAsBinaryData());
@@ -75,9 +74,8 @@ public class RestProxyUtilsTests {
             .setBody(EXPECTED)
             .setHeader("Content-Length", "5");
 
-        RestProxyUtils.validateLength(httpRequest);
-
-        Flux<ByteBuffer> verifierFlux = httpRequest.getBody();
+        Flux<ByteBuffer> verifierFlux = RestProxyUtils.validateLengthAsync(httpRequest)
+            .flatMapMany(HttpRequest::getBody);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
             .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
@@ -89,8 +87,7 @@ public class RestProxyUtilsTests {
     }
 
     private static Mono<byte[]> validateAndCollectRequest(HttpRequest request) {
-        return Mono.fromCallable(() ->  { RestProxyUtils.validateLength(request);
-                return request;})
+        return RestProxyUtils.validateLengthAsync(request)
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody()));
     }
 }

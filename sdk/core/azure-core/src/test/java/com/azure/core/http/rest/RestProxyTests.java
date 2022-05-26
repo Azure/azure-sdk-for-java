@@ -15,8 +15,11 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,7 +27,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,21 +80,81 @@ public class RestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
-    @Test
-    public void binaryDataIsPassthrough() {
+    @ParameterizedTest
+    @MethodSource("knownLengthBinaryDataIsPassthroughArgumentProvider")
+    public void knownLengthBinaryDataIsPassthrough(BinaryData data, long contentLength) {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        byte[] bytes = "hello".getBytes();
-        BinaryData data = BinaryData.fromBytes(bytes);
         Response<Void> response = testInterface.testMethod(data,
-                "application/json", (long) bytes.length)
+                "application/json", contentLength)
             .block();
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
+    }
+
+    private static Stream<Arguments> knownLengthBinaryDataIsPassthroughArgumentProvider() throws Exception {
+        String string = "hello";
+        byte[] bytes = string.getBytes();
+        Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
+        file.toFile().deleteOnExit();
+        Files.write(file, bytes);
+        return Stream.of(
+            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
+            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
+            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
+            Arguments.of(Named.of("flux with length",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
+            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
+                BinaryData.fromObject(bytes).getLength())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("doesNotChangeBinaryDataContentTypeDataProvider")
+    public void doesNotChangeBinaryDataContentType(BinaryData data, long contentLength) {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+        Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
+
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<Void> response = testInterface.testMethod(data,
+                "application/json", contentLength)
+            .block();
+        assertEquals(200, response.getStatusCode());
+
+        Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper.getContent(
+            client.getLastHttpRequest().getBodyAsBinaryData()).getClass();
+        assertEquals(expectedContentClazz, actualContentClazz);
+    }
+
+    private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
+        String string = "hello";
+        byte[] bytes = string.getBytes();
+        Path file = Files.createTempFile("doesNotChangeBinaryDataContentTypeDataProvider", null);
+        file.toFile().deleteOnExit();
+        Files.write(file, bytes);
+        ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+        return Stream.of(
+            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
+            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
+            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
+            Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
+            Arguments.of(Named.of("eager flux with length",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
+            Arguments.of(Named.of("lazy flux",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block()), bytes.length),
+            Arguments.of(Named.of("lazy flux with length",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), (long) bytes.length, false).block()), bytes.length),
+            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
+                BinaryData.fromObject(bytes).getLength())
+        );
     }
 
     private static final class LocalHttpClient implements HttpClient {

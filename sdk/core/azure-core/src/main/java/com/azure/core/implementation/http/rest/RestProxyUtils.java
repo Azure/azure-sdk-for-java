@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
@@ -22,11 +23,28 @@ public final class RestProxyUtils {
     private RestProxyUtils() {
     }
 
-    public static void validateLength(final HttpRequest request) {
+    public static Mono<HttpRequest> validateLengthAsync(final HttpRequest request) {
         final BinaryData body = request.getBodyAsBinaryData();
-        if (body != null) {
-            final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+
+        if (body == null) {
+            return Mono.just(request);
+        }
+
+        Long bodyLength = body.getLength();
+        long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+        if (bodyLength != null) {
+            if (bodyLength < expectedLength) {
+                return Mono.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                    bodyLength, expectedLength), bodyLength, expectedLength));
+            } else if (bodyLength > expectedLength) {
+                return Mono.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                    bodyLength, expectedLength), bodyLength, expectedLength));
+            } else {
+                return Mono.just(request);
+            }
+        } else {
             request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
+            return Mono.just(request);
         }
     }
 
