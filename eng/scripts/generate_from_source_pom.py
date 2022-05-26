@@ -138,10 +138,9 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         for p in source_projects:
             # get the service directory, which is one level up from the library's directory
             service_directory = '/'.join(p.directory_path.split('/')[0:-1])
-            if not service_directory in service_directories:
-                service_directories.add(service_directory)
+            service_directories.add(service_directory)
 
-        checkout_paths = list(set(sorted(service_directories)))
+        checkout_paths = list(sorted(service_directories))
         print('setting env variable {} = {}'.format(set_pipeline_variable, checkout_paths))
         print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(checkout_paths)))
 
