@@ -123,6 +123,7 @@ public final class EncryptedBlobClientBuilder implements
     private String snapshot;
     private String versionId;
     private boolean requiresEncryption;
+    private EncryptionVersion encryptionVersion;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -204,6 +205,13 @@ public final class EncryptedBlobClientBuilder implements
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
+        if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
+            LOGGER.warning("Client is being configured to use v1 of client side encryption, which is no longer "
+                + "considered secure. The default is v1 for compatibility reasons, but it is highly recommended "
+                + "the version be set to v2 using this builder");
+        }
+        this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -215,7 +223,7 @@ public final class EncryptedBlobClientBuilder implements
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion);
     }
 
 
@@ -889,6 +897,18 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
+        return this;
+    }
+
+    /**
+     * Sets the encryption version for this client. For any new workloads, using version 2 or above is highly
+     * encouraged as version 1 uses AES/CBC, which is no longer considered secure. For compatibility reasons, the
+     * default value is version 1.
+     * @param version The encryption version.
+     * @return The updated builder.
+     */
+    public EncryptedBlobClientBuilder encryptionVersion(EncryptionVersion version) {
+        this.encryptionVersion = version;
         return this;
     }
 }

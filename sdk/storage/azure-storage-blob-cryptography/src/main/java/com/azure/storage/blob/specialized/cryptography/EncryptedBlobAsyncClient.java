@@ -97,6 +97,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     private final String keyWrapAlgorithm;
 
+    private final EncryptionVersion encryptionVersion;
+
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      *
@@ -116,12 +118,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId) {
+        EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
+        EncryptionVersion encryptionVersion) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
+        this.encryptionVersion = encryptionVersion;
     }
 
     /**
@@ -138,7 +142,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId());
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion);
     }
 
     /**
@@ -159,7 +163,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId());
+            keyWrapAlgorithm, getVersionId(), encryptionVersion);
     }
 
     /**
@@ -393,12 +397,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
-        return uploadWithResponse(options, null);
-    }
-
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options,
-        EncryptionVersion version) {
-        version = version == null ? EncryptionVersion.V1 : version;
         try {
             StorageImplUtils.assertNotNull("options", options);
             // Can't use a Collections.emptyMap() because we add metadata for encryption.
@@ -407,7 +405,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
                 : options.getDataFlux();
-            Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal, version);
+            Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                 .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
@@ -590,7 +588,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param plainTextFlux The Flux ByteBuffer to be encrypted.
      * @return A {@link EncryptedBlob}
      */
-    Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux, EncryptionVersion version) {
+    Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
             SecretKey aesKey = generateSecretKey();
@@ -605,7 +603,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
                     EncryptionData encryptionData;
                     Flux<ByteBuffer> encryptedTextFlux;
-                    switch (version) {
+                    switch (this.encryptionVersion) {
                         case V1:
                             Cipher cbcCipher;
                             try {
@@ -770,8 +768,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @return A Mono containing the cipher text
      */
     private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
-        Map<String, String> metadata, EncryptionVersion version) {
-        return this.encryptBlob(plainText, version).flatMapMany(encryptedBlob -> {
+        Map<String, String> metadata) {
+        return this.encryptBlob(plainText).flatMapMany(encryptedBlob -> {
             try {
                 metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY,
                     encryptedBlob.getEncryptionData().toJsonString());

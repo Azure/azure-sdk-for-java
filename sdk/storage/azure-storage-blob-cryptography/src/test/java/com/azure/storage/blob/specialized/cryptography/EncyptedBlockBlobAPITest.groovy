@@ -103,13 +103,18 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "v2 Encryption Test"() {
         setup:
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .encryptionVersion(EncryptionVersion.V2)
+            .buildEncryptedBlobAsyncClient())
         def data = getRandomData(20 * 1024 * 1024 - 10)
 
         // 3000 passes
         // 5 * 1024 * 1024 - 10 passes
         // 20 * 1024 * 1024 - 10 passes
         when:
-        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
 
         and:
         def outStream = new ByteArrayOutputStream()
@@ -147,6 +152,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def "v2 Download test"() {
         setup:
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .encryptionVersion(EncryptionVersion.V2)
+            .buildEncryptedBlobAsyncClient())
         def encryptedBlobClient = new EncryptedBlobClient(beac)
         def blobClient = cc.getBlobClient(beac.getBlobName())
 
@@ -173,7 +183,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         // 5003000-6000000. All in one region. passes
         // Have to update logic around adjusting ranges. If there's a range adjust it, otherwise still try decrypting cus it could've been an empty (full) range
         when:
-        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data)), EncryptionVersion.V2).block()
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
 
         def plaintextOut = new ByteArrayOutputStream()
         encryptedBlobClient.downloadStreamWithResponse(plaintextOut, new BlobRange(offset, endRange-offset), null, null, false, null, null)
