@@ -4,7 +4,6 @@
 package com.azure.core.http;
 
 import com.azure.core.http.clients.NoOpHttpClient;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.PortPolicy;
 import com.azure.core.http.policy.ProtocolPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
