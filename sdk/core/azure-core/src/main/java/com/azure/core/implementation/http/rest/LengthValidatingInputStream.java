@@ -20,7 +20,8 @@ final class LengthValidatingInputStream extends InputStream {
     private final InputStream inner;
     private final long expectedReadSize;
 
-    private long currentReadSize;
+    private long position;
+    private long mark = -1;
 
     /**
      * Creates a new {@link LengthValidatingInputStream}.
@@ -48,8 +49,10 @@ final class LengthValidatingInputStream extends InputStream {
     }
 
     @Override
-    public long skip(long n) throws IOException {
-        return inner.skip(n);
+    public synchronized long skip(long n) throws IOException {
+        long skipped = inner.skip(n);
+        position += skipped;
+        return skipped;
     }
 
     @Override
@@ -65,11 +68,13 @@ final class LengthValidatingInputStream extends InputStream {
     @Override
     public synchronized void mark(int readlimit) {
         inner.mark(readlimit);
+        mark = position;
     }
 
     @Override
     public synchronized void reset() throws IOException {
         inner.reset();
+        position = mark;
     }
 
     @Override
@@ -88,15 +93,15 @@ final class LengthValidatingInputStream extends InputStream {
     private void validateLength(int readSize) {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
-            if (currentReadSize > expectedReadSize) {
+            if (position > expectedReadSize) {
                 throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                    currentReadSize, expectedReadSize), currentReadSize, expectedReadSize);
-            } else if (currentReadSize < expectedReadSize) {
+                    position, expectedReadSize), position, expectedReadSize);
+            } else if (position < expectedReadSize) {
                 throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                    currentReadSize, expectedReadSize), currentReadSize, expectedReadSize);
+                    position, expectedReadSize), position, expectedReadSize);
             }
         } else {
-            currentReadSize += readSize;
+            position += readSize;
         }
     }
 }
