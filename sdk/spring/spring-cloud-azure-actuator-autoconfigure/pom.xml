@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-actuator</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
