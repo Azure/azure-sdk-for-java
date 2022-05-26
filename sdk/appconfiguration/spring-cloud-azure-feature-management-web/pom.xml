@@ -9,7 +9,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-  <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
   <name>Spring Cloud Azure Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
   
@@ -84,7 +84,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure.spring:spring-cloud-azure-feature-management:[2.6.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
+                <include>com.azure.spring:azure-spring-cloud-feature-management:[3.0.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
+                <include>com.azure.spring:spring-cloud-azure-feature-management:[3.0.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-webmvc:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->

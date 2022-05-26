@@ -13,20 +13,20 @@ public interface ManagedEnvironmentsStorages {
      * Get all storages for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param envName Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all storages for a managedEnvironment.
      */
-    ManagedEnvironmentStoragesCollection list(String resourceGroupName, String envName);
+    ManagedEnvironmentStoragesCollection list(String resourceGroupName, String environmentName);
 
     /**
      * Get all storages for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param envName Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -35,28 +35,28 @@ public interface ManagedEnvironmentsStorages {
      * @return all storages for a managedEnvironment along with {@link Response}.
      */
     Response<ManagedEnvironmentStoragesCollection> listWithResponse(
-        String resourceGroupName, String envName, Context context);
+        String resourceGroupName, String environmentName, Context context);
 
     /**
      * Get storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param envName Name of the Environment.
-     * @param name Name of the storage.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return storage for a managedEnvironment.
      */
-    ManagedEnvironmentStorage get(String resourceGroupName, String envName, String name);
+    ManagedEnvironmentStorage get(String resourceGroupName, String environmentName, String storageName);
 
     /**
      * Get storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param envName Name of the Environment.
-     * @param name Name of the storage.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -65,27 +65,27 @@ public interface ManagedEnvironmentsStorages {
      * @return storage for a managedEnvironment along with {@link Response}.
      */
     Response<ManagedEnvironmentStorage> getWithResponse(
-        String resourceGroupName, String envName, String name, Context context);
+        String resourceGroupName, String environmentName, String storageName, Context context);
 
     /**
      * Delete storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param envName Name of the Environment.
-     * @param name Name of the storage.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String envName, String name);
+    void delete(String resourceGroupName, String environmentName, String storageName);
 
     /**
      * Delete storage for a managedEnvironment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param envName Name of the Environment.
-     * @param name Name of the storage.
+     * @param environmentName Name of the Environment.
+     * @param storageName Name of the storage.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -93,7 +93,8 @@ public interface ManagedEnvironmentsStorages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String envName, String name, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String storageName, Context context);
 
     /**
      * Get storage for a managedEnvironment.

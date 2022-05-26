@@ -174,8 +174,7 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
-        Response<Void> response = createIfNotExistsWithResponse(null, null, null);
-        return response.getStatusCode() == 201;
+        return createIfNotExistsWithResponse(null, null, null).getValue();
     }
 
     /**
@@ -187,7 +186,7 @@ public final class QueueClient {
      *
      * <!-- src_embed com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;,
+     * Response&lt;Boolean&gt; response = client.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
@@ -209,7 +208,7 @@ public final class QueueClient {
      * queue was successfully created. If status code is 204 or 409, a queue already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+    public Response<Boolean> createIfNotExistsWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(client.createIfNotExistsWithResponse(metadata, context), timeout);
     }
 
@@ -288,8 +287,7 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, Context.NONE);
-        return response.getStatusCode() == 204;
+        return deleteIfExistsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -301,8 +299,8 @@ public final class QueueClient {
      *
      * <!-- src_embed com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context -->
      * <pre>
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
@@ -320,8 +318,8 @@ public final class QueueClient {
      * was successfully deleted. If status code is 404, the queue does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteIfExistsWithResponse(context);
+    public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = client.deleteIfExistsWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

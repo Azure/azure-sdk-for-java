@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SshPublicKeys Delete. */
 public final class SshPublicKeysDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Delete_MaximumSet_Gen.
@@ -26,7 +26,7 @@ public final class SshPublicKeysDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Delete_MinimumSet_Gen.

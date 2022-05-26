@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sku of Azure Spring Cloud. */
+/** Sku of Azure Spring Apps. */
 @Fluent
 public final class Sku {
     /*

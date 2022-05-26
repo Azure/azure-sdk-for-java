@@ -232,7 +232,7 @@ class ShareAsyncAPITests extends APISpec {
         given:
         primaryShareAsyncClient.create().block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteIfExistsWithResponse())
+        StepVerifier.create(primaryShareAsyncClient.deleteIfExistsWithResponse(null))
             .assertNext {
                 FileTestHelper.assertResponseStatusCode(it, 201)
             }
@@ -246,6 +246,7 @@ class ShareAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists().block()
     }
@@ -263,6 +264,8 @@ class ShareAsyncAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 202
         secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
 
@@ -733,6 +736,7 @@ class ShareAsyncAPITests extends APISpec {
         def response = primaryShareAsyncClient.deleteDirectoryIfExistsWithResponse(directoryName).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -792,7 +796,7 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient.create().block()
         primaryShareAsyncClient.createFile(fileName, 1024).block()
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName))
+        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, null))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 202)
             }.verifyComplete()
@@ -807,8 +811,8 @@ class ShareAsyncAPITests extends APISpec {
         def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions()
-            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))))
+        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(leaseId)))
             .expectNextCount(1).verifyComplete()
     }
 
@@ -818,9 +822,10 @@ class ShareAsyncAPITests extends APISpec {
         primaryShareAsyncClient.create().block()
 
         when:
-        def response = primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName).block()
+        def response = primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -832,8 +837,8 @@ class ShareAsyncAPITests extends APISpec {
         createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions()
-            .setRequestConditions(new ShareRequestConditions().setLeaseId(namer.getRandomUuid()))))
+        StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
             .verifyError(ShareStorageException)
     }
 

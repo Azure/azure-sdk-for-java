@@ -19,7 +19,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
@@ -28,7 +27,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -185,13 +183,15 @@ class AmqpChannelProcessorTest {
         publisher.next(connection1);
         publisher.next(connection2);
         final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
+        final long request = 1;
 
         when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
         when(retryPolicy.getMaxRetries()).thenReturn(3);
 
         // Act & Assert
         // Verify that we get the first connection.
-        StepVerifier.create(processor)
+        StepVerifier.create(processor, request)
+            .thenAwait(Duration.ofMillis(400))
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
             .expectComplete()
@@ -200,14 +200,15 @@ class AmqpChannelProcessorTest {
         connection1.getSink().error(exception);
 
         // Expect that the next connection is returned to us.
-        StepVerifier.create(processor)
+        StepVerifier.create(processor, request)
+            .thenAwait(Duration.ofMillis(400))
             .then(() -> connection2.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection2)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
         // Expect that the next connection is returned to us.
-        StepVerifier.create(processor)
+        StepVerifier.create(processor, request)
             .expectNext(connection2)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -366,27 +367,6 @@ class AmqpChannelProcessorTest {
             .expectNext(contents)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
-    }
-
-    private static Flux<TestObject> createSink(TestObject... connections) {
-        return Flux.create(emitter -> {
-            final AtomicInteger counter = new AtomicInteger();
-
-            emitter.onRequest(request -> {
-                for (int i = 0; i < request; i++) {
-                    final int index = counter.getAndIncrement();
-
-                    if (index == connections.length) {
-                        emitter.error(new RuntimeException(String.format(
-                            "Cannot emit more. Index: %s. # of Connections: %s",
-                            index, connections.length)));
-                        break;
-                    }
-
-                    emitter.next(connections[index]);
-                }
-            });
-        }, FluxSink.OverflowStrategy.BUFFER);
     }
 
     static final class TestObject {

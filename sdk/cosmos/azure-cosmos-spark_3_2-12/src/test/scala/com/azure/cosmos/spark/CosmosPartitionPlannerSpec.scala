@@ -20,6 +20,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty)
 
@@ -81,6 +82,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty)
 
@@ -140,6 +142,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty)
 
@@ -215,6 +218,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       useGatewayMode = false,
       useEventualConsistency = true,
       enableClientTelemetry = false,
+      disableTcpConnectionEndpointRediscovery = false,
       clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty)
 
