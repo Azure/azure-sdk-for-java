@@ -52,10 +52,10 @@ service
 <details>
 <summary> appcontainers </summary>
 
-* package-2022-03
+* [package-2022-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-2022-03)
     * [1.0.0-beta.3](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.3/jar)
     * [1.0.0-beta.2](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.2/jar)
-* package-2022-01-01-preview
+* [package-2022-01-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-2022-01-01-preview)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.1/jar)
 </details>
 
