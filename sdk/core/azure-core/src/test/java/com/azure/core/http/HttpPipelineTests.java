@@ -150,7 +150,7 @@ public class HttpPipelineTests {
     }
 
     @Test
-    public void sendSyncWithUserAgentPolicy(HttpPipelinePolicy policy) throws MalformedURLException {
+    public void sendSyncWithUserAgentPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final String expectedUserAgent = "my-user-agent";
         final URL expectedUrl = new URL("http://my.site.com/1");
@@ -167,7 +167,7 @@ public class HttpPipelineTests {
 
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(policy)
+            .policies((new UserAgentPolicy(expectedUserAgent)))
             .build();
 
         final HttpResponse response =
