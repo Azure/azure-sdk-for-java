@@ -322,11 +322,9 @@ jobs:
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
-      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
-          BasePathLength: 38
 
       - ${{if ne(parameters.SDKType, 'data')}}:
         - ${{ each artifact in parameters.Artifacts }}:
