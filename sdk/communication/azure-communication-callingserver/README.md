@@ -1,6 +1,6 @@
 # Azure Communication CallingServer Service client library for Java
 
-This package contains a Java SDK for Azure Communication CallingServer Service.
+This package contains a Java SDK for Azure Communication CallingServer Service. Server Test
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
