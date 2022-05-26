@@ -51,55 +51,92 @@ public class OpenTelemetryMetricsBenchmark {
             put("az.messaging.entity", "entityName");
         }};
 
-    private static final MetricHelper METRIC_HELPER = new MetricHelper(CLIENT_METER_PROVIDER
-        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER)), "fqdn", "entityName");
+    private static final AzureMeter METER = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER));
 
-    private static final AzureLongHistogram HISTOGRAM_WITH_ATTRIBUTES = CLIENT_METER_PROVIDER
-        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER))
+    private static final MetricHelper METRIC_HELPER = new MetricHelper(METER, "fqdn", "entityName");
+
+    private static final AzureLongHistogram HISTOGRAM_WITH_ATTRIBUTES = METER
         .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static final AzureLongHistogram HISTOGRAM = CLIENT_METER_PROVIDER
-        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER))
+    private static final AzureLongHistogram HISTOGRAM = METER
         .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
     private static final AzureLongHistogram NOOP_HISTOGRAM = CLIENT_METER_PROVIDER
         .createMeter("bench", null, new MetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop()))
         .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
-    private static final AzureLongHistogram DISABLED_METRICS_HISTOGRAM = CLIENT_METER_PROVIDER
-        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_READER).enable(false))
+    private static final AzureMeter DISABLED_METER = CLIENT_METER_PROVIDER
+        .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_READER).enable(false));
+
+    private static final AzureLongHistogram DISABLED_METRICS_HISTOGRAM = DISABLED_METER
         .createLongHistogram("test", "description", "unit", COMMON_ATTRIBUTES);
 
     private static final Context AZ_CONTEXT_WITH_OTEL_CONTEXT = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root());
 
     @Benchmark
-    public void disabledMetrics() {
-        long startTime = Instant.now().toEpochMilli();
-        DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+    public void disabledOptimizedMetrics() {
+        Instant startTime = null;
+        if (DISABLED_METER.isEnabled()) {
+            startTime = Instant.now();
+        }
+
+        // do stuff
+
+        if (DISABLED_METER.isEnabled()) {
+            DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        }
     }
 
     @Benchmark
-    public void noopMeterProvider() {
+    public void disabledNotOptimizedMetrics() {
+        Instant startTime = Instant.now();
+        DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), AZ_CONTEXT_WITH_OTEL_CONTEXT);
+    }
+
+    @Benchmark
+    public void noopMeterProviderNotOptimized() {
         long startTime = Instant.now().toEpochMilli();
         NOOP_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime, AZ_CONTEXT_WITH_OTEL_CONTEXT);
     }
 
     @Benchmark
     public void basicHistogram() {
-        long startTime = Instant.now().toEpochMilli();
-        HISTOGRAM.record(Instant.now().toEpochMilli() - startTime, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        Instant startTime = null;
+        if (METER.isEnabled()) {
+            startTime = Instant.now();
+        }
+
+        // do stuff
+        if (METER.isEnabled()) {
+            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        }
     }
 
     @Benchmark
     public void basicHistogramWithCommonAttributes() {
-        long startTime = Instant.now().toEpochMilli();
-        HISTOGRAM_WITH_ATTRIBUTES.record(Instant.now().toEpochMilli() - startTime, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        Instant startTime = null;
+        if (METER.isEnabled()) {
+            startTime = Instant.now();
+        }
+
+        // do stuff
+        if (METER.isEnabled()) {
+            HISTOGRAM_WITH_ATTRIBUTES.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        }
     }
 
     @Benchmark
     public void basicHistogramWithCommonAndExtraAttributes() {
-        long startTime = Instant.now().toEpochMilli();
-        METRIC_HELPER.recordSendBatch(Instant.now().toEpochMilli() - startTime, "pId", false, null, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        Instant startTime = null;
+        if (METER.isEnabled()) {
+            startTime = Instant.now();
+        }
+
+        // do stuff
+        if (METER.isEnabled()) {
+            METRIC_HELPER.recordSendBatch(Instant.now().toEpochMilli() - startTime.toEpochMilli(), "pId", false, null, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        }
     }
 
     public static void main(String... args) throws IOException, RunnerException {
