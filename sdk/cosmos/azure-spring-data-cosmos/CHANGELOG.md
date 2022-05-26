@@ -3,6 +3,7 @@
 ### 3.22.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the `maxDegreeOfParallelism` flag to application.properties.
 
 #### Breaking Changes
 
