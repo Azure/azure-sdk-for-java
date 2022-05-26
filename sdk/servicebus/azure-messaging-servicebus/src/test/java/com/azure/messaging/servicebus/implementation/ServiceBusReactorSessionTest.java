@@ -67,7 +67,7 @@ import static org.mockito.Mockito.when;
  * Test for {@link ServiceBusReactorSession}.
  */
 public class ServiceBusReactorSessionTest {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorSessionTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSessionTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setTryTimeout(Duration.ofSeconds(5))
         .setMode(AmqpRetryMode.FIXED)
@@ -136,7 +136,7 @@ public class ServiceBusReactorSessionTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
         when(tokenManagerEntity.getAuthorizationResults()).thenReturn(Flux.just(AmqpResponseCode.ACCEPTED));
@@ -205,7 +205,7 @@ public class ServiceBusReactorSessionTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMock(this);
     }

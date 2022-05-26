@@ -259,7 +259,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -294,16 +294,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getRequestConditions()).onErrorResume(t -> t
-                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+            return deleteWithResponse(options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

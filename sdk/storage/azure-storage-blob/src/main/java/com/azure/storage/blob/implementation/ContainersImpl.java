@@ -24,8 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.blob.implementation.models.ContainersAcquireLeaseHeaders;
 import com.azure.storage.blob.implementation.models.ContainersBreakLeaseHeaders;
 import com.azure.storage.blob.implementation.models.ContainersChangeLeaseHeaders;
@@ -55,6 +53,8 @@ import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1203,7 +1203,9 @@ public final class ContainersImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listBlobFlatSegment(
                 this.client.getUrl(),
                 containerName,
@@ -1266,7 +1268,9 @@ public final class ContainersImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listBlobHierarchySegment(
                 this.client.getUrl(),
                 containerName,

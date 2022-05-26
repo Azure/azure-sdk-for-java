@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Integration tests for {@link ServiceBusManagementClientImpl}.
  */
 class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
-    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
 
@@ -108,7 +108,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
             .setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
-        logger.info("Creating queue: {}", queueName);
+        LOGGER.info("Creating queue: {}", queueName);
 
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
@@ -147,7 +147,7 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
             .setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
-        logger.info("Creating queue: {}", queueName);
+        LOGGER.info("Creating queue: {}", queueName);
 
         // This is not part of the scenario. We'll ensure it is created.
         Response<Object> response = entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE)
@@ -273,12 +273,12 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         try {
             deserialize = serializer.deserialize(contents, clazz);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format(
+            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
                 "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
 
         if (deserialize == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, clazz)));
         }
 

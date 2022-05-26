@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.models.DaprComponent;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
+import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.util.Collections;
 import java.util.List;
@@ -77,6 +79,10 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DaprComponentInner innerModel() {
         return this.innerObject;
     }
@@ -89,7 +95,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
 
     private String environmentName;
 
-    private String name;
+    private String componentName;
 
     public DaprComponentImpl withExistingManagedEnvironment(String resourceGroupName, String environmentName) {
         this.resourceGroupName = resourceGroupName;
@@ -102,7 +108,8 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
             serviceManager
                 .serviceClient()
                 .getDaprComponents()
-                .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE)
+                .createOrUpdateWithResponse(
+                    resourceGroupName, environmentName, componentName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -112,7 +119,8 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
             serviceManager
                 .serviceClient()
                 .getDaprComponents()
-                .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), context)
+                .createOrUpdateWithResponse(
+                    resourceGroupName, environmentName, componentName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -120,7 +128,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
     DaprComponentImpl(String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new DaprComponentInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.componentName = name;
     }
 
     public DaprComponentImpl update() {
@@ -132,7 +140,8 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
             serviceManager
                 .serviceClient()
                 .getDaprComponents()
-                .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE)
+                .createOrUpdateWithResponse(
+                    resourceGroupName, environmentName, componentName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -142,7 +151,8 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
             serviceManager
                 .serviceClient()
                 .getDaprComponents()
-                .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), context)
+                .createOrUpdateWithResponse(
+                    resourceGroupName, environmentName, componentName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -154,7 +164,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "daprComponents");
+        this.componentName = Utils.getValueFromIdByName(innerObject.id(), "daprComponents");
     }
 
     public DaprComponent refresh() {
@@ -162,7 +172,7 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
             serviceManager
                 .serviceClient()
                 .getDaprComponents()
-                .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
+                .getWithResponse(resourceGroupName, environmentName, componentName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -172,9 +182,19 @@ public final class DaprComponentImpl implements DaprComponent, DaprComponent.Def
             serviceManager
                 .serviceClient()
                 .getDaprComponents()
-                .getWithResponse(resourceGroupName, environmentName, name, context)
+                .getWithResponse(resourceGroupName, environmentName, componentName, context)
                 .getValue();
         return this;
+    }
+
+    public DaprSecretsCollection listSecrets() {
+        return serviceManager.daprComponents().listSecrets(resourceGroupName, environmentName, componentName);
+    }
+
+    public Response<DaprSecretsCollection> listSecretsWithResponse(Context context) {
+        return serviceManager
+            .daprComponents()
+            .listSecretsWithResponse(resourceGroupName, environmentName, componentName, context);
     }
 
     public DaprComponentImpl withComponentType(String componentType) {

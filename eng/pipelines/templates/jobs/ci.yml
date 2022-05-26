@@ -80,13 +80,11 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
-      - template: ../steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
           JobType: 'Build'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -120,6 +118,18 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-two"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -172,6 +182,17 @@ jobs:
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Verify Required Maven Artifacts'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
+          arguments: >
+            -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
+            -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+            -InformationAction Continue
 
       - task: PowerShell@2
         displayName: 'Copy artifacts to staging'
@@ -248,13 +269,11 @@ jobs:
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
-      - template: ../steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'
@@ -271,6 +290,18 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-two"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 

@@ -11,7 +11,6 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,7 +46,6 @@ public class EventHubClientBuilderTest {
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
     public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
-    private ClientLogger logger = new ClientLogger(EventHubClientBuilderTest.class);
 
     @Test
     public void missingConnectionString() {

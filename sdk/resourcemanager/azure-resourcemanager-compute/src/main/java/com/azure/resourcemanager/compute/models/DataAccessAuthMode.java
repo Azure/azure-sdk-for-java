@@ -27,7 +27,11 @@ public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAut
         return fromString(name, DataAccessAuthMode.class);
     }
 
-    /** @return known DataAccessAuthMode values. */
+    /**
+     * Gets known DataAccessAuthMode values.
+     *
+     * @return known DataAccessAuthMode values.
+     */
     public static Collection<DataAccessAuthMode> values() {
         return values(DataAccessAuthMode.class);
     }

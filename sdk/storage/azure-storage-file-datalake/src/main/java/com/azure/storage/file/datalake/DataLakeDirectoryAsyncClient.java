@@ -229,8 +229,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -266,16 +265,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions()).onErrorResume(t -> t
+            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t
                 instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -557,8 +558,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -591,7 +591,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * successfully deleted. If status code is 404, the specified file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
         try {
             return withContext(context -> this.deleteFileIfExistsWithResponse(fileName, options, context));
         } catch (RuntimeException ex) {
@@ -599,7 +599,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
         Context context) {
         try {
             return getFileAsyncClient(fileName).deleteIfExistsWithResponse(options, context);
@@ -901,7 +901,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
         return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -936,17 +936,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
+    public Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
         DataLakePathDeleteOptions options) {
         try {
             return deleteSubdirectoryWithResponse(directoryName, options.getIsRecursive(),
                 options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                     && ((DataLakeStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((DataLakeStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

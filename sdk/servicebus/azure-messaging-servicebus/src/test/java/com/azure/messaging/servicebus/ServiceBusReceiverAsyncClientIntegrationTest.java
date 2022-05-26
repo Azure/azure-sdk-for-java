@@ -63,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @Tag("integration")
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final boolean isSessionEnabled = false;
     private final ClientCreationOptions defaultClientCreationOptions = new ClientCreationOptions()
@@ -88,7 +88,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         try {
             dispose(receiver, sender, sessionReceiver);
         } catch (Exception e) {
-            logger.warning("Error occurred when draining queue.", e);
+            LOGGER.warning("Error occurred when draining queue.", e);
         }
     }
 
@@ -200,7 +200,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         operation = receiver.release(receivedMessage);
                         break;
                     default:
-                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                             "Disposition status not recognized for this test case: " + dispositionStatus));
                 }
                 return operation
@@ -425,7 +425,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Duration delayDuration = Duration.ofSeconds(3);
 
         final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
-        logger.info("Scheduled the message, sequence number {}.", sequenceNumber);
+        LOGGER.info("Scheduled the message, sequence number {}.", sequenceNumber);
 
         assertNotNull(sequenceNumber);
 
@@ -434,7 +434,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .block(TIMEOUT);
 
         messagesPending.decrementAndGet();
-        logger.info("Cancelled the scheduled message, sequence number {}.", sequenceNumber);
+        LOGGER.info("Cancelled the scheduled message, sequence number {}.", sequenceNumber);
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         // Assert & Act
@@ -524,7 +524,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sender.sendMessages(messages)
             .doOnSuccess(aVoid -> {
                 int number = messagesPending.addAndGet(messages.size());
-                logger.info("Number of messages sent: {}", number);
+                LOGGER.info("Number of messages sent: {}", number);
             })
             .block();
 
@@ -611,7 +611,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     return position1 - position2;
                 })
                 .forEach(actualMessage -> {
-                    logger.info("The position id of received message : {}", actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
+                    LOGGER.info("The position id of received message : {}", actualMessage.getApplicationProperties().get(MESSAGE_POSITION_ID));
                     checkCorrectMessage.accept(actualMessage, messageCount.getAndIncrement());
                 });
 
@@ -854,7 +854,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage.getLockedUntil());
 
         final OffsetDateTime initialLock = receivedMessage.getLockedUntil();
-        logger.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
+        LOGGER.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
 
         // Assert & Act
         try {
@@ -865,7 +865,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         lockedUntil, initialLock)))
                 .verifyComplete();
         } finally {
-            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
+            LOGGER.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
 
             receiver.complete(receivedMessage)
                 .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
@@ -959,17 +959,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().flatMap(received -> {
-            logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
+            LOGGER.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
                 received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
             // Simulate some sort of long processing.
             while (lockRenewCount.get() < 4) {
                 lockRenewCount.incrementAndGet();
-                logger.info("Iteration {}: Curren time {}.", lockRenewCount.get(), OffsetDateTime.now());
+                LOGGER.info("Iteration {}: Curren time {}.", lockRenewCount.get(), OffsetDateTime.now());
                 try {
                     TimeUnit.SECONDS.sleep(5);
                 } catch (InterruptedException error) {
-                    logger.error("Error occurred while sleeping: " + error);
+                    LOGGER.error("Error occurred while sleeping: " + error);
                 }
             }
             return receiver.complete(received).thenReturn(received);
@@ -1067,7 +1067,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         operation = receiver.complete(m);
                         break;
                     default:
-                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                             "Disposition status not recognized for this test case: " + dispositionStatus));
                 }
                 return operation.thenReturn(m);
@@ -1153,7 +1153,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver.receiveMessages()
             .flatMap(message -> {
-                    logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
+                    LOGGER.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                         message.getSessionId(), message.getLockToken(), message.getLockedUntil());
                     assertMessageEquals(message, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
@@ -1163,7 +1163,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 }
             ).take(1))
             .assertNext(state -> {
-                logger.info("State received: {}", new String(state, UTF_8));
+                LOGGER.info("State received: {}", new String(state, UTF_8));
                 assertArrayEquals(sessionState, state);
             })
             .verifyComplete();
@@ -1225,7 +1225,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     .buildAsyncClient();
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
         // Assert & Act
@@ -1272,7 +1272,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .then(() -> receiver.receiveMessages()
                 .filter(m -> messageId.equals(m.getMessageId()))
                 .flatMap(m -> {
-                    logger.info("Completing message.");
+                    LOGGER.info("Completing message.");
                     numberCompleted.addAndGet(completeMessages(receiver, Collections.singletonList(m)));
                     messagesPending.addAndGet(-numberCompleted.get());
                     return Mono.just(m);
@@ -1390,7 +1390,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     assertMapValues(expectedAmqpProperties.getApplicationProperties(), actual.getApplicationProperties());
                     assertMapValues(expectedAmqpProperties.getFooter(), actual.getFooter());
                 } finally {
-                    logger.info("Completing message.");
+                    LOGGER.info("Completing message.");
                     receiver.complete(received).block(Duration.ofSeconds(15));
                     messagesPending.decrementAndGet();
                 }
@@ -1524,7 +1524,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private Mono<Void> sendMessage(ServiceBusMessage message) {
         return sender.sendMessage(message).doOnSuccess(aVoid -> {
             int number = messagesPending.incrementAndGet();
-            logger.info("Message Id {}. Number sent: {}", message.getMessageId(), number);
+            LOGGER.info("Message Id {}. Number sent: {}", message.getMessageId(), number);
         });
     }
 

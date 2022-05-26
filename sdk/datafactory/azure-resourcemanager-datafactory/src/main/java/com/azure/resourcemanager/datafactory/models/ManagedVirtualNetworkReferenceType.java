@@ -25,7 +25,11 @@ public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEn
         return fromString(name, ManagedVirtualNetworkReferenceType.class);
     }
 
-    /** @return known ManagedVirtualNetworkReferenceType values. */
+    /**
+     * Gets known ManagedVirtualNetworkReferenceType values.
+     *
+     * @return known ManagedVirtualNetworkReferenceType values.
+     */
     public static Collection<ManagedVirtualNetworkReferenceType> values() {
         return values(ManagedVirtualNetworkReferenceType.class);
     }

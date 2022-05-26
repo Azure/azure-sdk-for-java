@@ -96,6 +96,31 @@ public final class ManagedEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
+     * Service communication telemetry.
+     *
+     * @return the daprAIConnectionString value.
+     */
+    public String daprAIConnectionString() {
+        return this.innerProperties() == null ? null : this.innerProperties().daprAIConnectionString();
+    }
+
+    /**
+     * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
+     * Service communication telemetry.
+     *
+     * @param daprAIConnectionString the daprAIConnectionString value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withDaprAIConnectionString(String daprAIConnectionString) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withDaprAIConnectionString(daprAIConnectionString);
+        return this;
+    }
+
+    /**
      * Get the vnetConfiguration property: Vnet configuration for the environment.
      *
      * @return the vnetConfiguration value.
@@ -167,6 +192,29 @@ public final class ManagedEnvironmentInner extends Resource {
             this.innerProperties = new ManagedEnvironmentProperties();
         }
         this.innerProperties().withAppLogsConfiguration(appLogsConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 

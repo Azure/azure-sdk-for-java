@@ -286,14 +286,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SystemTopicInner> getByResourceGroupAsync(String resourceGroupName, String systemTopicName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, systemTopicName)
-            .flatMap(
-                (Response<SystemTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

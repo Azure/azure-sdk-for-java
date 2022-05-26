@@ -24,6 +24,9 @@ public final class RntbdReporter {
             value = file.getName();
         } catch (Throwable error) {
             value = "azure-cosmos";
+            if (error instanceof Error) {
+                throw (Error) error;
+            }
         }
         codeSource = value;
     }

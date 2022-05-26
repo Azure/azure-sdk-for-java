@@ -27,7 +27,11 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
         return fromString(name, RoutingChoice.class);
     }
 
-    /** @return known RoutingChoice values. */
+    /**
+     * Gets known RoutingChoice values.
+     *
+     * @return known RoutingChoice values.
+     */
     public static Collection<RoutingChoice> values() {
         return values(RoutingChoice.class);
     }

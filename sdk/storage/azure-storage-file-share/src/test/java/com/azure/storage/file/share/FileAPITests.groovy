@@ -1079,7 +1079,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
 
         expect:
-        assertResponseStatusCode(primaryFileClient.deleteIfExistsWithResponse(null, null), 202)
+        assertResponseStatusCode(primaryFileClient.deleteIfExistsWithResponse(null, null, null), 202)
     }
 
     def "Delete if exists file min"() {
@@ -1094,9 +1094,10 @@ class FileAPITests extends APISpec {
         def client = shareClient.getFileClient(generateShareName())
 
         when:
-        def response = client.deleteIfExistsWithResponse(null, null)
+        def response = client.deleteIfExistsWithResponse(null, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists()
     }
@@ -1797,46 +1798,13 @@ class FileAPITests extends APISpec {
 
         when:
         def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
-            .setHeaders(new ShareFileHttpHeaders().setContentType("mytype")), null, null)
+            .setContentType("mytype"), null, null)
 
         def renamedClient = resp.getValue()
         def props = renamedClient.getProperties()
 
         then:
         props.getContentType() == "mytype"
-    }
-
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
-    def "Rename headers illegal"() {
-        when:
-        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setCacheControl("foo"))
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentEncoding("foo"))
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentDisposition("foo"))
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentLanguage("foo"))
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        new ShareFileRenameOptions("foo").setHeaders(new ShareFileHttpHeaders().setContentMd5("foo".getBytes()))
-
-        then:
-        thrown(IllegalArgumentException)
     }
 
     def "Get snapshot id"() {

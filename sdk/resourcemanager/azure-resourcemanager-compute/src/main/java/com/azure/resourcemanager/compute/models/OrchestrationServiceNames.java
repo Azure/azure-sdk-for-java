@@ -24,7 +24,11 @@ public final class OrchestrationServiceNames extends ExpandableStringEnum<Orches
         return fromString(name, OrchestrationServiceNames.class);
     }
 
-    /** @return known OrchestrationServiceNames values. */
+    /**
+     * Gets known OrchestrationServiceNames values.
+     *
+     * @return known OrchestrationServiceNames values.
+     */
     public static Collection<OrchestrationServiceNames> values() {
         return values(OrchestrationServiceNames.class);
     }

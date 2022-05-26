@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectableContai
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectableContainerResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectableContainerResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectableContainers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectableContainersImpl implements ProtectableContainers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectableContainersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectableContainersImpl.class);
 
     private final ProtectableContainersClient innerClient;
 

@@ -27,7 +27,7 @@ public class SimpleProxy implements ProxyServer {
 
     private static final String HOSTNAME = "localhost";
 
-    private final ClientLogger logger = new ClientLogger(SimpleProxy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SimpleProxy.class);
     private final AtomicBoolean isRunning;
     private final InetSocketAddress host;
     private final List<ProxyNegotiationHandler> connectedClients = new ArrayList<>();
@@ -53,9 +53,9 @@ public class SimpleProxy implements ProxyServer {
 
         onErrorHandler = onError != null
             ? onError
-            : error -> logger.error("Error occurred when running proxy.", error);
+            : error -> LOGGER.error("Error occurred when running proxy.", error);
 
-        logger.info("Opening proxy server on: '{}'", host);
+        LOGGER.info("Opening proxy server on: '{}'", host);
 
         serverSocket = AsynchronousServerSocketChannel.open();
         serverSocket.bind(host);
@@ -72,7 +72,7 @@ public class SimpleProxy implements ProxyServer {
                     client.close();
                 } catch (IOException e) {
                     final AsynchronousSocketChannel clientSocket = client.connection.getClientSocket();
-                    logger.warning("Error closing client: {}.", clientSocket.getRemoteAddress(), e);
+                    LOGGER.warning("Error closing client: {}.", clientSocket.getRemoteAddress(), e);
                 }
             }
         }
@@ -93,9 +93,9 @@ public class SimpleProxy implements ProxyServer {
         @Override
         public void completed(AsynchronousSocketChannel client, AsynchronousServerSocketChannel serverSocket) {
             try {
-                logger.info("Client connected from: {}", client.getRemoteAddress());
+                LOGGER.info("Client connected from: {}", client.getRemoteAddress());
             } catch (IOException error) {
-                logger.error("Unable to get socket address for: {}", client, error);
+                LOGGER.error("Unable to get socket address for: {}", client, error);
             }
 
             // Invoke again to accept additional client connections.
@@ -104,7 +104,7 @@ public class SimpleProxy implements ProxyServer {
             try {
                 connectedClients.add(new ProxyNegotiationHandler(client));
             } catch (IOException e) {
-                logger.error("Error creating proxy negotiation handler.", e);
+                LOGGER.error("Error creating proxy negotiation handler.", e);
                 onErrorHandler.accept(e);
             }
         }
@@ -114,7 +114,7 @@ public class SimpleProxy implements ProxyServer {
             isRunning.set(false);
 
             if (exc instanceof AsynchronousCloseException) {
-                logger.info("Closed proxy server.");
+                LOGGER.info("Closed proxy server.");
             } else {
                 onErrorHandler.accept(exc);
             }

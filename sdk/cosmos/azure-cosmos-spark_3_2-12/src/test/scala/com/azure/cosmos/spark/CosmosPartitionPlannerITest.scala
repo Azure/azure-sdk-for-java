@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getFilteredPartitionMetadata}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
@@ -24,7 +25,9 @@ class CosmosPartitionPlannerITest
   extends UnitSpec
     with CosmosClient
     with CosmosContainer
-    with Spark {
+    with Spark
+    with BasicLoggingTrait
+{
 
   private[this] val rnd = scala.util.Random
   private[this] val cosmosEndpoint = TestConfigurations.HOST
@@ -50,6 +53,28 @@ class CosmosPartitionPlannerITest
     evaluateStorageBasedStrategy(100 * 1024, 1 * cosmosBEPartitionCount)
     evaluateStorageBasedStrategy(128 * 1000 + 1, 1 * cosmosBEPartitionCount)
     evaluateStorageBasedStrategy(128 * 1024, 1 * cosmosBEPartitionCount)
+  }
+
+  it should "skip metadata retrieval for restrictive partitioning" in {
+    val userConfig = collection.mutable.Map(this.userConfigTemplate.toSeq: _*)
+    userConfig.put("spark.cosmos.read.partitioning.strategy", "Restrictive")
+
+    val restrictivePartitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfigTemplate)
+
+    PartitionMetadataCache.purge(containerConfig)
+    val expectedCachedCount = PartitionMetadataCache.cachedCount()
+
+    val partitionMetadata = getFilteredPartitionMetadata(
+      userConfig.toMap,
+      clientConfig,
+      None,
+      containerConfig,
+      restrictivePartitioningConfig,
+      false
+    )
+
+    partitionMetadata should have size cosmosBEPartitionCount
+    PartitionMetadataCache.cachedCount() shouldEqual expectedCachedCount
   }
 
   it should "provide multiple partitions as soon as storage size is > 128 MB" in {
@@ -290,7 +315,8 @@ class CosmosPartitionPlannerITest
       clientConfig,
       None,
       containerConfig,
-      partitioningConfig
+      partitioningConfig,
+      false
     )
 
     val partitionMetadata = if (startLsn.isDefined) {
@@ -313,7 +339,8 @@ class CosmosPartitionPlannerITest
           partitionMetadata: Array[PartitionMetadata],
           defaultMinimalPartitionCount,
           defaultMaxPartitionSizeInMB,
-          ReadLimit.allAvailable()
+          ReadLimit.allAvailable(),
+          false
         )
     })
   }

@@ -30,7 +30,11 @@ public final class TriggerRunStatus extends ExpandableStringEnum<TriggerRunStatu
         return fromString(name, TriggerRunStatus.class);
     }
 
-    /** @return known TriggerRunStatus values. */
+    /**
+     * Gets known TriggerRunStatus values.
+     *
+     * @return known TriggerRunStatus values.
+     */
     public static Collection<TriggerRunStatus> values() {
         return values(TriggerRunStatus.class);
     }

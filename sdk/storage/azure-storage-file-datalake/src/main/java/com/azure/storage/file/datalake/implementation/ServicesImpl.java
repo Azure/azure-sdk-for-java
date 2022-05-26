@@ -116,6 +116,6 @@ public final class ServicesImpl {
                                         res.getHeaders(),
                                         res.getValue().getFilesystems(),
                                         null,
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 }

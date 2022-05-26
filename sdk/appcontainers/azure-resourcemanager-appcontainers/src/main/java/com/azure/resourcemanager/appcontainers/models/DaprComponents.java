@@ -42,21 +42,21 @@ public interface DaprComponents {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
-     * @param name Name of the Dapr Component.
+     * @param componentName Name of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component.
      */
-    DaprComponent get(String resourceGroupName, String environmentName, String name);
+    DaprComponent get(String resourceGroupName, String environmentName, String componentName);
 
     /**
      * Get a dapr component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
-     * @param name Name of the Dapr Component.
+     * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -65,27 +65,27 @@ public interface DaprComponents {
      * @return a dapr component along with {@link Response}.
      */
     Response<DaprComponent> getWithResponse(
-        String resourceGroupName, String environmentName, String name, Context context);
+        String resourceGroupName, String environmentName, String componentName, Context context);
 
     /**
      * Delete a Dapr Component from a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
-     * @param name Name of the Dapr Component.
+     * @param componentName Name of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String environmentName, String name);
+    void delete(String resourceGroupName, String environmentName, String componentName);
 
     /**
      * Delete a Dapr Component from a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
-     * @param name Name of the Dapr Component.
+     * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -93,7 +93,38 @@ public interface DaprComponents {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String name, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String componentName, Context context);
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource.
+     */
+    DaprSecretsCollection listSecrets(String resourceGroupName, String environmentName, String componentName);
+
+    /**
+     * List secrets for a dapr component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param componentName Name of the Dapr Component.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dapr component Secrets Collection ARM resource along with {@link Response}.
+     */
+    Response<DaprSecretsCollection> listSecretsWithResponse(
+        String resourceGroupName, String environmentName, String componentName, Context context);
 
     /**
      * Get a dapr component.

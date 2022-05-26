@@ -48,7 +48,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
         final Message message = Proton.message();
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
-        discharge.setTxnId(new Binary(transaction.getTransactionId().array()));
+        discharge.setTxnId(Binary.create(transaction.getTransactionId()));
         message.setBody(new AmqpValue(discharge));
 
         final int payloadSize = messageSerializer.getSize(message);

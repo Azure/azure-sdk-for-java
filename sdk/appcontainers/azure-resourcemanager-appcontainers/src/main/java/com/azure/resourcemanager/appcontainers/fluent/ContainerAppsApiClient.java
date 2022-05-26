@@ -45,6 +45,13 @@ public interface ContainerAppsApiClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the ContainerAppsAuthConfigsClient object to access its operations.
+     *
+     * @return the ContainerAppsAuthConfigsClient object.
+     */
+    ContainerAppsAuthConfigsClient getContainerAppsAuthConfigs();
+
+    /**
      * Gets the ContainerAppsClient object to access its operations.
      *
      * @return the ContainerAppsClient object.
@@ -66,6 +73,20 @@ public interface ContainerAppsApiClient {
     ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas();
 
     /**
+     * Gets the DaprComponentsClient object to access its operations.
+     *
+     * @return the DaprComponentsClient object.
+     */
+    DaprComponentsClient getDaprComponents();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
      * Gets the ManagedEnvironmentsClient object to access its operations.
      *
      * @return the ManagedEnvironmentsClient object.
@@ -80,32 +101,11 @@ public interface ContainerAppsApiClient {
     CertificatesClient getCertificates();
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the NamespacesClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the NamespacesClient object.
      */
-    OperationsClient getOperations();
-
-    /**
-     * Gets the ContainerAppsSourceControlsClient object to access its operations.
-     *
-     * @return the ContainerAppsSourceControlsClient object.
-     */
-    ContainerAppsSourceControlsClient getContainerAppsSourceControls();
-
-    /**
-     * Gets the DaprComponentsClient object to access its operations.
-     *
-     * @return the DaprComponentsClient object.
-     */
-    DaprComponentsClient getDaprComponents();
-
-    /**
-     * Gets the ContainerAppsAuthConfigsClient object to access its operations.
-     *
-     * @return the ContainerAppsAuthConfigsClient object.
-     */
-    ContainerAppsAuthConfigsClient getContainerAppsAuthConfigs();
+    NamespacesClient getNamespaces();
 
     /**
      * Gets the ManagedEnvironmentsStoragesClient object to access its operations.
@@ -113,4 +113,11 @@ public interface ContainerAppsApiClient {
      * @return the ManagedEnvironmentsStoragesClient object.
      */
     ManagedEnvironmentsStoragesClient getManagedEnvironmentsStorages();
+
+    /**
+     * Gets the ContainerAppsSourceControlsClient object to access its operations.
+     *
+     * @return the ContainerAppsSourceControlsClient object.
+     */
+    ContainerAppsSourceControlsClient getContainerAppsSourceControls();
 }

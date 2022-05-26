@@ -30,7 +30,7 @@ public class AadProfileProperties {
 
     /**
      *
-     * @return The tenant id.
+     * @return The tenant ID.
      */
     public String getTenantId() {
         return tenantId;
@@ -38,7 +38,7 @@ public class AadProfileProperties {
 
     /**
      *
-     * @param tenantId The tenant id.
+     * @param tenantId The tenant ID.
      */
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;

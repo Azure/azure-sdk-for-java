@@ -232,6 +232,8 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-if-tags") String ifTags,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -256,6 +258,8 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-if-tags") String ifTags,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -892,6 +896,16 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -912,6 +926,8 @@ public final class PageBlobsImpl {
             String ifNoneMatch,
             String ifTags,
             String requestId,
+            String marker,
+            Integer maxresults,
             Context context) {
         final String comp = "pagelist";
         final String accept = "application/xml";
@@ -935,6 +951,8 @@ public final class PageBlobsImpl {
                 ifTags,
                 this.client.getVersion(),
                 requestId,
+                marker,
+                maxresults,
                 accept,
                 context);
     }
@@ -971,6 +989,16 @@ public final class PageBlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     *     maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     *     listing operation crosses a partition boundary, then the service will return a continuation token for
+     *     retrieving the remainder of the results. For this reason, it is possible that the service will return fewer
+     *     results than specified by maxresults, or than the default of 5000.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -993,6 +1021,8 @@ public final class PageBlobsImpl {
             String ifNoneMatch,
             String ifTags,
             String requestId,
+            String marker,
+            Integer maxresults,
             Context context) {
         final String comp = "pagelist";
         final String accept = "application/xml";
@@ -1018,6 +1048,8 @@ public final class PageBlobsImpl {
                 ifTags,
                 this.client.getVersion(),
                 requestId,
+                marker,
+                maxresults,
                 accept,
                 context);
     }

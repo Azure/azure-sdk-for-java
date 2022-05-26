@@ -27,7 +27,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
 class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
-    private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SynchronousMessageSubscriber.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger wip = new AtomicInteger();
     private final ConcurrentLinkedQueue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
@@ -79,7 +79,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         this.isPrefetchDisabled = isPrefetchDisabled;
         if (initialWork.getNumberOfEvents() < 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
         }
 
@@ -94,7 +94,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
         if (!Operators.setOnce(UPSTREAM, this, subscription)) {
-            logger.warning("This should only be subscribed to once. Ignoring subscription.");
+            LOGGER.warning("This should only be subscribed to once. Ignoring subscription.");
             return;
         }
 
@@ -131,7 +131,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         workQueue.add(work);
 
-        LoggingEventBuilder logBuilder = logger.atVerbose()
+        LoggingEventBuilder logBuilder = LOGGER.atVerbose()
             .addKeyValue(WORK_ID_KEY, work.getId())
             .addKeyValue("numberOfEvents", work.getNumberOfEvents())
             .addKeyValue("timeout", work.getTimeout());
@@ -213,10 +213,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     if (isPrefetchDisabled) {
                         // release is enabled only for no-prefetch scenario.
                         asyncClient.release(message).subscribe(__ -> { },
-                            error -> logger.atWarning()
+                            error -> LOGGER.atWarning()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Couldn't release the message.", error),
-                            () -> logger.atVerbose()
+                            () -> LOGGER.atVerbose()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Message successfully released."));
                     } else {
@@ -237,7 +237,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
         }
         if (numberRequested == 0L) {
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .log("Current work is completed. Schedule next work.");
             getOrUpdateCurrentWork();
         }
@@ -279,7 +279,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             currentWork = workQueue.poll();
             //The work in queue will not be terminal, here is double check
             while (currentWork != null && currentWork.isTerminal()) {
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue(WORK_ID_KEY, currentWork.getId())
                     .addKeyValue("numberOfEvents", currentWork.getNumberOfEvents())
                     .log("This work from queue is terminal. Skip it.");
@@ -289,7 +289,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
             if (currentWork != null) {
                 final SynchronousReceiveWork work = currentWork;
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue(WORK_ID_KEY, work.getId())
                     .addKeyValue("numberOfEvents", work.getNumberOfEvents())
                     .log("Current work updated.");
@@ -313,20 +313,20 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     private void requestUpstream(long numberOfMessages) {
         if (isTerminated()) {
-            logger.info("Cannot request more messages upstream. Subscriber is terminated.");
+            LOGGER.info("Cannot request more messages upstream. Subscriber is terminated.");
             return;
         }
 
         final Subscription subscription = UPSTREAM.get(this);
         if (subscription == null) {
-            logger.info("There is no upstream to request messages from.");
+            LOGGER.info("There is no upstream to request messages from.");
             return;
         }
 
         final long currentRequested = REQUESTED.get(this);
         final long difference = numberOfMessages - currentRequested;
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, currentRequested)
             .addKeyValue("numberOfMessages", numberOfMessages)
             .addKeyValue("difference", difference)

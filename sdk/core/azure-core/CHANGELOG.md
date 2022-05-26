@@ -1,6 +1,24 @@
 # Release History
 
-## 1.28.0-beta.1 (Unreleased)
+## 1.29.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+- Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
+  that represents slice of the file.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.28.0 (2022-05-06)
 
 ### Features Added
 
@@ -16,11 +34,15 @@
 ### Breaking Changes
 
 - Deprecated `Configuration.put`, `Configuration.remove`, `Configuration.clone`, and default `Configuration` constructor.
-  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`. 
-
-### Bugs Fixed
+  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`.
+- Moved Netty TC Native dependency to `azure-core-http-netty`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.14` to `3.4.17`.
+- Upgraded Jackson from `2.13.2.1` to `2.13.2.2`.
 
 ## 1.27.0 (2022-04-01)
 

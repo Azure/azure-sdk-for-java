@@ -248,7 +248,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null).map(response -> response.getStatusCode() != 409);
+        return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -280,7 +280,7 @@ public final class QueueAsyncClient {
      * successfully created. If status code is 204 or 409, a queue already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata) {
+    public Mono<Response<Boolean>> createIfNotExistsWithResponse(Map<String, String> metadata) {
         try {
             return createIfNotExistsWithResponse(metadata, null);
         } catch (RuntimeException ex) {
@@ -288,15 +288,16 @@ public final class QueueAsyncClient {
         }
     }
 
-    Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
+    Mono<Response<Boolean>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
         try {
-            return createWithResponse(metadata, context).onErrorResume(t -> t instanceof QueueStorageException
-                    && ((QueueStorageException) t).getStatusCode() == 409,
-                t -> {
-                    HttpResponse response = ((QueueStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+            return createWithResponse(metadata, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((QueueStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -392,7 +393,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -421,7 +422,7 @@ public final class QueueAsyncClient {
      * successfully deleted. If status code is 404, the queue does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse() {
         try {
             return withContext(this::deleteIfExistsWithResponse);
         } catch (RuntimeException ex) {
@@ -429,16 +430,16 @@ public final class QueueAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(Context context) {
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return deleteWithResponse(context).onErrorResume(t -> t instanceof QueueStorageException
-            && ((QueueStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((QueueStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            }
-            ).map(response -> new SimpleResponse<>(response, null));
+        return deleteWithResponse(context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((QueueStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**

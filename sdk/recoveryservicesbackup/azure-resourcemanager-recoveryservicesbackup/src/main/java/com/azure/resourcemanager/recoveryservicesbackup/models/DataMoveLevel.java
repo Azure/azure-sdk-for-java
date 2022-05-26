@@ -30,7 +30,11 @@ public final class DataMoveLevel extends ExpandableStringEnum<DataMoveLevel> {
         return fromString(name, DataMoveLevel.class);
     }
 
-    /** @return known DataMoveLevel values. */
+    /**
+     * Gets known DataMoveLevel values.
+     *
+     * @return known DataMoveLevel values.
+     */
     public static Collection<DataMoveLevel> values() {
         return values(DataMoveLevel.class);
     }

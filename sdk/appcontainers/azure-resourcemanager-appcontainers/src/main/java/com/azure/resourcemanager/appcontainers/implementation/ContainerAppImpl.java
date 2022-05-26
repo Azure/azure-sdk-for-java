@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerApp;
-import com.azure.resourcemanager.appcontainers.models.ContainerAppPatch;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.SecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Template;
@@ -98,6 +98,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ContainerAppInner innerModel() {
         return this.innerObject;
     }
@@ -108,9 +112,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     private String resourceGroupName;
 
-    private String name;
-
-    private ContainerAppPatch updateContainerAppEnvelope;
+    private String containerAppName;
 
     public ContainerAppImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -122,7 +124,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -131,18 +133,17 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), context);
         return this;
     }
 
     ContainerAppImpl(String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ContainerAppInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.containerAppName = name;
     }
 
     public ContainerAppImpl update() {
-        this.updateContainerAppEnvelope = new ContainerAppPatch();
         return this;
     }
 
@@ -151,8 +152,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .updateWithResponse(resourceGroupName, name, updateContainerAppEnvelope, Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -161,8 +161,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .updateWithResponse(resourceGroupName, name, updateContainerAppEnvelope, context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), context);
         return this;
     }
 
@@ -171,7 +170,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "containerApps");
+        this.containerAppName = Utils.getValueFromIdByName(innerObject.id(), "containerApps");
     }
 
     public ContainerApp refresh() {
@@ -179,7 +178,7 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
+                .getByResourceGroupWithResponse(resourceGroupName, containerAppName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -189,17 +188,28 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
             serviceManager
                 .serviceClient()
                 .getContainerApps()
-                .getByResourceGroupWithResponse(resourceGroupName, name, context)
+                .getByResourceGroupWithResponse(resourceGroupName, containerAppName, context)
                 .getValue();
         return this;
     }
 
+    public CustomHostnameAnalysisResult listCustomHostnameAnalysis() {
+        return serviceManager.containerApps().listCustomHostnameAnalysis(resourceGroupName, containerAppName);
+    }
+
+    public Response<CustomHostnameAnalysisResult> listCustomHostnameAnalysisWithResponse(
+        String customHostname, Context context) {
+        return serviceManager
+            .containerApps()
+            .listCustomHostnameAnalysisWithResponse(resourceGroupName, containerAppName, customHostname, context);
+    }
+
     public SecretsCollection listSecrets() {
-        return serviceManager.containerApps().listSecrets(resourceGroupName, name);
+        return serviceManager.containerApps().listSecrets(resourceGroupName, containerAppName);
     }
 
     public Response<SecretsCollection> listSecretsWithResponse(Context context) {
-        return serviceManager.containerApps().listSecretsWithResponse(resourceGroupName, name, context);
+        return serviceManager.containerApps().listSecretsWithResponse(resourceGroupName, containerAppName, context);
     }
 
     public ContainerAppImpl withRegion(Region location) {
@@ -213,13 +223,8 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     }
 
     public ContainerAppImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateContainerAppEnvelope.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public ContainerAppImpl withIdentity(ManagedServiceIdentity identity) {
@@ -240,9 +245,5 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     public ContainerAppImpl withTemplate(Template template) {
         this.innerModel().withTemplate(template);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
     }
 }

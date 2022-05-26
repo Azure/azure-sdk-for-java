@@ -728,8 +728,10 @@ public class BlobClientBase {
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStream(OutputStream)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public void download(OutputStream stream) {
         downloadStream(stream);
     }
@@ -820,8 +822,10 @@ public class BlobClientBase {
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
@@ -1194,8 +1198,7 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(null, null, null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteIfExistsWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -1207,7 +1210,7 @@ public class BlobClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->
      * <pre>
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
      *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1230,7 +1233,7 @@ public class BlobClientBase {
      * blob was successfully deleted. If status code is 404, the base blob does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Response<Boolean> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return blockWithOptionalTimeout(client.deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
             requestConditions, context), timeout);

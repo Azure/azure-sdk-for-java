@@ -66,7 +66,11 @@ public final class ExtensionAggregateState extends ExpandableStringEnum<Extensio
         return fromString(name, ExtensionAggregateState.class);
     }
 
-    /** @return known ExtensionAggregateState values. */
+    /**
+     * Gets known ExtensionAggregateState values.
+     *
+     * @return known ExtensionAggregateState values.
+     */
     public static Collection<ExtensionAggregateState> values() {
         return values(ExtensionAggregateState.class);
     }

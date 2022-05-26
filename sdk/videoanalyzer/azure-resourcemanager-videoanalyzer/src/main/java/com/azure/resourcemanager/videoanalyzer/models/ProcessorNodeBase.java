@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,8 +22,6 @@ import java.util.List;
 @JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EncoderProcessor", value = EncoderProcessor.class)})
 @Fluent
 public class ProcessorNodeBase extends NodeBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessorNodeBase.class);
-
     /*
      * An array of upstream node references within the topology to be used as
      * inputs for this node.
@@ -70,11 +67,13 @@ public class ProcessorNodeBase extends NodeBase {
     public void validate() {
         super.validate();
         if (inputs() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property inputs in model ProcessorNodeBase"));
         } else {
             inputs().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProcessorNodeBase.class);
 }

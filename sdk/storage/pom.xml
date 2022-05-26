@@ -27,52 +27,52 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-common</artifactId>
-          <version>12.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+          <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+          <version>12.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-batch</artifactId>
-          <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+          <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-changefeed</artifactId>
-          <version>12.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+          <version>12.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-cryptography</artifactId>
-          <version>12.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+          <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-nio</artifactId>
-          <version>12.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+          <version>12.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-file-share</artifactId>
-          <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+          <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-file-datalake</artifactId>
-          <version>12.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+          <version>12.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-internal-avro</artifactId>
-          <version>12.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+          <version>12.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
-          <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+          <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
         </dependency>
       </dependencies>
 
@@ -81,7 +81,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>

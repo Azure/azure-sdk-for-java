@@ -1061,8 +1061,10 @@ public class BlobAsyncClientBase {
      * <p>This method will be deprecated in the future. Use {@link #downloadStream()} instead.
      *
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStream()} instead.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
     public Flux<ByteBuffer> download() {
         return downloadStream();
     }
@@ -1159,8 +1161,10 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
@@ -1713,7 +1717,7 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null, null).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1745,7 +1749,7 @@ public class BlobAsyncClientBase {
      * successfully deleted. If status code is 404, the base blob does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context -> deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
@@ -1755,17 +1759,18 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context).onErrorResume(t -> t
-            instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((BlobStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            });
+        return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
