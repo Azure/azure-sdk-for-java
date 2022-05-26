@@ -5,6 +5,8 @@ package com.azure.spring.cloud.config;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V1;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V2;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_V1_SCHEMA;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_V2_SCHEMA;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_BOOLEAN_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
@@ -496,18 +498,18 @@ public class AppConfigurationPropertySourceTest {
 
         switch (StringUtils.hasText(version) ? version : "") {
             case "1":
-                return 1;
+                return FEATURE_MANAGEMENT_V1_SCHEMA;
             case "2":
-                return 2;
+                return FEATURE_MANAGEMENT_V2_SCHEMA;
             default:
-                return 1;
+                return FEATURE_MANAGEMENT_V1_SCHEMA;
         }
     }
 
     private String getFeatureSchema() {
         Integer version = getFeatureSchemaVersion();
         
-        if (version == 1) {
+        if (version == FEATURE_MANAGEMENT_V1_SCHEMA) {
             return FEATURE_MANAGEMENT_KEY_V1;
         } else {
             return FEATURE_MANAGEMENT_KEY_V2;

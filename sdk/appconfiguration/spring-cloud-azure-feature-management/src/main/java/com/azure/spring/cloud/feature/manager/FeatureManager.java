@@ -31,7 +31,7 @@ public class FeatureManager {
 
 	private transient ApplicationContext context;
 
-	private FeatureManagementProperties featureManagementConfigurations;
+	private final FeatureManagementProperties featureManagementConfigurations;
 
 	private transient FeatureManagementConfigProperties properties;
 

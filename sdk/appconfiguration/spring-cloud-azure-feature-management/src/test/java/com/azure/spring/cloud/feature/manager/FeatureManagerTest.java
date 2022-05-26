@@ -16,7 +16,6 @@ import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -41,9 +40,6 @@ import reactor.core.publisher.Mono;
 @SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
 public class FeatureManagerTest {
 
-
-
-    @InjectMocks
     private FeatureManager featureManager;
 
     @Mock
@@ -62,6 +58,8 @@ public class FeatureManagerTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
+        
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties);
     }
 
     @AfterEach

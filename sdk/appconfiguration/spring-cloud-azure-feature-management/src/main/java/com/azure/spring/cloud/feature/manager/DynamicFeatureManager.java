@@ -33,9 +33,9 @@ public class DynamicFeatureManager {
 	 * ConfigurationProperties for accessing the different types of feature
 	 * variants.
 	 */
-	private ObjectProvider<IDynamicFeatureProperties> propertiesProvider;
+	private final ObjectProvider<IDynamicFeatureProperties> propertiesProvider;
 
-	private FeatureManagementProperties featureManagementConfigurations;
+	private final FeatureManagementProperties featureManagementConfigurations;
 
 	/**
 	 * Creates Dynamic Feature Manager

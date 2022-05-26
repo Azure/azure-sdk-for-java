@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -53,7 +52,6 @@ public class DynamicFeatureManagerTest {
 
     private static final LinkedHashMap<String, Object> EMPTY_MAP = new LinkedHashMap<>();
 
-    @InjectMocks
     private DynamicFeatureManager featureManager;
 
     @Mock
@@ -100,6 +98,8 @@ public class DynamicFeatureManagerTest {
         when(variantProperties.getDiscountBanner()).thenReturn(discountBannerMap);
         when(propertiesProviderMock.stream()).thenReturn(streamMock);
         when(streamMock.filter(Mockito.any())).thenReturn(filterStreamMock);
+        
+        featureManager = new DynamicFeatureManager(context, propertiesProviderMock, featureManagementPropertiesMock);
     }
 
     @AfterEach
