@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Batch Management</name>
-  <description>This package contains Microsoft Azure SDK for Batch Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Batch Client. Package tag package-2022-01.</description>
+  <description>This package contains Microsoft Azure SDK for Batch Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Batch Client. Package tag package-2022-06.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

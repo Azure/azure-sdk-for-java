@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificate Get. */
 public final class CertificateGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateGetWithDeletionError.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/CertificateGetWithDeletionError.json
      */
     /**
      * Sample code: Get Certificate with Deletion Error.
@@ -27,7 +27,7 @@ public final class CertificateGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/CertificateGet.json
      */
     /**
      * Sample code: Get Certificate.

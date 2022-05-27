@@ -20,6 +20,7 @@ import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameter
 import com.azure.resourcemanager.batch.models.BatchAccountUpdateParameters;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
 import com.azure.resourcemanager.batch.models.KeyVaultReference;
+import com.azure.resourcemanager.batch.models.NetworkProfile;
 import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.batch.models.ProvisioningState;
@@ -68,6 +69,10 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
         return this.innerModel().accountEndpoint();
     }
 
+    public String nodeManagementEndpoint() {
+        return this.innerModel().nodeManagementEndpoint();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -82,6 +87,10 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
 
     public PublicNetworkAccessType publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
+    }
+
+    public NetworkProfile networkProfile() {
+        return this.innerModel().networkProfile();
     }
 
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -150,6 +159,10 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public BatchAccountInner innerModel() {
@@ -330,8 +343,23 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     }
 
     public BatchAccountImpl withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
-        this.createParameters.withPublicNetworkAccess(publicNetworkAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.createParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public BatchAccountImpl withNetworkProfile(NetworkProfile networkProfile) {
+        if (isInCreateMode()) {
+            this.createParameters.withNetworkProfile(networkProfile);
+            return this;
+        } else {
+            this.updateParameters.withNetworkProfile(networkProfile);
+            return this;
+        }
     }
 
     public BatchAccountImpl withEncryption(EncryptionProperties encryption) {

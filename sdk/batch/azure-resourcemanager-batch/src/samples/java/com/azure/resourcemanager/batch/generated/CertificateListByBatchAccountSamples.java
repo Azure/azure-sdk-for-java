@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificate ListByBatchAccount. */
 public final class CertificateListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateListWithFilter.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/CertificateListWithFilter.json
      */
     /**
      * Sample code: ListCertificates - Filter and Select.
@@ -30,7 +30,7 @@ public final class CertificateListByBatchAccountSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/CertificateList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/CertificateList.json
      */
     /**
      * Sample code: ListCertificates.

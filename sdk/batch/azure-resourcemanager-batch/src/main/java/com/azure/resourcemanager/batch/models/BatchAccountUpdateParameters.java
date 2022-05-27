@@ -159,6 +159,52 @@ public final class BatchAccountUpdateParameters {
     }
 
     /**
+     * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessType publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the BatchAccountUpdateParameters object itself.
+     */
+    public BatchAccountUpdateParameters withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the BatchAccountUpdateParameters object itself.
+     */
+    public BatchAccountUpdateParameters withNetworkProfile(NetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BatchAccountUpdateProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

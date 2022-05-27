@@ -63,7 +63,7 @@ import java.util.Map;
 /** Samples for Pool Create. */
 public final class PoolCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_SharedImageGallery.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_SharedImageGallery.json
      */
     /**
      * Sample code: CreatePool - Custom Image.
@@ -89,7 +89,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_CloudServiceConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_CloudServiceConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full CloudServiceConfiguration.
@@ -188,7 +188,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_MinimalCloudServiceConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal CloudServiceConfiguration.
@@ -210,7 +210,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_MinimalVirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Minimal VirtualMachineConfiguration.
@@ -245,7 +245,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_NoPublicIPAddresses.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_NoPublicIPAddresses.json
      */
     /**
      * Sample code: CreatePool - No public IP.
@@ -278,7 +278,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: CreatePool - VirtualMachineConfiguration Extensions.
@@ -335,7 +335,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_UserAssignedIdentities.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_UserAssignedIdentities.json
      */
     /**
      * Sample code: CreatePool - UserAssignedIdentities.
@@ -378,7 +378,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_PublicIPs.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_PublicIPs.json
      */
     /**
      * Sample code: CreatePool - Public IPs.
@@ -415,7 +415,7 @@ public final class PoolCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolCreate_VirtualMachineConfiguration.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolCreate_VirtualMachineConfiguration.json
      */
     /**
      * Sample code: CreatePool - Full VirtualMachineConfiguration.

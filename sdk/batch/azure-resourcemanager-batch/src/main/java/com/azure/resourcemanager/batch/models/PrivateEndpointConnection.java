@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
+import java.util.List;
 
 /** An immutable client-side representation of PrivateEndpointConnection. */
 public interface PrivateEndpointConnection {
@@ -49,6 +50,14 @@ public interface PrivateEndpointConnection {
      * @return the privateEndpoint value.
      */
     PrivateEndpoint privateEndpoint();
+
+    /**
+     * Gets the groupIds property: The group id of the private endpoint connection. The value has one and only one group
+     * id.
+     *
+     * @return the groupIds value.
+     */
+    List<String> groupIds();
 
     /**
      * Gets the privateLinkServiceConnectionState property: The private link service connection state of the private

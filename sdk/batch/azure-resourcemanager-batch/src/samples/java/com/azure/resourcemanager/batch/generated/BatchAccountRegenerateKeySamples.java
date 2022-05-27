@@ -11,7 +11,7 @@ import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameter
 /** Samples for BatchAccount RegenerateKey. */
 public final class BatchAccountRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountRegenerateKey.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/BatchAccountRegenerateKey.json
      */
     /**
      * Sample code: BatchAccountRegenerateKey.

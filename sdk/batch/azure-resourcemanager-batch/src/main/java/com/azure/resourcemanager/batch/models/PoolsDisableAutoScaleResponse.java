@@ -29,7 +29,11 @@ public final class PoolsDisableAutoScaleResponse extends ResponseBase<PoolsDisab
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public PoolInner getValue() {
         return super.getValue();

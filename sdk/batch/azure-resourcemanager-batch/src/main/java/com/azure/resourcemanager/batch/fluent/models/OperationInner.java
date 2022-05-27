@@ -37,7 +37,7 @@ public final class OperationInner {
     private String origin;
 
     /*
-     * Any object
+     * Properties of the operation.
      */
     @JsonProperty(value = "properties")
     private Object properties;
@@ -123,7 +123,7 @@ public final class OperationInner {
     }
 
     /**
-     * Get the properties property: Any object.
+     * Get the properties property: Properties of the operation.
      *
      * @return the properties value.
      */
@@ -132,7 +132,7 @@ public final class OperationInner {
     }
 
     /**
-     * Set the properties property: Any object.
+     * Set the properties property: Properties of the operation.
      *
      * @param properties the properties value to set.
      * @return the OperationInner object itself.

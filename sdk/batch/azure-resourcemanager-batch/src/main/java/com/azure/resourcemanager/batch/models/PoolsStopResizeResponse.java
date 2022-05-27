@@ -25,7 +25,11 @@ public final class PoolsStopResizeResponse extends ResponseBase<PoolsStopResizeH
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public PoolInner getValue() {
         return super.getValue();

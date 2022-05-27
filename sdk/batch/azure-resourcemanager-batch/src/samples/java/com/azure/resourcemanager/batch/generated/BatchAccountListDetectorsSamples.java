@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchAccount ListDetectors. */
 public final class BatchAccountListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/DetectorList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/DetectorList.json
      */
     /**
      * Sample code: ListDetectors.

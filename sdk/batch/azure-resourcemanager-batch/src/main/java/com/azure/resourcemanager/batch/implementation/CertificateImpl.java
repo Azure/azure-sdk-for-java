@@ -71,6 +71,10 @@ public final class CertificateImpl implements Certificate, Certificate.Definitio
         return this.innerModel().format();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CertificateInner innerModel() {
         return this.innerObject;
     }

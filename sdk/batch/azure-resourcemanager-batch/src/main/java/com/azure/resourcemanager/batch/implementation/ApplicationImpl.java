@@ -41,6 +41,10 @@ public final class ApplicationImpl implements Application, Application.Definitio
         return this.innerModel().defaultVersion();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationInner innerModel() {
         return this.innerObject;
     }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.batch.models.Application;
 /** Samples for Application Update. */
 public final class ApplicationUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/ApplicationUpdate.json
      */
     /**
      * Sample code: ApplicationUpdate.

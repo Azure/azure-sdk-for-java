@@ -727,14 +727,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     private Mono<BatchAccountInner> updateAsync(
         String resourceGroupName, String accountName, BatchAccountUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<BatchAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1108,14 +1101,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<BatchAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1575,7 +1561,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> synchronizeAutoStorageKeysAsync(String resourceGroupName, String accountName) {
         return synchronizeAutoStorageKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1743,14 +1729,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     private Mono<BatchAccountKeysInner> regenerateKeyAsync(
         String resourceGroupName, String accountName, BatchAccountRegenerateKeyParameters parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<BatchAccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1907,14 +1886,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchAccountKeysInner> getKeysAsync(String resourceGroupName, String accountName) {
         return getKeysWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<BatchAccountKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2260,14 +2232,7 @@ public final class BatchAccountsClientImpl implements BatchAccountsClient {
     private Mono<DetectorResponseInner> getDetectorAsync(
         String resourceGroupName, String accountName, String detectorId) {
         return getDetectorWithResponseAsync(resourceGroupName, accountName, detectorId)
-            .flatMap(
-                (Response<DetectorResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -63,6 +63,14 @@ public interface BatchAccount {
     String accountEndpoint();
 
     /**
+     * Gets the nodeManagementEndpoint property: The endpoint used by compute node to connect to the Batch node
+     * management service.
+     *
+     * @return the nodeManagementEndpoint value.
+     */
+    String nodeManagementEndpoint();
+
+    /**
      * Gets the provisioningState property: The provisioned state of the resource.
      *
      * @return the provisioningState value.
@@ -89,6 +97,13 @@ public interface BatchAccount {
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccessType publicNetworkAccess();
+
+    /**
+     * Gets the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
+     *
+     * @return the networkProfile value.
+     */
+    NetworkProfile networkProfile();
 
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connections associated with the Batch
@@ -124,7 +139,7 @@ public interface BatchAccount {
     Integer dedicatedCoreQuota();
 
     /**
-     * Gets the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account. For accounts with
+     * Gets the lowPriorityCoreQuota property: The low-priority core quota for the Batch account. For accounts with
      * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
      *
      * @return the lowPriorityCoreQuota value.
@@ -142,12 +157,10 @@ public interface BatchAccount {
 
     /**
      * Gets the dedicatedCoreQuotaPerVMFamilyEnforced property: A value indicating whether core quotas per Virtual
-     * Machine family are enforced for this account Batch is transitioning its core quota system for dedicated cores to
-     * be enforced per Virtual Machine family. During this transitional phase, the dedicated core quota per Virtual
-     * Machine family may not yet be enforced. If this flag is false, dedicated core quota is enforced via the old
-     * dedicatedCoreQuota property on the account and does not consider Virtual Machine family. If this flag is true,
-     * dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old
-     * dedicatedCoreQuota does not apply.
+     * Machine family are enforced for this account If this flag is true, dedicated core quota is enforced via both the
+     * dedicatedCoreQuotaPerVMFamily and dedicatedCoreQuota properties on the account. If this flag is false, dedicated
+     * core quota is enforced only via the dedicatedCoreQuota property on the account and does not consider Virtual
+     * Machine family.
      *
      * @return the dedicatedCoreQuotaPerVMFamilyEnforced value.
      */
@@ -188,6 +201,13 @@ public interface BatchAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.BatchAccountInner object.
@@ -247,6 +267,7 @@ public interface BatchAccount {
                 DefinitionStages.WithPoolAllocationMode,
                 DefinitionStages.WithKeyVaultReference,
                 DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithNetworkProfile,
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithAllowedAuthenticationModes {
             /**
@@ -331,6 +352,17 @@ public interface BatchAccount {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess);
         }
+        /** The stage of the BatchAccount definition allowing to specify networkProfile. */
+        interface WithNetworkProfile {
+            /**
+             * Specifies the networkProfile property: The network profile only takes effect when publicNetworkAccess is
+             * enabled..
+             *
+             * @param networkProfile The network profile only takes effect when publicNetworkAccess is enabled.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkProfile(NetworkProfile networkProfile);
+        }
         /** The stage of the BatchAccount definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -372,7 +404,9 @@ public interface BatchAccount {
             UpdateStages.WithIdentity,
             UpdateStages.WithAutoStorage,
             UpdateStages.WithEncryption,
-            UpdateStages.WithAllowedAuthenticationModes {
+            UpdateStages.WithAllowedAuthenticationModes,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithNetworkProfile {
         /**
          * Executes the update request.
          *
@@ -446,6 +480,27 @@ public interface BatchAccount {
              * @return the next definition stage.
              */
             Update withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes);
+        }
+        /** The stage of the BatchAccount update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: If not specified, the default value is 'enabled'..
+             *
+             * @param publicNetworkAccess If not specified, the default value is 'enabled'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess);
+        }
+        /** The stage of the BatchAccount update allowing to specify networkProfile. */
+        interface WithNetworkProfile {
+            /**
+             * Specifies the networkProfile property: The network profile only takes effect when publicNetworkAccess is
+             * enabled..
+             *
+             * @param networkProfile The network profile only takes effect when publicNetworkAccess is enabled.
+             * @return the next definition stage.
+             */
+            Update withNetworkProfile(NetworkProfile networkProfile);
         }
     }
     /**

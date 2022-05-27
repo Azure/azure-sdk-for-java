@@ -132,7 +132,7 @@ public interface Pool {
     Integer currentDedicatedNodes();
 
     /**
-     * Gets the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
+     * Gets the currentLowPriorityNodes property: The number of low-priority compute nodes currently in the pool.
      *
      * @return the currentLowPriorityNodes value.
      */
@@ -260,6 +260,13 @@ public interface Pool {
      * @return the mountConfiguration value.
      */
     List<MountConfiguration> mountConfiguration();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.PoolInner object.

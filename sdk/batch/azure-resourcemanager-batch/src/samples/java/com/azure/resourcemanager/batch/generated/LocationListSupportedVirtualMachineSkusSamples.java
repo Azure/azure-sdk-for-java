@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Location ListSupportedVirtualMachineSkus. */
 public final class LocationListSupportedVirtualMachineSkusSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationListVirtualMachineSkus.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/LocationListVirtualMachineSkus.json
      */
     /**
      * Sample code: LocationListVirtualMachineSkus.

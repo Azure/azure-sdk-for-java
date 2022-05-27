@@ -10,7 +10,7 @@ import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 /** Samples for Location CheckNameAvailability. */
 public final class LocationCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationCheckNameAvailability_AlreadyExists.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/LocationCheckNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_AlreadyExists.
@@ -26,7 +26,7 @@ public final class LocationCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationCheckNameAvailability_Available.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/LocationCheckNameAvailability_Available.json
      */
     /**
      * Sample code: LocationCheckNameAvailability_Available.
