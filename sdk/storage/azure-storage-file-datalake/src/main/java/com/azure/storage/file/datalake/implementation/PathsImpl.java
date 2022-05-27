@@ -21,6 +21,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
@@ -36,17 +37,18 @@ import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
-import com.azure.storage.file.datalake.implementation.models.PathsAppendDataResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsCreateResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsDeleteResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsFlushDataResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsLeaseResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsUndeleteResponse;
-import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsAppendDataHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsCreateHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsDeleteHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsFlushDataHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsLeaseHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsUndeleteHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathsUpdateHeaders;
+import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
@@ -84,7 +86,7 @@ public final class PathsImpl {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsCreateResponse> create(
+        Mono<ResponseBase<PathsCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -122,7 +124,7 @@ public final class PathsImpl {
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsUpdateResponse> update(
+        Mono<ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse>> update(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -161,7 +163,7 @@ public final class PathsImpl {
         @Post("/{filesystem}/{path}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsLeaseResponse> lease(
+        Mono<ResponseBase<PathsLeaseHeaders, Void>> lease(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -206,7 +208,7 @@ public final class PathsImpl {
         @Head("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsGetPropertiesResponse> getProperties(
+        Mono<ResponseBase<PathsGetPropertiesHeaders, Void>> getProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -226,7 +228,7 @@ public final class PathsImpl {
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsDeleteResponse> delete(
+        Mono<ResponseBase<PathsDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -246,7 +248,7 @@ public final class PathsImpl {
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsSetAccessControlResponse> setAccessControl(
+        Mono<ResponseBase<PathsSetAccessControlHeaders, Void>> setAccessControl(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -269,26 +271,27 @@ public final class PathsImpl {
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursive(
-                @HostParam("url") String url,
-                @PathParam("filesystem") String fileSystem,
-                @PathParam("path") String path,
-                @QueryParam("action") String action,
-                @QueryParam("timeout") Integer timeout,
-                @QueryParam("continuation") String continuation,
-                @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
-                @QueryParam("forceFlag") Boolean forceFlag,
-                @QueryParam("maxRecords") Integer maxRecords,
-                @HeaderParam("x-ms-acl") String acl,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>>
+                setAccessControlRecursive(
+                        @HostParam("url") String url,
+                        @PathParam("filesystem") String fileSystem,
+                        @PathParam("path") String path,
+                        @QueryParam("action") String action,
+                        @QueryParam("timeout") Integer timeout,
+                        @QueryParam("continuation") String continuation,
+                        @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
+                        @QueryParam("forceFlag") Boolean forceFlag,
+                        @QueryParam("maxRecords") Integer maxRecords,
+                        @HeaderParam("x-ms-acl") String acl,
+                        @HeaderParam("x-ms-client-request-id") String requestId,
+                        @HeaderParam("x-ms-version") String version,
+                        @HeaderParam("Accept") String accept,
+                        Context context);
 
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsFlushDataResponse> flushData(
+        Mono<ResponseBase<PathsFlushDataHeaders, Void>> flushData(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -320,7 +323,7 @@ public final class PathsImpl {
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsAppendDataResponse> appendData(
+        Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendData(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -343,7 +346,7 @@ public final class PathsImpl {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsSetExpiryResponse> setExpiry(
+        Mono<ResponseBase<PathsSetExpiryHeaders, Void>> setExpiry(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -359,7 +362,7 @@ public final class PathsImpl {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<PathsUndeleteResponse> undelete(
+        Mono<ResponseBase<PathsUndeleteHeaders, Void>> undelete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path,
@@ -422,10 +425,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<PathsCreateHeaders, Void>> createWithResponseAsync(
             String requestId,
             Integer timeout,
             PathResourceType resource,
@@ -649,10 +652,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithResponseAsync(
+    public Mono<ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse>> updateWithResponseAsync(
             PathUpdateAction action,
             PathSetAccessControlRecursiveMode mode,
             Flux<ByteBuffer> body,
@@ -803,10 +806,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsLeaseResponse> leaseWithResponseAsync(
+    public Mono<ResponseBase<PathsLeaseHeaders, Void>> leaseWithResponseAsync(
             PathLeaseAction xMsLeaseAction,
             String requestId,
             Integer timeout,
@@ -992,11 +995,11 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties returns all system and user defined properties for a path on successful completion of {@link
-     *     Mono}.
+     * @return properties returns all system and user defined properties for a path along with {@link ResponseBase} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsGetPropertiesResponse> getPropertiesWithResponseAsync(
+    public Mono<ResponseBase<PathsGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(
             String requestId,
             Integer timeout,
             PathGetPropertiesAction action,
@@ -1073,10 +1076,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsDeleteResponse> deleteWithResponseAsync(
+    public Mono<ResponseBase<PathsDeleteHeaders, Void>> deleteWithResponseAsync(
             String requestId,
             Integer timeout,
             Boolean recursive,
@@ -1155,10 +1158,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsSetAccessControlResponse> setAccessControlWithResponseAsync(
+    public Mono<ResponseBase<PathsSetAccessControlHeaders, Void>> setAccessControlWithResponseAsync(
             Integer timeout,
             String owner,
             String group,
@@ -1248,18 +1251,19 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsSetAccessControlRecursiveResponse> setAccessControlRecursiveWithResponseAsync(
-            PathSetAccessControlRecursiveMode mode,
-            Integer timeout,
-            String continuation,
-            Boolean forceFlag,
-            Integer maxRecords,
-            String acl,
-            String requestId,
-            Context context) {
+    public Mono<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>>
+            setAccessControlRecursiveWithResponseAsync(
+                    PathSetAccessControlRecursiveMode mode,
+                    Integer timeout,
+                    String continuation,
+                    Boolean forceFlag,
+                    Integer maxRecords,
+                    String acl,
+                    String requestId,
+                    Context context) {
         final String action = "setAccessControlRecursive";
         final String accept = "application/json";
         return service.setAccessControlRecursive(
@@ -1316,10 +1320,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsFlushDataResponse> flushDataWithResponseAsync(
+    public Mono<ResponseBase<PathsFlushDataHeaders, Void>> flushDataWithResponseAsync(
             Integer timeout,
             Long position,
             Boolean retainUncommittedData,
@@ -1463,10 +1467,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsAppendDataResponse> appendDataWithResponseAsync(
+    public Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendDataWithResponseAsync(
             Flux<ByteBuffer> body,
             Long position,
             Integer timeout,
@@ -1541,10 +1545,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsSetExpiryResponse> setExpiryWithResponseAsync(
+    public Mono<ResponseBase<PathsSetExpiryHeaders, Void>> setExpiryWithResponseAsync(
             PathExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
         final String accept = "application/json";
@@ -1576,10 +1580,10 @@ public final class PathsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUndeleteResponse> undeleteWithResponseAsync(
+    public Mono<ResponseBase<PathsUndeleteHeaders, Void>> undeleteWithResponseAsync(
             Integer timeout, String undeleteSource, String requestId, Context context) {
         final String comp = "undelete";
         final String accept = "application/json";

@@ -32,6 +32,8 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode
 customization-class: src/main/java/ShareStorageCustomization.java
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
 
 ### Query Parameters

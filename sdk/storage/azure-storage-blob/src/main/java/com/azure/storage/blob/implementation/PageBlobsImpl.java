@@ -17,26 +17,28 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.PageBlobsClearPagesResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsCreateResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsResizeResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesResponse;
+import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsResizeHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -73,7 +75,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCreateResponse> create(
+        Mono<ResponseBase<PageBlobsCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -112,7 +114,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUploadPagesResponse> uploadPages(
+        Mono<ResponseBase<PageBlobsUploadPagesHeaders, Void>> uploadPages(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -145,7 +147,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsClearPagesResponse> clearPages(
+        Mono<ResponseBase<PageBlobsClearPagesHeaders, Void>> clearPages(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -175,7 +177,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(
+        Mono<ResponseBase<PageBlobsUploadPagesFromURLHeaders, Void>> uploadPagesFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -214,7 +216,7 @@ public final class PageBlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesResponse> getPageRanges(
+        Mono<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> getPageRanges(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -238,7 +240,7 @@ public final class PageBlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(
+        Mono<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> getPageRangesDiff(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -264,7 +266,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsResizeResponse> resize(
+        Mono<ResponseBase<PageBlobsResizeHeaders, Void>> resize(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -289,7 +291,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
+        Mono<ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void>> updateSequenceNumber(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -311,7 +313,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCopyIncrementalResponse> copyIncremental(
+        Mono<ResponseBase<PageBlobsCopyIncrementalHeaders, Void>> copyIncremental(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -370,10 +372,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsCreateHeaders, Void>> createWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -528,10 +530,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsUploadPagesHeaders, Void>> uploadPagesWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -645,10 +647,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsClearPagesResponse> clearPagesWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsClearPagesHeaders, Void>> clearPagesWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -769,10 +771,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsUploadPagesFromURLHeaders, Void>> uploadPagesFromURLWithResponseAsync(
             String containerName,
             String blob,
             String sourceUrl,
@@ -908,10 +910,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of pages on successful completion of {@link Mono}.
+     * @return the list of pages along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesResponse> getPageRangesWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> getPageRangesWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1001,10 +1003,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of pages on successful completion of {@link Mono}.
+     * @return the list of pages along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> getPageRangesDiffWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1078,10 +1080,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsResizeResponse> resizeWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsResizeHeaders, Void>> resizeWithResponseAsync(
             String containerName,
             String blob,
             long blobContentLength,
@@ -1172,10 +1174,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumberWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void>> updateSequenceNumberWithResponseAsync(
             String containerName,
             String blob,
             SequenceNumberActionType sequenceNumberAction,
@@ -1242,10 +1244,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsCopyIncrementalHeaders, Void>> copyIncrementalWithResponseAsync(
             String containerName,
             String blob,
             String copySource,
