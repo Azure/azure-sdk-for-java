@@ -635,14 +635,7 @@ public final class PoolsClientImpl implements PoolsClient {
         String ifMatch,
         String ifNoneMatch) {
         return createWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (PoolsCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -663,14 +656,7 @@ public final class PoolsClientImpl implements PoolsClient {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return createWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (PoolsCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -873,14 +859,7 @@ public final class PoolsClientImpl implements PoolsClient {
     private Mono<PoolInner> updateAsync(
         String resourceGroupName, String accountName, String poolName, PoolInner parameters, String ifMatch) {
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch)
-            .flatMap(
-                (PoolsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -901,14 +880,7 @@ public final class PoolsClientImpl implements PoolsClient {
         String resourceGroupName, String accountName, String poolName, PoolInner parameters) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, accountName, poolName, parameters, ifMatch)
-            .flatMap(
-                (PoolsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1325,14 +1297,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> getAsync(String resourceGroupName, String accountName, String poolName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (PoolsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1487,14 +1452,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> disableAutoScaleAsync(String resourceGroupName, String accountName, String poolName) {
         return disableAutoScaleWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (PoolsDisableAutoScaleResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1661,14 +1619,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoolInner> stopResizeAsync(String resourceGroupName, String accountName, String poolName) {
         return stopResizeWithResponseAsync(resourceGroupName, accountName, poolName)
-            .flatMap(
-                (PoolsStopResizeResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

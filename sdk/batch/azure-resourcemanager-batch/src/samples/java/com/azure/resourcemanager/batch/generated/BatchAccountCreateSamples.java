@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for BatchAccount Create. */
 public final class BatchAccountCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_BYOS.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/BatchAccountCreate_BYOS.json
      */
     /**
      * Sample code: BatchAccountCreate_BYOS.
@@ -44,7 +44,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_UserAssignedIdentity.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/BatchAccountCreate_UserAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_UserAssignedIdentity.
@@ -72,7 +72,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PrivateBatchAccountCreate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PrivateBatchAccountCreate.json
      */
     /**
      * Sample code: PrivateBatchAccountCreate.
@@ -99,7 +99,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_SystemAssignedIdentity.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/BatchAccountCreate_SystemAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_SystemAssignedIdentity.
@@ -121,7 +121,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountCreate_Default.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/BatchAccountCreate_Default.json
      */
     /**
      * Sample code: BatchAccountCreate_Default.

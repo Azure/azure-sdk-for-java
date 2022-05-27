@@ -244,7 +244,7 @@ public final class PoolInner extends ProxyResource {
     }
 
     /**
-     * Get the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
+     * Get the currentLowPriorityNodes property: The number of low-priority compute nodes currently in the pool.
      *
      * @return the currentLowPriorityNodes value.
      */

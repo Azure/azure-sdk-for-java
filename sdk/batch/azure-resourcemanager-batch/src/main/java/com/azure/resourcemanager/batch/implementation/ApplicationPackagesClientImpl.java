@@ -325,14 +325,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         String versionName,
         ActivateApplicationPackageParameters parameters) {
         return activateWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, parameters)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -553,14 +546,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         String versionName,
         ApplicationPackageInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, parameters)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -583,14 +569,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
         String resourceGroupName, String accountName, String applicationName, String versionName) {
         final ApplicationPackageInner parameters = null;
         return createWithResponseAsync(resourceGroupName, accountName, applicationName, versionName, parameters)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -776,7 +755,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     private Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, String applicationName, String versionName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, applicationName, versionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -948,14 +927,7 @@ public final class ApplicationPackagesClientImpl implements ApplicationPackagesC
     private Mono<ApplicationPackageInner> getAsync(
         String resourceGroupName, String accountName, String applicationName, String versionName) {
         return getWithResponseAsync(resourceGroupName, accountName, applicationName, versionName)
-            .flatMap(
-                (Response<ApplicationPackageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

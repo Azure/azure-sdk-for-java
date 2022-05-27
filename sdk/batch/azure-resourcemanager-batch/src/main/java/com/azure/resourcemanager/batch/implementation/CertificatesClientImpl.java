@@ -611,14 +611,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String ifNoneMatch) {
         return createWithResponseAsync(
                 resourceGroupName, accountName, certificateName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (CertificatesCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -644,14 +637,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String ifNoneMatch = null;
         return createWithResponseAsync(
                 resourceGroupName, accountName, certificateName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(
-                (CertificatesCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -870,14 +856,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         CertificateCreateOrUpdateParameters parameters,
         String ifMatch) {
         return updateWithResponseAsync(resourceGroupName, accountName, certificateName, parameters, ifMatch)
-            .flatMap(
-                (CertificatesUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -901,14 +880,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
         CertificateCreateOrUpdateParameters parameters) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, accountName, certificateName, parameters, ifMatch)
-            .flatMap(
-                (CertificatesUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1350,14 +1322,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CertificateInner> getAsync(String resourceGroupName, String accountName, String certificateName) {
         return getWithResponseAsync(resourceGroupName, accountName, certificateName)
-            .flatMap(
-                (CertificatesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1532,14 +1497,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     private Mono<CertificateInner> cancelDeletionAsync(
         String resourceGroupName, String accountName, String certificateName) {
         return cancelDeletionWithResponseAsync(resourceGroupName, accountName, certificateName)
-            .flatMap(
-                (CertificatesCancelDeletionResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

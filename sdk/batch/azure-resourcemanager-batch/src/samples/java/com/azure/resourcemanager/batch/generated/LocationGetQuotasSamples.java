@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Location GetQuotas. */
 public final class LocationGetQuotasSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/LocationGetQuotas.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/LocationGetQuotas.json
      */
     /**
      * Sample code: LocationGetQuotas.

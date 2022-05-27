@@ -183,6 +183,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PoolInner innerModel() {
         return this.innerObject;
     }

@@ -46,7 +46,7 @@ public final class VMExtension {
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * Any object
+     * JSON formatted public settings for the extension.
      */
     @JsonProperty(value = "settings")
     private Object settings;
@@ -170,7 +170,7 @@ public final class VMExtension {
     }
 
     /**
-     * Get the settings property: Any object.
+     * Get the settings property: JSON formatted public settings for the extension.
      *
      * @return the settings value.
      */
@@ -179,7 +179,7 @@ public final class VMExtension {
     }
 
     /**
-     * Set the settings property: Any object.
+     * Set the settings property: JSON formatted public settings for the extension.
      *
      * @param settings the settings value to set.
      * @return the VMExtension object itself.

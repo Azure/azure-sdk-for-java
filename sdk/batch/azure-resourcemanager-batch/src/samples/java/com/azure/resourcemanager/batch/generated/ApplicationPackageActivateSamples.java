@@ -10,7 +10,7 @@ import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParamete
 /** Samples for ApplicationPackage Activate. */
 public final class ApplicationPackageActivateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageActivate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/ApplicationPackageActivate.json
      */
     /**
      * Sample code: ApplicationPackageActivate.

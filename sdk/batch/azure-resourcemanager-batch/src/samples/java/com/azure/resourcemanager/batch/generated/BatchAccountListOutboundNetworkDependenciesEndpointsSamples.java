@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchAccount ListOutboundNetworkDependenciesEndpoints. */
 public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: ListOutboundNetworkDependencies.

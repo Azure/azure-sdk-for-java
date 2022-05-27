@@ -61,6 +61,13 @@ public interface Application {
     String defaultVersion();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.ApplicationInner object.
      *
      * @return the inner object.

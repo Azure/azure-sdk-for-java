@@ -56,9 +56,7 @@ public final class StartTask {
      * maximum retry count is 3, Batch tries the task up to 4 times (one
      * initial try and 3 retries). If the maximum retry count is 0, the Batch
      * service does not retry the task. If the maximum retry count is -1, the
-     * Batch service retries the task without limit, however this is not
-     * recommended for a start task or any task. The default value is 0 (no
-     * retries).
+     * Batch service retries the task without limit.
      */
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
@@ -186,7 +184,7 @@ public final class StartTask {
      * Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry
      * count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0,
      * the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task
-     * without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
+     * without limit.
      *
      * @return the maxTaskRetryCount value.
      */
@@ -200,7 +198,7 @@ public final class StartTask {
      * Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry
      * count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0,
      * the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task
-     * without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
+     * without limit.
      *
      * @param maxTaskRetryCount the maxTaskRetryCount value to set.
      * @return the StartTask object itself.

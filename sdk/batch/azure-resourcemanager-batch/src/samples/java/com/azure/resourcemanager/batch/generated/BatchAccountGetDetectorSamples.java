@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchAccount GetDetector. */
 public final class BatchAccountGetDetectorSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/DetectorGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/DetectorGet.json
      */
     /**
      * Sample code: GetDetector.

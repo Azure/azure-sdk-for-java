@@ -30,8 +30,8 @@ public final class FixedScaleSettings {
     private Integer targetDedicatedNodes;
 
     /*
-     * The desired number of Spot/low-priority compute nodes in the pool. At
-     * least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * The desired number of low-priority compute nodes in the pool. At least
+     * one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      */
     @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
@@ -93,8 +93,8 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Get the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool. At
-     * least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * Get the targetLowPriorityNodes property: The desired number of low-priority compute nodes in the pool. At least
+     * one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      *
      * @return the targetLowPriorityNodes value.
      */
@@ -103,8 +103,8 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Set the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool. At
-     * least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * Set the targetLowPriorityNodes property: The desired number of low-priority compute nodes in the pool. At least
+     * one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      *
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
      * @return the FixedScaleSettings object itself.

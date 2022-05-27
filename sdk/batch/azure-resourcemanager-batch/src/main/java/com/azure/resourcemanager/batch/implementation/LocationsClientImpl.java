@@ -230,15 +230,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchLocationQuotaInner> getQuotasAsync(String locationName) {
-        return getQuotasWithResponseAsync(locationName)
-            .flatMap(
-                (Response<BatchLocationQuotaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getQuotasWithResponseAsync(locationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -795,14 +787,7 @@ public final class LocationsClientImpl implements LocationsClient {
     private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
         String locationName, CheckNameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
-            .flatMap(
-                (Response<CheckNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

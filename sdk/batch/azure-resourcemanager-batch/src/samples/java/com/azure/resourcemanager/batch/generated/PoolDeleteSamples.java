@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Pool Delete. */
 public final class PoolDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/PoolDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/PoolDelete.json
      */
     /**
      * Sample code: DeletePool.

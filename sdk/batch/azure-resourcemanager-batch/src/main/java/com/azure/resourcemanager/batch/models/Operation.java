@@ -37,7 +37,7 @@ public interface Operation {
     String origin();
 
     /**
-     * Gets the properties property: Any object.
+     * Gets the properties property: Properties of the operation.
      *
      * @return the properties value.
      */

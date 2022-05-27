@@ -117,6 +117,15 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
+    public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionName);
+    }
+
+    public void delete(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionName, context);
+    }
+
     private PrivateEndpointConnectionsClient serviceClient() {
         return this.innerClient;
     }

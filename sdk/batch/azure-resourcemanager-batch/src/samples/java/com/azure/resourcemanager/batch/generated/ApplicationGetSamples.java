@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Application Get. */
 public final class ApplicationGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-06-01/examples/ApplicationGet.json
      */
     /**
      * Sample code: ApplicationGet.

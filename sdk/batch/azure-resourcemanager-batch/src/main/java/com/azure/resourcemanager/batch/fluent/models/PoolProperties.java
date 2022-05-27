@@ -108,7 +108,7 @@ public final class PoolProperties {
     private Integer currentDedicatedNodes;
 
     /*
-     * The number of Spot/low-priority compute nodes currently in the pool.
+     * The number of low-priority compute nodes currently in the pool.
      */
     @JsonProperty(value = "currentLowPriorityNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentLowPriorityNodes;
@@ -385,7 +385,7 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
+     * Get the currentLowPriorityNodes property: The number of low-priority compute nodes currently in the pool.
      *
      * @return the currentLowPriorityNodes value.
      */
