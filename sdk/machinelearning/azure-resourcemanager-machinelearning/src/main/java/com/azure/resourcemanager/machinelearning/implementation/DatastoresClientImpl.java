@@ -32,7 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.machinelearning.fluent.DatastoresClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
 import com.azure.resourcemanager.machinelearning.models.DatastoreResourceArmPaginatedResult;
 import java.util.List;
@@ -108,7 +108,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreDataInner>> get(
+        Mono<Response<DatastoreInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -124,7 +124,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreDataInner>> createOrUpdate(
+        Mono<Response<DatastoreInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -132,7 +132,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("skipValidation") Boolean skipValidation,
-            @BodyParam("application/json") DatastoreDataInner body,
+            @BodyParam("application/json") DatastoreInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -182,7 +182,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -233,7 +233,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
                             orderByAsc,
                             accept,
                             context))
-            .<PagedResponse<DatastoreDataInner>>map(
+            .<PagedResponse<DatastoreInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -265,7 +265,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -344,7 +344,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatastoreDataInner> listAsync(
+    private PagedFlux<DatastoreInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -372,7 +372,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatastoreDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<DatastoreInner> listAsync(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final Integer count = null;
         final Boolean isDefault = null;
@@ -406,7 +406,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatastoreDataInner> listAsync(
+    private PagedFlux<DatastoreInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -444,7 +444,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatastoreDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<DatastoreInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final Integer count = null;
         final Boolean isDefault = null;
@@ -476,7 +476,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatastoreDataInner> list(
+    public PagedIterable<DatastoreInner> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -665,7 +665,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreDataInner>> getWithResponseAsync(
+    private Mono<Response<DatastoreInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -719,7 +719,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreDataInner>> getWithResponseAsync(
+    private Mono<Response<DatastoreInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -769,7 +769,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreDataInner> getAsync(String resourceGroupName, String workspaceName, String name) {
+    private Mono<DatastoreInner> getAsync(String resourceGroupName, String workspaceName, String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -786,7 +786,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreDataInner get(String resourceGroupName, String workspaceName, String name) {
+    public DatastoreInner get(String resourceGroupName, String workspaceName, String name) {
         return getAsync(resourceGroupName, workspaceName, name).block();
     }
 
@@ -803,7 +803,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreDataInner> getWithResponse(
+    public Response<DatastoreInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
@@ -823,8 +823,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, DatastoreDataInner body, Boolean skipValidation) {
+    private Mono<Response<DatastoreInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, DatastoreInner body, Boolean skipValidation) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -887,11 +887,11 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreDataInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<DatastoreInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
-        DatastoreDataInner body,
+        DatastoreInner body,
         Boolean skipValidation,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -951,8 +951,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, DatastoreDataInner body, Boolean skipValidation) {
+    private Mono<DatastoreInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, DatastoreInner body, Boolean skipValidation) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, skipValidation)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -970,8 +970,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, DatastoreDataInner body) {
+    private Mono<DatastoreInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, DatastoreInner body) {
         final Boolean skipValidation = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, skipValidation)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -990,8 +990,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, DatastoreDataInner body) {
+    public DatastoreInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, DatastoreInner body) {
         final Boolean skipValidation = null;
         return createOrUpdateAsync(resourceGroupName, workspaceName, name, body, skipValidation).block();
     }
@@ -1011,11 +1011,11 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreDataInner> createOrUpdateWithResponse(
+    public Response<DatastoreInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
-        DatastoreDataInner body,
+        DatastoreInner body,
         Boolean skipValidation,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, skipValidation, context)
@@ -1188,7 +1188,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DatastoreInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1201,7 +1201,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatastoreDataInner>>map(
+            .<PagedResponse<DatastoreInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1225,7 +1225,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<DatastoreInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

@@ -20,7 +20,7 @@ public interface ModelContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ModelContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<ModelContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List model containers.
@@ -36,7 +36,7 @@ public interface ModelContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ModelContainerData> list(
+    PagedIterable<ModelContainer> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -81,7 +81,7 @@ public interface ModelContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    ModelContainerData get(String resourceGroupName, String workspaceName, String name);
+    ModelContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -95,7 +95,7 @@ public interface ModelContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<ModelContainerData> getWithResponse(
+    Response<ModelContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -107,7 +107,7 @@ public interface ModelContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    ModelContainerData getById(String id);
+    ModelContainer getById(String id);
 
     /**
      * Get container.
@@ -119,7 +119,7 @@ public interface ModelContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<ModelContainerData> getByIdWithResponse(String id, Context context);
+    Response<ModelContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -144,10 +144,10 @@ public interface ModelContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ModelContainerData resource.
+     * Begins definition for a new ModelContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new ModelContainerData definition.
+     * @return the first stage of the new ModelContainer definition.
      */
-    ModelContainerData.DefinitionStages.Blank define(String name);
+    ModelContainer.DefinitionStages.Blank define(String name);
 }

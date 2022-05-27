@@ -10,23 +10,23 @@ import java.util.Collection;
 
 /** Defines values for JobOutputType. */
 public final class JobOutputType extends ExpandableStringEnum<JobOutputType> {
-    /** Static value UriFile for JobOutputType. */
-    public static final JobOutputType URI_FILE = fromString("UriFile");
+    /** Static value uri_file for JobOutputType. */
+    public static final JobOutputType URI_FILE = fromString("uri_file");
 
-    /** Static value UriFolder for JobOutputType. */
-    public static final JobOutputType URI_FOLDER = fromString("UriFolder");
+    /** Static value uri_folder for JobOutputType. */
+    public static final JobOutputType URI_FOLDER = fromString("uri_folder");
 
-    /** Static value MLTable for JobOutputType. */
-    public static final JobOutputType MLTABLE = fromString("MLTable");
+    /** Static value mltable for JobOutputType. */
+    public static final JobOutputType MLTABLE = fromString("mltable");
 
-    /** Static value CustomModel for JobOutputType. */
-    public static final JobOutputType CUSTOM_MODEL = fromString("CustomModel");
+    /** Static value custom_model for JobOutputType. */
+    public static final JobOutputType CUSTOM_MODEL = fromString("custom_model");
 
-    /** Static value MLFlowModel for JobOutputType. */
-    public static final JobOutputType MLFLOW_MODEL = fromString("MLFlowModel");
+    /** Static value mlflow_model for JobOutputType. */
+    public static final JobOutputType MLFLOW_MODEL = fromString("mlflow_model");
 
-    /** Static value TritonModel for JobOutputType. */
-    public static final JobOutputType TRITON_MODEL = fromString("TritonModel");
+    /** Static value triton_model for JobOutputType. */
+    public static final JobOutputType TRITON_MODEL = fromString("triton_model");
 
     /**
      * Creates or finds a JobOutputType from its string representation.

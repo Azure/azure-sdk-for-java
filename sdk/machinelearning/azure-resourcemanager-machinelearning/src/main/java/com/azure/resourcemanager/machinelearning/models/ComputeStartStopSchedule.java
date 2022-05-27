@@ -29,7 +29,7 @@ public final class ComputeStartStopSchedule {
     private ComputePowerAction action;
 
     /*
-     * Base definition of a schedule
+     * The schedule property.
      */
     @JsonProperty(value = "schedule")
     private ScheduleBase schedule;
@@ -73,7 +73,7 @@ public final class ComputeStartStopSchedule {
     }
 
     /**
-     * Get the schedule property: Base definition of a schedule.
+     * Get the schedule property: The schedule property.
      *
      * @return the schedule value.
      */
@@ -82,7 +82,7 @@ public final class ComputeStartStopSchedule {
     }
 
     /**
-     * Set the schedule property: Base definition of a schedule.
+     * Set the schedule property: The schedule property.
      *
      * @param schedule the schedule value to set.
      * @return the ComputeStartStopSchedule object itself.

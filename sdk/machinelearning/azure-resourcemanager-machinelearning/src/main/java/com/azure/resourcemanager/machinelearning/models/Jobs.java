@@ -20,7 +20,7 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobBaseData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<JobBase> list(String resourceGroupName, String workspaceName);
 
     /**
      * Lists Jobs in the workspace.
@@ -31,23 +31,19 @@ public interface Jobs {
      * @param jobType Type of job to be returned.
      * @param tag Jobs returned will have this tag key.
      * @param listViewType View type for including/excluding (for example) archived entities.
-     * @param scheduled Indicator whether the job is scheduled job.
-     * @param scheduleId The scheduled id for listing the job triggered from.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobBaseData> list(
+    PagedIterable<JobBase> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
         String jobType,
         String tag,
         ListViewType listViewType,
-        Boolean scheduled,
-        String scheduleId,
         Context context);
 
     /**
@@ -86,7 +82,7 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job by name/id.
      */
-    JobBaseData get(String resourceGroupName, String workspaceName, String id);
+    JobBase get(String resourceGroupName, String workspaceName, String id);
 
     /**
      * Gets a Job by name/id.
@@ -100,10 +96,10 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job by name/id along with {@link Response}.
      */
-    Response<JobBaseData> getWithResponse(String resourceGroupName, String workspaceName, String id, Context context);
+    Response<JobBase> getWithResponse(String resourceGroupName, String workspaceName, String id, Context context);
 
     /**
-     * Cancels a Job.
+     * Cancels a Job (asynchronous).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -115,7 +111,7 @@ public interface Jobs {
     void cancel(String resourceGroupName, String workspaceName, String id);
 
     /**
-     * Cancels a Job.
+     * Cancels a Job (asynchronous).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -124,9 +120,8 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> cancelWithResponse(String resourceGroupName, String workspaceName, String id, Context context);
+    void cancel(String resourceGroupName, String workspaceName, String id, Context context);
 
     /**
      * Gets a Job by name/id.
@@ -137,7 +132,7 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job by name/id along with {@link Response}.
      */
-    JobBaseData getById(String id);
+    JobBase getById(String id);
 
     /**
      * Gets a Job by name/id.
@@ -149,7 +144,7 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job by name/id along with {@link Response}.
      */
-    Response<JobBaseData> getByIdWithResponse(String id, Context context);
+    Response<JobBase> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes a Job (asynchronous).
@@ -173,10 +168,10 @@ public interface Jobs {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new JobBaseData resource.
+     * Begins definition for a new JobBase resource.
      *
      * @param name resource name.
-     * @return the first stage of the new JobBaseData definition.
+     * @return the first stage of the new JobBase definition.
      */
-    JobBaseData.DefinitionStages.Blank define(String name);
+    JobBase.DefinitionStages.Blank define(String name);
 }

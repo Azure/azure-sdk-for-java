@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.EnvironmentContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerInner;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentContainerResourceArmPaginatedResult;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import reactor.core.publisher.Mono;
@@ -100,7 +100,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/environments/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentContainerDataInner>> get(
+        Mono<Response<EnvironmentContainerInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -116,14 +116,14 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/environments/{name}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentContainerDataInner>> createOrUpdate(
+        Mono<Response<EnvironmentContainerInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") EnvironmentContainerDataInner body,
+            @BodyParam("application/json") EnvironmentContainerInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -152,7 +152,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<EnvironmentContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -188,7 +188,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<EnvironmentContainerDataInner>>map(
+            .<PagedResponse<EnvironmentContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -215,7 +215,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<EnvironmentContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -273,7 +273,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentContainerDataInner> listAsync(
+    private PagedFlux<EnvironmentContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, listViewType),
@@ -291,7 +291,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentContainerDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<EnvironmentContainerInner> listAsync(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
         return new PagedFlux<>(
@@ -313,7 +313,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentContainerDataInner> listAsync(
+    private PagedFlux<EnvironmentContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, listViewType, context),
@@ -331,7 +331,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnvironmentContainerDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<EnvironmentContainerInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, listViewType));
@@ -351,7 +351,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnvironmentContainerDataInner> list(
+    public PagedIterable<EnvironmentContainerInner> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, listViewType, context));
     }
@@ -520,7 +520,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<EnvironmentContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -574,7 +574,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<EnvironmentContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -624,7 +624,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentContainerDataInner> getAsync(String resourceGroupName, String workspaceName, String name) {
+    private Mono<EnvironmentContainerInner> getAsync(String resourceGroupName, String workspaceName, String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -641,7 +641,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentContainerDataInner get(String resourceGroupName, String workspaceName, String name) {
+    public EnvironmentContainerInner get(String resourceGroupName, String workspaceName, String name) {
         return getAsync(resourceGroupName, workspaceName, name).block();
     }
 
@@ -658,7 +658,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentContainerDataInner> getWithResponse(
+    public Response<EnvironmentContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
@@ -677,8 +677,8 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, EnvironmentContainerDataInner body) {
+    private Mono<Response<EnvironmentContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -739,12 +739,8 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        EnvironmentContainerDataInner body,
-        Context context) {
+    private Mono<Response<EnvironmentContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -800,8 +796,8 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentContainerDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, EnvironmentContainerDataInner body) {
+    private Mono<EnvironmentContainerInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -819,8 +815,8 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, EnvironmentContainerDataInner body) {
+    public EnvironmentContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, name, body).block();
     }
 
@@ -838,12 +834,8 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        EnvironmentContainerDataInner body,
-        Context context) {
+    public Response<EnvironmentContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, context).block();
     }
 
@@ -858,7 +850,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentContainerDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<EnvironmentContainerInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -871,7 +863,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EnvironmentContainerDataInner>>map(
+            .<PagedResponse<EnvironmentContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -895,8 +887,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentContainerDataInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EnvironmentContainerInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

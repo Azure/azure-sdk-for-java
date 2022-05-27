@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class ModelContainerResourceArmPaginatedResult {
      * An array of objects of type ModelContainer.
      */
     @JsonProperty(value = "value")
-    private List<ModelContainerDataInner> value;
+    private List<ModelContainerInner> value;
 
     /**
      * Get the nextLink property: The link to the next page of ModelContainer objects. If null, there are no additional
@@ -52,7 +52,7 @@ public final class ModelContainerResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<ModelContainerDataInner> value() {
+    public List<ModelContainerInner> value() {
         return this.value;
     }
 
@@ -62,7 +62,7 @@ public final class ModelContainerResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the ModelContainerResourceArmPaginatedResult object itself.
      */
-    public ModelContainerResourceArmPaginatedResult withValue(List<ModelContainerDataInner> value) {
+    public ModelContainerResourceArmPaginatedResult withValue(List<ModelContainerInner> value) {
         this.value = value;
         return this;
     }

@@ -13,15 +13,15 @@ import java.time.Duration;
 /** Samples for Compute Update. */
 public final class ComputeUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/patch.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/patch.json
      */
     /**
      * Sample code: Update a AmlCompute Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void updateAAmlComputeCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         ComputeResource resource =
             manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE).getValue();
         resource

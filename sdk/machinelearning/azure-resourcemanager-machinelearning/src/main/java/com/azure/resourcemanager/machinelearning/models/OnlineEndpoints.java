@@ -20,7 +20,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineEndpointData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<OnlineEndpoint> list(String resourceGroupName, String workspaceName);
 
     /**
      * List Online Endpoints.
@@ -42,7 +42,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineEndpointData> list(
+    PagedIterable<OnlineEndpoint> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -90,7 +90,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return online Endpoint.
      */
-    OnlineEndpointData get(String resourceGroupName, String workspaceName, String endpointName);
+    OnlineEndpoint get(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Get Online Endpoint.
@@ -104,7 +104,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return online Endpoint along with {@link Response}.
      */
-    Response<OnlineEndpointData> getWithResponse(
+    Response<OnlineEndpoint> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
@@ -205,7 +205,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return online Endpoint along with {@link Response}.
      */
-    OnlineEndpointData getById(String id);
+    OnlineEndpoint getById(String id);
 
     /**
      * Get Online Endpoint.
@@ -217,7 +217,7 @@ public interface OnlineEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return online Endpoint along with {@link Response}.
      */
-    Response<OnlineEndpointData> getByIdWithResponse(String id, Context context);
+    Response<OnlineEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Online Endpoint (asynchronous).
@@ -241,10 +241,10 @@ public interface OnlineEndpoints {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new OnlineEndpointData resource.
+     * Begins definition for a new OnlineEndpoint resource.
      *
      * @param name resource name.
-     * @return the first stage of the new OnlineEndpointData definition.
+     * @return the first stage of the new OnlineEndpoint definition.
      */
-    OnlineEndpointData.DefinitionStages.Blank define(String name);
+    OnlineEndpoint.DefinitionStages.Blank define(String name);
 }

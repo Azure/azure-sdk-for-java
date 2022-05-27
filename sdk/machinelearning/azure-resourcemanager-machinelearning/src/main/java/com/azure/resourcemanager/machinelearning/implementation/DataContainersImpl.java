@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.DataContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.DataContainerDataInner;
-import com.azure.resourcemanager.machinelearning.models.DataContainerData;
+import com.azure.resourcemanager.machinelearning.fluent.models.DataContainerInner;
+import com.azure.resourcemanager.machinelearning.models.DataContainer;
 import com.azure.resourcemanager.machinelearning.models.DataContainers;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
@@ -20,25 +20,25 @@ public final class DataContainersImpl implements DataContainers {
 
     private final DataContainersClient innerClient;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public DataContainersImpl(
         DataContainersClient innerClient,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<DataContainerData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<DataContainerDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new DataContainerDataImpl(inner1, this.manager()));
+    public PagedIterable<DataContainer> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<DataContainerInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new DataContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataContainerData> list(
+    public PagedIterable<DataContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
-        PagedIterable<DataContainerDataInner> inner =
+        PagedIterable<DataContainerInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, skip, listViewType, context);
-        return Utils.mapPage(inner, inner1 -> new DataContainerDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataContainerImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String name) {
@@ -50,31 +50,31 @@ public final class DataContainersImpl implements DataContainers {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, context);
     }
 
-    public DataContainerData get(String resourceGroupName, String workspaceName, String name) {
-        DataContainerDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
+    public DataContainer get(String resourceGroupName, String workspaceName, String name) {
+        DataContainerInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name);
         if (inner != null) {
-            return new DataContainerDataImpl(inner, this.manager());
+            return new DataContainerImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<DataContainerData> getWithResponse(
+    public Response<DataContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
-        Response<DataContainerDataInner> inner =
+        Response<DataContainerInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new DataContainerDataImpl(inner.getValue(), this.manager()));
+                new DataContainerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DataContainerData getById(String id) {
+    public DataContainer getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -100,7 +100,7 @@ public final class DataContainersImpl implements DataContainers {
         return this.getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
-    public Response<DataContainerData> getByIdWithResponse(String id, Context context) {
+    public Response<DataContainer> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -182,11 +182,11 @@ public final class DataContainersImpl implements DataContainers {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
-    public DataContainerDataImpl define(String name) {
-        return new DataContainerDataImpl(name, this.manager());
+    public DataContainerImpl define(String name) {
+        return new DataContainerImpl(name, this.manager());
     }
 }

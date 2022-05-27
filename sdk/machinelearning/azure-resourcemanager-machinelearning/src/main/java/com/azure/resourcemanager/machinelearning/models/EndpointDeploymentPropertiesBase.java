@@ -25,8 +25,8 @@ public class EndpointDeploymentPropertiesBase {
     private String description;
 
     /*
-     * ARM resource ID of the environment specification for the endpoint
-     * deployment.
+     * ARM resource ID or AssetId of the environment specification for the
+     * endpoint deployment.
      */
     @JsonProperty(value = "environmentId")
     private String environmentId;
@@ -87,7 +87,8 @@ public class EndpointDeploymentPropertiesBase {
     }
 
     /**
-     * Get the environmentId property: ARM resource ID of the environment specification for the endpoint deployment.
+     * Get the environmentId property: ARM resource ID or AssetId of the environment specification for the endpoint
+     * deployment.
      *
      * @return the environmentId value.
      */
@@ -96,7 +97,8 @@ public class EndpointDeploymentPropertiesBase {
     }
 
     /**
-     * Set the environmentId property: ARM resource ID of the environment specification for the endpoint deployment.
+     * Set the environmentId property: ARM resource ID or AssetId of the environment specification for the endpoint
+     * deployment.
      *
      * @param environmentId the environmentId value to set.
      * @return the EndpointDeploymentPropertiesBase object itself.

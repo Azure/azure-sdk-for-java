@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatastoreDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<DatastoreInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List datastores.
@@ -47,7 +47,7 @@ public interface DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatastoreDataInner> list(
+    PagedIterable<DatastoreInner> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -99,7 +99,7 @@ public interface DatastoresClient {
      * @return datastore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreDataInner get(String resourceGroupName, String workspaceName, String name);
+    DatastoreInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get datastore.
@@ -114,7 +114,7 @@ public interface DatastoresClient {
      * @return datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatastoreDataInner> getWithResponse(
+    Response<DatastoreInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -130,8 +130,7 @@ public interface DatastoresClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, DatastoreDataInner body);
+    DatastoreInner createOrUpdate(String resourceGroupName, String workspaceName, String name, DatastoreInner body);
 
     /**
      * Create or update datastore.
@@ -148,11 +147,11 @@ public interface DatastoresClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatastoreDataInner> createOrUpdateWithResponse(
+    Response<DatastoreInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
-        DatastoreDataInner body,
+        DatastoreInner body,
         Boolean skipValidation,
         Context context);
 

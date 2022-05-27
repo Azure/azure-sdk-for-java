@@ -9,15 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for ModelContainers List. */
 public final class ModelContainersListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ModelContainer/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/ModelContainer/list.json
      */
     /**
      * Sample code: List Model Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listModelContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.modelContainers().list("testrg123", "workspace123", null, null, null, Context.NONE);
     }
 }

@@ -22,12 +22,6 @@ public final class SecretsType extends ExpandableStringEnum<SecretsType> {
     /** Static value ServicePrincipal for SecretsType. */
     public static final SecretsType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
-    /** Static value KerberosPassword for SecretsType. */
-    public static final SecretsType KERBEROS_PASSWORD = fromString("KerberosPassword");
-
-    /** Static value KerberosKeytab for SecretsType. */
-    public static final SecretsType KERBEROS_KEYTAB = fromString("KerberosKeytab");
-
     /**
      * Creates or finds a SecretsType from its string representation.
      *

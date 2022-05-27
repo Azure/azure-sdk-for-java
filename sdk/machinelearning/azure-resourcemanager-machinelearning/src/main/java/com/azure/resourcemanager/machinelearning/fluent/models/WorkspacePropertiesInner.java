@@ -169,6 +169,13 @@ public final class WorkspacePropertiesInner {
     @JsonProperty(value = "mlFlowTrackingUri", access = JsonProperty.Access.WRITE_ONLY)
     private String mlFlowTrackingUri;
 
+    /*
+     * Enabling v1_legacy_mode may prevent you from using features provided by
+     * the v2 API.
+     */
+    @JsonProperty(value = "v1LegacyMode")
+    private Boolean v1LegacyMode;
+
     /**
      * Get the workspaceId property: The immutable id associated with this workspace.
      *
@@ -566,6 +573,28 @@ public final class WorkspacePropertiesInner {
      */
     public String mlFlowTrackingUri() {
         return this.mlFlowTrackingUri;
+    }
+
+    /**
+     * Get the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @return the v1LegacyMode value.
+     */
+    public Boolean v1LegacyMode() {
+        return this.v1LegacyMode;
+    }
+
+    /**
+     * Set the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @param v1LegacyMode the v1LegacyMode value to set.
+     * @return the WorkspacePropertiesInner object itself.
+     */
+    public WorkspacePropertiesInner withV1LegacyMode(Boolean v1LegacyMode) {
+        this.v1LegacyMode = v1LegacyMode;
+        return this;
     }
 
     /**

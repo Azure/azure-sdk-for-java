@@ -9,15 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Datastores Delete. */
 public final class DatastoresDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Datastore/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Datastore/delete.json
      */
     /**
      * Sample code: Delete datastore.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteDatastore(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.datastores().deleteWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

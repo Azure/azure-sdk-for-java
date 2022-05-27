@@ -16,7 +16,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("Sweep")
 @Fluent
-public final class SweepJob extends JobBaseDetails {
+public final class SweepJob extends JobBaseProperties {
     /*
      * Early termination policies enable canceling poor-performing runs before
      * they complete
@@ -265,13 +265,6 @@ public final class SweepJob extends JobBaseDetails {
     @Override
     public SweepJob withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SweepJob withSchedule(ScheduleBase schedule) {
-        super.withSchedule(schedule);
         return this;
     }
 

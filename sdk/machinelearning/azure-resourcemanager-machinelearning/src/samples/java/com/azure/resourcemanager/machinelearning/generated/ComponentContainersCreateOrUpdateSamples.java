@@ -4,28 +4,28 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.ComponentContainerDetails;
+import com.azure.resourcemanager.machinelearning.models.ComponentContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ComponentContainers CreateOrUpdate. */
 public final class ComponentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ComponentContainer/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/ComponentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Component Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateComponentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .componentContainers()
             .define("string")
             .withExistingWorkspace("test-rg", "my-aml-workspace")
             .withProperties(
-                new ComponentContainerDetails()
+                new ComponentContainerProperties()
                     .withDescription("string")
                     .withProperties(mapOf("string", "string"))
                     .withTags(mapOf("string", "string")))

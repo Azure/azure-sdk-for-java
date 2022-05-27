@@ -9,15 +9,15 @@ import com.azure.core.util.Context;
 /** Samples for OnlineEndpoints ListKeys. */
 public final class OnlineEndpointsListKeysSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/listKeys.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/listKeys.json
      */
     /**
      * Sample code: ListKeys Online Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listKeysOnlineEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.onlineEndpoints().listKeysWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
     }
 }

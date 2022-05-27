@@ -9,15 +9,17 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceConnections List. */
 public final class WorkspaceConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/WorkspaceConnection/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/WorkspaceConnection/list.json
      */
     /**
      * Sample code: ListWorkspaceConnections.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceConnections(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
-        manager.workspaceConnections().list("resourceGroup-1", "workspace-1", "www.facebook.com", "ACR", Context.NONE);
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager
+            .workspaceConnections()
+            .list("resourceGroup-1", "workspace-1", "www.facebook.com", "ContainerRegistry", Context.NONE);
     }
 }

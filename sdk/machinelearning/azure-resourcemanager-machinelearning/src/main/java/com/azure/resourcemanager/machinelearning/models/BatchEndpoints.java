@@ -20,7 +20,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchEndpointData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<BatchEndpoint> list(String resourceGroupName, String workspaceName);
 
     /**
      * Lists Batch inference endpoint in the workspace.
@@ -35,7 +35,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchEndpointData> list(
+    PagedIterable<BatchEndpoint> list(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context);
 
     /**
@@ -74,7 +74,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference endpoint by name.
      */
-    BatchEndpointData get(String resourceGroupName, String workspaceName, String endpointName);
+    BatchEndpoint get(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Gets a batch inference endpoint by name.
@@ -88,7 +88,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference endpoint by name along with {@link Response}.
      */
-    Response<BatchEndpointData> getWithResponse(
+    Response<BatchEndpoint> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context);
 
     /**
@@ -128,7 +128,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference endpoint by name along with {@link Response}.
      */
-    BatchEndpointData getById(String id);
+    BatchEndpoint getById(String id);
 
     /**
      * Gets a batch inference endpoint by name.
@@ -140,7 +140,7 @@ public interface BatchEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference endpoint by name along with {@link Response}.
      */
-    Response<BatchEndpointData> getByIdWithResponse(String id, Context context);
+    Response<BatchEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Batch Inference Endpoint (asynchronous).
@@ -164,10 +164,10 @@ public interface BatchEndpoints {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new BatchEndpointData resource.
+     * Begins definition for a new BatchEndpoint resource.
      *
      * @param name resource name.
-     * @return the first stage of the new BatchEndpointData definition.
+     * @return the first stage of the new BatchEndpoint definition.
      */
-    BatchEndpointData.DefinitionStages.Blank define(String name);
+    BatchEndpoint.DefinitionStages.Blank define(String name);
 }

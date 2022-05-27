@@ -15,7 +15,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("Pipeline")
 @Fluent
-public final class PipelineJob extends JobBaseDetails {
+public final class PipelineJob extends JobBaseProperties {
     /*
      * Inputs for the pipeline job.
      */
@@ -155,13 +155,6 @@ public final class PipelineJob extends JobBaseDetails {
     @Override
     public PipelineJob withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PipelineJob withSchedule(ScheduleBase schedule) {
-        super.withSchedule(schedule);
         return this;
     }
 

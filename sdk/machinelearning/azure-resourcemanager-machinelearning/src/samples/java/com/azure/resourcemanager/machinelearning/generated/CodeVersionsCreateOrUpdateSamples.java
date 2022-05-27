@@ -4,28 +4,28 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.CodeVersionDetails;
+import com.azure.resourcemanager.machinelearning.models.CodeVersionProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for CodeVersions CreateOrUpdate. */
 public final class CodeVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/CodeVersion/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/CodeVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Code Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateCodeVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .codeVersions()
             .define("string")
             .withExistingCode("test-rg", "my-aml-workspace", "string")
             .withProperties(
-                new CodeVersionDetails()
+                new CodeVersionProperties()
                     .withDescription("string")
                     .withProperties(mapOf("string", "string"))
                     .withTags(mapOf("string", "string"))

@@ -11,15 +11,15 @@ import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
 /** Samples for OnlineDeployments GetLogs. */
 public final class OnlineDeploymentsGetLogsSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/getLogs.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/getLogs.json
      */
     /**
      * Sample code: Get Online Deployment Logs.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getOnlineDeploymentLogs(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .getLogsWithResponse(

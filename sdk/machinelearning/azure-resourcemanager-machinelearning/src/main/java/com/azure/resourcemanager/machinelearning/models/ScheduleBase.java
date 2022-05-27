@@ -6,131 +6,85 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
 
-/** Base definition of a schedule. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "scheduleType",
-    defaultImpl = ScheduleBase.class)
-@JsonTypeName("ScheduleBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Cron", value = CronSchedule.class),
-    @JsonSubTypes.Type(name = "Recurrence", value = RecurrenceSchedule.class)
-})
+/** The ScheduleBase model. */
 @Fluent
-public class ScheduleBase {
+public final class ScheduleBase {
     /*
-     * Specifies end time of schedule in ISO 8601 format.
-     * If not present, the schedule will run indefinitely
+     * The id property.
      */
-    @JsonProperty(value = "endTime")
-    private OffsetDateTime endTime;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
-     * Specifies the schedule's status
+     * The provisioningStatus property.
      */
-    @JsonProperty(value = "scheduleStatus")
-    private ScheduleStatus scheduleStatus;
+    @JsonProperty(value = "provisioningStatus")
+    private ScheduleProvisioningState provisioningStatus;
 
     /*
-     * Specifies start time of schedule in ISO 8601 format.
+     * The status property.
      */
-    @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
-
-    /*
-     * Specifies time zone in which the schedule runs.
-     * TimeZone should follow Windows time zone format.
-     */
-    @JsonProperty(value = "timeZone")
-    private String timeZone;
+    @JsonProperty(value = "status")
+    private ScheduleStatus status;
 
     /**
-     * Get the endTime property: Specifies end time of schedule in ISO 8601 format. If not present, the schedule will
-     * run indefinitely.
+     * Get the id property: The id property.
      *
-     * @return the endTime value.
+     * @return the id value.
      */
-    public OffsetDateTime endTime() {
-        return this.endTime;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the endTime property: Specifies end time of schedule in ISO 8601 format. If not present, the schedule will
-     * run indefinitely.
+     * Set the id property: The id property.
      *
-     * @param endTime the endTime value to set.
+     * @param id the id value to set.
      * @return the ScheduleBase object itself.
      */
-    public ScheduleBase withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+    public ScheduleBase withId(String id) {
+        this.id = id;
         return this;
     }
 
     /**
-     * Get the scheduleStatus property: Specifies the schedule's status.
+     * Get the provisioningStatus property: The provisioningStatus property.
      *
-     * @return the scheduleStatus value.
+     * @return the provisioningStatus value.
      */
-    public ScheduleStatus scheduleStatus() {
-        return this.scheduleStatus;
+    public ScheduleProvisioningState provisioningStatus() {
+        return this.provisioningStatus;
     }
 
     /**
-     * Set the scheduleStatus property: Specifies the schedule's status.
+     * Set the provisioningStatus property: The provisioningStatus property.
      *
-     * @param scheduleStatus the scheduleStatus value to set.
+     * @param provisioningStatus the provisioningStatus value to set.
      * @return the ScheduleBase object itself.
      */
-    public ScheduleBase withScheduleStatus(ScheduleStatus scheduleStatus) {
-        this.scheduleStatus = scheduleStatus;
+    public ScheduleBase withProvisioningStatus(ScheduleProvisioningState provisioningStatus) {
+        this.provisioningStatus = provisioningStatus;
         return this;
     }
 
     /**
-     * Get the startTime property: Specifies start time of schedule in ISO 8601 format.
+     * Get the status property: The status property.
      *
-     * @return the startTime value.
+     * @return the status value.
      */
-    public OffsetDateTime startTime() {
-        return this.startTime;
+    public ScheduleStatus status() {
+        return this.status;
     }
 
     /**
-     * Set the startTime property: Specifies start time of schedule in ISO 8601 format.
+     * Set the status property: The status property.
      *
-     * @param startTime the startTime value to set.
+     * @param status the status value to set.
      * @return the ScheduleBase object itself.
      */
-    public ScheduleBase withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Get the timeZone property: Specifies time zone in which the schedule runs. TimeZone should follow Windows time
-     * zone format.
-     *
-     * @return the timeZone value.
-     */
-    public String timeZone() {
-        return this.timeZone;
-    }
-
-    /**
-     * Set the timeZone property: Specifies time zone in which the schedule runs. TimeZone should follow Windows time
-     * zone format.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the ScheduleBase object itself.
-     */
-    public ScheduleBase withTimeZone(String timeZone) {
-        this.timeZone = timeZone;
+    public ScheduleBase withStatus(ScheduleStatus status) {
+        this.status = status;
         return this;
     }
 

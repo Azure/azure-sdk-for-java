@@ -14,7 +14,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointComputeType")
 @JsonTypeName("Kubernetes")
 @Fluent
-public final class KubernetesOnlineDeployment extends OnlineDeploymentDetails {
+public final class KubernetesOnlineDeployment extends OnlineDeploymentProperties {
     /*
      * The resource requirements for the container (cpu and memory).
      */
@@ -51,14 +51,6 @@ public final class KubernetesOnlineDeployment extends OnlineDeploymentDetails {
 
     /** {@inheritDoc} */
     @Override
-    public KubernetesOnlineDeployment withEgressPublicNetworkAccess(
-        EgressPublicNetworkAccessType egressPublicNetworkAccess) {
-        super.withEgressPublicNetworkAccess(egressPublicNetworkAccess);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public KubernetesOnlineDeployment withInstanceType(String instanceType) {
         super.withInstanceType(instanceType);
         return this;
@@ -82,13 +74,6 @@ public final class KubernetesOnlineDeployment extends OnlineDeploymentDetails {
     @Override
     public KubernetesOnlineDeployment withModelMountPath(String modelMountPath) {
         super.withModelMountPath(modelMountPath);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public KubernetesOnlineDeployment withPrivateNetworkConnection(Boolean privateNetworkConnection) {
-        super.withPrivateNetworkConnection(privateNetworkConnection);
         return this;
     }
 

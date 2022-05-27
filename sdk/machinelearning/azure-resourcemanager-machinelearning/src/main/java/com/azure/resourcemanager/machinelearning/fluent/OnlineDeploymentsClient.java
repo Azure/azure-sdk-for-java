@@ -12,10 +12,10 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.models.DeploymentLogsInner;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
-import com.azure.resourcemanager.machinelearning.models.PartialOnlineDeploymentPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedResourceWithSku;
 
 /** An instance of this class provides access to all the operations defined in OnlineDeploymentsClient. */
 public interface OnlineDeploymentsClient {
@@ -31,7 +31,7 @@ public interface OnlineDeploymentsClient {
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineDeploymentDataInner> list(String resourceGroupName, String workspaceName, String endpointName);
+    PagedIterable<OnlineDeploymentInner> list(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * List Inference Endpoint Deployments.
@@ -49,7 +49,7 @@ public interface OnlineDeploymentsClient {
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OnlineDeploymentDataInner> list(
+    PagedIterable<OnlineDeploymentInner> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -134,7 +134,7 @@ public interface OnlineDeploymentsClient {
      * @return inference Deployment Deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineDeploymentDataInner get(
+    OnlineDeploymentInner get(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
 
     /**
@@ -151,7 +151,7 @@ public interface OnlineDeploymentsClient {
      * @return inference Deployment Deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OnlineDeploymentDataInner> getWithResponse(
+    Response<OnlineDeploymentInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
 
     /**
@@ -168,12 +168,12 @@ public interface OnlineDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginUpdate(
+    SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body);
+        PartialMinimalTrackedResourceWithSku body);
 
     /**
      * Update Online Deployment (asynchronous).
@@ -190,12 +190,12 @@ public interface OnlineDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginUpdate(
+    SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context);
 
     /**
@@ -212,12 +212,12 @@ public interface OnlineDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineDeploymentDataInner update(
+    OnlineDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body);
+        PartialMinimalTrackedResourceWithSku body);
 
     /**
      * Update Online Deployment (asynchronous).
@@ -234,12 +234,12 @@ public interface OnlineDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineDeploymentDataInner update(
+    OnlineDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialOnlineDeploymentPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithSku body,
         Context context);
 
     /**
@@ -256,12 +256,12 @@ public interface OnlineDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body);
+        OnlineDeploymentInner body);
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
@@ -278,12 +278,12 @@ public interface OnlineDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OnlineDeploymentDataInner>, OnlineDeploymentDataInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context);
 
     /**
@@ -300,12 +300,12 @@ public interface OnlineDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineDeploymentDataInner createOrUpdate(
+    OnlineDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body);
+        OnlineDeploymentInner body);
 
     /**
      * Create or update Inference Endpoint Deployment (asynchronous).
@@ -322,12 +322,12 @@ public interface OnlineDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OnlineDeploymentDataInner createOrUpdate(
+    OnlineDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        OnlineDeploymentDataInner body,
+        OnlineDeploymentInner body,
         Context context);
 
     /**

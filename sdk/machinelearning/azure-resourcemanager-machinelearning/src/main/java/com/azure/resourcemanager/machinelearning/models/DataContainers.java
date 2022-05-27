@@ -20,7 +20,7 @@ public interface DataContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<DataContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List data containers.
@@ -35,7 +35,7 @@ public interface DataContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataContainerData> list(
+    PagedIterable<DataContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
 
     /**
@@ -75,7 +75,7 @@ public interface DataContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    DataContainerData get(String resourceGroupName, String workspaceName, String name);
+    DataContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -89,7 +89,7 @@ public interface DataContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<DataContainerData> getWithResponse(
+    Response<DataContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -101,7 +101,7 @@ public interface DataContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    DataContainerData getById(String id);
+    DataContainer getById(String id);
 
     /**
      * Get container.
@@ -113,7 +113,7 @@ public interface DataContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<DataContainerData> getByIdWithResponse(String id, Context context);
+    Response<DataContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -138,10 +138,10 @@ public interface DataContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new DataContainerData resource.
+     * Begins definition for a new DataContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new DataContainerData definition.
+     * @return the first stage of the new DataContainer definition.
      */
-    DataContainerData.DefinitionStages.Blank define(String name);
+    DataContainer.DefinitionStages.Blank define(String name);
 }

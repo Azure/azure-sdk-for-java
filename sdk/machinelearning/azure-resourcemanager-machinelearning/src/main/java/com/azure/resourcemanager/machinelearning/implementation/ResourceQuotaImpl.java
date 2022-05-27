@@ -12,11 +12,11 @@ import com.azure.resourcemanager.machinelearning.models.ResourceQuota;
 public final class ResourceQuotaImpl implements ResourceQuota {
     private ResourceQuotaInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     ResourceQuotaImpl(
         ResourceQuotaInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -49,7 +49,7 @@ public final class ResourceQuotaImpl implements ResourceQuota {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 }

@@ -25,12 +25,6 @@ public final class CredentialsType extends ExpandableStringEnum<CredentialsType>
     /** Static value ServicePrincipal for CredentialsType. */
     public static final CredentialsType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
-    /** Static value KerberosKeytab for CredentialsType. */
-    public static final CredentialsType KERBEROS_KEYTAB = fromString("KerberosKeytab");
-
-    /** Static value KerberosPassword for CredentialsType. */
-    public static final CredentialsType KERBEROS_PASSWORD = fromString("KerberosPassword");
-
     /**
      * Creates or finds a CredentialsType from its string representation.
      *

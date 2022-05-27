@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineSizes List. */
 public final class VirtualMachineSizesListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/VirtualMachineSize/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/VirtualMachineSize/list.json
      */
     /**
      * Sample code: List VM Sizes.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listVMSizes(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listVMSizes(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.virtualMachineSizes().listWithResponse("eastus", Context.NONE);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datastoreType")
 @JsonTypeName("AzureDataLakeGen2")
 @Fluent
-public final class AzureDataLakeGen2Datastore extends DatastoreDetails {
+public final class AzureDataLakeGen2Datastore extends DatastoreProperties {
     /*
      * [Required] Storage account name.
      */

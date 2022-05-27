@@ -9,15 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for DataContainers Delete. */
 public final class DataContainersDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/DataContainer/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/DataContainer/delete.json
      */
     /**
      * Sample code: Delete Data Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteDataContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.dataContainers().deleteWithResponse("testrg123", "workspace123", "datacontainer123", Context.NONE);
     }
 }

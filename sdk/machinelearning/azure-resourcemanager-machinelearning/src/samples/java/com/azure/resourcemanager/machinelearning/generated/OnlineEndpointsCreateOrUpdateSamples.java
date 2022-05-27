@@ -7,7 +7,7 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthMode;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.machinelearning.models.OnlineEndpointDetails;
+import com.azure.resourcemanager.machinelearning.models.OnlineEndpointProperties;
 import com.azure.resourcemanager.machinelearning.models.Sku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
@@ -17,22 +17,22 @@ import java.util.Map;
 /** Samples for OnlineEndpoints CreateOrUpdate. */
 public final class OnlineEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Online Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateOnlineEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineEndpoints()
             .define("testEndpointName")
             .withRegion("string")
             .withExistingWorkspace("test-rg", "my-aml-workspace")
             .withProperties(
-                new OnlineEndpointDetails()
+                new OnlineEndpointProperties()
                     .withAuthMode(EndpointAuthMode.AMLTOKEN)
                     .withDescription("string")
                     .withProperties(mapOf("string", "string"))

@@ -12,11 +12,10 @@ import com.azure.resourcemanager.machinelearning.models.SkuSetting;
 public final class SkuResourceImpl implements SkuResource {
     private SkuResourceInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     SkuResourceImpl(
-        SkuResourceInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        SkuResourceInner innerObject, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -37,7 +36,7 @@ public final class SkuResourceImpl implements SkuResource {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 }

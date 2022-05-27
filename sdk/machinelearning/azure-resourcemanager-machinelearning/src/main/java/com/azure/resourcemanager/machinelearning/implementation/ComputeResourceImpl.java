@@ -24,7 +24,7 @@ import java.util.Map;
 public final class ComputeResourceImpl implements ComputeResource, ComputeResource.Definition, ComputeResource.Update {
     private ComputeResourceInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -83,7 +83,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -119,8 +119,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         return this;
     }
 
-    ComputeResourceImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+    ComputeResourceImpl(String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new ComputeResourceInner();
         this.serviceManager = serviceManager;
         this.computeName = name;
@@ -151,7 +150,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
 
     ComputeResourceImpl(
         ComputeResourceInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

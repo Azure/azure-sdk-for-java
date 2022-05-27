@@ -9,15 +9,15 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceConnections Delete. */
 public final class WorkspaceConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/WorkspaceConnection/delete.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/WorkspaceConnection/delete.json
      */
     /**
      * Sample code: DeleteWorkspaceConnection.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteWorkspaceConnection(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaceConnections()
             .deleteWithResponse("resourceGroup-1", "workspace-1", "connection-1", Context.NONE);

@@ -11,8 +11,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentDataInner;
-import com.azure.resourcemanager.machinelearning.models.PartialBatchDeploymentPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchDeploymentInner;
+import com.azure.resourcemanager.machinelearning.models.PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties;
 
 /** An instance of this class provides access to all the operations defined in BatchDeploymentsClient. */
 public interface BatchDeploymentsClient {
@@ -28,7 +28,7 @@ public interface BatchDeploymentsClient {
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchDeploymentDataInner> list(String resourceGroupName, String workspaceName, String endpointName);
+    PagedIterable<BatchDeploymentInner> list(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Lists Batch inference deployments in the workspace.
@@ -46,7 +46,7 @@ public interface BatchDeploymentsClient {
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchDeploymentDataInner> list(
+    PagedIterable<BatchDeploymentInner> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -131,7 +131,7 @@ public interface BatchDeploymentsClient {
      * @return a batch inference deployment by id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentDataInner get(
+    BatchDeploymentInner get(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
 
     /**
@@ -148,7 +148,7 @@ public interface BatchDeploymentsClient {
      * @return a batch inference deployment by id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchDeploymentDataInner> getWithResponse(
+    Response<BatchDeploymentInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
 
     /**
@@ -165,12 +165,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginUpdate(
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body);
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body);
 
     /**
      * Update a batch inference deployment (asynchronous).
@@ -187,12 +187,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginUpdate(
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context);
 
     /**
@@ -209,12 +209,12 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentDataInner update(
+    BatchDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body);
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body);
 
     /**
      * Update a batch inference deployment (asynchronous).
@@ -231,12 +231,12 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentDataInner update(
+    BatchDeploymentInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        PartialBatchDeploymentPartialTrackedResource body,
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context);
 
     /**
@@ -253,12 +253,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body);
+        BatchDeploymentInner body);
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
@@ -275,12 +275,12 @@ public interface BatchDeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BatchDeploymentDataInner>, BatchDeploymentDataInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context);
 
     /**
@@ -297,12 +297,12 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentDataInner createOrUpdate(
+    BatchDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body);
+        BatchDeploymentInner body);
 
     /**
      * Creates/updates a batch inference deployment (asynchronous).
@@ -319,11 +319,11 @@ public interface BatchDeploymentsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchDeploymentDataInner createOrUpdate(
+    BatchDeploymentInner createOrUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
         String deploymentName,
-        BatchDeploymentDataInner body,
+        BatchDeploymentInner body,
         Context context);
 }

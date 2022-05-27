@@ -10,26 +10,26 @@ import java.util.Collection;
 
 /** Defines values for JobInputType. */
 public final class JobInputType extends ExpandableStringEnum<JobInputType> {
-    /** Static value Literal for JobInputType. */
-    public static final JobInputType LITERAL = fromString("Literal");
+    /** Static value literal for JobInputType. */
+    public static final JobInputType LITERAL = fromString("literal");
 
-    /** Static value UriFile for JobInputType. */
-    public static final JobInputType URI_FILE = fromString("UriFile");
+    /** Static value uri_file for JobInputType. */
+    public static final JobInputType URI_FILE = fromString("uri_file");
 
-    /** Static value UriFolder for JobInputType. */
-    public static final JobInputType URI_FOLDER = fromString("UriFolder");
+    /** Static value uri_folder for JobInputType. */
+    public static final JobInputType URI_FOLDER = fromString("uri_folder");
 
-    /** Static value MLTable for JobInputType. */
-    public static final JobInputType MLTABLE = fromString("MLTable");
+    /** Static value mltable for JobInputType. */
+    public static final JobInputType MLTABLE = fromString("mltable");
 
-    /** Static value CustomModel for JobInputType. */
-    public static final JobInputType CUSTOM_MODEL = fromString("CustomModel");
+    /** Static value custom_model for JobInputType. */
+    public static final JobInputType CUSTOM_MODEL = fromString("custom_model");
 
-    /** Static value MLFlowModel for JobInputType. */
-    public static final JobInputType MLFLOW_MODEL = fromString("MLFlowModel");
+    /** Static value mlflow_model for JobInputType. */
+    public static final JobInputType MLFLOW_MODEL = fromString("mlflow_model");
 
-    /** Static value TritonModel for JobInputType. */
-    public static final JobInputType TRITON_MODEL = fromString("TritonModel");
+    /** Static value triton_model for JobInputType. */
+    public static final JobInputType TRITON_MODEL = fromString("triton_model");
 
     /**
      * Creates or finds a JobInputType from its string representation.

@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.DataContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.DataContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DataContainerInner;
 import com.azure.resourcemanager.machinelearning.models.DataContainerResourceArmPaginatedResult;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import reactor.core.publisher.Mono;
@@ -99,7 +99,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/data/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataContainerDataInner>> get(
+        Mono<Response<DataContainerInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -115,14 +115,14 @@ public final class DataContainersClientImpl implements DataContainersClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/data/{name}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataContainerDataInner>> createOrUpdate(
+        Mono<Response<DataContainerInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataContainerDataInner body,
+            @BodyParam("application/json") DataContainerInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -151,7 +151,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<DataContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -187,7 +187,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<DataContainerDataInner>>map(
+            .<PagedResponse<DataContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -214,7 +214,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<DataContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -272,7 +272,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataContainerDataInner> listAsync(
+    private PagedFlux<DataContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, listViewType),
@@ -290,7 +290,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataContainerDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<DataContainerInner> listAsync(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
         return new PagedFlux<>(
@@ -312,7 +312,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataContainerDataInner> listAsync(
+    private PagedFlux<DataContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, listViewType, context),
@@ -330,7 +330,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataContainerDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<DataContainerInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, listViewType));
@@ -350,7 +350,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return a paginated list of DataContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataContainerDataInner> list(
+    public PagedIterable<DataContainerInner> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, listViewType, context));
     }
@@ -519,7 +519,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<DataContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -573,7 +573,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<DataContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -623,7 +623,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataContainerDataInner> getAsync(String resourceGroupName, String workspaceName, String name) {
+    private Mono<DataContainerInner> getAsync(String resourceGroupName, String workspaceName, String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -640,7 +640,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataContainerDataInner get(String resourceGroupName, String workspaceName, String name) {
+    public DataContainerInner get(String resourceGroupName, String workspaceName, String name) {
         return getAsync(resourceGroupName, workspaceName, name).block();
     }
 
@@ -657,7 +657,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataContainerDataInner> getWithResponse(
+    public Response<DataContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
@@ -676,8 +676,8 @@ public final class DataContainersClientImpl implements DataContainersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, DataContainerDataInner body) {
+    private Mono<Response<DataContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, DataContainerInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -738,8 +738,8 @@ public final class DataContainersClientImpl implements DataContainersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, DataContainerDataInner body, Context context) {
+    private Mono<Response<DataContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, DataContainerInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -795,8 +795,8 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataContainerDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, DataContainerDataInner body) {
+    private Mono<DataContainerInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, DataContainerInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -814,8 +814,8 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, DataContainerDataInner body) {
+    public DataContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, DataContainerInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, name, body).block();
     }
 
@@ -833,8 +833,8 @@ public final class DataContainersClientImpl implements DataContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, DataContainerDataInner body, Context context) {
+    public Response<DataContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, DataContainerInner body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, context).block();
     }
 
@@ -849,7 +849,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataContainerDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DataContainerInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -862,7 +862,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataContainerDataInner>>map(
+            .<PagedResponse<DataContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -886,7 +886,7 @@ public final class DataContainersClientImpl implements DataContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataContainerDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<DataContainerInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

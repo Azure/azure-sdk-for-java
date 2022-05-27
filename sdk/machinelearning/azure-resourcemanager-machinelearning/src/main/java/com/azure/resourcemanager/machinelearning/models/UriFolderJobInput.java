@@ -5,72 +5,52 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The UriFolderJobInput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("UriFolder")
+@JsonTypeName("uri_folder")
 @Fluent
-public final class UriFolderJobInput extends JobInput {
+public final class UriFolderJobInput extends AssetJobInput {
     /*
-     * Input Asset Delivery Mode.
+     * Description for the input.
      */
-    @JsonProperty(value = "mode")
-    private InputDeliveryMode mode;
-
-    /*
-     * [Required] Input Asset URI.
-     */
-    @JsonProperty(value = "uri", required = true)
-    private String uri;
+    @JsonProperty(value = "description")
+    private String description;
 
     /**
-     * Get the mode property: Input Asset Delivery Mode.
+     * Get the description property: Description for the input.
      *
-     * @return the mode value.
+     * @return the description value.
      */
-    public InputDeliveryMode mode() {
-        return this.mode;
+    public String description() {
+        return this.description;
     }
 
     /**
-     * Set the mode property: Input Asset Delivery Mode.
+     * Set the description property: Description for the input.
      *
-     * @param mode the mode value to set.
+     * @param description the description value to set.
      * @return the UriFolderJobInput object itself.
      */
-    public UriFolderJobInput withMode(InputDeliveryMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
-     * Get the uri property: [Required] Input Asset URI.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: [Required] Input Asset URI.
-     *
-     * @param uri the uri value to set.
-     * @return the UriFolderJobInput object itself.
-     */
-    public UriFolderJobInput withUri(String uri) {
-        this.uri = uri;
+    public UriFolderJobInput withDescription(String description) {
+        this.description = description;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public UriFolderJobInput withDescription(String description) {
-        super.withDescription(description);
+    public UriFolderJobInput withMode(InputDeliveryMode mode) {
+        super.withMode(mode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UriFolderJobInput withUri(String uri) {
+        super.withUri(uri);
         return this;
     }
 
@@ -82,12 +62,5 @@ public final class UriFolderJobInput extends JobInput {
     @Override
     public void validate() {
         super.validate();
-        if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model UriFolderJobInput"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UriFolderJobInput.class);
 }
