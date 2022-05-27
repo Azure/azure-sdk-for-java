@@ -6,8 +6,6 @@
     - [Dependency Requirements](#dependency-requirements)
     - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
     - [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
-    - [Authenticate with Azure AD - Azure Redisson Client Wrapper](#authenticate-with-azure-ad-azure-redisson-wrapper)
-
 
 
 ### Redisson
@@ -26,6 +24,14 @@
 </dependency>
 ```
 
+#### Samples Guidance
+
+[Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
+This sample is recommended for users getting started to use Azure AD authentication with Azure Redis Cache.
+
+[Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
+This sample is recommended users looking to build long-running applications and would like to handle re authenticating with Azure AD upon token expiry.
+
 #### Authenticate with Azure AD Hello World.
 This sample is intended to assist in authenticating with Azure AD via Redisson client library. It focuses on displaying the logic required to fetch an Azure AD Access token and to use it as password when setting up the Redisson Client instance. It Further shows how to recreate and authenticate the Redisson Client instance when its connection is broken in Error/Exception scenarios.
 
@@ -41,44 +47,39 @@ Integrate the logic in your application code to fetch an Azure AD Access Token v
 
 
 ```java
+//Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
+        .clientId("YOUR-CLIENT-ID")
+        .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
+        .tenantId("YOUR-TENANT-ID")
+        .build();
 
-    public static void main(String[] args) {
+// Fetch an Azure AD token to be used for authentication.
+String token = clientCertificateCredential
+        .getToken(new TokenRequestContext()
+                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
 
-        //Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-        ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-                .clientId("YOUR-CLIENT-ID")
-                .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
-                .tenantId("YOUR-TENANT-ID")
-                .build();
+// Create Client Configuration
+Config config = new Config();
+config.useSingleServer()
+        .setAddress("redis://YOUR_HOST_NAME.cache.windows.net:6379")
+        .setKeepAlive(true)
+        .setUsername("Username")
+        .setPassword(token)
+        .setClientName("Reddison-Client");
 
-        // Fetch an Azure AD token to be used for authentication.
-        String token = clientCertificateCredential
-                .getToken(new TokenRequestContext()
-                        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+RedissonClient redisson = Redisson.create(config);
 
-        // Create Client Configuration
-        Config config = new Config();
-        config.useSingleServer()
-                .setAddress("redis://YOUR_HOST_NAME.cache.windows.net:6379")
-                .setKeepAlive(true)
-                .setUsername("Username")
-                .setPassword(token)
-                .setClientName("Reddison-Client");
+// perform operations
+RBuckets rBuckets =  redisson.getBuckets();
+RBucket bucket = redisson.getBucket("Az:key");
+bucket.set("This is object value");
 
-        RedissonClient redisson = Redisson.create(config);
-
-        // perform operations
-        RBuckets rBuckets =  redisson.getBuckets();
-        RBucket bucket = redisson.getBucket("Az:key");
-        bucket.set("This is object value");
-
-        String objectValue = bucket.get().toString();
-        System.out.println("stored object value: " + objectValue);
+String objectValue = bucket.get().toString();
+System.out.println("stored object value: " + objectValue);
 
 
-        redisson.shutdown();
-    }
-
+redisson.shutdown();
 ```
 
 #### Authenticate with Azure AD Handle Re Authentication
@@ -94,50 +95,49 @@ Integrate the logic in your application code to fetch an Azure AD Access Token v
 **Note:** The below sample uses `ClientCertificateCredential` from our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK, the credential can be replaced with any of the other `TokenCredential` implementations offered by our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK.
 
 ```java
-    public static void main(String[] args) {
+//Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+ClientCertificateCredential clientCertificateCredential = getClientCertificateCredential();
 
-        //Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-        ClientCertificateCredential clientCertificateCredential = getClientCertificateCredential();
+// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
 
-        // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-        AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
+// Create Redisson Client
+RedissonClient redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6379", "USERNAME", accessToken);
 
-        // Create Redisson Client
-        RedissonClient redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6379", "USERNAME", accessToken);
+int maxTries = 3;
+int i = 0;
 
-        int maxTries = 3;
-        int i = 0;
+while (i < maxTries) {
+    try {
+        // perform operations
+        RBuckets rBuckets = redisson.getBuckets();
+        RBucket bucket = redisson.getBucket("Az:key");
+        bucket.set("This is object value");
 
-        while (i < maxTries) {
-            try {
-                // perform operations
-                RBuckets rBuckets = redisson.getBuckets();
-                RBucket bucket = redisson.getBucket("Az:key");
-                bucket.set("This is object value");
+        String objectValue = bucket.get().toString();
+        System.out.println("stored object value: " + objectValue);
+        break;
+    } catch (RedisException exception) {
+        // Handle Exception as Required.
+        exception.printStackTrace();
 
-                String objectValue = bucket.get().toString();
-                System.out.println("stored object value: " + objectValue);
-                break;
-            } catch (RedisException exception) {
-                // Handle Exception as Required.
-                exception.printStackTrace();
-
-                // If access token is expired, we need to create a new client with a valid token as password.
-                if (accessToken.isExpired()) {
-                    redisson.shutdown();
-                    redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6379", "USERNAME", getAccessToken(clientCertificateCredential, trc));
-                }
-            } catch (Exception e) {
-                // Handle Exception as required
-                e.printStackTrace();
-            }
-            i++;
+        // If access token is expired, we need to create a new client with a valid token as password.
+        if (accessToken.isExpired()) {
+            redisson.shutdown();
+            redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6379", "USERNAME", getAccessToken(clientCertificateCredential, trc));
         }
-
-        redisson.shutdown();
+    } catch (Exception e) {
+        // Handle Exception as required
+        e.printStackTrace();
     }
+    i++;
+}
 
+redisson.shutdown();
+}
+
+    // Helper Code
     private static ClientCertificateCredential getClientCertificateCredential() {
         return new ClientCertificateCredentialBuilder()
                 .clientId("YOUR-CLIENT-ID")
