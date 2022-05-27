@@ -23,7 +23,7 @@
 ```
 
 #### Samples Guidance
-Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Lettuce](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
+Familiarity with the Lettuce and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Lettuce](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
 
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
