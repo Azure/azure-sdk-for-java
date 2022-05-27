@@ -21,6 +21,5 @@ public abstract class EventHubsScenario {
     @Autowired
     protected RateMeter rateMeter;
 
-
     public abstract void run();
 }

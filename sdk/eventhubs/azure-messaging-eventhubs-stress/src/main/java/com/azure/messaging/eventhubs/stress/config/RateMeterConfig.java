@@ -21,7 +21,7 @@ public class RateMeterConfig {
     private ScenarioOptions options;
 
     @Bean
-    public RateMeter createRateMeter() {
+    public RateMeter rateMeter() {
         return new RateMeter(telemetryClient, Duration.ofSeconds(
             Integer.parseInt(options.get(Constants.METRIC_INTERVAL_SEC, "60")))
         );

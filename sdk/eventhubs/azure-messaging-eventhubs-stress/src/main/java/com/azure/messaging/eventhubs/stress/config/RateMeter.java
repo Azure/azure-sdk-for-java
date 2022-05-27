@@ -23,7 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Send metric telemetry periodically
  */
 public class RateMeter {
-    Logger logger = LoggerFactory.getLogger(RateMeter.class);
+    private static final Logger logger = LoggerFactory.getLogger(RateMeter.class);
+
     private final Map<String, AtomicInteger> rateMap = new ConcurrentHashMap<>();
     private final TelemetryClient telemetryClient;
     private final Duration periodicDuration;

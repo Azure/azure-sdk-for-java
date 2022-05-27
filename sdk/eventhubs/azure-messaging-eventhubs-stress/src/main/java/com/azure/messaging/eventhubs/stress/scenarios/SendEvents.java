@@ -22,8 +22,8 @@ public class SendEvents extends EventHubsScenario {
 
     @Override
     public void run() {
-        String eventHubConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        String eventHub = options.get(Constants.EVENT_HUB_NAME);
+        final String eventHubConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
+        final String eventHub = options.get(Constants.EVENT_HUB_NAME);
 
         EventHubProducerAsyncClient client = new EventHubClientBuilder()
                 .connectionString(eventHubConnStr, eventHub)
