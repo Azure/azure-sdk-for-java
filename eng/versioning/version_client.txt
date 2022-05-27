@@ -344,6 +344,7 @@ com.azure.resourcemanager:azure-resourcemanager-workloads;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-confidentialledger;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dynatrace;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-machinelearning;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.0.0
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 

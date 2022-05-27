@@ -921,6 +921,7 @@
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/logz</module>
+        <module>sdk/machinelearning</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
