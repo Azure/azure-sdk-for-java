@@ -120,7 +120,8 @@ public final class CosmosPatchOperations {
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.REMOVE,
-                path));
+                path,
+                null));
 
         return this;
     }
@@ -157,6 +158,29 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    /**
+     * This moves the value of an object from the source to a destination.
+     *
+     * This performs the following based on different cases:
+     * 1. Source location points to an object as value, moves the entire object to the target location.
+     * 2. Target location specifies an object member that does not already exist, a new member is added to the object.
+     *    Its value is set to the value of the source location.
+     *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.move("/a", "/c/d"); // will move the value of "/a" to "/c/d"
+     *     cosmosPatch.move("/b/e/1", "/d"); // will move the object at the 2nd element of the array and set it as the
+     *                                          value of "/d".
+     *     cosmosPatch.move("/b", "/c"); //It can also be used as a rename operation since now all values of "/b" will
+     *                                     set as values of "/c".
+     * </code>
+     *
+     * @param from the source path for the operation.
+     * @param path the destination path for the operation.
+     *
+     * @return same instance of {@link CosmosPatchOperations}
+     */
     public <T> CosmosPatchOperations move(String from,String path) {
 
         checkArgument(StringUtils.isNotEmpty(from), "Source path empty %s", from);
@@ -165,8 +189,8 @@ public final class CosmosPatchOperations {
         this.patchOperations.add(
             new PatchOperationCore<>(
                 PatchOperationType.MOVE,
-                from,
-                path));
+                path,
+                from));
 
         return this;
     }

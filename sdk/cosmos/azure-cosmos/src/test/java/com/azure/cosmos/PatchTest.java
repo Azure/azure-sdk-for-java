@@ -59,10 +59,12 @@ public class PatchTest extends TestSuiteBase {
         assertThat(testItem.children[1].status).isNull();
 
         CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
-        cosmosPatchOperations.add("/children/1/CamelCase", "patched");
+        cosmosPatchOperations.add("/children/1/CamelCase", "1st patch");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
         cosmosPatchOperations.set("/valid", false);
+        cosmosPatchOperations.move("/children/1/CamelCase", "/children/0/CamelCase");
+        cosmosPatchOperations.add("/children/1/CamelCase", "2nd patch");
 
         CosmosPatchItemRequestOptions optionsFalse = new CosmosPatchItemRequestOptions();
         int numFalse = testItem.taskNum+1;
@@ -95,7 +97,8 @@ public class PatchTest extends TestSuiteBase {
         ToDoActivity patchedItem = responsePass.getItem();
         assertThat(patchedItem).isNotNull();
 
-        assertThat(patchedItem.children[1].camelCase).isEqualTo("patched");
+        assertThat(patchedItem.children[0].camelCase).isEqualTo("1st patch");
+        assertThat(patchedItem.children[1].camelCase).isEqualTo("2nd patch");
         assertThat(patchedItem.description).isNull();
         assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
         assertThat(patchedItem.valid).isEqualTo(false);
@@ -116,6 +119,7 @@ public class PatchTest extends TestSuiteBase {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
         ToDoActivity testItem1 = ToDoActivity.createRandomItem(this.container);
         ToDoActivity testItem2 = ToDoActivity.createRandomItem(this.container);
+        ToDoActivity testItem3 = ToDoActivity.createRandomItem(this.container);
 
         int originalTaskNum = testItem.taskNum;
         int newTaskNum = originalTaskNum + 1;
@@ -129,6 +133,8 @@ public class PatchTest extends TestSuiteBase {
         cosmosPatchOperations.replace("/children/1", testItem1);
         cosmosPatchOperations.replace("/nestedChild",testItem2);
         cosmosPatchOperations.set("/valid", false);
+        cosmosPatchOperations.add("/children/0/nestedChild", testItem3);
+        cosmosPatchOperations.move("/children/0/nestedChild", "/children/1/nestedChild");
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
@@ -149,6 +155,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(patchedItem.valid).isEqualTo(false);
         assertThat(patchedItem.children[1].id).isEqualTo(testItem1.id);
         assertThat(patchedItem.nestedChild.id).isEqualTo(testItem2.id);
+        assertThat(patchedItem.children[1].nestedChild.id).isEqualTo(testItem3.id);
 
         // read resource to validate the patch operation
         response = this.container.readItem(
@@ -174,7 +181,8 @@ public class PatchTest extends TestSuiteBase {
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
         cosmosPatchOperations.set("/cost", 100);
-        cosmosPatchOperations.move("/cost", "/fullCost");
+        cosmosPatchOperations.move("/children/1/CamelCase", "/children/0/CamelCase");
+        cosmosPatchOperations.add("/children/1/CamelCase", "beta");
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
         options.setContentResponseOnWriteEnabled(false);
@@ -204,7 +212,9 @@ public class PatchTest extends TestSuiteBase {
         assertThat(patchedItem).isNotNull();
 
         // Both the patch's result.
-        assertThat(patchedItem.children[1].camelCase).isEqualTo("alpha");
+        assertThat(patchedItem.children[1].camelCase).isEqualTo("beta");
+        assertThat(patchedItem.children[0].camelCase).isEqualTo("alpha");
+//        assertThat(patchedItem.children[0].camelCase).isNull();
         assertThat(patchedItem.description).isNull();
         assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
         assertThat(patchedItem.cost).isEqualTo(100);
