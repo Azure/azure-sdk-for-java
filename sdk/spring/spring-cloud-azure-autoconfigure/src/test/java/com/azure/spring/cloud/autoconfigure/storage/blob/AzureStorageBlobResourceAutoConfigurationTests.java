@@ -19,42 +19,42 @@ public class AzureStorageBlobResourceAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void accountNameShouldConfigure(String property) {
+    void accountNameShouldConfigure(String accoutNameProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .run((context) -> assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.endpoint", "spring.cloud.azure.storage.endpoint" })
-    void endpointShouldConfigure(String property) {
+    void endpointShouldConfigure(String endpointProperty) {
         this.contextRunner
-            .withPropertyValues(property + "=" + MOCK_URL)
+            .withPropertyValues(endpointProperty + "=" + MOCK_URL)
             .run((context) -> assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.connection-string=test-connection", "spring.cloud.azure.storage.connection-string=test-connection" })
-    void connectionStringShouldConfigure(String property) {
+    void connectionStringShouldConfigure(String connectionStringProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(connectionStringProperty)
             .run((context) -> assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void runShouldCreateResolver(String property) {
+    void runShouldCreateResolver(String accoutNameProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .run((context) -> assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void runWhenDisabledShouldNotCreateResolver(String property) {
+    void runWhenDisabledShouldNotCreateResolver(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
-                property,
+                accoutNameProperty,
                 "spring.cloud.azure.storage.blob.enabled:false")
             .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageBlobProtocolResolver.class));
     }

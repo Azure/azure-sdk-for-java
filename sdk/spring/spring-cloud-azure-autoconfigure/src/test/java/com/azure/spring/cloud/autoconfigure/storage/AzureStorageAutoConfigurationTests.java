@@ -34,6 +34,28 @@ class AzureStorageAutoConfigurationTests {
         .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class));
 
+    @Test
+    void blobConfigShouldWorkWithFileShareConfig() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.blob.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.blob.account-name=test-account-name",
+                "spring.cloud.azure.storage.fileshare.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.fileshare.account-name=test-account-name"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
+                assertNotNull(context.getBean("staticStorageFileShareConnectionStringProvider"));
+
+                assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(ShareServiceClientBuilderFactory.class);
+
+                assertThat(context).hasSingleBean(BlobServiceClient.class);
+            });
+    }
 
     @Test
     void blobConfigShouldWorkWithFileShareConfigAndQueueConfig() {

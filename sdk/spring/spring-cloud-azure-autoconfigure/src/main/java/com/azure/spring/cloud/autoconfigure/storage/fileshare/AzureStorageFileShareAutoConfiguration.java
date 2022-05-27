@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
-import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.fileshare.properties.AzureStorageFileShareProperties;
 import com.azure.spring.cloud.autoconfigure.storage.AzureStorageConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -49,8 +49,8 @@ public class AzureStorageFileShareAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
-    AzureStorageFileShareProperties azureStorageFileShareProperties(AzureStorageGlobalProperties storageGlobalProperties) {
-        return AzureServicePropertiesUtils.loadServiceProperties(storageGlobalProperties, new AzureStorageFileShareProperties());
+    AzureStorageFileShareProperties azureStorageFileShareProperties(AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadServiceProperties(azureStorageProperties, new AzureStorageFileShareProperties());
     }
 
     /**
@@ -143,7 +143,7 @@ public class AzureStorageFileShareAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnAnyProperty(prefixes = { AzureStorageFileShareProperties.PREFIX, AzureStorageGlobalProperties.PREFIX }, name = { "connection-string" })
+    @ConditionalOnAnyProperty(prefixes = { AzureStorageFileShareProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageFileShare> staticStorageFileShareConnectionStringProvider(
         AzureStorageFileShareProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_FILE_SHARE, properties.getConnectionString());

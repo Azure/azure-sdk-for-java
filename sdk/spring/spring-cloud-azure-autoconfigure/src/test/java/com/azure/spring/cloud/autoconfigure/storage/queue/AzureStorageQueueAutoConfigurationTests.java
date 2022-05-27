@@ -33,29 +33,29 @@ class AzureStorageQueueAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void configureWithoutQueueServiceClientBuilder(String property) {
+    void configureWithoutQueueServiceClientBuilder(String accoutNameProperty) {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(QueueServiceClientBuilder.class))
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void configureWithStorageQueueDisabled(String property) {
+    void configureWithStorageQueueDisabled(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.storage.queue.enabled=false",
-                property
+                accoutNameProperty
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void accountNameSetShouldConfigure(String property) {
+    void accountNameSetShouldConfigure(String accoutNameProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageQueueAutoConfiguration.class);
@@ -69,10 +69,10 @@ class AzureStorageQueueAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void queueNameSetShouldConfigureQueueClient(String property) {
+    void queueNameSetShouldConfigureQueueClient(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
-                property,
+                accoutNameProperty,
                 "spring.cloud.azure.storage.queue.queue-name=queue1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -84,9 +84,9 @@ class AzureStorageQueueAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void queueNameNotSetShouldNotConfigureQueueClient(String property) {
+    void queueNameNotSetShouldNotConfigureQueueClient(String accoutNameProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(QueueClient.class);
@@ -96,10 +96,10 @@ class AzureStorageQueueAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void customizerShouldBeCalled(String property) {
+    void customizerShouldBeCalled(String accoutNameProperty) {
         QueueServiceClientBuilderCustomizer customizer = new QueueServiceClientBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", QueueServiceClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", QueueServiceClientBuilderCustomizer.class, () -> customizer)
@@ -108,11 +108,11 @@ class AzureStorageQueueAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void otherCustomizerShouldNotBeCalled(String property) {
+    void otherCustomizerShouldNotBeCalled(String accoutNameProperty) {
         QueueServiceClientBuilderCustomizer customizer = new QueueServiceClientBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", QueueServiceClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", QueueServiceClientBuilderCustomizer.class, () -> customizer)

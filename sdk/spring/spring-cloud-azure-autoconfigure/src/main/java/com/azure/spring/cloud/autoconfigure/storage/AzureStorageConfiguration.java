@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuration for Azure Storage support.
  *
- * @since 4.0.0
+ * @since 4.3.0
  */
 @Configuration
 public class AzureStorageConfiguration extends AzureServiceConfigurationBase {
@@ -23,9 +23,9 @@ public class AzureStorageConfiguration extends AzureServiceConfigurationBase {
     }
 
     @Bean
-    @ConfigurationProperties(AzureStorageGlobalProperties.PREFIX)
-    AzureStorageGlobalProperties storageProperties() {
-        return loadProperties(getAzureGlobalProperties(), new AzureStorageGlobalProperties());
+    @ConfigurationProperties(AzureStorageProperties.PREFIX)
+    AzureStorageProperties azureStorageProperties() {
+        return loadProperties(getAzureGlobalProperties(), new AzureStorageProperties());
     }
 
 }

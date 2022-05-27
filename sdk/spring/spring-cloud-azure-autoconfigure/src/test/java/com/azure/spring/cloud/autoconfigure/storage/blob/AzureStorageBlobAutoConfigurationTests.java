@@ -34,29 +34,29 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void configureWithoutBlobServiceClientBuilder(String property) {
+    void configureWithoutBlobServiceClientBuilder(String accoutNameProperty) {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(BlobServiceClientBuilder.class))
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobAutoConfiguration.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void configureWithStorageBlobDisabled(String property) {
+    void configureWithStorageBlobDisabled(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.storage.blob.enabled=false",
-                property
+                accoutNameProperty
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobAutoConfiguration.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void accountNameSetShouldConfigure(String property) {
+    void accountNameSetShouldConfigure(String accoutNameProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);
@@ -70,10 +70,10 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void blobNameSetShouldConfigureBlobClient(String property) {
+    void blobNameSetShouldConfigureBlobClient(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
-                property,
+                accoutNameProperty,
                 "spring.cloud.azure.storage.blob.container-name=container1",
                 "spring.cloud.azure.storage.blob.blob-name=blob1"
             )
@@ -86,10 +86,10 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void blobNameNotSetShouldNotConfigureBlobClient(String property) {
+    void blobNameNotSetShouldNotConfigureBlobClient(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
-                property,
+                accoutNameProperty,
                 "spring.cloud.azure.storage.blob.container-name=container1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -101,10 +101,10 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void containerNameSetShouldConfigureContainerClient(String property) {
+    void containerNameSetShouldConfigureContainerClient(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
-                property,
+                accoutNameProperty,
                 "spring.cloud.azure.storage.blob.container-name=container1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -116,9 +116,9 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void containerNameNotSetShouldNotConfigureContainerClient(String property) {
+    void containerNameNotSetShouldNotConfigureContainerClient(String accoutNameProperty) {
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(BlobContainerClient.class);
@@ -128,10 +128,10 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void customizerShouldBeCalled(String property) {
+    void customizerShouldBeCalled(String accoutNameProperty) {
         BlobServiceClientBuilderCustomizer customizer = new BlobServiceClientBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", BlobServiceClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", BlobServiceClientBuilderCustomizer.class, () -> customizer)
@@ -140,11 +140,11 @@ class AzureStorageBlobAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void otherCustomizerShouldNotBeCalled(String property) {
+    void otherCustomizerShouldNotBeCalled(String accoutNameProperty) {
         BlobServiceClientBuilderCustomizer customizer = new BlobServiceClientBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(property)
+            .withPropertyValues(accoutNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", BlobServiceClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", BlobServiceClientBuilderCustomizer.class, () -> customizer)

@@ -6,8 +6,8 @@ package com.azure.spring.cloud.autoconfigure.storage.blob;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.storage.AzureStorageConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageGlobalProperties;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
@@ -51,8 +51,8 @@ public class AzureStorageBlobAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
-    AzureStorageBlobProperties azureStorageBlobProperties(AzureStorageGlobalProperties storageGlobalProperties) {
-        return AzureServicePropertiesUtils.loadServiceProperties(storageGlobalProperties, new AzureStorageBlobProperties());
+    AzureStorageBlobProperties azureStorageBlobProperties(AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadServiceProperties(azureStorageProperties, new AzureStorageBlobProperties());
     }
 
     @Bean
@@ -133,7 +133,7 @@ public class AzureStorageBlobAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnAnyProperty(prefixes = { AzureStorageBlobProperties.PREFIX, AzureStorageGlobalProperties.PREFIX }, name = { "connection-string" })
+    @ConditionalOnAnyProperty(prefixes = { AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
         AzureStorageBlobProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());

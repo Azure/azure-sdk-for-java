@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage.queue;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
-import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.autoconfigure.storage.AzureStorageConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -45,8 +45,8 @@ public class AzureStorageQueueAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
-    AzureStorageQueueProperties azureStorageQueueProperties(AzureStorageGlobalProperties storageGlobalProperties) {
-        return AzureServicePropertiesUtils.loadServiceProperties(storageGlobalProperties, new AzureStorageQueueProperties());
+    AzureStorageQueueProperties azureStorageQueueProperties(AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadServiceProperties(azureStorageProperties, new AzureStorageQueueProperties());
     }
 
     /**
@@ -108,7 +108,7 @@ public class AzureStorageQueueAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnAnyProperty(prefixes = { AzureStorageQueueProperties.PREFIX, AzureStorageGlobalProperties.PREFIX }, name = { "connection-string" })
+    @ConditionalOnAnyProperty(prefixes = { AzureStorageQueueProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageQueue> staticStorageQueueConnectionStringProvider(
         AzureStorageQueueProperties storageQueueProperties) {
 
