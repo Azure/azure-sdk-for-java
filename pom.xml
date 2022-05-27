@@ -869,6 +869,7 @@
         <module>sdk/confidentialledger</module>
         <module>sdk/confluent</module>
         <module>sdk/consumption</module>
+        <module>sdk/containerinstance</module>
         <module>sdk/containerregistry</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
