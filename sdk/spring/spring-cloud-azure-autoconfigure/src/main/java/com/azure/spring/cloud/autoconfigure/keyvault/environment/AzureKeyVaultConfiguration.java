@@ -5,11 +5,16 @@ package com.azure.spring.cloud.autoconfigure.keyvault.environment;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration for Azure Key Vault support.
+ *
+ * @since 4.3.0
+ */
 @Configuration
 public class AzureKeyVaultConfiguration extends AzureServiceConfigurationBase {
 
@@ -18,9 +23,9 @@ public class AzureKeyVaultConfiguration extends AzureServiceConfigurationBase {
     }
 
     @Bean
-    @ConfigurationProperties(AzureKeyVaultGlobalProperties.PREFIX)
-    AzureKeyVaultGlobalProperties storageProperties() {
-        return loadProperties(getAzureGlobalProperties(), new AzureKeyVaultGlobalProperties());
+    @ConfigurationProperties(AzureKeyVaultProperties.PREFIX)
+    AzureKeyVaultProperties azureKeyVaultProperties() {
+        return loadProperties(getAzureGlobalProperties(), new AzureKeyVaultProperties());
     }
 
 }

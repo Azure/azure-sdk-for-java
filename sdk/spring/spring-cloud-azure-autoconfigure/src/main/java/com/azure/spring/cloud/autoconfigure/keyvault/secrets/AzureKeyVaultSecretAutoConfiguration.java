@@ -6,10 +6,8 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.keyvault.environment.AzureKeyVaultConfiguration;
@@ -42,8 +40,8 @@ public class AzureKeyVaultSecretAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
-    AzureKeyVaultSecretProperties azureKeyVaultSecretProperties(AzureKeyVaultGlobalProperties azureKeyVaultGlobalProperties) {
-        return AzureServicePropertiesUtils.loadServiceProperties(azureKeyVaultGlobalProperties, new AzureKeyVaultSecretProperties());
+    AzureKeyVaultSecretProperties azureKeyVaultSecretProperties(AzureKeyVaultProperties azureKeyVaultProperties) {
+        return AzureServicePropertiesUtils.loadServiceProperties(azureKeyVaultProperties, new AzureKeyVaultSecretProperties());
     }
 
     /**
