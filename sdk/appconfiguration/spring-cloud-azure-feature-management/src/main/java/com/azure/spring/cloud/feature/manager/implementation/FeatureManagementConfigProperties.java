@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 /**
  * Feature Management configuration file properties.
  */
-@Validated
 @ConfigurationProperties(prefix = FeatureManagementConfigProperties.CONFIG_PREFIX)
 public class FeatureManagementConfigProperties {
 
