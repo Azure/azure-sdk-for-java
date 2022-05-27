@@ -60,7 +60,7 @@ public class SecretClientTest extends SecretClientTestBase {
             when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
 
-        secretClient = new SecretClient(asyncClient);
+        secretClient = new SecretClient(vaultUrl, pipeline, serviceVersion, asyncClient);
     }
 
     /**
