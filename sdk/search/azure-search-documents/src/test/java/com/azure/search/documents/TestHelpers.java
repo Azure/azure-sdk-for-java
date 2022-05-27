@@ -27,9 +27,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -293,19 +295,22 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename));
-
-        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
-    }
-
-    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
-        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
-    }
-
-    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
         try {
-            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
+            Path path = Paths.get(TestHelpers.class.getClassLoader().getResource(filename).toURI());
+
+            return deserializeToType(Files.readAllBytes(path), LIST_TYPE_REFERENCE);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static Map<String, Object> convertToMap(byte[] json) {
+        return deserializeToType(json, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    }
+
+    private static <T> T deserializeToType(byte[] json, TypeReference<T> type) {
+        try {
+            return getDefaultSerializerAdapter().deserialize(json, type.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }

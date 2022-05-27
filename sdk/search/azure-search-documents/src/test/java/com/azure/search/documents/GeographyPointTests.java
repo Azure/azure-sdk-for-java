@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * This class tests indexes using OData type GeographyPoint.
@@ -88,6 +89,8 @@ public class GeographyPointTests extends SearchTestBase {
 
     @Test
     public void canRoundTripGeographyPoints() {
+        assert searchClient != null;
+
         List<SimpleDocument> expectedDocuments = getDocuments();
         List<SimpleDocument> actualDocuments = new ArrayList<>();
 

@@ -61,7 +61,7 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class SearchJavaDocCodeSnippets {
-    private final SearchClient searchClient = new SearchClientBuilder().buildClient();
+    private static final SearchClient searchClient = new SearchClientBuilder().buildClient();
 
     /**
      * Code snippet for creating a {@link SearchClient}.
@@ -764,9 +764,9 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.SearchAsyncClient.instantiation
     }
 
-    private final SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
-    private final String key1 = "key1";
-    private final String value1 = "val1";
+    private static final SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
+    private static final String key1 = "key1";
+    private static final String value1 = "val1";
 
     /**
      * Code snippet for creating a {@link SearchIndexClient}.

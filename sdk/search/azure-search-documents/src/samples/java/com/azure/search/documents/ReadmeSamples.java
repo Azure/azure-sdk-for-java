@@ -29,22 +29,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- *
  * Code samples for the README.md
  */
 @SuppressWarnings("unused")
 public class ReadmeSamples {
-
-    private final String endpoint = "endpoint";
-    private final String adminKey = "admin key";
-    private final String apiKey = "api key";
-    private final String indexName = "index name";
-    private final SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
-    private final SearchClient searchClient = new SearchClientBuilder().buildClient();
-    private final SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
+    private static final String endpoint = "endpoint";
+    private static final String adminKey = "admin key";
+    private static final String apiKey = "api key";
+    private static final String indexName = "index name";
+    private static final SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
+    private static final SearchClient searchClient = new SearchClientBuilder().buildClient();
+    private static final SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
 
     public void createSearchClient() {
         // BEGIN: readme-sample-createSearchClient
