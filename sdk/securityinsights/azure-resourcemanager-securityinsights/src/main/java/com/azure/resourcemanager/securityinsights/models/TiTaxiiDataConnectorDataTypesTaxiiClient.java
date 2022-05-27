@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Data type for TAXII connector. */
 @Fluent
 public final class TiTaxiiDataConnectorDataTypesTaxiiClient extends DataConnectorDataTypeCommon {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TiTaxiiDataConnectorDataTypesTaxiiClient.class);
-
     /** {@inheritDoc} */
     @Override
     public TiTaxiiDataConnectorDataTypesTaxiiClient withState(DataTypeState state) {

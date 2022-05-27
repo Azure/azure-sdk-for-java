@@ -16,10 +16,9 @@ import com.azure.resourcemanager.eventgrid.models.Domain;
 import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.DomainSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.Domains;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DomainsImpl implements Domains {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DomainsImpl.class);
 
     private final DomainsClient innerClient;
 
@@ -139,7 +138,7 @@ public final class DomainsImpl implements Domains {
     public Domain getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class DomainsImpl implements Domains {
         }
         String domainName = Utils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
@@ -158,7 +157,7 @@ public final class DomainsImpl implements Domains {
     public Response<Domain> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class DomainsImpl implements Domains {
         }
         String domainName = Utils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
@@ -177,7 +176,7 @@ public final class DomainsImpl implements Domains {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -185,7 +184,7 @@ public final class DomainsImpl implements Domains {
         }
         String domainName = Utils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
@@ -196,7 +195,7 @@ public final class DomainsImpl implements Domains {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -204,7 +203,7 @@ public final class DomainsImpl implements Domains {
         }
         String domainName = Utils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));

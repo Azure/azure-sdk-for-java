@@ -53,7 +53,7 @@ public final class SparkBatchesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SparkClientSparkBatc")
-    private interface SparkBatchesService {
+    public interface SparkBatchesService {
         @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

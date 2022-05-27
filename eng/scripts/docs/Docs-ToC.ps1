@@ -4,11 +4,11 @@ function Get-java-OnboardedDocsMsPackages($DocRepoLocation) {
     $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
     $allPackages = @{}
     foreach ($spec in $onboardingSpec) {
-      $spec.packages | ForEach-Object {$allPackages[$_.packageArtifactId] = $null}
+      $spec.packages | ForEach-Object {$allPackages["$($_.packageGroupId):$($_.packageArtifactId)"] = $null}
     }
     return $allPackages
-  }
-  
+}
+
 function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     # Fallback to get package-level readme name if metadata file info does not exist
     $packageLevelReadmeName = $packageMetadata.Package.Replace('azure-', '');
@@ -150,8 +150,180 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
 function Parse-Overview-Frame ($filePath, $destination) {
     $htmlBody = Get-Content $filePath
     $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
-    
     $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }    
     Add-Content -Path $destination -Value $namespaces
-    Get-Content $destination
+}
+
+function Get-java-UpdatedDocsMsToc($toc) {
+    $services = $toc[0].items
+    # Add services exsting in old toc but missing in automation.
+    $otherService = $services[-1]
+    $sortableServices = $services | Where-Object { $_ –ne $otherService }
+    foreach ($service in $sortableServices) {
+        if ($service.name -eq "SQL") {
+            $items = $service.items
+            $service.items = @(
+                [PSCustomObject]@{
+                    name  = "Client"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.elasticdb*")
+                }
+            ) + $items
+        }
+        if ($service.name -eq "Log Analytics") {
+            $items = $service.items
+            $service.items = @(
+                [PSCustomObject]@{
+                    name  = "Client"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.loganalytics*")
+                }
+            ) + $items
+        }
+        if ($service.name -eq "Data Lake Analytics") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.management.datalake.analytics*")
+                }
+            )
+        }
+        if ($service.name -eq "Data Lake Store") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @(
+                        "com.microsoft.azure.management.datalakestore*",
+                        "com.microsoft.azure.management.datalake.store*",
+                        "com.microsoft.azure.management.datalake.store.models*"
+                    )
+                }
+            )
+        }
+        if ($service.name -eq "Stream Analytics") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.management.streamanalytics*")
+                }
+            )
+        }
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Active Directory"
+        href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+                children = @("com.azure.resourcemanager.msi*")
+            }, 
+            [PSCustomObject]@{
+                name  = "Client"
+                href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+                children = @(
+                    "com.microsoft.aad.adal*",
+                    "com.microsoft.aad.adal4j*",
+                    "com.microsoft.identity.client*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Edge Gateway"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                children = @("com.microsoft.azure.management.edgegateway*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Resource Mover"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                children = @("com.microsoft.azure.management.resourcemover.v2021_01_01*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Bing AutoSuggest"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                href = "~/docs-ref-services/{moniker}/cognitiveservices/bing-autosuggest-readme.md"
+                children = @("com.microsoft.azure.cognitiveservices.search.autosuggest*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Content Moderator"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.vision.contentmoderator*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Custom Vision"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.vision.customvision*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Face API"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.vision.faceapi*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Language Understanding"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @(
+                    "com.microsoft.azure.cognitiveservices.language.luis*", 
+                    "com.microsoft.azure.cognitiveservices.language.luis.authoring*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Speech Service"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.cognitiveservices.speech*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Text Analytics"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Management"
+                children = @("com.microsoft.azure.cognitiveservices.language.text*")
+            })
+    }
+    $sortableServices += [PSCustomObject]@{
+        name  = "Cognitive Services"
+        landingPageType = "Service"
+        items = @(
+            [PSCustomObject]@{
+                name  = "Resource Management"
+                children = @("com.microsoft.azure.management.cognitiveservices*")
+            })
+    }
+    $toc[0].items = ($sortableServices | Sort-Object -Property name) + $otherService
+    return , $toc
 }

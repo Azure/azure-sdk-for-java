@@ -30,7 +30,11 @@ public final class DedupState extends ExpandableStringEnum<DedupState> {
         return fromString(name, DedupState.class);
     }
 
-    /** @return known DedupState values. */
+    /**
+     * Gets known DedupState values.
+     *
+     * @return known DedupState values.
+     */
     public static Collection<DedupState> values() {
         return values(DedupState.class);
     }

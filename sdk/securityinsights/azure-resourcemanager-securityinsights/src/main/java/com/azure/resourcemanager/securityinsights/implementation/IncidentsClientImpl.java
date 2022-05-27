@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.IncidentsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentAlertListInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentBookmarkListInner;
@@ -37,13 +36,12 @@ import com.azure.resourcemanager.securityinsights.fluent.models.IncidentEntities
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.TeamInformationInner;
 import com.azure.resourcemanager.securityinsights.models.IncidentList;
+import com.azure.resourcemanager.securityinsights.models.ManualTriggerRequestBody;
 import com.azure.resourcemanager.securityinsights.models.TeamProperties;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IncidentsClient. */
 public final class IncidentsClientImpl implements IncidentsClient {
-    private final ClientLogger logger = new ClientLogger(IncidentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IncidentsService service;
 
@@ -68,6 +66,24 @@ public final class IncidentsClientImpl implements IncidentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SecurityInsightsInci")
     private interface IncidentsService {
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
+                + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentIdentifier}"
+                + "/runPlaybook")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Object>> runPlaybook(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("workspaceName") String workspaceName,
+            @PathParam("incidentIdentifier") String incidentIdentifier,
+            @BodyParam("application/json") ManualTriggerRequestBody requestBody,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
@@ -210,6 +226,210 @@ public final class IncidentsClientImpl implements IncidentsClient {
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+    }
+
+    /**
+     * Triggers playbook on a specific incident.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentIdentifier The incidentIdentifier parameter.
+     * @param requestBody The requestBody parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Object>> runPlaybookWithResponseAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String incidentIdentifier,
+        ManualTriggerRequestBody requestBody) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (incidentIdentifier == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter incidentIdentifier is required and cannot be null."));
+        }
+        if (requestBody != null) {
+            requestBody.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .runPlaybook(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            workspaceName,
+                            incidentIdentifier,
+                            requestBody,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Triggers playbook on a specific incident.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentIdentifier The incidentIdentifier parameter.
+     * @param requestBody The requestBody parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Object>> runPlaybookWithResponseAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String incidentIdentifier,
+        ManualTriggerRequestBody requestBody,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (incidentIdentifier == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter incidentIdentifier is required and cannot be null."));
+        }
+        if (requestBody != null) {
+            requestBody.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .runPlaybook(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                workspaceName,
+                incidentIdentifier,
+                requestBody,
+                accept,
+                context);
+    }
+
+    /**
+     * Triggers playbook on a specific incident.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentIdentifier The incidentIdentifier parameter.
+     * @param requestBody The requestBody parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Object> runPlaybookAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String incidentIdentifier,
+        ManualTriggerRequestBody requestBody) {
+        return runPlaybookWithResponseAsync(resourceGroupName, workspaceName, incidentIdentifier, requestBody)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Triggers playbook on a specific incident.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentIdentifier The incidentIdentifier parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Object> runPlaybookAsync(String resourceGroupName, String workspaceName, String incidentIdentifier) {
+        final ManualTriggerRequestBody requestBody = null;
+        return runPlaybookWithResponseAsync(resourceGroupName, workspaceName, incidentIdentifier, requestBody)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Triggers playbook on a specific incident.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentIdentifier The incidentIdentifier parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object runPlaybook(String resourceGroupName, String workspaceName, String incidentIdentifier) {
+        final ManualTriggerRequestBody requestBody = null;
+        return runPlaybookAsync(resourceGroupName, workspaceName, incidentIdentifier, requestBody).block();
+    }
+
+    /**
+     * Triggers playbook on a specific incident.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param incidentIdentifier The incidentIdentifier parameter.
+     * @param requestBody The requestBody parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> runPlaybookWithResponse(
+        String resourceGroupName,
+        String workspaceName,
+        String incidentIdentifier,
+        ManualTriggerRequestBody requestBody,
+        Context context) {
+        return runPlaybookWithResponseAsync(resourceGroupName, workspaceName, incidentIdentifier, requestBody, context)
+            .block();
     }
 
     /**
@@ -364,7 +584,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incidents.
+     * @return all incidents as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IncidentInner> listAsync(
@@ -382,7 +602,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incidents.
+     * @return all incidents as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IncidentInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -410,7 +630,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incidents.
+     * @return all incidents as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IncidentInner> listAsync(
@@ -434,7 +654,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incidents.
+     * @return all incidents as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentInner> list(String resourceGroupName, String workspaceName) {
@@ -460,7 +680,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incidents.
+     * @return all incidents as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentInner> list(
@@ -593,14 +813,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IncidentInner> getAsync(String resourceGroupName, String workspaceName, String incidentId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -773,14 +986,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String incidentId, IncidentInner incident) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, incidentId, incident)
-            .flatMap(
-                (Response<IncidentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -937,8 +1143,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String incidentId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1112,14 +1317,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<TeamInformationInner> createTeamAsync(
         String resourceGroupName, String workspaceName, String incidentId, TeamProperties teamProperties) {
         return createTeamWithResponseAsync(resourceGroupName, workspaceName, incidentId, teamProperties)
-            .flatMap(
-                (Response<TeamInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1283,14 +1481,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentAlertListInner> listAlertsAsync(
         String resourceGroupName, String workspaceName, String incidentId) {
         return listAlertsWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentAlertListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1446,14 +1637,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentBookmarkListInner> listBookmarksAsync(
         String resourceGroupName, String workspaceName, String incidentId) {
         return listBookmarksWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentBookmarkListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1609,14 +1793,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentEntitiesResponseInner> listEntitiesAsync(
         String resourceGroupName, String workspaceName, String incidentId) {
         return listEntitiesWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentEntitiesResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

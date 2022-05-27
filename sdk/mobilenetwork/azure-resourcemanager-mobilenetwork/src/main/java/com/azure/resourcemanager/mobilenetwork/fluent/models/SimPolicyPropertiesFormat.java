@@ -10,15 +10,12 @@ import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SimPolicy properties. */
 @Fluent
 public final class SimPolicyPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SimPolicyPropertiesFormat.class);
-
     /*
      * The provisioning state of the sim policy resource.
      */
@@ -184,7 +181,7 @@ public final class SimPolicyPropertiesFormat {
      */
     public void validate() {
         if (ueAmbr() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ueAmbr in model SimPolicyPropertiesFormat"));
@@ -192,7 +189,7 @@ public final class SimPolicyPropertiesFormat {
             ueAmbr().validate();
         }
         if (defaultSlice() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property defaultSlice in model SimPolicyPropertiesFormat"));
@@ -200,7 +197,7 @@ public final class SimPolicyPropertiesFormat {
             defaultSlice().validate();
         }
         if (sliceConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sliceConfigurations in model SimPolicyPropertiesFormat"));
@@ -208,4 +205,6 @@ public final class SimPolicyPropertiesFormat {
             sliceConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SimPolicyPropertiesFormat.class);
 }

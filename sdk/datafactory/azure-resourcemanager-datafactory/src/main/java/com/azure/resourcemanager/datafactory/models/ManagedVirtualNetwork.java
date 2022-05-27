@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** A managed Virtual Network associated with the Azure Data Factory. */
 @Fluent
 public final class ManagedVirtualNetwork {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedVirtualNetwork.class);
-
     /*
      * Managed Virtual Network ID.
      */

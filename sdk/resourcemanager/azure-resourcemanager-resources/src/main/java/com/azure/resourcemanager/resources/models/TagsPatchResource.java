@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Wrapper resource for tags patch API request only. */
 @Fluent
 public final class TagsPatchResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsPatchResource.class);
-
     /*
      * The operation type for the patch API.
      */

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of all the entity queries. */
 @Fluent
 public final class EntityQueryList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityQueryList.class);
-
     /*
      * URL to fetch the next set of entity queries.
      */
@@ -64,11 +61,13 @@ public final class EntityQueryList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model EntityQueryList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EntityQueryList.class);
 }

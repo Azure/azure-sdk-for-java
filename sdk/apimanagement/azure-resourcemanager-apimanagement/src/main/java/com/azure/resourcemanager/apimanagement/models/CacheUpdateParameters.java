@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.CacheUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cache update details. */
 @Fluent
 public final class CacheUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheUpdateParameters.class);
-
     /*
      * Cache update properties details.
      */

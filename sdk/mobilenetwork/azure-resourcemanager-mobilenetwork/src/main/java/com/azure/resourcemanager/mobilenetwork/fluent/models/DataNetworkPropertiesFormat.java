@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data network properties. */
 @Fluent
 public final class DataNetworkPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataNetworkPropertiesFormat.class);
-
     /*
      * The provisioning state of the data network resource.
      */

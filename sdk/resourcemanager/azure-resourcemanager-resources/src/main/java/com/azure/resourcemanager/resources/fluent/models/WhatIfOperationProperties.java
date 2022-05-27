@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Deployment operation properties. */
 @Fluent
 public final class WhatIfOperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfOperationProperties.class);
-
     /*
      * List of resource changes predicted by What-If operation.
      */

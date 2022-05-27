@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A service that allows server-side encryption to be used. */
 @Fluent
 public final class EncryptionService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionService.class);
-
     /*
      * A boolean indicating whether or not the service encrypts the data as it
      * is stored. Encryption at rest is enabled by default today and cannot be

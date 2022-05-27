@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vpn Profile Response for package generation. */
 @Fluent
 public final class VpnProfileResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnProfileResponseInner.class);
-
     /*
      * URL to the VPN profile.
      */

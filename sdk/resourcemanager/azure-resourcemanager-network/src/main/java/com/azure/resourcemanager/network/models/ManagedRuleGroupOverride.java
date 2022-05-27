@@ -6,15 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a managed rule group override setting. */
 @Fluent
 public final class ManagedRuleGroupOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleGroupOverride.class);
-
     /*
      * The managed rule group to override.
      */
@@ -77,7 +74,7 @@ public final class ManagedRuleGroupOverride {
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleGroupName in model ManagedRuleGroupOverride"));
@@ -86,4 +83,6 @@ public final class ManagedRuleGroupOverride {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleGroupOverride.class);
 }

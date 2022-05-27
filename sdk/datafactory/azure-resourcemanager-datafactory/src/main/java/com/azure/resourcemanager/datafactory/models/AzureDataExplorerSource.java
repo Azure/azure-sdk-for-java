@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDataExplorerSource")
 @Fluent
 public final class AzureDataExplorerSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerSource.class);
-
     /*
      * Database query. Should be a Kusto Query Language (KQL) query. Type:
      * string (or Expression with resultType string).
@@ -172,9 +169,11 @@ public final class AzureDataExplorerSource extends CopySource {
     public void validate() {
         super.validate();
         if (query() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property query in model AzureDataExplorerSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerSource.class);
 }

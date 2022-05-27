@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PCC rule QoS policy. */
 @Fluent
 public final class PccRuleQosPolicy extends QosPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PccRuleQosPolicy.class);
-
     /*
      * The Guaranteed Bit Rate (GBR) for all service data flows that use this
      * PCC Rule. This is an optional setting. If you do not provide a value,

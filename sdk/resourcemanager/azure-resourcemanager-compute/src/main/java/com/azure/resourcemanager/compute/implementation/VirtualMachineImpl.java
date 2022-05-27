@@ -192,7 +192,7 @@ class VirtualMachineImpl
     private final Map<String, DeleteOptions> secondaryNetworkInterfaceDeleteOptions = new HashMap<>();
 
     // Snapshot of the updateParameter when update() is called, used to compare whether there is modification to VM during updateResourceAsync
-    VirtualMachineUpdateInner updateParameterSnapshotOnUpdate;
+    private VirtualMachineUpdateInner updateParameterSnapshotOnUpdate;
     private static final SerializerAdapter SERIALIZER_ADAPTER =
         SerializerFactory.createDefaultManagementSerializerAdapter();
 
@@ -229,7 +229,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl update() {
         updateParameterSnapshotOnUpdate = this.deepCopyInnerToUpdateParameter();
         return super.update();
-    };
+    }
 
     @Override
     public Mono<VirtualMachine> refreshAsync() {

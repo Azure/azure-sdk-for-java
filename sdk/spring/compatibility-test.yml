@@ -1,0 +1,22 @@
+trigger: none
+pr: none
+
+variables:
+  - template: ../../eng/pipelines/templates/variables/globals.yml
+
+stages:
+  - stage: "spring_boot_compatibility_tests"
+    jobs:
+      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+        parameters:
+          SparseCheckout: true
+          JobTemplatePath: ../../../../../sdk/spring/compatibility-tests-job.yml
+          AdditionalParameters:
+            ServiceDirectory: spring
+          MatrixConfigs:
+            - Name: spring_boot_supported_version_tests
+              Path: sdk/spring/supported-version-matrix.json
+              Selection: sparse
+              NonSparseParameters:
+                - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
+              GenerateVMJobs: true

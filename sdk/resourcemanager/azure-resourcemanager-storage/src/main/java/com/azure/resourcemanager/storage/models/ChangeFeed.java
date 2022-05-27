@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The blob service properties for change feed events. */
 @Fluent
 public final class ChangeFeed {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeFeed.class);
-
     /*
      * Indicates whether change feed event logging is enabled for the Blob
      * service.

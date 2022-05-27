@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS package execution log location properties. */
 @Fluent
 public final class SsisLogLocationTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisLogLocationTypeProperties.class);
-
     /*
      * The package execution log access credential.
      */

@@ -22,6 +22,20 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.certificates.implementation.CertificateImportParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateIssuerSetParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateIssuerUpdateParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateMergeParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateOperationUpdateParameter;
+import com.azure.security.keyvault.certificates.implementation.CertificatePolicyRequest;
+import com.azure.security.keyvault.certificates.implementation.CertificateRequestAttributes;
+import com.azure.security.keyvault.certificates.implementation.CertificateRequestParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateRestoreParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateService;
+import com.azure.security.keyvault.certificates.implementation.CertificateUpdateParameters;
+import com.azure.security.keyvault.certificates.implementation.Contacts;
+import com.azure.security.keyvault.certificates.implementation.IssuerCredentials;
+import com.azure.security.keyvault.certificates.implementation.OrganizationDetails;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -84,7 +98,7 @@ public final class CertificateAsyncClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 

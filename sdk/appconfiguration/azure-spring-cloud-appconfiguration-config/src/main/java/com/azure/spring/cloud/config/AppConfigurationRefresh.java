@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.config;
 
 import java.time.Duration;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +25,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
@@ -45,20 +46,28 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher publisher;
 
+    private final AppConfigurationProviderProperties appProperties;
+
     private final ClientStore clientStore;
 
     private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
 
+    private final Duration refreshInterval;
+
     /**
      * Component used for checking for and triggering configuration refreshes.
      * 
      * @param properties Client properties to check against.
+     * @param appProperties Library properties for configuring backoff
      * @param clientStore Clients stores used to connect to App Configuration.
      */
-    public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore) {
+    public AppConfigurationRefresh(AppConfigurationProperties properties,
+        AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
+        this.appProperties = appProperties;
         this.configStores = properties.getStores();
+        this.refreshInterval = properties.getRefreshInterval();
         this.clientStore = clientStore;
         this.eventDataInfo = "";
         this.clientHealth = new HashMap<>();
@@ -92,11 +101,13 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
      * unless value is less than the amount of time to the next refresh check.
      * @param endpoint Config Store endpoint to expire refresh interval on.
+     * @param syncToken syncToken to verify latest changes are available on pull
      */
-    public void expireRefreshInterval(String endpoint) {
+    public void expireRefreshInterval(String endpoint, String syncToken) {
         for (ConfigStore configStore : configStores) {
             if (configStore.getEndpoint().equals(endpoint)) {
                 LOGGER.debug("Expiring refresh interval for " + configStore.getEndpoint());
+                clientStore.updateSyncToken(endpoint, syncToken);
                 StateHolder.expireState(configStore.getEndpoint());
                 break;
             }
@@ -122,6 +133,17 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                 }
             });
             try {
+                if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
+                    && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
+                    this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
+
+                    LOGGER.info(eventDataInfo);
+
+                    RefreshEventData eventData = new RefreshEventData(eventDataInfo);
+                    publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
+                    running.set(false);
+                    return true;
+                }
                 for (ConfigStore configStore : configStores) {
                     if (configStore.isEnabled()) {
                         String endpoint = configStore.getEndpoint();
@@ -152,6 +174,10 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                         }
                     }
                 }
+            } catch (Exception e) {
+                // The next refresh will happen sooner if refresh interval is expired.
+                StateHolder.updateNextRefreshTime(refreshInterval, appProperties);
+                throw e;
             } finally {
                 running.set(false);
                 clientHealth = clientHealthUpdate;
@@ -170,8 +196,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      * @return Refresh event was triggered. No other sources need to be checked.
      */
     private boolean refresh(State state, String endpoint, Duration refreshInterval) {
-        Date date = new Date();
-        if (date.after(state.getNextRefreshCheck())) {
+        Instant date = Instant.now();
+        if (date.isAfter(state.getNextRefreshCheck())) {
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
                 ConfigurationSetting watchedKey = clientStore.getWatchKey(watchKey.getKey(), watchKey.getLabel(),
                     endpoint);
@@ -211,8 +237,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private boolean refreshFeatureFlags(ConfigStore configStore, State state, String endpoint,
         Duration refreshInterval) {
-        Date date = new Date();
-        if (date.after(state.getNextRefreshCheck())) {
+        Instant date = Instant.now();
+        if (date.isAfter(state.getNextRefreshCheck())) {
             SettingSelector selector = new SettingSelector().setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
             PagedIterable<ConfigurationSetting> currentKeys = clientStore.getFeatureFlagWatchKey(selector, endpoint);
@@ -222,7 +248,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
             for (ConfigurationSetting currentKey : currentKeys) {
                 watchedKeySize += 1;
                 for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
-                    
+
                     String etag = null;
                     // If there is no result, etag will be considered empty.
                     // A refresh will trigger once the selector returns a value.
@@ -231,7 +257,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     } else {
                         break;
                     }
-                    
+
                     if (watchFlag.getKey().equals(currentKey.getKey())) {
                         LOGGER.debug(etag + " - " + currentKey.getETag());
                         if (etag != null && !etag.equals(currentKey.getETag())) {

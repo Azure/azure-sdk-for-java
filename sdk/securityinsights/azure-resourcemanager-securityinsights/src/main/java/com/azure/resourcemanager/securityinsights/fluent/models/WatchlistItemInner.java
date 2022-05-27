@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Represents a Watchlist item in Azure Security Insights. */
 @Fluent
 public final class WatchlistItemInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchlistItemInner.class);
-
     /*
      * Watchlist Item properties
      */
@@ -228,7 +225,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
      *
      * @return the itemsKeyValue value.
      */
-    public Object itemsKeyValue() {
+    public Map<String, Object> itemsKeyValue() {
         return this.innerProperties() == null ? null : this.innerProperties().itemsKeyValue();
     }
 
@@ -238,7 +235,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
      * @param itemsKeyValue the itemsKeyValue value to set.
      * @return the WatchlistItemInner object itself.
      */
-    public WatchlistItemInner withItemsKeyValue(Object itemsKeyValue) {
+    public WatchlistItemInner withItemsKeyValue(Map<String, Object> itemsKeyValue) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WatchlistItemProperties();
         }
@@ -251,7 +248,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
      *
      * @return the entityMapping value.
      */
-    public Object entityMapping() {
+    public Map<String, Object> entityMapping() {
         return this.innerProperties() == null ? null : this.innerProperties().entityMapping();
     }
 
@@ -261,7 +258,7 @@ public final class WatchlistItemInner extends ResourceWithEtag {
      * @param entityMapping the entityMapping value to set.
      * @return the WatchlistItemInner object itself.
      */
-    public WatchlistItemInner withEntityMapping(Object entityMapping) {
+    public WatchlistItemInner withEntityMapping(Map<String, Object> entityMapping) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WatchlistItemProperties();
         }

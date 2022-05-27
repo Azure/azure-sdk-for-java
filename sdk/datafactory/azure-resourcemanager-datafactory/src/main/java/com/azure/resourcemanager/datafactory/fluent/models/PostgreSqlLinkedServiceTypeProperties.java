@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PostgreSQL linked service properties. */
 @Fluent
 public final class PostgreSqlLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PostgreSqlLinkedServiceTypeProperties.class);
-
     /*
      * The connection string.
      */
@@ -104,7 +101,7 @@ public final class PostgreSqlLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model PostgreSqlLinkedServiceTypeProperties"));
@@ -113,4 +110,6 @@ public final class PostgreSqlLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlLinkedServiceTypeProperties.class);
 }

@@ -20,7 +20,7 @@ import java.util.Objects;
  * an exception will be thrown to prevent leaking the key.
  */
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
-    // AzureKeyCredentailPolicy can be a commonly used policy, use a static logger.
+    // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
 
     private final String name;

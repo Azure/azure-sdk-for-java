@@ -18,10 +18,9 @@ import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.Topics;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopicsImpl implements Topics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TopicsImpl.class);
 
     private final TopicsClient innerClient;
 
@@ -154,7 +153,7 @@ public final class TopicsImpl implements Topics {
     public Topic getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +161,7 @@ public final class TopicsImpl implements Topics {
         }
         String topicName = Utils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -173,7 +172,7 @@ public final class TopicsImpl implements Topics {
     public Response<Topic> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class TopicsImpl implements Topics {
         }
         String topicName = Utils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -192,7 +191,7 @@ public final class TopicsImpl implements Topics {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +199,7 @@ public final class TopicsImpl implements Topics {
         }
         String topicName = Utils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -211,7 +210,7 @@ public final class TopicsImpl implements Topics {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -219,7 +218,7 @@ public final class TopicsImpl implements Topics {
         }
         String topicName = Utils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));

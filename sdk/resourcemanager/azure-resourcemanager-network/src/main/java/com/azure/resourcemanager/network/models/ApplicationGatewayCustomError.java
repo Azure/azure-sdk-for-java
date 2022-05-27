@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Customer error of an application gateway. */
 @Fluent
 public final class ApplicationGatewayCustomError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayCustomError.class);
-
     /*
      * Status code of the application gateway customer error.
      */

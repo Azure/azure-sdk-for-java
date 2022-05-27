@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon S3 linked service properties. */
 @Fluent
 public final class AmazonS3LinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonS3LinkedServiceTypeProperties.class);
-
     /*
      * The authentication type of S3. Allowed value: AccessKey (default) or
      * TemporarySecurityCredentials. Type: string (or Expression with

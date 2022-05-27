@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List storage account local users. */
 @Fluent
 public final class LocalUsers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalUsers.class);
-
     /*
      * The local users associated with the storage account.
      */

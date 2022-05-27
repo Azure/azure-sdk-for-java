@@ -47,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourcesClient. */
 public final class ResourcesClientImpl implements InnerSupportsListing<GenericResourceExpandedInner>, ResourcesClient {
-    private final ClientLogger logger = new ClientLogger(ResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourcesService service;
 
@@ -1554,14 +1552,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceType,
                 resourceName,
                 apiVersion)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1599,7 +1590,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -3207,14 +3198,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceType,
                 resourceName,
                 apiVersion)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3368,14 +3352,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3396,7 +3373,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -4222,15 +4199,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
-        return getByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByIdWithResponseAsync(resourceId, apiVersion).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4412,4 +4381,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().nextLink(),
                         null));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourcesClientImpl.class);
 }

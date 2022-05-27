@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 import com.azure.resourcemanager.resources.models.FeatureOperationsListResult;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FeaturesClient. */
 public final class FeaturesClientImpl implements FeaturesClient {
-    private final ClientLogger logger = new ClientLogger(FeaturesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FeaturesService service;
 
@@ -581,14 +578,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
         return getWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -734,14 +724,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -887,14 +870,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

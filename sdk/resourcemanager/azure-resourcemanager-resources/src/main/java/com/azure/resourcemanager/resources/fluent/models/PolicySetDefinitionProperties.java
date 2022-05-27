@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionGroup;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionReference;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** The policy set definition properties. */
 @Fluent
 public final class PolicySetDefinitionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetDefinitionProperties.class);
-
     /*
      * The type of policy definition. Possible values are NotSpecified,
      * BuiltIn, Custom, and Static.
@@ -234,7 +231,7 @@ public final class PolicySetDefinitionProperties {
                     });
         }
         if (policyDefinitions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property policyDefinitions in model PolicySetDefinitionProperties"));
@@ -245,4 +242,6 @@ public final class PolicySetDefinitionProperties {
             policyDefinitionGroups().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicySetDefinitionProperties.class);
 }

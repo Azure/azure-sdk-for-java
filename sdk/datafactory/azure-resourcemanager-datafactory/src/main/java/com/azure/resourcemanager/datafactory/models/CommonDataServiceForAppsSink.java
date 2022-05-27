@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CommonDataServiceForAppsSink")
 @Fluent
 public final class CommonDataServiceForAppsSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonDataServiceForAppsSink.class);
-
     /*
      * The write behavior for the operation.
      */
@@ -154,10 +151,12 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property writeBehavior in model CommonDataServiceForAppsSink"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommonDataServiceForAppsSink.class);
 }

@@ -18,9 +18,16 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -90,7 +97,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
         return false;
     }
 
-    protected boolean requestSuccess(String url) throws IOException {
+    protected boolean requestSuccess(String url) throws Exception {
         for (int i = 0; i < 60; ++i) {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             try {
@@ -109,5 +116,25 @@ public class AppPlatformTest extends ResourceManagerTestBase {
             ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         }
         return false;
+    }
+
+    protected void allowAllSSL() throws NoSuchAlgorithmException, KeyManagementException {
+        TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                public void checkClientTrusted(
+                    java.security.cert.X509Certificate[] certs, String authType) {
+                }
+                public void checkServerTrusted(
+                    java.security.cert.X509Certificate[] certs, String authType) {
+                }
+            }
+        };
+        SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, trustAllCerts, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier((urlHostName, session) -> true);
     }
 }

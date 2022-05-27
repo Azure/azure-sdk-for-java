@@ -40,7 +40,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +54,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,7 +67,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,7 +79,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,7 +91,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +139,7 @@ public interface ManagedClustersClient
     /**
      * Lists managed clusters in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -151,7 +151,7 @@ public interface ManagedClustersClient
     /**
      * Lists managed clusters in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,7 +163,7 @@ public interface ManagedClustersClient
     /**
      * Lists managed clusters in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,7 +176,7 @@ public interface ManagedClustersClient
     /**
      * Gets the upgrade profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,7 +191,7 @@ public interface ManagedClustersClient
     /**
      * Gets the upgrade profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,7 +204,7 @@ public interface ManagedClustersClient
     /**
      * Gets the upgrade profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -217,7 +217,7 @@ public interface ManagedClustersClient
     /**
      * Gets the upgrade profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +236,7 @@ public interface ManagedClustersClient
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +255,7 @@ public interface ManagedClustersClient
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,7 +274,7 @@ public interface ManagedClustersClient
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -292,7 +292,7 @@ public interface ManagedClustersClient
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
      * .
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @param context The context to associate with this operation.
@@ -308,7 +308,7 @@ public interface ManagedClustersClient
     /**
      * Lists the admin credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,7 +323,7 @@ public interface ManagedClustersClient
     /**
      * Lists the admin credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,7 +338,7 @@ public interface ManagedClustersClient
     /**
      * Lists the admin credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -351,7 +351,7 @@ public interface ManagedClustersClient
     /**
      * Lists the admin credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -364,7 +364,7 @@ public interface ManagedClustersClient
     /**
      * Lists the admin credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param context The context to associate with this operation.
@@ -380,7 +380,7 @@ public interface ManagedClustersClient
     /**
      * Lists the user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
@@ -398,7 +398,7 @@ public interface ManagedClustersClient
     /**
      * Lists the user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
@@ -416,7 +416,7 @@ public interface ManagedClustersClient
     /**
      * Lists the user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -429,7 +429,7 @@ public interface ManagedClustersClient
     /**
      * Lists the user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -442,7 +442,7 @@ public interface ManagedClustersClient
     /**
      * Lists the user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return
@@ -461,7 +461,7 @@ public interface ManagedClustersClient
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,7 +476,7 @@ public interface ManagedClustersClient
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -491,7 +491,7 @@ public interface ManagedClustersClient
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -505,7 +505,7 @@ public interface ManagedClustersClient
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -518,7 +518,7 @@ public interface ManagedClustersClient
     /**
      * Lists the cluster monitoring user credentials of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param serverFqdn server fqdn type for credentials to be returned.
      * @param context The context to associate with this operation.
@@ -534,7 +534,7 @@ public interface ManagedClustersClient
     /**
      * Gets a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -548,7 +548,7 @@ public interface ManagedClustersClient
     /**
      * Gets a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -561,7 +561,7 @@ public interface ManagedClustersClient
     /**
      * Gets a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -574,7 +574,7 @@ public interface ManagedClustersClient
     /**
      * Gets a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -589,7 +589,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -604,7 +604,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,7 +619,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,7 +634,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @param context The context to associate with this operation.
@@ -650,7 +650,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -665,7 +665,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,7 +679,7 @@ public interface ManagedClustersClient
     /**
      * Creates or updates a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The managed cluster to create or update.
      * @param context The context to associate with this operation.
@@ -695,7 +695,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -710,7 +710,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -725,7 +725,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,7 +740,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
@@ -756,7 +756,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,7 +770,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,7 +784,7 @@ public interface ManagedClustersClient
     /**
      * Updates tags on a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
@@ -800,7 +800,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -813,7 +813,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -826,7 +826,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -839,7 +839,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -853,7 +853,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -866,7 +866,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -878,7 +878,7 @@ public interface ManagedClustersClient
     /**
      * Deletes a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -891,7 +891,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -906,7 +906,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -921,7 +921,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -936,7 +936,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @param context The context to associate with this operation.
@@ -955,7 +955,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -970,7 +970,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -984,7 +984,7 @@ public interface ManagedClustersClient
     /**
      * This action cannot be performed on a cluster that is not using a service principal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The service principal profile to set on the managed cluster.
      * @param context The context to associate with this operation.
@@ -1002,7 +1002,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1017,7 +1017,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1032,7 +1032,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1047,7 +1047,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @param context The context to associate with this operation.
@@ -1063,7 +1063,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1077,7 +1077,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1090,7 +1090,7 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
      * @param context The context to associate with this operation.
@@ -1106,7 +1106,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1121,7 +1121,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1136,7 +1136,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1150,7 +1150,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1166,7 +1166,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1180,7 +1180,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1193,7 +1193,7 @@ public interface ManagedClustersClient
      * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1209,7 +1209,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1225,7 +1225,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1241,7 +1241,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1257,7 +1257,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1274,7 +1274,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1290,7 +1290,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1305,7 +1305,7 @@ public interface ManagedClustersClient
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1319,7 +1319,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1333,7 +1333,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1347,7 +1347,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1361,7 +1361,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1376,7 +1376,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1390,7 +1390,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1403,7 +1403,7 @@ public interface ManagedClustersClient
      * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
      * a cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1417,7 +1417,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1433,7 +1433,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1449,7 +1449,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1465,7 +1465,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @param context The context to associate with this operation.
@@ -1482,7 +1482,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1498,7 +1498,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1513,7 +1513,7 @@ public interface ManagedClustersClient
      * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
      * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param requestPayload The run command request.
      * @param context The context to associate with this operation.
@@ -1529,7 +1529,7 @@ public interface ManagedClustersClient
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1545,7 +1545,7 @@ public interface ManagedClustersClient
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1560,7 +1560,7 @@ public interface ManagedClustersClient
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1574,7 +1574,7 @@ public interface ManagedClustersClient
     /**
      * Gets the results of a command which has been run on the Managed Cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param commandId Id of the command.
      * @param context The context to associate with this operation.
@@ -1591,7 +1591,7 @@ public interface ManagedClustersClient
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1607,7 +1607,7 @@ public interface ManagedClustersClient
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1623,7 +1623,7 @@ public interface ManagedClustersClient
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

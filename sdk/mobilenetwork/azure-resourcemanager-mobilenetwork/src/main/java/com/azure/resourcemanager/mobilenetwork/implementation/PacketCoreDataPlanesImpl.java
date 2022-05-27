@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreDataPlanesClient
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlaneInner;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlanes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCoreDataPlanesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCoreDataPlanesImpl.class);
 
     private final PacketCoreDataPlanesClient innerClient;
 
@@ -83,7 +82,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
     public PacketCoreDataPlane getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,7 +90,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -101,7 +100,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
     public Response<PacketCoreDataPlane> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +134,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +166,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -199,7 +198,7 @@ public final class PacketCoreDataPlanesImpl implements PacketCoreDataPlanes {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

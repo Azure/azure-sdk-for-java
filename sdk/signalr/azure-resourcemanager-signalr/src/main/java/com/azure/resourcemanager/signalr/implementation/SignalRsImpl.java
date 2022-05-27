@@ -21,10 +21,9 @@ import com.azure.resourcemanager.signalr.models.SignalRKeys;
 import com.azure.resourcemanager.signalr.models.SignalRResource;
 import com.azure.resourcemanager.signalr.models.SignalRs;
 import com.azure.resourcemanager.signalr.models.SkuList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignalRsImpl implements SignalRs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SignalRsImpl.class);
 
     private final SignalRsClient innerClient;
 
@@ -190,7 +189,7 @@ public final class SignalRsImpl implements SignalRs {
     public SignalRResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -198,7 +197,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -209,7 +208,7 @@ public final class SignalRsImpl implements SignalRs {
     public Response<SignalRResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -217,7 +216,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -228,7 +227,7 @@ public final class SignalRsImpl implements SignalRs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,7 +235,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -247,7 +246,7 @@ public final class SignalRsImpl implements SignalRs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -255,7 +254,7 @@ public final class SignalRsImpl implements SignalRs {
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));

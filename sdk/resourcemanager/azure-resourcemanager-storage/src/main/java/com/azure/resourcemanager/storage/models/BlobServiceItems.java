@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The BlobServiceItems model. */
 @Immutable
 public final class BlobServiceItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobServiceItems.class);
-
     /*
      * List of blob services returned.
      */

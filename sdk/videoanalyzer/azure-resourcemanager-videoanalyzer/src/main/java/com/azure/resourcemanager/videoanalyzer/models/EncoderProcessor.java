@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +19,6 @@ import java.util.List;
 @JsonTypeName("#Microsoft.VideoAnalyzer.EncoderProcessor")
 @Fluent
 public final class EncoderProcessor extends ProcessorNodeBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncoderProcessor.class);
-
     /*
      * The encoder preset, which defines the recipe or instructions on how the
      * input content should be processed.
@@ -74,11 +71,13 @@ public final class EncoderProcessor extends ProcessorNodeBase {
     public void validate() {
         super.validate();
         if (preset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property preset in model EncoderProcessor"));
         } else {
             preset().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncoderProcessor.class);
 }

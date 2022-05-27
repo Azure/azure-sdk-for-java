@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Installation of licensed component setup type properties. */
 @Fluent
 public final class LicensedComponentSetupTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LicensedComponentSetupTypeProperties.class);
-
     /*
      * The name of the 3rd party component.
      */
@@ -74,7 +71,7 @@ public final class LicensedComponentSetupTypeProperties {
      */
     public void validate() {
         if (componentName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property componentName in model LicensedComponentSetupTypeProperties"));
@@ -83,4 +80,6 @@ public final class LicensedComponentSetupTypeProperties {
             licenseKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LicensedComponentSetupTypeProperties.class);
 }

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleTemplateInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.NrtAlertRuleTemplateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +19,6 @@ import java.util.Map;
 @JsonTypeName("NRT")
 @Fluent
 public final class NrtAlertRuleTemplate extends AlertRuleTemplateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NrtAlertRuleTemplate.class);
-
     /*
      * NRT alert rule template properties
      */
@@ -81,29 +77,6 @@ public final class NrtAlertRuleTemplate extends AlertRuleTemplateInner {
             this.innerProperties = new NrtAlertRuleTemplateProperties();
         }
         this.innerProperties().withSeverity(severity);
-        return this;
-    }
-
-    /**
-     * Get the tactics property: The tactics of the alert rule.
-     *
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.innerProperties() == null ? null : this.innerProperties().tactics();
-    }
-
-    /**
-     * Set the tactics property: The tactics of the alert rule.
-     *
-     * @param tactics the tactics value to set.
-     * @return the NrtAlertRuleTemplate object itself.
-     */
-    public NrtAlertRuleTemplate withTactics(List<AttackTactic> tactics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NrtAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withTactics(tactics);
         return this;
     }
 
@@ -198,6 +171,52 @@ public final class NrtAlertRuleTemplate extends AlertRuleTemplateInner {
             this.innerProperties = new NrtAlertRuleTemplateProperties();
         }
         this.innerProperties().withAlertDetailsOverride(alertDetailsOverride);
+        return this;
+    }
+
+    /**
+     * Get the tactics property: The tactics of the alert rule.
+     *
+     * @return the tactics value.
+     */
+    public List<AttackTactic> tactics() {
+        return this.innerProperties() == null ? null : this.innerProperties().tactics();
+    }
+
+    /**
+     * Set the tactics property: The tactics of the alert rule.
+     *
+     * @param tactics the tactics value to set.
+     * @return the NrtAlertRuleTemplate object itself.
+     */
+    public NrtAlertRuleTemplate withTactics(List<AttackTactic> tactics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NrtAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withTactics(tactics);
+        return this;
+    }
+
+    /**
+     * Get the techniques property: The techniques of the alert rule.
+     *
+     * @return the techniques value.
+     */
+    public List<String> techniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().techniques();
+    }
+
+    /**
+     * Set the techniques property: The techniques of the alert rule.
+     *
+     * @param techniques the techniques value to set.
+     * @return the NrtAlertRuleTemplate object itself.
+     */
+    public NrtAlertRuleTemplate withTechniques(List<String> techniques) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NrtAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withTechniques(techniques);
         return this;
     }
 

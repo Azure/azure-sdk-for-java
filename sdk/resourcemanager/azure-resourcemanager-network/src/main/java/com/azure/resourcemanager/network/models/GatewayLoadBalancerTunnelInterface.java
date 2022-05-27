@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gateway load balancer tunnel interface of a load balancer backend address pool. */
 @Fluent
 public final class GatewayLoadBalancerTunnelInterface {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayLoadBalancerTunnelInterface.class);
-
     /*
      * Port of gateway load balancer tunnel interface.
      */

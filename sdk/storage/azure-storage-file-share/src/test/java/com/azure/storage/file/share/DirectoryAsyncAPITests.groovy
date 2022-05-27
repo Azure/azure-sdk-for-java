@@ -11,6 +11,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
@@ -124,6 +125,83 @@ class DirectoryAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
+    def "Create if not exists directory"() {
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create if not exists directory error"() {
+        given:
+        def testShareName = namer.getRandomName(60)
+        when:
+        def createDirErrorVerifier = StepVerifier.create(directoryBuilderHelper(testShareName, directoryPath).buildDirectoryAsyncClient().createIfNotExists())
+        then:
+        createDirErrorVerifier.verifyErrorSatisfies {
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
+        }
+    }
+
+    def "Create if not exists directory that already exists"() {
+        setup:
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+        def initialResponse = client.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()).block()
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()).block()
+
+        then:
+        FileTestHelper.assertResponseStatusCode(initialResponse, 201)
+        FileTestHelper.assertResponseStatusCode(secondResponse, 409)
+    }
+
+    def "Create if not exists directory with metadata"() {
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create if not exists directory with file permission"() {
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()
+            .setFilePermission(filePermission).setMetadata(testMetadata)))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
+            }.verifyComplete()
+    }
+
+    def "Create if not exists dir with file perm key"() {
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+                assert it.getValue().getSmbProperties()
+                assert it.getValue().getSmbProperties().getFilePermissionKey()
+                assert it.getValue().getSmbProperties().getNtfsFileAttributes()
+                assert it.getValue().getSmbProperties().getFileLastWriteTime()
+                assert it.getValue().getSmbProperties().getFileCreationTime()
+                assert it.getValue().getSmbProperties().getFileChangeTime()
+                assert it.getValue().getSmbProperties().getParentId()
+                assert it.getValue().getSmbProperties().getFileId()
+            }.verifyComplete()
+    }
+
     def "Delete directory"() {
         given:
         primaryDirectoryAsyncClient.create().block()
@@ -141,6 +219,51 @@ class DirectoryAsyncAPITests extends APISpec {
         deleteDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
+    }
+
+    def "Delete if exists directory min"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        primaryDirectoryAsyncClient.deleteIfExists().block()
+    }
+
+    def "Delete if exists directory"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteIfExistsWithResponse())
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete if exists directory that does not exist"() {
+        setup:
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null).block()
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !client.exists().block()
+    }
+
+    def "Delete if exists directory that was already deleted"() {
+        setup:
+        primaryDirectoryAsyncClient.create().block()
+
+        when:
+        def initialResponse = primaryDirectoryAsyncClient.deleteIfExistsWithResponse().block()
+        def secondResponse = primaryDirectoryAsyncClient.deleteIfExistsWithResponse().block()
+
+        then:
+        initialResponse.getStatusCode() == 202
+        secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
     def "Get properties"() {
@@ -465,6 +588,92 @@ class DirectoryAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
+    def "Create if not exists sub directory"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", new ShareDirectoryCreateOptions()))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create if not exists sub directory invalid name"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        when:
+        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExists("test/subdirectory"))
+        then:
+        createDirErrorVerifier.verifyErrorSatisfies {
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND)
+        }
+    }
+
+    def "Create if not exists subdirectory that already exists"() {
+        setup:
+        def subdirectoryName = generatePathName()
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+        client.create().block()
+        def initialResponse = client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions()).block()
+
+        when:
+        def secondResponse = client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions()).block()
+
+        then:
+        initialResponse != null
+        FileTestHelper.assertResponseStatusCode(initialResponse, 201)
+        FileTestHelper.assertResponseStatusCode(secondResponse, 409)
+    }
+
+    def "Create if not exists sub directory metadata"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+            new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create if not exists sub directory metadata error"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        when:
+        def createDirErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient
+            .createSubdirectoryIfNotExistsWithResponse("testsubdirectory", new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value"))))
+        then:
+        createDirErrorVerifier.verifyErrorSatisfies {
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
+        }
+    }
+
+    def "Create if not exists sub directory file permission"() {
+        given:
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+            new ShareDirectoryCreateOptions().setFilePermission(filePermission)))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
+    def "Create if not exists sub directory file perm key"() {
+        given:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+        primaryDirectoryAsyncClient.create().block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+            new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 201)
+            }.verifyComplete()
+    }
+
     def "Delete sub directory"() {
         given:
         def subDirectoryName = "testSubCreateDirectory"
@@ -486,6 +695,42 @@ class DirectoryAsyncAPITests extends APISpec {
         deleteDirErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
         }
+    }
+
+    def "Delete if exists sub directory"() {
+        given:
+        def subDirectoryName = "testSubCreateDirectory"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createSubdirectory(subDirectoryName).block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse(subDirectoryName))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete if exists sub directory min"() {
+        given:
+        def subDirectoryName = "testSubCreateDirectory"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createSubdirectory(subDirectoryName).block()
+        expect:
+        primaryDirectoryAsyncClient.deleteSubdirectoryIfExists(subDirectoryName).block()
+    }
+
+    def "Delete if exists subdirectory that does not exist"() {
+        setup:
+        def subdirectoryName = generatePathName()
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+        client.create().block()
+
+        when:
+        def response = client.deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null).block()
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !client.getSubdirectoryClient(subdirectoryName).exists().block()
     }
 
     def "Create file"() {
@@ -612,6 +857,66 @@ class DirectoryAsyncAPITests extends APISpec {
             .verifyError(ShareStorageException)
     }
 
+    def "Delete if exists file"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName))
+            .assertNext {
+                assert FileTestHelper.assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete if exists file min"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        expect:
+        primaryDirectoryAsyncClient.deleteFileIfExists(fileName).block()
+    }
+
+    def "Delete if exists file lease"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        def leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareRequestConditions().setLeaseId(leaseId)))
+            .expectNextCount(1).verifyComplete()
+    }
+
+    def "Delete if exists file lease fail"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryAsyncClient.create().block()
+        primaryDirectoryAsyncClient.createFile(fileName, 1024).block()
+        createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareRequestConditions()
+                .setLeaseId(namer.getRandomUuid()))).verifyError(ShareStorageException)
+    }
+
+    def "Delete if exists file that does not exist"() {
+        setup:
+        def subdirectoryName = generatePathName()
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+        client.create().block()
+
+        when:
+        def response = client.deleteFileIfExistsWithResponse(subdirectoryName, null).block()
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !client.getSubdirectoryClient(subdirectoryName).exists().block()
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -631,4 +936,5 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         directoryPath == primaryDirectoryAsyncClient.getDirectoryPath()
     }
+
 }

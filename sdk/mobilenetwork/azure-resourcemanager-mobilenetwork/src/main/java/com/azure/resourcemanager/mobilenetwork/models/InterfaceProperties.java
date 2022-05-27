@@ -6,20 +6,35 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Interface properties. */
 @Fluent
 public final class InterfaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InterfaceProperties.class);
-
     /*
      * The logical name for this interface. This should match one of the
      * interfaces configured on your Azure Stack Edge machine.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /*
+     * The IPv4 address.
+     */
+    @JsonProperty(value = "ipv4Address")
+    private String ipv4Address;
+
+    /*
+     * The IPv4 subnet.
+     */
+    @JsonProperty(value = "ipv4Subnet")
+    private String ipv4Subnet;
+
+    /*
+     * The default IPv4 gateway (router).
+     */
+    @JsonProperty(value = "ipv4Gateway")
+    private String ipv4Gateway;
 
     /**
      * Get the name property: The logical name for this interface. This should match one of the interfaces configured on
@@ -44,15 +59,77 @@ public final class InterfaceProperties {
     }
 
     /**
+     * Get the ipv4Address property: The IPv4 address.
+     *
+     * @return the ipv4Address value.
+     */
+    public String ipv4Address() {
+        return this.ipv4Address;
+    }
+
+    /**
+     * Set the ipv4Address property: The IPv4 address.
+     *
+     * @param ipv4Address the ipv4Address value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withIpv4Address(String ipv4Address) {
+        this.ipv4Address = ipv4Address;
+        return this;
+    }
+
+    /**
+     * Get the ipv4Subnet property: The IPv4 subnet.
+     *
+     * @return the ipv4Subnet value.
+     */
+    public String ipv4Subnet() {
+        return this.ipv4Subnet;
+    }
+
+    /**
+     * Set the ipv4Subnet property: The IPv4 subnet.
+     *
+     * @param ipv4Subnet the ipv4Subnet value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withIpv4Subnet(String ipv4Subnet) {
+        this.ipv4Subnet = ipv4Subnet;
+        return this;
+    }
+
+    /**
+     * Get the ipv4Gateway property: The default IPv4 gateway (router).
+     *
+     * @return the ipv4Gateway value.
+     */
+    public String ipv4Gateway() {
+        return this.ipv4Gateway;
+    }
+
+    /**
+     * Set the ipv4Gateway property: The default IPv4 gateway (router).
+     *
+     * @param ipv4Gateway the ipv4Gateway value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withIpv4Gateway(String ipv4Gateway) {
+        this.ipv4Gateway = ipv4Gateway;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model InterfaceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InterfaceProperties.class);
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AccountEntity;
 import com.azure.resourcemanager.securityinsights.models.AzureResourceEntity;
 import com.azure.resourcemanager.securityinsights.models.CloudApplicationEntity;
@@ -29,7 +28,6 @@ import com.azure.resourcemanager.securityinsights.models.SecurityAlert;
 import com.azure.resourcemanager.securityinsights.models.SecurityGroupEntity;
 import com.azure.resourcemanager.securityinsights.models.SubmissionMailEntity;
 import com.azure.resourcemanager.securityinsights.models.UrlEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -67,8 +65,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class EntityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityInner.class);
-
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy
      * information.

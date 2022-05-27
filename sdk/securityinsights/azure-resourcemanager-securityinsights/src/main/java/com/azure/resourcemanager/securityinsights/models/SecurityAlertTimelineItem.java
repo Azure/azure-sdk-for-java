@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("SecurityAlert")
 @Fluent
 public final class SecurityAlertTimelineItem extends EntityTimelineItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityAlertTimelineItem.class);
-
     /*
      * The alert azure resource id.
      */
@@ -262,46 +259,48 @@ public final class SecurityAlertTimelineItem extends EntityTimelineItem {
     public void validate() {
         super.validate();
         if (azureResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azureResourceId in model SecurityAlertTimelineItem"));
         }
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model SecurityAlertTimelineItem"));
         }
         if (severity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property severity in model SecurityAlertTimelineItem"));
         }
         if (endTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endTimeUtc in model SecurityAlertTimelineItem"));
         }
         if (startTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property startTimeUtc in model SecurityAlertTimelineItem"));
         }
         if (timeGenerated() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property timeGenerated in model SecurityAlertTimelineItem"));
         }
         if (alertType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property alertType in model SecurityAlertTimelineItem"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityAlertTimelineItem.class);
 }

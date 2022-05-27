@@ -13,8 +13,8 @@ public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelT
     /** Static value User for IncidentLabelType. */
     public static final IncidentLabelType USER = fromString("User");
 
-    /** Static value System for IncidentLabelType. */
-    public static final IncidentLabelType SYSTEM = fromString("System");
+    /** Static value AutoAssigned for IncidentLabelType. */
+    public static final IncidentLabelType AUTO_ASSIGNED = fromString("AutoAssigned");
 
     /**
      * Creates or finds a IncidentLabelType from its string representation.
@@ -27,7 +27,11 @@ public final class IncidentLabelType extends ExpandableStringEnum<IncidentLabelT
         return fromString(name, IncidentLabelType.class);
     }
 
-    /** @return known IncidentLabelType values. */
+    /**
+     * Gets known IncidentLabelType values.
+     *
+     * @return known IncidentLabelType values.
+     */
     public static Collection<IncidentLabelType> values() {
         return values(IncidentLabelType.class);
     }

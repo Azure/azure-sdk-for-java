@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.IncidentRelationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import com.azure.resourcemanager.securityinsights.models.RelationList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IncidentRelationsClient. */
 public final class IncidentRelationsClientImpl implements IncidentRelationsClient {
-    private final ClientLogger logger = new ClientLogger(IncidentRelationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IncidentRelationsService service;
 
@@ -318,7 +315,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations.
+     * @return all incident relations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(
@@ -343,7 +340,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations.
+     * @return all incident relations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(String resourceGroupName, String workspaceName, String incidentId) {
@@ -372,7 +369,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations.
+     * @return all incident relations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(
@@ -400,7 +397,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations.
+     * @return all incident relations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(String resourceGroupName, String workspaceName, String incidentId) {
@@ -428,7 +425,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident relations.
+     * @return all incident relations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(
@@ -574,14 +571,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     private Mono<RelationInner> getAsync(
         String resourceGroupName, String workspaceName, String incidentId, String relationName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, incidentId, relationName)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -780,14 +770,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
         String relationName,
         RelationInner relation) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, incidentId, relationName, relation)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -970,7 +953,7 @@ public final class IncidentRelationsClientImpl implements IncidentRelationsClien
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String incidentId, String relationName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId, relationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

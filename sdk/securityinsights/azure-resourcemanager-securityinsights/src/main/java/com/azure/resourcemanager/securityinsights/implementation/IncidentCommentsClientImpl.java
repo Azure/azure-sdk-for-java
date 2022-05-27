@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.IncidentCommentsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentCommentInner;
 import com.azure.resourcemanager.securityinsights.models.IncidentCommentList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IncidentCommentsClient. */
 public final class IncidentCommentsClientImpl implements IncidentCommentsClient {
-    private final ClientLogger logger = new ClientLogger(IncidentCommentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IncidentCommentsService service;
 
@@ -318,7 +315,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident comments.
+     * @return all incident comments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IncidentCommentInner> listAsync(
@@ -343,7 +340,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident comments.
+     * @return all incident comments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IncidentCommentInner> listAsync(
@@ -373,7 +370,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident comments.
+     * @return all incident comments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IncidentCommentInner> listAsync(
@@ -401,7 +398,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident comments.
+     * @return all incident comments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentCommentInner> list(String resourceGroupName, String workspaceName, String incidentId) {
@@ -429,7 +426,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all incident comments.
+     * @return all incident comments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentCommentInner> list(
@@ -577,14 +574,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     private Mono<IncidentCommentInner> getAsync(
         String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, incidentId, incidentCommentId)
-            .flatMap(
-                (Response<IncidentCommentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -787,14 +777,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
         IncidentCommentInner incidentComment) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, incidentId, incidentCommentId, incidentComment)
-            .flatMap(
-                (Response<IncidentCommentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -980,7 +963,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId, incidentCommentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -10,15 +10,12 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Security rule resource. */
 @Fluent
 public final class SecurityRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRulePropertiesFormat.class);
-
     /*
      * A description for this rule. Restricted to 140 chars.
      */
@@ -461,7 +458,7 @@ public final class SecurityRulePropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model SecurityRulePropertiesFormat"));
@@ -473,16 +470,18 @@ public final class SecurityRulePropertiesFormat {
             destinationApplicationSecurityGroups().forEach(e -> e.validate());
         }
         if (access() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property access in model SecurityRulePropertiesFormat"));
         }
         if (direction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property direction in model SecurityRulePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityRulePropertiesFormat.class);
 }

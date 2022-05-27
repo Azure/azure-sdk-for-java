@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/chat/threads/19:4b72178530934b7790135dd9359205e0@thread.v2/readReceipts?maxPageSize=1&api-version=2021-04-05-preview6",
+    "Uri" : "https://REDACTED.communication.azure.com/chat/threads/19:4b72178530934b7790135dd9359205e0@thread.v2/readReceipts?maxPageSize=1&api-version=2021-09-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0 (1.8.0_262; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "83aa9442-406f-488c-8f23-506bbf5bc525"
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.3.0-beta.1 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "fb97f39c-eba9-4960-b645-98418b25a735"
     },
     "Response" : {
       "retry-after" : "0",

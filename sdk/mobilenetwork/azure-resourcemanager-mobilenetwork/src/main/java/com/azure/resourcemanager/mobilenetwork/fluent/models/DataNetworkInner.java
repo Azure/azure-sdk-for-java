@@ -7,17 +7,13 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Data network resource. */
 @Fluent
 public final class DataNetworkInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataNetworkInner.class);
-
     /*
      * Data network properties.
      */
@@ -25,10 +21,11 @@ public final class DataNetworkInner extends Resource {
     private DataNetworkPropertiesFormat innerProperties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData innerSystemData;
+    private SystemData systemData;
 
     /**
      * Get the innerProperties property: Data network properties.
@@ -39,14 +36,14 @@ public final class DataNetworkInner extends Resource {
         return this.innerProperties;
     }
 
-//    /**
-//     * Get the innerSystemData property: Metadata pertaining to creation and last modification of the resource.
-//     *
-//     * @return the innerSystemData value.
-//     */
-//    private SystemData innerSystemData() {
-//        return this.innerSystemData;
-//    }
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /** {@inheritDoc} */
     @Override

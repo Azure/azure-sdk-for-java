@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Connection information for encrypting the on-premises data source credentials. */
 @Fluent
 public final class IntegrationRuntimeConnectionInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeConnectionInfoInner.class);
-
     /*
      * The token generated in service. Callers use this token to authenticate
      * to integration runtime.

@@ -14,12 +14,19 @@ public final class ThroughputControlGroupConfig {
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
     private final boolean isDefault;
+    private final boolean continueOnInitError;
 
-    ThroughputControlGroupConfig(String groupName, Integer targetThroughput, Double targetThroughputThreshold, boolean isDefault) {
-       this.groupName= groupName;
+    ThroughputControlGroupConfig(
+            String groupName,
+            Integer targetThroughput,
+            Double targetThroughputThreshold,
+            boolean isDefault,
+            boolean continueOnInitError) {
+       this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.isDefault = isDefault;
+       this.continueOnInitError = continueOnInitError;
     }
 
     /**
@@ -69,5 +76,18 @@ public final class ThroughputControlGroupConfig {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.isDefault;
+    }
+
+    /**
+     * Get whether request is allowed to continue on original request flow if throughput control controller failed on initialization.
+     *
+     * By default, it is false.
+     * If it is true, requests will continue on original request flow if throughput control controller failed on initialization.
+     *
+     * @return {@code true} request will continue on original request flow if throughput control controller failed on initialization. {@code false} otherwise.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public boolean continueOnInitError() {
+        return continueOnInitError;
     }
 }

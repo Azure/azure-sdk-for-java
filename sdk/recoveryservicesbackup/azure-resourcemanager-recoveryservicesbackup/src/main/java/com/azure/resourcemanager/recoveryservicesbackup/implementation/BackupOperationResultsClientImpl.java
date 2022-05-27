@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupOperationResultsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupOperationResultsClient. */
 public final class BackupOperationResultsClientImpl implements BackupOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(BackupOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupOperationResultsService service;
 
@@ -196,8 +193,7 @@ public final class BackupOperationResultsClientImpl implements BackupOperationRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getAsync(String vaultName, String resourceGroupName, String operationId) {
-        return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return getWithResponseAsync(vaultName, resourceGroupName, operationId).flatMap(ignored -> Mono.empty());
     }
 
     /**

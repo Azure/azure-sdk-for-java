@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Export operation configuration information. */
 @Fluent
 public final class ServiceExportConfigurationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceExportConfigurationInfo.class);
-
     /*
      * The name of the default export storage account.
      */

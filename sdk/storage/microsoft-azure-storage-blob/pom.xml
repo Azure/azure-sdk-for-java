@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.33</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+            <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
         </dependency>
 
         <dependency>
@@ -90,14 +90,14 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.7.9</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-common</artifactId>
-          <version>12.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+          <version>12.17.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
           <classifier>tests</classifier>
           <type>test-jar</type>
           <scope>test</scope>

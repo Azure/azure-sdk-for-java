@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyDefinitionsClient. */
 public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClient {
-    private final ClientLogger logger = new ClientLogger(PolicyDefinitionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyDefinitionsService service;
 
@@ -344,14 +341,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     public Mono<PolicyDefinitionInner> createOrUpdateAsync(
         String policyDefinitionName, PolicyDefinitionInner parameters) {
         return createOrUpdateWithResponseAsync(policyDefinitionName, parameters)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -481,7 +471,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String policyDefinitionName) {
-        return deleteWithResponseAsync(policyDefinitionName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(policyDefinitionName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -607,15 +597,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyDefinitionInner> getAsync(String policyDefinitionName) {
-        return getWithResponseAsync(policyDefinitionName)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(policyDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -717,15 +699,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyDefinitionInner> getBuiltInAsync(String policyDefinitionName) {
-        return getBuiltInWithResponseAsync(policyDefinitionName)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getBuiltInWithResponseAsync(policyDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -870,14 +844,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     public Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters) {
         return createOrUpdateAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, parameters)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1009,7 +976,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupAsync(String policyDefinitionName, String managementGroupId) {
         return deleteAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1136,14 +1103,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     public Mono<PolicyDefinitionInner> getAtManagementGroupAsync(
         String policyDefinitionName, String managementGroupId) {
         return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

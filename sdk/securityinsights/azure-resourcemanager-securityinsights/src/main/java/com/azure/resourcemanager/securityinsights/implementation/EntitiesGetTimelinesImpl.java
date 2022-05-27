@@ -13,10 +13,9 @@ import com.azure.resourcemanager.securityinsights.fluent.models.EntityTimelineRe
 import com.azure.resourcemanager.securityinsights.models.EntitiesGetTimelines;
 import com.azure.resourcemanager.securityinsights.models.EntityTimelineParameters;
 import com.azure.resourcemanager.securityinsights.models.EntityTimelineResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EntitiesGetTimelinesImpl implements EntitiesGetTimelines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntitiesGetTimelinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EntitiesGetTimelinesImpl.class);
 
     private final EntitiesGetTimelinesClient innerClient;
 

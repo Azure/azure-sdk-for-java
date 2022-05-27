@@ -20,7 +20,7 @@ public final class WorkspaceClient {
     @Generated private final WorkspacesImpl serviceClient;
 
     /**
-     * Initializes an instance of Workspaces client.
+     * Initializes an instance of WorkspaceClient class.
      *
      * @param serviceClient the service client implementation.
      */

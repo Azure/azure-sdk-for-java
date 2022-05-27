@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Get GitHub access token request definition. */
 @Fluent
 public final class GitHubAccessTokenRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GitHubAccessTokenRequest.class);
-
     /*
      * GitHub access code.
      */
@@ -125,7 +122,7 @@ public final class GitHubAccessTokenRequest {
      */
     public void validate() {
         if (gitHubAccessCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
@@ -134,10 +131,12 @@ public final class GitHubAccessTokenRequest {
             gitHubClientSecret().validate();
         }
         if (gitHubAccessTokenBaseUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GitHubAccessTokenRequest.class);
 }

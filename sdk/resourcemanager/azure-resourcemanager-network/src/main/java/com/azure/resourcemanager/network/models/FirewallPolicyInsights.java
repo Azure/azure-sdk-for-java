@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Firewall Policy Insights. */
 @Fluent
 public final class FirewallPolicyInsights {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyInsights.class);
-
     /*
      * A flag to indicate if the insights are enabled on the policy.
      */

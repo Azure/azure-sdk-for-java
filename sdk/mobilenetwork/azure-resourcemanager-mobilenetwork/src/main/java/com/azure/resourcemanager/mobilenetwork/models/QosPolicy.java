@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** QoS policy. */
 @Fluent
 public class QosPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QosPolicy.class);
-
     /*
      * QoS Flow 5G QoS Indicator value.  The 5QI identifies a specific QoS
      * forwarding treatment to be provided to a flow. This must not be a
@@ -193,11 +190,13 @@ public class QosPolicy {
      */
     public void validate() {
         if (maximumBitRate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property maximumBitRate in model QosPolicy"));
         } else {
             maximumBitRate().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QosPolicy.class);
 }

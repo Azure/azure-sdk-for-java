@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,31 +14,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ModifyProperties")
 @Fluent
 public final class AutomationRuleModifyPropertiesAction extends AutomationRuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRuleModifyPropertiesAction.class);
-
     /*
-     * The configuration of the modify properties automation rule action
+     * The actionConfiguration property.
      */
-    @JsonProperty(value = "actionConfiguration", required = true)
-    private AutomationRuleModifyPropertiesActionConfiguration actionConfiguration;
+    @JsonProperty(value = "actionConfiguration")
+    private IncidentPropertiesAction actionConfiguration;
 
     /**
-     * Get the actionConfiguration property: The configuration of the modify properties automation rule action.
+     * Get the actionConfiguration property: The actionConfiguration property.
      *
      * @return the actionConfiguration value.
      */
-    public AutomationRuleModifyPropertiesActionConfiguration actionConfiguration() {
+    public IncidentPropertiesAction actionConfiguration() {
         return this.actionConfiguration;
     }
 
     /**
-     * Set the actionConfiguration property: The configuration of the modify properties automation rule action.
+     * Set the actionConfiguration property: The actionConfiguration property.
      *
      * @param actionConfiguration the actionConfiguration value to set.
      * @return the AutomationRuleModifyPropertiesAction object itself.
      */
-    public AutomationRuleModifyPropertiesAction withActionConfiguration(
-        AutomationRuleModifyPropertiesActionConfiguration actionConfiguration) {
+    public AutomationRuleModifyPropertiesAction withActionConfiguration(IncidentPropertiesAction actionConfiguration) {
         this.actionConfiguration = actionConfiguration;
         return this;
     }
@@ -60,12 +55,7 @@ public final class AutomationRuleModifyPropertiesAction extends AutomationRuleAc
     @Override
     public void validate() {
         super.validate();
-        if (actionConfiguration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actionConfiguration in model AutomationRuleModifyPropertiesAction"));
-        } else {
+        if (actionConfiguration() != null) {
             actionConfiguration().validate();
         }
     }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.DataPolicyManifestsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
@@ -21,8 +20,6 @@ import java.time.Duration;
 /** Initializes a new instance of the PolicyClientImpl type. */
 @ServiceClient(builder = PolicyClientBuilder.class)
 public final class PolicyClientImpl extends AzureServiceClient implements PolicyClient {
-    private final ClientLogger logger = new ClientLogger(PolicyClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 

@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.VpnSiteLinkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnSiteLinkConnectionsClient. */
 public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(VpnSiteLinkConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VpnSiteLinkConnectionsService service;
 

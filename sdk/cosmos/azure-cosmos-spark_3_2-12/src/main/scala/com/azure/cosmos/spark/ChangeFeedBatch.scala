@@ -46,7 +46,8 @@ private class ChangeFeedBatch
       val container = ThroughputControlHelper.getContainer(config, containerConfig, cacheItem.client)
 
       // This maps the StartFrom settings to concrete LSNs
-      val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, None)
+      val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(
+        container, changeFeedConfig, partitioningConfig, None)
 
       // Calculates the Input partitions based on start Lsn and latest Lsn
       val latestOffset = CosmosPartitionPlanner.getLatestOffset(

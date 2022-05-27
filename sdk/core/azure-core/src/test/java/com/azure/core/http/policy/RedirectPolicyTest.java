@@ -15,6 +15,9 @@ import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.test.junit.extensions.SyncAsyncExtension;
 import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -26,6 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class RedirectPolicyTest {
 
@@ -58,14 +62,16 @@ public class RedirectPolicyTest {
         assertEquals(308, response.getStatusCode());
     }
 
-    @SyncAsyncTest
-    public void defaultRedirectWhen308() throws Exception {
+    @ParameterizedTest
+    @ValueSource(ints = {308, 307, 301, 302})
+    public void defaultRedirectExpectedStatusCodes(int statusCode) throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Location", "http://redirecthost/");
+                headers.put("Authorization", "12345");
                 HttpHeaders httpHeader = new HttpHeaders(headers);
-                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+                return Mono.just(new MockHttpResponse(request, statusCode, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
             }
@@ -76,15 +82,11 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy())
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/")), Context.NONE),
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost/"))).block()
-        );
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+                new URL("http://localhost/"))).block();
 
-        // assertEquals(2, httpClient.getCount());
         assertEquals(200, response.getStatusCode());
+        assertNull(response.getHeaders().getValue("Authorization"));
     }
 
     @SyncAsyncTest
@@ -374,6 +376,32 @@ public class RedirectPolicyTest {
         );
 
         assertEquals(401, response.getStatusCode());
+    }
+
+    @Test
+    public void defaultRedirectAuthorizationHeaderCleared() throws Exception {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/");
+                headers.put("Authorization", "12345");
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy())
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(200, response.getStatusCode());
+        assertNull(response.getHeaders().getValue("Authorization"));
     }
 
     static class RecordingHttpClient implements HttpClient {

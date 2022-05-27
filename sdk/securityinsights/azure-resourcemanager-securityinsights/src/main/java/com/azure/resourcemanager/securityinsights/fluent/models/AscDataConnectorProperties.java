@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertsDataTypeOfDataConnector;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorWithAlertsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ASC (Azure Security Center) data connector properties. */
 @Fluent
 public final class AscDataConnectorProperties extends DataConnectorWithAlertsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AscDataConnectorProperties.class);
-
     /*
      * The subscription id to connect to, and get the data from.
      */

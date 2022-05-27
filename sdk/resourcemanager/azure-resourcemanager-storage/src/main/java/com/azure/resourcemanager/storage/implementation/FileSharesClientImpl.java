@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.FileSharesClient;
 import com.azure.resourcemanager.storage.fluent.models.FileShareInner;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileSharesClient. */
 public final class FileSharesClientImpl implements FileSharesClient {
-    private final ClientLogger logger = new ClientLogger(FileSharesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FileSharesService service;
 
@@ -628,14 +625,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public Mono<FileShareInner> createAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, String expand) {
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, expand)
-            .flatMap(
-                (Response<FileShareInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -661,14 +651,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         final String expand = null;
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, expand)
-            .flatMap(
-                (Response<FileShareInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -879,14 +862,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public Mono<FileShareInner> updateAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
         return updateWithResponseAsync(resourceGroupName, accountName, shareName, fileShare)
-            .flatMap(
-                (Response<FileShareInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1086,14 +1062,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public Mono<FileShareInner> getAsync(
         String resourceGroupName, String accountName, String shareName, String expand, String xMsSnapshot) {
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand, xMsSnapshot)
-            .flatMap(
-                (Response<FileShareInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1116,14 +1085,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         final String expand = null;
         final String xMsSnapshot = null;
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand, xMsSnapshot)
-            .flatMap(
-                (Response<FileShareInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1336,7 +1298,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, String shareName, String xMsSnapshot, String include) {
         return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, include)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1359,7 +1321,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         final String xMsSnapshot = null;
         final String include = null;
         return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, include)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1563,7 +1525,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public Mono<Void> restoreAsync(
         String resourceGroupName, String accountName, String shareName, DeletedShare deletedShare) {
         return restoreWithResponseAsync(resourceGroupName, accountName, shareName, deletedShare)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1772,14 +1734,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String xMsSnapshot,
         LeaseShareRequest parameters) {
         return leaseWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, parameters)
-            .flatMap(
-                (FileSharesLeaseResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1803,14 +1758,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         final String xMsSnapshot = null;
         final LeaseShareRequest parameters = null;
         return leaseWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, parameters)
-            .flatMap(
-                (FileSharesLeaseResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

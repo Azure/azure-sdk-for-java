@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Power query sink. */
 @Fluent
 public final class PowerQuerySink extends DataFlowSink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerQuerySink.class);
-
     /*
      * sink script.
      */
@@ -44,6 +40,13 @@ public final class PowerQuerySink extends DataFlowSink {
     @Override
     public PowerQuerySink withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         super.withSchemaLinkedService(schemaLinkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PowerQuerySink withRejectedDataLinkedService(LinkedServiceReference rejectedDataLinkedService) {
+        super.withRejectedDataLinkedService(rejectedDataLinkedService);
         return this;
     }
 

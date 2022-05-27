@@ -13,7 +13,12 @@ import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,6 +28,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -32,10 +39,15 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
+
     private static final String REQUEST_HOST = "http://localhost";
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
@@ -56,7 +69,8 @@ public abstract class HttpClientTests {
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
-    private static final String ECHO_REQUEST = "echoRequest";
+    protected static final String ECHO_RESPONSE = "echo";
+
     private static final Random RANDOM = new Random();
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
@@ -319,7 +333,7 @@ public abstract class HttpClientTests {
         HttpResponse response = createHttpClient()
             .sendSync(new HttpRequest(
                 HttpMethod.PUT,
-                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_RESPONSE),
                 new HttpHeaders(),
                 content), Context.NONE);
 
@@ -347,7 +361,7 @@ public abstract class HttpClientTests {
         HttpResponse response = createHttpClient()
             .sendSync(new HttpRequest(
                 HttpMethod.PUT,
-                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_RESPONSE),
                 new HttpHeaders(),
                 content), Context.NONE);
 
@@ -384,7 +398,7 @@ public abstract class HttpClientTests {
         HttpResponse response = createHttpClient()
             .sendSync(new HttpRequest(
                 HttpMethod.PUT,
-                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_RESPONSE),
                 new HttpHeaders(),
                 content), Context.NONE);
 
@@ -447,10 +461,159 @@ public abstract class HttpClientTests {
                 .verifyComplete());
     }
 
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     * @throws MalformedURLException If it can't parse URL
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody)
+        throws MalformedURLException {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        StepVerifier.create(createHttpClient()
+            .send(request)
+            .flatMap(HttpResponse::getBodyAsByteArray))
+            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> getBinaryDataBodyVariants() {
+        return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
+            .flatMap(size -> {
+                try {
+                    byte[] bytes = new byte[size];
+                    RANDOM.nextBytes(bytes);
+
+                    BinaryData byteArrayData = BinaryData.fromBytes(bytes);
+
+                    String randomString = new String(bytes, StandardCharsets.UTF_8);
+                    byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
+                    BinaryData stringBinaryData = BinaryData.fromString(randomString);
+
+                    BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes));
+
+                    List<ByteBuffer> bufferList = new ArrayList<>();
+                    int bufferSize = 113;
+                    for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
+                        bufferList.add(
+                            ByteBuffer.wrap(
+                                bytes, startIndex, Math.min(bytes.length - startIndex, bufferSize)));
+                    }
+                    BinaryData fluxBinaryData = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate),
+                        null, false).block();
+
+                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate),
+                        size.longValue(), false).block();
+
+                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate)
+                            .delayElements(Duration.ofNanos(10))
+                            .flatMapSequential(
+                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
+                            ),
+                        null, false).block();
+
+                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(
+                        Flux.fromIterable(bufferList)
+                            .map(ByteBuffer::duplicate)
+                            .delayElements(Duration.ofNanos(10))
+                            .flatMapSequential(
+                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
+                            ),
+                        size.longValue(), false).block();
+
+                    BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
+
+
+                    Path wholeFile = Files.createTempFile("http-client-tests", null);
+                    wholeFile.toFile().deleteOnExit();
+                    Files.write(wholeFile, bytes);
+                    BinaryData fileData = BinaryData.fromFile(wholeFile);
+
+                    Path sliceFile = Files.createTempFile("http-client-tests", null);
+                    sliceFile.toFile().deleteOnExit();
+                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+                    Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
+                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+                    BinaryData sliceFileData = BinaryData.fromFile(sliceFile, Long.valueOf(size), Long.valueOf(size));
+
+
+                    return Stream.of(
+                        Arguments.of(Named.named("byte[]", byteArrayData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("String", stringBinaryData),
+                            Named.named("" + randomStringBytes.length, randomStringBytes)),
+                        Arguments.of(Named.named("InputStream",
+                            streamData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("Flux", fluxBinaryData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("Object", objectBinaryData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("File slice", sliceFileData), Named.named("" + size, bytes))
+                    );
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+    }
+
     private Mono<String> sendRequest(String requestPath) {
         return createHttpClient()
-            .send(new HttpRequest(HttpMethod.GET, REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath))
+            .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)))
             .flatMap(HttpResponse::getBodyAsString);
+    }
+
+    /**
+     * Gets the request URL for given path.
+     * @param requestPath The path.
+     * @return The request URL for given path.
+     * @throws RuntimeException if url is invalid.
+     */
+    protected URL getRequestUrl(String requestPath) {
+        try {
+            return new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    private static class ByteArraySerializer implements ObjectSerializer {
+        @Override
+        public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+            throw new UnsupportedOperationException("Not supported");
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+            throw new UnsupportedOperationException("Not supported");
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                stream.write((byte[]) value);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
     }
 
     private String sendRequestSync(String requestPath) {
@@ -467,7 +630,7 @@ public abstract class HttpClientTests {
             return createHttpClient()
                 .send(new HttpRequest(
                     HttpMethod.PUT,
-                    new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                    new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_RESPONSE),
                     new HttpHeaders(),
                     content))
                 .flatMap(HttpResponse::getBodyAsString);
@@ -481,7 +644,7 @@ public abstract class HttpClientTests {
             HttpResponse response = createHttpClient()
                 .sendSync(new HttpRequest(
                     HttpMethod.PUT,
-                    new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_REQUEST),
+                    new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + ECHO_RESPONSE),
                     new HttpHeaders(),
                     content), Context.NONE);
             // TODO (kasobol-msft) response.getContent().toString() doesn't respect the encoding. How do we do this?

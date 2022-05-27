@@ -7,18 +7,14 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.synapse.models.PrincipalType;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a database principal assignment. */
 @Fluent
 public final class DatabasePrincipalAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentInner.class);
-
     /*
      * The database principal.
      */

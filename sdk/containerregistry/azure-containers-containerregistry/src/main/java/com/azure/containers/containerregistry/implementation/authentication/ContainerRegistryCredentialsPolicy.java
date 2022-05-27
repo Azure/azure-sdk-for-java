@@ -5,6 +5,7 @@ package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.logging.ClientLogger;
@@ -81,6 +82,45 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
             .flatMap((token) -> {
                 context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
                 return Mono.empty();
+            });
+    }
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+        }
+
+        // Since we will need to replay this call, adding duplicate to make this replayable.
+        if (context.getHttpRequest().getBody() != null) {
+            context.getHttpRequest().setBody(context.getHttpRequest().getBody().map(buffer -> buffer.duplicate()));
+        }
+
+        HttpPipelineNextPolicy nextPolicy = next.clone();
+        return authorizeRequest(context)
+            .then(Mono.defer(() -> next.process()))
+            .flatMap(httpResponse -> {
+                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                    return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
+                        if (retry) {
+                            return nextPolicy.process()
+                                .doFinally(ignored -> {
+                                    // Both Netty and OkHttp expect the requestBody to be closed after the connection is closed.
+                                    // Failure to do so results in memory leak.
+                                    // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
+                                    // we let the client close the connection after the stream read.
+                                    // This can cause potential leaks in the scenarios like above, where the policy
+                                    // may intercept the response and prevent it from reaching the client.
+                                    // Hence, the policy needs to ensure that the connection is closed.
+                                    httpResponse.close();
+                                });
+                        } else {
+                            return Mono.just(httpResponse);
+                        }
+                    });
+                }
+                return Mono.just(httpResponse);
             });
     }
 

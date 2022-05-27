@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FacebookChannel")
 @Fluent
 public final class FacebookChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FacebookChannel.class);
-
     /*
      * The set of properties specific to bot facebook channel
      */

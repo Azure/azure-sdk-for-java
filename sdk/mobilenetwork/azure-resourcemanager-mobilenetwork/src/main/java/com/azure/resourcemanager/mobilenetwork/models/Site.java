@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
 import java.util.List;
@@ -47,6 +48,13 @@ public interface Site {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the site resource. **TODO**: Confirm if this is

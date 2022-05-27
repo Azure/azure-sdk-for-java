@@ -7,15 +7,14 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Describes watchlist item properties. */
 @Fluent
 public final class WatchlistItemProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchlistItemProperties.class);
-
     /*
      * The type of the watchlist item
      */
@@ -68,13 +67,15 @@ public final class WatchlistItemProperties {
      * key-value pairs for a watchlist item
      */
     @JsonProperty(value = "itemsKeyValue", required = true)
-    private Object itemsKeyValue;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> itemsKeyValue;
 
     /*
      * key-value pairs for a watchlist item entity mapping
      */
     @JsonProperty(value = "entityMapping")
-    private Object entityMapping;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> entityMapping;
 
     /**
      * Get the watchlistItemType property: The type of the watchlist item.
@@ -241,7 +242,7 @@ public final class WatchlistItemProperties {
      *
      * @return the itemsKeyValue value.
      */
-    public Object itemsKeyValue() {
+    public Map<String, Object> itemsKeyValue() {
         return this.itemsKeyValue;
     }
 
@@ -251,7 +252,7 @@ public final class WatchlistItemProperties {
      * @param itemsKeyValue the itemsKeyValue value to set.
      * @return the WatchlistItemProperties object itself.
      */
-    public WatchlistItemProperties withItemsKeyValue(Object itemsKeyValue) {
+    public WatchlistItemProperties withItemsKeyValue(Map<String, Object> itemsKeyValue) {
         this.itemsKeyValue = itemsKeyValue;
         return this;
     }
@@ -261,7 +262,7 @@ public final class WatchlistItemProperties {
      *
      * @return the entityMapping value.
      */
-    public Object entityMapping() {
+    public Map<String, Object> entityMapping() {
         return this.entityMapping;
     }
 
@@ -271,7 +272,7 @@ public final class WatchlistItemProperties {
      * @param entityMapping the entityMapping value to set.
      * @return the WatchlistItemProperties object itself.
      */
-    public WatchlistItemProperties withEntityMapping(Object entityMapping) {
+    public WatchlistItemProperties withEntityMapping(Map<String, Object> entityMapping) {
         this.entityMapping = entityMapping;
         return this;
     }
@@ -289,10 +290,12 @@ public final class WatchlistItemProperties {
             updatedBy().validate();
         }
         if (itemsKeyValue() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property itemsKeyValue in model WatchlistItemProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WatchlistItemProperties.class);
 }

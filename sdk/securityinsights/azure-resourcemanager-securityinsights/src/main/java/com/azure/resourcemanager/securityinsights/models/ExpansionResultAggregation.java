@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information of a specific aggregation in the expansion result. */
 @Fluent
 public final class ExpansionResultAggregation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpansionResultAggregation.class);
-
     /*
      * The common type of the aggregation. (for e.g. entity field name)
      */
@@ -128,10 +125,12 @@ public final class ExpansionResultAggregation {
      */
     public void validate() {
         if (entityKind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property entityKind in model ExpansionResultAggregation"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExpansionResultAggregation.class);
 }

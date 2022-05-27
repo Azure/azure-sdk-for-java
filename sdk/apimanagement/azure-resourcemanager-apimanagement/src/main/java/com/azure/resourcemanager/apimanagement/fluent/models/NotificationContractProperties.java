@@ -7,14 +7,11 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.RecipientsContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Notification Contract properties. */
 @Fluent
 public final class NotificationContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationContractProperties.class);
-
     /*
      * Title of the Notification.
      */
@@ -100,7 +97,7 @@ public final class NotificationContractProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property title in model NotificationContractProperties"));
@@ -109,4 +106,6 @@ public final class NotificationContractProperties {
             recipients().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationContractProperties.class);
 }

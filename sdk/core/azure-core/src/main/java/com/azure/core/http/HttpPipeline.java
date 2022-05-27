@@ -29,7 +29,7 @@ public final class HttpPipeline {
      * HttpPipeline#send(HttpPipelineCallContext)} and it's response.
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
-     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will be made
+     * @param pipelinePolicies pipeline policies in the order they need to be applied, a copy of this array will be made
      * hence changing the original array after the creation of pipeline will not  mutate the pipeline
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
@@ -42,7 +42,7 @@ public final class HttpPipeline {
     /**
      * Get the policy at the passed index in the pipeline.
      *
-     * @param index index of the the policy to retrieve.
+     * @param index index of the policy to retrieve.
      * @return the policy stored at that index.
      */
     public HttpPipelinePolicy getPolicy(final int index) {

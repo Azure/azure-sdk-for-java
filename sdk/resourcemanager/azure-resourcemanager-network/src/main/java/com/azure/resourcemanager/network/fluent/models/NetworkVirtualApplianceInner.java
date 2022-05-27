@@ -7,12 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** NetworkVirtualAppliance Resource. */
 @Fluent
 public final class NetworkVirtualApplianceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceInner.class);
-
     /*
      * Properties of the Network Virtual Appliance.
      */

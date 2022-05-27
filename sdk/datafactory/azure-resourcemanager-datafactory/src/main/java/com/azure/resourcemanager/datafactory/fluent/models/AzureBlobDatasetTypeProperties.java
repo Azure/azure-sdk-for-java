@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Blob dataset properties. */
 @Fluent
 public final class AzureBlobDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobDatasetTypeProperties.class);
-
     /*
      * The path of the Azure Blob storage. Type: string (or Expression with
      * resultType string).

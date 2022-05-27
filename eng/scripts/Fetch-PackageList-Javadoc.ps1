@@ -22,9 +22,13 @@ param (
 )
 . (Join-Path $PSScriptRoot ../common/scripts/common.ps1)
 
-Write-Host "The artifact name: $ArtifactName"
+Write-Host "JavaDocJarLocation: $JavaDocJarLocation"
+Write-Host "DocRepoLocation: $DocRepoLocation"
+Write-Host "ArtifactName: $ArtifactName"
+
 $jarFile = Get-ChildItem $JavaDocJarLocation -Recurse -Include "$ArtifactName*-javadoc.jar"
-Write-Host "The jar file is $jarFile."
+Write-Host "The javadoc jar file is $jarFile."
+
 $version = $jarFile.Name -replace "$ArtifactName-(.*)-javadoc.jar", '$1'
 Write-Host "The full version: $version"
 $originalVersion = [AzureEngSemanticVersion]::ParseVersionString($version)
@@ -36,4 +40,10 @@ if ($originalVersion -and $originalVersion.IsPrerelease) {
 $packageNameLocation = "$DocRepoLocation/metadata/$metadataMoniker"
 New-Item -ItemType Directory -Path $packageNameLocation -Force
 Write-Host "The moniker $packageNameLocation"
+
+if (!(Test-Path $jarFile.FullName)) {
+  LogWarning "Skipping the doc publishing for $ArtifactName because we cannot find the javadoc jar."
+  return
+}
+
 Fetch-Namespaces-From-Javadoc $jarFile.FullName "$packageNameLocation/$ArtifactName.txt"

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DocumentDB Collection dataset properties. */
 @Fluent
 public final class DocumentDbCollectionDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DocumentDbCollectionDatasetTypeProperties.class);
-
     /*
      * Document Database collection name. Type: string (or Expression with
      * resultType string).
@@ -50,10 +47,12 @@ public final class DocumentDbCollectionDatasetTypeProperties {
      */
     public void validate() {
         if (collectionName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property collectionName in model DocumentDbCollectionDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DocumentDbCollectionDatasetTypeProperties.class);
 }

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Site properties. */
 @Fluent
 public final class SitePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SitePropertiesFormat.class);
-
     /*
      * The provisioning state of the site resource. **TODO**: Confirm if this
      * is needed

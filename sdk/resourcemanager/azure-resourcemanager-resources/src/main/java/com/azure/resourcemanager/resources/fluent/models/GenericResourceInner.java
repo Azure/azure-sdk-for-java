@@ -6,20 +6,16 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ExtendedLocation;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Resource information. */
 @Fluent
 public class GenericResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResourceInner.class);
-
     /*
      * The plan of the resource.
      */

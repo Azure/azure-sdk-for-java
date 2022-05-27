@@ -33,8 +33,7 @@ public class PortPolicy implements HttpPipelinePolicy {
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
                 } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(
-                        String.format("Failed to set the HTTP request port to %d.", port), e));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
                 }
             }
         }

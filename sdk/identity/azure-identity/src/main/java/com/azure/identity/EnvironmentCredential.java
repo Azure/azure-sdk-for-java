@@ -131,7 +131,7 @@ public class EnvironmentCredential implements TokenCredential {
                     "EnvironmentCredential authentication unavailable."
                         + " Environment variables are not fully configured."
                         + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
-                        + " https://aka.ms/azsdk/net/identity/environmentcredential/troubleshoot")));
+                        + " https://aka.ms/azsdk/java/identity/environmentcredential/troubleshoot")));
         } else {
             return tokenCredential.getToken(request);
         }

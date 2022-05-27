@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a connection monitor output destination. */
 @Fluent
 public final class ConnectionMonitorOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorOutput.class);
-
     /*
      * Connection monitor output destination type. Currently, only "Workspace"
      * is supported.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  */
 @Fluent
 public final class ObjectReplicationPolicyFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyFilter.class);
-
     /*
      * Optional. Filters the results to replicate only blobs whose names begin
      * with the specified prefix.

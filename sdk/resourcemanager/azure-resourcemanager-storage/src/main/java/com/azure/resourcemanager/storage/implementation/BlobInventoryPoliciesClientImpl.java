@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.BlobInventoryPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.models.BlobInventoryPolicyInner;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlobInventoryPoliciesClient. */
 public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(BlobInventoryPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BlobInventoryPoliciesService service;
 
@@ -267,14 +264,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
     public Mono<BlobInventoryPolicyInner> getAsync(
         String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName)
-            .flatMap(
-                (Response<BlobInventoryPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -480,14 +470,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         BlobInventoryPolicyName blobInventoryPolicyName,
         BlobInventoryPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, properties)
-            .flatMap(
-                (Response<BlobInventoryPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -677,7 +660,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
     public Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

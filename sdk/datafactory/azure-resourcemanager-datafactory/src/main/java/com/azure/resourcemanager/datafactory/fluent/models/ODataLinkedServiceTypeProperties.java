@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.ODataAadServicePrincipalCredentialType;
 import com.azure.resourcemanager.datafactory.models.ODataAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OData linked service properties. */
 @Fluent
 public final class ODataLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ODataLinkedServiceTypeProperties.class);
-
     /*
      * The URL of the OData service endpoint. Type: string (or Expression with
      * resultType string).
@@ -431,7 +428,7 @@ public final class ODataLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model ODataLinkedServiceTypeProperties"));
@@ -449,4 +446,6 @@ public final class ODataLinkedServiceTypeProperties {
             servicePrincipalEmbeddedCertPassword().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ODataLinkedServiceTypeProperties.class);
 }

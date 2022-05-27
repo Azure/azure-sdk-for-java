@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** IfCondition activity properties. */
 @Fluent
 public final class IfConditionActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IfConditionActivityTypeProperties.class);
-
     /*
      * An expression that would evaluate to Boolean. This is used to determine
      * the block of activities (ifTrueActivities or ifFalseActivities) that
@@ -114,7 +111,7 @@ public final class IfConditionActivityTypeProperties {
      */
     public void validate() {
         if (expression() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expression in model IfConditionActivityTypeProperties"));
@@ -128,4 +125,6 @@ public final class IfConditionActivityTypeProperties {
             ifFalseActivities().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IfConditionActivityTypeProperties.class);
 }

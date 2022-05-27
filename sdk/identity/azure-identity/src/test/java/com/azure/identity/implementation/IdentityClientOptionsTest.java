@@ -38,11 +38,4 @@ public class IdentityClientOptionsTest {
         identityClientOptions.setAuthorityHost(authorityHost);
         Assert.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
     }
-
-    @Test
-    public void testDisableAuthorityValidationSafetyCheck() {
-        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        identityClientOptions.disableAuthorityValidationSafetyCheck();
-        Assert.assertFalse(identityClientOptions.getAuthorityValidationSafetyCheck());
-    }
 }

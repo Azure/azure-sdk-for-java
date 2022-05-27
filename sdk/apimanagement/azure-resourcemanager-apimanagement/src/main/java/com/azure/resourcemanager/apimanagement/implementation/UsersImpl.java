@@ -21,10 +21,9 @@ import com.azure.resourcemanager.apimanagement.models.UserTokenResult;
 import com.azure.resourcemanager.apimanagement.models.Users;
 import com.azure.resourcemanager.apimanagement.models.UsersGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsersImpl implements Users {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsersImpl.class);
 
     private final UsersClient innerClient;
 
@@ -162,7 +161,7 @@ public final class UsersImpl implements Users {
     public UserContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,14 +169,14 @@ public final class UsersImpl implements Users {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String userId = Utils.getValueFromIdByName(id, "users");
         if (userId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
@@ -188,7 +187,7 @@ public final class UsersImpl implements Users {
     public Response<UserContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,14 +195,14 @@ public final class UsersImpl implements Users {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String userId = Utils.getValueFromIdByName(id, "users");
         if (userId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
@@ -214,7 +213,7 @@ public final class UsersImpl implements Users {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -222,14 +221,14 @@ public final class UsersImpl implements Users {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String userId = Utils.getValueFromIdByName(id, "users");
         if (userId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
@@ -247,15 +246,14 @@ public final class UsersImpl implements Users {
                 localDeleteSubscriptions,
                 localNotify,
                 localAppType,
-                Context.NONE)
-            .getValue();
+                Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(
         String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -263,14 +261,14 @@ public final class UsersImpl implements Users {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String userId = Utils.getValueFromIdByName(id, "users");
         if (userId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));

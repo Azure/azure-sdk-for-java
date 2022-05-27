@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MySQL linked service properties. */
 @Fluent
 public final class MySqlLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MySqlLinkedServiceTypeProperties.class);
-
     /*
      * The connection string.
      */
@@ -104,7 +101,7 @@ public final class MySqlLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model MySqlLinkedServiceTypeProperties"));
@@ -113,4 +110,6 @@ public final class MySqlLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MySqlLinkedServiceTypeProperties.class);
 }

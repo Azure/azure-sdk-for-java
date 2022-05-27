@@ -24,7 +24,11 @@ public final class SelectPermissions extends ExpandableStringEnum<SelectPermissi
         return fromString(name, SelectPermissions.class);
     }
 
-    /** @return known SelectPermissions values. */
+    /**
+     * Gets known SelectPermissions values.
+     *
+     * @return known SelectPermissions values.
+     */
     public static Collection<SelectPermissions> values() {
         return values(SelectPermissions.class);
     }

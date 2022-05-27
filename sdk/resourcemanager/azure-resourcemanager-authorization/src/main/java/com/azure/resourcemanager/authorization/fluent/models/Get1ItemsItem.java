@@ -16,14 +16,54 @@ public final class Get1ItemsItem extends ExpandableStringEnum<Get1ItemsItem> {
     /** Static value deletedDateTime for Get1ItemsItem. */
     public static final Get1ItemsItem DELETED_DATE_TIME = fromString("deletedDateTime");
 
-    /** Static value alternateNotificationEmails for Get1ItemsItem. */
-    public static final Get1ItemsItem ALTERNATE_NOTIFICATION_EMAILS = fromString("alternateNotificationEmails");
+    /** Static value authenticationType for Get1ItemsItem. */
+    public static final Get1ItemsItem AUTHENTICATION_TYPE = fromString("authenticationType");
 
-    /** Static value groupLifetimeInDays for Get1ItemsItem. */
-    public static final Get1ItemsItem GROUP_LIFETIME_IN_DAYS = fromString("groupLifetimeInDays");
+    /** Static value availabilityStatus for Get1ItemsItem. */
+    public static final Get1ItemsItem AVAILABILITY_STATUS = fromString("availabilityStatus");
 
-    /** Static value managedGroupTypes for Get1ItemsItem. */
-    public static final Get1ItemsItem MANAGED_GROUP_TYPES = fromString("managedGroupTypes");
+    /** Static value isAdminManaged for Get1ItemsItem. */
+    public static final Get1ItemsItem IS_ADMIN_MANAGED = fromString("isAdminManaged");
+
+    /** Static value isDefault for Get1ItemsItem. */
+    public static final Get1ItemsItem IS_DEFAULT = fromString("isDefault");
+
+    /** Static value isInitial for Get1ItemsItem. */
+    public static final Get1ItemsItem IS_INITIAL = fromString("isInitial");
+
+    /** Static value isRoot for Get1ItemsItem. */
+    public static final Get1ItemsItem IS_ROOT = fromString("isRoot");
+
+    /** Static value isVerified for Get1ItemsItem. */
+    public static final Get1ItemsItem IS_VERIFIED = fromString("isVerified");
+
+    /** Static value manufacturer for Get1ItemsItem. */
+    public static final Get1ItemsItem MANUFACTURER = fromString("manufacturer");
+
+    /** Static value model for Get1ItemsItem. */
+    public static final Get1ItemsItem MODEL = fromString("model");
+
+    /** Static value passwordNotificationWindowInDays for Get1ItemsItem. */
+    public static final Get1ItemsItem PASSWORD_NOTIFICATION_WINDOW_IN_DAYS =
+        fromString("passwordNotificationWindowInDays");
+
+    /** Static value passwordValidityPeriodInDays for Get1ItemsItem. */
+    public static final Get1ItemsItem PASSWORD_VALIDITY_PERIOD_IN_DAYS = fromString("passwordValidityPeriodInDays");
+
+    /** Static value state for Get1ItemsItem. */
+    public static final Get1ItemsItem STATE = fromString("state");
+
+    /** Static value supportedServices for Get1ItemsItem. */
+    public static final Get1ItemsItem SUPPORTED_SERVICES = fromString("supportedServices");
+
+    /** Static value domainNameReferences for Get1ItemsItem. */
+    public static final Get1ItemsItem DOMAIN_NAME_REFERENCES = fromString("domainNameReferences");
+
+    /** Static value serviceConfigurationRecords for Get1ItemsItem. */
+    public static final Get1ItemsItem SERVICE_CONFIGURATION_RECORDS = fromString("serviceConfigurationRecords");
+
+    /** Static value verificationDnsRecords for Get1ItemsItem. */
+    public static final Get1ItemsItem VERIFICATION_DNS_RECORDS = fromString("verificationDnsRecords");
 
     /**
      * Creates or finds a Get1ItemsItem from its string representation.

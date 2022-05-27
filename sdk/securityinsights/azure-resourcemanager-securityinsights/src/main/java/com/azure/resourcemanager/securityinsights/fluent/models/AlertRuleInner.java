@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.FusionAlertRule;
 import com.azure.resourcemanager.securityinsights.models.MLBehaviorAnalyticsAlertRule;
 import com.azure.resourcemanager.securityinsights.models.MicrosoftSecurityIncidentCreationAlertRule;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.securityinsights.models.NrtAlertRule;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.ScheduledAlertRule;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceAlertRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -37,8 +35,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AlertRuleInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleInner.class);
-
     /** {@inheritDoc} */
     @Override
     public AlertRuleInner withEtag(String etag) {

@@ -75,8 +75,5 @@ extends:
       - name: azure-core-tracing-opentelemetry
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
-    AdditionalModules:
-      - name: perf-test-core
-        groupId: com.azure
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

@@ -14,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceInner;
-import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,7 +30,7 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate resource.
+     * @return the certificate resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CertificateResourceInner>> getWithResponseAsync(
@@ -47,7 +46,7 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate resource.
+     * @return the certificate resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CertificateResourceInner> getAsync(String resourceGroupName, String serviceName, String certificateName);
@@ -78,7 +77,7 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate resource.
+     * @return the certificate resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CertificateResourceInner> getWithResponse(
@@ -91,15 +90,18 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
+     * @param certificateResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
+     * @return certificate resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String certificateName, CertificateProperties properties);
+        String resourceGroupName,
+        String serviceName,
+        String certificateName,
+        CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
@@ -108,15 +110,18 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
+     * @param certificateResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
+     * @return the {@link PollerFlux} for polling of certificate resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serviceName, String certificateName, CertificateProperties properties);
+        String resourceGroupName,
+        String serviceName,
+        String certificateName,
+        CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
@@ -125,36 +130,39 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
+     * @param certificateResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
+     * @return the {@link SyncPoller} for polling of certificate resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String certificateName, CertificateProperties properties);
-
-    /**
-     * Create or update certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String certificateName,
-        CertificateProperties properties,
+        CertificateResourceInner certificateResource);
+
+    /**
+     * Create or update certificate resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param certificateName The name of the certificate resource.
+     * @param certificateResource Parameters for the create or update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of certificate resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CertificateResourceInner>, CertificateResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String certificateName,
+        CertificateResourceInner certificateResource,
         Context context);
 
     /**
@@ -164,15 +172,18 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
+     * @param certificateResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
+     * @return certificate resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CertificateResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String certificateName, CertificateProperties properties);
+        String resourceGroupName,
+        String serviceName,
+        String certificateName,
+        CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
@@ -181,23 +192,7 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CertificateResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String certificateName);
-
-    /**
-     * Create or update certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
+     * @param certificateResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,7 +200,10 @@ public interface CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CertificateResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String certificateName, CertificateProperties properties);
+        String resourceGroupName,
+        String serviceName,
+        String certificateName,
+        CertificateResourceInner certificateResource);
 
     /**
      * Create or update certificate resource.
@@ -214,22 +212,7 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateResourceInner createOrUpdate(String resourceGroupName, String serviceName, String certificateName);
-
-    /**
-     * Create or update certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
-     * @param properties Properties of the certificate resource payload.
+     * @param certificateResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,7 +224,7 @@ public interface CertificatesClient {
         String resourceGroupName,
         String serviceName,
         String certificateName,
-        CertificateProperties properties,
+        CertificateResourceInner certificateResource,
         Context context);
 
     /**
@@ -254,7 +237,7 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -270,9 +253,9 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String certificateName);
 
@@ -286,9 +269,9 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String certificateName);
 
@@ -303,9 +286,9 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String certificateName, Context context);
 
@@ -319,7 +302,7 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String certificateName);
@@ -362,7 +345,8 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of certificate resources list and a possible link for next page.
+     * @return collection compose of certificate resources list and a possible link for next page as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CertificateResourceInner> listAsync(String resourceGroupName, String serviceName);
@@ -376,7 +360,8 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of certificate resources list and a possible link for next page.
+     * @return collection compose of certificate resources list and a possible link for next page as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CertificateResourceInner> list(String resourceGroupName, String serviceName);
@@ -391,7 +376,8 @@ public interface CertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of certificate resources list and a possible link for next page.
+     * @return collection compose of certificate resources list and a possible link for next page as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CertificateResourceInner> list(String resourceGroupName, String serviceName, Context context);

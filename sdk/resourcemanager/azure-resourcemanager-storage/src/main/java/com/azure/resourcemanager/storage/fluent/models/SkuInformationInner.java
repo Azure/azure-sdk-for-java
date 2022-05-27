@@ -11,15 +11,12 @@ import com.azure.resourcemanager.storage.models.Restriction;
 import com.azure.resourcemanager.storage.models.SkuCapability;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Storage SKU and its properties. */
 @Fluent
 public final class SkuInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInformationInner.class);
-
     /*
      * The SKU name. Required for account creation; optional for update. Note
      * that in older versions, SKU name was called accountType.
@@ -165,7 +162,7 @@ public final class SkuInformationInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
         }
@@ -176,4 +173,6 @@ public final class SkuInformationInner {
             restrictions().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SkuInformationInner.class);
 }

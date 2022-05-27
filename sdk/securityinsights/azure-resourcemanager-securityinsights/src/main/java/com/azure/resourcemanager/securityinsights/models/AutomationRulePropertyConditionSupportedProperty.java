@@ -25,13 +25,16 @@ public final class AutomationRulePropertyConditionSupportedProperty
     /** Static value IncidentStatus for AutomationRulePropertyConditionSupportedProperty. */
     public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_STATUS = fromString("IncidentStatus");
 
+    /** Static value IncidentRelatedAnalyticRuleIds for AutomationRulePropertyConditionSupportedProperty. */
+    public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_RELATED_ANALYTIC_RULE_IDS =
+        fromString("IncidentRelatedAnalyticRuleIds");
+
     /** Static value IncidentTactics for AutomationRulePropertyConditionSupportedProperty. */
     public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_TACTICS =
         fromString("IncidentTactics");
 
-    /** Static value IncidentRelatedAnalyticRuleIds for AutomationRulePropertyConditionSupportedProperty. */
-    public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_RELATED_ANALYTIC_RULE_IDS =
-        fromString("IncidentRelatedAnalyticRuleIds");
+    /** Static value IncidentLabel for AutomationRulePropertyConditionSupportedProperty. */
+    public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_LABEL = fromString("IncidentLabel");
 
     /** Static value IncidentProviderName for AutomationRulePropertyConditionSupportedProperty. */
     public static final AutomationRulePropertyConditionSupportedProperty INCIDENT_PROVIDER_NAME =
@@ -65,6 +68,10 @@ public final class AutomationRulePropertyConditionSupportedProperty
     /** Static value AccountUPNSuffix for AutomationRulePropertyConditionSupportedProperty. */
     public static final AutomationRulePropertyConditionSupportedProperty ACCOUNT_UPNSUFFIX =
         fromString("AccountUPNSuffix");
+
+    /** Static value AlertProductNames for AutomationRulePropertyConditionSupportedProperty. */
+    public static final AutomationRulePropertyConditionSupportedProperty ALERT_PRODUCT_NAMES =
+        fromString("AlertProductNames");
 
     /** Static value AzureResourceResourceId for AutomationRulePropertyConditionSupportedProperty. */
     public static final AutomationRulePropertyConditionSupportedProperty AZURE_RESOURCE_RESOURCE_ID =
@@ -208,7 +215,11 @@ public final class AutomationRulePropertyConditionSupportedProperty
         return fromString(name, AutomationRulePropertyConditionSupportedProperty.class);
     }
 
-    /** @return known AutomationRulePropertyConditionSupportedProperty values. */
+    /**
+     * Gets known AutomationRulePropertyConditionSupportedProperty values.
+     *
+     * @return known AutomationRulePropertyConditionSupportedProperty values.
+     */
     public static Collection<AutomationRulePropertyConditionSupportedProperty> values() {
         return values(AutomationRulePropertyConditionSupportedProperty.class);
     }

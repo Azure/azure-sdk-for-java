@@ -84,7 +84,7 @@ class ServiceBusSessionManagerTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
@@ -121,7 +121,7 @@ class ServiceBusSessionManagerTest {
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
-        logger.info("===== [{}] Setting up. =====", testInfo.getDisplayName());
+        LOGGER.info("===== [{}] Setting up. =====", testInfo.getDisplayName());
 
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
@@ -154,7 +154,7 @@ class ServiceBusSessionManagerTest {
 
     @AfterEach
     void afterEach(TestInfo testInfo) throws Exception {
-        logger.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
+        LOGGER.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
 
         // If this test class is made to run in parallel this will need to change to
         // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.

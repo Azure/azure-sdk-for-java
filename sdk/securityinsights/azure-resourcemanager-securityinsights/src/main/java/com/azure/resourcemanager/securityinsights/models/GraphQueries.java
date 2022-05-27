@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The graph query to show the current data status. */
 @Fluent
 public class GraphQueries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GraphQueries.class);
-
     /*
      * the metric that the query is checking
      */

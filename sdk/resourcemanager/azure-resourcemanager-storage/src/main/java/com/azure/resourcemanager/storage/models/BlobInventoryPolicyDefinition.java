@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object that defines the blob inventory rule. */
 @Fluent
 public final class BlobInventoryPolicyDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyDefinition.class);
-
     /*
      * An object that defines the filter set.
      */
@@ -50,12 +47,25 @@ public final class BlobInventoryPolicyDefinition {
      * Last-Modified, Content-Length, Content-MD5, BlobType, AccessTier,
      * AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time,
      * hdi_isfolder, Owner, Group, Permissions, Acl, Snapshot, VersionId,
-     * IsCurrentVersion, Metadata, LastAccessTime'. The valid values for
-     * 'Container' definition.objectType include 'Name, Last-Modified,
-     * Metadata, LeaseStatus, LeaseState, LeaseDuration, PublicAccess,
-     * HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time,
-     * hdi_isfolder, Owner, Group, Permissions, Acl' are valid only for Hns
-     * enabled accounts.'Tags' field is only valid for non Hns accounts
+     * IsCurrentVersion, Metadata, LastAccessTime, Tags, Etag, ContentType,
+     * ContentEncoding, ContentLanguage, ContentCRC64, CacheControl,
+     * ContentDisposition, LeaseStatus, LeaseState, LeaseDuration,
+     * ServerEncrypted, Deleted, DeletionId, DeletedTime,
+     * RemainingRetentionDays, ImmutabilityPolicyUntilDate,
+     * ImmutabilityPolicyMode, LegalHold, CopyId, CopyStatus, CopySource,
+     * CopyProgress, CopyCompletionTime, CopyStatusDescription,
+     * CustomerProvidedKeySha256, RehydratePriority, ArchiveStatus,
+     * XmsBlobSequenceNumber, EncryptionScope, IncrementalCopy, TagCount'. For
+     * Blob object type schema field value 'DeletedTime' is applicable only for
+     * Hns enabled accounts. The valid values for 'Container'
+     * definition.objectType include 'Name, Last-Modified, Metadata,
+     * LeaseStatus, LeaseState, LeaseDuration, PublicAccess,
+     * HasImmutabilityPolicy, HasLegalHold, Etag, DefaultEncryptionScope,
+     * DenyEncryptionScopeOverride, ImmutableStorageWithVersioningEnabled,
+     * Deleted, Version, DeletedTime, RemainingRetentionDays'. Schema field
+     * values 'Expiry-Time, hdi_isfolder, Owner, Group, Permissions, Acl,
+     * DeletionId' are valid only for Hns enabled accounts.Schema field values
+     * 'Tags, TagCount' are only valid for Non-Hns accounts.
      */
     @JsonProperty(value = "schemaFields", required = true)
     private List<String> schemaFields;
@@ -147,11 +157,18 @@ public final class BlobInventoryPolicyDefinition {
      * object to be included in the inventory. The Schema field value 'Name' is always required. The valid values for
      * this field for the 'Blob' definition.objectType include 'Name, Creation-Time, Last-Modified, Content-Length,
      * Content-MD5, BlobType, AccessTier, AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time, hdi_isfolder,
-     * Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime'. The valid
-     * values for 'Container' definition.objectType include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState,
-     * LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time,
-     * hdi_isfolder, Owner, Group, Permissions, Acl' are valid only for Hns enabled accounts.'Tags' field is only valid
-     * for non Hns accounts.
+     * Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime, Tags, Etag,
+     * ContentType, ContentEncoding, ContentLanguage, ContentCRC64, CacheControl, ContentDisposition, LeaseStatus,
+     * LeaseState, LeaseDuration, ServerEncrypted, Deleted, DeletionId, DeletedTime, RemainingRetentionDays,
+     * ImmutabilityPolicyUntilDate, ImmutabilityPolicyMode, LegalHold, CopyId, CopyStatus, CopySource, CopyProgress,
+     * CopyCompletionTime, CopyStatusDescription, CustomerProvidedKeySha256, RehydratePriority, ArchiveStatus,
+     * XmsBlobSequenceNumber, EncryptionScope, IncrementalCopy, TagCount'. For Blob object type schema field value
+     * 'DeletedTime' is applicable only for Hns enabled accounts. The valid values for 'Container' definition.objectType
+     * include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState, LeaseDuration, PublicAccess,
+     * HasImmutabilityPolicy, HasLegalHold, Etag, DefaultEncryptionScope, DenyEncryptionScopeOverride,
+     * ImmutableStorageWithVersioningEnabled, Deleted, Version, DeletedTime, RemainingRetentionDays'. Schema field
+     * values 'Expiry-Time, hdi_isfolder, Owner, Group, Permissions, Acl, DeletionId' are valid only for Hns enabled
+     * accounts.Schema field values 'Tags, TagCount' are only valid for Non-Hns accounts.
      *
      * @return the schemaFields value.
      */
@@ -164,11 +181,18 @@ public final class BlobInventoryPolicyDefinition {
      * object to be included in the inventory. The Schema field value 'Name' is always required. The valid values for
      * this field for the 'Blob' definition.objectType include 'Name, Creation-Time, Last-Modified, Content-Length,
      * Content-MD5, BlobType, AccessTier, AccessTierChangeTime, AccessTierInferred, Tags, Expiry-Time, hdi_isfolder,
-     * Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime'. The valid
-     * values for 'Container' definition.objectType include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState,
-     * LeaseDuration, PublicAccess, HasImmutabilityPolicy, HasLegalHold'. Schema field values 'Expiry-Time,
-     * hdi_isfolder, Owner, Group, Permissions, Acl' are valid only for Hns enabled accounts.'Tags' field is only valid
-     * for non Hns accounts.
+     * Owner, Group, Permissions, Acl, Snapshot, VersionId, IsCurrentVersion, Metadata, LastAccessTime, Tags, Etag,
+     * ContentType, ContentEncoding, ContentLanguage, ContentCRC64, CacheControl, ContentDisposition, LeaseStatus,
+     * LeaseState, LeaseDuration, ServerEncrypted, Deleted, DeletionId, DeletedTime, RemainingRetentionDays,
+     * ImmutabilityPolicyUntilDate, ImmutabilityPolicyMode, LegalHold, CopyId, CopyStatus, CopySource, CopyProgress,
+     * CopyCompletionTime, CopyStatusDescription, CustomerProvidedKeySha256, RehydratePriority, ArchiveStatus,
+     * XmsBlobSequenceNumber, EncryptionScope, IncrementalCopy, TagCount'. For Blob object type schema field value
+     * 'DeletedTime' is applicable only for Hns enabled accounts. The valid values for 'Container' definition.objectType
+     * include 'Name, Last-Modified, Metadata, LeaseStatus, LeaseState, LeaseDuration, PublicAccess,
+     * HasImmutabilityPolicy, HasLegalHold, Etag, DefaultEncryptionScope, DenyEncryptionScopeOverride,
+     * ImmutableStorageWithVersioningEnabled, Deleted, Version, DeletedTime, RemainingRetentionDays'. Schema field
+     * values 'Expiry-Time, hdi_isfolder, Owner, Group, Permissions, Acl, DeletionId' are valid only for Hns enabled
+     * accounts.Schema field values 'Tags, TagCount' are only valid for Non-Hns accounts.
      *
      * @param schemaFields the schemaFields value to set.
      * @return the BlobInventoryPolicyDefinition object itself.
@@ -188,28 +212,30 @@ public final class BlobInventoryPolicyDefinition {
             filters().validate();
         }
         if (format() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property format in model BlobInventoryPolicyDefinition"));
         }
         if (schedule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schedule in model BlobInventoryPolicyDefinition"));
         }
         if (objectType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property objectType in model BlobInventoryPolicyDefinition"));
         }
         if (schemaFields() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaFields in model BlobInventoryPolicyDefinition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicyDefinition.class);
 }

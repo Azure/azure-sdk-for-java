@@ -52,7 +52,7 @@ public final class CommunicationNetworkTraversalsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "CommunicationNetwork")
-    private interface CommunicationNetworkTraversalsService {
+    public interface CommunicationNetworkTraversalsService {
         @Post("/networkTraversal/:issueRelayConfiguration")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

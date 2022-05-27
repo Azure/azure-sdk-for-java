@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for QueueServices GetServiceProperties. */
 public final class QueueServicesGetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/QueueServicesGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/QueueServicesGet.json
      */
     /**
      * Sample code: QueueServicesGet.

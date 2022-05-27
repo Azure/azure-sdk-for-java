@@ -55,6 +55,7 @@ import com.azure.resourcemanager.apimanagement.fluent.GatewayApisClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayCertificateAuthoritiesClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayHostnameConfigurationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.GatewaysClient;
+import com.azure.resourcemanager.apimanagement.fluent.GlobalSchemasClient;
 import com.azure.resourcemanager.apimanagement.fluent.GroupUsersClient;
 import com.azure.resourcemanager.apimanagement.fluent.GroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.IdentityProvidersClient;
@@ -67,10 +68,12 @@ import com.azure.resourcemanager.apimanagement.fluent.NotificationRecipientUsers
 import com.azure.resourcemanager.apimanagement.fluent.NotificationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.OpenIdConnectProvidersClient;
 import com.azure.resourcemanager.apimanagement.fluent.OperationsClient;
+import com.azure.resourcemanager.apimanagement.fluent.OutboundNetworkDependenciesEndpointsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.PolicyDescriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalRevisionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalSettingsClient;
+import com.azure.resourcemanager.apimanagement.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductApisClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductGroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductPoliciesClient;
@@ -80,6 +83,7 @@ import com.azure.resourcemanager.apimanagement.fluent.QuotaByCounterKeysClient;
 import com.azure.resourcemanager.apimanagement.fluent.QuotaByPeriodKeysClient;
 import com.azure.resourcemanager.apimanagement.fluent.RegionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ReportsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.apimanagement.fluent.SignInSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.SignUpSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.SubscriptionsClient;
@@ -107,8 +111,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the ApiManagementClientImpl type. */
 @ServiceClient(builder = ApiManagementClientBuilder.class)
 public final class ApiManagementClientImpl implements ApiManagementClient {
-    private final ClientLogger logger = new ClientLogger(ApiManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -437,6 +439,18 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         return this.certificates;
     }
 
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
     /** The ContentTypesClient object to access its operations. */
     private final ContentTypesClient contentTypes;
 
@@ -713,6 +727,18 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         return this.openIdConnectProviders;
     }
 
+    /** The OutboundNetworkDependenciesEndpointsClient object to access its operations. */
+    private final OutboundNetworkDependenciesEndpointsClient outboundNetworkDependenciesEndpoints;
+
+    /**
+     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
+     *
+     * @return the OutboundNetworkDependenciesEndpointsClient object.
+     */
+    public OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints() {
+        return this.outboundNetworkDependenciesEndpoints;
+    }
+
     /** The PoliciesClient object to access its operations. */
     private final PoliciesClient policies;
 
@@ -795,6 +821,18 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public DelegationSettingsClient getDelegationSettings() {
         return this.delegationSettings;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /** The ProductsClient object to access its operations. */
@@ -903,6 +941,18 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public ReportsClient getReports() {
         return this.reports;
+    }
+
+    /** The GlobalSchemasClient object to access its operations. */
+    private final GlobalSchemasClient globalSchemas;
+
+    /**
+     * Gets the GlobalSchemasClient object to access its operations.
+     *
+     * @return the GlobalSchemasClient object.
+     */
+    public GlobalSchemasClient getGlobalSchemas() {
+        return this.globalSchemas;
     }
 
     /** The TenantSettingsClient object to access its operations. */
@@ -1072,7 +1122,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-12-01";
+        this.apiVersion = "2021-08-01";
         this.apis = new ApisClientImpl(this);
         this.apiRevisions = new ApiRevisionsClientImpl(this);
         this.apiReleases = new ApiReleasesClientImpl(this);
@@ -1094,6 +1144,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.backends = new BackendsClientImpl(this);
         this.caches = new CachesClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.contentTypes = new ContentTypesClientImpl(this);
         this.contentItems = new ContentItemsClientImpl(this);
         this.deletedServices = new DeletedServicesClientImpl(this);
@@ -1117,6 +1168,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.notificationRecipientUsers = new NotificationRecipientUsersClientImpl(this);
         this.notificationRecipientEmails = new NotificationRecipientEmailsClientImpl(this);
         this.openIdConnectProviders = new OpenIdConnectProvidersClientImpl(this);
+        this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsClientImpl(this);
         this.policies = new PoliciesClientImpl(this);
         this.policyDescriptions = new PolicyDescriptionsClientImpl(this);
         this.portalRevisions = new PortalRevisionsClientImpl(this);
@@ -1124,6 +1176,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.signInSettings = new SignInSettingsClientImpl(this);
         this.signUpSettings = new SignUpSettingsClientImpl(this);
         this.delegationSettings = new DelegationSettingsClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.products = new ProductsClientImpl(this);
         this.productApis = new ProductApisClientImpl(this);
         this.productGroups = new ProductGroupsClientImpl(this);
@@ -1133,6 +1186,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.quotaByPeriodKeys = new QuotaByPeriodKeysClientImpl(this);
         this.regions = new RegionsClientImpl(this);
         this.reports = new ReportsClientImpl(this);
+        this.globalSchemas = new GlobalSchemasClientImpl(this);
         this.tenantSettings = new TenantSettingsClientImpl(this);
         this.apiManagementSkus = new ApiManagementSkusClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
@@ -1230,7 +1284,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -1289,4 +1343,6 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiManagementClientImpl.class);
 }

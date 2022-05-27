@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.AuthorizationOperationsClient;
 import com.azure.resourcemanager.resources.fluent.models.OperationInner;
 import com.azure.resourcemanager.resources.models.OperationListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AuthorizationOperationsClient. */
 public final class AuthorizationOperationsClientImpl implements AuthorizationOperationsClient {
-    private final ClientLogger logger = new ClientLogger(AuthorizationOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AuthorizationOperationsService service;
 

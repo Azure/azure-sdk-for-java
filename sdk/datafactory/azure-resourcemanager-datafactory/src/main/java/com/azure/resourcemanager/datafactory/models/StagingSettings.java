@@ -16,8 +16,6 @@ import java.util.Map;
 /** Staging settings. */
 @Fluent
 public final class StagingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StagingSettings.class);
-
     /*
      * Staging linked service reference.
      */
@@ -144,7 +142,7 @@ public final class StagingSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model StagingSettings"));
@@ -152,4 +150,6 @@ public final class StagingSettings {
             linkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StagingSettings.class);
 }

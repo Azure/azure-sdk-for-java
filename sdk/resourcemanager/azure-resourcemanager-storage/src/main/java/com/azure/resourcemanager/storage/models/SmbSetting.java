@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Setting for SMB protocol. */
 @Fluent
 public final class SmbSetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SmbSetting.class);
-
     /*
      * Multichannel setting. Applies to Premium FileStorage only.
      */

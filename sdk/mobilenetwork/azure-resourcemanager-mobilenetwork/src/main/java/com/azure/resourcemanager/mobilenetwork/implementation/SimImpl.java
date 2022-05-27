@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
-import com.azure.resourcemanager.mobilenetwork.models.ConfigurationState;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.Sim;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
@@ -48,12 +49,16 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         }
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
-    public ConfigurationState configurationState() {
-        return this.innerModel().configurationState();
+    public SimState simState() {
+        return this.innerModel().simState();
     }
 
     public String internationalMobileSubscriberIdentity() {

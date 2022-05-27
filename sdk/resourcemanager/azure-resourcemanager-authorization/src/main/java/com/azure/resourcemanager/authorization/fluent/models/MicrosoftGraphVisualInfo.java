@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** visualInfo. */
 @Fluent
 public final class MicrosoftGraphVisualInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphVisualInfo.class);
-
     /*
      * imageInfo
      */
@@ -36,11 +34,11 @@ public final class MicrosoftGraphVisualInfo {
      * Json
      */
     @JsonProperty(value = "content")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> content;
 
     /*
-     * Optional. Longer text description of the user's unique activity
-     * (example: document name, first sentence, and/or metadata)
+     * The description property.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -121,8 +119,7 @@ public final class MicrosoftGraphVisualInfo {
     }
 
     /**
-     * Get the description property: Optional. Longer text description of the user's unique activity (example: document
-     * name, first sentence, and/or metadata).
+     * Get the description property: The description property.
      *
      * @return the description value.
      */
@@ -131,8 +128,7 @@ public final class MicrosoftGraphVisualInfo {
     }
 
     /**
-     * Set the description property: Optional. Longer text description of the user's unique activity (example: document
-     * name, first sentence, and/or metadata).
+     * Set the description property: The description property.
      *
      * @param description the description value to set.
      * @return the MicrosoftGraphVisualInfo object itself.

@@ -41,9 +41,16 @@ public class Configs {
     private static final String HTTP_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.HTTP_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS";
     private static final String ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = "COSMOS.ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS";
-    private static final String CLIENT_TELEMETRY_ENABLED = "COSMOS.CLIENT_TELEMETRY_ENABLED";
+
+    // Example for customer how to setup the proxy:
+    // System.setProperty(
+    //  "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG","{\"type\":\"HTTP\", \"host\": \"localhost\", \"port\": 8080}")
+    private static final String CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG = "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG";
+    // In the future, the following two client telemetry related configs will be part of the database account info
+    // Before that day comes, use JVM properties
     private static final String CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS = "COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS";
     private static final String CLIENT_TELEMETRY_ENDPOINT = "COSMOS.CLIENT_TELEMETRY_ENDPOINT";
+
     private static final String ENVIRONMENT_NAME = "COSMOS.ENVIRONMENT_NAME";
     private static final String QUERYPLAN_CACHING_ENABLED = "COSMOS.QUERYPLAN_CACHING_ENABLED";
 
@@ -94,10 +101,6 @@ public class Configs {
     // Whether to process the response on a different thread
     private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
     private static final boolean DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE = false;
-
-    // OpenConnectionsAndInitCaches Constants
-    private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
-    private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
 
     // whether to allow query empty page diagnostics logging
     private static final String QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = "COSMOS.QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED";
@@ -225,12 +228,12 @@ public class Configs {
         return getJVMConfigAsInt(QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS);
     }
 
-    public static boolean isClientTelemetryEnabled(boolean defaultValue) {
-        return getJVMConfigAsBoolean(CLIENT_TELEMETRY_ENABLED, defaultValue);
-    }
-
     public static String getClientTelemetryEndpoint() {
         return System.getProperty(CLIENT_TELEMETRY_ENDPOINT);
+    }
+
+    public static String getClientTelemetryProxyOptionsConfig() {
+        return System.getProperty(CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG);
     }
 
     public static String getEnvironmentName() {
@@ -238,7 +241,7 @@ public class Configs {
     }
 
     public static boolean isQueryPlanCachingEnabled() {
-        // Queryplan caching will be disabled by default
+        // Queryplan caching is enabled by default
         return getJVMConfigAsBoolean(QUERYPLAN_CACHING_ENABLED, true);
     }
 
@@ -268,12 +271,6 @@ public class Configs {
         return getJVMConfigAsBoolean(
             SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME,
             DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE);
-    }
-
-    public static int getOpenConnectionsRetriesCount() {
-        return getJVMConfigAsInt(
-            OPEN_CONNECTIONS_RETRIES_COUNT_NAME,
-            DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT);
     }
 
     public static boolean isEmptyPageDiagnosticsEnabled() {

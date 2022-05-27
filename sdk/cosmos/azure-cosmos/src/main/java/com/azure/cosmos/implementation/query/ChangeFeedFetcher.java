@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -45,9 +46,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         Map<String, Object> requestOptionProperties,
         int top,
         int maxItemCount,
-        boolean isSplitHandlingDisabled) {
+        boolean isSplitHandlingDisabled,
+        OperationContextAndListenerTuple operationContext) {
 
-        super(executeFunc, true, top, maxItemCount);
+        super(executeFunc, true, top, maxItemCount, operationContext);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
@@ -80,7 +82,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 this.changeFeedState,
                 retryPolicyInstance,
                 requestOptionProperties,
-                retryPolicyInstance.getRetryContext());
+                retryPolicyInstance.getRetryContext(),
+                () -> this.getOperationContextText());
             this.createRequestFunc = () -> {
                 RxDocumentServiceRequest request = createRequestFunc.get();
                 this.feedRangeContinuationSplitRetryPolicy.onBeforeSendRequest(request);
@@ -177,20 +180,26 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private final Map<String, Object> requestOptionProperties;
         private MetadataDiagnosticsContext diagnosticsContext;
         private final RetryContext retryContext;
+        private final Supplier<String> operationContextTextProvider;
 
         public FeedRangeContinuationSplitRetryPolicy(
             RxDocumentClientImpl client,
             ChangeFeedState state,
             DocumentClientRetryPolicy nextRetryPolicy,
             Map<String, Object> requestOptionProperties,
-            RetryContext retryContext) {
+            RetryContext retryContext,
+            Supplier<String> operationContextTextProvider) {
 
+            checkNotNull(
+                operationContextTextProvider,
+                "Argument 'operationContextTextProvider' must not be null.");
             this.client = client;
             this.state = state;
             this.nextRetryPolicy = nextRetryPolicy;
             this.requestOptionProperties = requestOptionProperties;
             this.diagnosticsContext = null;
             this.retryContext = retryContext;
+            this.operationContextTextProvider = operationContextTextProvider;
         }
 
         @Override
@@ -205,7 +214,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             return this.nextRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
                 if (!shouldRetryResult.shouldRetry) {
                     if (!(e instanceof GoneException)) {
-                        LOGGER.warn("Exception not applicable - will fail the request.", e);
+                        LOGGER.warn(
+                            "Exception not applicable - will fail the request. Context: {}",
+                            this.operationContextTextProvider.get(),
+                            e);
                         return Mono.just(ShouldRetryResult.noRetry());
                     }
 
@@ -235,9 +247,15 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                         .handleSplit(client, (GoneException)e)
                         .flatMap(splitShouldRetryResult -> {
                             if (!splitShouldRetryResult.shouldRetry) {
-                                LOGGER.warn("No partition split error - will fail the request.", e);
+                                LOGGER.warn(
+                                    "No partition split error - will fail the request. Context: {}",
+                                    this.operationContextTextProvider.get(),
+                                    e);
                             } else {
-                                LOGGER.debug("HandleSplit will retry.", e);
+                                LOGGER.debug(
+                                    "HandleSplit will retry. Context: {}",
+                                    this.operationContextTextProvider.get(),
+                                    e);
                             }
 
                             return Mono.just(shouldRetryResult);

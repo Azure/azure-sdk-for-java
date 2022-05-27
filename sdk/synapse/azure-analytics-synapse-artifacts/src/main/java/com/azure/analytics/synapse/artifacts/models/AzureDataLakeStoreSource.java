@@ -42,4 +42,25 @@ public final class AzureDataLakeStoreSource extends CopySource {
         this.recursive = recursive;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataLakeStoreSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

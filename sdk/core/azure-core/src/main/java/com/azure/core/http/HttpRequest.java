@@ -24,7 +24,7 @@ public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private BinaryData data;
+    private BinaryData body;
 
     /**
      * Create a new HttpRequest instance.
@@ -55,25 +55,41 @@ public class HttpRequest {
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
      * @param headers the HTTP headers to use with this request
-     * @param body the request content
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
-        this(httpMethod, url, headers, createFluxBinaryData(body));
-    }
-
-    /**
-     * Creates a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The address where the request will be sent.
-     * @param headers The HTTP headers in the request.
-     * @param data The request body content.
-     */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, BinaryData data) {
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
-        this.data = data;
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method
+     * @param url the target address to send the request to
+     * @param headers the HTTP headers to use with this request
+     * @param body the request content
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+        setBody(BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body)));
+    }
+
+    /**
+     * Create a new HttpRequest instance.
+     *
+     * @param httpMethod the HTTP request method
+     * @param url the target address to send the request to
+     * @param headers the HTTP headers to use with this request
+     * @param body the request content
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, BinaryData body) {
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+        setBody(body);
     }
 
     /**
@@ -171,7 +187,16 @@ public class HttpRequest {
      * @return the content to be sent
      */
     public Flux<ByteBuffer> getBody() {
-        return (data == null) ? null : data.toFluxByteBuffer();
+        return body == null ? null : body.toFluxByteBuffer();
+    }
+
+    /**
+     * Get the request content.
+     *
+     * @return the content to be sent
+     */
+    public BinaryData getBodyAsBinaryData() {
+        return body;
     }
 
     /**
@@ -183,10 +208,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        data = BinaryData.fromString(content);
-        setContentLength(data.getLength());
-
-        return this;
+        return setBody(BinaryData.fromString(content));
     }
 
     /**
@@ -198,10 +220,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        data = BinaryData.fromBytes(content);
-        setContentLength(data.getLength());
-
-        return this;
+        return setBody(BinaryData.fromBytes(content));
     }
 
     /**
@@ -214,40 +233,36 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
-        this.data = createFluxBinaryData(content);
+        if (content != null) {
+            this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
+        } else  {
+            this.body = null;
+        }
         return this;
     }
 
     /**
-     * Gets the {@link BinaryData} that represents the body of the request.
+     * Set request content.
+     * <p>
+     * If provided content has known length, i.e. {@link BinaryData#getLength()} returns non-null then
+     * Content-Length header is updated. Otherwise,
+     * if provided content has unknown length, i.e. {@link BinaryData#getLength()} returns null then
+     * the caller must set the Content-Length header to indicate the length of the content, or use Transfer-Encoding:
+     * chunked.
      *
-     * @return The {@link BinaryData} request body.
-     */
-    public BinaryData getBodyAsBinaryData() {
-        return data;
-    }
-
-    /**
-     * Sets the {@link BinaryData} that represents the body of the request.
-     *
-     * @param data The {@link BinaryData} request body.
+     * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest setBody(BinaryData data) {
-        this.data = data;
+    public HttpRequest setBody(BinaryData content) {
+        this.body = content;
+        if (content != null && content.getLength() != null) {
+            setContentLength(content.getLength());
+        }
         return this;
     }
 
-    private static BinaryData createFluxBinaryData(Flux<ByteBuffer> content) {
-        return (content == null) ? null : BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
-    }
-
-    private void setContentLength(Long contentLength) {
-        if (contentLength == null) {
-            headers.remove("Content-Length");
-        } else {
-            headers.set("Content-Length", String.valueOf(contentLength));
-        }
+    private void setContentLength(long contentLength) {
+        headers.set("Content-Length", String.valueOf(contentLength));
     }
 
     /**
@@ -261,9 +276,6 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        final BinaryData bufferedData = (data == null)
-            ? null
-            : BinaryDataHelper.createBinaryData(BinaryDataHelper.getContent(data).copy());
-        return new HttpRequest(httpMethod, url, bufferedHeaders, bufferedData);
+        return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
 }

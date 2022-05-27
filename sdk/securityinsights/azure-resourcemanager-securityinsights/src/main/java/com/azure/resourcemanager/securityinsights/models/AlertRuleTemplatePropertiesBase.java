@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Base alert rule template property bag. */
 @Fluent
 public class AlertRuleTemplatePropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleTemplatePropertiesBase.class);
-
     /*
      * the number of alert rules that were created by this template
      */

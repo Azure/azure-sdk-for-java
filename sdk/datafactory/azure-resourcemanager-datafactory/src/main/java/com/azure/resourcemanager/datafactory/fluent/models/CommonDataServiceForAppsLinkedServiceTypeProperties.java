@@ -7,15 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Common Data Service for Apps linked service properties. */
 @Fluent
 public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CommonDataServiceForAppsLinkedServiceTypeProperties.class);
-
     /*
      * The deployment type of the Common Data Service for Apps instance.
      * 'Online' for Common Data Service for Apps Online and 'OnPremisesWithIfd'
@@ -401,14 +397,14 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (deploymentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deploymentType in model"
                             + " CommonDataServiceForAppsLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model"
@@ -421,4 +417,7 @@ public final class CommonDataServiceForAppsLinkedServiceTypeProperties {
             servicePrincipalCredential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(CommonDataServiceForAppsLinkedServiceTypeProperties.class);
 }

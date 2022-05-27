@@ -19,7 +19,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class FileContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final Path file;
     private final int chunkSize;
     private final long position;
@@ -40,20 +40,19 @@ public final class FileContent extends BinaryDataContent {
      * @param file The {@link Path} content.
      * @param chunkSize The requested size for each read of the path.
      * @param position Position, or offset, within the path where reading begins.
-     * @param size Total number of bytes to be read from the path.
+     * @param length Total number of bytes to be read from the path.
      * @throws NullPointerException if {@code file} is null.
-     * @throws IllegalArgumentException If {@code chunkSize} is less than or equal to 0 or {@code position} or
-     * {@code size} is non-null and negative.
+     * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
+     * @throws IllegalArgumentException if {@code position} is less than zero.
+     * @throws IllegalArgumentException if {@code length} is less than zero.
+     * @throws UncheckedIOException if file doesn't exist.
      */
-    public FileContent(Path file, int chunkSize, Long position, Long size) {
-        this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position), validateSize(size, file));
-    }
-
-    private FileContent(Path file, int chunkSize, long position, long length) {
-        this.file = file;
-        this.chunkSize = chunkSize;
-        this.position = position;
-        this.length = length;
+    public FileContent(Path file, int chunkSize, Long position, Long length) {
+        this.file = validateFile(file);
+        this.chunkSize = validateChunkSize(chunkSize);
+        long fileLength = file.toFile().length();
+        this.position = validatePosition(position);
+        this.length = validateLength(length, fileLength, this.position);
     }
 
     private static Path validateFile(Path file) {
@@ -84,13 +83,15 @@ public final class FileContent extends BinaryDataContent {
         return (position != null) ? position : 0;
     }
 
-    private static long validateSize(Long size, Path file) {
-        if (size != null && size < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'size' cannot be negative."));
+    private static long validateLength(Long length, long fileLength, long position) {
+        if (length != null && length < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be negative."));
         }
 
+        long maxAvailableLength = fileLength - position;
+
         // If a size has been set use the minimum of the remaining file size and size to determine the length.
-        return (size == null) ? file.toFile().length() : Math.min(size, file.toFile().length());
+        return (length == null) ? maxAvailableLength : Math.min(length, maxAvailableLength);
     }
 
     @Override
@@ -99,11 +100,7 @@ public final class FileContent extends BinaryDataContent {
     }
 
     public long getPosition() {
-        return this.position;
-    }
-
-    public int getChunkSize() {
-        return chunkSize;
+        return position;
     }
 
     @Override
@@ -129,7 +126,9 @@ public final class FileContent extends BinaryDataContent {
     @Override
     public InputStream toStream() {
         try {
-            return new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize);
+            return new SliceInputStream(
+                new BufferedInputStream(new FileInputStream(file.toFile()), chunkSize),
+                position, length);
         } catch (FileNotFoundException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
         }
@@ -137,9 +136,17 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        try {
-            FileChannel fileChannel = FileChannel.open(file);
-            return fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, length);
+        if (length > Integer.MAX_VALUE) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("'length' cannot be greater than %d when mapping file to ByteBuffer.",
+                    Integer.MAX_VALUE)));
+        }
+        /*
+         * A mapping, once established, is not dependent upon the file channel that was used to create it.
+         * Closing the channel, in particular, has no effect upon the validity of the mapping.
+         */
+        try (FileChannel fileChannel = FileChannel.open(file)) {
+            return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
         }
@@ -179,41 +186,24 @@ public final class FileContent extends BinaryDataContent {
         return file;
     }
 
+    /**
+     * Gets the requested size for each read of the path.
+     *
+     * @return The requested size for each read of the path.
+     */
+    public int getChunkSize() {
+        return chunkSize;
+    }
+
     private byte[] getBytes() {
-        try (FileInputStream stream = new FileInputStream(file.toFile())) {
-            int totalSkipCount = 0;
-            long currentSkipCount;
-            while (totalSkipCount != position) {
-                currentSkipCount = stream.skip(position - totalSkipCount);
-                if (currentSkipCount == -1) {
-                    break;
-                }
-
-                totalSkipCount += currentSkipCount;
-            }
-
-            byte[] bytes = new byte[(int) length];
-            int totalReadCount = 0;
-            int currentReadCount;
-            while ((currentReadCount = stream.read(bytes, totalReadCount, bytes.length - totalReadCount)) != -1) {
-                totalReadCount += currentReadCount;
-
-                // Expected read count has been met, return the byte array as it contains all the content.
-                if (totalReadCount == bytes.length) {
-                    return bytes;
-                }
-            }
-
-            // Another check for read count matching expected read count just to be certain.
-            if (totalReadCount == bytes.length) {
-                return bytes;
-            }
-
-            // Otherwise, the bytes need to be resized to what was actually read.
-            return Arrays.copyOfRange(bytes, 0, totalReadCount);
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        if (length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("'length' cannot be greater than %d when buffering content.",
+                    MAX_ARRAY_SIZE)));
         }
+        byte[] bytes = new byte[(int) length];
+        toByteBuffer().get(bytes);
+        return bytes;
     }
 
     @Override

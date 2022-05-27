@@ -7,31 +7,21 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
-import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplatePropertiesBase;
+import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateWithMitreProperties;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Threat Intelligence alert rule template properties. */
 @Fluent
-public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRuleTemplatePropertiesBase {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ThreatIntelligenceAlertRuleTemplateProperties.class);
-
+public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRuleTemplateWithMitreProperties {
     /*
      * The severity for alerts created by this alert rule.
      */
     @JsonProperty(value = "severity", required = true)
     private AlertSeverity severity;
-
-    /*
-     * The tactics of the alert rule template
-     */
-    @JsonProperty(value = "tactics")
-    private List<AttackTactic> tactics;
 
     /**
      * Get the severity property: The severity for alerts created by this alert rule.
@@ -53,23 +43,17 @@ public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRu
         return this;
     }
 
-    /**
-     * Get the tactics property: The tactics of the alert rule template.
-     *
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.tactics;
+    /** {@inheritDoc} */
+    @Override
+    public ThreatIntelligenceAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
+        super.withTactics(tactics);
+        return this;
     }
 
-    /**
-     * Set the tactics property: The tactics of the alert rule template.
-     *
-     * @param tactics the tactics value to set.
-     * @return the ThreatIntelligenceAlertRuleTemplateProperties object itself.
-     */
-    public ThreatIntelligenceAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
-        this.tactics = tactics;
+    /** {@inheritDoc} */
+    @Override
+    public ThreatIntelligenceAlertRuleTemplateProperties withTechniques(List<String> techniques) {
+        super.withTechniques(techniques);
         return this;
     }
 
@@ -119,10 +103,12 @@ public final class ThreatIntelligenceAlertRuleTemplateProperties extends AlertRu
     public void validate() {
         super.validate();
         if (severity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property severity in model ThreatIntelligenceAlertRuleTemplateProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThreatIntelligenceAlertRuleTemplateProperties.class);
 }

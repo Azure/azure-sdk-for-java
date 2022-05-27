@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-videoanalyzer</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-videoanalyzer;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-videoanalyzer;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Video Analyzer Management</name>
-  <description>This package contains Microsoft Azure SDK for Video Analyzer Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Video Analyzer provides a platform for you to build intelligent video applications that span the edge and the cloud. Package tag package-preview-2021-11.</description>
+  <description>We’re retiring the Azure Video Analyzer preview service; you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is no longer maintained and won’t work after the service is retired. To learn how to transition off, please refer to: https://aka.ms/azsdk/videoanalyzer/transitionoffguidance This package contains Microsoft Azure SDK for Video Analyzer Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Video Analyzer provides a platform for you to build intelligent video applications that span the edge and the cloud. Package tag package-preview-2021-11.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -44,12 +44,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.28.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
   </dependencies>
 </project>

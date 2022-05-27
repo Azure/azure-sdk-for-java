@@ -18,6 +18,7 @@ import reactor.core.publisher.Sinks;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -52,7 +53,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusReceiverClient implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClient.class);
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
@@ -60,6 +61,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
+    /* To ensure synchronousMessageSubscriber is subscribed only once. */
+    private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -93,6 +96,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public String getEntityPath() {
         return asyncClient.getEntityPath();
+    }
+
+    /**
+     * Gets the SessionId of the session if this receiver is a session receiver.
+     *
+     * @return The SessionId or null if this is not a session receiver.
+     */
+    public String getSessionId() {
+        return asyncClient.getSessionId();
     }
 
     /**
@@ -354,7 +366,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
@@ -401,7 +413,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
@@ -449,13 +461,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         } else if (Objects.isNull(maxWaitTime)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new NullPointerException("'maxWaitTime' cannot be null."));
         } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
@@ -574,12 +586,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final String lockToken = message != null ? message.getLockToken() : "null";
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
+            : error -> LOGGER.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
 
         asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
-            v -> logger.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
+            v -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
             throwableConsumer,
-            () -> logger.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
+            () -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
     }
 
     /**
@@ -719,31 +731,39 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
-        final SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
+        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
 
         if (messageSubscriber != null) {
             messageSubscriber.queueWork(work);
             return;
         }
 
-        final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(asyncClient,
-            work,
-            isPrefetchDisabled,
-            operationTimeout);
+        messageSubscriber = synchronousMessageSubscriber.updateAndGet(subscriber -> {
+            // Ensuring we create SynchronousMessageSubscriber only once.
+            if (subscriber == null) {
+                return new SynchronousMessageSubscriber(asyncClient,
+                    work,
+                    isPrefetchDisabled,
+                    operationTimeout);
+            } else {
+                return subscriber;
+            }
+        });
 
         // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
         // time).
         // This means that there may be messages internally buffered before users start iterating the IterableStream.
         // If users do not iterate through the stream and their lock duration expires, it is possible that the
         // Service Bus message's delivery count will be incremented.
-        if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
-            asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
+        if (!syncSubscribed.getAndSet(true)) {
+            // The 'subscribeWith' has side effects hence must not be called from
+            // the above updateFunction of AtomicReference::updateAndGet.
+            asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
         } else {
-            newSubscriber.dispose();
-            synchronousMessageSubscriber.get().queueWork(work);
+            messageSubscriber.queueWork(work);
         }
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(WORK_ID_KEY, work.getId())
             .log("Receive request queued up.");
     }
@@ -751,12 +771,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> logger.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
+            : error -> LOGGER.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
 
         asyncClient.renewSessionLock(maxLockRenewalDuration).subscribe(
-            v -> logger.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
+            v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
             throwableConsumer,
-            () -> logger.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
+            () -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
     }
 
     void setSessionState(String sessionId, byte[] sessionState) {

@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Snapshots UpdateTags. */
 public final class SnapshotsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-01-01/examples/SnapshotsUpdateTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/SnapshotsUpdateTags.json
      */
     /**
      * Sample code: Update Snapshot Tags.

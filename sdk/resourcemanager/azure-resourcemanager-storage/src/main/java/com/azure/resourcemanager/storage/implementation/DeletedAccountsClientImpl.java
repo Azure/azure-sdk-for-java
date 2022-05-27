@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.storage.fluent.models.DeletedAccountInner;
 import com.azure.resourcemanager.storage.models.DeletedAccountListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeletedAccountsClient. */
 public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
-    private final ClientLogger logger = new ClientLogger(DeletedAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DeletedAccountsService service;
 
@@ -345,15 +342,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedAccountInner> getAsync(String deletedAccountName, String location) {
-        return getWithResponseAsync(deletedAccountName, location)
-            .flatMap(
-                (Response<DeletedAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(deletedAccountName, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Sims ListByResourceGroup. */
 public final class SimsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-01-01-preview/examples/SimListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-03-01-preview/examples/SimListByResourceGroup.json
      */
     /**
      * Sample code: List sims in a resource group.

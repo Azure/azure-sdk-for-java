@@ -7,15 +7,12 @@ package com.azure.resourcemanager.resourcehealth.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resourcehealth.models.Operation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lists the operations response. */
 @Fluent
 public final class OperationListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResultInner.class);
-
     /*
      * List of operations available in the resourcehealth resource provider.
      */
@@ -49,11 +46,13 @@ public final class OperationListResultInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model OperationListResultInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationListResultInner.class);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes team information. */
 @Immutable
 public final class TeamInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TeamInformationInner.class);
-
     /*
      * Team ID
      */

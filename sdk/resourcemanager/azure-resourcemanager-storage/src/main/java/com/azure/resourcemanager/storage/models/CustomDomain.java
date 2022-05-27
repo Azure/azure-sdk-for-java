@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The custom domain assigned to this storage account. This can be set via Update. */
 @Fluent
 public final class CustomDomain {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomain.class);
-
     /*
      * Gets or sets the custom domain name assigned to the storage account.
      * Name is the CNAME source.
@@ -79,9 +76,11 @@ public final class CustomDomain {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CustomDomain"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomDomain.class);
 }

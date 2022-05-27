@@ -70,6 +70,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
                 if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
                     attemptedRedirectUrls)) {
                     HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
+
+                    // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
+                    // causing it to leak your authorization token to.
+                    httpResponse.getHeaders().remove("Authorization");
+
                     return CoreUtils.consumeResponseBodyAsync(httpResponse)
                         .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls));
                 } else {

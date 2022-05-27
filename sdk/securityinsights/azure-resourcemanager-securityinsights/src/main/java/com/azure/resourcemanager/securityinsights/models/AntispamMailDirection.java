@@ -33,7 +33,11 @@ public final class AntispamMailDirection extends ExpandableStringEnum<AntispamMa
         return fromString(name, AntispamMailDirection.class);
     }
 
-    /** @return known AntispamMailDirection values. */
+    /**
+     * Gets known AntispamMailDirection values.
+     *
+     * @return known AntispamMailDirection values.
+     */
     public static Collection<AntispamMailDirection> values() {
         return values(AntispamMailDirection.class);
     }

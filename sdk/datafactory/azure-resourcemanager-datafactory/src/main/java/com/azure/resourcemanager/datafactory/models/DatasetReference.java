@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Dataset reference type. */
 @Fluent
 public final class DatasetReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetReference.class);
-
     /*
      * Dataset reference type.
      */
@@ -107,9 +104,11 @@ public final class DatasetReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property referenceName in model DatasetReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetReference.class);
 }

@@ -24,7 +24,7 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMe
  * single AMQP message when sent to the Azure Service Bus service.
  */
 public final class ServiceBusMessageBatch {
-    private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMessageBatch.class);
     private final int maxMessageSize;
     private final ErrorContextProvider contextProvider;
     private final MessageSerializer serializer;
@@ -92,7 +92,7 @@ public final class ServiceBusMessageBatch {
      */
     public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
-            throw logger.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
+            throw LOGGER.logExceptionAsWarning(new NullPointerException("'serviceBusMessage' cannot be null"));
         }
         ServiceBusMessage serviceBusMessageUpdated =
             tracerProvider.isEnabled()
@@ -109,7 +109,7 @@ public final class ServiceBusMessageBatch {
                         String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                             maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
 
-            throw logger.logExceptionAsWarning(ex);
+            throw LOGGER.logExceptionAsWarning(ex);
         }
 
         if (this.sizeInBytes + size > this.maxMessageSize) {

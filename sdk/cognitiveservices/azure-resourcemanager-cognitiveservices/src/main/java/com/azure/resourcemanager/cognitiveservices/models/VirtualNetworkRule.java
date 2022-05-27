@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A rule governing the accessibility from a specific virtual network. */
 @Fluent
 public final class VirtualNetworkRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRule.class);
-
     /*
      * Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
@@ -102,9 +99,11 @@ public final class VirtualNetworkRule {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model VirtualNetworkRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkRule.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the connection monitor endpoint filter item. */
 @Fluent
 public final class ConnectionMonitorEndpointFilterItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpointFilterItem.class);
-
     /*
      * The type of item included in the filter. Currently only 'AgentAddress'
      * is supported.

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus;
 import com.azure.resourcemanager.network.models.ConnectionStateSnapshot;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of connection states snapshots. */
 @Fluent
 public final class ConnectionMonitorQueryResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorQueryResultInner.class);
-
     /*
      * Status of connection monitor source.
      */

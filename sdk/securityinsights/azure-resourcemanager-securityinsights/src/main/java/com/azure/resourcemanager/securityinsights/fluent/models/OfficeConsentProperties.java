@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Consent property bag. */
 @Fluent
 public final class OfficeConsentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfficeConsentProperties.class);
-
     /*
      * The tenantId of the Office365 with the consent.
      */

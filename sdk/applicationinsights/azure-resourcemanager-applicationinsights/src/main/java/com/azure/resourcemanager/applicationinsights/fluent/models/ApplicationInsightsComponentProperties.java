@@ -12,7 +12,6 @@ import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
 import com.azure.resourcemanager.applicationinsights.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.applicationinsights.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.applicationinsights.models.RequestSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -20,8 +19,6 @@ import java.util.List;
 /** Properties that define an Application Insights component resource. */
 @Fluent
 public final class ApplicationInsightsComponentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentProperties.class);
-
     /*
      * The unique ID of your application. This field mirrors the 'Name' field
      * and cannot be changed.
@@ -601,7 +598,7 @@ public final class ApplicationInsightsComponentProperties {
      */
     public void validate() {
         if (applicationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property applicationType in model ApplicationInsightsComponentProperties"));
@@ -610,4 +607,6 @@ public final class ApplicationInsightsComponentProperties {
             privateLinkScopedResources().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationInsightsComponentProperties.class);
 }

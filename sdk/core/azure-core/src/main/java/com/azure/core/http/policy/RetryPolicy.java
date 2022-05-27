@@ -147,7 +147,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return Mono.just(httpResponse);
                 }
             })
-            .onErrorResume(err -> {
+            .onErrorResume(Exception.class, err -> {
                 if (shouldRetryException(err, tryCount)) {
                     LOGGER.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
@@ -175,7 +175,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("interrupted", ie));
                 }
                 return attemptSync(context, next, originalHttpRequest, tryCount + 1);
             } else {

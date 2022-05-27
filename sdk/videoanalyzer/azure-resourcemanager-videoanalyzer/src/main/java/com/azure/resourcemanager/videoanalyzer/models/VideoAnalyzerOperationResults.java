@@ -30,7 +30,7 @@ public interface VideoAnalyzerOperationResults {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video analyzer operation result.
+     * @return video analyzer operation result along with {@link Response}.
      */
     Response<VideoAnalyzer> getWithResponse(String locationName, String operationId, Context context);
 }

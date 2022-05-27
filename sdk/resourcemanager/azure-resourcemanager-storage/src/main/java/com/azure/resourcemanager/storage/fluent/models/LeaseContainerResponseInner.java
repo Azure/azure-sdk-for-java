@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Lease Container response schema. */
 @Fluent
 public final class LeaseContainerResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LeaseContainerResponseInner.class);
-
     /*
      * Returned unique lease ID that must be included with any request to
      * delete the container, or to renew, change, or release the lease.

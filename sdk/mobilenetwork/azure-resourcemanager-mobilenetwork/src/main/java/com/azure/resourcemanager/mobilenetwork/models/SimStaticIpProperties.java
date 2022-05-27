@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static IP configuration for a sim, scoped to a particular attached data network and slice. */
 @Fluent
 public final class SimStaticIpProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SimStaticIpProperties.class);
-
     /*
      * The attached data network on which the static IP address will be used.
      * The combination of attachedDataNetwork and slice defines the network

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An update history of the ImmutabilityPolicy of a blob container. */
 @Fluent
 public final class UpdateHistoryProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateHistoryProperty.class);
-
     /*
      * The ImmutabilityPolicy update type of a blob container, possible values
      * include: put, lock and extend.

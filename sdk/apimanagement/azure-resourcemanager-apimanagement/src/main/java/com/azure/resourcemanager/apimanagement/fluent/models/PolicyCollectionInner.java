@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the list policy operation. */
 @Fluent
 public final class PolicyCollectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyCollectionInner.class);
-
     /*
      * Policy Contract value.
      */

@@ -43,7 +43,11 @@ public final class SubscriptionFeatureRegistrationState
         return fromString(name, SubscriptionFeatureRegistrationState.class);
     }
 
-    /** @return known SubscriptionFeatureRegistrationState values. */
+    /**
+     * Gets known SubscriptionFeatureRegistrationState values.
+     *
+     * @return known SubscriptionFeatureRegistrationState values.
+     */
     public static Collection<SubscriptionFeatureRegistrationState> values() {
         return values(SubscriptionFeatureRegistrationState.class);
     }

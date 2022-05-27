@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.RestServiceAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Rest Service linked service properties. */
 @Fluent
 public final class RestServiceLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestServiceLinkedServiceTypeProperties.class);
-
     /*
      * The base URL of the REST service.
      */
@@ -387,13 +384,13 @@ public final class RestServiceLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model RestServiceLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model"
@@ -409,4 +406,6 @@ public final class RestServiceLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestServiceLinkedServiceTypeProperties.class);
 }

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.videoanalyzer.models.EdgeModuleEntity;
 import com.azure.resourcemanager.videoanalyzer.models.EdgeModuleProvisioningToken;
 import com.azure.resourcemanager.videoanalyzer.models.EdgeModules;
 import com.azure.resourcemanager.videoanalyzer.models.ListProvisioningTokenInput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EdgeModulesImpl implements EdgeModules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeModulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EdgeModulesImpl.class);
 
     private final EdgeModulesClient innerClient;
 
@@ -111,7 +110,7 @@ public final class EdgeModulesImpl implements EdgeModules {
     public EdgeModuleEntity getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +126,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
@@ -138,7 +137,7 @@ public final class EdgeModulesImpl implements EdgeModules {
     public Response<EdgeModuleEntity> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
@@ -165,7 +164,7 @@ public final class EdgeModulesImpl implements EdgeModules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,7 +172,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,18 +180,18 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, edgeModuleName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, edgeModuleName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +199,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -208,7 +207,7 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the properties of a database transparent data encryption. */
 @Fluent
 public final class TransparentDataEncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransparentDataEncryptionProperties.class);
-
     /*
      * The status of the database transparent data encryption.
      */

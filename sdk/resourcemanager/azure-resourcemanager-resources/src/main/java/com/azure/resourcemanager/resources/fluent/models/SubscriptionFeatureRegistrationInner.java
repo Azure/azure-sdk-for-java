@@ -6,16 +6,12 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.SubscriptionFeatureRegistrationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subscription feature registration details. */
 @Fluent
 public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionFeatureRegistrationInner.class);
-
     /*
      * The properties property.
      */

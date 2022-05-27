@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureMySqlTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AzureMySqlTable")
 @Fluent
 public final class AzureMySqlTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMySqlTableDataset.class);
-
     /*
      * Azure MySQL database dataset properties.
      */
@@ -144,7 +141,7 @@ public final class AzureMySqlTableDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureMySqlTableDataset"));
@@ -152,4 +149,6 @@ public final class AzureMySqlTableDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMySqlTableDataset.class);
 }

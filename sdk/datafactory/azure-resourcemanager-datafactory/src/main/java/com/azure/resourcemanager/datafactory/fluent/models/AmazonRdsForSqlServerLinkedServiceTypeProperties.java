@@ -8,15 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon Rds for SQL Server linked service properties. */
 @Fluent
 public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AmazonRdsForSqlServerLinkedServiceTypeProperties.class);
-
     /*
      * The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
@@ -165,7 +161,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
@@ -178,4 +174,6 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
             alwaysEncryptedSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonRdsForSqlServerLinkedServiceTypeProperties.class);
 }

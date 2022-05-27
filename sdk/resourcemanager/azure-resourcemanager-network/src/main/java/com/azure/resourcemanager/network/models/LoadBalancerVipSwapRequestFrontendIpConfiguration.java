@@ -6,17 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VIP swap request's frontend IP configuration object. */
 @Fluent
 public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LoadBalancerVipSwapRequestFrontendIpConfiguration.class);
-
     /*
      * The ID of frontend IP configuration resource.
      */

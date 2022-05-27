@@ -3,26 +3,27 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.concurrent.Queues;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -32,7 +33,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class GlobalAddressResolver implements IAddressResolver {
     private static final Logger logger = LoggerFactory.getLogger(GlobalAddressResolver.class);
@@ -52,6 +56,8 @@ public class GlobalAddressResolver implements IAddressResolver {
     private ApiType apiType;
 
     private HttpClient httpClient;
+    private IOpenConnectionsHandler openConnectionsHandler;
+    private ConnectionPolicy connectionPolicy;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -75,6 +81,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.routingMapProvider = routingMapProvider;
         this.serviceConfigReader = serviceConfigReader;
         this.tcpConnectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
+        this.connectionPolicy = connectionPolicy;
 
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
@@ -89,43 +96,92 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    Mono<Void> openAsync(DocumentCollection collection) {
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMap = this.routingMapProvider.tryLookupAsync(null, collection.getId(), null, null);
-        return routingMap.flatMap(collectionRoutingMap -> {
+    @Override
+    public int updateAddresses(final URI serverKey) {
 
-            if ( collectionRoutingMap.v == null) {
-                return Mono.empty();
-            }
+        Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
-            List<PartitionKeyRangeIdentity> ranges = collectionRoutingMap.v.getOrderedPartitionKeyRanges().stream().map(range ->
-                    new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId())).collect(Collectors.toList());
-            List<Mono<Void>> tasks = new ArrayList<>();
+        AtomicInteger updatedCount = new AtomicInteger(0);
+
+        if (this.tcpConnectionEndpointRediscoveryEnabled) {
             for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
-                tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
+                final GatewayAddressCache addressCache = endpointCache.addressCache;
+
+                updatedCount.accumulateAndGet(addressCache.updateAddresses(serverKey), (oldValue, newValue) -> oldValue + newValue);
             }
-            @SuppressWarnings({ "rawtypes", "unchecked" })
-            Mono<Void>[] array = new Mono[this.addressCacheByEndpoint.values().size()];
-            return Flux.mergeDelayError(Queues.SMALL_BUFFER_SIZE, tasks.toArray(array)).then();
-        });
+        } else {
+            logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
+        }
+
+        return updatedCount.get();
     }
 
     @Override
-    public void updateAddresses(final RxDocumentServiceRequest request, final URI serverKey) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
-        Objects.requireNonNull(request, "expected non-null request");
-        Objects.requireNonNull(serverKey, "expected non-null serverKey");
+        // Strip the leading "/", which follows the same format for document requests
+        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
+        // TODO: ideally it should have been consistent across
+        String cacheKey = StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR);
+        return this.collectionCache.resolveByNameAsync(null, cacheKey, null)
+                .flatMapMany(collection -> {
+                    if (collection == null) {
+                        logger.warn("Can not find the collection, no connections will be opened");
+                        return Mono.empty();
+                    }
 
-        if (this.tcpConnectionEndpointRediscoveryEnabled) {
-            URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
-            this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
+                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
+                                    null,
+                                    collection.getResourceId(),
+                                    PartitionKeyInternalHelper.FullRange,
+                                    true,
+                                    null)
+                            .map(valueHolder -> {
 
-                final GatewayAddressCache addressCache = endpointCache.addressCache;
-                addressCache.updateAddresses(serverKey);
+                                if(valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                    logger.warn(
+                                            "There is no pkRanges found for collection {}, no connections will be opened",
+                                            collection.getResourceId());
+                                    return new ArrayList<PartitionKeyRangeIdentity>();
+                                }
 
-                return endpointCache;
-            });
-        } else {
-            logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
+                                return valueHolder.v
+                                        .stream()
+                                        .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
+                                        .collect(Collectors.toList());
+                            })
+                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities));
+                });
+    }
+
+    private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
+            DocumentCollection collection,
+            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
+
+        // Currently, we will only open connections to current read region
+        return Flux.just(this.endpointManager.getReadEndpoints().stream().findFirst())
+                .flatMap(readEndpointOptional -> {
+                    if (readEndpointOptional.isPresent()) {
+                        if (this.addressCacheByEndpoint.containsKey(readEndpointOptional.get())) {
+                            return this.addressCacheByEndpoint.get(readEndpointOptional.get())
+                                        .addressCache
+                                        .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                        }
+                    }
+
+                    return Flux.empty();
+                });
+    }
+
+    @Override
+    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler) {
+        this.openConnectionsHandler = openConnectionHandler;
+
+        // setup openConnectionHandler for existing address cache
+        // For the new ones added later, the openConnectionHandler will pass through constructor
+        for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
+            endpointCache.addressCache.setOpenConnectionsHandler(openConnectionsHandler);
         }
     }
 
@@ -156,7 +212,10 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.userAgentContainer,
                 this.httpClient,
                 this.tcpConnectionEndpointRediscoveryEnabled,
-                this.apiType);
+                this.apiType,
+                this.endpointManager,
+                this.connectionPolicy,
+                this.openConnectionsHandler);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

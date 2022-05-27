@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -14,8 +12,6 @@ import java.util.UUID;
 /** The parameters required to execute an expand operation on the given entity. */
 @Fluent
 public final class EntityExpandParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityExpandParameters.class);
-
     /*
      * The end date filter, so the only expansion results returned are before
      * this date.

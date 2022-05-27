@@ -1,6 +1,6 @@
 # Release History
 
-## 7.8.0-beta.1 (Unreleased)
+## 7.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.9.0 (2022-05-18)
+
+### Features Added
+- Replaced creating single thread executor with `Schedulers.boundedElastic()`. ([#27805](https://github.com/Azure/azure-sdk-for-java/issues/27805))
+- Added new method `getSessionId()` in `ServiceBusReceiverAsyncClient` . ([#28338](https://github.com/Azure/azure-sdk-for-java/issues/28338))
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+- Upgraded `azure-core-amqp` from `2.4.2` to `2.5.0`.
+
+## 7.8.0 (2022-04-11)
+
+### Features Added
+- Implemented equals and hashCode methods for CorrelationRuleFilter and SqlRuleFilter objects
+### Bugs Fixed
+- Entity Name is handled properly when passed in as part of connection string in `ServiceBusClientBuilder`. ([#27509](https://github.com/azure/azure-sdk-for-java/issues/27509))
+- Fixed a bug that when the current `SynchronousReceiveWork` is completed, the queued `SynchronousReceiveWork` is not updated. ([#27578](https://github.com/Azure/azure-sdk-for-java/issues/27578))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+- Upgraded `azure-core-amqp` from `2.4.1` to `2.4.2`.
 
 ## 7.7.0 (2022-03-17)
 ### Features Added

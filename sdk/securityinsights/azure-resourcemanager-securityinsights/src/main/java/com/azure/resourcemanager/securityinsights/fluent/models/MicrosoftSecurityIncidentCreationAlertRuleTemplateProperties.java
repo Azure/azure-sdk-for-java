@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplatePropertiesBase;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.MicrosoftSecurityProductName;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,10 +17,6 @@ import java.util.List;
 @Fluent
 public final class MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
     extends AlertRuleTemplatePropertiesBase {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties.class);
-
     /*
      * the alerts' displayNames on which the cases will be generated
      */
@@ -38,7 +32,7 @@ public final class MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
     /*
      * The alerts' productName on which the cases will be generated
      */
-    @JsonProperty(value = "productFilter", required = true)
+    @JsonProperty(value = "productFilter")
     private MicrosoftSecurityProductName productFilter;
 
     /*
@@ -176,12 +170,5 @@ public final class MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
     @Override
     public void validate() {
         super.validate();
-        if (productFilter() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property productFilter in model"
-                            + " MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties"));
-        }
     }
 }

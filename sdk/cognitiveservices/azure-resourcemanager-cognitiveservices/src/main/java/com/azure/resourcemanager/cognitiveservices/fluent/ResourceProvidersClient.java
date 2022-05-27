@@ -37,7 +37,7 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
+     * @return check SKU availability result list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
@@ -63,7 +63,7 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
+     * @return domain availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(

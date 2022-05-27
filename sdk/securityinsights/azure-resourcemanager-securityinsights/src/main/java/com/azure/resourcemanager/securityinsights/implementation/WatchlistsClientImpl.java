@@ -28,16 +28,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.WatchlistsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistInner;
 import com.azure.resourcemanager.securityinsights.models.WatchlistList;
+import com.azure.resourcemanager.securityinsights.models.WatchlistsCreateOrUpdateResponse;
+import com.azure.resourcemanager.securityinsights.models.WatchlistsDeleteResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WatchlistsClient. */
 public final class WatchlistsClientImpl implements WatchlistsClient {
-    private final ClientLogger logger = new ClientLogger(WatchlistsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WatchlistsService service;
 
@@ -74,6 +73,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
+            @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -99,7 +99,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
                 + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<WatchlistsDeleteResponse> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -115,7 +115,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
                 + "/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WatchlistInner>> createOrUpdate(
+        Mono<WatchlistsCreateOrUpdateResponse> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -142,6 +142,9 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -149,7 +152,8 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WatchlistInner>> listSinglePageAsync(String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<WatchlistInner>> listSinglePageAsync(
+        String resourceGroupName, String workspaceName, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -180,6 +184,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
+                            skipToken,
                             accept,
                             context))
             .<PagedResponse<WatchlistInner>>map(
@@ -199,6 +204,9 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -208,7 +216,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatchlistInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+        String resourceGroupName, String workspaceName, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -237,6 +245,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
+                skipToken,
                 accept,
                 context)
             .map(
@@ -255,15 +264,19 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlists, without watchlist items.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WatchlistInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<WatchlistInner> listAsync(String resourceGroupName, String workspaceName, String skipToken) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, skipToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -271,16 +284,38 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<WatchlistInner> listAsync(String resourceGroupName, String workspaceName) {
+        final String skipToken = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, skipToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all watchlists, without watchlist items.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlists, without watchlist items.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WatchlistInner> listAsync(String resourceGroupName, String workspaceName, Context context) {
+    private PagedFlux<WatchlistInner> listAsync(
+        String resourceGroupName, String workspaceName, String skipToken, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, context),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -292,11 +327,12 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlists, without watchlist items.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatchlistInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName));
+        final String skipToken = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skipToken));
     }
 
     /**
@@ -304,15 +340,19 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlists, without watchlist items.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WatchlistInner> list(String resourceGroupName, String workspaceName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, context));
+    public PagedIterable<WatchlistInner> list(
+        String resourceGroupName, String workspaceName, String skipToken, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skipToken, context));
     }
 
     /**
@@ -435,14 +475,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WatchlistInner> getAsync(String resourceGroupName, String workspaceName, String watchlistAlias) {
         return getWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias)
-            .flatMap(
-                (Response<WatchlistInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -488,10 +521,10 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<WatchlistsDeleteResponse> deleteWithResponseAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -542,10 +575,10 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<WatchlistsDeleteResponse> deleteWithResponseAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -597,7 +630,7 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String watchlistAlias) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -625,17 +658,20 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
+    public WatchlistsDeleteResponse deleteWithResponse(
         String resourceGroupName, String workspaceName, String watchlistAlias, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, context).block();
     }
 
     /**
-     * Creates or updates a watchlist and its watchlist items (bulk creation, e.g. through text/csv content type). To
-     * create a Watchlist and its items, we should call this endpoint with rawContent and contentType properties.
+     * Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type). To
+     * create a Watchlist and its Items, we should call this endpoint with either rawContent or a valid SAR URI and
+     * contentType properties. The rawContent is mainly used for small watchlist (content size below 3.8 MB). The SAS
+     * URI enables the creation of large watchlist, where the content size can go up to 500 MB. The status of processing
+     * such large file can be polled through the URL returned in Azure-AsyncOperation header.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -644,11 +680,10 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Watchlist in Azure Security Insights along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return represents a Watchlist in Azure Security Insights on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatchlistInner>> createOrUpdateWithResponseAsync(
+    private Mono<WatchlistsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, WatchlistInner watchlist) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -696,8 +731,11 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     }
 
     /**
-     * Creates or updates a watchlist and its watchlist items (bulk creation, e.g. through text/csv content type). To
-     * create a Watchlist and its items, we should call this endpoint with rawContent and contentType properties.
+     * Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type). To
+     * create a Watchlist and its Items, we should call this endpoint with either rawContent or a valid SAR URI and
+     * contentType properties. The rawContent is mainly used for small watchlist (content size below 3.8 MB). The SAS
+     * URI enables the creation of large watchlist, where the content size can go up to 500 MB. The status of processing
+     * such large file can be polled through the URL returned in Azure-AsyncOperation header.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -707,11 +745,10 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Watchlist in Azure Security Insights along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return represents a Watchlist in Azure Security Insights on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WatchlistInner>> createOrUpdateWithResponseAsync(
+    private Mono<WatchlistsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String watchlistAlias,
@@ -760,8 +797,11 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     }
 
     /**
-     * Creates or updates a watchlist and its watchlist items (bulk creation, e.g. through text/csv content type). To
-     * create a Watchlist and its items, we should call this endpoint with rawContent and contentType properties.
+     * Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type). To
+     * create a Watchlist and its Items, we should call this endpoint with either rawContent or a valid SAR URI and
+     * contentType properties. The rawContent is mainly used for small watchlist (content size below 3.8 MB). The SAS
+     * URI enables the creation of large watchlist, where the content size can go up to 500 MB. The status of processing
+     * such large file can be polled through the URL returned in Azure-AsyncOperation header.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -776,19 +816,15 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     private Mono<WatchlistInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, WatchlistInner watchlist) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, watchlist)
-            .flatMap(
-                (Response<WatchlistInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Creates or updates a watchlist and its watchlist items (bulk creation, e.g. through text/csv content type). To
-     * create a Watchlist and its items, we should call this endpoint with rawContent and contentType properties.
+     * Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type). To
+     * create a Watchlist and its Items, we should call this endpoint with either rawContent or a valid SAR URI and
+     * contentType properties. The rawContent is mainly used for small watchlist (content size below 3.8 MB). The SAS
+     * URI enables the creation of large watchlist, where the content size can go up to 500 MB. The status of processing
+     * such large file can be polled through the URL returned in Azure-AsyncOperation header.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -806,8 +842,11 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
     }
 
     /**
-     * Creates or updates a watchlist and its watchlist items (bulk creation, e.g. through text/csv content type). To
-     * create a Watchlist and its items, we should call this endpoint with rawContent and contentType properties.
+     * Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type). To
+     * create a Watchlist and its Items, we should call this endpoint with either rawContent or a valid SAR URI and
+     * contentType properties. The rawContent is mainly used for small watchlist (content size below 3.8 MB). The SAS
+     * URI enables the creation of large watchlist, where the content size can go up to 500 MB. The status of processing
+     * such large file can be polled through the URL returned in Azure-AsyncOperation header.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -817,10 +856,10 @@ public final class WatchlistsClientImpl implements WatchlistsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Watchlist in Azure Security Insights along with {@link Response}.
+     * @return represents a Watchlist in Azure Security Insights.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WatchlistInner> createOrUpdateWithResponse(
+    public WatchlistsCreateOrUpdateResponse createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String watchlistAlias,

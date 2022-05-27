@@ -6,11 +6,9 @@ package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.Kind;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbookManagedIdentity;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbookResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** An Application Insights private workbook definition. */
 @Fluent
 public final class MyWorkbookInner extends MyWorkbookResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MyWorkbookInner.class);
-
     /*
      * The kind of workbook. Choices are user and shared.
      */

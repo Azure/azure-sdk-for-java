@@ -6,15 +6,12 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Description of an additional API Management resource location. */
 @Fluent
 public final class AdditionalLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalLocation.class);
-
     /*
      * The location name of the additional region among Azure Data center
      * regions.
@@ -53,6 +50,14 @@ public final class AdditionalLocation {
     private List<String> privateIpAddresses;
 
     /*
+     * Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the location. Supported only for Premium SKU
+     * being deployed in Virtual Network.
+     */
+    @JsonProperty(value = "publicIpAddressId")
+    private String publicIpAddressId;
+
+    /*
      * Virtual network configuration for the location.
      */
     @JsonProperty(value = "virtualNetworkConfiguration")
@@ -71,6 +76,12 @@ public final class AdditionalLocation {
      */
     @JsonProperty(value = "disableGateway")
     private Boolean disableGateway;
+
+    /*
+     * Compute Platform Version running the service.
+     */
+    @JsonProperty(value = "platformVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private PlatformVersion platformVersion;
 
     /**
      * Get the location property: The location name of the additional region among Azure Data center regions.
@@ -154,6 +165,28 @@ public final class AdditionalLocation {
     }
 
     /**
+     * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the location. Supported only for Premium SKU being deployed in Virtual Network.
+     *
+     * @return the publicIpAddressId value.
+     */
+    public String publicIpAddressId() {
+        return this.publicIpAddressId;
+    }
+
+    /**
+     * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the location. Supported only for Premium SKU being deployed in Virtual Network.
+     *
+     * @param publicIpAddressId the publicIpAddressId value to set.
+     * @return the AdditionalLocation object itself.
+     */
+    public AdditionalLocation withPublicIpAddressId(String publicIpAddressId) {
+        this.publicIpAddressId = publicIpAddressId;
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration for the location.
      *
      * @return the virtualNetworkConfiguration value.
@@ -205,18 +238,27 @@ public final class AdditionalLocation {
     }
 
     /**
+     * Get the platformVersion property: Compute Platform Version running the service.
+     *
+     * @return the platformVersion value.
+     */
+    public PlatformVersion platformVersion() {
+        return this.platformVersion;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model AdditionalLocation"));
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model AdditionalLocation"));
         } else {
@@ -226,4 +268,6 @@ public final class AdditionalLocation {
             virtualNetworkConfiguration().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdditionalLocation.class);
 }

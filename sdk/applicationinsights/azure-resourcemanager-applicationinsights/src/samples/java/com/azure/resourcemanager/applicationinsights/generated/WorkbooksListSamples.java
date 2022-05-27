@@ -10,19 +10,6 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks List. */
 public final class WorkbooksListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksManagedList.json
-     */
-    /**
-     * Sample code: WorkbooksManagedList.
-     *
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbooksManagedList(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks().list(CategoryType.WORKBOOK, null, null, Context.NONE);
-    }
-
-    /*
      * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksListSub.json
      */
     /**

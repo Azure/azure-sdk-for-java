@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Radius Server Settings. */
 @Fluent
 public final class RadiusServer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RadiusServer.class);
-
     /*
      * The address of this radius server.
      */
@@ -99,10 +96,12 @@ public final class RadiusServer {
      */
     public void validate() {
         if (radiusServerAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property radiusServerAddress in model RadiusServer"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RadiusServer.class);
 }

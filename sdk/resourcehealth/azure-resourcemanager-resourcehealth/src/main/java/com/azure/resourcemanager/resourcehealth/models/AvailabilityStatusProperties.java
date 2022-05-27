@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,14 +12,18 @@ import java.util.List;
 /** Properties of availability state. */
 @Fluent
 public final class AvailabilityStatusProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityStatusProperties.class);
-
     /*
      * Availability status of the resource. When it is null, this
      * availabilityStatus object represents an availability impacting event
      */
     @JsonProperty(value = "availabilityState")
     private AvailabilityStateValues availabilityState;
+
+    /*
+     * Title description of the availability status.
+     */
+    @JsonProperty(value = "title")
+    private String title;
 
     /*
      * Summary description of the availability status.
@@ -146,6 +148,26 @@ public final class AvailabilityStatusProperties {
      */
     public AvailabilityStatusProperties withAvailabilityState(AvailabilityStateValues availabilityState) {
         this.availabilityState = availabilityState;
+        return this;
+    }
+
+    /**
+     * Get the title property: Title description of the availability status.
+     *
+     * @return the title value.
+     */
+    public String title() {
+        return this.title;
+    }
+
+    /**
+     * Set the title property: Title description of the availability status.
+     *
+     * @param title the title value to set.
+     * @return the AvailabilityStatusProperties object itself.
+     */
+    public AvailabilityStatusProperties withTitle(String title) {
+        this.title = title;
         return this;
     }
 

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.storage.models.DeletedShare;
 /** Samples for FileShares Restore. */
 public final class FileSharesRestoreSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/FileSharesRestore.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/FileSharesRestore.json
      */
     /**
      * Sample code: RestoreShares.

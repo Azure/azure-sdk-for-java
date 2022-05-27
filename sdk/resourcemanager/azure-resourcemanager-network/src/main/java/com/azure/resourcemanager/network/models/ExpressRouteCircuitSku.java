@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains SKU in an ExpressRouteCircuit. */
 @Fluent
 public final class ExpressRouteCircuitSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitSku.class);
-
     /*
      * The name of the SKU.
      */

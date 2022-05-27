@@ -7,15 +7,11 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources. */
 @Fluent
 public final class ExtensionTopicInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionTopicInner.class);
-
     /*
      * Properties of the extension topic
      */
@@ -23,7 +19,7 @@ public final class ExtensionTopicInner extends ProxyResource {
     private ExtensionTopicProperties innerProperties;
 
     /*
-     * The system metadata relating to the Extension Topic resource.
+     * The system metadata relating to Extension Topic resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -38,7 +34,7 @@ public final class ExtensionTopicInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to the Extension Topic resource.
+     * Get the systemData property: The system metadata relating to Extension Topic resource.
      *
      * @return the systemData value.
      */

@@ -24,7 +24,11 @@ public final class TriggersOn extends ExpandableStringEnum<TriggersOn> {
         return fromString(name, TriggersOn.class);
     }
 
-    /** @return known TriggersOn values. */
+    /**
+     * Gets known TriggersOn values.
+     *
+     * @return known TriggersOn values.
+     */
     public static Collection<TriggersOn> values() {
         return values(TriggersOn.class);
     }

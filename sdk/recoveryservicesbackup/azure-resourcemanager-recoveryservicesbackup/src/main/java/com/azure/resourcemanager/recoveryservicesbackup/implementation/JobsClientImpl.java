@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobsClient. */
 public final class JobsClientImpl implements JobsClient {
-    private final ClientLogger logger = new ClientLogger(JobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobsService service;
 
@@ -179,8 +176,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> exportAsync(String vaultName, String resourceGroupName, String filter) {
-        return exportWithResponseAsync(vaultName, resourceGroupName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return exportWithResponseAsync(vaultName, resourceGroupName, filter).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -196,8 +192,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> exportAsync(String vaultName, String resourceGroupName) {
         final String filter = null;
-        return exportWithResponseAsync(vaultName, resourceGroupName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return exportWithResponseAsync(vaultName, resourceGroupName, filter).flatMap(ignored -> Mono.empty());
     }
 
     /**

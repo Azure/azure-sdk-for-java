@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data type for last data received. */
 @Fluent
 public class LastDataReceivedDataType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LastDataReceivedDataType.class);
-
     /*
      * Name of the data type to show in the graph. can be use with
      * {{graphQueriesTableName}} placeholder

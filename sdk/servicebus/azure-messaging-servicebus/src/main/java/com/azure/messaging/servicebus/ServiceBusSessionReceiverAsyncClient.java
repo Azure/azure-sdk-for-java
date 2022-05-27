@@ -87,6 +87,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
+
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
@@ -96,7 +98,6 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager unNamedSessionManager;  // for acceptNextSession()
-    private final ClientLogger logger = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
 
     ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
         MessagingEntityType entityType, ReceiverOptions receiverOptions,
@@ -159,10 +160,10 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceBusReceiverAsyncClient> acceptSession(String sessionId) {
         if (sessionId == null) {
-            return monoError(logger, new NullPointerException("'sessionId' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'sessionId' cannot be null"));
         }
         if (CoreUtils.isNullOrEmpty(sessionId)) {
-            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty"));
+            return monoError(LOGGER, new IllegalArgumentException("'sessionId' cannot be empty"));
         }
 
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),

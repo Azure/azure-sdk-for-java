@@ -63,7 +63,11 @@ public final class KillChainIntent extends ExpandableStringEnum<KillChainIntent>
         return fromString(name, KillChainIntent.class);
     }
 
-    /** @return known KillChainIntent values. */
+    /**
+     * Gets known KillChainIntent values.
+     *
+     * @return known KillChainIntent values.
+     */
     public static Collection<KillChainIntent> values() {
         return values(KillChainIntent.class);
     }

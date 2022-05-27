@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -43,8 +42,6 @@ public final class PolicyAssignmentsClientImpl
     implements InnerSupportsListing<PolicyAssignmentInner>,
         InnerSupportsDelete<PolicyAssignmentInner>,
         PolicyAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(PolicyAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyAssignmentsService service;
 
@@ -368,15 +365,7 @@ public final class PolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName) {
-        return deleteWithResponseAsync(scope, policyAssignmentName)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return deleteWithResponseAsync(scope, policyAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -545,14 +534,7 @@ public final class PolicyAssignmentsClientImpl
     public Mono<PolicyAssignmentInner> createAsync(
         String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
         return createWithResponseAsync(scope, policyAssignmentName, parameters)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -692,15 +674,7 @@ public final class PolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName) {
-        return getWithResponseAsync(scope, policyAssignmentName)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope, policyAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -864,14 +838,7 @@ public final class PolicyAssignmentsClientImpl
     public Mono<PolicyAssignmentInner> updateAsync(
         String scope, String policyAssignmentName, PolicyAssignmentUpdate parameters) {
         return updateWithResponseAsync(scope, policyAssignmentName, parameters)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2343,15 +2310,7 @@ public final class PolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId) {
-        return deleteByIdWithResponseAsync(policyAssignmentId)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return deleteByIdWithResponseAsync(policyAssignmentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2509,14 +2468,7 @@ public final class PolicyAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
         return createByIdWithResponseAsync(policyAssignmentId, parameters)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2653,15 +2605,7 @@ public final class PolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
-        return getByIdWithResponseAsync(policyAssignmentId)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByIdWithResponseAsync(policyAssignmentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2817,14 +2761,7 @@ public final class PolicyAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> updateByIdAsync(String policyAssignmentId, PolicyAssignmentUpdate parameters) {
         return updateByIdWithResponseAsync(policyAssignmentId, parameters)
-            .flatMap(
-                (Response<PolicyAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

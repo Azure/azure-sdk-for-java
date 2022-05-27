@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Provides entity name and id that started the pipeline run. */
 @Immutable
 public final class PipelineRunInvokedBy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineRunInvokedBy.class);
-
     /*
      * Name of the entity that started the pipeline run.
      */

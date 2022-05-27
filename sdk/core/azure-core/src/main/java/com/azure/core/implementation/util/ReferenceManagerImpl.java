@@ -86,7 +86,7 @@ public final class ReferenceManagerImpl implements ReferenceManager {
                 if (reference != null) {
                     reference.clean();
                 }
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 // Cleaning action threw an exception.
                 LOGGER.log(LogLevel.INFORMATIONAL, () -> "Cleaning a reference threw an exception.", ex);
             }

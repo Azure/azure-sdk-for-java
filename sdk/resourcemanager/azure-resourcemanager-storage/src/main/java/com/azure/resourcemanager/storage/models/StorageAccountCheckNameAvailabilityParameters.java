@@ -6,15 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to check the availability of the storage account name. */
 @Fluent
 public final class StorageAccountCheckNameAvailabilityParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StorageAccountCheckNameAvailabilityParameters.class);
-
     /*
      * The storage account name.
      */
@@ -79,10 +75,12 @@ public final class StorageAccountCheckNameAvailabilityParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model StorageAccountCheckNameAvailabilityParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCheckNameAvailabilityParameters.class);
 }

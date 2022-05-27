@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the list of all possible values for a specific filter value. */
 @Fluent
 public final class SignatureOverridesFilterValuesResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignatureOverridesFilterValuesResponseInner.class);
-
     /*
      * Describes the possible values
      */

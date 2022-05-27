@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.FactoryUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Parameters for updating a factory resource. */
 @Fluent
 public final class FactoryUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryUpdateParameters.class);
-
     /*
      * The resource tags.
      */

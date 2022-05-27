@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The DeletedServiceContractProperties model. */
 @Fluent
 public final class DeletedServiceContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedServiceContractProperties.class);
-
     /*
      * Fully-qualified API Management Service Resource ID
      */

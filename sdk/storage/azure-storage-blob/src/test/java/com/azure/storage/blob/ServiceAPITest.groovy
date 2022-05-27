@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.GeoReplicationStatus
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
@@ -763,7 +764,14 @@ class ServiceAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-request-id") != null
         response.getHeaders().getValue("Date") != null
         response.getValue().getGeoReplication().getStatus() != null
-        response.getValue().getGeoReplication().getLastSyncTime() != null
+
+        // The LastSyncTime will return a DateTimeRfc1123 if the replication status is LIVE
+        // but there are two other statuses, unavailable and bootstrap, which will return null.
+        if (response.getValue().getGeoReplication().getStatus() == GeoReplicationStatus.LIVE) {
+            assert response.getValue().getGeoReplication().getLastSyncTime() != null
+        } else {
+            assert response.getValue().getGeoReplication().getLastSyncTime() == null
+        }
     }
 
     def "Get stats min"() {
@@ -1102,6 +1110,68 @@ class ServiceAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Create container if not exists"() {
+        when:
+        def containerName = generateContainerName()
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+        def response2 = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        response2.getStatusCode() == 409
+    }
+
+    def "Delete container if exists"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
+
+        then:
+        response.getValue()
+        response.getStatusCode() == 202
+    }
+
+    def "Delete container if exists min"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExists(containerName)
+
+        then:
+        response
+    }
+
+    def "Delete container if exists container does not exist"() {
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExists(generateContainerName())
+
+        then:
+        !response
+    }
+
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
+    def "Delete container if exists already deleted"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
+        def response2 = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
+
+        then:
+        response.getStatusCode() == 202
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        response2.getStatusCode() == 202
     }
 
 //    def "Rename blob container"() {

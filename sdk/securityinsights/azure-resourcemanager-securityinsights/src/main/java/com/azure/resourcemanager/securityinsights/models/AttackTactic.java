@@ -10,6 +10,12 @@ import java.util.Collection;
 
 /** Defines values for AttackTactic. */
 public final class AttackTactic extends ExpandableStringEnum<AttackTactic> {
+    /** Static value Reconnaissance for AttackTactic. */
+    public static final AttackTactic RECONNAISSANCE = fromString("Reconnaissance");
+
+    /** Static value ResourceDevelopment for AttackTactic. */
+    public static final AttackTactic RESOURCE_DEVELOPMENT = fromString("ResourceDevelopment");
+
     /** Static value InitialAccess for AttackTactic. */
     public static final AttackTactic INITIAL_ACCESS = fromString("InitialAccess");
 
@@ -49,6 +55,12 @@ public final class AttackTactic extends ExpandableStringEnum<AttackTactic> {
     /** Static value PreAttack for AttackTactic. */
     public static final AttackTactic PRE_ATTACK = fromString("PreAttack");
 
+    /** Static value ImpairProcessControl for AttackTactic. */
+    public static final AttackTactic IMPAIR_PROCESS_CONTROL = fromString("ImpairProcessControl");
+
+    /** Static value InhibitResponseFunction for AttackTactic. */
+    public static final AttackTactic INHIBIT_RESPONSE_FUNCTION = fromString("InhibitResponseFunction");
+
     /**
      * Creates or finds a AttackTactic from its string representation.
      *
@@ -60,7 +72,11 @@ public final class AttackTactic extends ExpandableStringEnum<AttackTactic> {
         return fromString(name, AttackTactic.class);
     }
 
-    /** @return known AttackTactic values. */
+    /**
+     * Gets known AttackTactic values.
+     *
+     * @return known AttackTactic values.
+     */
     public static Collection<AttackTactic> values() {
         return values(AttackTactic.class);
     }

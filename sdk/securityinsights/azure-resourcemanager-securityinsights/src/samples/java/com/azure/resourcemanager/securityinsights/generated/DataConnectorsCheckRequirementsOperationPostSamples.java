@@ -8,18 +8,21 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.models.AadCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.AscCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.Dynamics365CheckRequirements;
+import com.azure.resourcemanager.securityinsights.models.IoTCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.McasCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.MstiCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.MtpCheckRequirements;
+import com.azure.resourcemanager.securityinsights.models.Office365ProjectCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.OfficeAtpCheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.OfficeIrmCheckRequirements;
+import com.azure.resourcemanager.securityinsights.models.OfficePowerBICheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.TICheckRequirements;
 import com.azure.resourcemanager.securityinsights.models.TiTaxiiCheckRequirements;
 
 /** Samples for DataConnectorsCheckRequirementsOperation Post. */
 public final class DataConnectorsCheckRequirementsOperationPostSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsOfficeATP.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsOfficeATP.json
      */
     /**
      * Sample code: Check requirements for OfficeATP.
@@ -34,7 +37,22 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectory.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsOffice365Project.json
+     */
+    /**
+     * Sample code: Check requirements for Office365Project.
+     *
+     * @param manager Entry point to SecurityInsightsManager.
+     */
+    public static void checkRequirementsForOffice365Project(
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager
+            .dataConnectorsCheckRequirementsOperations()
+            .postWithResponse("myRg", "myWorkspace", new Office365ProjectCheckRequirements(), Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectory.json
      */
     /**
      * Sample code: Check requirements for AAD.
@@ -49,7 +67,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsMicrosoftCloudAppSecurity.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsMicrosoftCloudAppSecurity.json
      */
     /**
      * Sample code: Check requirements for Mcas.
@@ -64,7 +82,26 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsMdatp.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsIoT.json
+     */
+    /**
+     * Sample code: Check requirements for IoT.
+     *
+     * @param manager Entry point to SecurityInsightsManager.
+     */
+    public static void checkRequirementsForIoT(
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager
+            .dataConnectorsCheckRequirementsOperations()
+            .postWithResponse(
+                "myRg",
+                "myWorkspace",
+                new IoTCheckRequirements().withSubscriptionId("c0688291-89d7-4bed-87a2-a7b1bff43f4c"),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsMdatp.json
      */
     /**
      * Sample code: Check requirements for Mdatp.
@@ -79,7 +116,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectoryNoAuthorization.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectoryNoAuthorization.json
      */
     /**
      * Sample code: Check requirements for AAD - no authorization.
@@ -94,7 +131,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsAzureSecurityCenter.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsAzureSecurityCenter.json
      */
     /**
      * Sample code: Check requirements for ASC.
@@ -113,7 +150,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsMicrosoftThreatProtection.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsMicrosoftThreatProtection.json
      */
     /**
      * Sample code: Check requirements for MicrosoftThreatProtection.
@@ -128,7 +165,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsThreatIntelligenceTaxii.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsThreatIntelligenceTaxii.json
      */
     /**
      * Sample code: Check requirements for TI Taxii.
@@ -143,7 +180,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsOfficeIRM.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsOfficeIRM.json
      */
     /**
      * Sample code: Check requirements for OfficeIRM.
@@ -158,7 +195,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsMicrosoftThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsMicrosoftThreatIntelligence.json
      */
     /**
      * Sample code: Check requirements for MicrosoftThreatIntelligence.
@@ -173,7 +210,22 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsDynamics365.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsOfficePowerBI.json
+     */
+    /**
+     * Sample code: Check requirements for OfficePowerBI.
+     *
+     * @param manager Entry point to SecurityInsightsManager.
+     */
+    public static void checkRequirementsForOfficePowerBI(
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager
+            .dataConnectorsCheckRequirementsOperations()
+            .postWithResponse("myRg", "myWorkspace", new OfficePowerBICheckRequirements(), Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsDynamics365.json
      */
     /**
      * Sample code: Check requirements for Dynamics365.
@@ -188,7 +240,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectoryNoLicense.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsAzureActiveDirectoryNoLicense.json
      */
     /**
      * Sample code: Check requirements for AAD - no license.
@@ -203,7 +255,7 @@ public final class DataConnectorsCheckRequirementsOperationPostSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/dataConnectors/CheckRequirementsThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CheckRequirementsThreatIntelligence.json
      */
     /**
      * Sample code: Check requirements for TI.

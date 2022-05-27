@@ -103,7 +103,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -147,7 +147,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         if (endpoint == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
         final ServiceBusServiceVersion apiVersion = serviceVersion == null
@@ -226,7 +226,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         try {
             url = new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = url.getHost();
@@ -269,13 +269,13 @@ public final class ServiceBusAdministrationClientBuilder implements
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
         this.endpoint = properties.getEndpoint().getHost();
         if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'connectionString' cannot contain an EntityPath. It should be a namespace connection string."));
         }
 
@@ -297,7 +297,7 @@ public final class ServiceBusAdministrationClientBuilder implements
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -335,7 +335,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     @Override
     public ServiceBusAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -406,7 +406,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     @Override
     public ServiceBusAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;

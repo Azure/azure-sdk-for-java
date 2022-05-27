@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesCreateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +14,6 @@ import java.util.Map;
 /** The parameters used when creating a storage account. */
 @Fluent
 public final class StorageAccountCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCreateParameters.class);
-
     /*
      * Required. Gets or sets the SKU name.
      */
@@ -383,8 +380,9 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -393,8 +391,9 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountCreateParameters object itself.
@@ -756,13 +755,40 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsEndpointType();
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withDnsEndpointType(dnsEndpointType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sku in model StorageAccountCreateParameters"));
@@ -770,13 +796,13 @@ public final class StorageAccountCreateParameters {
             sku().validate();
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kind in model StorageAccountCreateParameters"));
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model StorageAccountCreateParameters"));
@@ -791,4 +817,6 @@ public final class StorageAccountCreateParameters {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCreateParameters.class);
 }

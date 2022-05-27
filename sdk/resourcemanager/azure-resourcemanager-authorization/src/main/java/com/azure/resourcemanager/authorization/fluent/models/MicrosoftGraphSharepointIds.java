@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** sharepointIds. */
 @Fluent
 public final class MicrosoftGraphSharepointIds {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSharepointIds.class);
-
     /*
      * The unique identifier (guid) for the item's list in SharePoint.
      */

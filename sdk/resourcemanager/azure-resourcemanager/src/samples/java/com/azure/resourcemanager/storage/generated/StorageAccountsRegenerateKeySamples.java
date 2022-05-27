@@ -10,7 +10,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParam
 /** Samples for StorageAccounts RegenerateKey. */
 public final class StorageAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountRegenerateKey.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountRegenerateKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKey.
@@ -28,7 +28,7 @@ public final class StorageAccountsRegenerateKeySamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountRegenerateKerbKey.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountRegenerateKerbKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKerbKey.

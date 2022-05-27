@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("Bookmark")
 @Fluent
 public final class BookmarkTimelineItem extends EntityTimelineItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BookmarkTimelineItem.class);
-
     /*
      * The bookmark azure resource id.
      */
@@ -237,7 +234,7 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
     public void validate() {
         super.validate();
         if (azureResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azureResourceId in model BookmarkTimelineItem"));
@@ -246,4 +243,6 @@ public final class BookmarkTimelineItem extends EntityTimelineItem {
             createdBy().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BookmarkTimelineItem.class);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dynamics AX OData resource dataset properties. */
 @Fluent
 public final class DynamicsAXResourceDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsAXResourceDatasetTypeProperties.class);
-
     /*
      * The path of the Dynamics AX OData entity. Type: string (or Expression
      * with resultType string).
@@ -50,10 +47,12 @@ public final class DynamicsAXResourceDatasetTypeProperties {
      */
     public void validate() {
         if (path() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property path in model DynamicsAXResourceDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicsAXResourceDatasetTypeProperties.class);
 }

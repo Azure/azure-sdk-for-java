@@ -10,15 +10,12 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.Snssai;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Network slice resource. */
 @Fluent
 public final class SliceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SliceInner.class);
-
     /*
      * Slice properties.
      */
@@ -26,10 +23,11 @@ public final class SliceInner extends Resource {
     private SlicePropertiesFormat innerProperties = new SlicePropertiesFormat();
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData innerSystemData;
+    private SystemData systemData;
 
     /**
      * Get the innerProperties property: Slice properties.
@@ -40,14 +38,14 @@ public final class SliceInner extends Resource {
         return this.innerProperties;
     }
 
-//    /**
-//     * Get the innerSystemData property: Metadata pertaining to creation and last modification of the resource.
-//     *
-//     * @return the innerSystemData value.
-//     */
-//    private SystemData innerSystemData() {
-//        return this.innerSystemData;
-//    }
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -127,11 +125,13 @@ public final class SliceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model SliceInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SliceInner.class);
 }

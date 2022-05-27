@@ -129,6 +129,10 @@
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
 
+    <!-- Reserved for general JVM arguments to export, open, or read modules in testing that affect all SDKs. -->
+    <defaultJavaModulesSurefireArgLine>
+    </defaultJavaModulesSurefireArgLine>
+
     <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
     <javaModulesSurefireArgLine>
     </javaModulesSurefireArgLine>
@@ -171,6 +175,7 @@
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
     <graalvm.enable>false</graalvm.enable>
+    <nativeImage.buildArgs></nativeImage.buildArgs>
 
     <!-- The following properties configure the revapi-maven-plugin. -->
     <!-- This property configures whether the revapi-maven-plugin should run. -->
@@ -257,7 +262,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <skip>${codesnippet.skip}</skip>
           <readmeGlob>**/*.md</readmeGlob>
@@ -335,7 +340,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <dataFileIncludes>
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
@@ -820,7 +825,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.7</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.8</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -1022,6 +1027,10 @@
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
+                ${defaultJavaModulesSurefireArgLine}
+                <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=com.azure.core
                 ${additionalSurefireArgLine}
               </argLine>
             </configuration>
@@ -1390,7 +1399,7 @@
             <version>0.9.10</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
               <skip>${graalvm.enable}</skip>
-              <buildArgs>--no-fallback</buildArgs>
+              <buildArgs>--no-fallback ${nativeImage.buildArgs}</buildArgs>
             </configuration>
             <executions>
               <execution>
@@ -1404,6 +1413,22 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>from-source-test-run</id>
+      <activation>
+        <property>
+          <name>env.TESTFROMSOURCE</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <defaultJavaModulesSurefireArgLine>
+          <!-- Maven loads NettyAsyncHttpClient from unnamed module in "from source" core runs -->
+          --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+        </defaultJavaModulesSurefireArgLine>
+      </properties>
     </profile>
   </profiles>
 </project>

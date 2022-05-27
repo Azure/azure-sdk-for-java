@@ -27,7 +27,11 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
         return fromString(name, TeamDeskAuthenticationType.class);
     }
 
-    /** @return known TeamDeskAuthenticationType values. */
+    /**
+     * Gets known TeamDeskAuthenticationType values.
+     *
+     * @return known TeamDeskAuthenticationType values.
+     */
     public static Collection<TeamDeskAuthenticationType> values() {
         return values(TeamDeskAuthenticationType.class);
     }

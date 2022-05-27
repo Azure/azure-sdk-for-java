@@ -27,7 +27,11 @@ public final class IpFamily extends ExpandableStringEnum<IpFamily> {
         return fromString(name, IpFamily.class);
     }
 
-    /** @return known IpFamily values. */
+    /**
+     * Gets known IpFamily values.
+     *
+     * @return known IpFamily values.
+     */
     public static Collection<IpFamily> values() {
         return values(IpFamily.class);
     }

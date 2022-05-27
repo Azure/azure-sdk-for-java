@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Allow to exclude some variable satisfy the condition for the WAF check. */
 @Fluent
 public final class ApplicationGatewayFirewallExclusion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallExclusion.class);
-
     /*
      * The variable to be excluded.
      */
@@ -105,23 +102,25 @@ public final class ApplicationGatewayFirewallExclusion {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
         }
         if (selectorMatchOperator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selectorMatchOperator in model"
                             + " ApplicationGatewayFirewallExclusion"));
         }
         if (selector() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayFirewallExclusion.class);
 }

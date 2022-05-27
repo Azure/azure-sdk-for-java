@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The settings for the CORS configuration of the service instance. */
 @Fluent
 public final class ServiceCorsConfigurationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceCorsConfigurationInfo.class);
-
     /*
      * The origins to be allowed via CORS.
      */

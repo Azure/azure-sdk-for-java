@@ -6,16 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private Endpoint Connection Approval ARM resource. */
 @Fluent
 public final class PrivateLinkConnectionApprovalRequestResource extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateLinkConnectionApprovalRequestResource.class);
-
     /*
      * Core resource properties
      */

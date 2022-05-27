@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListBastionHosts API service call. */
 @Fluent
 public final class BastionHostListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostListResult.class);
-
     /*
      * List of Bastion Hosts in a resource group.
      */

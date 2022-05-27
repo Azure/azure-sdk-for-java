@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Map Power Query mashup query to sink dataset(s). */
 @Fluent
 public final class PowerQuerySinkMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerQuerySinkMapping.class);
-
     /*
      * Name of the query in Power Query mashup document.
      */

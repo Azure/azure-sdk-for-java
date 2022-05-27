@@ -5,15 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The CodelessUiConnectorConfigPropertiesGraphQueriesItem model. */
 @Fluent
 public final class CodelessUiConnectorConfigPropertiesGraphQueriesItem extends GraphQueries {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CodelessUiConnectorConfigPropertiesGraphQueriesItem.class);
-
     /** {@inheritDoc} */
     @Override
     public CodelessUiConnectorConfigPropertiesGraphQueriesItem withMetricName(String metricName) {

@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/chat/threads?api-version=2021-04-05-preview6",
+    "Uri" : "https://REDACTED.communication.azure.com/chat/threads?api-version=2021-09-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0 (1.8.0_262; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4e6c0cec-588d-472f-bb76-a10d2e3970e8",
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.3.0-beta.1 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4d38e25d-ac4c-477d-b501-ae61e8a53f88",
       "Content-Type" : "application/json"
     },
     "Response" : {

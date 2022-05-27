@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ItemLevelRecoveryConnectionsClient. */
 public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRecoveryConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(ItemLevelRecoveryConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ItemLevelRecoveryConnectionsService service;
 
@@ -299,7 +296,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         IlrRequestResource parameters) {
         return provisionWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -553,7 +550,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         String recoveryPointId) {
         return revokeWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

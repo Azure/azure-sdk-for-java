@@ -55,7 +55,7 @@ public interface SnapshotsClient
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -67,7 +67,7 @@ public interface SnapshotsClient
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,7 +79,7 @@ public interface SnapshotsClient
     /**
      * Lists snapshots in the specified subscription and resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,7 +92,7 @@ public interface SnapshotsClient
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +105,7 @@ public interface SnapshotsClient
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,7 +118,7 @@ public interface SnapshotsClient
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +131,7 @@ public interface SnapshotsClient
     /**
      * Gets a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +146,7 @@ public interface SnapshotsClient
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +161,7 @@ public interface SnapshotsClient
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +175,7 @@ public interface SnapshotsClient
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +189,7 @@ public interface SnapshotsClient
     /**
      * Creates or updates a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
@@ -205,7 +205,7 @@ public interface SnapshotsClient
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +220,7 @@ public interface SnapshotsClient
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +234,7 @@ public interface SnapshotsClient
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +248,7 @@ public interface SnapshotsClient
     /**
      * Updates tags on a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @param context The context to associate with this operation.
@@ -264,7 +264,7 @@ public interface SnapshotsClient
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -277,7 +277,7 @@ public interface SnapshotsClient
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -290,7 +290,7 @@ public interface SnapshotsClient
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -302,7 +302,7 @@ public interface SnapshotsClient
     /**
      * Deletes a snapshot.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the List System topics operation. */
 @Fluent
 public final class SystemTopicsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemTopicsListResult.class);
-
     /*
      * A collection of system Topics.
      */

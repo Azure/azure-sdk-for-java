@@ -48,18 +48,18 @@ public interface SystemTopic {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: Identity information for the resource.
-     *
-     * @return the identity value.
-     */
-    IdentityInfo identity();
-
-    /**
      * Gets the systemData property: The system metadata relating to System Topic resource.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    IdentityInfo identity();
 
     /**
      * Gets the provisioningState property: Provisioning state of the system topic.
@@ -102,6 +102,13 @@ public interface SystemTopic {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner object.

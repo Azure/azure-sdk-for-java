@@ -23,10 +23,9 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugPackage;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessionInfo;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessions;
 import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowDebugSessionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowDebugSessionsImpl.class);
 
     private final DataFlowDebugSessionsClient innerClient;
 

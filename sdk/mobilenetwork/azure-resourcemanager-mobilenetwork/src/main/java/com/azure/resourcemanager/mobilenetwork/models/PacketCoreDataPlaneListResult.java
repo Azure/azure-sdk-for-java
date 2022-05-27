@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlaneInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for packet core data planes API service call. */
 @Fluent
 public final class PacketCoreDataPlaneListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCoreDataPlaneListResult.class);
-
     /*
      * A list of packet core data planes in a resource group.
      */

@@ -7,10 +7,11 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.DateTimeRfc1123;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -18,16 +19,20 @@ import java.util.Locale;
  * The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request.
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
-
-    private static final DateTimeFormatter FORMAT = DateTimeFormatter
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
             .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-            .withZone(ZoneId.of("UTC"))
+            .withZone(ZoneOffset.UTC)
             .withLocale(Locale.US);
 
     private static final HttpPipelinePolicy INNER = new HttpPipelineSynchronousPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            context.getHttpRequest().getHeaders().set("Date", FORMAT.format(OffsetDateTime.now()));
+            OffsetDateTime now = OffsetDateTime.now();
+            try {
+                context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
+            } catch (IllegalArgumentException ignored) {
+                context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
+            }
         }
     };
 

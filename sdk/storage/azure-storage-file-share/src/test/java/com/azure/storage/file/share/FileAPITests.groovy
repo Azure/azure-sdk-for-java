@@ -15,6 +15,7 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import com.azure.storage.file.share.models.DownloadRetryOptions
+import com.azure.storage.file.share.models.FileLastWrittenMode
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -22,13 +23,16 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareFileUploadOptions
+import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileCreateOptions
 import com.azure.storage.file.share.options.ShareFileDownloadOptions
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -194,6 +198,19 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileChangeTime()
         resp.getValue().getSmbProperties().getParentId()
         resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Create change time"() {
+        setup:
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryFileClient.createWithResponse(512, null, new FileSmbProperties().setFileChangeTime(changeTime),
+            null, null, null, null, null)
+
+        then:
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
     }
 
     def "Create file with args error"() {
@@ -854,6 +871,33 @@ class FileAPITests extends APISpec {
         deleteFileIfExists(testFolder.getPath(), downloadFile.getName())
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Upload range preserve file last written on"() {
+        setup:
+        primaryFileClient.create(Constants.KB)
+        def initialProps = primaryFileClient.getProperties()
+
+        when:
+        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions
+            (new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB).setLastWrittenMode(mode), null, null)
+        def resultProps = primaryFileClient.getProperties()
+
+        then:
+        if (mode.equals(FileLastWrittenMode.PRESERVE)) {
+            assert initialProps.getSmbProperties().getFileLastWriteTime() == resultProps.getSmbProperties()
+                .getFileLastWriteTime()
+        } else {
+            assert initialProps.getSmbProperties().getFileLastWriteTime() != resultProps.getSmbProperties()
+                .getFileLastWriteTime()
+        }
+
+        where:
+        mode                         | _
+        FileLastWrittenMode.NOW      | _
+        FileLastWrittenMode.PRESERVE | _
+    }
+
     @Unroll
     def "Upload range from URL"() {
         given:
@@ -894,6 +938,46 @@ class FileAPITests extends APISpec {
         pathSuffix || _
         ""         || _
         "ü1ü"      || _ /* Something that needs to be url encoded. */
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Upload range from Url preserve file last written on"() {
+        setup:
+        primaryFileClient.create(Constants.KB)
+        def destinationClient = shareClient.getFileClient(generatePathName())
+        destinationClient.create(Constants.KB)
+        def initialProps = destinationClient.getProperties()
+
+        primaryFileClient.uploadRange(new ByteArrayInputStream(getRandomBuffer(Constants.KB)), Constants.KB)
+
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sasToken = new ShareServiceSasSignatureValues()
+            .setExpiryTime(namer.getUtcNow().plusDays(1))
+            .setPermissions(new ShareFileSasPermission().setReadPermission(true))
+            .setShareName(primaryFileClient.getShareName())
+            .setFilePath(primaryFileClient.getFilePath())
+            .generateSasQueryParameters(credential)
+            .encode()
+
+        when:
+        destinationClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(Constants.KB,
+            primaryFileClient.getFileUrl() + "?" + sasToken).setLastWrittenMode(mode), null, null)
+        def resultProps = destinationClient.getProperties()
+
+        then:
+        if (mode.equals(FileLastWrittenMode.PRESERVE)) {
+            assert initialProps.getSmbProperties().getFileLastWriteTime() == resultProps.getSmbProperties()
+                .getFileLastWriteTime()
+        } else {
+            assert initialProps.getSmbProperties().getFileLastWriteTime() != resultProps.getSmbProperties()
+                .getFileLastWriteTime()
+        }
+
+        where:
+        mode                         | _
+        FileLastWrittenMode.NOW      | _
+        FileLastWrittenMode.PRESERVE | _
     }
 
     @Unroll
@@ -990,6 +1074,47 @@ class FileAPITests extends APISpec {
         assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    def "Delete if exists file"() {
+        given:
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
+
+        expect:
+        assertResponseStatusCode(primaryFileClient.deleteIfExistsWithResponse(null, null, null), 202)
+    }
+
+    def "Delete if exists file min"() {
+        given:
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
+
+        expect:
+        primaryFileClient.deleteIfExists()
+    }
+
+    def "Delete if exists file that does not exist"() {
+        def client = shareClient.getFileClient(generateShareName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !client.exists()
+    }
+
+    def "Delete if exists file that was already deleted"() {
+        setup:
+        primaryFileClient.createWithResponse(1024, null, null, null, null, null, null)
+
+        when:
+        def result1 = primaryFileClient.deleteIfExists()
+        def result2 = primaryFileClient.deleteIfExists()
+
+        then:
+        result1
+        !result2
+    }
+
     def "Get properties"() {
         given:
         primaryFileClient.create(1024)
@@ -1066,6 +1191,19 @@ class FileAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileChangeTime()
         resp.getValue().getSmbProperties().getParentId()
         resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Set httpHeaders change time"() {
+        setup:
+        primaryFileClient.create(512)
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null)
+
+        then:
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
     }
 
     def "Set httpHeaders error"() {
@@ -1477,9 +1615,9 @@ class FileAPITests extends APISpec {
         exception == !ignoreReadOnly
 
         where:
-        ignoreReadOnly  | _
-        true            | _
-        false           | _
+        ignoreReadOnly | _
+        true           | _
+        false          | _
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -1511,7 +1649,7 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException) // permission and key cannot both be set
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Rename file smbProperties"() {
         setup:
         primaryFileClient.create(512)
@@ -1519,11 +1657,13 @@ class FileAPITests extends APISpec {
         def permissionKey = shareClient.createPermission(filePermission)
         def fileCreationTime = namer.getUtcNow().minusDays(5)
         def fileLastWriteTime = namer.getUtcNow().minusYears(2)
+        def fileChangeTime = namer.getUtcNow()
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(fileCreationTime)
             .setFileLastWriteTime(fileLastWriteTime)
+            .setFileChangeTime(fileChangeTime)
 
         when:
         def destClient = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -1534,6 +1674,7 @@ class FileAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
+        destProperties.getSmbProperties().getFileChangeTime() == fileChangeTime
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -1601,8 +1742,8 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
 
         where:
-         leaseID        | _
-         garbageLeaseID | _
+        leaseID        | _
+        garbageLeaseID | _
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -1648,6 +1789,22 @@ class FileAPITests extends APISpec {
         where:
         leaseID        | _
         garbageLeaseID | _
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Rename content type"() {
+        setup:
+        primaryFileClient.create(512)
+
+        when:
+        def resp = primaryFileClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
+            .setContentType("mytype"), null, null)
+
+        def renamedClient = resp.getValue()
+        def props = renamedClient.getProperties()
+
+        then:
+        props.getContentType() == "mytype"
     }
 
     def "Get snapshot id"() {

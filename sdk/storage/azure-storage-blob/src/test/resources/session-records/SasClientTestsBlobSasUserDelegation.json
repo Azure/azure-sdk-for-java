@@ -70,7 +70,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ba1973bf0ba1973bfb649027545135ea6f57546e79c7/ba1973bf1ba1973bfb642486788d911bd5e31480fbf0?sv=2021-04-10&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-10-12T21%3A50%3A48Z&ske=2021-10-14T21%3A50%3A48Z&sks=b&skv=2020-12-06&sr=b&sp=racwdlme&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ba1973bf0ba1973bfb649027545135ea6f57546e79c7/ba1973bf1ba1973bfb642486788d911bd5e31480fbf0?sv=2021-06-08&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-10-12T21%3A50%3A48Z&ske=2021-10-14T21%3A50%3A48Z&sks=b&skv=2020-12-06&sr=b&sp=racwdlme&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",
@@ -109,7 +109,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/ba1973bf0ba1973bfb649027545135ea6f57546e79c7/ba1973bf1ba1973bfb642486788d911bd5e31480fbf0?sv=2021-04-10&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-10-12T21%3A50%3A48Z&ske=2021-10-14T21%3A50%3A48Z&sks=b&skv=2020-12-06&sr=b&sp=racwdlme&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ba1973bf0ba1973bfb649027545135ea6f57546e79c7/ba1973bf1ba1973bfb642486788d911bd5e31480fbf0?sv=2021-06-08&spr=https%2Chttp&st=2021-10-12T21%3A50%3A48Z&se=2021-10-14T21%3A50%3A48Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2021-10-12T21%3A50%3A48Z&ske=2021-10-14T21%3A50%3A48Z&sks=b&skv=2020-12-06&sr=b&sp=racwdlme&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2021-02-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 (11.0.7; Windows 10; 10.0)",

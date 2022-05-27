@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.OSFamily;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Host entity property bag. */
 @Fluent
 public final class HostEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostEntityProperties.class);
-
     /*
      * The azure resource id of the VM.
      */

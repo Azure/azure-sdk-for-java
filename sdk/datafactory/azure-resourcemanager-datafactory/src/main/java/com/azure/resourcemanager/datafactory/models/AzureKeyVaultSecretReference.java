@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureKeyVaultSecret")
 @Fluent
 public final class AzureKeyVaultSecretReference extends SecretBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureKeyVaultSecretReference.class);
-
     /*
      * The Azure Key Vault linked service reference.
      */
@@ -112,7 +109,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     public void validate() {
         super.validate();
         if (store() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property store in model AzureKeyVaultSecretReference"));
@@ -120,10 +117,12 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
             store().validate();
         }
         if (secretName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretName in model AzureKeyVaultSecretReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyVaultSecretReference.class);
 }

@@ -73,4 +73,18 @@ public final class SftpWriteSettings extends StoreWriteSettings {
         this.useTempFileRename = useTempFileRename;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SftpWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SftpWriteSettings setCopyBehavior(Object copyBehavior) {
+        super.setCopyBehavior(copyBehavior);
+        return this;
+    }
 }

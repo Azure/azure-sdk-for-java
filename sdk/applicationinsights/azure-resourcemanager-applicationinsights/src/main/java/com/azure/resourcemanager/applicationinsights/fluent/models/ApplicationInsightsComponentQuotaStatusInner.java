@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component daily data volume cap status. */
 @Immutable
 public final class ApplicationInsightsComponentQuotaStatusInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentQuotaStatusInner.class);
-
     /*
      * The Application ID for the Application Insights component.
      */

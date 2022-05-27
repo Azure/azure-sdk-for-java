@@ -6,20 +6,16 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NetworkInterface properties. */
 @Fluent
 public final class NetworkInterfacePropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfacePropertiesFormatInner.class);
-
     /*
      * The reference to a virtual machine.
      */

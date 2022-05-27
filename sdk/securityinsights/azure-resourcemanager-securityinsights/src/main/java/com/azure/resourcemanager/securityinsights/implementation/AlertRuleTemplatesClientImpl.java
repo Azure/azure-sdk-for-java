@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.AlertRuleTemplatesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleTemplateInner;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplatesList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AlertRuleTemplatesClient. */
 public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesClient {
-    private final ClientLogger logger = new ClientLogger(AlertRuleTemplatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AlertRuleTemplatesService service;
 
@@ -222,7 +219,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all alert rule templates.
+     * @return all alert rule templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertRuleTemplateInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -239,7 +236,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all alert rule templates.
+     * @return all alert rule templates as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertRuleTemplateInner> listAsync(
@@ -257,7 +254,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all alert rule templates.
+     * @return all alert rule templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleTemplateInner> list(String resourceGroupName, String workspaceName) {
@@ -273,7 +270,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all alert rule templates.
+     * @return all alert rule templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleTemplateInner> list(String resourceGroupName, String workspaceName, Context context) {
@@ -401,14 +398,7 @@ public final class AlertRuleTemplatesClientImpl implements AlertRuleTemplatesCli
     private Mono<AlertRuleTemplateInner> getAsync(
         String resourceGroupName, String workspaceName, String alertRuleTemplateId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, alertRuleTemplateId)
-            .flatMap(
-                (Response<AlertRuleTemplateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

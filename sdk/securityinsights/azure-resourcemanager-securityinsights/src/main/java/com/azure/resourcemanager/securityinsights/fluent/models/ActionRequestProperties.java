@@ -7,14 +7,11 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ActionPropertiesBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Action property bag. */
 @Fluent
 public final class ActionRequestProperties extends ActionPropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionRequestProperties.class);
-
     /*
      * Logic App Callback URL for this specific workflow.
      */
@@ -57,10 +54,12 @@ public final class ActionRequestProperties extends ActionPropertiesBase {
     public void validate() {
         super.validate();
         if (triggerUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property triggerUri in model ActionRequestProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActionRequestProperties.class);
 }

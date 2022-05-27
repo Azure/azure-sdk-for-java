@@ -8,8 +8,7 @@ import time
 
 import in_place
 
-from log import log, Log
-from artifact_id_pair import ArtifactIdPair
+from log import log
 from version_update_item import VersionUpdateItem
 
 X_VERSION_UPDATE = 'x-version-update'
@@ -38,7 +37,7 @@ config = {
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.5.0'),
             )
         },
-        'sdk/spring/azure-spring-cloud-test-parent/pom.xml': {
+        'sdk/spring/spring-cloud-azure-test-parent/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.4.10'),
             )
@@ -95,14 +94,7 @@ def get_args():
 
 
 def init_log(args):
-    log_dict = {
-        'debug': Log.DEBUG,
-        'info': Log.INFO,
-        'warn': Log.WARN,
-        'error': Log.ERROR,
-        'none': Log.NONE
-    }
-    log.set_log_level(log_dict[args.log])
+    log.set_log_level(args.log)
     color_dict = {
         'true': True,
         'false': False
@@ -138,7 +130,7 @@ def replace_artifact_id(module, pom):
     :param module: module name
     :param pom: pom file path
     """
-    log.debug('Replacing artifact id in file: {}'.format(pom, module))
+    log.debug('Replacing artifact id in file: {}'.format(pom))
     pom_dict = config[module][pom]
     if ARTIFACT_ID_PAIRS not in pom_dict:
         log.warn('No config key {} in pom parameters.'.format(ARTIFACT_ID_PAIRS))

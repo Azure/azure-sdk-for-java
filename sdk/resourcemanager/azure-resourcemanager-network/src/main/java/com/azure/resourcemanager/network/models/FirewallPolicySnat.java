@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The private IP addresses/IP ranges to which traffic will not be SNAT. */
 @Fluent
 public final class FirewallPolicySnat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicySnat.class);
-
     /*
      * List of private IP addresses/IP address ranges to not be SNAT.
      */

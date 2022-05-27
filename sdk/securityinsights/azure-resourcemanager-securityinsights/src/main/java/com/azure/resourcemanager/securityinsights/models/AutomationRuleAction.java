@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -20,21 +18,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = AutomationRuleAction.class)
 @JsonTypeName("AutomationRuleAction")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "RunPlaybook", value = AutomationRuleRunPlaybookAction.class),
-    @JsonSubTypes.Type(name = "ModifyProperties", value = AutomationRuleModifyPropertiesAction.class)
+    @JsonSubTypes.Type(name = "ModifyProperties", value = AutomationRuleModifyPropertiesAction.class),
+    @JsonSubTypes.Type(name = "RunPlaybook", value = AutomationRuleRunPlaybookAction.class)
 })
 @Fluent
 public class AutomationRuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRuleAction.class);
-
     /*
-     * The order of execution of the automation rule action
+     * The order property.
      */
     @JsonProperty(value = "order", required = true)
     private int order;
 
     /**
-     * Get the order property: The order of execution of the automation rule action.
+     * Get the order property: The order property.
      *
      * @return the order value.
      */
@@ -43,7 +39,7 @@ public class AutomationRuleAction {
     }
 
     /**
-     * Set the order property: The order of execution of the automation rule action.
+     * Set the order property: The order property.
      *
      * @param order the order value to set.
      * @return the AutomationRuleAction object itself.

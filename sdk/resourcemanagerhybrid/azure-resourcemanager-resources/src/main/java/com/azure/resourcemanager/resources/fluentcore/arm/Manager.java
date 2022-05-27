@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 
 /**
@@ -19,7 +18,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     private ResourceManager resourceManager;
     private final String subscriptionId;
     private final AzureEnvironment environment;
-    private final HttpPipeline httpPipeline;
+    private HttpPipeline httpPipeline;
 
     private final InnerT innerManagementClient;
 
@@ -33,10 +32,7 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
-            this.resourceManager = AzureConfigurableImpl
-                .configureHttpPipeline(httpPipeline, ResourceManager.configure())
-                .authenticate(null, profile)
-                .withDefaultSubscription();
+            this.resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         }
         this.subscriptionId = profile.getSubscriptionId();
         this.environment = profile.getEnvironment();
@@ -69,6 +65,10 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
      */
     protected final void withResourceManager(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
+        if (this.httpPipeline == null) {
+            // fill httpPipeline from resourceManager
+            this.httpPipeline = resourceManager.serviceClient().getHttpPipeline();
+        }
     }
 
     /**

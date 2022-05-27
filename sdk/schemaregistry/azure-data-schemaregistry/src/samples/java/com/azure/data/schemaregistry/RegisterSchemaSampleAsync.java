@@ -36,6 +36,9 @@ public class RegisterSchemaSampleAsync {
             .registerSchema("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
             .subscribe(schemaProperties -> {
                 System.out.println("Successfully registered a schema with id " + schemaProperties.getId());
+                System.out.println("Schema Group: " + schemaProperties.getGroupName());
+                System.out.println("Schema Name: " + schemaProperties.getName());
+
                 countDownLatch.countDown();
             });
 

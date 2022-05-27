@@ -24,7 +24,11 @@ public final class IpActionType extends ExpandableStringEnum<IpActionType> {
         return fromString(name, IpActionType.class);
     }
 
-    /** @return known IpActionType values. */
+    /**
+     * Gets known IpActionType values.
+     *
+     * @return known IpActionType values.
+     */
     public static Collection<IpActionType> values() {
         return values(IpActionType.class);
     }

@@ -17,7 +17,6 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnGatewayGeneration;
 import com.azure.resourcemanager.network.models.VpnType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,6 @@ import java.util.Map;
 /** A common class for general resource information. */
 @Fluent
 public final class VirtualNetworkGatewayInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayInner.class);
-
     /*
      * Properties of the virtual network gateway.
      */
@@ -564,7 +561,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
@@ -575,4 +572,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
             extendedLocation().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayInner.class);
 }
