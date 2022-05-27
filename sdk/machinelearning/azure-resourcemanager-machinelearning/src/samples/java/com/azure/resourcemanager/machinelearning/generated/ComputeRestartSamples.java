@@ -14,10 +14,10 @@ public final class ComputeRestartSamples {
     /**
      * Sample code: Restart ComputeInstance Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void restartComputeInstanceCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().restart("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 }

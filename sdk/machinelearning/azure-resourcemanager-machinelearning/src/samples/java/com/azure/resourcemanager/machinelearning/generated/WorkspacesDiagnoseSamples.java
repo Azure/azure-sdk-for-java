@@ -18,10 +18,9 @@ public final class WorkspacesDiagnoseSamples {
     /**
      * Sample code: Diagnose Workspace.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void diagnoseWorkspace(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void diagnoseWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaces()
             .diagnose(

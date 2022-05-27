@@ -14,10 +14,10 @@ public final class OnlineDeploymentsListSkusSamples {
     /**
      * Sample code: List Managed Online Deployment Skus.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listManagedOnlineDeploymentSkus(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .listSkus("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", 1, null, Context.NONE);
@@ -29,10 +29,10 @@ public final class OnlineDeploymentsListSkusSamples {
     /**
      * Sample code: List Kubernetes Online Deployment Skus.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listKubernetesOnlineDeploymentSkus(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .listSkus("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", 1, null, Context.NONE);

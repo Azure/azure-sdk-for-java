@@ -14,10 +14,9 @@ public final class ComponentVersionsListSamples {
     /**
      * Sample code: List Component Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listComponentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listComponentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .componentVersions()
             .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, Context.NONE);

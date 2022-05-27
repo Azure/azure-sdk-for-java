@@ -19,10 +19,10 @@ public final class ComponentVersionsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Component Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateComponentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         manager
             .componentVersions()
             .define("string")

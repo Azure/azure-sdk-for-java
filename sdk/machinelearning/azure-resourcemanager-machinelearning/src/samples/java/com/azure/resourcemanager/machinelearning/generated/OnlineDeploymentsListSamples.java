@@ -14,10 +14,9 @@ public final class OnlineDeploymentsListSamples {
     /**
      * Sample code: List Online Deployments.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listOnlineDeployments(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listOnlineDeployments(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .list("test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, Context.NONE);

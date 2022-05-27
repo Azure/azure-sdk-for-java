@@ -14,10 +14,9 @@ public final class BatchEndpointsDeleteSamples {
     /**
      * Sample code: Delete Batch Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteBatchEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.batchEndpoints().delete("resourceGroup-1234", "testworkspace", "testBatchEndpoint", Context.NONE);
     }
 }

@@ -14,10 +14,9 @@ public final class CodeVersionsGetSamples {
     /**
      * Sample code: Get Code Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getCodeVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.codeVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
     }
 }

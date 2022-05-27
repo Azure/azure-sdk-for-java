@@ -14,10 +14,10 @@ public final class EnvironmentVersionsDeleteSamples {
     /**
      * Sample code: Delete Environment Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteEnvironmentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
             .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);

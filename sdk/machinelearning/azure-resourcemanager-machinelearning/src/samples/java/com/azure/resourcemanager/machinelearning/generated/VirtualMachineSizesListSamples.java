@@ -14,9 +14,9 @@ public final class VirtualMachineSizesListSamples {
     /**
      * Sample code: List VM Sizes.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listVMSizes(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listVMSizes(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.virtualMachineSizes().listWithResponse("eastus", Context.NONE);
     }
 }

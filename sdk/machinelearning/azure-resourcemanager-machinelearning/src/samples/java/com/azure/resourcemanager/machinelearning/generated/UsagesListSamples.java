@@ -14,9 +14,9 @@ public final class UsagesListSamples {
     /**
      * Sample code: List Usages.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listUsages(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listUsages(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.usages().list("eastus", Context.NONE);
     }
 }

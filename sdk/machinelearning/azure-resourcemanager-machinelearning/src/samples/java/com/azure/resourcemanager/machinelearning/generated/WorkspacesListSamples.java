@@ -14,10 +14,10 @@ public final class WorkspacesListSamples {
     /**
      * Sample code: Get Workspaces by subscription.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getWorkspacesBySubscription(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().list(null, Context.NONE);
     }
 }

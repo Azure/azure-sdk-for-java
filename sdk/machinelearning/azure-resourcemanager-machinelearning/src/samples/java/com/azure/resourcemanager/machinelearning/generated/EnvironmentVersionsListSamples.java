@@ -14,10 +14,10 @@ public final class EnvironmentVersionsListSamples {
     /**
      * Sample code: List Environment Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listEnvironmentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
             .list("test-rg", "my-aml-workspace", "string", "string", 1, null, null, Context.NONE);

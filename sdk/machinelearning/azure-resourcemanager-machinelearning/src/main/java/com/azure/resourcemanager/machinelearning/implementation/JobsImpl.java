@@ -20,11 +20,10 @@ public final class JobsImpl implements Jobs {
 
     private final JobsClient innerClient;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public JobsImpl(
-        JobsClient innerClient,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        JobsClient innerClient, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -201,7 +200,7 @@ public final class JobsImpl implements Jobs {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 

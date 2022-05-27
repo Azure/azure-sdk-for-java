@@ -13,7 +13,7 @@ import com.azure.resourcemanager.machinelearning.models.CodeVersionDetails;
 public final class CodeVersionDataImpl implements CodeVersionData, CodeVersionData.Definition, CodeVersionData.Update {
     private CodeVersionDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -43,7 +43,7 @@ public final class CodeVersionDataImpl implements CodeVersionData, CodeVersionDa
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -83,8 +83,7 @@ public final class CodeVersionDataImpl implements CodeVersionData, CodeVersionDa
         return this;
     }
 
-    CodeVersionDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+    CodeVersionDataImpl(String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new CodeVersionDataInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -117,7 +116,7 @@ public final class CodeVersionDataImpl implements CodeVersionData, CodeVersionDa
 
     CodeVersionDataImpl(
         CodeVersionDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

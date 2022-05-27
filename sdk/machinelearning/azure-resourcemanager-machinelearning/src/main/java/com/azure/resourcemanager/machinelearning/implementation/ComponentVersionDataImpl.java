@@ -14,7 +14,7 @@ public final class ComponentVersionDataImpl
     implements ComponentVersionData, ComponentVersionData.Definition, ComponentVersionData.Update {
     private ComponentVersionDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +44,7 @@ public final class ComponentVersionDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -85,7 +85,7 @@ public final class ComponentVersionDataImpl
     }
 
     ComponentVersionDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new ComponentVersionDataInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -118,7 +118,7 @@ public final class ComponentVersionDataImpl
 
     ComponentVersionDataImpl(
         ComponentVersionDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

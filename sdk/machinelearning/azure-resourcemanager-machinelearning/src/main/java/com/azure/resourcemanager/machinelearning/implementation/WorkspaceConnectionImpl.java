@@ -13,11 +13,11 @@ import com.azure.resourcemanager.machinelearning.models.WorkspaceConnection;
 public final class WorkspaceConnectionImpl implements WorkspaceConnection, WorkspaceConnection.Definition {
     private WorkspaceConnectionInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     WorkspaceConnectionImpl(
         WorkspaceConnectionInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -62,7 +62,7 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -99,7 +99,7 @@ public final class WorkspaceConnectionImpl implements WorkspaceConnection, Works
     }
 
     WorkspaceConnectionImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new WorkspaceConnectionInner();
         this.serviceManager = serviceManager;
         this.connectionName = name;

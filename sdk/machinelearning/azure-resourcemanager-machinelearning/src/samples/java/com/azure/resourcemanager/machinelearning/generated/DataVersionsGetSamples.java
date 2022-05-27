@@ -14,10 +14,9 @@ public final class DataVersionsGetSamples {
     /**
      * Sample code: Get Data Version Base.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getDataVersionBase(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getDataVersionBase(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.dataVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
     }
 }

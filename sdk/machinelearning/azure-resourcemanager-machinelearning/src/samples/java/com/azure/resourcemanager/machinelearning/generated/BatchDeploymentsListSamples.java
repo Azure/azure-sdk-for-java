@@ -14,10 +14,9 @@ public final class BatchDeploymentsListSamples {
     /**
      * Sample code: List Batch Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listBatchDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .batchDeployments()
             .list("test-rg", "my-aml-workspace", "testEndpointName", "string", 1, null, Context.NONE);

@@ -14,10 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: OperationsList.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void operationsList(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void operationsList(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.operations().list(Context.NONE);
     }
 }

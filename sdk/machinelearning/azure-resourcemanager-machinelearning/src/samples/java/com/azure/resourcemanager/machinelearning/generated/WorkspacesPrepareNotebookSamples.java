@@ -14,10 +14,9 @@ public final class WorkspacesPrepareNotebookSamples {
     /**
      * Sample code: Prepare Notebook.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void prepareNotebook(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void prepareNotebook(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().prepareNotebook("testrg123", "workspaces123", Context.NONE);
     }
 }

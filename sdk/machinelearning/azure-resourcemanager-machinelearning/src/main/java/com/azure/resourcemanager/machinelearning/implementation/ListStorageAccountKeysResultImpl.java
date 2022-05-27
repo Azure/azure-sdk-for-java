@@ -10,11 +10,11 @@ import com.azure.resourcemanager.machinelearning.models.ListStorageAccountKeysRe
 public final class ListStorageAccountKeysResultImpl implements ListStorageAccountKeysResult {
     private ListStorageAccountKeysResultInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     ListStorageAccountKeysResultImpl(
         ListStorageAccountKeysResultInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -27,7 +27,7 @@ public final class ListStorageAccountKeysResultImpl implements ListStorageAccoun
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 }

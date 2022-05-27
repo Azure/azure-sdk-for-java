@@ -14,10 +14,9 @@ public final class BatchDeploymentsDeleteSamples {
     /**
      * Sample code: Delete Batch Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteBatchDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .batchDeployments()
             .delete("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);

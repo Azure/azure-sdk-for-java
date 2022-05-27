@@ -14,10 +14,10 @@ public final class PrivateLinkResourcesListSamples {
     /**
      * Sample code: WorkspaceListPrivateLinkResources.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void workspaceListPrivateLinkResources(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.privateLinkResources().listWithResponse("rg-1234", "testworkspace", Context.NONE);
     }
 }

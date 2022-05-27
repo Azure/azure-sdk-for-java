@@ -14,10 +14,10 @@ public final class WorkspaceConnectionsDeleteSamples {
     /**
      * Sample code: DeleteWorkspaceConnection.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteWorkspaceConnection(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaceConnections()
             .deleteWithResponse("resourceGroup-1", "workspace-1", "connection-1", Context.NONE);

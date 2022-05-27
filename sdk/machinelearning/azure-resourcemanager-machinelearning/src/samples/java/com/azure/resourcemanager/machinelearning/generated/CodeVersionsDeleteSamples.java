@@ -14,10 +14,9 @@ public final class CodeVersionsDeleteSamples {
     /**
      * Sample code: Delete Code Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteCodeVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteCodeVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.codeVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
     }
 }

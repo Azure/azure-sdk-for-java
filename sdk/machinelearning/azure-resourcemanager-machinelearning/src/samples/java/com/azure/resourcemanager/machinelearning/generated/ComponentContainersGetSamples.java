@@ -14,10 +14,9 @@ public final class ComponentContainersGetSamples {
     /**
      * Sample code: Get Component Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getComponentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getComponentContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.componentContainers().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

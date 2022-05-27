@@ -16,10 +16,10 @@ public final class DataVersionsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Data Version Base.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateDataVersionBase(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .dataVersions()
             .define("string")

@@ -14,10 +14,10 @@ public final class ComponentContainersDeleteSamples {
     /**
      * Sample code: Delete Component Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteComponentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.componentContainers().deleteWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

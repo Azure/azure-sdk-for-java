@@ -14,10 +14,9 @@ public final class OnlineEndpointsGetSamples {
     /**
      * Sample code: Get Online Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getOnlineEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.onlineEndpoints().getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
     }
 }

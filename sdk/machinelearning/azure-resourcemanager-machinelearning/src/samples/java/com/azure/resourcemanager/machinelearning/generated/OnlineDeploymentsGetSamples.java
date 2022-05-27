@@ -14,10 +14,10 @@ public final class OnlineDeploymentsGetSamples {
     /**
      * Sample code: Get Kubernetes Online Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getKubernetesOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);
@@ -29,10 +29,10 @@ public final class OnlineDeploymentsGetSamples {
     /**
      * Sample code: Get Managed Online Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getManagedOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE);

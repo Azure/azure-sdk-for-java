@@ -19,11 +19,11 @@ public final class CodeVersionsImpl implements CodeVersions {
 
     private final CodeVersionsClient innerClient;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public CodeVersionsImpl(
         CodeVersionsClient innerClient,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -215,7 +215,7 @@ public final class CodeVersionsImpl implements CodeVersions {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 

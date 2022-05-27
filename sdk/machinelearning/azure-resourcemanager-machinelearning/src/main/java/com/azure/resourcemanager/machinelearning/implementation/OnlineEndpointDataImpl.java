@@ -27,7 +27,7 @@ public final class OnlineEndpointDataImpl
     implements OnlineEndpointData, OnlineEndpointData.Definition, OnlineEndpointData.Update {
     private OnlineEndpointDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -90,7 +90,7 @@ public final class OnlineEndpointDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -127,7 +127,7 @@ public final class OnlineEndpointDataImpl
     }
 
     OnlineEndpointDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new OnlineEndpointDataInner();
         this.serviceManager = serviceManager;
         this.endpointName = name;
@@ -158,7 +158,7 @@ public final class OnlineEndpointDataImpl
 
     OnlineEndpointDataImpl(
         OnlineEndpointDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

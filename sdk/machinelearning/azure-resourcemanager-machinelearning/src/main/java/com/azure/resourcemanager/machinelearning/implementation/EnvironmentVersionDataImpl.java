@@ -14,7 +14,7 @@ public final class EnvironmentVersionDataImpl
     implements EnvironmentVersionData, EnvironmentVersionData.Definition, EnvironmentVersionData.Update {
     private EnvironmentVersionDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +44,7 @@ public final class EnvironmentVersionDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -86,7 +86,7 @@ public final class EnvironmentVersionDataImpl
     }
 
     EnvironmentVersionDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new EnvironmentVersionDataInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -119,7 +119,7 @@ public final class EnvironmentVersionDataImpl
 
     EnvironmentVersionDataImpl(
         EnvironmentVersionDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

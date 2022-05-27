@@ -14,7 +14,7 @@ import com.azure.resourcemanager.machinelearning.models.JobBaseDetails;
 public final class JobBaseDataImpl implements JobBaseData, JobBaseData.Definition, JobBaseData.Update {
     private JobBaseDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +44,7 @@ public final class JobBaseDataImpl implements JobBaseData, JobBaseData.Definitio
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -80,8 +80,7 @@ public final class JobBaseDataImpl implements JobBaseData, JobBaseData.Definitio
         return this;
     }
 
-    JobBaseDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+    JobBaseDataImpl(String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new JobBaseDataInner();
         this.serviceManager = serviceManager;
         this.id = name;
@@ -112,8 +111,7 @@ public final class JobBaseDataImpl implements JobBaseData, JobBaseData.Definitio
     }
 
     JobBaseDataImpl(
-        JobBaseDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        JobBaseDataInner innerObject, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

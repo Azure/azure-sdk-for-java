@@ -12,10 +12,10 @@ public final class WorkspaceConnectionsCreateSamples {
     /**
      * Sample code: CreateWorkspaceConnection.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createWorkspaceConnection(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaceConnections()
             .define("connection-1")

@@ -14,10 +14,10 @@ public final class WorkspacesListByResourceGroupSamples {
     /**
      * Sample code: Get Workspaces by Resource Group.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getWorkspacesByResourceGroup(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().listByResourceGroup("workspace-1234", null, Context.NONE);
     }
 }

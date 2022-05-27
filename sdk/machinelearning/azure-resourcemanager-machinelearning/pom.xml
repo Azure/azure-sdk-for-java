@@ -12,8 +12,8 @@
   <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-machinelearning;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for MachineLearningServices Management</name>
-  <description>This package contains Microsoft Azure SDK for MachineLearningServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package tag package-2022-02-01-preview.</description>
+  <name>Microsoft Azure SDK for Machine Learning Management</name>
+  <description>This package contains Microsoft Azure SDK for Machine Learning Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package tag package-2022-02-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

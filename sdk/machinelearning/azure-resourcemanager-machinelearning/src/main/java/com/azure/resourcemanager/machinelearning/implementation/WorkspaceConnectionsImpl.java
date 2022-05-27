@@ -19,11 +19,11 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
 
     private final WorkspaceConnectionsClient innerClient;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public WorkspaceConnectionsImpl(
         WorkspaceConnectionsClient innerClient,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -181,7 +181,7 @@ public final class WorkspaceConnectionsImpl implements WorkspaceConnections {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 

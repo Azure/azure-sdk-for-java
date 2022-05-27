@@ -17,10 +17,10 @@ public final class DataContainersCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Data Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateDataContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .dataContainers()
             .define("datacontainer123")

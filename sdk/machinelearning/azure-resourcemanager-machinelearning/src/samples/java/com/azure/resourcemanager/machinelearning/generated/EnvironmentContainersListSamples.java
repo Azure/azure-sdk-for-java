@@ -14,10 +14,10 @@ public final class EnvironmentContainersListSamples {
     /**
      * Sample code: List Environment Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listEnvironmentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.environmentContainers().list("testrg123", "testworkspace", null, null, Context.NONE);
     }
 }

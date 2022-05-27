@@ -26,10 +26,10 @@ public final class BatchEndpointsUpdateSamples {
     /**
      * Sample code: Update Batch Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateBatchEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+    public static void updateBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
+        throws IOException {
         BatchEndpointData resource =
             manager
                 .batchEndpoints()

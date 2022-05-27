@@ -14,10 +14,9 @@ public final class BatchEndpointsGetSamples {
     /**
      * Sample code: Get Batch Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getBatchEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.batchEndpoints().getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
     }
 }

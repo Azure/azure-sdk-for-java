@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsGetSamples {
     /**
      * Sample code: WorkspaceGetPrivateEndpointConnection.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void workspaceGetPrivateEndpointConnection(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .privateEndpointConnections()
             .getWithResponse("rg-1234", "testworkspace", "{privateEndpointConnectionName}", Context.NONE);

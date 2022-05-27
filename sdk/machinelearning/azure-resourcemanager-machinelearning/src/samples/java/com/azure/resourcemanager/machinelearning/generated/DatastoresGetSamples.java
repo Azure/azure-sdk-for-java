@@ -14,9 +14,9 @@ public final class DatastoresGetSamples {
     /**
      * Sample code: Get datastore.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getDatastore(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.datastores().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

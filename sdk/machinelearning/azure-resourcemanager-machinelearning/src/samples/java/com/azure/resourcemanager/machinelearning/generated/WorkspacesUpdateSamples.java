@@ -16,10 +16,9 @@ public final class WorkspacesUpdateSamples {
     /**
      * Sample code: Update Workspace.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateWorkspace(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void updateWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         Workspace resource =
             manager
                 .workspaces()

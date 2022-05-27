@@ -14,10 +14,10 @@ public final class WorkspaceConnectionsListSamples {
     /**
      * Sample code: ListWorkspaceConnections.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceConnections(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaceConnections().list("resourceGroup-1", "workspace-1", "www.facebook.com", "ACR", Context.NONE);
     }
 }

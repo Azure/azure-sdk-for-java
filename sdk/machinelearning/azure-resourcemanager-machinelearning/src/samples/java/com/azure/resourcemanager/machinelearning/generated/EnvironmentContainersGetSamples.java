@@ -14,10 +14,10 @@ public final class EnvironmentContainersGetSamples {
     /**
      * Sample code: Get Environment Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getEnvironmentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.environmentContainers().getWithResponse("testrg123", "testworkspace", "testEnvironment", Context.NONE);
     }
 }

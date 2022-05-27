@@ -14,10 +14,9 @@ public final class DataContainersGetSamples {
     /**
      * Sample code: Get Data Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getDataContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.dataContainers().getWithResponse("testrg123", "workspace123", "datacontainer123", Context.NONE);
     }
 }

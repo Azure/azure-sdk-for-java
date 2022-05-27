@@ -24,7 +24,7 @@ public final class BatchEndpointDataImpl
     implements BatchEndpointData, BatchEndpointData.Definition, BatchEndpointData.Update {
     private BatchEndpointDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -83,7 +83,7 @@ public final class BatchEndpointDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -120,7 +120,7 @@ public final class BatchEndpointDataImpl
     }
 
     BatchEndpointDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new BatchEndpointDataInner();
         this.serviceManager = serviceManager;
         this.endpointName = name;
@@ -151,7 +151,7 @@ public final class BatchEndpointDataImpl
 
     BatchEndpointDataImpl(
         BatchEndpointDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

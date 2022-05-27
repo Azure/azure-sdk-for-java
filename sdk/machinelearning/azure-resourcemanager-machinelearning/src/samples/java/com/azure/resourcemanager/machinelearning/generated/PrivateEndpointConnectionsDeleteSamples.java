@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     /**
      * Sample code: WorkspaceDeletePrivateEndpointConnection.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void workspaceDeletePrivateEndpointConnection(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .privateEndpointConnections()
             .deleteWithResponse("rg-1234", "testworkspace", "{privateEndpointConnectionName}", Context.NONE);
