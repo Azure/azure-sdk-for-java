@@ -23,7 +23,6 @@ import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.file.Files;
@@ -31,7 +30,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.TextStyle;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -39,7 +37,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -224,13 +221,14 @@ public final class TestHelpers {
     }
 
     private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
+        if (ex instanceof HttpResponseException) {
+            assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 
-        assertEquals(HttpResponseException.class, ex.getClass());
-
-        assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
-
-        if (expectedMessage != null) {
-            assertTrue(ex.getMessage().contains(expectedMessage));
+            if (expectedMessage != null) {
+                assertTrue(ex.getMessage().contains(expectedMessage));
+            }
+        } else {
+            fail("Expected exception to be instanceof HttpResponseException", ex);
         }
     }
 

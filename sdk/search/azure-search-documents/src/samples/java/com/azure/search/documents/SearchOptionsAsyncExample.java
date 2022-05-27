@@ -6,11 +6,9 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -92,7 +90,7 @@ public class SearchOptionsAsyncExample {
 
     private static void searchResultsAsList(SearchAsyncClient searchClient) {
         // Converting search results to list
-        List<SearchResult> searchResults = searchClient.search("*")
+        searchClient.search("*")
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(result ->
@@ -100,6 +98,7 @@ public class SearchOptionsAsyncExample {
                     System.out.println((field + ":" + value)))
             )
             .doOnComplete(() -> System.out.println("Completed processing"))
-            .collectList().block();
+            .collectList()
+            .block();
     }
 }

@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -176,10 +175,8 @@ public class IndexBatchExceptionTests {
         IndexBatchException exception = new IndexBatchException(result);
 
         IndexDocumentsBatch<SearchDocument> originalBatch = new IndexDocumentsBatch<SearchDocument>().addUploadActions(
-            allKeys.stream().map(key -> new SearchDocument(new HashMap<String, String>() {{
-                    put(KEY_FIELD_NAME, key);
-                }})).collect(Collectors.toList())
-        );
+            allKeys.stream().map(key -> new SearchDocument(Collections.singletonMap(KEY_FIELD_NAME, key)))
+                .collect(Collectors.toList()));
         return exception.findFailedActionsToRetry(originalBatch, KEY_FIELD_NAME);
     }
 

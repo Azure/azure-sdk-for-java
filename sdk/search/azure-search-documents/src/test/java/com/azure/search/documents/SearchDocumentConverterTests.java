@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -42,9 +43,9 @@ public class SearchDocumentConverterTests {
 
     private static void cleanupODataAnnotation(SearchDocument searchDocument) {
         // Skip OData @search annotations. These are deserialized separately.
-        searchDocument.keySet().stream()
-            .filter(key -> key.startsWith("@search"))
-            .forEach(searchDocument::remove);
+        List<String> keysToRemove = searchDocument.keySet().stream().filter(key -> key.startsWith("@search"))
+            .collect(Collectors.toList());
+        keysToRemove.forEach(searchDocument::remove);
     }
 
     @Test
@@ -99,7 +100,7 @@ public class SearchDocumentConverterTests {
         values.put("[\"hello\", \"goodbye\"]", Arrays.asList("hello", "goodbye"));
         values.put("[123, 456]", Arrays.asList(123, 456));
         values.put("[9999999999999, -12]", Arrays.asList(9_999_999_999_999L, -12));
-        values.put("[3.25, 2.78]", Arrays.asList(3.125, 2.78));
+        values.put("[3.25, 2.78]", Arrays.asList(3.25, 2.78));
         values.put("[true, false]", Arrays.asList(true, false));
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
@@ -194,8 +195,8 @@ public class SearchDocumentConverterTests {
         // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
         String json =
             "{\"field\": [\"hello\", 123, 3.25, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
-            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
-            + "{ \"name\": \"Arthur\", \"quest\": null }] }";
+                + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
+                + "{ \"name\": \"Arthur\", \"quest\": null }] }";
 
         GeoPoint point = new GeoPoint(-122.131577, 47.678581);
         SearchDocument innerDoc = new SearchDocument();
