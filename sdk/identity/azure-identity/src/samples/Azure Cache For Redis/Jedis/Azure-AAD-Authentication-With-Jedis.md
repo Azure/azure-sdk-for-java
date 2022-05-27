@@ -24,7 +24,7 @@
 
 #### Samples Guidance
 
-Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
+Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
 
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
@@ -35,15 +35,14 @@ This sample is recommended users looking to build long-running applications and 
 [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
 This sample is recommended for users looking to build long-running applications and would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
 
+**Note:** The below sample uses the Azure Identity library's `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
-#### Authenticate with Azure AD Hello World
+#### Authenticate with Azure AD: Hello World
 This sample is intended to assist in authenticating with Azure AD via the Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Jedis instance.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
-
-**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ```java
 //Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
@@ -76,14 +75,12 @@ System.out.println(jedis.get("Az:key"));
 jedis.close();
 ```
 
-#### Authenticate with Azure AD Handle Re Authentication
-This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Jedis instance. It Further shows how to recreate and authenticate the Jedis instance when its connection is broken in error/exception scenarios.
+#### Authenticate with Azure AD: Handle Reauthentication
+This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance when its connection is broken in error/exception scenarios.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
-
-**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ```java
 //Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
@@ -137,7 +134,7 @@ private static AccessToken getAccessToken(TokenCredential tokenCredential, Token
 }
 ```
 
-#### Authenticate with Azure AD Azure Jedis Wrapper
+#### Authenticate with Azure AD: Azure Jedis Wrapper
 This sample is intended to assist in the migration from Jedis to `AzureJedisClientBuilder`. It focuses on side-by-side comparisons for similar operations between the two libraries.
 
 ##### Migration benefits
@@ -167,7 +164,7 @@ With `AzureJedisClient`, client instances are created via builders. The builder 
 
 See the following example of setting up the Azure Jedis client.
 
-| Feature | Jedis | Microsoft Jedis |
+| Feature | Jedis | Azure Jedis |
 |--|--|--|
 | Connect to Redis Cache | Yes |Yes |
 | Azure AD Authentication Support | No | Yes|
@@ -176,8 +173,6 @@ See the following example of setting up the Azure Jedis client.
 | Handle Broken Connection | No |Yes |
 
 See the following example of setting up the Azure Jedis client.
-
-**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ```java
 ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()

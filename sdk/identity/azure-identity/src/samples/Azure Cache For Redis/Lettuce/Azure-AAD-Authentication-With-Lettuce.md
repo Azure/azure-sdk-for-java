@@ -23,7 +23,7 @@
 ```
 
 #### Samples Guidance
-Familiarity with the Lettuce and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Lettuce](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
+Familiarity with the [Lettuce]() and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
 
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
@@ -31,8 +31,10 @@ This sample is recommended for users getting started to use Azure AD authenticat
 [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
 This sample is recommended users looking to build long-running applications and would like to handle re authenticating with Azure AD upon token expiry.
 
+**Note:** The below sample uses the Azure Identity library's `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ##### Challenges
+The Lettuce Redis Client Handshake process is described below. The RESP 3 Protocol uses `HELLO` command which currently is not supported on service side.
 ![image](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/images/lettuce-aad-handshake.png)
 
 ##### Raw Redis CLI Connection Behavior
@@ -54,14 +56,12 @@ walmart-demo.redis.cache.windows.net:6379> HELLO 3 AUTH walmartdummyuser eyJ0eXA
 
 ```
 
-##### Authenticate with Azure AD Hello World
-This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis Client instance.
+##### Authenticate with Azure AD: Hello World
+This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
-
-**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ##### Version 6.1.8.RELEASE or less
 ```xml
@@ -215,14 +215,12 @@ System.out.println(sync.get("Az:testKey").toString());
 ```
 
 
-##### Authenticate with Azure AD Handle Re Authentication.
-This sample is intended to assist in authenticating with Azure AD via Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It Further shows how to recreate and authenticate the Lettuce Redis client instance when its connection is broken in error/exception scenarios.
+##### Authenticate with Azure AD: Handle Reauthentication
+This sample is intended to assist in authenticating with Azure AD via Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance. It also shows how to recreate and authenticate the Lettuce client instance when its connection is broken in error/exception scenarios.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
-
-**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ##### Version 6.1.8.RELEASE or less
 ```xml
