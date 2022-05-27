@@ -53,6 +53,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -813,16 +814,17 @@ public class EventHubClientBuilder implements
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        AmqpClientOptions amqpClientOptions;
+        String identifier;
         if (clientOptions != null && clientOptions instanceof AmqpClientOptions) {
-            amqpClientOptions = (AmqpClientOptions) clientOptions;
+            String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+            identifier = clientOptionIdentifier == null ? UUID.randomUUID().toString() : clientOptionIdentifier;
         } else {
-            amqpClientOptions = new AmqpClientOptions();
+            identifier = UUID.randomUUID().toString();
         }
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose,
-            amqpClientOptions.getIdentifier());
+            identifier);
     }
 
     /**
