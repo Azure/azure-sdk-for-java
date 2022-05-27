@@ -31,8 +31,7 @@ class AzureStorageAutoConfigurationTests {
     private static final String STORAGE_CONNECTION_STRING_PATTERN = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
 
     @Test
     void blobConfigShouldWorkWithFileShareConfig() {
@@ -71,6 +70,7 @@ class AzureStorageAutoConfigurationTests {
                 "spring.cloud.azure.storage.queue.account-name=test-account-name"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
                 assertNotNull(context.getBean("staticStorageFileShareConnectionStringProvider"));
@@ -104,6 +104,7 @@ class AzureStorageAutoConfigurationTests {
                 "spring.cloud.azure.storage.account-name=test-account-name"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
                 assertNotNull(context.getBean("staticStorageFileShareConnectionStringProvider"));

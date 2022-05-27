@@ -154,31 +154,6 @@ class AzureStorageQueueAutoConfigurationTests {
             });
     }
 
-    @Test
-    void configurationPropertiesShouldBindWithGlobalConfig() {
-        String accountName = "test-account-name";
-        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
-        String endpoint = String.format("https://%s.queue.core.windows.net", accountName);
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.endpoint=" + endpoint,
-                "spring.cloud.azure.storage.account-key=test-key",
-                "spring.cloud.azure.storage.sas-token=test-sas-token",
-                "spring.cloud.azure.storage.connection-string=" + connectionString,
-                "spring.cloud.azure.storage.account-name=test-account-name"
-            )
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureStorageQueueProperties.class);
-                AzureStorageQueueProperties properties = context.getBean(AzureStorageQueueProperties.class);
-                assertEquals(endpoint, properties.getEndpoint());
-                assertEquals("test-key", properties.getAccountKey());
-                assertEquals("test-sas-token", properties.getSasToken());
-                assertEquals(connectionString, properties.getConnectionString());
-                assertEquals(accountName, properties.getAccountName());
-            });
-    }
-
     private static class QueueServiceClientBuilderCustomizer extends TestBuilderCustomizer<QueueServiceClientBuilder> {
 
     }

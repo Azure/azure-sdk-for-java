@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AzureStorageFileShareResourceAutoConfigurationTests {
+class AzureStorageFileShareResourceAutoConfigurationTests {
 
     private static final String MOCK_URL = "https://test.fileshare.core.windows.net/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -22,7 +22,10 @@ public class AzureStorageFileShareResourceAutoConfigurationTests {
     void accountNameShouldConfigure(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(accoutNameProperty)
-            .run((context) -> assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class));
+            .run(context -> {
+                    assertThat(context).hasSingleBean(AzureStorageFileShareResourceAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class);
+                });
     }
 
     @ParameterizedTest
@@ -30,7 +33,10 @@ public class AzureStorageFileShareResourceAutoConfigurationTests {
     void endpointShouldConfigure(String endpointProperty) {
         this.contextRunner
             .withPropertyValues(endpointProperty + "=" + MOCK_URL)
-            .run((context) -> assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class));
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageFileShareResourceAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class);
+            });
     }
 
     @ParameterizedTest
@@ -38,24 +44,19 @@ public class AzureStorageFileShareResourceAutoConfigurationTests {
     void connectionStringShouldConfigure(String connectionStringProperty) {
         this.contextRunner
             .withPropertyValues(connectionStringProperty)
-            .run((context) -> assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class));
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageFileShareResourceAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class);
+            });
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void runShouldCreateResolver(String accoutNameProperty) {
-        this.contextRunner
-            .withPropertyValues(accoutNameProperty)
-            .run((context) -> assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "spring.cloud.azure.storage.fileshare.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void runWhenDisabledShouldNotCreateResolver(String accoutNameProperty) {
+    void configureWithStorageFileShareResourceDisabled(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(
                 accoutNameProperty,
                 "spring.cloud.azure.storage.fileshare.enabled:false")
-            .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageFileProtocolResolver.class));
+            .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageFileShareResourceAutoConfiguration.class));
     }
 }

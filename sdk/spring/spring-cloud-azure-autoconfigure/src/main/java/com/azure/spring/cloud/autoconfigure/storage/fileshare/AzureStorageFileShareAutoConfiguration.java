@@ -43,14 +43,16 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties
 @ConditionalOnClass(ShareServiceClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.storage.fileshare.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.storage.fileshare", "spring.cloud.azure.storage" }, name = { "account-name", "endpoint", "connection-string" })
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.storage.fileshare", "spring.cloud.azure.storage" },
+    name = { "account-name", "endpoint", "connection-string" })
 @Import(AzureStorageConfiguration.class)
 public class AzureStorageFileShareAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
     AzureStorageFileShareProperties azureStorageFileShareProperties(AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadServiceProperties(azureStorageProperties, new AzureStorageFileShareProperties());
+        return AzureServicePropertiesUtils.loadStorageProperties(azureStorageProperties, new AzureStorageFileShareProperties());
     }
 
     /**

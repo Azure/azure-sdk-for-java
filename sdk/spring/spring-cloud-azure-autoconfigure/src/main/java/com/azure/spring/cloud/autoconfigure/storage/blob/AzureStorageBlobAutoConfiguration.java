@@ -45,14 +45,16 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STO
 @EnableConfigurationProperties
 @ConditionalOnClass(BlobServiceClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.storage.blob.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" }, name = { "account-name", "endpoint", "connection-string" })
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
+    name = { "account-name", "endpoint", "connection-string" })
 @Import(AzureStorageConfiguration.class)
 public class AzureStorageBlobAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
     AzureStorageBlobProperties azureStorageBlobProperties(AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadServiceProperties(azureStorageProperties, new AzureStorageBlobProperties());
+        return AzureServicePropertiesUtils.loadStorageProperties(azureStorageProperties, new AzureStorageBlobProperties());
     }
 
     @Bean
