@@ -6,16 +6,12 @@ package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationCodeResponseProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of the response of the verification code. */
 @Fluent
 public final class VerificationCodeResponseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerificationCodeResponseInner.class);
-
     /*
      * Request etag.
      */
