@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.util.Context;
+import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
@@ -85,21 +86,11 @@ class VertxAsyncHttpClient implements HttpClient {
                     }
                 });
 
-                getRequestBody(request).subscribeOn(scheduler).subscribe(buffer -> {
-                    while (buffer.hasRemaining()) {
-                        int bufferSize;
-                        if (buffer.remaining() > BYTE_BUFFER_CHUNK_SIZE) {
-                            bufferSize = BYTE_BUFFER_CHUNK_SIZE;
-                        } else {
-                            bufferSize = buffer.remaining();
-                        }
-
-                        byte[] bytes = new byte[bufferSize];
-                        buffer.get(bytes, 0, bytes.length);
-
-                        vertxHttpRequest.write(Buffer.buffer(bytes));
-                    }
-                }, sink::error, vertxHttpRequest::end);
+                getRequestBody(request)
+                    .subscribeOn(scheduler)
+                    .map(Unpooled::wrappedBuffer)
+                    .map(Buffer::buffer)
+                    .subscribe(buffer -> vertxHttpRequest.write(buffer), sink::error, vertxHttpRequest::end);
             }, sink::error));
     }
 
