@@ -45,6 +45,18 @@
       <artifactId>perf-test-core</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
   </dependencies>
 
   <profiles>
