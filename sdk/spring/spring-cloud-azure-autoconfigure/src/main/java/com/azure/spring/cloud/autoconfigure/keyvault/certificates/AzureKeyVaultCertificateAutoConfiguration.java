@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
-import com.azure.spring.cloud.autoconfigure.keyvault.environment.AzureKeyVaultConfiguration;
+import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
