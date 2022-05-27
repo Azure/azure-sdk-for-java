@@ -21,7 +21,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchDeploymentData> list(String resourceGroupName, String workspaceName, String endpointName);
+    PagedIterable<BatchDeployment> list(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * Lists Batch inference deployments in the workspace.
@@ -38,7 +38,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BatchDeploymentData> list(
+    PagedIterable<BatchDeployment> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -87,7 +87,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference deployment by id.
      */
-    BatchDeploymentData get(String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    BatchDeployment get(String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
 
     /**
      * Gets a batch inference deployment by id.
@@ -102,7 +102,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference deployment by id along with {@link Response}.
      */
-    Response<BatchDeploymentData> getWithResponse(
+    Response<BatchDeployment> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
 
     /**
@@ -114,7 +114,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference deployment by id along with {@link Response}.
      */
-    BatchDeploymentData getById(String id);
+    BatchDeployment getById(String id);
 
     /**
      * Gets a batch inference deployment by id.
@@ -126,7 +126,7 @@ public interface BatchDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch inference deployment by id along with {@link Response}.
      */
-    Response<BatchDeploymentData> getByIdWithResponse(String id, Context context);
+    Response<BatchDeployment> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Batch Inference deployment (asynchronous).
@@ -150,10 +150,10 @@ public interface BatchDeployments {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new BatchDeploymentData resource.
+     * Begins definition for a new BatchDeployment resource.
      *
      * @param name resource name.
-     * @return the first stage of the new BatchDeploymentData definition.
+     * @return the first stage of the new BatchDeployment definition.
      */
-    BatchDeploymentData.DefinitionStages.Blank define(String name);
+    BatchDeployment.DefinitionStages.Blank define(String name);
 }

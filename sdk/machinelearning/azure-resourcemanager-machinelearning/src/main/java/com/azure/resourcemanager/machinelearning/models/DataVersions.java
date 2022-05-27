@@ -21,7 +21,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataVersionBaseData> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<DataVersionBase> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List data versions in the data container.
@@ -42,7 +42,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataVersionBaseData> list(
+    PagedIterable<DataVersionBase> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -94,7 +94,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version.
      */
-    DataVersionBaseData get(String resourceGroupName, String workspaceName, String name, String version);
+    DataVersionBase get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -109,7 +109,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<DataVersionBaseData> getWithResponse(
+    Response<DataVersionBase> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -121,7 +121,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    DataVersionBaseData getById(String id);
+    DataVersionBase getById(String id);
 
     /**
      * Get version.
@@ -133,7 +133,7 @@ public interface DataVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<DataVersionBaseData> getByIdWithResponse(String id, Context context);
+    Response<DataVersionBase> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete version.
@@ -158,10 +158,10 @@ public interface DataVersions {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new DataVersionBaseData resource.
+     * Begins definition for a new DataVersionBase resource.
      *
      * @param name resource name.
-     * @return the first stage of the new DataVersionBaseData definition.
+     * @return the first stage of the new DataVersionBase definition.
      */
-    DataVersionBaseData.DefinitionStages.Blank define(String name);
+    DataVersionBase.DefinitionStages.Blank define(String name);
 }

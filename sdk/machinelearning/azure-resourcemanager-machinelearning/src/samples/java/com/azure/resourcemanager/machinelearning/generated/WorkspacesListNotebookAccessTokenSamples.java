@@ -9,15 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Workspaces ListNotebookAccessToken. */
 public final class WorkspacesListNotebookAccessTokenSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/listNotebookAccessToken.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Workspace/listNotebookAccessToken.json
      */
     /**
      * Sample code: List Workspace Keys.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listWorkspaceKeys(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().listNotebookAccessTokenWithResponse("workspace-1234", "testworkspace", Context.NONE);
     }
 }

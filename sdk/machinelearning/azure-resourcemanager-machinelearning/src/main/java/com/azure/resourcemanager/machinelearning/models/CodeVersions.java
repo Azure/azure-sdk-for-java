@@ -21,7 +21,7 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CodeVersionData> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<CodeVersion> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List versions.
@@ -38,7 +38,7 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CodeVersionData> list(
+    PagedIterable<CodeVersion> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -88,7 +88,7 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version.
      */
-    CodeVersionData get(String resourceGroupName, String workspaceName, String name, String version);
+    CodeVersion get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -103,7 +103,7 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<CodeVersionData> getWithResponse(
+    Response<CodeVersion> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -115,7 +115,7 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    CodeVersionData getById(String id);
+    CodeVersion getById(String id);
 
     /**
      * Get version.
@@ -127,7 +127,7 @@ public interface CodeVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<CodeVersionData> getByIdWithResponse(String id, Context context);
+    Response<CodeVersion> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete version.
@@ -152,10 +152,10 @@ public interface CodeVersions {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new CodeVersionData resource.
+     * Begins definition for a new CodeVersion resource.
      *
      * @param name resource name.
-     * @return the first stage of the new CodeVersionData definition.
+     * @return the first stage of the new CodeVersion definition.
      */
-    CodeVersionData.DefinitionStages.Blank define(String name);
+    CodeVersion.DefinitionStages.Blank define(String name);
 }

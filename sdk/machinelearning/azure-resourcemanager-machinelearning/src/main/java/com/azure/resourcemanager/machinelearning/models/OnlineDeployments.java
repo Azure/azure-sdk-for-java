@@ -21,7 +21,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineDeploymentData> list(String resourceGroupName, String workspaceName, String endpointName);
+    PagedIterable<OnlineDeployment> list(String resourceGroupName, String workspaceName, String endpointName);
 
     /**
      * List Inference Endpoint Deployments.
@@ -38,7 +38,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineDeploymentData> list(
+    PagedIterable<OnlineDeployment> list(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
@@ -87,8 +87,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment.
      */
-    OnlineDeploymentData get(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    OnlineDeployment get(String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
 
     /**
      * Get Inference Deployment Deployment.
@@ -103,7 +102,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment along with {@link Response}.
      */
-    Response<OnlineDeploymentData> getWithResponse(
+    Response<OnlineDeployment> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
 
     /**
@@ -196,7 +195,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment along with {@link Response}.
      */
-    OnlineDeploymentData getById(String id);
+    OnlineDeployment getById(String id);
 
     /**
      * Get Inference Deployment Deployment.
@@ -208,7 +207,7 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment along with {@link Response}.
      */
-    Response<OnlineDeploymentData> getByIdWithResponse(String id, Context context);
+    Response<OnlineDeployment> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
@@ -232,10 +231,10 @@ public interface OnlineDeployments {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new OnlineDeploymentData resource.
+     * Begins definition for a new OnlineDeployment resource.
      *
      * @param name resource name.
-     * @return the first stage of the new OnlineDeploymentData definition.
+     * @return the first stage of the new OnlineDeployment definition.
      */
-    OnlineDeploymentData.DefinitionStages.Blank define(String name);
+    OnlineDeployment.DefinitionStages.Blank define(String name);
 }

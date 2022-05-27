@@ -20,7 +20,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EnvironmentContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<EnvironmentContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List environment containers.
@@ -35,7 +35,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EnvironmentContainerData> list(
+    PagedIterable<EnvironmentContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
 
     /**
@@ -75,7 +75,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    EnvironmentContainerData get(String resourceGroupName, String workspaceName, String name);
+    EnvironmentContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -89,7 +89,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<EnvironmentContainerData> getWithResponse(
+    Response<EnvironmentContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -101,7 +101,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    EnvironmentContainerData getById(String id);
+    EnvironmentContainer getById(String id);
 
     /**
      * Get container.
@@ -113,7 +113,7 @@ public interface EnvironmentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<EnvironmentContainerData> getByIdWithResponse(String id, Context context);
+    Response<EnvironmentContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -138,10 +138,10 @@ public interface EnvironmentContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new EnvironmentContainerData resource.
+     * Begins definition for a new EnvironmentContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new EnvironmentContainerData definition.
+     * @return the first stage of the new EnvironmentContainer definition.
      */
-    EnvironmentContainerData.DefinitionStages.Blank define(String name);
+    EnvironmentContainer.DefinitionStages.Blank define(String name);
 }

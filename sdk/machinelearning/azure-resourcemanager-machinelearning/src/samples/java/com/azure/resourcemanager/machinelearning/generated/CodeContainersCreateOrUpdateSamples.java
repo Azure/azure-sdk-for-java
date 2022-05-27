@@ -4,28 +4,28 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.resourcemanager.machinelearning.models.CodeContainerDetails;
+import com.azure.resourcemanager.machinelearning.models.CodeContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for CodeContainers CreateOrUpdate. */
 public final class CodeContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/CodeContainer/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/CodeContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Code Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateCodeContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .codeContainers()
             .define("testContainer")
             .withExistingWorkspace("testrg123", "testworkspace")
             .withProperties(
-                new CodeContainerDetails()
+                new CodeContainerProperties()
                     .withDescription("string")
                     .withTags(mapOf("tag1", "value1", "tag2", "value2")))
             .create();

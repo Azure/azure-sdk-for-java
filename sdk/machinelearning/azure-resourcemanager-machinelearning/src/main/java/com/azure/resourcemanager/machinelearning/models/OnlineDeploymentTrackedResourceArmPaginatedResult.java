@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.OnlineDeploymentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class OnlineDeploymentTrackedResourceArmPaginatedResult {
      * An array of objects of type OnlineDeployment.
      */
     @JsonProperty(value = "value")
-    private List<OnlineDeploymentDataInner> value;
+    private List<OnlineDeploymentInner> value;
 
     /**
      * Get the nextLink property: The link to the next page of OnlineDeployment objects. If null, there are no
@@ -52,7 +52,7 @@ public final class OnlineDeploymentTrackedResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<OnlineDeploymentDataInner> value() {
+    public List<OnlineDeploymentInner> value() {
         return this.value;
     }
 
@@ -62,7 +62,7 @@ public final class OnlineDeploymentTrackedResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the OnlineDeploymentTrackedResourceArmPaginatedResult object itself.
      */
-    public OnlineDeploymentTrackedResourceArmPaginatedResult withValue(List<OnlineDeploymentDataInner> value) {
+    public OnlineDeploymentTrackedResourceArmPaginatedResult withValue(List<OnlineDeploymentInner> value) {
         this.value = value;
         return this;
     }

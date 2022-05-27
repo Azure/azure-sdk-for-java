@@ -34,10 +34,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.machinelearning.fluent.BatchEndpointsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
 import com.azure.resourcemanager.machinelearning.models.BatchEndpointTrackedResourceArmPaginatedResult;
-import com.azure.resourcemanager.machinelearning.models.PartialBatchEndpointPartialTrackedResource;
+import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedResourceWithIdentity;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -107,7 +107,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/batchEndpoints/{endpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BatchEndpointDataInner>> get(
+        Mono<Response<BatchEndpointInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -130,7 +130,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
             @PathParam("workspaceName") String workspaceName,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PartialBatchEndpointPartialTrackedResource body,
+            @BodyParam("application/json") PartialMinimalTrackedResourceWithIdentity body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -147,7 +147,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
             @PathParam("workspaceName") String workspaceName,
             @PathParam("endpointName") String endpointName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BatchEndpointDataInner body,
+            @BodyParam("application/json") BatchEndpointInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -193,7 +193,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchEndpointDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<BatchEndpointInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, Integer count, String skip) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -229,7 +229,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
                             skip,
                             accept,
                             context))
-            .<PagedResponse<BatchEndpointDataInner>>map(
+            .<PagedResponse<BatchEndpointInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -256,7 +256,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchEndpointDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<BatchEndpointInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -314,7 +314,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchEndpointDataInner> listAsync(
+    private PagedFlux<BatchEndpointInner> listAsync(
         String resourceGroupName, String workspaceName, Integer count, String skip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, count, skip),
@@ -332,7 +332,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchEndpointDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<BatchEndpointInner> listAsync(String resourceGroupName, String workspaceName) {
         final Integer count = null;
         final String skip = null;
         return new PagedFlux<>(
@@ -354,7 +354,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BatchEndpointDataInner> listAsync(
+    private PagedFlux<BatchEndpointInner> listAsync(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, count, skip, context),
@@ -372,7 +372,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchEndpointDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<BatchEndpointInner> list(String resourceGroupName, String workspaceName) {
         final Integer count = null;
         final String skip = null;
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, count, skip));
@@ -392,7 +392,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a paginated list of BatchEndpoint entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchEndpointDataInner> list(
+    public PagedIterable<BatchEndpointInner> list(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, count, skip, context));
     }
@@ -661,7 +661,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a batch inference endpoint by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BatchEndpointDataInner>> getWithResponseAsync(
+    private Mono<Response<BatchEndpointInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -715,7 +715,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a batch inference endpoint by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BatchEndpointDataInner>> getWithResponseAsync(
+    private Mono<Response<BatchEndpointInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -765,7 +765,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a batch inference endpoint by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchEndpointDataInner> getAsync(String resourceGroupName, String workspaceName, String endpointName) {
+    private Mono<BatchEndpointInner> getAsync(String resourceGroupName, String workspaceName, String endpointName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -782,7 +782,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a batch inference endpoint by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchEndpointDataInner get(String resourceGroupName, String workspaceName, String endpointName) {
+    public BatchEndpointInner get(String resourceGroupName, String workspaceName, String endpointName) {
         return getAsync(resourceGroupName, workspaceName, endpointName).block();
     }
 
@@ -799,7 +799,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return a batch inference endpoint by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BatchEndpointDataInner> getWithResponse(
+    public Response<BatchEndpointInner> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, endpointName, context).block();
     }
@@ -821,7 +821,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -885,7 +885,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -942,20 +942,20 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<BatchEndpointInner>, BatchEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body);
         return this
             .client
-            .<BatchEndpointDataInner, BatchEndpointDataInner>getLroResult(
+            .<BatchEndpointInner, BatchEndpointInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                BatchEndpointDataInner.class,
-                BatchEndpointDataInner.class,
+                BatchEndpointInner.class,
+                BatchEndpointInner.class,
                 this.client.getContext());
     }
 
@@ -973,23 +973,19 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginUpdateAsync(
+    private PollerFlux<PollResult<BatchEndpointInner>, BatchEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body, context);
         return this
             .client
-            .<BatchEndpointDataInner, BatchEndpointDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BatchEndpointDataInner.class,
-                BatchEndpointDataInner.class,
-                context);
+            .<BatchEndpointInner, BatchEndpointInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BatchEndpointInner.class, BatchEndpointInner.class, context);
     }
 
     /**
@@ -1005,11 +1001,11 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginUpdate(
+    public SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
@@ -1027,11 +1023,11 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginUpdate(
+    public SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginUpdate(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
     }
@@ -1049,11 +1045,11 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchEndpointDataInner> updateAsync(
+    private Mono<BatchEndpointInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1073,11 +1069,11 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchEndpointDataInner> updateAsync(
+    private Mono<BatchEndpointInner> updateAsync(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context)
             .last()
@@ -1097,11 +1093,11 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchEndpointDataInner update(
+    public BatchEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body) {
+        PartialMinimalTrackedResourceWithIdentity body) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, body).block();
     }
 
@@ -1119,11 +1115,11 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchEndpointDataInner update(
+    public BatchEndpointInner update(
         String resourceGroupName,
         String workspaceName,
         String endpointName,
-        PartialBatchEndpointPartialTrackedResource body,
+        PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
         return updateAsync(resourceGroupName, workspaceName, endpointName, body, context).block();
     }
@@ -1142,7 +1138,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body) {
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1203,11 +1199,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context) {
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1263,17 +1255,17 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body) {
+    private PollerFlux<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body);
         return this
             .client
-            .<BatchEndpointDataInner, BatchEndpointDataInner>getLroResult(
+            .<BatchEndpointInner, BatchEndpointInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                BatchEndpointDataInner.class,
-                BatchEndpointDataInner.class,
+                BatchEndpointInner.class,
+                BatchEndpointInner.class,
                 this.client.getContext());
     }
 
@@ -1291,23 +1283,15 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context) {
+    private PollerFlux<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, endpointName, body, context);
         return this
             .client
-            .<BatchEndpointDataInner, BatchEndpointDataInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BatchEndpointDataInner.class,
-                BatchEndpointDataInner.class,
-                context);
+            .<BatchEndpointInner, BatchEndpointInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BatchEndpointInner.class, BatchEndpointInner.class, context);
     }
 
     /**
@@ -1323,8 +1307,8 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body) {
+    public SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
@@ -1342,12 +1326,8 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BatchEndpointDataInner>, BatchEndpointDataInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context) {
+    public SyncPoller<PollResult<BatchEndpointInner>, BatchEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
     }
 
@@ -1364,8 +1344,8 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchEndpointDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body) {
+    private Mono<BatchEndpointInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1385,12 +1365,8 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BatchEndpointDataInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context) {
+    private Mono<BatchEndpointInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1409,8 +1385,8 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchEndpointDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointDataInner body) {
+    public BatchEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).block();
     }
 
@@ -1428,12 +1404,8 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchEndpointDataInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        BatchEndpointDataInner body,
-        Context context) {
+    public BatchEndpointInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String endpointName, BatchEndpointInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).block();
     }
 
@@ -1604,7 +1576,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchEndpointDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BatchEndpointInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1617,7 +1589,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BatchEndpointDataInner>>map(
+            .<PagedResponse<BatchEndpointInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1641,7 +1613,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BatchEndpointDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<BatchEndpointInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

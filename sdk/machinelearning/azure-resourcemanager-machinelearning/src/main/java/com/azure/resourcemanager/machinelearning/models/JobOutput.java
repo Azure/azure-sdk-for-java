@@ -18,12 +18,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = JobOutput.class)
 @JsonTypeName("JobOutput")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "CustomModel", value = CustomModelJobOutput.class),
-    @JsonSubTypes.Type(name = "MLFlowModel", value = MLFlowModelJobOutput.class),
-    @JsonSubTypes.Type(name = "MLTable", value = MLTableJobOutput.class),
-    @JsonSubTypes.Type(name = "TritonModel", value = TritonModelJobOutput.class),
-    @JsonSubTypes.Type(name = "UriFile", value = UriFileJobOutput.class),
-    @JsonSubTypes.Type(name = "UriFolder", value = UriFolderJobOutput.class)
+    @JsonSubTypes.Type(name = "custom_model", value = CustomModelJobOutput.class),
+    @JsonSubTypes.Type(name = "mlflow_model", value = MLFlowModelJobOutput.class),
+    @JsonSubTypes.Type(name = "mltable", value = MLTableJobOutput.class),
+    @JsonSubTypes.Type(name = "triton_model", value = TritonModelJobOutput.class),
+    @JsonSubTypes.Type(name = "uri_file", value = UriFileJobOutput.class),
+    @JsonSubTypes.Type(name = "uri_folder", value = UriFolderJobOutput.class)
 })
 @Fluent
 public class JobOutput {

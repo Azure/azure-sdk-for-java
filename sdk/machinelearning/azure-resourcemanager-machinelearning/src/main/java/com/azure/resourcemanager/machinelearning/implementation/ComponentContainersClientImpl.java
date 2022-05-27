@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.ComponentContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.ComponentContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ComponentContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ComponentContainerResourceArmPaginatedResult;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import reactor.core.publisher.Mono;
@@ -99,7 +99,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/components/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ComponentContainerDataInner>> get(
+        Mono<Response<ComponentContainerInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -115,14 +115,14 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/components/{name}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ComponentContainerDataInner>> createOrUpdate(
+        Mono<Response<ComponentContainerInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ComponentContainerDataInner body,
+            @BodyParam("application/json") ComponentContainerInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -151,7 +151,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ComponentContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -187,7 +187,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<ComponentContainerDataInner>>map(
+            .<PagedResponse<ComponentContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -214,7 +214,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ComponentContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -272,7 +272,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComponentContainerDataInner> listAsync(
+    private PagedFlux<ComponentContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, listViewType),
@@ -290,7 +290,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComponentContainerDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<ComponentContainerInner> listAsync(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
         return new PagedFlux<>(
@@ -312,7 +312,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComponentContainerDataInner> listAsync(
+    private PagedFlux<ComponentContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, listViewType, context),
@@ -330,7 +330,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ComponentContainerDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<ComponentContainerInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, listViewType));
@@ -350,7 +350,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ComponentContainerDataInner> list(
+    public PagedIterable<ComponentContainerInner> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, skip, listViewType, context));
     }
@@ -519,7 +519,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<ComponentContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -573,7 +573,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<ComponentContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -623,7 +623,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComponentContainerDataInner> getAsync(String resourceGroupName, String workspaceName, String name) {
+    private Mono<ComponentContainerInner> getAsync(String resourceGroupName, String workspaceName, String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -640,7 +640,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComponentContainerDataInner get(String resourceGroupName, String workspaceName, String name) {
+    public ComponentContainerInner get(String resourceGroupName, String workspaceName, String name) {
         return getAsync(resourceGroupName, workspaceName, name).block();
     }
 
@@ -657,7 +657,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComponentContainerDataInner> getWithResponse(
+    public Response<ComponentContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
     }
@@ -676,8 +676,8 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, ComponentContainerDataInner body) {
+    private Mono<Response<ComponentContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, ComponentContainerInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -738,12 +738,8 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ComponentContainerDataInner body,
-        Context context) {
+    private Mono<Response<ComponentContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, ComponentContainerInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -799,8 +795,8 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComponentContainerDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, ComponentContainerDataInner body) {
+    private Mono<ComponentContainerInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, ComponentContainerInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -818,8 +814,8 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComponentContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, ComponentContainerDataInner body) {
+    public ComponentContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, ComponentContainerInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, name, body).block();
     }
 
@@ -837,12 +833,8 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComponentContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        ComponentContainerDataInner body,
-        Context context) {
+    public Response<ComponentContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, ComponentContainerInner body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, context).block();
     }
 
@@ -857,7 +849,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentContainerDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ComponentContainerInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -870,7 +862,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ComponentContainerDataInner>>map(
+            .<PagedResponse<ComponentContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -894,7 +886,7 @@ public final class ComponentContainersClientImpl implements ComponentContainersC
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentContainerDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ComponentContainerInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

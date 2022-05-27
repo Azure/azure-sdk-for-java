@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
 /** An instance of this class provides access to all the operations defined in EnvironmentContainersClient. */
@@ -25,7 +25,7 @@ public interface EnvironmentContainersClient {
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentContainerDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<EnvironmentContainerInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List environment containers.
@@ -41,7 +41,7 @@ public interface EnvironmentContainersClient {
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentContainerDataInner> list(
+    PagedIterable<EnvironmentContainerInner> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
 
     /**
@@ -84,7 +84,7 @@ public interface EnvironmentContainersClient {
      * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentContainerDataInner get(String resourceGroupName, String workspaceName, String name);
+    EnvironmentContainerInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -99,7 +99,7 @@ public interface EnvironmentContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentContainerDataInner> getWithResponse(
+    Response<EnvironmentContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -115,8 +115,8 @@ public interface EnvironmentContainersClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, EnvironmentContainerDataInner body);
+    EnvironmentContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body);
 
     /**
      * Create or update container.
@@ -132,10 +132,6 @@ public interface EnvironmentContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        EnvironmentContainerDataInner body,
-        Context context);
+    Response<EnvironmentContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body, Context context);
 }

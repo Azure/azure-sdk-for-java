@@ -6,11 +6,9 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 
 /** AML Compute properties. */
 @Fluent
@@ -140,8 +138,7 @@ public final class AmlComputeProperties {
      * A property bag containing additional properties.
      */
     @JsonProperty(value = "propertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> propertyBag;
+    private Object propertyBag;
 
     /**
      * Get the osType property: Compute OS Type.
@@ -425,7 +422,7 @@ public final class AmlComputeProperties {
      *
      * @return the propertyBag value.
      */
-    public Map<String, Object> propertyBag() {
+    public Object propertyBag() {
         return this.propertyBag;
     }
 
@@ -435,7 +432,7 @@ public final class AmlComputeProperties {
      * @param propertyBag the propertyBag value to set.
      * @return the AmlComputeProperties object itself.
      */
-    public AmlComputeProperties withPropertyBag(Map<String, Object> propertyBag) {
+    public AmlComputeProperties withPropertyBag(Object propertyBag) {
         this.propertyBag = propertyBag;
         return this;
     }

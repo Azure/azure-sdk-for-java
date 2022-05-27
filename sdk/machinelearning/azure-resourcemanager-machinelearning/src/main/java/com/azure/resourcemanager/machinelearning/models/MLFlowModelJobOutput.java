@@ -11,65 +11,46 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The MLFlowModelJobOutput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobOutputType")
-@JsonTypeName("MLFlowModel")
+@JsonTypeName("mlflow_model")
 @Fluent
-public final class MLFlowModelJobOutput extends JobOutput {
+public final class MLFlowModelJobOutput extends AssetJobOutput {
     /*
-     * Output Asset Delivery Mode.
+     * Description for the output.
      */
-    @JsonProperty(value = "mode")
-    private OutputDeliveryMode mode;
-
-    /*
-     * Output Asset URI.
-     */
-    @JsonProperty(value = "uri")
-    private String uri;
+    @JsonProperty(value = "description")
+    private String description;
 
     /**
-     * Get the mode property: Output Asset Delivery Mode.
+     * Get the description property: Description for the output.
      *
-     * @return the mode value.
+     * @return the description value.
      */
-    public OutputDeliveryMode mode() {
-        return this.mode;
+    public String description() {
+        return this.description;
     }
 
     /**
-     * Set the mode property: Output Asset Delivery Mode.
+     * Set the description property: Description for the output.
      *
-     * @param mode the mode value to set.
+     * @param description the description value to set.
      * @return the MLFlowModelJobOutput object itself.
      */
-    public MLFlowModelJobOutput withMode(OutputDeliveryMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
-     * Get the uri property: Output Asset URI.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: Output Asset URI.
-     *
-     * @param uri the uri value to set.
-     * @return the MLFlowModelJobOutput object itself.
-     */
-    public MLFlowModelJobOutput withUri(String uri) {
-        this.uri = uri;
+    public MLFlowModelJobOutput withDescription(String description) {
+        this.description = description;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public MLFlowModelJobOutput withDescription(String description) {
-        super.withDescription(description);
+    public MLFlowModelJobOutput withMode(OutputDeliveryMode mode) {
+        super.withMode(mode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MLFlowModelJobOutput withUri(String uri) {
+        super.withUri(uri);
         return this;
     }
 

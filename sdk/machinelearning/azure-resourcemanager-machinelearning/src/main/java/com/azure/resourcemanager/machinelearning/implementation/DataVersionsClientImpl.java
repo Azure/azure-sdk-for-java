@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.DataVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseInner;
 import com.azure.resourcemanager.machinelearning.models.DataVersionBaseResourceArmPaginatedResult;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import reactor.core.publisher.Mono;
@@ -104,7 +104,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/data/{name}/versions/{version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataVersionBaseDataInner>> get(
+        Mono<Response<DataVersionBaseInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -121,7 +121,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/data/{name}/versions/{version}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataVersionBaseDataInner>> createOrUpdate(
+        Mono<Response<DataVersionBaseInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -129,7 +129,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
             @PathParam("name") String name,
             @PathParam("version") String version,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataVersionBaseDataInner body,
+            @BodyParam("application/json") DataVersionBaseInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -164,7 +164,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataVersionBaseDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<DataVersionBaseInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -214,7 +214,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<DataVersionBaseDataInner>>map(
+            .<PagedResponse<DataVersionBaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -247,7 +247,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataVersionBaseDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<DataVersionBaseInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -326,7 +326,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataVersionBaseDataInner> listAsync(
+    private PagedFlux<DataVersionBaseInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -352,7 +352,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataVersionBaseDataInner> listAsync(String resourceGroupName, String workspaceName, String name) {
+    private PagedFlux<DataVersionBaseInner> listAsync(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -383,7 +383,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataVersionBaseDataInner> listAsync(
+    private PagedFlux<DataVersionBaseInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -412,7 +412,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataVersionBaseDataInner> list(String resourceGroupName, String workspaceName, String name) {
+    public PagedIterable<DataVersionBaseInner> list(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -442,7 +442,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataVersionBaseDataInner> list(
+    public PagedIterable<DataVersionBaseInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -636,7 +636,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataVersionBaseDataInner>> getWithResponseAsync(
+    private Mono<Response<DataVersionBaseInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -695,7 +695,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataVersionBaseDataInner>> getWithResponseAsync(
+    private Mono<Response<DataVersionBaseInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -750,7 +750,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataVersionBaseDataInner> getAsync(
+    private Mono<DataVersionBaseInner> getAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -769,7 +769,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataVersionBaseDataInner get(String resourceGroupName, String workspaceName, String name, String version) {
+    public DataVersionBaseInner get(String resourceGroupName, String workspaceName, String name, String version) {
         return getAsync(resourceGroupName, workspaceName, name, version).block();
     }
 
@@ -787,7 +787,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataVersionBaseDataInner> getWithResponse(
+    public Response<DataVersionBaseInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version, context).block();
     }
@@ -807,8 +807,8 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataVersionBaseDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseDataInner body) {
+    private Mono<Response<DataVersionBaseInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -874,12 +874,12 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataVersionBaseDataInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<DataVersionBaseInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        DataVersionBaseDataInner body,
+        DataVersionBaseInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -941,8 +941,8 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataVersionBaseDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseDataInner body) {
+    private Mono<DataVersionBaseInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -961,8 +961,8 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataVersionBaseDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseDataInner body) {
+    public DataVersionBaseInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, name, version, body).block();
     }
 
@@ -981,12 +981,12 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataVersionBaseDataInner> createOrUpdateWithResponse(
+    public Response<DataVersionBaseInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        DataVersionBaseDataInner body,
+        DataVersionBaseInner body,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body, context).block();
     }
@@ -1002,7 +1002,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataVersionBaseDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DataVersionBaseInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1015,7 +1015,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataVersionBaseDataInner>>map(
+            .<PagedResponse<DataVersionBaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1039,7 +1039,7 @@ public final class DataVersionsClientImpl implements DataVersionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataVersionBaseDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<DataVersionBaseInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

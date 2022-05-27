@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerInner;
 
 /** An instance of this class provides access to all the operations defined in CodeContainersClient. */
 public interface CodeContainersClient {
@@ -24,7 +24,7 @@ public interface CodeContainersClient {
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeContainerDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<CodeContainerInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List containers.
@@ -39,7 +39,7 @@ public interface CodeContainersClient {
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeContainerDataInner> list(
+    PagedIterable<CodeContainerInner> list(
         String resourceGroupName, String workspaceName, String skip, Context context);
 
     /**
@@ -82,7 +82,7 @@ public interface CodeContainersClient {
      * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeContainerDataInner get(String resourceGroupName, String workspaceName, String name);
+    CodeContainerInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -97,7 +97,7 @@ public interface CodeContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeContainerDataInner> getWithResponse(
+    Response<CodeContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -113,8 +113,8 @@ public interface CodeContainersClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, CodeContainerDataInner body);
+    CodeContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, CodeContainerInner body);
 
     /**
      * Create or update container.
@@ -130,6 +130,6 @@ public interface CodeContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, CodeContainerDataInner body, Context context);
+    Response<CodeContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, CodeContainerInner body, Context context);
 }

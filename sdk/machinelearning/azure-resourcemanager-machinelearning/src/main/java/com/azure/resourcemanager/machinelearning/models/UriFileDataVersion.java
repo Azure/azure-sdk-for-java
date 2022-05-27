@@ -11,9 +11,9 @@ import java.util.Map;
 
 /** uri-file data version entity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataType")
-@JsonTypeName("UriFile")
+@JsonTypeName("uri_file")
 @Fluent
-public final class UriFileDataVersion extends DataVersionBaseDetails {
+public final class UriFileDataVersion extends DataVersionBaseProperties {
     /** {@inheritDoc} */
     @Override
     public UriFileDataVersion withDataUri(String dataUri) {

@@ -9,15 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for ModelVersions List. */
 public final class ModelVersionsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ModelVersion/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/ModelVersion/list.json
      */
     /**
      * Sample code: List Model Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listModelVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listModelVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .modelVersions()
             .list(

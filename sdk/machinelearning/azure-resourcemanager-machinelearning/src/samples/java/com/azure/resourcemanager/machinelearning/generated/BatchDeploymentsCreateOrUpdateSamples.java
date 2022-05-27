@@ -6,7 +6,7 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.machinelearning.models.BatchDeploymentDetails;
+import com.azure.resourcemanager.machinelearning.models.BatchDeploymentProperties;
 import com.azure.resourcemanager.machinelearning.models.BatchLoggingLevel;
 import com.azure.resourcemanager.machinelearning.models.BatchOutputAction;
 import com.azure.resourcemanager.machinelearning.models.BatchRetrySettings;
@@ -26,22 +26,22 @@ import java.util.Map;
 /** Samples for BatchDeployments CreateOrUpdate. */
 public final class BatchDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Batch Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateBatchDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         manager
             .batchDeployments()
             .define("testDeploymentName")
             .withRegion("string")
             .withExistingBatchEndpoint("test-rg", "my-aml-workspace", "testEndpointName")
             .withProperties(
-                new BatchDeploymentDetails()
+                new BatchDeploymentProperties()
                     .withCodeConfiguration(new CodeConfiguration().withCodeId("string").withScoringScript("string"))
                     .withDescription("string")
                     .withEnvironmentId("string")

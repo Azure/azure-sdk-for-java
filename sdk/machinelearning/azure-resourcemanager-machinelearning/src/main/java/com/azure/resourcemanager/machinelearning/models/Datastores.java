@@ -21,7 +21,7 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DatastoreData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<Datastore> list(String resourceGroupName, String workspaceName);
 
     /**
      * List datastores.
@@ -41,7 +41,7 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DatastoreData> list(
+    PagedIterable<Datastore> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -90,7 +90,7 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return datastore.
      */
-    DatastoreData get(String resourceGroupName, String workspaceName, String name);
+    Datastore get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get datastore.
@@ -104,8 +104,7 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return datastore along with {@link Response}.
      */
-    Response<DatastoreData> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    Response<Datastore> getWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
      * Get datastore secrets.
@@ -144,7 +143,7 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return datastore along with {@link Response}.
      */
-    DatastoreData getById(String id);
+    Datastore getById(String id);
 
     /**
      * Get datastore.
@@ -156,7 +155,7 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return datastore along with {@link Response}.
      */
-    Response<DatastoreData> getByIdWithResponse(String id, Context context);
+    Response<Datastore> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete datastore.
@@ -181,10 +180,10 @@ public interface Datastores {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new DatastoreData resource.
+     * Begins definition for a new Datastore resource.
      *
      * @param name resource name.
-     * @return the first stage of the new DatastoreData definition.
+     * @return the first stage of the new Datastore definition.
      */
-    DatastoreData.DefinitionStages.Blank define(String name);
+    Datastore.DefinitionStages.Blank define(String name);
 }

@@ -9,15 +9,15 @@ import com.azure.core.util.Context;
 /** Samples for Quotas List. */
 public final class QuotasListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Quota/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Quota/list.json
      */
     /**
      * Sample code: List workspace quotas by VMFamily.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceQuotasByVMFamily(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.quotas().list("eastus", Context.NONE);
     }
 }

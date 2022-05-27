@@ -21,7 +21,7 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ModelVersionData> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<ModelVersion> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List model versions.
@@ -45,7 +45,7 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ModelVersionData> list(
+    PagedIterable<ModelVersion> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -102,7 +102,7 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version.
      */
-    ModelVersionData get(String resourceGroupName, String workspaceName, String name, String version);
+    ModelVersion get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -117,7 +117,7 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<ModelVersionData> getWithResponse(
+    Response<ModelVersion> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -129,7 +129,7 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    ModelVersionData getById(String id);
+    ModelVersion getById(String id);
 
     /**
      * Get version.
@@ -141,7 +141,7 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<ModelVersionData> getByIdWithResponse(String id, Context context);
+    Response<ModelVersion> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete version.
@@ -166,10 +166,10 @@ public interface ModelVersions {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ModelVersionData resource.
+     * Begins definition for a new ModelVersion resource.
      *
      * @param name resource name.
-     * @return the first stage of the new ModelVersionData definition.
+     * @return the first stage of the new ModelVersion definition.
      */
-    ModelVersionData.DefinitionStages.Blank define(String name);
+    ModelVersion.DefinitionStages.Blank define(String name);
 }

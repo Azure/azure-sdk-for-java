@@ -13,19 +13,11 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointComputeType")
 @JsonTypeName("Managed")
 @Fluent
-public final class ManagedOnlineDeployment extends OnlineDeploymentDetails {
+public final class ManagedOnlineDeployment extends OnlineDeploymentProperties {
     /** {@inheritDoc} */
     @Override
     public ManagedOnlineDeployment withAppInsightsEnabled(Boolean appInsightsEnabled) {
         super.withAppInsightsEnabled(appInsightsEnabled);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedOnlineDeployment withEgressPublicNetworkAccess(
-        EgressPublicNetworkAccessType egressPublicNetworkAccess) {
-        super.withEgressPublicNetworkAccess(egressPublicNetworkAccess);
         return this;
     }
 
@@ -54,13 +46,6 @@ public final class ManagedOnlineDeployment extends OnlineDeploymentDetails {
     @Override
     public ManagedOnlineDeployment withModelMountPath(String modelMountPath) {
         super.withModelMountPath(modelMountPath);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedOnlineDeployment withPrivateNetworkConnection(Boolean privateNetworkConnection) {
-        super.withPrivateNetworkConnection(privateNetworkConnection);
         return this;
     }
 

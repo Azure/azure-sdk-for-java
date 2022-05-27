@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DataVersionBaseInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
 /** An instance of this class provides access to all the operations defined in DataVersionsClient. */
@@ -26,7 +26,7 @@ public interface DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataVersionBaseDataInner> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<DataVersionBaseInner> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List data versions in the data container.
@@ -48,7 +48,7 @@ public interface DataVersionsClient {
      * @return a paginated list of DataVersionBase entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataVersionBaseDataInner> list(
+    PagedIterable<DataVersionBaseInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -103,7 +103,7 @@ public interface DataVersionsClient {
      * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataVersionBaseDataInner get(String resourceGroupName, String workspaceName, String name, String version);
+    DataVersionBaseInner get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -119,7 +119,7 @@ public interface DataVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataVersionBaseDataInner> getWithResponse(
+    Response<DataVersionBaseInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -136,8 +136,8 @@ public interface DataVersionsClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataVersionBaseDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseDataInner body);
+    DataVersionBaseInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, DataVersionBaseInner body);
 
     /**
      * Create or update version.
@@ -154,11 +154,11 @@ public interface DataVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataVersionBaseDataInner> createOrUpdateWithResponse(
+    Response<DataVersionBaseInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        DataVersionBaseDataInner body,
+        DataVersionBaseInner body,
         Context context);
 }

@@ -10,9 +10,6 @@ import java.util.Collection;
 
 /** Defines values for JobType. */
 public final class JobType extends ExpandableStringEnum<JobType> {
-    /** Static value AutoML for JobType. */
-    public static final JobType AUTO_ML = fromString("AutoML");
-
     /** Static value Command for JobType. */
     public static final JobType COMMAND = fromString("Command");
 

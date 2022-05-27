@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
 /** An instance of this class provides access to all the operations defined in ModelContainersClient. */
@@ -25,7 +25,7 @@ public interface ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModelContainerDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<ModelContainerInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List model containers.
@@ -42,7 +42,7 @@ public interface ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModelContainerDataInner> list(
+    PagedIterable<ModelContainerInner> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -90,7 +90,7 @@ public interface ModelContainersClient {
      * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelContainerDataInner get(String resourceGroupName, String workspaceName, String name);
+    ModelContainerInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -105,7 +105,7 @@ public interface ModelContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModelContainerDataInner> getWithResponse(
+    Response<ModelContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -121,8 +121,8 @@ public interface ModelContainersClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body);
+    ModelContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body);
 
     /**
      * Create or update container.
@@ -138,6 +138,6 @@ public interface ModelContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModelContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body, Context context);
+    Response<ModelContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body, Context context);
 }

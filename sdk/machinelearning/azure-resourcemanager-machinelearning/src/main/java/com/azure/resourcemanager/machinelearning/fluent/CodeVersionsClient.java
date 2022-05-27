@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
 
 /** An instance of this class provides access to all the operations defined in CodeVersionsClient. */
 public interface CodeVersionsClient {
@@ -25,7 +25,7 @@ public interface CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeVersionDataInner> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<CodeVersionInner> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List versions.
@@ -43,7 +43,7 @@ public interface CodeVersionsClient {
      * @return a paginated list of CodeVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeVersionDataInner> list(
+    PagedIterable<CodeVersionInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -96,7 +96,7 @@ public interface CodeVersionsClient {
      * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeVersionDataInner get(String resourceGroupName, String workspaceName, String name, String version);
+    CodeVersionInner get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -112,7 +112,7 @@ public interface CodeVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeVersionDataInner> getWithResponse(
+    Response<CodeVersionInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -129,8 +129,8 @@ public interface CodeVersionsClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeVersionDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, CodeVersionDataInner body);
+    CodeVersionInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, CodeVersionInner body);
 
     /**
      * Create or update version.
@@ -147,11 +147,11 @@ public interface CodeVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeVersionDataInner> createOrUpdateWithResponse(
+    Response<CodeVersionInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        CodeVersionDataInner body,
+        CodeVersionInner body,
         Context context);
 }

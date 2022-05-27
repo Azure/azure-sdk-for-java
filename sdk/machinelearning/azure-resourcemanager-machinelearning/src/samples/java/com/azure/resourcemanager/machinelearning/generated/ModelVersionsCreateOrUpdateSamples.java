@@ -5,35 +5,34 @@
 package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.resourcemanager.machinelearning.models.FlavorData;
-import com.azure.resourcemanager.machinelearning.models.ModelType;
-import com.azure.resourcemanager.machinelearning.models.ModelVersionDetails;
+import com.azure.resourcemanager.machinelearning.models.ModelVersionProperties;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ModelVersions CreateOrUpdate. */
 public final class ModelVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ModelVersion/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/ModelVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Model Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateModelVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .modelVersions()
             .define("string")
             .withExistingModel("test-rg", "my-aml-workspace", "string")
             .withProperties(
-                new ModelVersionDetails()
+                new ModelVersionProperties()
                     .withDescription("string")
                     .withProperties(mapOf("string", "string"))
                     .withTags(mapOf("string", "string"))
                     .withIsAnonymous(false)
                     .withFlavors(mapOf("string", new FlavorData().withData(mapOf("string", "string"))))
-                    .withModelType(ModelType.CUSTOM_MODEL)
+                    .withModelType("CustomModel")
                     .withModelUri("string"))
             .create();
     }

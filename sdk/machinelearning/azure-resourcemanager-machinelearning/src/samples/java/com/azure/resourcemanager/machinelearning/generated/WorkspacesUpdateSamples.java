@@ -11,15 +11,14 @@ import com.azure.resourcemanager.machinelearning.models.Workspace;
 /** Samples for Workspaces Update. */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Workspace/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Workspace/update.json
      */
     /**
      * Sample code: Update Workspace.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateWorkspace(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void updateWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         Workspace resource =
             manager
                 .workspaces()

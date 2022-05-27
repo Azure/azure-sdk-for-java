@@ -7,13 +7,9 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.machinelearning.models.BatchEndpointData;
-import com.azure.resourcemanager.machinelearning.models.BatchEndpointDefaults;
+import com.azure.resourcemanager.machinelearning.models.BatchEndpoint;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.machinelearning.models.PartialBatchEndpoint;
 import com.azure.resourcemanager.machinelearning.models.PartialManagedServiceIdentity;
-import com.azure.resourcemanager.machinelearning.models.PartialSku;
-import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,16 +17,16 @@ import java.util.Map;
 /** Samples for BatchEndpoints Update. */
 public final class BatchEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/update.json
      */
     /**
      * Sample code: Update Batch Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateBatchEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
-        BatchEndpointData resource =
+    public static void updateBatchEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
+        throws IOException {
+        BatchEndpoint resource =
             manager
                 .batchEndpoints()
                 .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE)
@@ -47,16 +43,6 @@ public final class BatchEndpointsUpdateSamples {
                             SerializerFactory
                                 .createDefaultManagementSerializerAdapter()
                                 .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withKind("string")
-            .withProperties(
-                new PartialBatchEndpoint().withDefaults(new BatchEndpointDefaults().withDeploymentName("string")))
-            .withSku(
-                new PartialSku()
-                    .withCapacity(1)
-                    .withFamily("string")
-                    .withName("string")
-                    .withSize("string")
-                    .withTier(SkuTier.FREE))
             .apply();
     }
 

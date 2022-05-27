@@ -602,6 +602,31 @@ public final class WorkspaceInner extends ProxyResource {
     }
 
     /**
+     * Get the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @return the v1LegacyMode value.
+     */
+    public Boolean v1LegacyMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().v1LegacyMode();
+    }
+
+    /**
+     * Set the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
+     * API.
+     *
+     * @param v1LegacyMode the v1LegacyMode value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withV1LegacyMode(Boolean v1LegacyMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withV1LegacyMode(v1LegacyMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

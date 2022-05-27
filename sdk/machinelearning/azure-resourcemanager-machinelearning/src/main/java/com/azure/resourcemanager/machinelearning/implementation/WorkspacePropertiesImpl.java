@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 public final class WorkspacePropertiesImpl implements WorkspaceProperties {
     private WorkspacePropertiesInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     WorkspacePropertiesImpl(
         WorkspacePropertiesInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -147,11 +147,15 @@ public final class WorkspacePropertiesImpl implements WorkspaceProperties {
         return this.innerModel().mlFlowTrackingUri();
     }
 
+    public Boolean v1LegacyMode() {
+        return this.innerModel().v1LegacyMode();
+    }
+
     public WorkspacePropertiesInner innerModel() {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 }

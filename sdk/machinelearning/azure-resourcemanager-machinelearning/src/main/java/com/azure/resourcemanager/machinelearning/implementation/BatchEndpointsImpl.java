@@ -10,9 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.BatchEndpointsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.BatchEndpointInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
-import com.azure.resourcemanager.machinelearning.models.BatchEndpointData;
+import com.azure.resourcemanager.machinelearning.models.BatchEndpoint;
 import com.azure.resourcemanager.machinelearning.models.BatchEndpoints;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthKeys;
 
@@ -21,25 +21,25 @@ public final class BatchEndpointsImpl implements BatchEndpoints {
 
     private final BatchEndpointsClient innerClient;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public BatchEndpointsImpl(
         BatchEndpointsClient innerClient,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BatchEndpointData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<BatchEndpointDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new BatchEndpointDataImpl(inner1, this.manager()));
+    public PagedIterable<BatchEndpoint> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<BatchEndpointInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new BatchEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BatchEndpointData> list(
+    public PagedIterable<BatchEndpoint> list(
         String resourceGroupName, String workspaceName, Integer count, String skip, Context context) {
-        PagedIterable<BatchEndpointDataInner> inner =
+        PagedIterable<BatchEndpointInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, count, skip, context);
-        return Utils.mapPage(inner, inner1 -> new BatchEndpointDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new BatchEndpointImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String endpointName) {
@@ -50,25 +50,25 @@ public final class BatchEndpointsImpl implements BatchEndpoints {
         this.serviceClient().delete(resourceGroupName, workspaceName, endpointName, context);
     }
 
-    public BatchEndpointData get(String resourceGroupName, String workspaceName, String endpointName) {
-        BatchEndpointDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, endpointName);
+    public BatchEndpoint get(String resourceGroupName, String workspaceName, String endpointName) {
+        BatchEndpointInner inner = this.serviceClient().get(resourceGroupName, workspaceName, endpointName);
         if (inner != null) {
-            return new BatchEndpointDataImpl(inner, this.manager());
+            return new BatchEndpointImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<BatchEndpointData> getWithResponse(
+    public Response<BatchEndpoint> getWithResponse(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        Response<BatchEndpointDataInner> inner =
+        Response<BatchEndpointInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, endpointName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new BatchEndpointDataImpl(inner.getValue(), this.manager()));
+                new BatchEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -98,7 +98,7 @@ public final class BatchEndpointsImpl implements BatchEndpoints {
         }
     }
 
-    public BatchEndpointData getById(String id) {
+    public BatchEndpoint getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -125,7 +125,7 @@ public final class BatchEndpointsImpl implements BatchEndpoints {
         return this.getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
     }
 
-    public Response<BatchEndpointData> getByIdWithResponse(String id, Context context) {
+    public Response<BatchEndpoint> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -210,11 +210,11 @@ public final class BatchEndpointsImpl implements BatchEndpoints {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
-    public BatchEndpointDataImpl define(String name) {
-        return new BatchEndpointDataImpl(name, this.manager());
+    public BatchEndpointImpl define(String name) {
+        return new BatchEndpointImpl(name, this.manager());
     }
 }

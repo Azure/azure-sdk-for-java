@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
 /** An instance of this class provides access to all the operations defined in EnvironmentVersionsClient. */
@@ -26,7 +26,7 @@ public interface EnvironmentVersionsClient {
      * @return a paginated list of EnvironmentVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentVersionDataInner> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<EnvironmentVersionInner> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List versions.
@@ -45,7 +45,7 @@ public interface EnvironmentVersionsClient {
      * @return a paginated list of EnvironmentVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentVersionDataInner> list(
+    PagedIterable<EnvironmentVersionInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -99,7 +99,7 @@ public interface EnvironmentVersionsClient {
      * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentVersionDataInner get(String resourceGroupName, String workspaceName, String name, String version);
+    EnvironmentVersionInner get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -115,7 +115,7 @@ public interface EnvironmentVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentVersionDataInner> getWithResponse(
+    Response<EnvironmentVersionInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -132,8 +132,8 @@ public interface EnvironmentVersionsClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentVersionDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, EnvironmentVersionDataInner body);
+    EnvironmentVersionInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, EnvironmentVersionInner body);
 
     /**
      * Creates or updates an EnvironmentVersion.
@@ -150,11 +150,11 @@ public interface EnvironmentVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentVersionDataInner> createOrUpdateWithResponse(
+    Response<EnvironmentVersionInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        EnvironmentVersionDataInner body,
+        EnvironmentVersionInner body,
         Context context);
 }

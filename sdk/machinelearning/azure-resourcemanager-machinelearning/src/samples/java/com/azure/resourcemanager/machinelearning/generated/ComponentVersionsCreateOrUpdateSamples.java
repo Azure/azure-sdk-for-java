@@ -6,7 +6,7 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.machinelearning.models.ComponentVersionDetails;
+import com.azure.resourcemanager.machinelearning.models.ComponentVersionProperties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,21 +14,21 @@ import java.util.Map;
 /** Samples for ComponentVersions CreateOrUpdate. */
 public final class ComponentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ComponentVersion/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/ComponentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Component Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateComponentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         manager
             .componentVersions()
             .define("string")
             .withExistingComponent("test-rg", "my-aml-workspace", "string")
             .withProperties(
-                new ComponentVersionDetails()
+                new ComponentVersionProperties()
                     .withDescription("string")
                     .withProperties(mapOf("string", "string"))
                     .withTags(mapOf("string", "string"))

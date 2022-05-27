@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.ComponentVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ComponentVersionInner;
 import com.azure.resourcemanager.machinelearning.models.ComponentVersionResourceArmPaginatedResult;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import reactor.core.publisher.Mono;
@@ -103,7 +103,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/components/{name}/versions/{version}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ComponentVersionDataInner>> get(
+        Mono<Response<ComponentVersionInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -120,7 +120,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/components/{name}/versions/{version}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ComponentVersionDataInner>> createOrUpdate(
+        Mono<Response<ComponentVersionInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -128,7 +128,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
             @PathParam("name") String name,
             @PathParam("version") String version,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ComponentVersionDataInner body,
+            @BodyParam("application/json") ComponentVersionInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -160,7 +160,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentVersionDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ComponentVersionInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -208,7 +208,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<ComponentVersionDataInner>>map(
+            .<PagedResponse<ComponentVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -238,7 +238,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentVersionDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ComponentVersionInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -312,7 +312,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComponentVersionDataInner> listAsync(
+    private PagedFlux<ComponentVersionInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -337,8 +337,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComponentVersionDataInner> listAsync(
-        String resourceGroupName, String workspaceName, String name) {
+    private PagedFlux<ComponentVersionInner> listAsync(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -365,7 +364,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ComponentVersionDataInner> listAsync(
+    private PagedFlux<ComponentVersionInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -392,7 +391,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ComponentVersionDataInner> list(String resourceGroupName, String workspaceName, String name) {
+    public PagedIterable<ComponentVersionInner> list(String resourceGroupName, String workspaceName, String name) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
@@ -417,7 +416,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ComponentVersionDataInner> list(
+    public PagedIterable<ComponentVersionInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -610,7 +609,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentVersionDataInner>> getWithResponseAsync(
+    private Mono<Response<ComponentVersionInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -669,7 +668,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentVersionDataInner>> getWithResponseAsync(
+    private Mono<Response<ComponentVersionInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -724,7 +723,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComponentVersionDataInner> getAsync(
+    private Mono<ComponentVersionInner> getAsync(
         String resourceGroupName, String workspaceName, String name, String version) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -743,7 +742,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComponentVersionDataInner get(String resourceGroupName, String workspaceName, String name, String version) {
+    public ComponentVersionInner get(String resourceGroupName, String workspaceName, String name, String version) {
         return getAsync(resourceGroupName, workspaceName, name, version).block();
     }
 
@@ -761,7 +760,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComponentVersionDataInner> getWithResponse(
+    public Response<ComponentVersionInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, version, context).block();
     }
@@ -781,8 +780,8 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentVersionDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, String version, ComponentVersionDataInner body) {
+    private Mono<Response<ComponentVersionInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, String version, ComponentVersionInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -848,12 +847,12 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ComponentVersionDataInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<ComponentVersionInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        ComponentVersionDataInner body,
+        ComponentVersionInner body,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -915,8 +914,8 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ComponentVersionDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, String version, ComponentVersionDataInner body) {
+    private Mono<ComponentVersionInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, String version, ComponentVersionInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -935,8 +934,8 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComponentVersionDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, ComponentVersionDataInner body) {
+    public ComponentVersionInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, ComponentVersionInner body) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, name, version, body).block();
     }
 
@@ -955,12 +954,12 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ComponentVersionDataInner> createOrUpdateWithResponse(
+    public Response<ComponentVersionInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        ComponentVersionDataInner body,
+        ComponentVersionInner body,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, version, body, context).block();
     }
@@ -976,7 +975,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentVersionDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ComponentVersionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -989,7 +988,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ComponentVersionDataInner>>map(
+            .<PagedResponse<ComponentVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1013,7 +1012,7 @@ public final class ComponentVersionsClientImpl implements ComponentVersionsClien
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ComponentVersionDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ComponentVersionInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

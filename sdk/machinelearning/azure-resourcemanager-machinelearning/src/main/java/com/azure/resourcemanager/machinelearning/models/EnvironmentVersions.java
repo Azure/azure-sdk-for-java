@@ -21,7 +21,7 @@ public interface EnvironmentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of EnvironmentVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EnvironmentVersionData> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<EnvironmentVersion> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List versions.
@@ -39,7 +39,7 @@ public interface EnvironmentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of EnvironmentVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EnvironmentVersionData> list(
+    PagedIterable<EnvironmentVersion> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -90,7 +90,7 @@ public interface EnvironmentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version.
      */
-    EnvironmentVersionData get(String resourceGroupName, String workspaceName, String name, String version);
+    EnvironmentVersion get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -105,7 +105,7 @@ public interface EnvironmentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<EnvironmentVersionData> getWithResponse(
+    Response<EnvironmentVersion> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
@@ -117,7 +117,7 @@ public interface EnvironmentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    EnvironmentVersionData getById(String id);
+    EnvironmentVersion getById(String id);
 
     /**
      * Get version.
@@ -129,7 +129,7 @@ public interface EnvironmentVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<EnvironmentVersionData> getByIdWithResponse(String id, Context context);
+    Response<EnvironmentVersion> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete version.
@@ -154,10 +154,10 @@ public interface EnvironmentVersions {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new EnvironmentVersionData resource.
+     * Begins definition for a new EnvironmentVersion resource.
      *
      * @param name resource name.
-     * @return the first stage of the new EnvironmentVersionData definition.
+     * @return the first stage of the new EnvironmentVersion definition.
      */
-    EnvironmentVersionData.DefinitionStages.Blank define(String name);
+    EnvironmentVersion.DefinitionStages.Blank define(String name);
 }

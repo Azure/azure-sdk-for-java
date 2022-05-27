@@ -11,15 +11,14 @@ import com.azure.resourcemanager.machinelearning.models.OrderString;
 /** Samples for OnlineEndpoints List. */
 public final class OnlineEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/list.json
      */
     /**
      * Sample code: List Online Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listOnlineEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineEndpoints()
             .list(

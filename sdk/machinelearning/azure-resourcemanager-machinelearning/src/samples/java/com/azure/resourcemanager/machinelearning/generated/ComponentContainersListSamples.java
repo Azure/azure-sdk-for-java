@@ -9,15 +9,15 @@ import com.azure.core.util.Context;
 /** Samples for ComponentContainers List. */
 public final class ComponentContainersListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/ComponentContainer/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/ComponentContainer/list.json
      */
     /**
      * Sample code: List Component Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listComponentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.componentContainers().list("test-rg", "my-aml-workspace", null, null, Context.NONE);
     }
 }

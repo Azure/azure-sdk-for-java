@@ -34,15 +34,14 @@ import java.util.Map;
 /** Samples for Compute CreateOrUpdate. */
 public final class ComputeCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/BasicAKSCompute.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/BasicAKSCompute.json
      */
     /**
      * Sample code: Create an AKS Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void createAnAKSCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void createAnAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -53,15 +52,14 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/AKSCompute.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/AKSCompute.json
      */
     /**
      * Sample code: Update an AKS Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateAnAKSCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void updateAnAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -77,15 +75,15 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/KubernetesCompute.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/KubernetesCompute.json
      */
     /**
      * Sample code: Attach a Kubernetes Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void attachAKubernetesCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -114,15 +112,14 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/BasicAmlCompute.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/BasicAmlCompute.json
      */
     /**
      * Sample code: Create a AML Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void createAAMLCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void createAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -151,15 +148,15 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/ComputeInstance.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/ComputeInstance.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createAnComputeInstanceCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -185,15 +182,15 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/ComputeInstanceMinimal.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/ComputeInstanceMinimal.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute with minimal inputs.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createAnComputeInstanceComputeWithMinimalInputs(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -205,15 +202,14 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/AmlCompute.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/AmlCompute.json
      */
     /**
      * Sample code: Update a AML Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateAAMLCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void updateAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")
@@ -233,15 +229,15 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Compute/createOrUpdate/BasicDataFactoryCompute.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/Compute/createOrUpdate/BasicDataFactoryCompute.json
      */
     /**
      * Sample code: Create a DataFactory Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createADataFactoryCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .define("compute123")

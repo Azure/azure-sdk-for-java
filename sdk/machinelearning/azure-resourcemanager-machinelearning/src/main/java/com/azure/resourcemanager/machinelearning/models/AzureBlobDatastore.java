@@ -14,7 +14,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datastoreType")
 @JsonTypeName("AzureBlob")
 @Fluent
-public final class AzureBlobDatastore extends DatastoreDetails {
+public final class AzureBlobDatastore extends DatastoreProperties {
     /*
      * Storage account name.
      */

@@ -20,7 +20,7 @@ public interface CodeContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CodeContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<CodeContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List containers.
@@ -34,7 +34,7 @@ public interface CodeContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CodeContainerData> list(String resourceGroupName, String workspaceName, String skip, Context context);
+    PagedIterable<CodeContainer> list(String resourceGroupName, String workspaceName, String skip, Context context);
 
     /**
      * Delete container.
@@ -73,7 +73,7 @@ public interface CodeContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    CodeContainerData get(String resourceGroupName, String workspaceName, String name);
+    CodeContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -87,7 +87,7 @@ public interface CodeContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<CodeContainerData> getWithResponse(
+    Response<CodeContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -99,7 +99,7 @@ public interface CodeContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    CodeContainerData getById(String id);
+    CodeContainer getById(String id);
 
     /**
      * Get container.
@@ -111,7 +111,7 @@ public interface CodeContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<CodeContainerData> getByIdWithResponse(String id, Context context);
+    Response<CodeContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -136,10 +136,10 @@ public interface CodeContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new CodeContainerData resource.
+     * Begins definition for a new CodeContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new CodeContainerData definition.
+     * @return the first stage of the new CodeContainer definition.
      */
-    CodeContainerData.DefinitionStages.Blank define(String name);
+    CodeContainer.DefinitionStages.Blank define(String name);
 }

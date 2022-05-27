@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class JobBaseResourceArmPaginatedResult {
      * An array of objects of type JobBase.
      */
     @JsonProperty(value = "value")
-    private List<JobBaseDataInner> value;
+    private List<JobBaseInner> value;
 
     /**
      * Get the nextLink property: The link to the next page of JobBase objects. If null, there are no additional pages.
@@ -50,7 +50,7 @@ public final class JobBaseResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<JobBaseDataInner> value() {
+    public List<JobBaseInner> value() {
         return this.value;
     }
 
@@ -60,7 +60,7 @@ public final class JobBaseResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the JobBaseResourceArmPaginatedResult object itself.
      */
-    public JobBaseResourceArmPaginatedResult withValue(List<JobBaseDataInner> value) {
+    public JobBaseResourceArmPaginatedResult withValue(List<JobBaseInner> value) {
         this.value = value;
         return this;
     }

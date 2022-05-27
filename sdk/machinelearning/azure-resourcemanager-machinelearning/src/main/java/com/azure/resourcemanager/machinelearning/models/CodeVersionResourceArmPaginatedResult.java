@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class CodeVersionResourceArmPaginatedResult {
      * An array of objects of type CodeVersion.
      */
     @JsonProperty(value = "value")
-    private List<CodeVersionDataInner> value;
+    private List<CodeVersionInner> value;
 
     /**
      * Get the nextLink property: The link to the next page of CodeVersion objects. If null, there are no additional
@@ -52,7 +52,7 @@ public final class CodeVersionResourceArmPaginatedResult {
      *
      * @return the value value.
      */
-    public List<CodeVersionDataInner> value() {
+    public List<CodeVersionInner> value() {
         return this.value;
     }
 
@@ -62,7 +62,7 @@ public final class CodeVersionResourceArmPaginatedResult {
      * @param value the value value to set.
      * @return the CodeVersionResourceArmPaginatedResult object itself.
      */
-    public CodeVersionResourceArmPaginatedResult withValue(List<CodeVersionDataInner> value) {
+    public CodeVersionResourceArmPaginatedResult withValue(List<CodeVersionInner> value) {
         this.value = value;
         return this;
     }

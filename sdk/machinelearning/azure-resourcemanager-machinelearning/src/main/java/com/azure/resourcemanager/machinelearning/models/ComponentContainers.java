@@ -20,7 +20,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ComponentContainerData> list(String resourceGroupName, String workspaceName);
+    PagedIterable<ComponentContainer> list(String resourceGroupName, String workspaceName);
 
     /**
      * List component containers.
@@ -35,7 +35,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ComponentContainer entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ComponentContainerData> list(
+    PagedIterable<ComponentContainer> list(
         String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
 
     /**
@@ -75,7 +75,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container.
      */
-    ComponentContainerData get(String resourceGroupName, String workspaceName, String name);
+    ComponentContainer get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -89,7 +89,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<ComponentContainerData> getWithResponse(
+    Response<ComponentContainer> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
@@ -101,7 +101,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    ComponentContainerData getById(String id);
+    ComponentContainer getById(String id);
 
     /**
      * Get container.
@@ -113,7 +113,7 @@ public interface ComponentContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container along with {@link Response}.
      */
-    Response<ComponentContainerData> getByIdWithResponse(String id, Context context);
+    Response<ComponentContainer> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete container.
@@ -138,10 +138,10 @@ public interface ComponentContainers {
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new ComponentContainerData resource.
+     * Begins definition for a new ComponentContainer resource.
      *
      * @param name resource name.
-     * @return the first stage of the new ComponentContainerData definition.
+     * @return the first stage of the new ComponentContainer definition.
      */
-    ComponentContainerData.DefinitionStages.Blank define(String name);
+    ComponentContainer.DefinitionStages.Blank define(String name);
 }

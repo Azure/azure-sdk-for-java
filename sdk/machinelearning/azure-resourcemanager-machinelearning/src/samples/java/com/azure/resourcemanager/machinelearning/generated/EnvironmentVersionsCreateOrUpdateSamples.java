@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.resourcemanager.machinelearning.models.BuildContext;
-import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionDetails;
+import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionProperties;
 import com.azure.resourcemanager.machinelearning.models.InferenceContainerProperties;
 import com.azure.resourcemanager.machinelearning.models.Route;
 import java.util.HashMap;
@@ -14,21 +14,21 @@ import java.util.Map;
 /** Samples for EnvironmentVersions CreateOrUpdate. */
 public final class EnvironmentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/EnvironmentVersion/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/EnvironmentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Environment Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateEnvironmentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
             .define("string")
             .withExistingEnvironment("test-rg", "my-aml-workspace", "string")
             .withProperties(
-                new EnvironmentVersionDetails()
+                new EnvironmentVersionProperties()
                     .withDescription("string")
                     .withProperties(mapOf("string", "string"))
                     .withTags(mapOf("string", "string"))
