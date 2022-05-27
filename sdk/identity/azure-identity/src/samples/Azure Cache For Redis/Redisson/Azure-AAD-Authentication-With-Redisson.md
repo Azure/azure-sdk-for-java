@@ -1,14 +1,11 @@
-## Azure Cache For Redis Azure AD With Redisson Client Library
+## Azure Cache for Redis: Azure AD with Redisson client library
 
 ### Table of contents
 
-- [Redisson Library](#redisson-library)
-    - [Dependency Requirements](#dependency-requirements)
-    - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-    - [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
+- [Dependency Requirements](#dependency-requirements)
+- [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
+- [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
 
-
-### Redisson
 #### Dependency Requirements
 ```xml
 <dependency>
@@ -25,29 +22,26 @@
 ```
 
 #### Samples Guidance
+Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Redisson](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
 
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-This sample is recommended for users getting started to use Azure AD authentication with Azure Redis Cache.
+This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
 [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
 This sample is recommended users looking to build long-running applications and would like to handle re authenticating with Azure AD upon token expiry.
 
 #### Authenticate with Azure AD Hello World.
-This sample is intended to assist in authenticating with Azure AD via Redisson client library. It focuses on displaying the logic required to fetch an Azure AD Access token and to use it as password when setting up the Redisson Client instance. It Further shows how to recreate and authenticate the Redisson Client instance when its connection is broken in Error/Exception scenarios.
-
-Familiarity with the Jedis and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Redisson](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
-
+This sample is intended to assist in authenticating with Azure AD via the Redisson client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Redisson Client instance. It Further shows how to recreate and authenticate the Redisson Client instance when its connection is broken in Error/Exception scenarios.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with Azure Active Directory Token.
-Integrate the logic in your application code to fetch an Azure AD Access Token via Identity SDK as shown below and replace the password configuring/retrieving logic in your application code.
+Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 
-**Note:** The below sample uses `ClientCertificateCredential` from our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK, the credential can be replaced with any of the other `TokenCredential` implementations offered by our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK.
-
+**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ```java
-//Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
         .clientId("YOUR-CLIENT-ID")
         .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
@@ -83,19 +77,16 @@ redisson.shutdown();
 ```
 
 #### Authenticate with Azure AD Handle Re Authentication
-This sample is intended to assist in authenticating with Azure AD via Redisson client library. It focuses on displaying the logic required to fetch an Azure AD Access token and to use it as password when setting up the Jedis instance. It Further shows how to recreate and authenticate the Redisson client instance when its connection is broken in Error/Exception scenarios.
-
-Familiarity with the Redisson and Azure Identity client libraries is assumed. If you're new to the Azure Identity library for Java, see the docs for [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) and [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) rather than this guide.
-
+This sample is intended to assist in authenticating with Azure AD via Redisson client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Redisson client instance. It Further shows how to recreate and authenticate the Redisson client instance when its connection is broken in error/exception scenarios.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with Azure Active Directory Token.
-Integrate the logic in your application code to fetch an Azure AD Access Token via Identity SDK as shown below and replace the password configuring/retrieving logic in your application code.
+Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
-**Note:** The below sample uses `ClientCertificateCredential` from our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK, the credential can be replaced with any of the other `TokenCredential` implementations offered by our [Azure Identity](https://docs.microsoft.com/azure/developer/java/sdk/identity) SDK.
+**Note:** The below sample uses the [Azure Identity library](https://docs.microsoft.com/azure/developer/java/sdk/identity)'s `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ```java
-//Construct a Token Credential from Identity SDK, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 ClientCertificateCredential clientCertificateCredential = getClientCertificateCredential();
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
