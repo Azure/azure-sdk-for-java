@@ -22,7 +22,7 @@
 ```
 
 #### Samples Guidance
-Familiarity with the [Redisson]() and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
+Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
 
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
