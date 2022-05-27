@@ -307,7 +307,7 @@ com.azure.resourcemanager:azure-resourcemanager-labservices;1.0.0-beta.2;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-vmwarecloudsimple;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-videoanalyzer;1.0.0-beta.5;1.0.0-beta.6
-com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.0.0-beta.5;1.0.0-beta.6
