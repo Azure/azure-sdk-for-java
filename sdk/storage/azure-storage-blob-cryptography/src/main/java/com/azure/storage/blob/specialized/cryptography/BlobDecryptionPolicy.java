@@ -59,6 +59,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     private final AsyncKeyEncryptionKey keyWrapper;
 
+    /**
+     * Whether encryption is enforced by this client. Throws an exception if data is downloaded and it is not
+     * encrypted.
+     */
     private final boolean requiresEncryption;
 
     /**
@@ -73,6 +77,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption
      * key
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
+     * @param requiresEncryption Whether encryption is enforced by this client.
      */
     BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
         boolean requiresEncryption) {
@@ -85,17 +90,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
 
+        // Get the encryption data put in the pipeline by the FetchEncryptionDataPolicy.
+        // This will be present if there was a range set on the request. It will not be present if this is
+        // not a download or there was no range set.
         EncryptionData encryptionData = (EncryptionData) context.getData(ENCRYPTION_DATA_KEY)
             .orElse(null);
-
-        // If the blob is not encrypted, this policy is a no-op.
-        // Note we already checked for requiresEncryption when we fetched EncryptionData.
-
-        // Blob being downloaded is not null.
-        // Move this check and the whole getAndValidate into the FetchEncryptionVersionPolicy?
-        // Well this check has to stay here because of the requiresEncryption flag being here, but other validation can move
-        // But if encryption data is null and we don't require encryption, we can short circuit and just allow the request to pass through
-        // Make sure we have tests for these pass through cases
 
 
         // 1. Expand the range of download for decryption if a range was present. If the range was present, we know the
@@ -117,20 +116,27 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * not set originally with the intent of downloading the whole blob, update it here.
                  */
                 encryptedRange.setAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+
                 /*
-                 * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
-                 * block size. Padding is only ever present in track 1.
+                 * If there was no range set on the request, we skipped doing a get properties first as we are getting
+                 * the whole blob anyway, so we didn't have to know the version a priori to adjust the range.
+                 * In that case, we deserialize the encryption data here.
                  */
                 EncryptionData encryptionDataFinal =
                     encryptionData == null ? EncryptionData.getAndValidateEncryptionData(
                         httpResponse.getHeaderValue("x-ms-meta-" + ENCRYPTION_DATA_KEY), requiresEncryption)
                         : encryptionData;
+
+                /*
+                 * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
+                 * block size. Padding is only ever present in track 1.
+                 */
                 boolean padding = encryptionDataFinal.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
                     && (encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
                 Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
-                    encryptionDataFinal);
+                    encryptionDataFinal, httpResponse.getRequest().getUrl().toString());
 
                 return Mono.just(new BlobDecryptionPolicy.DecryptedResponse(httpResponse, plainTextData));
             } else {
@@ -145,10 +151,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param encryptedFlux The encrypted Flux of ByteBuffer to decrypt
      * @param encryptedBlobRange A {@link EncryptedBlobRange} indicating the range to decrypt
      * @param padding Boolean indicating if the padding mode should be set or not.
+     * @param encryptionData The {@link EncryptionData}
      * @return A Flux ByteBuffer that has been decrypted
      */
-    Flux<ByteBuffer> decryptBlob(Flux<ByteBuffer> encryptedFlux,
-        EncryptedBlobRange encryptedBlobRange, boolean padding, EncryptionData encryptionData) {
+    Flux<ByteBuffer> decryptBlob(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange, boolean padding,
+        EncryptionData encryptionData, String requestUri) {
 
         // The number of bytes we have put into the Cipher so far.
         AtomicLong totalInputBytes = new AtomicLong(0);
@@ -164,6 +171,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 .flatMapMany(contentEncryptionKey -> {
                     switch (encryptionData.getEncryptionAgent().getProtocol()) {
                         case ENCRYPTION_PROTOCOL_V1:
+                            LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
+                                + "which is no longer secure. Uri: " + requestUri);
                             EncryptionDataV1 encryptionDataV1 = (EncryptionDataV1) encryptionData;
                             /*
                              * Calculate the IV.

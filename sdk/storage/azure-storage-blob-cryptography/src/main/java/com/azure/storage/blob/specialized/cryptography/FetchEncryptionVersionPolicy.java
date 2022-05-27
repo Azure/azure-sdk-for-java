@@ -18,6 +18,10 @@ import java.util.Objects;
 
 // TODO: Access conditions, leases, etc from the download call that need to be applied to this request
 // TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
+// Current thinking is override anything that manages large downloads and do the getProps up front and then pass it through
+// the context for this policy to skip
+// What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
+// Maybe we just respond to customers when they complain and tell them to adjust a bit.
 public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     private final BlobAsyncClient blobClient;
