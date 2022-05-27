@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DedicatedHosts Get. */
 public final class DedicatedHostsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetADedicatedHost.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHost_Get.json
      */
     /**
      * Sample code: Get a dedicated host.

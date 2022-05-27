@@ -1,6 +1,6 @@
 # Release History
 
-## 12.16.0-beta.2 (Unreleased)
+## 12.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.16.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
 
 ## 12.15.2 (2022-05-12)
 
