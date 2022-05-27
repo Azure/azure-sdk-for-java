@@ -6,7 +6,7 @@ package com.azure.core.implementation.models.jsonflatten;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,7 +17,7 @@ import java.util.List;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public final class JsonFlattenOnArrayType implements JsonCapable<JsonFlattenOnArrayType> {
+public final class JsonFlattenOnArrayType implements JsonSerializable<JsonFlattenOnArrayType> {
     private String[] jsonFlattenArray;
 
     public JsonFlattenOnArrayType setJsonFlattenArray(String[] jsonFlattenArray) {
@@ -34,8 +34,7 @@ public final class JsonFlattenOnArrayType implements JsonCapable<JsonFlattenOnAr
         jsonWriter.writeStartObject();
 
         if (jsonFlattenArray != null) {
-            jsonWriter.writeFieldName("jsonflatten")
-                .writeStartObject();
+            jsonWriter.writeStartObject("jsonflatten");
 
             JsonUtils.writeArray(jsonWriter, "array", jsonFlattenArray, JsonWriter::writeString)
                 .writeEndObject();

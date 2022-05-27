@@ -4,14 +4,14 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.List;
 
-public class AnimalShelter implements JsonCapable<AnimalShelter> {
+public class AnimalShelter implements JsonSerializable<AnimalShelter> {
     private String description;
     private List<FlattenableAnimalInfo> animalsInfo;
 
@@ -41,10 +41,10 @@ public class AnimalShelter implements JsonCapable<AnimalShelter> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeFieldName("properties").writeStartObject();
+        jsonWriter.writeStartObject("properties")
+            .writeStringField("description", description, false);
 
-        JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
-        JsonUtils.writeArray(jsonWriter, "animalsInfo", animalsInfo, (writer, animalInfo) -> animalInfo.toJson(writer));
+        JsonUtils.writeArray(jsonWriter, "animalsInfo", animalsInfo, JsonWriter::writeJson);
 
         return jsonWriter.writeEndObject().writeEndObject().flush();
     }

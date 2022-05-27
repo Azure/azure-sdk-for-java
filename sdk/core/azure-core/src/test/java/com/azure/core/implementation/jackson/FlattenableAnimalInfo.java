@@ -4,12 +4,12 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo> {
+public class FlattenableAnimalInfo implements JsonSerializable<FlattenableAnimalInfo> {
     private String home;
     private AnimalWithTypeIdContainingDot animal;
 
@@ -33,18 +33,11 @@ public class FlattenableAnimalInfo implements JsonCapable<FlattenableAnimalInfo>
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "home", home);
-
-        if (animal == null) {
-            jsonWriter.writeNullField("animal");
-        } else {
-            jsonWriter.writeFieldName("animal");
-            animal.toJson(jsonWriter);
-        }
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeStringField("home", home, false)
+            .writeJsonField("animal", animal)
+            .writeEndObject()
+            .flush();
     }
 
     /**

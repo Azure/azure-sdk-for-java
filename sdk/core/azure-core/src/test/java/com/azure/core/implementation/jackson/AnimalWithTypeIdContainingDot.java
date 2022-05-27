@@ -4,14 +4,14 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AnimalWithTypeIdContainingDot implements JsonCapable<AnimalWithTypeIdContainingDot> {
+public abstract class AnimalWithTypeIdContainingDot implements JsonSerializable<AnimalWithTypeIdContainingDot> {
     /**
      * Creates an instance of {@link AnimalWithTypeIdContainingDot} by reading the {@link JsonReader}.
      *

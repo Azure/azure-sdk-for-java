@@ -4,7 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 
 import java.lang.invoke.MethodHandle;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A concurrent cache of {@link JsonCapable#fromJson(JsonReader) JsonCapable fromJson}
+ * A concurrent cache of {@link JsonSerializable#fromJson(JsonReader) JsonCapable fromJson}
  * {@link MethodHandle MethodHandles}.
  */
 public final class FromJsonCache {
@@ -24,21 +24,21 @@ public final class FromJsonCache {
         new ConcurrentHashMap<>();
 
     /**
-     * Whether the {@link Type} implements {@link JsonCapable}.
+     * Whether the {@link Type} implements {@link JsonSerializable}.
      *
      * @param type The type.
-     * @return Whether the type implements {@link JsonCapable}.
+     * @return Whether the type implements {@link JsonSerializable}.
      */
     public static boolean isJsonCapable(Type type) {
-        return IS_JSON_CAPABLE_CACHE.computeIfAbsent(type, t -> TypeUtil.typeImplementsInterface(t, JsonCapable.class));
+        return IS_JSON_CAPABLE_CACHE.computeIfAbsent(type, t -> TypeUtil.typeImplementsInterface(t, JsonSerializable.class));
     }
 
     /**
-     * Reads the {@link JsonReader} into the type of {@link JsonCapable}.
+     * Reads the {@link JsonReader} into the type of {@link JsonSerializable}.
      *
-     * @param jsonCapable The {@link JsonCapable} type.
+     * @param jsonCapable The {@link JsonSerializable} type.
      * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link JsonCapable} object based on what was read from the {@link JsonReader}.
+     * @return The {@link JsonSerializable} object based on what was read from the {@link JsonReader}.
      */
     public static Object fromJson(Class<?> jsonCapable, JsonReader jsonReader) {
         MethodHandle fromJsonHandle = FROM_READER_CACHE.computeIfAbsent(jsonCapable, type -> {

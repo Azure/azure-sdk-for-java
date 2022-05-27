@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,7 +17,7 @@ import java.util.Map;
  * Class with JSON flattening on a property along with additional properties mapping.
  */
 @Fluent
-public final class FlattenedPropertiesAndJsonAnyGetter implements JsonCapable<FlattenedPropertiesAndJsonAnyGetter> {
+public final class FlattenedPropertiesAndJsonAnyGetter implements JsonSerializable<FlattenedPropertiesAndJsonAnyGetter> {
     private String string;
     private Map<String, Object> additionalProperties;
 
@@ -48,8 +48,7 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonCapable<Fl
         jsonWriter.writeStartObject();
 
         if (string != null) {
-            jsonWriter.writeFieldName("flattened")
-                .writeStartObject()
+            jsonWriter.writeStartObject("flattened")
                 .writeStringField("string", string)
                 .writeEndObject();
         }

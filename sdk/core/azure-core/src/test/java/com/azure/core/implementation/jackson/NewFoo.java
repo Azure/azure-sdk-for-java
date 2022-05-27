@@ -4,7 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * Class for testing serialization.
  */
-public class NewFoo implements JsonCapable<NewFoo> {
+public class NewFoo implements JsonSerializable<NewFoo> {
     private String bar;
     private List<String>  baz;
     private Map<String, String> qux;
@@ -100,24 +100,19 @@ public class NewFoo implements JsonCapable<NewFoo> {
             .writeStringField("$type", type);
 
         if (bar != null || baz != null || qux != null || moreProps != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject();
-
-            JsonUtils.writeNonNullStringField(jsonWriter, "bar", bar);
+            jsonWriter.writeStartObject("properties")
+                .writeStringField("bar", bar, false);
 
             if (baz != null || qux != null) {
-                jsonWriter.writeFieldName("props")
-                    .writeStartObject();
+                jsonWriter.writeStartObject("props");
 
                 if (baz != null) {
                     JsonUtils.writeArray(jsonWriter, "baz", baz, JsonWriter::writeString);
                 }
 
                 if (qux != null) {
-                    jsonWriter.writeFieldName("q")
-                        .writeStartObject()
-                        .writeFieldName("qux")
-                        .writeStartObject();
+                    jsonWriter.writeStartObject("q")
+                        .writeStartObject("qux");
 
                     qux.forEach(jsonWriter::writeStringField);
 
@@ -128,21 +123,18 @@ public class NewFoo implements JsonCapable<NewFoo> {
                 jsonWriter.writeEndObject();
             }
 
-            JsonUtils.writeNonNullStringField(jsonWriter, "more.props", moreProps);
-
-            jsonWriter.writeEndObject();
+            jsonWriter.writeStringField("more.props", moreProps, false)
+                .writeEndObject();
         }
 
         if (empty != null) {
-            jsonWriter.writeFieldName("props")
-                .writeStartObject()
+            jsonWriter.writeStartObject("props")
                 .writeIntField("empty", empty)
                 .writeEndObject();
         }
 
         if (additionalPropertiesProperty != null) {
-            jsonWriter.writeFieldName("additionalProperties")
-                .writeStartObject();
+            jsonWriter.writeStartObject("additionalProperties");
 
             additionalPropertiesProperty.forEach((key, value) ->
                 JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));

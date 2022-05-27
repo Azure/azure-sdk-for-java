@@ -4,7 +4,7 @@
 package com.azure.core.models;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class represents the error details of an HTTP response.
  */
-public final class ResponseError implements JsonCapable<ResponseError> {
+public final class ResponseError implements JsonSerializable<ResponseError> {
     private final String code;
     private final String message;
 
@@ -114,23 +114,12 @@ public final class ResponseError implements JsonCapable<ResponseError> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject()
             .writeStringField("code", code)
-            .writeStringField("message", message);
-
-        if (target != null) {
-            jsonWriter.writeStringField("target", target);
-        }
-
-        if (innerError != null) {
-            jsonWriter.writeFieldName("innererror");
-            innerError.toJson(jsonWriter);
-        }
+            .writeStringField("message", message)
+            .writeStringField("target", target, false)
+            .writeJsonField("innererror", innerError, false);
 
         if (errorDetails != null) {
-            jsonWriter.writeFieldName("details").writeStartArray();
-
-            errorDetails.forEach(error -> error.toJson(jsonWriter));
-
-            jsonWriter.writeEndArray();
+            JsonUtils.writeArray(jsonWriter, "details", errorDetails, JsonWriter::writeJson);
         }
 
         return jsonWriter.writeEndObject().flush();

@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public final class JsonFlattenOnJsonIgnoredProperty implements JsonCapable<JsonFlattenOnJsonIgnoredProperty> {
+public final class JsonFlattenOnJsonIgnoredProperty implements JsonSerializable<JsonFlattenOnJsonIgnoredProperty> {
     private String name;
     private String ignored;
 
@@ -37,7 +37,8 @@ public final class JsonFlattenOnJsonIgnoredProperty implements JsonCapable<JsonF
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        return JsonUtils.writeNonNullStringField(jsonWriter.writeStartObject(), "name", name)
+        return jsonWriter.writeStartObject()
+            .writeStringField("name", name, false)
             .writeEndObject()
             .flush();
     }

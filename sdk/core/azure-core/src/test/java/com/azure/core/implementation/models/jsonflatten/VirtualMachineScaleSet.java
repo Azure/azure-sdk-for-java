@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing flattening.
  */
 @Fluent
-public final class VirtualMachineScaleSet implements JsonCapable<VirtualMachineScaleSet> {
+public final class VirtualMachineScaleSet implements JsonSerializable<VirtualMachineScaleSet> {
     private VirtualMachineScaleSetVMProfile virtualMachineProfile;
 
     public VirtualMachineScaleSet setVirtualMachineProfile(VirtualMachineScaleSetVMProfile virtualMachineProfile) {
@@ -31,11 +31,8 @@ public final class VirtualMachineScaleSet implements JsonCapable<VirtualMachineS
         jsonWriter.writeStartObject();
 
         if (virtualMachineProfile != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject()
-                .writeFieldName("virtualMachineProfile");
-
-            virtualMachineProfile.toJson(jsonWriter)
+            jsonWriter.writeStartObject("properties")
+                .writeJsonField("virtualMachineProfile", virtualMachineProfile)
                 .writeEndObject();
         }
 

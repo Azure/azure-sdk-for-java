@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -17,7 +17,7 @@ import static com.azure.core.util.serializer.JsonUtils.getNullableProperty;
  */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfiguration
-    implements JsonCapable<VirtualMachineScaleSetNetworkConfiguration> {
+    implements JsonSerializable<VirtualMachineScaleSetNetworkConfiguration> {
     private String name;
     private Boolean primary;
 
@@ -41,13 +41,11 @@ public final class VirtualMachineScaleSetNetworkConfiguration
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "name", name);
+        jsonWriter.writeStartObject()
+            .writeStringField("name", name, false);
 
         if (primary != null) {
-            jsonWriter.writeFieldName("properties")
-                .writeStartObject()
+            jsonWriter.writeStartObject("properties")
                 .writeBooleanField("primary", primary)
                 .writeEndObject();
         }

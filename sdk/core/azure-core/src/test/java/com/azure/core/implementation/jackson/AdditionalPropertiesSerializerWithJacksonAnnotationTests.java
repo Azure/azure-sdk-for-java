@@ -6,7 +6,7 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Assertions;
@@ -142,10 +142,10 @@ public class AdditionalPropertiesSerializerWithJacksonAnnotationTests {
         Assertions.assertEquals(73L, deserialized.additionalPropertiesProperty().get("age"));
     }
 
-    private static String writeJson(JsonCapable<?> jsonCapable) {
+    private static String writeJson(JsonSerializable<?> jsonSerializable) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
-        jsonCapable.toJson(writer);
+        jsonSerializable.toJson(writer);
 
         return outputStream.toString(StandardCharsets.UTF_8);
     }

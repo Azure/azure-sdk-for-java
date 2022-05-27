@@ -3,7 +3,7 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -40,13 +40,11 @@ public final class JsonUtils {
      */
     public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, T[] array,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
-        jsonWriter.writeFieldName(fieldName);
-
         if (array == null) {
-            return jsonWriter.writeNull().flush();
+            return jsonWriter.writeNullField(fieldName).flush();
         }
 
-        jsonWriter.writeStartArray();
+        jsonWriter.writeStartArray(fieldName);
 
         for (T element : array) {
             elementWriterFunc.accept(jsonWriter, element);
@@ -75,13 +73,11 @@ public final class JsonUtils {
      */
     public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, Iterable<T> array,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
-        jsonWriter.writeFieldName(fieldName);
-
         if (array == null) {
-            return jsonWriter.writeNull().flush();
+            return jsonWriter.writeNullField(fieldName).flush();
         }
 
-        jsonWriter.writeStartArray();
+        jsonWriter.writeStartArray(fieldName);
 
         for (T element : array) {
             elementWriterFunc.accept(jsonWriter, element);
@@ -156,32 +152,6 @@ public final class JsonUtils {
         }
 
         return array;
-    }
-
-    /**
-     * Writes the JSON string field if, and only if, {@code value} isn't null.
-     *
-     * @param writer The {@link JsonWriter} being written.
-     * @param fieldName The field name.
-     * @param value The value.
-     * @return The updated {@link JsonWriter} if {@code value} wasn't null, otherwise the {@link JsonWriter} with no
-     * modifications.
-     */
-    public static JsonWriter writeNonNullStringField(JsonWriter writer, String fieldName, String value) {
-        return (value == null) ? writer : writer.writeStringField(fieldName, value);
-    }
-
-    /**
-     * Writes the JSON int field if, and only if, {@code value} isn't null.
-     *
-     * @param writer The {@link JsonWriter} being written.
-     * @param fieldName The field name.
-     * @param value The value.
-     * @return The updated {@link JsonWriter} if {@code value} wasn't null, otherwise the {@link JsonWriter} with no
-     * modifications.
-     */
-    public static JsonWriter writeNonNullIntegerField(JsonWriter writer, String fieldName, Integer value) {
-        return (value == null) ? writer : writer.writeIntField(fieldName, value);
     }
 
     /**
@@ -289,8 +259,8 @@ public final class JsonUtils {
             return jsonWriter.writeBinary((byte[]) value).flush();
         } else if (value instanceof CharSequence) {
             return jsonWriter.writeString(String.valueOf(value)).flush();
-        } else if (value instanceof JsonCapable<?>) {
-            return ((JsonCapable<?>) value).toJson(jsonWriter).flush();
+        } else if (value instanceof JsonSerializable<?>) {
+            return ((JsonSerializable<?>) value).toJson(jsonWriter).flush();
         } else if (value.getClass() == Object.class) {
             return jsonWriter.writeStartObject().writeEndObject().flush();
         } else {

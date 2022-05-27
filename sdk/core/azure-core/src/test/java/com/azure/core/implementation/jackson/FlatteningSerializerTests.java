@@ -26,7 +26,7 @@ import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetVM
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Assertions;
@@ -696,20 +696,20 @@ public class FlatteningSerializerTests {
         assertEquals(expected, deserialized.getFlattenedProperty());
     }
 
-    private static String writeJson(JsonCapable<?> jsonCapable) {
+    private static String writeJson(JsonSerializable<?> jsonSerializable) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
-        jsonCapable.toJson(writer);
+        jsonSerializable.toJson(writer);
 
         return outputStream.toString(StandardCharsets.UTF_8);
     }
 
-    private static String writeJson(List<? extends JsonCapable<?>> jsonCapables) {
+    private static String writeJson(List<? extends JsonSerializable<?>> jsonCapables) {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         JsonWriter writer = DefaultJsonWriter.fromStream(outputStream);
 
         writer.writeStartArray();
-        jsonCapables.forEach(jsonCapable -> jsonCapable.toJson(writer));
+        jsonCapables.forEach(writer::writeJson);
         writer.writeEndArray().flush();
 
         return outputStream.toString(StandardCharsets.UTF_8);

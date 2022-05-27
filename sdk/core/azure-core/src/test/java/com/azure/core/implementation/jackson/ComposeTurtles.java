@@ -4,14 +4,14 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.List;
 
-public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
+public class ComposeTurtles implements JsonSerializable<ComposeTurtles> {
     private String description;
     private TurtleWithTypeIdContainingDot turtlesSet1Lead;
     private List<TurtleWithTypeIdContainingDot> turtlesSet1;
@@ -65,26 +65,18 @@ public class ComposeTurtles implements JsonCapable<ComposeTurtles> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "description", description);
-
-        if (turtlesSet1Lead != null) {
-            jsonWriter.writeFieldName("turtlesSet1Lead");
-            turtlesSet1Lead.toJson(jsonWriter);
-        }
+        jsonWriter.writeStartObject()
+            .writeStringField("description", description, false)
+            .writeJsonField("turtlesSet1Lead", turtlesSet1Lead, false);
 
         if (turtlesSet1 != null) {
-            JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, (writer, turtle) -> turtle.toJson(writer));
+            JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, JsonWriter::writeJson);
         }
 
-        if (turtlesSet2Lead != null) {
-            jsonWriter.writeFieldName("turtlesSet2Lead");
-            turtlesSet2Lead.toJson(jsonWriter);
-        }
+        jsonWriter.writeJsonField("turtlesSet2Lead", turtlesSet2Lead, false);
 
         if (turtlesSet2 != null) {
-            JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, (writer, turtle) -> turtle.toJson(writer));
+            JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, JsonWriter::writeJson);
         }
 
         return jsonWriter.writeEndObject().flush();

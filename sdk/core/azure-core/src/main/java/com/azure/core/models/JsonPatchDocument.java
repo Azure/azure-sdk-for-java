@@ -12,7 +12,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * Represents a JSON Patch document.
  */
-public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
+public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocument> {
     private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     static {
@@ -489,7 +489,7 @@ public final class JsonPatchDocument implements JsonCapable<JsonPatchDocument> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartArray();
 
-        operations.forEach(operation -> operation.toJson(jsonWriter));
+        operations.forEach(jsonWriter::writeJson);
 
         return jsonWriter.writeEndArray().flush();
     }

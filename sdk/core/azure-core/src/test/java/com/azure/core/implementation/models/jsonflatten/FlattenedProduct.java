@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public class FlattenedProduct implements JsonCapable<FlattenedProduct> {
+public class FlattenedProduct implements JsonSerializable<FlattenedProduct> {
     private String productName;
     private String productType;
 
@@ -44,12 +44,12 @@ public class FlattenedProduct implements JsonCapable<FlattenedProduct> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeFieldName("properties").writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "p.name", productName);
-        JsonUtils.writeNonNullStringField(jsonWriter, "type", productType);
-
-        return jsonWriter.writeEndObject().writeEndObject().flush();
+        return jsonWriter.writeStartObject("properties")
+            .writeStringField("p.name", productName, false)
+            .writeStringField("type", productType, false)
+            .writeEndObject()
+            .writeEndObject()
+            .flush();
     }
 
     public static FlattenedProduct fromJson(JsonReader jsonReader) {

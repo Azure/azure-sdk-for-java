@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 
@@ -21,12 +20,12 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject().writeStringField("@odata.type", "#Favourite.Pet.TurtleWithTypeIdContainingDot");
-
-        JsonUtils.writeNonNullIntegerField(jsonWriter, "age", age());
-        JsonUtils.writeNonNullIntegerField(jsonWriter, "size", size);
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeStringField("@odata.type", "#Favourite.Pet.TurtleWithTypeIdContainingDot")
+            .writeIntegerField("age", age(), false)
+            .writeIntegerField("size", size, false)
+            .writeEndObject()
+            .flush();
     }
 
     public static TurtleWithTypeIdContainingDot fromJson(JsonReader jsonReader) {

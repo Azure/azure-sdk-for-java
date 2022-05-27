@@ -5,7 +5,7 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +14,7 @@ import com.azure.json.JsonWriter;
  * Model used for testing JSON flattening.
  */
 @Fluent
-public class SampleResource implements JsonCapable<SampleResource> {
+public class SampleResource implements JsonSerializable<SampleResource> {
     private String namePropertiesName;
     private String registrationTtl;
 
@@ -44,12 +44,12 @@ public class SampleResource implements JsonCapable<SampleResource> {
             return jsonWriter.writeEndObject().flush();
         }
 
-        jsonWriter.writeFieldName("properties").writeStartObject();
-
-        JsonUtils.writeNonNullStringField(jsonWriter, "name", namePropertiesName);
-        JsonUtils.writeNonNullStringField(jsonWriter, "registrationTtl", registrationTtl);
-
-        return jsonWriter.writeEndObject().writeEndObject().flush();
+        return jsonWriter.writeStartObject("properties")
+            .writeStringField("name", namePropertiesName, false)
+            .writeStringField("registrationTtl", registrationTtl, false)
+            .writeEndObject()
+            .writeEndObject()
+            .flush();
     }
 
     public static SampleResource fromJson(JsonReader jsonReader) {

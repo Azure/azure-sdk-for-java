@@ -6,7 +6,7 @@ package com.azure.core.implementation;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * Represents a JSON Patch operation.
  */
 @Immutable
-public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation> {
+public final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
     private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
@@ -116,15 +116,11 @@ public final class JsonPatchOperation implements JsonCapable<JsonPatchOperation>
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         // Write the start object and "op" property.
-        jsonWriter.writeStartObject().writeStringField("op", op.toString());
-
-        // Only write "from" property if it isn't null.
-        if (from != null) {
-            jsonWriter.writeStringField("from", from);
-        }
-
-        // Write the "path" property.
-        jsonWriter.writeStringField("path", path);
+        jsonWriter.writeStartObject().writeStringField("op", op.toString())
+            // Only write "from" property if it isn't null.
+            .writeStringField("from", from, false)
+            // Write the "path" property.
+            .writeStringField("path", path);
 
         // Only write the "value" property if it exists.
         if (value.isInitialized()) {

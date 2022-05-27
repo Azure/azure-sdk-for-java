@@ -4,7 +4,7 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonCapable;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -16,7 +16,7 @@ import java.util.Map;
  * Model used for testing JSON flattening.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
-public class Teacher implements JsonCapable<Teacher> {
+public class Teacher implements JsonSerializable<Teacher> {
     private Map<String, Student> students;
 
     public Teacher setStudents(Map<String, Student> students) {
@@ -29,12 +29,9 @@ public class Teacher implements JsonCapable<Teacher> {
         jsonWriter.writeStartObject();
 
         if (students != null) {
-            jsonWriter.writeFieldName("students").writeStartObject();
+            jsonWriter.writeStartObject("students");
 
-            students.forEach((key, value) -> {
-                jsonWriter.writeFieldName(key);
-                value.toJson(jsonWriter);
-            });
+            students.forEach(jsonWriter::writeJsonField);
 
             jsonWriter.writeEndObject();
         }
