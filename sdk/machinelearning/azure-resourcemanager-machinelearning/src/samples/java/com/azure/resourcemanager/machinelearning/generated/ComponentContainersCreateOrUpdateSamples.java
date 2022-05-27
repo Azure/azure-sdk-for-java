@@ -16,10 +16,10 @@ public final class ComponentContainersCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Component Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateComponentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .componentContainers()
             .define("string")

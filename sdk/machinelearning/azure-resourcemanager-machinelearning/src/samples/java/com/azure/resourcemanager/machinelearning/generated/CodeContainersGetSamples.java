@@ -14,10 +14,9 @@ public final class CodeContainersGetSamples {
     /**
      * Sample code: Get Code Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getCodeContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getCodeContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.codeContainers().getWithResponse("testrg123", "testworkspace", "testContainer", Context.NONE);
     }
 }

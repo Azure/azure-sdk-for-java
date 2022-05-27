@@ -14,10 +14,9 @@ public final class WorkspacesListNotebookKeysSamples {
     /**
      * Sample code: List Workspace Keys.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listWorkspaceKeys(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().listNotebookKeysWithResponse("testrg123", "workspaces123", Context.NONE);
     }
 }

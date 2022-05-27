@@ -14,7 +14,7 @@ public final class ModelVersionDataImpl
     implements ModelVersionData, ModelVersionData.Definition, ModelVersionData.Update {
     private ModelVersionDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +44,7 @@ public final class ModelVersionDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -84,8 +84,7 @@ public final class ModelVersionDataImpl
         return this;
     }
 
-    ModelVersionDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+    ModelVersionDataImpl(String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new ModelVersionDataInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -118,7 +117,7 @@ public final class ModelVersionDataImpl
 
     ModelVersionDataImpl(
         ModelVersionDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

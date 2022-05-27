@@ -14,10 +14,10 @@ public final class ComponentContainersListSamples {
     /**
      * Sample code: List Component Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listComponentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.componentContainers().list("test-rg", "my-aml-workspace", null, null, Context.NONE);
     }
 }

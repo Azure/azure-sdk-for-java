@@ -26,7 +26,7 @@ public final class OnlineDeploymentDataImpl
     implements OnlineDeploymentData, OnlineDeploymentData.Definition, OnlineDeploymentData.Update {
     private OnlineDeploymentDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -89,7 +89,7 @@ public final class OnlineDeploymentDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -132,7 +132,7 @@ public final class OnlineDeploymentDataImpl
     }
 
     OnlineDeploymentDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new OnlineDeploymentDataInner();
         this.serviceManager = serviceManager;
         this.deploymentName = name;
@@ -163,7 +163,7 @@ public final class OnlineDeploymentDataImpl
 
     OnlineDeploymentDataImpl(
         OnlineDeploymentDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

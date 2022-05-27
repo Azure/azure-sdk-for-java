@@ -14,10 +14,10 @@ public final class QuotasListSamples {
     /**
      * Sample code: List workspace quotas by VMFamily.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceQuotasByVMFamily(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.quotas().list("eastus", Context.NONE);
     }
 }

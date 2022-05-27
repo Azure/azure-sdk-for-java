@@ -14,10 +14,9 @@ public final class DatastoresDeleteSamples {
     /**
      * Sample code: Delete datastore.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteDatastore(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.datastores().deleteWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

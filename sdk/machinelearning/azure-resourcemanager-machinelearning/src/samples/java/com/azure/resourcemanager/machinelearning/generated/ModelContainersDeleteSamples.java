@@ -14,10 +14,9 @@ public final class ModelContainersDeleteSamples {
     /**
      * Sample code: Delete Model Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteModelContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.modelContainers().deleteWithResponse("testrg123", "workspace123", "testContainer", Context.NONE);
     }
 }

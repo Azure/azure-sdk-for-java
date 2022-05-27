@@ -14,10 +14,9 @@ public final class ModelVersionsDeleteSamples {
     /**
      * Sample code: Delete Model Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteModelVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteModelVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.modelVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
     }
 }

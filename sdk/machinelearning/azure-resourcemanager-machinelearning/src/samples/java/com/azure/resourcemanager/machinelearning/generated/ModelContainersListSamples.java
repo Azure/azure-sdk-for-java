@@ -14,10 +14,9 @@ public final class ModelContainersListSamples {
     /**
      * Sample code: List Model Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listModelContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listModelContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.modelContainers().list("testrg123", "workspace123", null, null, null, Context.NONE);
     }
 }

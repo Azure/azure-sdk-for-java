@@ -16,10 +16,10 @@ public final class CodeVersionsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Code Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateCodeVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .codeVersions()
             .define("string")

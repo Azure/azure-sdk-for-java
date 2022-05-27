@@ -14,10 +14,9 @@ public final class ComputeGetSamples {
     /**
      * Sample code: Get a AKS Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getAAKSCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getAAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 
@@ -27,10 +26,9 @@ public final class ComputeGetSamples {
     /**
      * Sample code: Get a Kubernetes Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getAKubernetesCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getAKubernetesCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 
@@ -40,10 +38,9 @@ public final class ComputeGetSamples {
     /**
      * Sample code: Get an ComputeInstance.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getAnComputeInstance(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getAnComputeInstance(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 
@@ -53,10 +50,9 @@ public final class ComputeGetSamples {
     /**
      * Sample code: Get a AML Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getAAMLCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 }

@@ -13,11 +13,11 @@ import java.util.List;
 public final class UpdateWorkspaceQuotasResultImpl implements UpdateWorkspaceQuotasResult {
     private UpdateWorkspaceQuotasResultInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     UpdateWorkspaceQuotasResultImpl(
         UpdateWorkspaceQuotasResultInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class UpdateWorkspaceQuotasResultImpl implements UpdateWorkspaceQuo
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 }

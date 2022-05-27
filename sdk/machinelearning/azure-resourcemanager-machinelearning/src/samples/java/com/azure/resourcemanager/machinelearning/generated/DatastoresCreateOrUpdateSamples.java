@@ -24,10 +24,10 @@ public final class DatastoresCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate datastore (Azure Data Lake Gen1 w/ ServicePrincipal).
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateDatastoreAzureDataLakeGen1WServicePrincipal(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .datastores()
             .define("string")
@@ -54,10 +54,10 @@ public final class DatastoresCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate datastore (Azure Data Lake Gen2 w/ Service Principal).
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateDatastoreAzureDataLakeGen2WServicePrincipal(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .datastores()
             .define("string")
@@ -87,10 +87,10 @@ public final class DatastoresCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate datastore (AzureBlob w/ AccountKey).
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateDatastoreAzureBlobWAccountKey(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .datastores()
             .define("string")
@@ -116,10 +116,10 @@ public final class DatastoresCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate datastore (Azure File store w/ AccountKey).
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateDatastoreAzureFileStoreWAccountKey(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .datastores()
             .define("string")

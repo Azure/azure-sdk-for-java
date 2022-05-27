@@ -25,10 +25,10 @@ public final class OnlineEndpointsUpdateSamples {
     /**
      * Sample code: Update Online Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateOnlineEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+    public static void updateOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
+        throws IOException {
         OnlineEndpointData resource =
             manager
                 .onlineEndpoints()

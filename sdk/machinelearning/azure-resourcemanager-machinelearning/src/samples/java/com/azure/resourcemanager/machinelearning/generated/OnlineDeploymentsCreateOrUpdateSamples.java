@@ -29,10 +29,10 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Kubernetes Online Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateKubernetesOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .define("testDeploymentName")
@@ -93,10 +93,10 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Managed Online Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateManagedOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .define("testDeploymentName")

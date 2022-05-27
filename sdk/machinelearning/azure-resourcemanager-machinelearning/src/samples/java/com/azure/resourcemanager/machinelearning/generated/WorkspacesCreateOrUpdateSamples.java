@@ -25,10 +25,9 @@ public final class WorkspacesCreateOrUpdateSamples {
     /**
      * Sample code: Create Workspace.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void createWorkspace(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void createWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaces()
             .define("testworkspace")

@@ -18,10 +18,10 @@ public final class ModelVersionsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Model Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateModelVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .modelVersions()
             .define("string")

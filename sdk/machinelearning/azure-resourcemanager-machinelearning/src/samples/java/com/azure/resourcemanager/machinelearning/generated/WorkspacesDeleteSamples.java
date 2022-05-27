@@ -14,10 +14,9 @@ public final class WorkspacesDeleteSamples {
     /**
      * Sample code: Delete Workspace.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteWorkspace(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().delete("workspace-1234", "testworkspace", Context.NONE);
     }
 }

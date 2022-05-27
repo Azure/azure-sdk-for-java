@@ -18,9 +18,9 @@ public final class QuotasUpdateSamples {
     /**
      * Sample code: update quotas.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void updateQuotas(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void updateQuotas(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .quotas()
             .updateWithResponse(

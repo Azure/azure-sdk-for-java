@@ -14,10 +14,9 @@ public final class ComponentVersionsGetSamples {
     /**
      * Sample code: Get Component Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getComponentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getComponentVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.componentVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
     }
 }

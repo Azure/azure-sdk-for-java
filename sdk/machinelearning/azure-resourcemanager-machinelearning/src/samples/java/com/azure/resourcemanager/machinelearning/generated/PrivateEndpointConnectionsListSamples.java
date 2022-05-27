@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsListSamples {
     /**
      * Sample code: StorageAccountListPrivateEndpointConnections.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void storageAccountListPrivateEndpointConnections(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.privateEndpointConnections().list("rg-1234", "testworkspace", Context.NONE);
     }
 }

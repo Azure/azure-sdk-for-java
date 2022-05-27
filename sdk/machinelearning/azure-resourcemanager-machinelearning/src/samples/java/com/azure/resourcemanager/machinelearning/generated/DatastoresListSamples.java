@@ -15,10 +15,9 @@ public final class DatastoresListSamples {
     /**
      * Sample code: List datastores.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listDatastores(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listDatastores(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .datastores()
             .list(

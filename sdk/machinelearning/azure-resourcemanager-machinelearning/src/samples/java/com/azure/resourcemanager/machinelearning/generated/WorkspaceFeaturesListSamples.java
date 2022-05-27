@@ -14,10 +14,9 @@ public final class WorkspaceFeaturesListSamples {
     /**
      * Sample code: List Workspace features.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listWorkspaceFeatures(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listWorkspaceFeatures(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaceFeatures().list("myResourceGroup", "testworkspace", Context.NONE);
     }
 }

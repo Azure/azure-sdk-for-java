@@ -14,9 +14,9 @@ public final class JobsCancelSamples {
     /**
      * Sample code: Cancel Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void cancelJob(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void cancelJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.jobs().cancelWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

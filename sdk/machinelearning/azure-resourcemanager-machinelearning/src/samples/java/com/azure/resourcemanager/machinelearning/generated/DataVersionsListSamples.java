@@ -14,10 +14,9 @@ public final class DataVersionsListSamples {
     /**
      * Sample code: List Data Version Base.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listDataVersionBase(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listDataVersionBase(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .dataVersions()
             .list("test-rg", "my-aml-workspace", "string", "string", 1, null, "string", null, Context.NONE);

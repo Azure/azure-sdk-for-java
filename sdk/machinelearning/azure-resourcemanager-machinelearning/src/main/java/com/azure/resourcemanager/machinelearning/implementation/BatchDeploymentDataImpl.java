@@ -23,7 +23,7 @@ public final class BatchDeploymentDataImpl
     implements BatchDeploymentData, BatchDeploymentData.Definition, BatchDeploymentData.Update {
     private BatchDeploymentDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -86,7 +86,7 @@ public final class BatchDeploymentDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -129,7 +129,7 @@ public final class BatchDeploymentDataImpl
     }
 
     BatchDeploymentDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new BatchDeploymentDataInner();
         this.serviceManager = serviceManager;
         this.deploymentName = name;
@@ -160,7 +160,7 @@ public final class BatchDeploymentDataImpl
 
     BatchDeploymentDataImpl(
         BatchDeploymentDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

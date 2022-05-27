@@ -14,10 +14,9 @@ public final class ComputeListKeysSamples {
     /**
      * Sample code: List AKS Compute Keys.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void listAKSComputeKeys(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void listAKSComputeKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().listKeysWithResponse("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 }

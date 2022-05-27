@@ -14,10 +14,9 @@ public final class ModelVersionsGetSamples {
     /**
      * Sample code: Get Model Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getModelVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getModelVersion(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.modelVersions().getWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
     }
 }

@@ -14,10 +14,10 @@ public final class ComputeListNodesSamples {
     /**
      * Sample code: Get compute nodes information for a compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getComputeNodesInformationForACompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().listNodes("testrg123", "workspaces123", "compute123", Context.NONE);
     }
 }

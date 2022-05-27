@@ -49,10 +49,10 @@ public final class JobsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate AutoML Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateAutoMLJob(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+    public static void createOrUpdateAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
+        throws IOException {
         manager
             .jobs()
             .define("string")
@@ -127,10 +127,10 @@ public final class JobsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Sweep Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void createOrUpdateSweepJob(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+    public static void createOrUpdateSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager)
+        throws IOException {
         manager
             .jobs()
             .define("string")
@@ -192,10 +192,10 @@ public final class JobsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Pipeline Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdatePipelineJob(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         manager
             .jobs()
             .define("string")
@@ -237,10 +237,10 @@ public final class JobsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Command Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateCommandJob(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         manager
             .jobs()
             .define("string")

@@ -16,10 +16,10 @@ public final class OnlineDeploymentsGetLogsSamples {
     /**
      * Sample code: Get Online Deployment Logs.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void getOnlineDeploymentLogs(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
             .getLogsWithResponse(

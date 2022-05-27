@@ -14,10 +14,10 @@ public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
     /**
      * Sample code: ListOutboundNetworkDependenciesEndpoints.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void listOutboundNetworkDependenciesEndpoints(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaces()
             .listOutboundNetworkDependenciesEndpointsWithResponse("workspace-1234", "testworkspace", Context.NONE);

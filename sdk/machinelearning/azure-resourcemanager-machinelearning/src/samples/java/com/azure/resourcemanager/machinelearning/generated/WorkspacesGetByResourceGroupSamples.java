@@ -14,9 +14,9 @@ public final class WorkspacesGetByResourceGroupSamples {
     /**
      * Sample code: Get Workspace.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.workspaces().getByResourceGroupWithResponse("workspace-1234", "testworkspace", Context.NONE);
     }
 }

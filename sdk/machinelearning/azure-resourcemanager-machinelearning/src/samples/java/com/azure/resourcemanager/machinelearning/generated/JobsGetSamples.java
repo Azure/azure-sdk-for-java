@@ -14,9 +14,9 @@ public final class JobsGetSamples {
     /**
      * Sample code: Get Command Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getCommandJob(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getCommandJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 
@@ -26,9 +26,9 @@ public final class JobsGetSamples {
     /**
      * Sample code: Get AutoML Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 
@@ -38,9 +38,9 @@ public final class JobsGetSamples {
     /**
      * Sample code: Get Sweep Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 
@@ -50,10 +50,9 @@ public final class JobsGetSamples {
     /**
      * Sample code: Get Pipeline Job.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getPipelineJob(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getPipelineJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
     }
 }

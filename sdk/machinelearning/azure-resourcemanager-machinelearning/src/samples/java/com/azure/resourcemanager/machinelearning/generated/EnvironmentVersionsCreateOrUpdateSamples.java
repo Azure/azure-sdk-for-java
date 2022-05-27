@@ -19,10 +19,10 @@ public final class EnvironmentVersionsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Environment Version.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateEnvironmentVersion(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentVersions()
             .define("string")

@@ -14,9 +14,9 @@ public final class ComputeListSamples {
     /**
      * Sample code: Get Computes.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void getComputes(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void getComputes(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.computes().list("testrg123", "workspaces123", null, Context.NONE);
     }
 }

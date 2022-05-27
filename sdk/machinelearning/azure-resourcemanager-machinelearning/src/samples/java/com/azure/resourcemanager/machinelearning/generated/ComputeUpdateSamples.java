@@ -18,10 +18,10 @@ public final class ComputeUpdateSamples {
     /**
      * Sample code: Update a AmlCompute Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void updateAAmlComputeCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         ComputeResource resource =
             manager.computes().getWithResponse("testrg123", "workspaces123", "compute123", Context.NONE).getValue();
         resource

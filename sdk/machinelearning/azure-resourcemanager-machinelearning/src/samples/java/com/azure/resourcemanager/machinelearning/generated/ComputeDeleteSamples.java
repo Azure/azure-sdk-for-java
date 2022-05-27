@@ -15,9 +15,9 @@ public final class ComputeDeleteSamples {
     /**
      * Sample code: Delete Compute.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteCompute(com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+    public static void deleteCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .computes()
             .delete("testrg123", "workspaces123", "compute123", UnderlyingResourceAction.DELETE, Context.NONE);

@@ -16,10 +16,10 @@ public final class OnlineEndpointsRegenerateKeysSamples {
     /**
      * Sample code: RegenerateKeys Online Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void regenerateKeysOnlineEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineEndpoints()
             .regenerateKeys(

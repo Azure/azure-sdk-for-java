@@ -16,10 +16,10 @@ public final class ModelContainersCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Model Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateModelContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .modelContainers()
             .define("testContainer")

@@ -85,10 +85,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to MachineLearningServicesManager. These APIs allow end users to operate on Azure Machine Learning
- * Workspace resources.
+ * Entry point to MachineLearningManager. These APIs allow end users to operate on Azure Machine Learning Workspace
+ * resources.
  */
-public final class MachineLearningServicesManager {
+public final class MachineLearningManager {
     private Operations operations;
 
     private Workspaces workspaces;
@@ -143,8 +143,7 @@ public final class MachineLearningServicesManager {
 
     private final AzureMachineLearningWorkspaces clientObject;
 
-    private MachineLearningServicesManager(
-        HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private MachineLearningManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
@@ -157,39 +156,38 @@ public final class MachineLearningServicesManager {
     }
 
     /**
-     * Creates an instance of MachineLearningServices service API entry point.
+     * Creates an instance of Machine Learning service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the MachineLearningServices service API instance.
+     * @return the Machine Learning service API instance.
      */
-    public static MachineLearningServicesManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static MachineLearningManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of MachineLearningServices service API entry point.
+     * Creates an instance of Machine Learning service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the MachineLearningServices service API instance.
+     * @return the Machine Learning service API instance.
      */
-    public static MachineLearningServicesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static MachineLearningManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new MachineLearningServicesManager(httpPipeline, profile, null);
+        return new MachineLearningManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create MachineLearningServicesManager with optional
-     * configuration.
+     * Gets a Configurable instance that can be used to create MachineLearningManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new MachineLearningServicesManager.Configurable();
+        return new MachineLearningManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -292,13 +290,13 @@ public final class MachineLearningServicesManager {
         }
 
         /**
-         * Creates an instance of MachineLearningServices service API entry point.
+         * Creates an instance of Machine Learning service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the MachineLearningServices service API instance.
+         * @return the Machine Learning service API instance.
          */
-        public MachineLearningServicesManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public MachineLearningManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -308,7 +306,7 @@ public final class MachineLearningServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.machinelearning")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -361,7 +359,7 @@ public final class MachineLearningServicesManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new MachineLearningServicesManager(httpPipeline, profile, defaultPollInterval);
+            return new MachineLearningManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 

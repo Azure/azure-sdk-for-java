@@ -16,10 +16,10 @@ public final class EnvironmentContainersCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Environment Container.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateEnvironmentContainer(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .environmentContainers()
             .define("testEnvironment")

@@ -23,10 +23,10 @@ public final class BatchEndpointsCreateOrUpdateSamples {
     /**
      * Sample code: CreateOrUpdate Batch Endpoint.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void createOrUpdateBatchEndpoint(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .batchEndpoints()
             .define("testEndpointName")

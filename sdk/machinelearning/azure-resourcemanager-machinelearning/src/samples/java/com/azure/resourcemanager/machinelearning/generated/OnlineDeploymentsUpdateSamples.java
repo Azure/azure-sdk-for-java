@@ -26,10 +26,10 @@ public final class OnlineDeploymentsUpdateSamples {
     /**
      * Sample code: Update Managed Online Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void updateManagedOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         OnlineDeploymentData resource =
             manager
                 .onlineDeployments()
@@ -65,10 +65,10 @@ public final class OnlineDeploymentsUpdateSamples {
     /**
      * Sample code: Update Kubernetes Online Deployment.
      *
-     * @param manager Entry point to MachineLearningServicesManager.
+     * @param manager Entry point to MachineLearningManager.
      */
     public static void updateKubernetesOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager) throws IOException {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
         OnlineDeploymentData resource =
             manager
                 .onlineDeployments()

@@ -14,7 +14,7 @@ public final class DataVersionBaseDataImpl
     implements DataVersionBaseData, DataVersionBaseData.Definition, DataVersionBaseData.Update {
     private DataVersionBaseDataInner innerObject;
 
-    private final com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager;
+    private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -44,7 +44,7 @@ public final class DataVersionBaseDataImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.machinelearning.MachineLearningServicesManager manager() {
+    private com.azure.resourcemanager.machinelearning.MachineLearningManager manager() {
         return this.serviceManager;
     }
 
@@ -85,7 +85,7 @@ public final class DataVersionBaseDataImpl
     }
 
     DataVersionBaseDataImpl(
-        String name, com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        String name, com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = new DataVersionBaseDataInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -118,7 +118,7 @@ public final class DataVersionBaseDataImpl
 
     DataVersionBaseDataImpl(
         DataVersionBaseDataInner innerObject,
-        com.azure.resourcemanager.machinelearning.MachineLearningServicesManager serviceManager) {
+        com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
