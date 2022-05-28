@@ -770,7 +770,7 @@ public final class VirtualMachineUpdateInner extends UpdateResource {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
      *
      * @return the timeCreated value.
      */

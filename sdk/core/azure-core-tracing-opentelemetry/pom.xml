@@ -34,6 +34,7 @@
   <properties>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.tracing.opentelemetry/com.azure.core.tracing.opentelemetry.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.tracing.opentelemetry/com.azure.core.tracing.opentelemetry=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -92,6 +93,12 @@
       <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-testing</artifactId>
+      <scope>test</scope>
+      <version>1.11.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+    </dependency>
 
     <!-- sample file dependencies -->
     <dependency>
@@ -115,7 +122,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -146,6 +153,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-logging:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

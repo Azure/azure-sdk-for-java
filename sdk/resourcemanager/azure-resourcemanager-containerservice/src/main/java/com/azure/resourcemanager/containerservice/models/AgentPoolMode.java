@@ -27,7 +27,11 @@ public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
         return fromString(name, AgentPoolMode.class);
     }
 
-    /** @return known AgentPoolMode values. */
+    /**
+     * Gets known AgentPoolMode values.
+     *
+     * @return known AgentPoolMode values.
+     */
     public static Collection<AgentPoolMode> values() {
         return values(AgentPoolMode.class);
     }

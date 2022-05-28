@@ -47,7 +47,11 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
-    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosSerializationConfig = CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.Default
+      )
+
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
     ImplementationBridgeHelpers
@@ -170,7 +174,10 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
-    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosSerializationConfig = CosmosSerializationConfig(
+      SerializationInclusionModes.Always,
+      SerializationDateTimeConversionModes.Default
+    )
     val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
     ImplementationBridgeHelpers

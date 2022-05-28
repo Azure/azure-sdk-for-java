@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedClusters ListByResourceGroup. */
 public final class ManagedClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-03-01/examples/ManagedClustersListByResourceGroup.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/ManagedClustersListByResourceGroup.json
      */
     /**
      * Sample code: Get Managed Clusters by Resource Group.

@@ -39,7 +39,11 @@ public final class BindingType extends ExpandableStringEnum<BindingType> {
         return fromString(name, BindingType.class);
     }
 
-    /** @return known BindingType values. */
+    /**
+     * Gets known BindingType values.
+     *
+     * @return known BindingType values.
+     */
     public static Collection<BindingType> values() {
         return values(BindingType.class);
     }

@@ -217,7 +217,7 @@ class NettyAsyncHttpClient implements HttpClient {
 
                     try {
                         return new ChunkedNioFile(
-                            fc, 0, fileContent.getLength(), fileContent.getChunkSize());
+                            fc, fileContent.getPosition(), fileContent.getLength(), fileContent.getChunkSize());
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                     }
@@ -233,7 +233,7 @@ class NettyAsyncHttpClient implements HttpClient {
             // Beware of NettyOutbound.sendFile(Path) it involves extra file length lookup.
             // This is going to use zero-copy transfer if there's no ssl
             return reactorNettyOutbound.sendFile(
-                fileContent.getFile(), 0, fileContent.getLength());
+                fileContent.getFile(), fileContent.getPosition(), fileContent.getLength());
         }
     }
 

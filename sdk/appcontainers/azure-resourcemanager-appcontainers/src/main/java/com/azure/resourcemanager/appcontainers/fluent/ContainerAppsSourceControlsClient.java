@@ -52,7 +52,7 @@ public interface ContainerAppsSourceControlsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -60,14 +60,14 @@ public interface ContainerAppsSourceControlsClient {
      * @return a SourceControl of a Container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SourceControlInner get(String resourceGroupName, String containerAppName, String name);
+    SourceControlInner get(String resourceGroupName, String containerAppName, String sourceControlName);
 
     /**
      * Get a SourceControl of a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -77,14 +77,14 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SourceControlInner> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context);
+        String resourceGroupName, String containerAppName, String sourceControlName, Context context);
 
     /**
-     * Description for Create or update the SourceControl for a Container App.
+     * Create or update the SourceControl for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -94,14 +94,17 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(
-        String resourceGroupName, String containerAppName, String name, SourceControlInner sourceControlEnvelope);
+        String resourceGroupName,
+        String containerAppName,
+        String sourceControlName,
+        SourceControlInner sourceControlEnvelope);
 
     /**
-     * Description for Create or update the SourceControl for a Container App.
+     * Create or update the SourceControl for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,16 +117,16 @@ public interface ContainerAppsSourceControlsClient {
     SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(
         String resourceGroupName,
         String containerAppName,
-        String name,
+        String sourceControlName,
         SourceControlInner sourceControlEnvelope,
         Context context);
 
     /**
-     * Description for Create or update the SourceControl for a Container App.
+     * Create or update the SourceControl for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -133,14 +136,17 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SourceControlInner createOrUpdate(
-        String resourceGroupName, String containerAppName, String name, SourceControlInner sourceControlEnvelope);
+        String resourceGroupName,
+        String containerAppName,
+        String sourceControlName,
+        SourceControlInner sourceControlEnvelope);
 
     /**
-     * Description for Create or update the SourceControl for a Container App.
+     * Create or update the SourceControl for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,16 +159,16 @@ public interface ContainerAppsSourceControlsClient {
     SourceControlInner createOrUpdate(
         String resourceGroupName,
         String containerAppName,
-        String name,
+        String sourceControlName,
         SourceControlInner sourceControlEnvelope,
         Context context);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -170,14 +176,15 @@ public interface ContainerAppsSourceControlsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName, String name);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String containerAppName, String sourceControlName);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -187,28 +194,28 @@ public interface ContainerAppsSourceControlsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String containerAppName, String name, Context context);
+        String resourceGroupName, String containerAppName, String sourceControlName, Context context);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String containerAppName, String name);
+    void delete(String resourceGroupName, String containerAppName, String sourceControlName);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -216,5 +223,5 @@ public interface ContainerAppsSourceControlsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String containerAppName, String name, Context context);
+    void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of provisioning service descriptions. */
 @Fluent
 public final class ProvisioningServiceDescriptionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProvisioningServiceDescriptionListResult.class);
-
     /*
      * List of provisioning service descriptions.
      */

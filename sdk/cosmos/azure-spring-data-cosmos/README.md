@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.20.0</version>
+    <version>3.21.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,9 +86,10 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 ### Setup Configuration Class
 - In order to set up configuration class, you'll need to extend `AbstractCosmosConfiguration`
 
-- Azure-spring-data-cosmos also supports `Response Diagnostics String` and `Query Metrics`.
+- Azure-spring-data-cosmos also supports `Response Diagnostics String`, `Query Metrics` and `Max Degree of Parallelism`.
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
+Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -111,6 +112,9 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
+    
+    @Value("${azure.cosmos.maxDegreeOfParallelism}")
+    private int maxDegreeOfParallelism;
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -129,6 +133,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
+                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
@@ -170,6 +175,7 @@ public CosmosClientBuilder getCosmosClientBuilder() {
 public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
                        .enableQueryMetrics(queryMetricsEnabled)
+                       .maxDegreeOfParallelism(maxDegreeOfParallelism)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
 }
@@ -646,6 +652,7 @@ public class SecondaryDatasourceConfiguration {
     public CosmosConfig getCosmosConfig() {
         return CosmosConfig.builder()
             .enableQueryMetrics(true)
+            .maxDegreeOfParallelism(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -681,18 +688,20 @@ public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProp
 public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
+        .maxDegreeOfParallelism(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
 ```
 
-- Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
+- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor` or `maxDegreeOfParallelism` , you can create the `CosmosConfig` for your cosmos template.
 
 ```java
 @Bean("secondaryCosmosConfig")
 public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
+        .maxDegreeOfParallelism(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }

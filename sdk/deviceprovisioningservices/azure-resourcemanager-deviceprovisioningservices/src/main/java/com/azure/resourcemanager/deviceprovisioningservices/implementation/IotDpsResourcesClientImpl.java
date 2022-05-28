@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.IotDpsResourcesClient;
@@ -49,15 +48,14 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInpu
 import com.azure.resourcemanager.deviceprovisioningservices.models.ProvisioningServiceDescriptionListResult;
 import com.azure.resourcemanager.deviceprovisioningservices.models.SharedAccessSignatureAuthorizationRuleListResult;
 import com.azure.resourcemanager.deviceprovisioningservices.models.TagsResource;
-import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+import java.util.List;
+
 /** An instance of this class provides access to all the operations defined in IotDpsResourcesClient. */
 public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
-    private final ClientLogger logger = new ClientLogger(IotDpsResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IotDpsResourcesService service;
 
@@ -494,14 +492,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     private Mono<ProvisioningServiceDescriptionInner> getByResourceGroupAsync(
         String resourceGroupName, String provisioningServiceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, provisioningServiceName)
-            .flatMap(
-                (Response<ProvisioningServiceDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -673,8 +664,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner>
@@ -706,8 +696,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner>
@@ -740,8 +729,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner>
@@ -764,8 +752,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner>
@@ -1000,8 +987,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner>
@@ -1029,8 +1015,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner>
@@ -1061,8 +1046,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner> beginUpdate(
@@ -1080,8 +1064,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the provisioning service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the description of the provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProvisioningServiceDescriptionInner>, ProvisioningServiceDescriptionInner> beginUpdate(
@@ -1279,7 +1262,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1300,7 +1283,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1321,7 +1304,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String provisioningServiceName) {
@@ -1337,7 +1320,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1503,7 +1486,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of provisioning service descriptions.
+     * @return list of provisioning service descriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProvisioningServiceDescriptionInner> listAsync() {
@@ -1518,7 +1501,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of provisioning service descriptions.
+     * @return list of provisioning service descriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProvisioningServiceDescriptionInner> listAsync(Context context) {
@@ -1531,7 +1514,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of provisioning service descriptions.
+     * @return list of provisioning service descriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProvisioningServiceDescriptionInner> list() {
@@ -1545,7 +1528,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of provisioning service descriptions.
+     * @return list of provisioning service descriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProvisioningServiceDescriptionInner> list(Context context) {
@@ -1663,7 +1646,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all provisioning services in the given resource group.
+     * @return a list of all provisioning services in the given resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProvisioningServiceDescriptionInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1680,7 +1664,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all provisioning services in the given resource group.
+     * @return a list of all provisioning services in the given resource group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProvisioningServiceDescriptionInner> listByResourceGroupAsync(
@@ -1697,7 +1682,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all provisioning services in the given resource group.
+     * @return a list of all provisioning services in the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProvisioningServiceDescriptionInner> listByResourceGroup(String resourceGroupName) {
@@ -1712,7 +1698,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all provisioning services in the given resource group.
+     * @return a list of all provisioning services in the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProvisioningServiceDescriptionInner> listByResourceGroup(
@@ -1864,14 +1851,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     private Mono<AsyncOperationResultInner> getOperationResultAsync(
         String operationId, String resourceGroupName, String provisioningServiceName, String asyncinfo) {
         return getOperationResultWithResponseAsync(operationId, resourceGroupName, provisioningServiceName, asyncinfo)
-            .flatMap(
-                (Response<AsyncOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2046,7 +2026,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs and tiers for a provisioning service.
+     * @return the list of valid SKUs and tiers for a provisioning service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IotDpsSkuDefinitionInner> listValidSkusAsync(
@@ -2065,7 +2045,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs and tiers for a provisioning service.
+     * @return the list of valid SKUs and tiers for a provisioning service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IotDpsSkuDefinitionInner> listValidSkusAsync(
@@ -2083,7 +2063,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs and tiers for a provisioning service.
+     * @return the list of valid SKUs and tiers for a provisioning service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IotDpsSkuDefinitionInner> listValidSkus(
@@ -2100,7 +2081,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs and tiers for a provisioning service.
+     * @return the list of valid SKUs and tiers for a provisioning service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IotDpsSkuDefinitionInner> listValidSkus(
@@ -2212,14 +2194,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NameAvailabilityInfoInner> checkProvisioningServiceNameAvailabilityAsync(OperationInputs arguments) {
         return checkProvisioningServiceNameAvailabilityWithResponseAsync(arguments)
-            .flatMap(
-                (Response<NameAvailabilityInfoInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2380,7 +2355,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of shared access keys.
+     * @return list of shared access keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedAccessSignatureAuthorizationRuleInner> listKeysAsync(
@@ -2399,7 +2374,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of shared access keys.
+     * @return list of shared access keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedAccessSignatureAuthorizationRuleInner> listKeysAsync(
@@ -2417,7 +2392,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of shared access keys.
+     * @return list of shared access keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(
@@ -2434,7 +2409,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of shared access keys.
+     * @return list of shared access keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(
@@ -2567,14 +2542,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     private Mono<SharedAccessSignatureAuthorizationRuleInner> listKeysForKeyNameAsync(
         String provisioningServiceName, String keyName, String resourceGroupName) {
         return listKeysForKeyNameWithResponseAsync(provisioningServiceName, keyName, resourceGroupName)
-            .flatMap(
-                (Response<SharedAccessSignatureAuthorizationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2723,14 +2691,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     private Mono<PrivateLinkResourcesInner> listPrivateLinkResourcesAsync(
         String resourceGroupName, String resourceName) {
         return listPrivateLinkResourcesWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<PrivateLinkResourcesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2887,14 +2848,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     private Mono<GroupIdInformationInner> getPrivateLinkResourcesAsync(
         String resourceGroupName, String resourceName, String groupId) {
         return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, resourceName, groupId)
-            .flatMap(
-                (Response<GroupIdInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3043,14 +2997,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     private Mono<List<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsAsync(
         String resourceGroupName, String resourceName) {
         return listPrivateEndpointConnectionsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<List<PrivateEndpointConnectionInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3214,14 +3161,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
         String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
         return getPrivateEndpointConnectionWithResponseAsync(
                 resourceGroupName, resourceName, privateEndpointConnectionName)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3411,8 +3351,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3445,8 +3384,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3480,8 +3418,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3506,8 +3443,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3741,8 +3677,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3771,8 +3706,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3801,8 +3735,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
@@ -3822,8 +3755,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
