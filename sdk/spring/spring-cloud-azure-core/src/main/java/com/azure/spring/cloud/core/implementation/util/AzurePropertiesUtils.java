@@ -60,20 +60,20 @@ public final class AzurePropertiesUtils {
      * @param <T> The type of the target that extends AzureProperties.
      */
     public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
-        copyPropertiesIgnoreNull(source.getClient(), target.getClient());
+        copyPropertiesIgnoreSourceNull(source.getClient(), target.getClient());
         copyHttpLoggingProperties(source, target, true);
 
-        copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
-        copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
+        copyPropertiesIgnoreSourceNull(source.getProxy(), target.getProxy());
+        copyPropertiesIgnoreSourceNull(source.getProfile(), target.getProfile());
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
-        copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
+        copyPropertiesIgnoreSourceNull(source.getCredential(), target.getCredential());
 
         if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
             RetryOptionsProvider.RetryOptions sourceRetry = ((RetryOptionsProvider) source).getRetry();
             RetryOptionsProvider.RetryOptions targetRetry = ((RetryOptionsProvider) target).getRetry();
-            copyPropertiesIgnoreNull(sourceRetry, targetRetry);
-            copyPropertiesIgnoreNull(sourceRetry.getExponential(), targetRetry.getExponential());
-            copyPropertiesIgnoreNull(sourceRetry.getFixed(), targetRetry.getFixed());
+            copyPropertiesIgnoreSourceNull(sourceRetry, targetRetry);
+            copyPropertiesIgnoreSourceNull(sourceRetry.getExponential(), targetRetry.getExponential());
+            copyPropertiesIgnoreSourceNull(sourceRetry.getFixed(), targetRetry.getFixed());
         }
     }
 
@@ -99,8 +99,18 @@ public final class AzurePropertiesUtils {
      * @param source The source object.
      * @param target The target object.
      */
-    public static void copyPropertiesIgnoreNull(Object source, Object target) {
+    public static void copyPropertiesIgnoreSourceNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
+    }
+
+    /**
+     * Copy properties from source object to target object. Ignore the source value if the related target is non-null.
+     *
+     * @param source The source object.
+     * @param target The target object.
+     */
+    public static void copyPropertiesIgnoreTargetNonNull(Object source, Object target) {
+        BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
     }
 
     private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source,
@@ -112,7 +122,7 @@ public final class AzurePropertiesUtils {
             ClientOptionsProvider.HttpClientOptions sourceClient = (ClientOptionsProvider.HttpClientOptions) source.getClient();
             ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
             if (ignoreNull) {
-                copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
+                copyPropertiesIgnoreSourceNull(sourceClient.getLogging(), targetClient.getLogging());
             } else {
                 BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
             }
@@ -122,7 +132,7 @@ public final class AzurePropertiesUtils {
     }
 
     private static String[] findPropertyNames(Object source, Predicate<Object> predicate) {
-        final Set<String> emptyNames = new HashSet<>();
+        final Set<String> ignoredNames = new HashSet<>();
 
         final BeanWrapper beanWrapper = new BeanWrapperImpl(source);
         PropertyDescriptor[] pds = beanWrapper.getPropertyDescriptors();
@@ -130,15 +140,18 @@ public final class AzurePropertiesUtils {
         for (PropertyDescriptor pd : pds) {
             Object srcValue = beanWrapper.getPropertyValue(pd.getName());
             if (predicate.test(srcValue)) {
-                emptyNames.add(pd.getName());
+                ignoredNames.add(pd.getName());
             }
         }
-        return emptyNames.toArray(new String[0]);
+        return ignoredNames.toArray(new String[0]);
     }
 
     private static String[] findNullPropertyNames(Object source) {
         return findPropertyNames(source, Objects::isNull);
     }
 
+    private static String[] findNonNullPropertyNames(Object source) {
+        return findPropertyNames(source, Objects::nonNull);
+    }
 
 }
