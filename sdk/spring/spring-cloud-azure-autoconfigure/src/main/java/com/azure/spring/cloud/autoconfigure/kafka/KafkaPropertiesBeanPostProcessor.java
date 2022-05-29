@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 import com.azure.spring.cloud.autoconfigure.kafka.properties.AzureEventHubsKafkaProperties;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -26,6 +28,8 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HAN
  */
 class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
+    private static final String LOG_PROPERTIES_CONFIGURE = "Property %s will be configured as %s.";
     private final AzureEventHubsKafkaProperties azureEventHubsKafkaProperties;
 
     KafkaPropertiesBeanPostProcessor(AzureEventHubsKafkaProperties azureEventHubsKafkaProperties) {
@@ -50,14 +54,14 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
     private void configureOAuthPropertiesIfNeed(Map<String, Object> sourceProperties,
                                                 Map<String, String> propertiesToConfigure) {
         if (ifSaslOAuthNeedConfigure(sourceProperties)) {
-            propertiesToConfigure.put(SECURITY_PROTOCOL_CONFIG,
-                    SECURITY_PROTOCOL_CONFIG_SASL);
-            propertiesToConfigure.put(SASL_MECHANISM,
-                    SASL_MECHANISM_OAUTH);
-            propertiesToConfigure.put(SASL_JAAS_CONFIG,
-                    SASL_JAAS_CONFIG_OAUTH);
-            propertiesToConfigure.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS,
-                    SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
+            propertiesToConfigure.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
+            LOGGER.debug(LOG_PROPERTIES_CONFIGURE, SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
+            propertiesToConfigure.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
+            LOGGER.debug(LOG_PROPERTIES_CONFIGURE, SASL_MECHANISM, SASL_MECHANISM_OAUTH);
+            propertiesToConfigure.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+            LOGGER.debug(LOG_PROPERTIES_CONFIGURE, SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+            propertiesToConfigure.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
+            LOGGER.debug(LOG_PROPERTIES_CONFIGURE, SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
         }
     }
 
