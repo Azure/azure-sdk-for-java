@@ -153,7 +153,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
-                retryPolicy, transferEntityPath);
+                retryPolicy, transferEntityPath).cast(AmqpSendLink.class);
         });
     }
 

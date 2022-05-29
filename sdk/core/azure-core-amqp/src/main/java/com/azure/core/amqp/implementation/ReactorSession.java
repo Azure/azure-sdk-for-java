@@ -226,8 +226,7 @@ public class ReactorSession implements AmqpSession {
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
         return createProducer(linkName, entityPath, timeout, retry, null)
-            .or(onClosedError("Connection closed while waiting for new producer link.", entityPath, linkName))
-            .cast(AmqpLink.class);
+            .or(onClosedError("Connection closed while waiting for new producer link.", entityPath, linkName));
     }
 
     /**
@@ -432,7 +431,7 @@ public class ReactorSession implements AmqpSession {
      *
      * @return A new instance of an {@link AmqpLink} with the correct properties set.
      */
-    protected Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout,
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
 
         final Target target = new Target();
@@ -446,7 +445,8 @@ public class ReactorSession implements AmqpSession {
             options.setTryTimeout(timeout);
         }
 
-        return createProducer(linkName, entityPath, target, options, linkProperties, true);
+        return createProducer(linkName, entityPath, target, options, linkProperties, true)
+            .cast(AmqpLink.class);
     }
 
     private Mono<AmqpSendLink> createProducer(String linkName, String entityPath,

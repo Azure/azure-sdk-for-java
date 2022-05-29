@@ -9,7 +9,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -109,7 +108,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout,
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, String transferEntityPath) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -147,12 +146,12 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        return this.createProducer(linkName, entityPath, timeout, retry, (Map<Symbol, Object>) null).cast(AmqpLink.class);
+        return this.createProducer(linkName, entityPath, timeout, retry, (Map<Symbol, Object>) null);
     }
 
     @Override
-    protected Mono<AmqpSendLink> createProducer(String linkName, String entityPath, Duration timeout,
-                                                AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+                                            AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
         if (distributedTransactionsSupport) {
             return getOrCreateTransactionCoordinator().flatMap(coordinator -> super.createProducer(linkName, entityPath,
                 timeout, retry, linkProperties));
