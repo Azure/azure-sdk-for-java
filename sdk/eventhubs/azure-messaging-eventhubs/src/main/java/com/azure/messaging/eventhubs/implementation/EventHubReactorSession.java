@@ -81,7 +81,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Objects.requireNonNull(clientIdentifier, "'clientIdentifier' cannot be null.");
         final Map<Symbol, Object> properties = new HashMap<>();
         properties.put(CLIENT_IDENTIFIER, clientIdentifier);
-        return createProducer(linkName, entityPath, timeout, retryPolicy, properties);
+        return createProducer(linkName, entityPath, timeout, retryPolicy, properties).cast(AmqpSendLink.class);
     }
 
     /**
