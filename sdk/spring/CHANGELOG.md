@@ -3,8 +3,10 @@
 ## 4.3.0-beta.1 (Unreleased)
 
 ### Features Added
+- Support OAuth2 authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
 
 ### Breaking Changes
+- Drop support of connection string or Azure Resource Manager based authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
 
 ### Bugs Fixed
 
