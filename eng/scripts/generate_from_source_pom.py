@@ -130,7 +130,18 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         fromSourcePom.write(pom_file_end)
 
     if set_pipeline_variable:
-        checkout_paths = list(set(sorted([p.directory_path for p in source_projects])))
+        # The directory_path is too granular. There are build rules for some libraries that
+        # create empty sources/javadocs jars using the README.md. Not every library
+        # has a README.md and, in these cases, it uses the README.md from the root service
+        # directory. This will also trim the number of paths down considerably.
+        service_directories: Set[str] = set()
+        for p in source_projects:
+            # get the service directory, which is one level up from the library's directory
+            service_directory = '/'.join(p.directory_path.split('/')[0:-1])
+            service_directories.add(service_directory)
+
+        checkout_paths = list(sorted(service_directories))
+        print('setting env variable {} = {}'.format(set_pipeline_variable, checkout_paths))
         print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(checkout_paths)))
 
     # Sets the DevOps variable that is used to skip certain projects during linting validation.
@@ -139,7 +150,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         for maven_identifier in sorted([p.identifier for p in source_projects]):
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
-
+        print('setting env variable {} = {}'.format(set_skip_linting_projects, skip_linting_projects))
         print('##vso[task.setvariable variable={};]{}'.format(set_skip_linting_projects, ','.join(list(set(skip_linting_projects)))))
 
 
@@ -170,6 +181,10 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     for root, _, files in os.walk(root_path):
         # Ignore sdk/resourcemanagerhybrid
         if 'resourcemanagerhybrid' in root:
+            continue
+
+        # Also ignore sdk/e2e as this only creates noise during checkout as it uses many current dependencies but isn't an actual project we want to build.
+        if 'e2e' in root:
             continue
 
         for file_name in files:

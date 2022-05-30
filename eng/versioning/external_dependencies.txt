@@ -112,6 +112,7 @@ org.postgresql:postgresql;42.3.4
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
+redis.clients:jedis;4.2.3
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.6.7
@@ -198,6 +199,7 @@ io.opentelemetry:opentelemetry-api;1.11.0
 io.opentelemetry:opentelemetry-sdk;1.11.0
 io.opentelemetry:opentelemetry-exporter-logging;1.11.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.11.0
+io.opentelemetry:opentelemetry-sdk-testing;1.11.0
 io.projectreactor:reactor-test;3.4.17
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
