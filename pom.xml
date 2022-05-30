@@ -895,6 +895,7 @@
         <module>sdk/dnsresolver</module>
         <module>sdk/dynatrace</module>
         <module>sdk/edgeorder</module>
+        <module>sdk/education</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -921,6 +922,7 @@
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/logz</module>
+        <module>sdk/machinelearning</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>

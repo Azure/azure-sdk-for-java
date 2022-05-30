@@ -27,7 +27,11 @@ public final class DeploymentResourceStatus extends ExpandableStringEnum<Deploym
         return fromString(name, DeploymentResourceStatus.class);
     }
 
-    /** @return known DeploymentResourceStatus values. */
+    /**
+     * Gets known DeploymentResourceStatus values.
+     *
+     * @return known DeploymentResourceStatus values.
+     */
     public static Collection<DeploymentResourceStatus> values() {
         return values(DeploymentResourceStatus.class);
     }

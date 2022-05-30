@@ -11,6 +11,7 @@ trigger:
       - sdk/eventhubs/ci.yml
       - sdk/eventhubs/azure-messaging-eventhubs/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-stress/
@@ -18,6 +19,7 @@ trigger:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
@@ -34,6 +36,7 @@ pr:
       - sdk/eventhubs/ci.yml
       - sdk/eventhubs/azure-messaging-eventhubs/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-stress/
@@ -41,6 +44,7 @@ pr:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
@@ -56,6 +60,9 @@ extends:
       - name: azure-messaging-eventhubs-checkpointstore-blob
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
+      - name: azure-messaging-eventhubs-checkpointstore-redis
+        groupId: com.azure
+        safeName: azuremessagingeventhubscheckpointstoreredis
     AdditionalModules:
       - name: azure-messaging-eventhubs-track1-perf
         groupId: com.azure

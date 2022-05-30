@@ -34,12 +34,6 @@ public final class DeploymentSettings {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, Object>> addonConfigs;
 
-    /*
-     * Container liveness and readiness probe settings
-     */
-    @JsonProperty(value = "containerProbeSettings")
-    private ContainerProbeSettings containerProbeSettings;
-
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory. It is recommended
      * that using this field to represent the required CPU and Memory, the old field cpu and memoryInGB will be
@@ -105,26 +99,6 @@ public final class DeploymentSettings {
     }
 
     /**
-     * Get the containerProbeSettings property: Container liveness and readiness probe settings.
-     *
-     * @return the containerProbeSettings value.
-     */
-    public ContainerProbeSettings containerProbeSettings() {
-        return this.containerProbeSettings;
-    }
-
-    /**
-     * Set the containerProbeSettings property: Container liveness and readiness probe settings.
-     *
-     * @param containerProbeSettings the containerProbeSettings value to set.
-     * @return the DeploymentSettings object itself.
-     */
-    public DeploymentSettings withContainerProbeSettings(ContainerProbeSettings containerProbeSettings) {
-        this.containerProbeSettings = containerProbeSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -132,9 +106,6 @@ public final class DeploymentSettings {
     public void validate() {
         if (resourceRequests() != null) {
             resourceRequests().validate();
-        }
-        if (containerProbeSettings() != null) {
-            containerProbeSettings().validate();
         }
     }
 }

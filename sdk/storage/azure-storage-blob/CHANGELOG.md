@@ -1,12 +1,19 @@
 # Release History
 
-## 12.17.0-beta.2 (Unreleased)
+## 12.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.17.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
 
 ### Other Changes
 - Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output

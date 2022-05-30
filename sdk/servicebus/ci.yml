@@ -48,8 +48,6 @@ extends:
         groupId: com.azure
         safeName: azuremessagingservicebus
     AdditionalModules:
-      - name: perf-test-core
-        groupId: com.azure
       - name: azure-messaging-servicebus-track1-perf
         groupId: com.azure
       - name: azure-messaging-servicebus-track2-perf

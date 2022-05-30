@@ -113,6 +113,13 @@ public interface Extension {
     Object protectedSettings();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.azurestackhci.fluent.models.ExtensionInner object.
      *
      * @return the inner object.

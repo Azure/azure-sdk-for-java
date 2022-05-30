@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of List image templates operation. */
 @Fluent
 public final class ImageTemplateListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateListResult.class);
-
     /*
      * An array of image templates
      */

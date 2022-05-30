@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-dependencies</artifactId>
-  <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Spring Cloud Azure Dependencies</name>
@@ -50,187 +50,181 @@
       <!-- Azure SDK -->
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-cosmos</artifactId> <!-- Spring Cloud Azure is tested with 4.29.1 -->
-        <version>4.30.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
-      </dependency>
-      <dependency>
-        <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.2.1</version>
+        <version>1.2.2</version>   <!-- NOTE: This should be updated manually. -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>com.azure.resourcemanager</groupId>
-        <artifactId>azure-resourcemanager</artifactId>
-        <version>2.14.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
-      </dependency>
-
-      <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>
         <version>3.21.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      </dependency>
+      <dependency>
+        <groupId>com.azure.resourcemanager</groupId>
+        <artifactId>azure-resourcemanager</artifactId>
+        <version>2.15.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       </dependency>
 
       <!-- Spring Cloud Azure -->
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-actuator</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-actuator-autoconfigure</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-core</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-service</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-active-directory;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-active-directory-b2c</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-active-directory-b2c;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-actuator</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-actuator;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-data-cosmos;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-integration-eventhubs</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-integration-eventhubs;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-integration-servicebus</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-integration-servicebus;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-integration-storage-queue</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-integration-storage-queue;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-storage-file-share</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-file-share;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-stream-eventhubs</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-stream-eventhubs;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-stream-servicebus</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-stream-servicebus;current} -->
+        <version>${project.version}</version>
       </dependency>
 
       <!-- Azure Spring Cloud Stream Binder -->
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
+        <version>${project.version}</version>
       </dependency>
 
       <!-- Tracing -->
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
+        <version>${project.version}</version>
       </dependency>
 
 
@@ -238,22 +232,22 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-integration-azure-core</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-integration-azure-eventhubs</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-integration-azure-servicebus</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-integration-azure-storage-queue</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
+        <version>${project.version}</version>
       </dependency>
 
 
@@ -261,22 +255,22 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-messaging-azure</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-messaging-azure-eventhubs</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-messaging-azure-servicebus</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-messaging-azure-storage-queue</artifactId>
-        <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
+        <version>${project.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

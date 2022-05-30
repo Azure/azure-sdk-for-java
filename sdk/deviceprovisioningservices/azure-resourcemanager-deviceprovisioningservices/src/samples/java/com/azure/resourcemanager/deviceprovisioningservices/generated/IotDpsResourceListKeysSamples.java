@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListKeys. */
 public final class IotDpsResourceListKeysSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListKeys.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListKeys.json
      */
     /**
      * Sample code: DPSListKeys.

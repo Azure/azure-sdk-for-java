@@ -57,7 +57,11 @@ public final class NodeArcState extends ExpandableStringEnum<NodeArcState> {
         return fromString(name, NodeArcState.class);
     }
 
-    /** @return known NodeArcState values. */
+    /**
+     * Gets known NodeArcState values.
+     *
+     * @return known NodeArcState values.
+     */
     public static Collection<NodeArcState> values() {
         return values(NodeArcState.class);
     }

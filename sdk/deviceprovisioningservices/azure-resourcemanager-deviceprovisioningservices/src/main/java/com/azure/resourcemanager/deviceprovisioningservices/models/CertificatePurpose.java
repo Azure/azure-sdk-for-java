@@ -27,7 +27,11 @@ public final class CertificatePurpose extends ExpandableStringEnum<CertificatePu
         return fromString(name, CertificatePurpose.class);
     }
 
-    /** @return known CertificatePurpose values. */
+    /**
+     * Gets known CertificatePurpose values.
+     *
+     * @return known CertificatePurpose values.
+     */
     public static Collection<CertificatePurpose> values() {
         return values(CertificatePurpose.class);
     }

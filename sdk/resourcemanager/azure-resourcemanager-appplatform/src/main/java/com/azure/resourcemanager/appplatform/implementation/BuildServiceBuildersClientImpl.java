@@ -279,14 +279,7 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
     public Mono<BuilderResourceInner> getAsync(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName)
-            .flatMap(
-                (Response<BuilderResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

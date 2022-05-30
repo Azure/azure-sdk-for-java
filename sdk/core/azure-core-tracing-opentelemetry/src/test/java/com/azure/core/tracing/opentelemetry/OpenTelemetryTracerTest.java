@@ -20,13 +20,20 @@ import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -35,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
@@ -43,15 +51,16 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 import static io.opentelemetry.api.trace.StatusCode.UNSET;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -77,9 +86,12 @@ public class OpenTelemetryTracerTest {
         TRACE_ID_OFFSET + TRACE_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
     private static final int TRACE_OPTION_OFFSET =
         SPAN_ID_OFFSET + SPAN_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
-    private static OpenTelemetryTracer openTelemetryTracer;
+    private OpenTelemetryTracer openTelemetryTracer;
+    private static final SpanContext TEST_CONTEXT = SpanContext.create("0123456789abcdef0123456789abcdef", "0123456789abcdef", TraceFlags.getSampled(), TraceState.getDefault());
 
-    private static Tracer tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
+    private InMemorySpanExporter testExporter;
+    private Tracer tracer;
+    private SpanProcessor spanProcessor;
     private Context tracingContext;
     private Span parentSpan;
 
@@ -93,8 +105,18 @@ public class OpenTelemetryTracerTest {
 
     @BeforeEach
     public void setUp() {
+        testExporter = InMemorySpanExporter.create();
+        spanProcessor = SimpleSpanProcessor.create(testExporter);
+        tracer = OpenTelemetrySdk.builder()
+            .setTracerProvider(SdkTracerProvider.builder()
+                .addSpanProcessor(spanProcessor)
+                .build())
+            .build().getTracer("TracerSdkTest");
+
         // Start user parent span.
-        parentSpan = tracer.spanBuilder(METHOD_NAME).setNoParent().startSpan();
+        parentSpan = tracer.spanBuilder(METHOD_NAME)
+            .setSpanKind(SpanKind.SERVER)
+            .setNoParent().startSpan();
 
         // Add parent span to tracingContext
         tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
@@ -791,6 +813,209 @@ public class OpenTelemetryTracerTest {
         final ReadableSpan span = getSpan(started);
 
         verifySpanAttributes(expectedAttributes, span.toSpanData().getAttributes());
+    }
+
+    @Test
+    public void suppressNestedClientSpan() {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        Context innerSuppressed = openTelemetryTracer.start("innerSuppressed", outer);
+        Context innerNotSuppressed = openTelemetryTracer.start("innerNotSuppressed", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), innerSuppressed);
+
+        openTelemetryTracer.end("ok", null, innerNotSuppressed);
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
+        openTelemetryTracer.end("ok", null, innerSuppressed);
+
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
+        openTelemetryTracer.end("ok", null, outer);
+
+        assertEquals(2, testExporter.getFinishedSpanItems().size());
+
+        SpanData innerNotSuppressedSpan = testExporter.getFinishedSpanItems().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
+        assertEquals(innerNotSuppressedSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
+        assertEquals(innerNotSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
+    }
+
+    @Test
+    public void suppressNestedInterleavedClientSpan() {
+        Context outer = openTelemetryTracer.getSharedSpanBuilder("outer", Context.NONE);
+        openTelemetryTracer.addLink(outer.addData(SPAN_CONTEXT_KEY, TEST_CONTEXT));
+        outer = openTelemetryTracer.start("outer", outer, ProcessKind.SEND);
+
+        Context inner1Suppressed = openTelemetryTracer.start("innerSuppressed", outer);
+        Context inner1NotSuppressed = openTelemetryTracer.start("innerNotSuppressed", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), inner1Suppressed);
+        Context inner2Suppressed = openTelemetryTracer.start("innerSuppressed", inner1NotSuppressed);
+
+        openTelemetryTracer.end("ok", null, inner2Suppressed);
+        assertEquals(0, testExporter.getFinishedSpanItems().size());
+
+        openTelemetryTracer.end("ok", null, inner1NotSuppressed);
+        openTelemetryTracer.end("ok", null, inner1Suppressed);
+        openTelemetryTracer.end("ok", null, outer);
+        assertEquals(2, testExporter.getFinishedSpanItems().size());
+
+        SpanData innerNotSuppressedSpan = testExporter.getFinishedSpanItems().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
+        assertEquals(innerNotSuppressedSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
+        assertEquals(innerNotSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
+    }
+
+    @Test
+    public void suppressNestedMultipleLayersSpan() {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        Context inner1Suppressed = openTelemetryTracer.start("innerSuppressed", outer);
+        Context inner2Suppressed = openTelemetryTracer.start("inner2Suppressed", inner1Suppressed);
+
+        openTelemetryTracer.end("ok", null, inner2Suppressed);
+        openTelemetryTracer.end("ok", null, inner1Suppressed);
+        assertEquals(0, testExporter.getFinishedSpanItems().size());
+
+        openTelemetryTracer.end("ok", null, outer);
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("spanKinds")
+    public void suppressNestedClientSpan(com.azure.core.util.tracing.SpanKind outerKind, com.azure.core.util.tracing.SpanKind innerKind, boolean shouldSuppressInner) {
+        Context outer = openTelemetryTracer.start("outer", new StartSpanOptions(outerKind), Context.NONE);
+        Context inner = openTelemetryTracer.start("inner", new StartSpanOptions(innerKind), outer);
+        Context neverSuppressed = openTelemetryTracer.start("innerNotSuppressed", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.PRODUCER), inner);
+
+        openTelemetryTracer.end("ok", null, neverSuppressed);
+        assertEquals(1, testExporter.getFinishedSpanItems().size());
+
+        openTelemetryTracer.end("ok", null, inner);
+        assertEquals(shouldSuppressInner ? 1 : 2, testExporter.getFinishedSpanItems().size());
+
+        openTelemetryTracer.end("ok", null, outer);
+        assertEquals(shouldSuppressInner ? 2 : 3, testExporter.getFinishedSpanItems().size());
+
+        SpanData neverSuppressedSpan = testExporter.getFinishedSpanItems().get(0);
+
+        if (shouldSuppressInner) {
+            SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
+            assertEquals(neverSuppressedSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
+        } else {
+            SpanData innerSpan = testExporter.getFinishedSpanItems().get(1);
+            SpanData outerSpan = testExporter.getFinishedSpanItems().get(2);
+            assertEquals(neverSuppressedSpan.getParentSpanId(), innerSpan.getSpanContext().getSpanId());
+            assertEquals(innerSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
+        }
+    }
+
+    private static Stream<Arguments> spanKinds() {
+        return Stream.of(
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.CLIENT, true),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.INTERNAL, true),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.PRODUCER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.CONSUMER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CLIENT, com.azure.core.util.tracing.SpanKind.SERVER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.INTERNAL, com.azure.core.util.tracing.SpanKind.CLIENT, true),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.INTERNAL, com.azure.core.util.tracing.SpanKind.INTERNAL, true),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.INTERNAL, com.azure.core.util.tracing.SpanKind.PRODUCER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.INTERNAL, com.azure.core.util.tracing.SpanKind.CONSUMER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.INTERNAL, com.azure.core.util.tracing.SpanKind.SERVER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.PRODUCER, com.azure.core.util.tracing.SpanKind.CLIENT, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.PRODUCER, com.azure.core.util.tracing.SpanKind.INTERNAL, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.PRODUCER, com.azure.core.util.tracing.SpanKind.PRODUCER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.PRODUCER, com.azure.core.util.tracing.SpanKind.CONSUMER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.PRODUCER, com.azure.core.util.tracing.SpanKind.SERVER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CONSUMER, com.azure.core.util.tracing.SpanKind.CLIENT, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CONSUMER, com.azure.core.util.tracing.SpanKind.INTERNAL, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CONSUMER, com.azure.core.util.tracing.SpanKind.PRODUCER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CONSUMER, com.azure.core.util.tracing.SpanKind.CONSUMER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.CONSUMER, com.azure.core.util.tracing.SpanKind.SERVER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.CLIENT, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.INTERNAL, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.PRODUCER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.CONSUMER, false),
+            Arguments.of(com.azure.core.util.tracing.SpanKind.SERVER, com.azure.core.util.tracing.SpanKind.SERVER, false));
+
+    }
+
+    @Test
+    public void suppressNestedClientSpanAttributes() {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        openTelemetryTracer.setAttribute("outer1", "foo", outer);
+
+        Context innerSuppressed = openTelemetryTracer.start("innerSuppressed", outer);
+        openTelemetryTracer.setAttribute("outer2", "bar", outer);
+        openTelemetryTracer.setAttribute("innerSuppressed", "foo", innerSuppressed);
+
+        openTelemetryTracer.end("ok", null, innerSuppressed);
+        openTelemetryTracer.end("ok", null, outer);
+
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
+        assertEquals("outer", outerSpan.getName());
+
+        Map<String, Object> outerAttributesExpected = new HashMap<String, Object>() {{
+                put("outer1", "foo");
+                put("outer2", "bar");
+            }};
+
+        verifySpanAttributes(outerAttributesExpected, outerSpan.getAttributes());
+    }
+
+    @Test
+    public void suppressNestedClientSpanEvents() {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        openTelemetryTracer.addEvent("outer1", null, null, outer);
+
+        Context innerSuppressed = openTelemetryTracer.start("innerSuppressed", outer);
+        openTelemetryTracer.addEvent("outer2", null, null, outer);
+        openTelemetryTracer.addEvent("innerSuppressed", null, null, innerSuppressed);
+
+        openTelemetryTracer.end("ok", null, innerSuppressed);
+        openTelemetryTracer.end("ok", null, outer);
+
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
+        assertEquals(2, outerSpan.getEvents().size());
+        assertEquals("outer1", outerSpan.getEvents().get(0).getName());
+        assertEquals("outer2", outerSpan.getEvents().get(1).getName());
+    }
+
+    @Test
+    public void suppressNestedClientSpanLinks() {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        Context innerSuppressed = openTelemetryTracer.getSharedSpanBuilder("innerSuppressed", outer);
+        openTelemetryTracer.addLink(innerSuppressed.addData(SPAN_CONTEXT_KEY, TEST_CONTEXT));
+        innerSuppressed = openTelemetryTracer.start("innerSuppressed", innerSuppressed, ProcessKind.SEND);
+
+        openTelemetryTracer.end("ok", null, innerSuppressed);
+
+        assertTrue(testExporter.getFinishedSpanItems().isEmpty());
+    }
+
+    @Test
+    public void suppressNestedClientSpanMakeCurrent() throws Exception {
+        Context outer = openTelemetryTracer.start("outer", Context.NONE);
+        AutoCloseable outerScope = openTelemetryTracer.makeSpanCurrent(outer);
+        Span outerSpan = Span.current();
+        Context inner = openTelemetryTracer.start("inner", outer);
+
+        AutoCloseable innerScope = openTelemetryTracer.makeSpanCurrent(outer);
+        assertSame(outerSpan, Span.current());
+        innerScope.close();
+        assertSame(outerSpan, Span.current());
+        openTelemetryTracer.end("ok", null, inner);
+        assertTrue(testExporter.getFinishedSpanItems().isEmpty());
+    }
+
+    @Test
+    public void startSendSpanWithoutBuilder() {
+        Context outer = openTelemetryTracer.start("outer", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.SERVER), Context.NONE);
+        Context sendNoBuilder = openTelemetryTracer.start("sendNoBuilder", outer, ProcessKind.SEND);
+
+        assertNotSame(sendNoBuilder, outer);
+        openTelemetryTracer.end("ok", null, sendNoBuilder);
+        openTelemetryTracer.end("ok", null, outer);
+
+        assertEquals(2, testExporter.getFinishedSpanItems().size());
+
+        SpanData sendNoBuilderSpan = testExporter.getFinishedSpanItems().get(0);
+        SpanData outerSpan = testExporter.getFinishedSpanItems().get(1);
+        assertEquals(sendNoBuilderSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
+        assertEquals(sendNoBuilderSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
     }
 
     private static ReadableSpan getSpan(Context context) {

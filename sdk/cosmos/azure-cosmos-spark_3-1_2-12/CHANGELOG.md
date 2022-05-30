@@ -3,6 +3,8 @@
 ### 4.11.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added ability to disable endpoint rediscovery when using custom domain names in combination with private endpoints from a custom (on-premise) Spark environment (neither Databricks nor Synapse). - See [PR 29027](https://github.com/Azure/azure-sdk-for-java/pull/29027)
+* Added a config option `spark.cosmos.serialization.dateTimeConversionMode` to allow changing date/time conversion to fall back to converting `java.sql.Date` and `java.sql.Tiemstamp` into Epoch Milliseconds like in the Cosmos DB Connector for Spark 2.4 - See [PR 29081](https://github.com/Azure/azure-sdk-for-java/pull/29081)
 
 #### Breaking Changes
 
