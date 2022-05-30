@@ -19,7 +19,6 @@ import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.AppConfigurationEntry;
-import java.io.IOException;
 import java.net.URI;
 import java.text.ParseException;
 import java.time.Duration;
@@ -28,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -55,16 +52,12 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     }
 
     @Override
-    public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+    public void handle(Callback[] callbacks) throws UnsupportedCallbackException {
         for (Callback callback : callbacks) {
             if (callback instanceof OAuthBearerTokenCallback) {
-                try {
-                    OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
-                    OAuthBearerToken token = getOAuthBearerToken();
-                    oauthCallback.token(token);
-                } catch (InterruptedException | ExecutionException | TimeoutException | ParseException e) {
-                    e.printStackTrace();
-                }
+                OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
+                OAuthBearerToken token = getOAuthBearerToken();
+                oauthCallback.token(token);
             } else {
                 throw new UnsupportedCallbackException(callback);
             }
@@ -88,32 +81,32 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         return credential;
     }
 
-    private OAuthBearerToken getOAuthBearerToken() throws InterruptedException, ExecutionException, TimeoutException,
-            ParseException {
+    private OAuthBearerToken getOAuthBearerToken() {
         if (accessToken == null || accessToken.isExpired()) {
             TokenCredential credential = getTokenCredential();
             TokenRequestContext request = new TokenRequestContext();
             request.addScopes(tokenAudience);
             request.setTenantId(tenantId);
             accessToken = Optional.ofNullable(credential.getToken(request).block(Duration.ofSeconds(30)))
-                    .map(token -> {
-                        try {
-                            return convertToken(token);
-                        } catch (ParseException exception) {
-                            throw new RuntimeException(exception);
-                        }
-                    })
+                    .map(token -> convertToken(token))
                     .orElse(null);
         }
 
         return accessToken;
     }
 
-    AzureOAuthBearerToken convertToken(AccessToken sourceToken) throws ParseException {
+    AzureOAuthBearerToken convertToken(AccessToken sourceToken) {
         String token = sourceToken.getToken();
-        JWTClaimsSet claims = JWTParser.parse(token).getJWTClaimsSet();
+        JWTClaimsSet claims;
+        try {
+            claims = JWTParser.parse(token).getJWTClaimsSet();
+        } catch (ParseException exception) {
+            throw new RuntimeException("Unable to parse access token", exception);
+        }
         long startTimeMs = claims.getIssueTime().getTime();
         long lifetimeMs = claims.getExpirationTime().getTime();
+        // Referring to https://docs.microsoft.com/azure/active-directory/develop/access-tokens#payload-claims, the scp
+        // claim is a String which is presented as a space separated list.
         Set<String> scope = Optional.ofNullable(claims.getClaim("scp"))
                 .map(s -> Arrays.stream(((String) s).split(" ")).collect(Collectors.toSet()))
                 .orElse(null);

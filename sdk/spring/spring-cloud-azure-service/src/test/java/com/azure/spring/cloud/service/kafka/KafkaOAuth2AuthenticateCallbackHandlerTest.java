@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.text.ParseException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class KafkaOAuth2AuthenticateCallbackHandlerTest {
@@ -45,7 +46,7 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
         closeable.close();
     }
     @Test
-    void testConvertAzureTokenToKafka() throws ParseException {
+    void testConvertAzureTokenToKafka() {
         AzureOAuthBearerToken azureOAuthBearerToken = handler.convertToken(azureToken);
         assertEquals(azureOAuthBearerToken.value(), FAKE_TOKEN);
         assertNull(azureOAuthBearerToken.scope());
