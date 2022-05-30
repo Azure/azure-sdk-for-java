@@ -26,7 +26,8 @@ spec:
         - |
             set -a &&
             source $ENV_FILE &&
-            java "org.springframework.boot.loader.JarLauncher" \
+            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+            "org.springframework.boot.loader.JarLauncher" \
             --TEST_CLASS=ProcessEvents
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

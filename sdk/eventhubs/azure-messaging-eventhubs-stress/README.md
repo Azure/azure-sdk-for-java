@@ -4,6 +4,8 @@ Represents stress tests for Event Hubs client.
 
 ## Getting started
 
+The stress tests for event hubs client is developed from [azure-sdk-chaos][azure_sdk_chaos]. 
+
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk_link], version 8 or later.
@@ -14,17 +16,7 @@ Represents stress tests for Event Hubs client.
 - [Azure CLI][azure_cli]
 - [Powershell 7.0+][powershell]
 
-Make sure you have permission to access subscription `Azure SDK Developer Playground` and resource group `rg-stress-cluster-test`.
-
-```shell
-# Authenticate to Azure
-az login
-
-# Download the kubeconfig for the cluster (creates a 'context' named 'stress-test')
-az aks get-credentials --subscription "Azure SDK Developer Playground" -g rg-stress-cluster-test -n stress-test
-```
-
-### Deploy to cluster
+### Deploy Stress Test
 
 Build out the jar package:
 
@@ -33,42 +25,37 @@ cd <current project path>
 mvn clean install
 ```
 
-Update the `namespace` field in `Chart.yaml` file. It is suggested to use your own alias to avoid conflict.
-
-```yaml
-name: <stress test name>
-...
-annotations:
-  namespace: <stress test namespace>
-```
-
-Note: the default value of stress test namespace is `java-eh`. You can keep it when no other stress test are running.
-
-Download project [azure-sdk-tools][azure_sdk_tools] for the deployment to stress test cluster.
-
-Keep in current project path, run below command:
+Run command to deploy the package to cluster:
 
 ```shell
-<root path>\azure-sdk-tools\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -PushImage -Login -Namespace <stress test namespace>
-```
+..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Login -PushImage
+``` 
 
-### Validate status
+### Validate Status
 
-Get pods and jobs:
+Only the most frequently used commands are listed below. See [Deploying A Stress Test][deploy_stress_test] for more details. 
+
+List deployed packages:
 
 ```shell
 helm list -n <stress test namespace>
-kubectl get pods -n <stress test namespace>
-kubectl get jobs -n <stress test namespace>
 ```
 
-List stress test pods:
+Get stress test pods and status:
 
 ```shell
-kubectl get pods -n <stress test namespace> -l release=<stress test name>
+kubectl get pods -n <stress test namespace>
 ```
 
-Get logs from the init-azure-deployer init container, if deploying resources. Omit `-c init-azure-deployer` to get main container logs.
+Get stress test pod logs:
+
+```shell
+kubectl logs -n <stress test namespace> <stress test pod name>
+# Note that we may define multiple containers (for example, sender and receiver)
+kubectl logs -n <stress test namespace> <stress test pod name> -c <container name>
+```
+
+If stress test pod is in `Error` status, check logs from init container:
 
 ```shell
 kubectl logs -n <stress test namespace> <stress test pod name> -c init-azure-deployer
@@ -80,14 +67,6 @@ If above command output is empty, there may have been startup failures:
 kubectl describe pod -n <stress test namespace> <stress test pod name>
 ```
 
-Get stress test logs:
-
-```shell
-kubectl logs -n <stress test namespace> <stress test pod name>
-# Note that we may define multiple containers (for example, sender and receiver)
-kubectl logs -n <stress test namespace> <stress test pod name> -c <container name>
-```
-
 Stop and remove deployed package:
 
 ```shell
@@ -96,44 +75,25 @@ helm uninstall <stress test name> -n <stress test namespace>
 
 ### Configure Faults
 
-[Chaos Mesh](https://chaos-mesh.org/) is used to configure faults against test jobs. There are two ways for the configuration, which are via the UI or via kubernetes manifests.
+See [Config Faults][config_faults] section for details.
 
-#### Chaos Dashboard
+### Configure Monitor 
 
-Make sure you can access the chaos dashboard by running the below command, and navigating to localhost:2333 in your browser.
+We have configured Application Insights on cluster. The telemetry data can be monitored on the Application Insights provided by cluster.
 
-```shell
-kubectl port-forward -n stress-infra svc/chaos-dashboard 2333:2333
-```
-From dashboard, click `New experiment` and choose your parameters to submit a fault experiment.
+For local test, you can follow the [steps][enable_application_insights] to enable application insights. Make sure you have added below JVM parameters when you start the test.
 
-#### Chaos Manifest
-
-See [Chaos manifest](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#chaos-manifest) for details.
-
-
-### Configure Monitor
-
-Download [application insights java agent][java_agent_jar]. 
-
-Place the `applicationinsights-agent-3.2.11.jar` under `src\main\resources` folder.
-
-Add JVM parameter `-javaagent:src\main\resources\applicationinsights-agent-3.2.11.jar` for java command in `job.yaml`.
 ```yaml
-java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
-"org.springframework.boot.loader.JarLauncher" \
+java -javaagent:<path to the downloaded jar>/applicationinsights-agent-3.2.11.jar 
 ```
-
-
-Redeploy job to cluster and monitor application insights under resource group `rg-stress-cluster-test`.
-
 
 ## Key concepts
 
-The stress tests for event hubs client is developed from [azure-sdk-chaos][azure_sdk_chaos].
-
 ### Project Structure
 
+See [Layout][stress_test_layout] section for details. 
+
+Below is the current structure of project:
 ```
 .
 ├── src/                         # Test code
@@ -144,6 +104,23 @@ The stress tests for event hubs client is developed from [azure-sdk-chaos][azure
 ├── values.yaml                  # Any default helm template values for this chart, e.g. a `scenarios` list
 ├── pom.xml
 └── README.md
+```
+
+### Cluster Namespace 
+
+The cluster namespace is defined in `Chart.yaml`. The default value we set is `java-eh`.
+
+```yaml
+name: <stress test name>
+...
+annotations:
+  namespace: <stress test namespace>
+```
+
+For local deployment with script, if the namespace option is not specified, the value will be overridden by the shell username.
+
+```shell
+..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Namespace <stress test namespace>
 ```
 
 ## Examples
@@ -294,7 +271,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [kubectl]: https://kubernetes.io/docs/tasks/tools/#kubectl
 [helm]: https://helm.sh/docs/intro/install/
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
-[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7 
-[azure_sdk_tools]: https://github.com/Azure/azure-sdk-tools
+[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
-[java_agent_jar]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent
+[enable_application_insights]: https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
+[deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
+[config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
+[stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
