@@ -273,7 +273,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
 [powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
-[enable_application_insights]: https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
+[enable_application_insights]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
