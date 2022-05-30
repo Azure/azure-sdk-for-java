@@ -11,7 +11,6 @@ import com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerToken
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.KafkaException;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
@@ -115,7 +114,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     }
 
     @Override
-    public void close() throws KafkaException {
+    public void close() {
         // NOOP
     }
 }
