@@ -43,6 +43,26 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for creating an async Communication Identity Client.
+     *
+     * @return the Communication Identity Async Client.
+     */
+    public CommunicationIdentityAsyncClient createCommunicationIdentityAsyncClient() {
+        // BEGIN: readme-sample-createCommunicationIdentityAsyncClient
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+        CommunicationIdentityAsyncClient communicationIdentityAsyncClient = new CommunicationIdentityClientBuilder()
+                .endpoint(endpoint)
+                .credential(keyCredential)
+                .buildAsyncClient();
+        // END: readme-sample-createCommunicationIdentityAsyncClient
+
+        return communicationIdentityAsyncClient;
+    }
+
+    /**
      * Sample code for creating a sync Communication Identity Client using connection string.
      *
      * @return the Communication Identity Client.

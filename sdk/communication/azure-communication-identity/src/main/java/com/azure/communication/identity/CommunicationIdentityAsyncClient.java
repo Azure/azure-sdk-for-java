@@ -35,8 +35,27 @@ import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Asynchronous client interface for Azure Communication Services identity
+ * Asynchronous client interface for Azure Communication Services Identity
  * operations
+ *
+ * <p><strong>Instantiating an asynchronous Azure Communication Service Identity Client</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationIdentityAsyncClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationIdentityAsyncClient communicationIdentityAsyncClient = new CommunicationIdentityClientBuilder&#40;&#41;
+ *         .endpoint&#40;endpoint&#41;
+ *         .credential&#40;keyCredential&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationIdentityAsyncClient -->
+ *
+ *<p>View {@link CommunicationIdentityClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see CommunicationIdentityClientBuilder
  */
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = true)
 public final class CommunicationIdentityAsyncClient {

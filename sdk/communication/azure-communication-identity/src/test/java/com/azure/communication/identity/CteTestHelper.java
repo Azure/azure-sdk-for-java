@@ -80,9 +80,7 @@ public class CteTestHelper {
                 Arrays.fill(password, '0');
                 IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
                 String[] accountIds = result.account().homeAccountId().split("\\.");
-                options.setTeamsUserAadToken(result.accessToken())
-                        .setClientId(COMMUNICATION_M365_APP_ID)
-                        .setUserObjectId(accountIds[0]);
+                options = new GetTokenForTeamsUserOptions(result.accessToken(), COMMUNICATION_M365_APP_ID, accountIds[0]);
             } catch (Exception e) {
                 ClientLogger logger = new ClientLogger(CommunicationIdentityClientTestBase.class);
                 logger.error("Could not generate Teams User Azure AD token, failed with '{}' ", e.getMessage());
@@ -123,8 +121,8 @@ public class CteTestHelper {
         List<Arguments> argumentsList = new ArrayList<>();
         GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions("", COMMUNICATION_M365_APP_ID, "");
         argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyToken", options));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidToken", options.setTeamsUserAadToken("invalid")));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithExpiredToken", options.setTeamsUserAadToken(COMMUNICATION_EXPIRED_TEAMS_TOKEN)));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidToken", new GetTokenForTeamsUserOptions("invalid", options.getClientId(), options.getUserObjectId())));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithExpiredToken", new GetTokenForTeamsUserOptions(COMMUNICATION_EXPIRED_TEAMS_TOKEN, options.getClientId(), options.getUserObjectId())));
         return argumentsList.stream();
     }
 
@@ -136,9 +134,9 @@ public class CteTestHelper {
     static Stream<Arguments> getInvalidAppIds() throws Exception {
         List<Arguments> argumentsList = new ArrayList<>();
         GetTokenForTeamsUserOptions options = createTeamsUserExchangeTokenRequest();
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyAppId", options.setClientId("")));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidAppId", options.setClientId("invalid")));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongAppId", options.setClientId(options.getUserObjectId())));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyAppId", new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), "", options.getUserObjectId())));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidAppId", new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), "invalid", options.getUserObjectId())));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongAppId", new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), options.getUserObjectId(), options.getUserObjectId())));
         return argumentsList.stream();
     }
 
@@ -150,9 +148,9 @@ public class CteTestHelper {
     static Stream<Arguments> getInvalidUserIds() throws Exception {
         List<Arguments> argumentsList = new ArrayList<>();
         GetTokenForTeamsUserOptions options = createTeamsUserExchangeTokenRequest();
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyUserId", options.setUserObjectId("")));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidUserId", options.setUserObjectId("invalid")));
-        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongUserId", options.setUserObjectId(options.getClientId())));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithEmptyUserId", new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), options.getClientId(), "")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithInvalidUserId", new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), options.getClientId(), "invalid")));
+        argumentsList.add(Arguments.of("getTokenForTeamsUserWithWrongUserId", new GetTokenForTeamsUserOptions(options.getTeamsUserAadToken(), options.getClientId(), options.getClientId())));
         return argumentsList.stream();
     }
 

@@ -28,7 +28,26 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
- * Synchronous client interface for Communication Service identity operations
+ * Synchronous client interface for Azure Communication Service Identity operations
+ *
+ * <p><strong>Instantiating a synchronous Azure Communication Service Identity Client</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationIdentityClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationIdentityClient -->
+ *
+ *<p>View {@link CommunicationIdentityClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see CommunicationIdentityClientBuilder
  */
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {

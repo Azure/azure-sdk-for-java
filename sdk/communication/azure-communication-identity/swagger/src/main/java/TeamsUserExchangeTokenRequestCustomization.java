@@ -59,13 +59,7 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
                 "getTeamsUserAadToken",
                 "Gets the Azure AD access token of a Teams User.",
                 "the Azure AD access token of a Teams User.");
-        customizeSetter(classCustomization,
-                "teamsUserAadToken",
-                "token",
-                "Sets the Azure AD access token of a Teams User.",
-                "the Azure AD access token of a Teams User.",
-                "the {@link GetTokenForTeamsUserOptions}."
-                );
+        classCustomization.removeMethod("setTeamsUserAadToken");
     }
 
     private void customizeAppIdVariable(ClassCustomization classCustomization) {
@@ -74,13 +68,7 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
                 "getClientId",
                 "Gets the Client ID of an Azure AD application.",
                 "the Client ID of an Azure AD application.");
-        customizeSetter(classCustomization,
-                "clientId",
-                "appId",
-                "Sets the Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access token.",
-                "the Client ID of an Azure AD application.",
-                "the {@link GetTokenForTeamsUserOptions}."
-        );
+        classCustomization.removeMethod("setClientId");
     }
 
     private void customizeUserIdVariable(ClassCustomization classCustomization){
@@ -89,13 +77,7 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
                 "getUserObjectId",
                 "Gets the Object ID of an Azure AD user (Teams User).",
                 "the Object ID of an Azure AD user (Teams User).");
-        customizeSetter(classCustomization,
-                "userObjectId",
-                "userId",
-                "Sets the Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access token.",
-                "the Object ID of an Azure AD user (Teams User).",
-                "the {@link GetTokenForTeamsUserOptions}."
-        );
+        classCustomization.removeMethod("setUserObjectId");
     }
 
     private void renameVariableName(ClassCustomization classCustomization, String oldName, String newName){
@@ -107,20 +89,6 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
         classCustomization.getMethod(getterName)
                 .getJavadoc()
                 .setDescription(desc)
-                .setReturn(returnDesc);
-    }
-
-    private void customizeSetter(ClassCustomization classCustomization, String paramName, String oldParamName, String desc, String paramDesc, String returnDesc){
-        classCustomization.getMethod("set" + paramName.substring(0, 1).toUpperCase() + paramName.substring(1))
-                .replaceParameters("String " + paramName)
-                .replaceBody(joinWithNewline(
-                        "this." + paramName + " = " + paramName + ";",
-                        "return this;"
-                ))
-                .getJavadoc()
-                .setDescription(desc)
-                .removeParam(oldParamName)
-                .setParam(paramName, paramDesc)
                 .setReturn(returnDesc);
     }
 

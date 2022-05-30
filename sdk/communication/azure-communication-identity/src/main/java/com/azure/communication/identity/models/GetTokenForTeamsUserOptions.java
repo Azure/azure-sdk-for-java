@@ -62,17 +62,6 @@ public final class GetTokenForTeamsUserOptions {
     }
 
     /**
-     * Sets the Azure AD access token of a Teams User.
-     *
-     * @param teamsUserAadToken the Azure AD access token of a Teams User.
-     * @return the {@link GetTokenForTeamsUserOptions}.
-     */
-    public GetTokenForTeamsUserOptions setTeamsUserAadToken(String teamsUserAadToken) {
-        this.teamsUserAadToken = teamsUserAadToken;
-        return this;
-    }
-
-    /**
      * Gets the Client ID of an Azure AD application.
      *
      * @return the Client ID of an Azure AD application.
@@ -82,35 +71,11 @@ public final class GetTokenForTeamsUserOptions {
     }
 
     /**
-     * Sets the Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access
-     * token.
-     *
-     * @param clientId the Client ID of an Azure AD application.
-     * @return the {@link GetTokenForTeamsUserOptions}.
-     */
-    public GetTokenForTeamsUserOptions setClientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
      * Gets the Object ID of an Azure AD user (Teams User).
      *
      * @return the Object ID of an Azure AD user (Teams User).
      */
     public String getUserObjectId() {
         return this.userObjectId;
-    }
-
-    /**
-     * Sets the Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access
-     * token.
-     *
-     * @param userObjectId the Object ID of an Azure AD user (Teams User).
-     * @return the {@link GetTokenForTeamsUserOptions}.
-     */
-    public GetTokenForTeamsUserOptions setUserObjectId(String userObjectId) {
-        this.userObjectId = userObjectId;
-        return this;
     }
 }
