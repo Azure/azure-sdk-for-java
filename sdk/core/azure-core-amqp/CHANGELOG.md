@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `AmqpClientOptions` to enable set identifier for AMQP client and link.
+
 ### Breaking Changes
 
 ### Bugs Fixed
