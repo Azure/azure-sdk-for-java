@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -49,7 +50,7 @@ public final class CosmosPatchOperations {
     private final List<PatchOperation> patchOperations;
 
     private CosmosPatchOperations() {
-        this.patchOperations = new ArrayList<>();
+        this.patchOperations = Collections.synchronizedList(new ArrayList<>());
     }
 
     /**
@@ -256,7 +257,9 @@ public final class CosmosPatchOperations {
     }
 
     List<PatchOperation> getPatchOperations() {
-        return patchOperations;
+        synchronized (this.patchOperations) {
+            return new ArrayList<>(this.patchOperations);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
