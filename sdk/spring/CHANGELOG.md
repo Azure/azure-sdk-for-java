@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fix the `ServiceBusContainerProperties` constructor with overriding the default field values [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
+- Restrict the concurrency value to be int format in `ServiceBusListener` [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
 
 ### Other Changes
 
