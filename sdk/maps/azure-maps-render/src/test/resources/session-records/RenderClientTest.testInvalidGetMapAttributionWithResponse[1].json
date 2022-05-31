@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/attribution?api-version=2.1&tilesetId=null&zoom=-100&bounds=47.57949%2C-122.414162%2C47.668372%2C-122.247157",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 15:41:04 GMT",
+      "content-length" : "177",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 3F8A11697033463BA800A19127C2DD01 Ref B: SIN30EDGE0411 Ref C: 2022-05-31T15:41:04Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"1 errors occurred. More information provided in details.\",\"details\":[{\"message\":\"The field Bounds is invalid.\",\"target\":\"Bounds\"}]}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
