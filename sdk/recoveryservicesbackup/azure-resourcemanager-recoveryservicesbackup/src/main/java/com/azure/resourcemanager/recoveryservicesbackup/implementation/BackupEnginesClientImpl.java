@@ -456,14 +456,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
     private Mono<BackupEngineBaseResourceInner> getAsync(
         String vaultName, String resourceGroupName, String backupEngineName, String filter, String skipToken) {
         return getWithResponseAsync(vaultName, resourceGroupName, backupEngineName, filter, skipToken)
-            .flatMap(
-                (Response<BackupEngineBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -483,14 +476,7 @@ public final class BackupEnginesClientImpl implements BackupEnginesClient {
         final String filter = null;
         final String skipToken = null;
         return getWithResponseAsync(vaultName, resourceGroupName, backupEngineName, filter, skipToken)
-            .flatMap(
-                (Response<BackupEngineBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

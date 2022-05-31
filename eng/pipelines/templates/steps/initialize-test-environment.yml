@@ -47,13 +47,11 @@ steps:
       arguments: '--update-type library --build-type client --sr'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: generate-project-list.yml
+  - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
       JobType: 'test'
-      SDKType: ${{ parameters.SDKType }}
-      ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
   - task: PythonScript@0
     displayName: 'Generate directories variable for sparse checkout'

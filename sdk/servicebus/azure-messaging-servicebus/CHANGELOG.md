@@ -1,15 +1,25 @@
 # Release History
 
-## 7.9.0-beta.1 (Unreleased)
+## 7.10.0-beta.1 (Unreleased)
 
 ### Features Added
-- Replaced creating single thread executor with `Schedulers.boundedElastic()`. ([#27805](https://github.com/Azure/azure-sdk-for-java/issues/27805))
-- Added new method `getSessionId()` in `ServiceBusReceiverAsyncClient` . ([#28338](https://github.com/Azure/azure-sdk-for-java/issues/28338))
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.9.0 (2022-05-18)
+
+### Features Added
+- Replaced creating single thread executor with `Schedulers.boundedElastic()`. ([#27805](https://github.com/Azure/azure-sdk-for-java/issues/27805))
+- Added new method `getSessionId()` in `ServiceBusReceiverAsyncClient` . ([#28338](https://github.com/Azure/azure-sdk-for-java/issues/28338))
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+- Upgraded `azure-core-amqp` from `2.4.2` to `2.5.0`.
 
 ## 7.8.0 (2022-04-11)
 

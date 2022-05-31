@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner;
 
@@ -30,13 +29,6 @@ public interface AuthConfig {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the platform property: The configuration settings of the platform of ContainerApp Service
@@ -77,6 +69,13 @@ public interface AuthConfig {
      * @return the httpSettings value.
      */
     HttpSettings httpSettings();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner object.

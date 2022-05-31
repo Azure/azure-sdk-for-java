@@ -234,7 +234,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "afd51ffa-2e37-4ee6-bb31-153cde93faee",
@@ -321,7 +321,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4e7182e1-b643-4e0c-90b1-65293160bbeb"
@@ -349,7 +349,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "bb401b34-5cc8-4d97-9b25-36c3ae9daf7d",
@@ -408,7 +408,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c3d65ee9-a47e-4336-adb2-e5d31d29b0b7"
@@ -436,7 +436,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8ec34d9b-e3fa-4293-9d97-bf8c433f04d6",
@@ -465,7 +465,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5cce87d1-92ce-4f32-a2b8-9e6f32a2462c",
@@ -523,7 +523,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "843545df-210b-4ff7-9d50-374d724aa18b"
@@ -551,7 +551,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "77e007b3-c4d2-4d55-a5d4-df5e52c759e4",
@@ -580,7 +580,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "de781ad3-e3aa-43ea-9851-426acf564bf8",
@@ -638,7 +638,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "979a0a9a-937f-49be-99cb-f06ee77eed60"
@@ -666,7 +666,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "58574056-dbdd-4064-b224-7ed4ad2f0216",
@@ -695,7 +695,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d8e88749-ed86-4b60-b78b-50aa499fda1e",
@@ -753,7 +753,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fb424688-4691-4705-bdb9-281a10362e2d"
@@ -781,7 +781,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e7180bdb-52e9-4298-87aa-6c311fce9ae3",
@@ -810,7 +810,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/CustomScriptForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/CustomScriptForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "78cd3690-1ad9-4946-a073-da53f832b20e",
@@ -925,7 +925,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/CustomScriptForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/CustomScriptForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "945e59d2-b7de-436e-92e1-dec0ba8f8ed4"
@@ -953,7 +953,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "300d338a-0a11-424c-9629-e75e42d8d253",
@@ -982,7 +982,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/CustomScriptForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/CustomScriptForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ee2a0424-01ab-4145-8087-54d8c4739c3e",
@@ -1012,7 +1012,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189/extensions/VMAccessForLinux?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2a5a3248-b993-4448-b6d1-2bee2ee28ec6",
@@ -1150,7 +1150,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/lvm011189?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6e122c27-84e7-43c7-b7b8-1946510bf19e",
@@ -1386,7 +1386,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "11e6728a-d91b-4663-8fac-4c87e4dfa9e2",
@@ -1501,7 +1501,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8741487b-b9ae-4362-8ed4-c753d99ddf8a"
@@ -1529,7 +1529,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/CustomScriptExtension?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/CustomScriptExtension?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "af55f687-fdbc-4137-8e96-4e73dc33046d",
@@ -1616,7 +1616,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/CustomScriptExtension?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/CustomScriptExtension?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "80cd0d7f-386d-49c3-8cf6-0cfaaba4156b"
@@ -1644,7 +1644,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1e7e16bd-b986-4d43-9d00-38cf4e38dd61",
@@ -1673,7 +1673,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b6650d51-082e-4470-a169-8335855f7c2e",
@@ -1732,7 +1732,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7efa36a0-ea72-4485-8313-702a6bf5e65d"
@@ -1760,7 +1760,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "244f1358-67e7-4291-8406-490145b509a8",
@@ -1789,7 +1789,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e5bbaa54-ed17-4264-97c0-d6f27f3653df",
@@ -1847,7 +1847,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a394c656-8efd-46a0-bad2-4410070ec22c"
@@ -1875,7 +1875,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c5ffa1bd-59b5-4270-9c72-6729396cfb91",
@@ -1904,7 +1904,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "aca4d359-e510-479f-8502-fcb3559543ca",
@@ -1990,7 +1990,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d8e9bcea-741b-4d85-b7ff-09dcde1f5dfd"
@@ -2018,7 +2018,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "48b96d12-9931-43cc-bf07-a12beda0a32e",
@@ -2047,7 +2047,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e/extensions/VMAccessAgent?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ad641963-fdad-49d8-b501-acf95393044d",
@@ -2159,7 +2159,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2021-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove1111096/providers/Microsoft.Compute/virtualMachines/wvm98452e?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4c884dc2-fcb6-4a77-90c5-4617a38d8c88",

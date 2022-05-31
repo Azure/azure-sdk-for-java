@@ -16,6 +16,12 @@ public final class PrivateLinkConnectionApprovalRequest {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
 
+    /*
+     * The resource of private endpoint.
+     */
+    @JsonProperty(value = "privateEndpoint")
+    private PrivateEndpoint privateEndpoint;
+
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
      *
@@ -38,6 +44,26 @@ public final class PrivateLinkConnectionApprovalRequest {
     }
 
     /**
+     * Get the privateEndpoint property: The resource of private endpoint.
+     *
+     * @return the privateEndpoint value.
+     */
+    public PrivateEndpoint privateEndpoint() {
+        return this.privateEndpoint;
+    }
+
+    /**
+     * Set the privateEndpoint property: The resource of private endpoint.
+     *
+     * @param privateEndpoint the privateEndpoint value to set.
+     * @return the PrivateLinkConnectionApprovalRequest object itself.
+     */
+    public PrivateLinkConnectionApprovalRequest withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+        this.privateEndpoint = privateEndpoint;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -45,6 +71,9 @@ public final class PrivateLinkConnectionApprovalRequest {
     public void validate() {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
+        }
+        if (privateEndpoint() != null) {
+            privateEndpoint().validate();
         }
     }
 }

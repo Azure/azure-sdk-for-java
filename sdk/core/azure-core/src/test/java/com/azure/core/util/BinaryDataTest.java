@@ -11,11 +11,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,10 +36,13 @@ import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -55,6 +61,7 @@ import static org.mockito.Mockito.when;
  */
 public class BinaryDataTest {
     private static final ObjectSerializer CUSTOM_SERIALIZER = new MyJsonSerializer();
+    private static final Random RANDOM = new Random();
 
     @Test
     public void fromCustomObject() {
@@ -197,16 +204,90 @@ public class BinaryDataTest {
     }
 
     @Test
-    public void createFromFlux() {
+    public void createFromFluxEagerly() {
         // Arrange
         final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
-        final Flux<ByteBuffer> expectedFlux = Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data));
+        final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
+        final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
+        final long length = expected.length;
+
+        Arrays.asList(
+            BinaryData.fromFlux(dataFlux),
+            BinaryData.fromFlux(dataFlux, null),
+            BinaryData.fromFlux(dataFlux, length),
+            BinaryData.fromFlux(dataFlux, null, true),
+            BinaryData.fromFlux(dataFlux, length, true)
+        ).forEach(binaryDataMono -> {
+            // Act & Assert
+            StepVerifier.create(binaryDataMono)
+                .assertNext(actual -> {
+                    assertArrayEquals(expected, actual.toBytes());
+                    assertEquals(expected.length, actual.getLength());
+                })
+                .verifyComplete();
+
+            // Verify that data got buffered
+            StepVerifier.create(binaryDataMono
+                    .flatMapMany(BinaryData::toFluxByteBuffer)
+                    .count())
+                .assertNext(actual -> assertEquals(1, actual))
+                .verifyComplete();
+        });
+    }
+
+    @Test
+    public void createFromFluxLazy() {
+        final byte[] data = "Doe".getBytes(StandardCharsets.UTF_8);
+        final Flux<ByteBuffer> dataFlux = Flux.defer(() -> Flux.just(ByteBuffer.wrap(data), ByteBuffer.wrap(data)));
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
 
         // Act & Assert
-        StepVerifier.create(BinaryData.fromFlux(expectedFlux))
-            .assertNext(actual -> Assertions.assertArrayEquals(expected, actual.toBytes()))
-            .verifyComplete();
+        Arrays.asList((long) expected.length, null).forEach(
+            providedLength -> {
+                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false))
+                    .assertNext(actual -> {
+                        assertArrayEquals(expected, actual.toBytes());
+                        // toBytes buffers and reveals length
+                        assertEquals(expected.length, actual.getLength());
+                    })
+                    .verifyComplete();
+
+                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false))
+                    .assertNext(actual -> {
+                        // Assert that length isn't computed eagerly.
+                        assertEquals(providedLength, actual.getLength());
+                    })
+                    .verifyComplete();
+
+                // Verify that data isn't buffered
+                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false)
+                        .flatMapMany(BinaryData::toFluxByteBuffer)
+                        .count())
+                    .assertNext(actual -> assertEquals(2, actual))
+                    .verifyComplete();
+            }
+        );
+    }
+
+    @Test
+    public void createFromFluxValidations() {
+        Stream.of(
+            BinaryData.fromFlux(null),
+            BinaryData.fromFlux(null, null),
+            BinaryData.fromFlux(null, null, false),
+            BinaryData.fromFlux(null, null, true)
+        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
+            .expectError(NullPointerException.class)
+            .verify());
+
+        Stream.of(
+            BinaryData.fromFlux(Flux.empty(), -1L),
+            BinaryData.fromFlux(Flux.empty(), -1L, false),
+            BinaryData.fromFlux(Flux.empty(), -1L, true),
+            BinaryData.fromFlux(Flux.empty(), Integer.MAX_VALUE - 7L, true)
+        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
+            .expectError(IllegalArgumentException.class)
+            .verify());
     }
 
     @Test
@@ -216,7 +297,7 @@ public class BinaryDataTest {
 
         // Act & Assert
         StepVerifier.create(BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)))
-            .assertNext(actual -> Assertions.assertArrayEquals(expected, actual.toBytes()))
+            .assertNext(actual -> assertArrayEquals(expected, actual.toBytes()))
             .verifyComplete();
     }
 
@@ -229,7 +310,7 @@ public class BinaryDataTest {
         // Act & Assert
         StepVerifier.create(BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER)
             .flatMap(binaryData -> binaryData.toObjectAsync(personTypeReference, CUSTOM_SERIALIZER)))
-            .assertNext(actual -> Assertions.assertEquals(expected, actual))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -344,7 +425,7 @@ public class BinaryDataTest {
         // Act & Assert
         StepVerifier.create(BinaryData.fromObjectAsync(expected)
             .flatMap(binaryData -> binaryData.toObjectAsync(TypeReference.createInstance(Person.class))))
-            .assertNext(actual -> Assertions.assertEquals(expected, actual))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -460,6 +541,36 @@ public class BinaryDataTest {
                 .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
                         StandardCharsets.UTF_8.decode(bb).toString()))
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 10, 113, 1024, 1024 + 113, 10 * 1024 * 1024 + 13 })
+    public void testFromFileSegment(int size) throws Exception {
+        int leftPadding = 10 * 1024 + 13;
+        int rightPadding = 10 * 1024 + 27;
+        byte[] fullFile = new byte[size + leftPadding + rightPadding];
+        RANDOM.nextBytes(fullFile);
+        byte[] expectedBytes = Arrays.copyOfRange(fullFile, leftPadding, size + leftPadding);
+        Path file = Files.createTempFile("binaryDataFromFileSegment" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        Files.write(file, fullFile);
+
+        assertEquals(size, BinaryData.fromFile(file, (long) leftPadding, (long) size).getLength());
+        assertArrayEquals(expectedBytes, BinaryData.fromFile(file, (long) leftPadding, (long) size).toBytes());
+        assertArrayEquals(expectedBytes,
+            FluxUtil.collectBytesInByteBufferStream(
+                BinaryData.fromFile(file, (long) leftPadding, (long) size).toFluxByteBuffer()).block());
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(size);
+        try (InputStream is = BinaryData.fromFile(file, (long) leftPadding, (long) size).toStream()) {
+            int nRead;
+            byte[] buffer = new byte[1024];
+            while ((nRead = is.read(buffer, 0, buffer.length)) != -1) {
+                bos.write(buffer, 0, nRead);
+            }
+        }
+        assertArrayEquals(expectedBytes, bos.toByteArray());
+
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

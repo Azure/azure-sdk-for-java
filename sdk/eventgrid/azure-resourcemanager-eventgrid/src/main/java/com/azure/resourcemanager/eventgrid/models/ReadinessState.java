@@ -27,7 +27,11 @@ public final class ReadinessState extends ExpandableStringEnum<ReadinessState> {
         return fromString(name, ReadinessState.class);
     }
 
-    /** @return known ReadinessState values. */
+    /**
+     * Gets known ReadinessState values.
+     *
+     * @return known ReadinessState values.
+     */
     public static Collection<ReadinessState> values() {
         return values(ReadinessState.class);
     }

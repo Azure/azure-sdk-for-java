@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Configure necessary beans for AAD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for AAD
+ * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
  * B2C OAuth2 client support.
  */
 @Configuration(proxyBeanMethods = false)
@@ -50,7 +50,7 @@ public class AadB2cResourceServerAutoConfiguration {
     /**
      * Creates a new instance of {@link AadB2cResourceServerAutoConfiguration}.
      *
-     * @param properties the AAD B2C properties
+     * @param properties the Azure AD B2C properties
      */
     public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties) {
         this.properties = properties;

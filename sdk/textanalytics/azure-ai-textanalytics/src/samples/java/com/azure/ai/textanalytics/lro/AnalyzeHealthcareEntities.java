@@ -9,20 +9,22 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrates how to analyze a healthcare task.
@@ -34,11 +36,10 @@ public class AnalyzeHealthcareEntities {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsClient client =
-            new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
-                .buildClient();
+        TextAnalyticsClient client = new TextAnalyticsClientBuilder()
+                                         .credential(new AzureKeyCredential("{key}"))
+                                         .endpoint("{endpoint}")
+                                         .buildClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
@@ -50,7 +51,9 @@ public class AnalyzeHealthcareEntities {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
+                                                       .setFhirVersion(FhirVersion.V4_0_1)
+                                                       .setIncludeStatistics(true);
 
         SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
             syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
@@ -67,7 +70,7 @@ public class AnalyzeHealthcareEntities {
         for (AnalyzeHealthcareEntitiesResultCollection resultCollection : syncPoller.getFinalResult()) {
             // Model version
             System.out.printf(
-                "Results of Azure Text Analytics \"Analyze Healthcare Entities\" Model, version: %s%n",
+                "Results of \"Analyze Healthcare Entities\" Model, version: %s%n",
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -105,6 +108,11 @@ public class AnalyzeHealthcareEntities {
                         System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     }
+                }
+                // FHIR bundle in JSON format
+                final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
+                if (fhirBundle != null) {
+                    System.out.printf("FHIR bundle: %s%n", fhirBundle);
                 }
             }
         }

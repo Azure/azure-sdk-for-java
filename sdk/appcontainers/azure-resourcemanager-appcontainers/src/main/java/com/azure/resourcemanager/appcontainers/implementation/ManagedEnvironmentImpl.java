@@ -11,7 +11,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentI
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPatch;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import java.util.Collections;
 import java.util.Map;
@@ -59,6 +58,10 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().daprAIInstrumentationKey();
     }
 
+    public String daprAIConnectionString() {
+        return this.innerModel().daprAIConnectionString();
+    }
+
     public VnetConfiguration vnetConfiguration() {
         return this.innerModel().vnetConfiguration();
     }
@@ -79,12 +82,20 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().appLogsConfiguration();
     }
 
+    public Boolean zoneRedundant() {
+        return this.innerModel().zoneRedundant();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ManagedEnvironmentInner innerModel() {
@@ -97,9 +108,7 @@ public final class ManagedEnvironmentImpl
 
     private String resourceGroupName;
 
-    private String name;
-
-    private ManagedEnvironmentPatch updateEnvironmentEnvelope;
+    private String environmentName;
 
     public ManagedEnvironmentImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -111,7 +120,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -120,7 +129,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
@@ -128,11 +137,10 @@ public final class ManagedEnvironmentImpl
         String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ManagedEnvironmentInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.environmentName = name;
     }
 
     public ManagedEnvironmentImpl update() {
-        this.updateEnvironmentEnvelope = new ManagedEnvironmentPatch();
         return this;
     }
 
@@ -141,8 +149,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .updateWithResponse(resourceGroupName, name, updateEnvironmentEnvelope, Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -151,8 +158,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .updateWithResponse(resourceGroupName, name, updateEnvironmentEnvelope, context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
@@ -162,7 +168,7 @@ public final class ManagedEnvironmentImpl
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
+        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
     }
 
     public ManagedEnvironment refresh() {
@@ -170,7 +176,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
+                .getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -180,7 +186,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .getByResourceGroupWithResponse(resourceGroupName, name, context)
+                .getByResourceGroupWithResponse(resourceGroupName, environmentName, context)
                 .getValue();
         return this;
     }
@@ -196,17 +202,17 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironmentImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateEnvironmentEnvelope.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public ManagedEnvironmentImpl withDaprAIInstrumentationKey(String daprAIInstrumentationKey) {
         this.innerModel().withDaprAIInstrumentationKey(daprAIInstrumentationKey);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withDaprAIConnectionString(String daprAIConnectionString) {
+        this.innerModel().withDaprAIConnectionString(daprAIConnectionString);
         return this;
     }
 
@@ -220,7 +226,8 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public ManagedEnvironmentImpl withZoneRedundant(Boolean zoneRedundant) {
+        this.innerModel().withZoneRedundant(zoneRedundant);
+        return this;
     }
 }

@@ -99,7 +99,12 @@ final class ResponseConstructorsCache {
                 }
             }
         }
-        return null;
+
+        // Before this was returning null, but in all cases where null is returned from this method an exception would
+        // be thrown later. Instead, just throw here to properly use computeIfAbsent by not inserting a null key-value
+        // pair that would cause the computation to always be performed.
+        throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class "
+            + responseClass));
     }
 
     /**

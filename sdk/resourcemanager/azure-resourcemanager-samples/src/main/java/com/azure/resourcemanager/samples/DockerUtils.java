@@ -90,7 +90,7 @@ public class DockerUtils {
      * @param username - user name to connect with to the private container registry
      * @param password - password to connect with to the private container registry
      * @return an instance of DockerClient
-     * @throws Exception exception thrown
+     * @throws IOException exception thrown
      */
     public static DockerClient createDockerClient(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                   String registryServerUrl, String username, String password) throws IOException {
@@ -186,7 +186,6 @@ public class DockerUtils {
      * @param username - user name to connect with to the private container registry
      * @param password - password to connect with to the private container registry
      * @return an instance of DockerClient
-     * @throws Exception exception thrown
      */
     public static DockerClient fromNewDockerVM(AzureResourceManager azureResourceManager, String rgName, Region region,
                                                String registryServerUrl, String username, String password) {

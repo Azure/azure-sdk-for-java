@@ -48,7 +48,11 @@ public final class MicrosoftSecurityProductName extends ExpandableStringEnum<Mic
         return fromString(name, MicrosoftSecurityProductName.class);
     }
 
-    /** @return known MicrosoftSecurityProductName values. */
+    /**
+     * Gets known MicrosoftSecurityProductName values.
+     *
+     * @return known MicrosoftSecurityProductName values.
+     */
     public static Collection<MicrosoftSecurityProductName> values() {
         return values(MicrosoftSecurityProductName.class);
     }

@@ -27,7 +27,11 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
         return fromString(name, ScriptActivityLogDestination.class);
     }
 
-    /** @return known ScriptActivityLogDestination values. */
+    /**
+     * Gets known ScriptActivityLogDestination values.
+     *
+     * @return known ScriptActivityLogDestination values.
+     */
     public static Collection<ScriptActivityLogDestination> values() {
         return values(ScriptActivityLogDestination.class);
     }

@@ -195,7 +195,8 @@ public final class SSHShell {
      * @param passPhrase the byte array content to be uploaded
      * @param comment the name of the file for which the content will be saved into
      * @return SSH public and private key
-     * @throws Exception exception thrown
+     * @throws UnsupportedEncodingException exception thrown
+     * @throws JSchException exception thrown
      */
     public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment) throws UnsupportedEncodingException, JSchException {
         JSch jsch = new JSch();

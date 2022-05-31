@@ -30,7 +30,11 @@ public final class DiagnosticLevel extends ExpandableStringEnum<DiagnosticLevel>
         return fromString(name, DiagnosticLevel.class);
     }
 
-    /** @return known DiagnosticLevel values. */
+    /**
+     * Gets known DiagnosticLevel values.
+     *
+     * @return known DiagnosticLevel values.
+     */
     public static Collection<DiagnosticLevel> values() {
         return values(DiagnosticLevel.class);
     }

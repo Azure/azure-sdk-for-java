@@ -33,7 +33,11 @@ public final class SsisObjectMetadataType extends ExpandableStringEnum<SsisObjec
         return fromString(name, SsisObjectMetadataType.class);
     }
 
-    /** @return known SsisObjectMetadataType values. */
+    /**
+     * Gets known SsisObjectMetadataType values.
+     *
+     * @return known SsisObjectMetadataType values.
+     */
     public static Collection<SsisObjectMetadataType> values() {
         return values(SsisObjectMetadataType.class);
     }

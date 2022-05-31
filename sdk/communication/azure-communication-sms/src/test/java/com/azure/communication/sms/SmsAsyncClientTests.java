@@ -15,6 +15,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -234,7 +236,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
                 return requestResponse.getRequest().getBody().last();
             })
         ).assertNext(bodyBuff -> {
-            String bodyRequest = new String(bodyBuff.array());
+            String bodyRequest =  StandardCharsets.UTF_8.decode(bodyBuff).toString();
             assertTrue(bodyRequest.contains("repeatabilityRequestId"));
             assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
         })

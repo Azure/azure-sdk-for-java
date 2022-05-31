@@ -4,6 +4,14 @@
 
 ### Features Added
 
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+- Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
+  that represents slice of the file.
+
 ### Breaking Changes
 
 ### Bugs Fixed

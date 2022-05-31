@@ -263,14 +263,7 @@ public final class EventChannelsClientImpl implements EventChannelsClient {
     private Mono<EventChannelInner> getAsync(
         String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
         return getWithResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName)
-            .flatMap(
-                (Response<EventChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -458,14 +451,7 @@ public final class EventChannelsClientImpl implements EventChannelsClient {
         EventChannelInner eventChannelInfo) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, partnerNamespaceName, eventChannelName, eventChannelInfo)
-            .flatMap(
-                (Response<EventChannelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

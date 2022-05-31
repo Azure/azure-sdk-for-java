@@ -30,7 +30,11 @@ public final class DataFlowDebugCommandType extends ExpandableStringEnum<DataFlo
         return fromString(name, DataFlowDebugCommandType.class);
     }
 
-    /** @return known DataFlowDebugCommandType values. */
+    /**
+     * Gets known DataFlowDebugCommandType values.
+     *
+     * @return known DataFlowDebugCommandType values.
+     */
     public static Collection<DataFlowDebugCommandType> values() {
         return values(DataFlowDebugCommandType.class);
     }

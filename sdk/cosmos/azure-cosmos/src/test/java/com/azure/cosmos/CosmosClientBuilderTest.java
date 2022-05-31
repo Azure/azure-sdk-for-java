@@ -65,7 +65,7 @@ public class CosmosClientBuilderTest {
          accessor.setCosmosClientApiType(cosmosClientBuilder, apiType);
 
         RxDocumentClientImpl documentClient =
-            (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(new CosmosAsyncClient(cosmosClientBuilder));
+            (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClientBuilder.buildAsyncClient());
         assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
     }
 }

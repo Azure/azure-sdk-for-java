@@ -2230,6 +2230,37 @@
     MS_SHOULD_BE_FINAL"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientEncryptionKeyHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncContainerHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncDatabaseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchOperationResultHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkExecutionOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkExecutionThresholdsStateHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkItemResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosChangeFeedRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientBuilderHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosContainerPropertiesHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosDiagnosticsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosExceptionHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPageFluxHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPatchOperationsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosQueryRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
+    </Or>
+    <Bug pattern="DM_EXIT"/>
+  </Match>
+
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
     <Class name="~com\.azure\.core\.http\.okhttp\.implementation\.OkHttpAsyncResponse(.*)"/>
@@ -2632,6 +2663,79 @@
   <Match>
     <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
     <Method name="propertyOnlyFlattenSerialize"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody"/>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody"/>
+    </Or>
+    <Method name="writeTo"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
+    <Or>
+      <Method name="getCustomEntitiesTaskParameters"/>
+      <Method name="getCustomMultiLabelClassificationTaskParameters"/>
+      <Method name="getCustomSingleClassificationTaskParameters"/>
+      <Method name="getEntitiesTaskParameters"/>
+      <Method name="getEntityLinkingTaskParameters"/>
+      <Method name="getExtractiveSummarizationTaskParameters"/>
+      <Method name="getHealthcareTaskParameters"/>
+      <Method name="getKeyPhraseTaskParameters"/>
+      <Method name="getPiiTaskParameters"/>
+      <Method name="getSentimentAnalysisTaskParameters"/>
+    </Or>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Or>
+      <Method name="beginAnalyzeHealthcareEntities"/>
+      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Or>
+      <Method name="beginAnalyzeHealthcareEntities"/>
+      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
+    <Method name="getAnalyzedSentimentResponse"/>  
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
+    <Method name="getDetectedLanguageResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
+    <Method name="getExtractedKeyPhrasesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
+    <Method name="getRecognizedEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
+    <Method name="getRecognizedLinkedEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>  
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
+    <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 </FindBugsFilter>

@@ -30,7 +30,11 @@ public final class ConfidenceLevel extends ExpandableStringEnum<ConfidenceLevel>
         return fromString(name, ConfidenceLevel.class);
     }
 
-    /** @return known ConfidenceLevel values. */
+    /**
+     * Gets known ConfidenceLevel values.
+     *
+     * @return known ConfidenceLevel values.
+     */
     public static Collection<ConfidenceLevel> values() {
         return values(ConfidenceLevel.class);
     }
