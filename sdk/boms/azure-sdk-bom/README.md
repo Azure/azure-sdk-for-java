@@ -7,7 +7,6 @@ minimal dependency conflicts.
 - [Getting started](#getting-started)
   - [Adding the BOM to your project](#adding-the-bom-to-your-project)
   - [Adding libraries to your project](#adding-libraries-to-your-project)
-  - [Adding library dependencies to your project](#adding-library-dependencies-to-your-project)
 
 ## Getting started
 
