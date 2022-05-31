@@ -45,7 +45,11 @@ public final class DiskState extends ExpandableStringEnum<DiskState> {
         return fromString(name, DiskState.class);
     }
 
-    /** @return known DiskState values. */
+    /**
+     * Gets known DiskState values.
+     *
+     * @return known DiskState values.
+     */
     public static Collection<DiskState> values() {
         return values(DiskState.class);
     }

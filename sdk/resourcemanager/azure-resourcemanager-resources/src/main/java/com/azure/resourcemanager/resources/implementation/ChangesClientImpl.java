@@ -557,14 +557,7 @@ public final class ChangesClientImpl implements ChangesClient {
         String changeResourceId) {
         return getWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, resourceType, resourceName, changeResourceId)
-            .flatMap(
-                (Response<ChangeResourceResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

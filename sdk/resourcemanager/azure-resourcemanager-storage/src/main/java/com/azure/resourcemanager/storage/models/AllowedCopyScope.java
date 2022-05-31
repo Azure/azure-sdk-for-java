@@ -27,7 +27,11 @@ public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScop
         return fromString(name, AllowedCopyScope.class);
     }
 
-    /** @return known AllowedCopyScope values. */
+    /**
+     * Gets known AllowedCopyScope values.
+     *
+     * @return known AllowedCopyScope values.
+     */
     public static Collection<AllowedCopyScope> values() {
         return values(AllowedCopyScope.class);
     }

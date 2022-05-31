@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Started suppressing spans for nested Azure client libraries public API calls with `INTERNAL` or `CLIENT` kind. ([#28998](https://github.com/Azure/azure-sdk-for-java/pull/28998))
+
 ### Bugs Fixed
 
 ### Other Changes

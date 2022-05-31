@@ -50,7 +50,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.6.0</version>
+    <version>2.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -158,22 +158,22 @@ Or add permission by cli command:
 Please replace `${KEY_VAULT}` with your key vault name and replace `${MANAGED_IDENTITY}` with your principal's object-id.
 
 ### Supported key type
-Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
--------------|----------|---------------------------------|---------------- |-------- |
-PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
-PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
-PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
-PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
-PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
-PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
-PKCS #12     | EC       | P-256K                          |                 | ✘       |
-PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
-PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
-PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
-PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
-PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
-PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
-PEM          | EC       | P-256K                          |                 | ✘       |
+| Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
+|--------------|----------|---------------------------------|-----------------|---------|
+| PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
+| PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+| PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+| PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
+| PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
+| PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
+| PKCS #12     | EC       | P-256K                          |                 | ✘       |
+| PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
+| PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+| PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+| PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
+| PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
+| PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
+| PEM          | EC       | P-256K                          |                 | ✘       |
 
 ## Troubleshooting
 
@@ -207,14 +207,18 @@ com.azure.security.keyvault.jca.level = ALL
 Azure Key Vault JCA clients raise exceptions. For example, if you try to check a client's identity with a certificate chain that does not include a trusted certificate, a `CertificateException` will be thrown. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 
 ```java
-try {
-    KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-    Security.addProvider(provider);
-    ...
-    // Start SSL server socket
-    ...
-} catch (CertificateException e) {
-    System.out.println(e.getMessage());
+class Demo {
+    void demo () {
+        try {
+            KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+            Security.addProvider(provider);
+            // ...
+            // Start SSL server socket
+            // ...
+        } catch (CertificateException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
 ```
 

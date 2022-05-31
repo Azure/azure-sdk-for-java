@@ -1258,14 +1258,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         ReplicationStatusTypes expand) {
         return getWithResponseAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, expand)
-            .flatMap(
-                (Response<GalleryApplicationVersionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1291,14 +1284,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         final ReplicationStatusTypes expand = null;
         return getWithResponseAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, expand)
-            .flatMap(
-                (Response<GalleryApplicationVersionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.fluent.models.RunOutputInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of List run outputs operation. */
 @Fluent
 public final class RunOutputCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunOutputCollection.class);
-
     /*
      * An array of run outputs
      */

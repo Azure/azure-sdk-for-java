@@ -873,7 +873,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         expect:
-        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse())
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(null))
             .assertNext {
                 assert assertResponseStatusCode(it, 202)
             }.verifyComplete()
@@ -886,6 +886,7 @@ class FileAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null, null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists().block()
     }

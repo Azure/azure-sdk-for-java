@@ -146,14 +146,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition) {
         return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -169,14 +162,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
     public Mono<CheckResourceNameResultInner> checkResourceNameAsync() {
         final ResourceName resourceNameDefinition = null;
         return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
+import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -41,6 +42,13 @@ public final class DedicatedHostGroupProperties {
      */
     @JsonProperty(value = "supportAutomaticPlacement")
     private Boolean supportAutomaticPlacement;
+
+    /*
+     * Enables or disables a capability on the dedicated host
+     * group.<br><br>Minimum api-version: 2022-03-01.
+     */
+    @JsonProperty(value = "additionalCapabilities")
+    private DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities;
 
     /**
      * Get the platformFaultDomainCount property: Number of fault domains that the host group can span.
@@ -108,6 +116,29 @@ public final class DedicatedHostGroupProperties {
     }
 
     /**
+     * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host
+     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @return the additionalCapabilities value.
+     */
+    public DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities() {
+        return this.additionalCapabilities;
+    }
+
+    /**
+     * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host
+     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @param additionalCapabilities the additionalCapabilities value to set.
+     * @return the DedicatedHostGroupProperties object itself.
+     */
+    public DedicatedHostGroupProperties withAdditionalCapabilities(
+        DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities) {
+        this.additionalCapabilities = additionalCapabilities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -118,6 +149,9 @@ public final class DedicatedHostGroupProperties {
         }
         if (instanceView() != null) {
             instanceView().validate();
+        }
+        if (additionalCapabilities() != null) {
+            additionalCapabilities().validate();
         }
     }
 }

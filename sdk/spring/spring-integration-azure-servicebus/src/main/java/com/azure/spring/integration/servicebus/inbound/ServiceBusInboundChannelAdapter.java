@@ -42,7 +42,7 @@ import java.util.Map;
  *         checkpointer.success()
  *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
  *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
- *                 .subscribe();
+ *                 .block();
  *     }
  *
  *    {@literal @}Bean

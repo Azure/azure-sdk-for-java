@@ -17,6 +17,8 @@ public class CosmosConfig {
 
     private final boolean queryMetricsEnabled;
 
+    private final int maxDegreeOfParallelism;
+
     /**
      * Initialization
      *
@@ -33,7 +35,7 @@ public class CosmosConfig {
      * Initialization
      *
      * @param responseDiagnosticsProcessor must not be {@literal null}
-     * @param databaseThroughputConfig may be @{literal null}
+     * @param databaseThroughputConfig may be {@literal null}
      * @param queryMetricsEnabled must not be {@literal null}
      */
     @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled"})
@@ -43,6 +45,26 @@ public class CosmosConfig {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
+        this.maxDegreeOfParallelism = 0;
+    }
+
+    /**
+     * Initialization
+     *
+     * @param responseDiagnosticsProcessor must not be {@literal null}
+     * @param databaseThroughputConfig may be {@literal null}
+     * @param queryMetricsEnabled must not be {@literal null}
+     * @param maxDegreeOfParallelism must not be {@literal null}
+     */
+    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "maxDegreeOfParallelism"})
+    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                        DatabaseThroughputConfig databaseThroughputConfig,
+                        boolean queryMetricsEnabled,
+                        int maxDegreeOfParallelism) {
+        this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
+        this.databaseThroughputConfig = databaseThroughputConfig;
+        this.queryMetricsEnabled = queryMetricsEnabled;
+        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
     }
 
     /**
@@ -61,6 +83,15 @@ public class CosmosConfig {
      */
     public boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
+    }
+
+    /**
+     * Gets the value of maxDegreeOfParallelism
+     *
+     * @return int, value of maxDegreeOfParallelism
+     */
+    public int getMaxDegreeOfParallelism() {
+        return maxDegreeOfParallelism;
     }
 
     /**
@@ -88,6 +119,7 @@ public class CosmosConfig {
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private DatabaseThroughputConfig databaseThroughputConfig;
         private boolean queryMetricsEnabled;
+        private int maxDegreeOfParallelism;
         CosmosConfigBuilder() {
         }
 
@@ -116,6 +148,17 @@ public class CosmosConfig {
         }
 
         /**
+         * Set maxDegreeOfParallelism
+         *
+         * @param maxDegreeOfParallelism value to initialize
+         * @return CosmosConfigBuilder
+         */
+        public CosmosConfigBuilder maxDegreeOfParallelism(int maxDegreeOfParallelism) {
+            this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+            return this;
+        }
+
+        /**
          * Enable database throughput
          *
          * @param autoscale Autoscaling
@@ -133,7 +176,7 @@ public class CosmosConfig {
          * @return CosmosConfig
          */
         public CosmosConfig build() {
-            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig, this.queryMetricsEnabled);
+            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig, this.queryMetricsEnabled, this.maxDegreeOfParallelism);
         }
 
         @Override
@@ -142,6 +185,7 @@ public class CosmosConfig {
                 + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
                 + ", databaseThroughputConfig=" + databaseThroughputConfig
                 + ", queryMetricsEnabled=" + queryMetricsEnabled
+                + ", maxDegreeOfParallelism=" + maxDegreeOfParallelism
                 + '}';
         }
     }

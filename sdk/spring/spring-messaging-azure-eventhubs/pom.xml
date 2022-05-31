@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-messaging-azure-eventhubs</artifactId>
-  <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
 
   <name>Spring Messaging Azure Event Hubs</name>
   <description>Spring Messaging Azure Event Hubs</description>
@@ -37,32 +37,32 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.12.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -100,7 +100,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -144,8 +144,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-messaging:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
-                <include>org.springframework:spring-tx:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-tx:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[1.3.3]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[2.6.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.8.5]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->

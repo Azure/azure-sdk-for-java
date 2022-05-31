@@ -286,7 +286,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteValueAsync(String tagName, String tagValue) {
-        return deleteValueWithResponseAsync(tagName, tagValue).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteValueWithResponseAsync(tagName, tagValue).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -427,15 +427,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
-        return createOrUpdateValueWithResponseAsync(tagName, tagValue)
-            .flatMap(
-                (Response<TagValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrUpdateValueWithResponseAsync(tagName, tagValue).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -568,15 +560,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagDetailsInner> createOrUpdateAsync(String tagName) {
-        return createOrUpdateWithResponseAsync(tagName)
-            .flatMap(
-                (Response<TagDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return createOrUpdateWithResponseAsync(tagName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -709,7 +693,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String tagName) {
-        return deleteWithResponseAsync(tagName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(tagName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -986,14 +970,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, TagsResourceInner parameters) {
         return createOrUpdateAtScopeWithResponseAsync(scope, parameters)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1127,15 +1104,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters) {
-        return updateAtScopeWithResponseAsync(scope, parameters)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return updateAtScopeWithResponseAsync(scope, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1245,15 +1214,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> getAtScopeAsync(String scope) {
-        return getAtScopeWithResponseAsync(scope)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtScopeWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1351,7 +1312,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope) {
-        return deleteAtScopeWithResponseAsync(scope).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtScopeWithResponseAsync(scope).flatMap(ignored -> Mono.empty());
     }
 
     /**

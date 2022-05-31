@@ -24,7 +24,11 @@ public final class BlobInventoryPolicyName extends ExpandableStringEnum<BlobInve
         return fromString(name, BlobInventoryPolicyName.class);
     }
 
-    /** @return known BlobInventoryPolicyName values. */
+    /**
+     * Gets known BlobInventoryPolicyName values.
+     *
+     * @return known BlobInventoryPolicyName values.
+     */
     public static Collection<BlobInventoryPolicyName> values() {
         return values(BlobInventoryPolicyName.class);
     }

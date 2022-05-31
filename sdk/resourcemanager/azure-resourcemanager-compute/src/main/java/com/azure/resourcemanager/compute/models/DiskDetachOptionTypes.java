@@ -24,7 +24,11 @@ public final class DiskDetachOptionTypes extends ExpandableStringEnum<DiskDetach
         return fromString(name, DiskDetachOptionTypes.class);
     }
 
-    /** @return known DiskDetachOptionTypes values. */
+    /**
+     * Gets known DiskDetachOptionTypes values.
+     *
+     * @return known DiskDetachOptionTypes values.
+     */
     public static Collection<DiskDetachOptionTypes> values() {
         return values(DiskDetachOptionTypes.class);
     }

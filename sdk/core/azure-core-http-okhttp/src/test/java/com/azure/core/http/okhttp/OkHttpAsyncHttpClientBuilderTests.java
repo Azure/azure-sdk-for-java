@@ -263,6 +263,60 @@ public class OkHttpAsyncHttpClientBuilderTests {
     }
 
     /**
+     * Tests building a client with a given {@code callTimeout}.
+     */
+    @Test
+    public void buildWithCallTimeout() {
+        long expectedCallTimeoutNanos = 3600000000000L;
+        Interceptor validatorInterceptor = chain -> {
+            assertEquals(expectedCallTimeoutNanos, chain.call().timeout().timeoutNanos());
+            return chain.proceed(chain.request());
+        };
+
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder()
+            .addNetworkInterceptor(validatorInterceptor)
+            .callTimeout(Duration.ofSeconds(3600))
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    /**
+     * Tests building a client with negative callTimeout.
+     */
+    @Test
+    public void throwsWithNegativeCallTimeout() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new OkHttpAsyncHttpClientBuilder()
+                .callTimeout(Duration.ofSeconds(-1));
+        });
+    }
+
+    /**
+     * Tests building a client with default timeouts.
+     */
+    @Test
+    public void buildWithDefaultTimeouts() {
+        Interceptor validatorInterceptor = chain -> {
+            assertEquals(0L, chain.call().timeout().timeoutNanos());
+            assertEquals(60000, chain.readTimeoutMillis());
+            assertEquals(60000, chain.writeTimeoutMillis());
+            assertEquals(10000, chain.connectTimeoutMillis());
+            return chain.proceed(chain.request());
+        };
+
+        HttpClient okClient = new OkHttpAsyncHttpClientBuilder()
+            .addNetworkInterceptor(validatorInterceptor)
+            .build();
+
+        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    /**
      * Tests building a client with a given {@code connectionPool}.
      */
     @Test

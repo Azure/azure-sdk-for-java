@@ -186,8 +186,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String jobName) {
-        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName).flatMap(ignored -> Mono.empty());
     }
 
     /**

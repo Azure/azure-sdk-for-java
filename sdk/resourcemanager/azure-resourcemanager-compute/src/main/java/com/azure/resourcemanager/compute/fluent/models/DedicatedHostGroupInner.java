@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
+import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -149,6 +150,32 @@ public final class DedicatedHostGroupInner extends Resource {
             this.innerProperties = new DedicatedHostGroupProperties();
         }
         this.innerProperties().withSupportAutomaticPlacement(supportAutomaticPlacement);
+        return this;
+    }
+
+    /**
+     * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host
+     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @return the additionalCapabilities value.
+     */
+    public DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
+    }
+
+    /**
+     * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host
+     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @param additionalCapabilities the additionalCapabilities value to set.
+     * @return the DedicatedHostGroupInner object itself.
+     */
+    public DedicatedHostGroupInner withAdditionalCapabilities(
+        DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostGroupProperties();
+        }
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 

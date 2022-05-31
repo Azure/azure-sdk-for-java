@@ -116,15 +116,7 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailableRuntimeVersionsInner> listRuntimeVersionsAsync() {
-        return listRuntimeVersionsWithResponseAsync()
-            .flatMap(
-                (Response<AvailableRuntimeVersionsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listRuntimeVersionsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

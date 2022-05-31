@@ -31,7 +31,11 @@ public final class ThreatIntelligenceSortingCriteriaEnum
         return fromString(name, ThreatIntelligenceSortingCriteriaEnum.class);
     }
 
-    /** @return known ThreatIntelligenceSortingCriteriaEnum values. */
+    /**
+     * Gets known ThreatIntelligenceSortingCriteriaEnum values.
+     *
+     * @return known ThreatIntelligenceSortingCriteriaEnum values.
+     */
     public static Collection<ThreatIntelligenceSortingCriteriaEnum> values() {
         return values(ThreatIntelligenceSortingCriteriaEnum.class);
     }

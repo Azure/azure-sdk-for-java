@@ -56,25 +56,25 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
+      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
+      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;dependency} -->
+      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;dependency} -->
+      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -87,42 +87,42 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.29.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.30.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.16.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.17.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.12.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.12.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -144,25 +144,76 @@
           </rules>
         </configuration>
       </plugin>
-      <!-- We must generate an empty javadoc JAR file to publish to Maven Central because this package does not contain any public sources -->
+      <!-- START: Empty Java Doc -->
+      <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+           to pass the required checks on Maven. The way this works is by setting the classesDirectory
+           to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+           is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+           will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+           and recreated with the README.md being copied every time to guarantee that, when building locally,
+           it'll have the latest copy of the README.md file.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>empty-javadoc-jar</id>
+            <id>empty-javadoc-jar-with-readme</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
             <configuration>
               <classifier>javadoc</classifier>
-              <classesDirectory>${basedir}/javadoc</classesDirectory>
+              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
             </configuration>
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-readme-to-javadocTemp</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                <delete includeEmptyDirs="true" quiet="true">
+                  <fileset dir="${project.basedir}/javadocTemp"/>
+                </delete>
+                <echo>Copying ${project.basedir}/README.md to
+                  ${project.basedir}/javadocTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- END: Empty Java Doc -->
     </plugins>
   </build>
 

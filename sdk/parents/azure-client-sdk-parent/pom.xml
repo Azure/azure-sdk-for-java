@@ -129,6 +129,10 @@
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
 
+    <!-- Reserved for general JVM arguments to export, open, or read modules in testing that affect all SDKs. -->
+    <defaultJavaModulesSurefireArgLine>
+    </defaultJavaModulesSurefireArgLine>
+
     <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
     <javaModulesSurefireArgLine>
     </javaModulesSurefireArgLine>
@@ -1023,6 +1027,7 @@
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
+                ${defaultJavaModulesSurefireArgLine}
                 <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
@@ -1408,6 +1413,22 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>from-source-test-run</id>
+      <activation>
+        <property>
+          <name>env.TESTFROMSOURCE</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <defaultJavaModulesSurefireArgLine>
+          <!-- Maven loads NettyAsyncHttpClient from unnamed module in "from source" core runs -->
+          --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+        </defaultJavaModulesSurefireArgLine>
+      </properties>
     </profile>
   </profiles>
 </project>
