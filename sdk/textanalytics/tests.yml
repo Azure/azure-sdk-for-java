@@ -22,3 +22,4 @@ stages:
         AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME: $(java-multi-category-classify-deployment-name)
         AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME: $(java-recognize-custom-entities-project-name)
         AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME: $(java-recognize-custom-entities-deployment-name)
+        AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS: $(java-textanalytics-test-service-versions)
