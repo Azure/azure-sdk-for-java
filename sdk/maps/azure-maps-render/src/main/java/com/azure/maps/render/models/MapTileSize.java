@@ -29,7 +29,11 @@ public final class MapTileSize extends ExpandableStringEnum<MapTileSize> {
         return fromString(name, MapTileSize.class);
     }
 
-    /** @return known MapTileSize values. */
+    /**
+     * Gets known MapTileSize values.
+     *
+     * @return known MapTileSize values.
+     */
     public static Collection<MapTileSize> values() {
         return values(MapTileSize.class);
     }

@@ -18,7 +18,28 @@ autorest --java --use:@autorest/java@4.0.x
 ## Java
 
 ``` yaml
+directive:
+- from: swagger-document
+  where: "$"
+  transform: >
+    $["securityDefinitions"] = {};
+- from: swagger-document
+  where: "$"
+  transform: >
+    $["security"] = [];
 
+- from: swagger-document
+  where: $..responses
+  debug: true
+  transform: |
+    $["default"] = { 
+            "description": "An unexpected error occurred.",
+            "schema": {
+              "$ref": "../../../../../common-types/data-plane/v1/types.json#/definitions/ErrorResponse"
+            },
+            "x-ms-error-response": true
+          }
+    
 title: RenderClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/preview/2.1/render.json
 namespace: com.azure.maps.render

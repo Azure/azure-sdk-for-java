@@ -14,14 +14,14 @@ public class RenderCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.render.models");
 
-         // customize maptileset
-         customizeMapTileset(models);
+        // customize maptileset
+        customizeMapTileset(models);
 
-         // customize error repsponse exception
-         customizeErrorResponseException(models);
+        // customize error repsponse exception
+        customizeErrorResponseException(models);
 
-         // customize tilesetid
-         customizeTilesetId(models);
+        // customize tilesetid
+        customizeTilesetId(models);
     }
 
     // Customizes the MapTileset class
@@ -56,7 +56,7 @@ public class RenderCustomization extends Customization {
 
     // Customizes the ErrorResponseException class
     private void customizeErrorResponseException(PackageCustomization models) {
-        final String getValueMethod = 
+        final String getValueMethod =
             "/** " +
             "* Gets the deserialized response value." +
             "*/" +

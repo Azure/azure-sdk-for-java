@@ -32,7 +32,11 @@ public final class StaticMapLayer extends ExpandableStringEnum<StaticMapLayer> {
         return fromString(name, StaticMapLayer.class);
     }
 
-    /** @return known StaticMapLayer values. */
+    /**
+     * Gets known StaticMapLayer values.
+     *
+     * @return known StaticMapLayer values.
+     */
     public static Collection<StaticMapLayer> values() {
         return values(StaticMapLayer.class);
     }

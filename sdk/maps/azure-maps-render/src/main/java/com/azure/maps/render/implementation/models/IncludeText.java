@@ -29,7 +29,11 @@ public final class IncludeText extends ExpandableStringEnum<IncludeText> {
         return fromString(name, IncludeText.class);
     }
 
-    /** @return known IncludeText values. */
+    /**
+     * Gets known IncludeText values.
+     *
+     * @return known IncludeText values.
+     */
     public static Collection<IncludeText> values() {
         return values(IncludeText.class);
     }

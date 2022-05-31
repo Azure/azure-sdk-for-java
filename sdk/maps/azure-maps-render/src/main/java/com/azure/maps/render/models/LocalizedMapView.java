@@ -77,7 +77,11 @@ public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapVie
         return fromString(name, LocalizedMapView.class);
     }
 
-    /** @return known LocalizedMapView values. */
+    /**
+     * Gets known LocalizedMapView values.
+     *
+     * @return known LocalizedMapView values.
+     */
     public static Collection<LocalizedMapView> values() {
         return values(LocalizedMapView.class);
     }
