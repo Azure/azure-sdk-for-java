@@ -76,7 +76,7 @@
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;redis.clients:com.azure.jedis;external_dependency} -->
+      <version>4.0.1</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
