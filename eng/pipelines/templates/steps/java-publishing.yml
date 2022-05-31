@@ -1,5 +1,6 @@
 parameters:
   ArtifactDirectory: not-specified
+  OutputDirectory: not-specified
   RepositoryUrl: not-specified
   GroupID:
   ArtifactID:
@@ -81,3 +82,32 @@ steps:
           -StageOnly:$${{parameters.StageOnly}}
           -ShouldPublish:$${{parameters.ShouldPublish}}
           -InformationAction Continue
+
+  - ${{if eq(parameters.Target, 'EsrpRelease')}}:
+    - task: PowerShell@2
+      displayName: 'Gpg sign and hash packages'
+      inputs:
+        pwsh: true
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/SignAndHash-MavenPackages.ps1
+        arguments: >
+          -Path ${{ parameters.ArtifactDirectory }}
+          -DestinationPath ${{ parameters.OutputDirectory }}
+          -GroupIDFilter "${{ parameters.GroupID }}"
+          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
+          -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+          -InformationAction Continue
+    - ${{if and(eq(parameters.ShouldPublish, 'true'), ne(parameters.StageOnly, 'true'))}}:
+      - task: EsrpRelease@1
+        displayName: 'Publish to ESRP'
+        inputs:
+          ConnectedServiceName: 'ESRP Release Service'
+          Intent: 'PackageDistribution'
+          ContentType: 'Maven'
+          PackageLocation: $(PackageLocation)
+          Owners: $(Build.RequestedForEmail)
+          Approvers: 'azsdkmavenapprover@microsoft.com'
+          ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
+          MainPublisher: 'ESRPRELPACMANTEST'
+          DomainTenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+
