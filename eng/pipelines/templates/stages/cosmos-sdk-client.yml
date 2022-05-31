@@ -21,6 +21,9 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: UseEsrpRelease
+  type: boolean
+  default: true
 
 stages:
   - stage: Build
@@ -125,3 +128,4 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
         TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
