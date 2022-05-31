@@ -146,15 +146,21 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
         # get the service directory, which is one level up from the library's directory
         sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
         sparse_checkout_directories.add(sparse_checkout_directory)
-        # Sparse checkout directories can contain non-service directories (aka. /common)
-        # that aren't service directories. Any service directory will start with "/sdk/"
-        if sdk_string in sparse_checkout_directory:
-            service_directory = sparse_checkout_directory.replace(sdk_string, "")
-            service_directories.add(service_directory)
+        # The ServiceDirectories list should only ever contain the list of service
+        # directories for the project list and nothing else.
+        if p.identifier in project_list_identifiers:
+            # Sparse checkout directories can contain directories that aren't service directories.
+            # (aka. /common). Any service directory will start with "/sdk/", everything else is
+            # would be attributed to supporting libraries (ex. perf-test-core).
+            if sdk_string in sparse_checkout_directory:
+                service_directory = sparse_checkout_directory.replace(sdk_string, "")
+                service_directories.add(service_directory)
+
     # output the SparseCheckoutDirectories environment variable
     sparse_checkout_paths = list(sorted(sparse_checkout_directories))
     print('setting env variable SparseCheckoutDirectories = {}'.format(sparse_checkout_paths))
     print('##vso[task.setvariable variable=SparseCheckoutDirectories;]{}'.format(json.dumps(sparse_checkout_paths)))
+
     # output the ServiceDirectories environment variable
     service_dirs = list(sorted(service_directories))
     print('setting env variable ServiceDirectories = {}'.format(service_dirs))

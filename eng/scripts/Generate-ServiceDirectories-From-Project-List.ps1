@@ -95,7 +95,6 @@ foreach ($project in $ProjectList) {
 foreach ($project in $unreleasedList) {
     if ($sparseCheckoutDirHash.ContainsKey($project)) {
         $sparseCheckoutDirectories += $sparseCheckoutDirHash[$project]
-        $serviceDirectories += $serviceDirHash[$project]
     } else {
         LogError("Did not find unreleased $project in any pom files")
         $script:FoundError = $true
@@ -106,9 +105,11 @@ if ($script:FoundError) {
     exit(1)
 }
 
-$temp =  ConvertTo-Json @($sparseCheckoutDirectories | Sort-Object | Get-Unique)
+$temp =  ConvertTo-Json @($sparseCheckoutDirectories | Sort-Object | Get-Unique) -Compress
+Write-Host "setting env variable SparseCheckoutDirectories = $temp"
 Write-Host "##vso[task.setvariable variable=SparseCheckoutDirectories;]$temp"
-$temp =  ConvertTo-Json @($serviceDirectories | Sort-Object | Get-Unique)
+$temp =  ConvertTo-Json @($serviceDirectories | Sort-Object | Get-Unique) -Compress
+Write-Host "setting env variable ServiceDirectories = $temp"
 Write-Host "##vso[task.setvariable variable=ServiceDirectories;]$temp"
 $ElapsedTime = $(get-date) - $StartTime
 $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
