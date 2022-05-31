@@ -14,5 +14,5 @@ ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/dow
 ADD ${AGENT_URL} ./BOOT-INF/classes/
 ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher", \
             "-javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar", \
-            "--TEST_CLASS=SendEvents"]
+            "--TEST_CLASS=EventSender"]
 

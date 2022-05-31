@@ -4,15 +4,15 @@ param baseName string = resourceGroup().name
 @description('The location of the resources. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-var subBaseName = substring(baseName, 0, min(length(baseName), 10))
-var eventHubsNamespaceName = '${subBaseName}-eventhubs'
+var subBaseName = '${substring(baseName, 0, min(length(baseName), 15))}-${substring(guid(baseName), 0, 5)}'
+var eventHubsNamespaceName = '${subBaseName}-ehns'
 var eventHubName = 'test-event-hub'
-var eventHubAuthRulesName = '${subBaseName}-eventhub-rules'
+var eventHubAuthRulesName = '${subBaseName}-ehrl'
 var secondEventHubName = 'test-event-hub2'
-var secondEventHubAuthRulesName = '${subBaseName}-eventhub-rules2'
+var secondEventHubAuthRulesName = '${subBaseName}-ehrl2'
 
-// storage account must be between 3 and 24 characters in length and use numbers and lower-case letters only 
-var storageAccountName = replace('${subBaseName}account', '-', '')
+// storage account must be between 3 and 24 characters in length and use numbers and lower-case letters only
+var storageAccountName = replace('${subBaseName}ac', '-', '')
 var storageContainerName = 'test-blob-container'
 
 resource eventHubsNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {

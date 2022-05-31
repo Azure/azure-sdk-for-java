@@ -12,27 +12,32 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 
-@Service("SendEvents")
-public class SendEvents extends EventHubsScenario {
+@Service("EventSender")
+public class EventSender extends EventHubsScenario {
 
-    private final int sendTimes = 1000;
-    private final int eventNumber =  500;
+    private static final int SEND_TIMES = 10000;
+    private static final int EVENT_NUMBER = 500;
+    private static final int PAYLOAD_SIZE = 4 * 1024;
 
     @Override
     public void run() {
         final String eventHubConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
         final String eventHub = options.get(Constants.EVENT_HUB_NAME);
 
-        EventHubProducerAsyncClient client = new EventHubClientBuilder()
-                .connectionString(eventHubConnStr, eventHub)
-                .buildAsyncProducerClient();
+        final byte[] payload = new byte[PAYLOAD_SIZE];
+        (new Random()).nextBytes(payload);
 
-        Flux.range(0, sendTimes).concatMap(i -> {
+        EventHubProducerAsyncClient client = new EventHubClientBuilder()
+            .connectionString(eventHubConnStr, eventHub)
+            .buildAsyncProducerClient();
+
+        Flux.range(0, SEND_TIMES).concatMap(i -> {
             List<EventData> eventDataList = new ArrayList<>();
-            IntStream.range(0, eventNumber).forEach(j -> {
-                eventDataList.add(new EventData("A"));
+            IntStream.range(0, EVENT_NUMBER).forEach(j -> {
+                eventDataList.add(new EventData(payload));
             });
             return client.send(eventDataList);
         }).subscribe();

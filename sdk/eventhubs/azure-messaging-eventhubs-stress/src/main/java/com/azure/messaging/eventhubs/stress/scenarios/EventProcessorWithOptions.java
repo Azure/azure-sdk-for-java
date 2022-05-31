@@ -38,9 +38,9 @@ import java.util.function.Consumer;
  * --UPDATE_CHECKPOINT=YES/NO <br/>
  * --NEED_SEND_EVENT_HUB=YES/NO <br/>
  */
-@Service("ProcessEventsWithOptions")
-public class ProcessEventsWithOptions extends EventHubsScenario {
-    private static final Logger logger = LoggerFactory.getLogger(ProcessEventsWithOptions.class);
+@Service("EventProcessorWithOptions")
+public class EventProcessorWithOptions extends EventHubsScenario {
+    private static final Logger logger = LoggerFactory.getLogger(EventProcessorWithOptions.class);
 
     private static final int PARTITION_NUMBER = 64;
     private static final int EVENT_COUNT_THRESHOLD = 40;

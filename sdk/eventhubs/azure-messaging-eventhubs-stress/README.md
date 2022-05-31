@@ -125,11 +125,11 @@ For local deployment with script, if the namespace option is not specified, the 
 
 ## Examples
 
-### Update SendEvents
+### Update EventSender
 
-Change `sendTimes` and `eventNumber` to the number of events you want to send.
+Change `SEND_TIMES` and `EVENT_NUMBER` to the number of events you want to send.
 
-### Run ProcessEventsWithOptions
+### Run EventProcessorWithOptions
 
 Modify receiver command in `job.yaml` to run stress test in different scenarios:
 
@@ -146,7 +146,7 @@ Scenario 1: receiver does not checkpoint and not write to another new event hub.
               source $ENV_FILE &&
               java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
               "org.springframework.boot.loader.JarLauncher" \
-              --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=NO --NEED_SEND_EVENT_HUB=NO
+              --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=NO --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 Scenario 2: receiver does checkpoint and not write to another new event hub.
@@ -162,7 +162,7 @@ Scenario 2: receiver does checkpoint and not write to another new event hub.
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 
@@ -179,7 +179,7 @@ Scenario 3: receiver does checkpoint and write to another event hub.
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=YES
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=YES
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 
@@ -196,7 +196,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver2
       image: {{ .Values.image }}
@@ -208,7 +208,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver3
       image: {{ .Values.image }}
@@ -220,7 +220,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver4
       image: {{ .Values.image }}
@@ -232,7 +232,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=ProcessEventsWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 

@@ -14,9 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-@Service("ProcessEvents")
-public class ProcessEvents extends EventHubsScenario {
-    private static final Logger logger = LoggerFactory.getLogger(ProcessEvents.class);
+@Service("EventProcessor")
+public class EventProcessor extends EventHubsScenario {
+    private static final Logger logger = LoggerFactory.getLogger(EventProcessor.class);
 
     @Override
     public void run() {
