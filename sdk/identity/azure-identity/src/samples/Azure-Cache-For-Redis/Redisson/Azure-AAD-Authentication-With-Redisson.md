@@ -4,7 +4,7 @@
 
 - [Dependency Requirements](#dependency-requirements)
 - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-- [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
+- [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
 
 #### Dependency Requirements
 ```xml
@@ -27,8 +27,8 @@ Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
-[Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
-This sample is recommended users looking to build long-running applications and would like to handle re authenticating with Azure AD upon token expiry.
+[Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
+This sample is recommended to users looking to build long-running applications and would like to handle reauthenticating with Azure AD upon token expiry.
 
 **Note:** The samples use the Azure Identity library's `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 

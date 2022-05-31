@@ -4,7 +4,7 @@
 
 - [Dependency Requirements](#dependency-requirements)
 - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-- [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
+- [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
 
 
 #### Dependency Requirements
@@ -28,13 +28,13 @@ Familiarity with the [Lettuce](https://github.com/lettuce-io/lettuce-core) and [
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
-[Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
-This sample is recommended users looking to build long-running applications and would like to handle re authenticating with Azure AD upon token expiry.
+[Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
+This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
 **Note:** The below sample uses the Azure Identity library's `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
 ##### Challenges
-The Lettuce Redis Client Handshake process is described below. The RESP 3 Protocol uses `HELLO` command which currently is not supported on service side.
+The Lettuce client handshake process is described below. The RESP 3 Protocol uses `HELLO` command, which currently isn't supported on the service side.
 ![image](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/images/lettuce-aad-handshake.png)
 
 ##### Raw Redis CLI Connection Behavior
@@ -51,13 +51,10 @@ OK
 walmart-demo.redis.cache.windows.net:6379> HELLO 3 AUTH walmartdummyuser eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImpTMVhvMU9XRGpfNTJ2YndHTmd2UU8yVnpNYyIsImtpZCI6ImpTMVhvMU9XRGpfNTJ2YndHTmd2UU8yVnpNYyJ9.eyJhdWQiOiJodHRwczovLyouY2FjaGVpbmZyYS53aW5kb3dzLm5ldDoxMDIyNS9hcHBpZCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0Ny8iLCJpYXQiOjE2NTA4OTkxMzUsIm5iZiI6MTY1MDg5OTEzNSwiZXhwIjoxNjUwOTg1ODM1LCJhaW8iOiJFMlpnWU1pWmVIWVpZOC8xRHhjdjl2ZlhPKzdjQWdBPSIsImFwcGlkIjoi.....
 
 (error) WRONGPASS invalid username-password pair
-
-
-
 ```
 
 ##### Authenticate with Azure AD: Hello World
-This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce Redis client instance.
+This sample is intended to assist in authenticating with Azure AD via the Lettuce client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Lettuce client instance.
 
 ##### Migration Guidance
 When migrating your existing your application code, you need to replace the password input with the Azure AD token.
@@ -273,7 +270,7 @@ while (i < maxTries) {
     i++;
 }
     
-// Helper code
+    // Helper code
     private static RedisClient createLettuceRedisClient(String hostName, int port, String username, AccessToken accessToken) {
 
         // Build Redis URI with host and authentication details.

@@ -2,10 +2,10 @@
 
 ### Table of contents
 
-- [Dependency Requirements](#dependency-requirements-jedis)
+- [Dependency Requirements](#dependency-requirements-com.azure.jedis)
 - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-- [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
-- [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
+- [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
+- [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-com.azure.jedis-wrapper)
 
 #### Dependency Requirements Jedis
 ```xml
@@ -17,23 +17,23 @@
 
 <dependency>
     <groupId>redis.clients</groupId>
-    <artifactId>jedis</artifactId>
+    <artifactId>com.azure.jedis</artifactId>
     <version>4.0.1</version>
 </dependency>
 ```
 
 #### Samples Guidance
 
-Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
+Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/com.azure.jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
 
 [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
 [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
-This sample is recommended users looking to build long-running applications and would like to handle re authenticating with Azure AD upon token expiry.
+This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
-[Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
-This sample is recommended for users looking to build long-running applications and would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
+[Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-com.azure.jedis-wrapper)
+This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
 
 **Note:** The below sample uses the Azure Identity library's `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
 
@@ -62,17 +62,17 @@ boolean useSsl = true;
 String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-Jedis jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
+Jedis com.azure.jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
         .password(token)
         .ssl(useSsl)
         .build());
 
 // Set a value against your key in the Redis cache.
-jedis.set("Az:key", "testValue");
-System.out.println(jedis.get("Az:key"));
+com.azure.jedis.set("Az:key", "testValue");
+System.out.println(com.azure.jedis.get("Az:key"));
 
 // Close the Jedis Client
-jedis.close();
+com.azure.jedis.close();
 ```
 
 #### Authenticate with Azure AD: Handle Reauthentication
@@ -99,25 +99,25 @@ boolean useSsl = true;
 String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-Jedis jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
+Jedis com.azure.jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
 
 try {
     // Set a value against your key in the Redis cache.
-    jedis.set("Az:key", "testValue");
-    System.out.println(jedis.get("Az:key"));
+    com.azure.jedis.set("Az:key", "testValue");
+    System.out.println(com.azure.jedis.get("Az:key"));
 } catch (JedisException e) {
     // Handle The Exception as required in your application.
     e.printStackTrace();
 
     // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
-    if (jedis.isBroken() || accessToken.isExpired()) {
-        jedis.close();
-        jedis = createJedisClient(cacheHostname, 6380,"USERNAME", getAccessToken(clientCertificateCredential, trc), useSsl);
+    if (com.azure.jedis.isBroken() || accessToken.isExpired()) {
+        com.azure.jedis.close();
+        com.azure.jedis = createJedisClient(cacheHostname, 6380,"USERNAME", getAccessToken(clientCertificateCredential, trc), useSsl);
     }
 }
 
 // Close the Jedis Client
-jedis.close();
+com.azure.jedis.close();
 
 
 // Helper Code
@@ -146,12 +146,12 @@ A natural question to ask when considering whether or not to adopt a new version
 In Jedis, you create a `Jedis` object via a public constructor. The constructor accepts the cache host name and port number. It authenticates using the access keys. For example:
 
 ```java
-import redis.clients.jedis.Jedis;
+import redis.clients.com.azure.jedis.Jedis;
 
-Jedis jedis = new Jedis("<host name>", <port number>);
-jedis.auth("<username>", "<token>");
-jedis.set("key", "value");
-jedis.close();
+Jedis com.azure.jedis = new Jedis("<host name>", <port number>);
+com.azure.jedis.auth("<username>", "<token>");
+com.azure.jedis.set("key", "value");
+com.azure.jedis.close();
 ```
 
 With `AzureJedisClient`, client instances are created via builders. The builder accepts the:
@@ -162,17 +162,20 @@ With `AzureJedisClient`, client instances are created via builders. The builder 
 - Optional retry options to configure retry
 - Token credential object that's used to generate a token
 
-See the following example of setting up the Azure Jedis client.
+The following table compares the capabilities of the Jedis and Azure Jedis clients.
 
 | Feature | Jedis | Azure Jedis |
 |--|--|--|
 | Connect to Redis Cache | Yes |Yes |
 | Azure AD Authentication Support | No | Yes|
 | Retry Failure | No| Yes |
-| Re Authenticate | No |Yes |
+| Reauthenticate | No |Yes |
 | Handle Broken Connection | No |Yes |
 
-See the following example of setting up the Azure Jedis client.
+See the following example of setting up the Azure Jedis client:
+
+The wrapper code located [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/java/com/azure/jedis/) requires to be added/integrated in your application code for the below sample to work.
+
 
 ```java
 ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
