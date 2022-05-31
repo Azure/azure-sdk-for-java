@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/search/nearby/json?api-version=1.0&lat=-100.0&lon=-100.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 12 Apr 2022 06:10:39 GMT",
+      "content-length" : "96",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: F0C1A5C5BBE94E43A6689CCF1ADB4A4E Ref B: SIN30EDGE0320 Ref C: 2022-04-12T06:10:40Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"lat value should be between -90 and 90 inclusive\"}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

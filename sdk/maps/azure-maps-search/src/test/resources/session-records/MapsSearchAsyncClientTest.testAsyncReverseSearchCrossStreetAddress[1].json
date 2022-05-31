@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/search/address/reverse/crossStreet/json?api-version=1.0&query=37.337%2C-121.89",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 12 Apr 2022 06:10:16 GMT",
+      "content-length" : "606",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 3BE503CDDE4B476CA5E8E53A81AE5889 Ref B: SIN30EDGE0420 Ref C: 2022-04-12T06:10:16Z",
+      "vary" : "Accept-Encoding",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"summary\":{\"numResults\":1,\"queryTime\":53},\"addresses\":[{\"address\":{\"streetName\":\"East Santa Clara Street & North 2nd Street\",\"crossStreet\":\"East Santa Clara Street\",\"municipalitySubdivision\":\"Downtown San Jose\",\"municipality\":\"San Jose\",\"countrySecondarySubdivision\":\"Santa Clara\",\"countrySubdivision\":\"CA\",\"countrySubdivisionName\":\"California\",\"postalCode\":\"95113\",\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"East Santa Clara Street & North 2nd Street, San Jose, CA 95113\",\"localName\":\"San Jose\",\"street\":\"North 2nd Street\"},\"position\":\"37.33666,-121.88951\"}]}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

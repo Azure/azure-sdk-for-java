@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/search/address/reverse/json?api-version=1.0&query=37.337%2C-121.89",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 12 Apr 2022 06:10:19 GMT",
+      "content-length" : "764",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 6FB2B29E705F45FD95996FF2254A6EFF Ref B: SIN30EDGE0812 Ref C: 2022-04-12T06:10:19Z",
+      "vary" : "Accept-Encoding",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"summary\":{\"queryTime\":3,\"numResults\":1},\"addresses\":[{\"address\":{\"buildingNumber\":\"17\",\"streetNumber\":\"17\",\"routeNumbers\":[],\"street\":\"North 2nd Street\",\"streetName\":\"North 2nd Street\",\"streetNameAndNumber\":\"17 North 2nd Street\",\"countryCode\":\"US\",\"countrySubdivision\":\"CA\",\"countrySecondarySubdivision\":\"Santa Clara\",\"municipality\":\"San Jose\",\"postalCode\":\"95113\",\"municipalitySubdivision\":\"Downtown San Jose\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"17 North 2nd Street, San Jose, CA 95113\",\"boundingBox\":{\"northEast\":\"37.337507,-121.889512\",\"southWest\":\"37.336664,-121.890130\",\"entity\":\"position\"},\"extendedPostalCode\":\"95113-1205\",\"countrySubdivisionName\":\"California\",\"localName\":\"San Jose\"},\"position\":\"37.337029,-121.889778\"}]}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
