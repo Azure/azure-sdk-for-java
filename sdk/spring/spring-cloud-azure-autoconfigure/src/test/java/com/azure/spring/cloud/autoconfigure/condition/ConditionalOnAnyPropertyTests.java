@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
-class conditionalOnAnyPropertyTests {
+class ConditionalOnAnyPropertyTests {
 
     private ConfigurableApplicationContext context;
 
