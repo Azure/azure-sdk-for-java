@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.maps.render.implementation.models.BoundingBox;
@@ -45,21 +44,17 @@ import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RenderV2s. */
 public final class RenderV2sImpl {
-    private final ClientLogger logger = new ClientLogger(RenderV2sImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RenderV2sService service;
 
@@ -258,7 +253,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getMapTileWithResponseAsync(
@@ -334,7 +329,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getMapTileWithResponseAsync(
@@ -628,7 +623,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a tileset in the TileJSON format.
+     * @return metadata for a tileset in the TileJSON format along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MapTileset>> getMapTilesetWithResponseAsync(TilesetId tilesetId) {
@@ -658,7 +654,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a tileset in the TileJSON format.
+     * @return metadata for a tileset in the TileJSON format along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MapTileset>> getMapTilesetWithResponseAsync(TilesetId tilesetId, Context context) {
@@ -685,19 +682,11 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a tileset in the TileJSON format.
+     * @return metadata for a tileset in the TileJSON format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MapTileset> getMapTilesetAsync(TilesetId tilesetId) {
-        return getMapTilesetWithResponseAsync(tilesetId)
-                .flatMap(
-                        (Response<MapTileset> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getMapTilesetWithResponseAsync(tilesetId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -714,19 +703,11 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a tileset in the TileJSON format.
+     * @return metadata for a tileset in the TileJSON format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MapTileset> getMapTilesetAsync(TilesetId tilesetId, Context context) {
-        return getMapTilesetWithResponseAsync(tilesetId, context)
-                .flatMap(
-                        (Response<MapTileset> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getMapTilesetWithResponseAsync(tilesetId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -763,7 +744,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a tileset in the TileJSON format.
+     * @return metadata for a tileset in the TileJSON format along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MapTileset> getMapTilesetWithResponse(TilesetId tilesetId, Context context) {
@@ -789,7 +770,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return copyright attribution for the requested section of a tileset.
+     * @return copyright attribution for the requested section of a tileset along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MapAttribution>> getMapAttributionWithResponseAsync(
@@ -830,7 +812,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return copyright attribution for the requested section of a tileset.
+     * @return copyright attribution for the requested section of a tileset along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MapAttribution>> getMapAttributionWithResponseAsync(
@@ -868,19 +851,12 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return copyright attribution for the requested section of a tileset.
+     * @return copyright attribution for the requested section of a tileset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MapAttribution> getMapAttributionAsync(TilesetId tilesetId, int zoom, List<Double> bounds) {
         return getMapAttributionWithResponseAsync(tilesetId, zoom, bounds)
-                .flatMap(
-                        (Response<MapAttribution> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -903,20 +879,13 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return copyright attribution for the requested section of a tileset.
+     * @return copyright attribution for the requested section of a tileset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MapAttribution> getMapAttributionAsync(
             TilesetId tilesetId, int zoom, List<Double> bounds, Context context) {
         return getMapAttributionWithResponseAsync(tilesetId, zoom, bounds, context)
-                .flatMap(
-                        (Response<MapAttribution> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -965,7 +934,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return copyright attribution for the requested section of a tileset.
+     * @return copyright attribution for the requested section of a tileset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MapAttribution> getMapAttributionWithResponse(
@@ -985,7 +954,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getMapStateTileWithResponseAsync(String statesetId, TileIndex tileIndex) {
@@ -1020,7 +989,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getMapStateTileWithResponseAsync(
@@ -1146,7 +1115,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright call.
+     * @return this object is returned from a successful copyright call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyrightCaption>> getCopyrightCaptionWithResponseAsync(ResponseFormat format) {
@@ -1176,7 +1146,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright call.
+     * @return this object is returned from a successful copyright call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyrightCaption>> getCopyrightCaptionWithResponseAsync(
@@ -1199,19 +1170,11 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright call.
+     * @return this object is returned from a successful copyright call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyrightCaption> getCopyrightCaptionAsync(ResponseFormat format) {
-        return getCopyrightCaptionWithResponseAsync(format)
-                .flatMap(
-                        (Response<CopyrightCaption> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getCopyrightCaptionWithResponseAsync(format).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1228,19 +1191,11 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright call.
+     * @return this object is returned from a successful copyright call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyrightCaption> getCopyrightCaptionAsync(ResponseFormat format, Context context) {
-        return getCopyrightCaptionWithResponseAsync(format, context)
-                .flatMap(
-                        (Response<CopyrightCaption> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getCopyrightCaptionWithResponseAsync(format, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1277,7 +1232,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright call.
+     * @return this object is returned from a successful copyright call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyrightCaption> getCopyrightCaptionWithResponse(ResponseFormat format, Context context) {
@@ -1490,7 +1445,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getMapStaticImageWithResponseAsync(
@@ -1512,17 +1467,13 @@ public final class RenderV2sImpl {
         String boundingBoxPrivateConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(boundingBoxPrivate, CollectionFormat.CSV);
         List<String> pinsConverted =
-                Optional.ofNullable(pins)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (pins == null)
+                        ? new ArrayList<>()
+                        : pins.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> pathConverted =
-                Optional.ofNullable(path)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (path == null)
+                        ? new ArrayList<>()
+                        : path.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.getMapStaticImage(
@@ -1752,7 +1703,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getMapStaticImageWithResponseAsync(
@@ -1775,17 +1726,13 @@ public final class RenderV2sImpl {
         String boundingBoxPrivateConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(boundingBoxPrivate, CollectionFormat.CSV);
         List<String> pinsConverted =
-                Optional.ofNullable(pins)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (pins == null)
+                        ? new ArrayList<>()
+                        : pins.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> pathConverted =
-                Optional.ofNullable(path)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (path == null)
+                        ? new ArrayList<>()
+                        : path.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.getMapStaticImage(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -2793,7 +2740,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightFromBoundingBoxWithResponseAsync(
@@ -2833,7 +2781,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightFromBoundingBoxWithResponseAsync(
@@ -2870,20 +2819,13 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightFromBoundingBoxAsync(
             ResponseFormat format, BoundingBox boundingBox, IncludeText includeText) {
         return getCopyrightFromBoundingBoxWithResponseAsync(format, boundingBox, includeText)
-                .flatMap(
-                        (Response<Copyright> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2900,20 +2842,13 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightFromBoundingBoxAsync(
             ResponseFormat format, BoundingBox boundingBox, IncludeText includeText, Context context) {
         return getCopyrightFromBoundingBoxWithResponseAsync(format, boundingBox, includeText, context)
-                .flatMap(
-                        (Response<Copyright> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2951,7 +2886,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Copyright> getCopyrightFromBoundingBoxWithResponse(
@@ -2974,7 +2909,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightForTileWithResponseAsync(
@@ -3014,7 +2950,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightForTileWithResponseAsync(
@@ -3051,20 +2988,13 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightForTileAsync(
             ResponseFormat format, TileIndex tileIndex, IncludeText includeText) {
         return getCopyrightForTileWithResponseAsync(format, tileIndex, includeText)
-                .flatMap(
-                        (Response<Copyright> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3083,20 +3013,13 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightForTileAsync(
             ResponseFormat format, TileIndex tileIndex, IncludeText includeText, Context context) {
         return getCopyrightForTileWithResponseAsync(format, tileIndex, includeText, context)
-                .flatMap(
-                        (Response<Copyright> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3137,7 +3060,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Copyright> getCopyrightForTileWithResponse(
@@ -3159,7 +3082,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightForWorldWithResponseAsync(
@@ -3192,7 +3116,8 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Copyright>> getCopyrightForWorldWithResponseAsync(
@@ -3222,19 +3147,12 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightForWorldAsync(ResponseFormat format, IncludeText includeText) {
         return getCopyrightForWorldWithResponseAsync(format, includeText)
-                .flatMap(
-                        (Response<Copyright> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3252,19 +3170,12 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Copyright> getCopyrightForWorldAsync(ResponseFormat format, IncludeText includeText, Context context) {
         return getCopyrightForWorldWithResponseAsync(format, includeText, context)
-                .flatMap(
-                        (Response<Copyright> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3303,7 +3214,7 @@ public final class RenderV2sImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful copyright request.
+     * @return this object is returned from a successful copyright request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Copyright> getCopyrightForWorldWithResponse(

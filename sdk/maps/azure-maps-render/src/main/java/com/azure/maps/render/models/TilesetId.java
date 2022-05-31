@@ -95,7 +95,11 @@ public final class TilesetId extends ExpandableStringEnum<TilesetId> {
         return fromString(name, TilesetId.class);
     }
 
-    /** @return known TilesetID values. */
+    /**
+     * Gets known TilesetID values.
+     *
+     * @return known TilesetID values.
+     */
     public static Collection<TilesetId> values() {
         return values(TilesetId.class);
     }

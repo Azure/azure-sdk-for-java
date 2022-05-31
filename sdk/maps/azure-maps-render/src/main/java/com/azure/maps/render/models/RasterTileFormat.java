@@ -26,7 +26,11 @@ public final class RasterTileFormat extends ExpandableStringEnum<RasterTileForma
         return fromString(name, RasterTileFormat.class);
     }
 
-    /** @return known RasterTileFormat values. */
+    /**
+     * Gets known RasterTileFormat values.
+     *
+     * @return known RasterTileFormat values.
+     */
     public static Collection<RasterTileFormat> values() {
         return values(RasterTileFormat.class);
     }

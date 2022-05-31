@@ -29,7 +29,11 @@ public final class MapImageStyle extends ExpandableStringEnum<MapImageStyle> {
         return fromString(name, MapImageStyle.class);
     }
 
-    /** @return known MapImageStyle values. */
+    /**
+     * Gets known MapImageStyle values.
+     *
+     * @return known MapImageStyle values.
+     */
     public static Collection<MapImageStyle> values() {
         return values(MapImageStyle.class);
     }
