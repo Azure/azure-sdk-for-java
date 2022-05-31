@@ -30,7 +30,11 @@ public final class JunctionType extends ExpandableStringEnum<JunctionType> {
         return fromString(name, JunctionType.class);
     }
 
-    /** @return known JunctionType values. */
+    /**
+     * Gets known JunctionType values.
+     *
+     * @return known JunctionType values.
+     */
     public static Collection<JunctionType> values() {
         return values(JunctionType.class);
     }

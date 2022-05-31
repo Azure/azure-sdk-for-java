@@ -27,7 +27,11 @@ public final class AlternativeRouteType extends ExpandableStringEnum<Alternative
         return fromString(name, AlternativeRouteType.class);
     }
 
-    /** @return known AlternativeRouteType values. */
+    /**
+     * Gets known AlternativeRouteType values.
+     *
+     * @return known AlternativeRouteType values.
+     */
     public static Collection<AlternativeRouteType> values() {
         return values(AlternativeRouteType.class);
     }

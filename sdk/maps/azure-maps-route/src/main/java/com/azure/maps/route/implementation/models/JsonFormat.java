@@ -24,7 +24,11 @@ public final class JsonFormat extends ExpandableStringEnum<JsonFormat> {
         return fromString(name, JsonFormat.class);
     }
 
-    /** @return known JsonFormat values. */
+    /**
+     * Gets known JsonFormat values.
+     *
+     * @return known JsonFormat values.
+     */
     public static Collection<JsonFormat> values() {
         return values(JsonFormat.class);
     }

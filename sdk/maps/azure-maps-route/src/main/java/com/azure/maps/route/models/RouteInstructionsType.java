@@ -30,7 +30,11 @@ public final class RouteInstructionsType extends ExpandableStringEnum<RouteInstr
         return fromString(name, RouteInstructionsType.class);
     }
 
-    /** @return known RouteInstructionsType values. */
+    /**
+     * Gets known RouteInstructionsType values.
+     *
+     * @return known RouteInstructionsType values.
+     */
     public static Collection<RouteInstructionsType> values() {
         return values(RouteInstructionsType.class);
     }

@@ -27,7 +27,11 @@ public final class VehicleEngineType extends ExpandableStringEnum<VehicleEngineT
         return fromString(name, VehicleEngineType.class);
     }
 
-    /** @return known VehicleEngineType values. */
+    /**
+     * Gets known VehicleEngineType values.
+     *
+     * @return known VehicleEngineType values.
+     */
     public static Collection<VehicleEngineType> values() {
         return values(VehicleEngineType.class);
     }

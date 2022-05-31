@@ -33,7 +33,11 @@ public final class SimpleCategory extends ExpandableStringEnum<SimpleCategory> {
         return fromString(name, SimpleCategory.class);
     }
 
-    /** @return known SimpleCategory values. */
+    /**
+     * Gets known SimpleCategory values.
+     *
+     * @return known SimpleCategory values.
+     */
     public static Collection<SimpleCategory> values() {
         return values(SimpleCategory.class);
     }

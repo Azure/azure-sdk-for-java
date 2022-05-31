@@ -27,7 +27,11 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
         return fromString(name, ResponseFormat.class);
     }
 
-    /** @return known ResponseFormat values. */
+    /**
+     * Gets known ResponseFormat values.
+     *
+     * @return known ResponseFormat values.
+     */
     public static Collection<ResponseFormat> values() {
         return values(ResponseFormat.class);
     }

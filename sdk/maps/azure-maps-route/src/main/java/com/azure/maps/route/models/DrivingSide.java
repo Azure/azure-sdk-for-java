@@ -27,7 +27,11 @@ public final class DrivingSide extends ExpandableStringEnum<DrivingSide> {
         return fromString(name, DrivingSide.class);
     }
 
-    /** @return known DrivingSide values. */
+    /**
+     * Gets known DrivingSide values.
+     *
+     * @return known DrivingSide values.
+     */
     public static Collection<DrivingSide> values() {
         return values(DrivingSide.class);
     }

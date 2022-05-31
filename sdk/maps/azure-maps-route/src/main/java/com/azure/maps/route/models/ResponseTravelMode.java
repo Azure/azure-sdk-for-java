@@ -48,7 +48,11 @@ public final class ResponseTravelMode extends ExpandableStringEnum<ResponseTrave
         return fromString(name, ResponseTravelMode.class);
     }
 
-    /** @return known ResponseTravelMode values. */
+    /**
+     * Gets known ResponseTravelMode values.
+     *
+     * @return known ResponseTravelMode values.
+     */
     public static Collection<ResponseTravelMode> values() {
         return values(ResponseTravelMode.class);
     }

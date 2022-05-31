@@ -30,7 +30,11 @@ public final class WindingnessLevel extends ExpandableStringEnum<WindingnessLeve
         return fromString(name, WindingnessLevel.class);
     }
 
-    /** @return known WindingnessLevel values. */
+    /**
+     * Gets known WindingnessLevel values.
+     *
+     * @return known WindingnessLevel values.
+     */
     public static Collection<WindingnessLevel> values() {
         return values(WindingnessLevel.class);
     }

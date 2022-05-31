@@ -57,7 +57,11 @@ public final class SectionType extends ExpandableStringEnum<SectionType> {
         return fromString(name, SectionType.class);
     }
 
-    /** @return known SectionType values. */
+    /**
+     * Gets known SectionType values.
+     *
+     * @return known SectionType values.
+     */
     public static Collection<SectionType> values() {
         return values(SectionType.class);
     }

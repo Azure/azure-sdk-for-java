@@ -9,14 +9,11 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the RouteClient type. */
 public final class RouteClientImpl {
-    private final ClientLogger logger = new ClientLogger(RouteClientImpl.class);
-
     /**
      * Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents a
      * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
