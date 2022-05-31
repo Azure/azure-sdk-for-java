@@ -83,12 +83,13 @@ When migrating your existing your application code, you need to replace the pass
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
+
 //Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-        .clientId("YOUR-CLIENT-ID")
-        .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
-        .tenantId("YOUR-TENANT-ID")
-        .build();
+    .clientId("YOUR-CLIENT-ID")
+    .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
+    .tenantId("YOUR-TENANT-ID")
+    .build();
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
@@ -101,19 +102,26 @@ String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 Jedis jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
 
-try {
-    // Set a value against your key in the Redis cache.
-    jedis.set("Az:key", "testValue");
-    System.out.println(jedis.get("Az:key"));
-} catch (JedisException e) {
-    // Handle The Exception as required in your application.
-    e.printStackTrace();
+int maxTries = 3;
+int i = 0;
 
-    // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
-    if (jedis.isBroken() || accessToken.isExpired()) {
-        jedis.close();
-        jedis = createJedisClient(cacheHostname, 6380,"USERNAME", getAccessToken(clientCertificateCredential, trc), useSsl);
+while (i < maxTries) {
+    try {
+        // Set a value against your key in the Redis cache.
+        jedis.set("Az:key", "testValue");
+        System.out.println(jedis.get("Az:key"));
+        break;
+    } catch (JedisException e) {
+        // Handle The Exception as required in your application.
+        e.printStackTrace();
+
+        // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
+        if (jedis.isBroken() || accessToken.isExpired()) {
+            jedis.close();
+            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", getAccessToken(clientCertificateCredential, trc), useSsl);
+        }
     }
+    i++;
 }
 
 // Close the Jedis Client
