@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class EventProcessorBlobCheckpointStoreSample {
 
-    private static final String EH_CONNECTION_STRING = "";
+    private static final String EH_CONNECTION_STRING = "Endpoint=sb://t-anusingh-samples.servicebus.windows.net/;SharedAccessKeyName=testSamplesSharedAccessPolicy;SharedAccessKey=xC0N+Y5h5T4ml3/3/qq8CoR12vRabxwUOlfe93iEdzs=;EntityPath=samplestest";
     private static final String SAS_TOKEN_STRING = "";
     private static final String STORAGE_CONNECTION_STRING = "";
 
