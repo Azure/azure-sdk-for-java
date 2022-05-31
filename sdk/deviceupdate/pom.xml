@@ -42,6 +42,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-deviceupdate-deviceupdate</module>
         <module>azure-iot-deviceupdate</module>
         <module>azure-resourcemanager-deviceupdate</module>
       </modules>

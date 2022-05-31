@@ -38,3 +38,6 @@ extends:
       - name: azure-resourcemanager-deviceupdate
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdeviceupdate
+      - name: azure-deviceupdate-deviceupdate
+        groupId: com.azure
+        safeName: azuredeviceupdatedeviceupdate
