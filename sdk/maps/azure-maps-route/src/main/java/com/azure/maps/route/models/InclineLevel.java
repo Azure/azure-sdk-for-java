@@ -30,7 +30,11 @@ public final class InclineLevel extends ExpandableStringEnum<InclineLevel> {
         return fromString(name, InclineLevel.class);
     }
 
-    /** @return known InclineLevel values. */
+    /**
+     * Gets known InclineLevel values.
+     *
+     * @return known InclineLevel values.
+     */
     public static Collection<InclineLevel> values() {
         return values(InclineLevel.class);
     }

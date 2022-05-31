@@ -57,7 +57,11 @@ public final class ResponseSectionType extends ExpandableStringEnum<ResponseSect
         return fromString(name, ResponseSectionType.class);
     }
 
-    /** @return known ResponseSectionType values. */
+    /**
+     * Gets known ResponseSectionType values.
+     *
+     * @return known ResponseSectionType values.
+     */
     public static Collection<ResponseSectionType> values() {
         return values(ResponseSectionType.class);
     }

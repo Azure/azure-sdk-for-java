@@ -36,7 +36,11 @@ public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
         return fromString(name, DelayMagnitude.class);
     }
 
-    /** @return known DelayMagnitude values. */
+    /**
+     * Gets known DelayMagnitude values.
+     *
+     * @return known DelayMagnitude values.
+     */
     public static Collection<DelayMagnitude> values() {
         return values(DelayMagnitude.class);
     }

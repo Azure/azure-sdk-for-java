@@ -42,7 +42,11 @@ public final class RouteAvoidType extends ExpandableStringEnum<RouteAvoidType> {
         return fromString(name, RouteAvoidType.class);
     }
 
-    /** @return known RouteAvoidType values. */
+    /**
+     * Gets known RouteAvoidType values.
+     *
+     * @return known RouteAvoidType values.
+     */
     public static Collection<RouteAvoidType> values() {
         return values(RouteAvoidType.class);
     }

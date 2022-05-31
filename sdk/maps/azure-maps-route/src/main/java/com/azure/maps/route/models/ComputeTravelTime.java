@@ -27,7 +27,11 @@ public final class ComputeTravelTime extends ExpandableStringEnum<ComputeTravelT
         return fromString(name, ComputeTravelTime.class);
     }
 
-    /** @return known ComputeTravelTime values. */
+    /**
+     * Gets known ComputeTravelTime values.
+     *
+     * @return known ComputeTravelTime values.
+     */
     public static Collection<ComputeTravelTime> values() {
         return values(ComputeTravelTime.class);
     }

@@ -120,7 +120,11 @@ public final class GuidanceManeuver extends ExpandableStringEnum<GuidanceManeuve
         return fromString(name, GuidanceManeuver.class);
     }
 
-    /** @return known GuidanceManeuver values. */
+    /**
+     * Gets known GuidanceManeuver values.
+     *
+     * @return known GuidanceManeuver values.
+     */
     public static Collection<GuidanceManeuver> values() {
         return values(GuidanceManeuver.class);
     }

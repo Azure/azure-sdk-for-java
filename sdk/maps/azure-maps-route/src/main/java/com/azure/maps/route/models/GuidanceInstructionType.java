@@ -39,7 +39,11 @@ public final class GuidanceInstructionType extends ExpandableStringEnum<Guidance
         return fromString(name, GuidanceInstructionType.class);
     }
 
-    /** @return known GuidanceInstructionType values. */
+    /**
+     * Gets known GuidanceInstructionType values.
+     *
+     * @return known GuidanceInstructionType values.
+     */
     public static Collection<GuidanceInstructionType> values() {
         return values(GuidanceInstructionType.class);
     }

@@ -17,11 +17,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
@@ -57,18 +57,14 @@ import com.azure.maps.route.models.VehicleLoadType;
 import com.azure.maps.route.models.WindingnessLevel;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Routes. */
 public final class RoutesImpl {
-    private final ClientLogger logger = new ClientLogger(RoutesImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RoutesService service;
 
@@ -94,7 +90,7 @@ public final class RoutesImpl {
     private interface RoutesService {
         @Post("/route/matrix/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<RoutesRequestRouteMatrixResponse> requestRouteMatrix(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
@@ -124,7 +120,7 @@ public final class RoutesImpl {
 
         @Get("/route/matrix/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<RoutesGetRouteMatrixResponse> getRouteMatrix(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
@@ -325,7 +321,7 @@ public final class RoutesImpl {
 
         @Post("/route/directions/batch/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<RoutesRequestRouteDirectionsBatchResponse> requestRouteDirectionsBatch(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
@@ -337,7 +333,7 @@ public final class RoutesImpl {
 
         @Get("/route/directions/batch/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<RoutesGetRouteDirectionsBatchResponse> getRouteDirectionsBatch(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
@@ -500,9 +496,9 @@ public final class RoutesImpl {
      *     for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only
      *     considered for travelMode=truck.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesRequestRouteMatrixResponse> requestRouteMatrixWithResponseAsync(
@@ -528,11 +524,9 @@ public final class RoutesImpl {
             VehicleLoadType vehicleLoadType) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.requestRouteMatrix(
@@ -702,9 +696,9 @@ public final class RoutesImpl {
      *     considered for travelMode=truck.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesRequestRouteMatrixResponse> requestRouteMatrixWithResponseAsync(
@@ -731,11 +725,9 @@ public final class RoutesImpl {
             Context context) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.requestRouteMatrix(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -902,9 +894,9 @@ public final class RoutesImpl {
      *     for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only
      *     considered for travelMode=truck.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginRequestRouteMatrixAsync(
@@ -952,7 +944,7 @@ public final class RoutesImpl {
                                 useTrafficData,
                                 routeType,
                                 vehicleLoadType),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
                 new TypeReferenceRouteMatrixResultPrivate(),
                 new TypeReferenceRouteMatrixResultPrivate());
     }
@@ -1096,9 +1088,9 @@ public final class RoutesImpl {
      *     considered for travelMode=truck.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginRequestRouteMatrixAsync(
@@ -1148,7 +1140,7 @@ public final class RoutesImpl {
                                 routeType,
                                 vehicleLoadType,
                                 context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
                 new TypeReferenceRouteMatrixResultPrivate(),
                 new TypeReferenceRouteMatrixResultPrivate());
     }
@@ -1291,9 +1283,9 @@ public final class RoutesImpl {
      *     for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only
      *     considered for travelMode=truck.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginRequestRouteMatrix(
@@ -1480,9 +1472,9 @@ public final class RoutesImpl {
      *     considered for travelMode=truck.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginRequestRouteMatrix(
@@ -1561,9 +1553,9 @@ public final class RoutesImpl {
      *
      * @param matrixId Matrix id received after the Matrix Route request was accepted successfully.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesGetRouteMatrixResponse> getRouteMatrixWithResponseAsync(String matrixId) {
@@ -1609,9 +1601,9 @@ public final class RoutesImpl {
      * @param matrixId Matrix id received after the Matrix Route request was accepted successfully.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesGetRouteMatrixResponse> getRouteMatrixWithResponseAsync(String matrixId, Context context) {
@@ -1654,16 +1646,16 @@ public final class RoutesImpl {
      *
      * @param matrixId Matrix id received after the Matrix Route request was accepted successfully.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginGetRouteMatrixAsync(String matrixId) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getRouteMatrixWithResponseAsync(matrixId),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
                 new TypeReferenceRouteMatrixResultPrivate(),
                 new TypeReferenceRouteMatrixResultPrivate());
     }
@@ -1698,9 +1690,9 @@ public final class RoutesImpl {
      * @param matrixId Matrix id received after the Matrix Route request was accepted successfully.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginGetRouteMatrixAsync(
@@ -1708,7 +1700,7 @@ public final class RoutesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getRouteMatrixWithResponseAsync(matrixId, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
                 new TypeReferenceRouteMatrixResultPrivate(),
                 new TypeReferenceRouteMatrixResultPrivate());
     }
@@ -1742,9 +1734,9 @@ public final class RoutesImpl {
      *
      * @param matrixId Matrix id received after the Matrix Route request was accepted successfully.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginGetRouteMatrix(String matrixId) {
@@ -1781,9 +1773,9 @@ public final class RoutesImpl {
      * @param matrixId Matrix id received after the Matrix Route request was accepted successfully.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteMatrixResultPrivate, RouteMatrixResultPrivate> beginGetRouteMatrix(
@@ -1932,7 +1924,8 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteMatrixResultPrivate>> requestRouteMatrixSyncWithResponseAsync(
@@ -1958,11 +1951,9 @@ public final class RoutesImpl {
             VehicleLoadType vehicleLoadType) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.requestRouteMatrixSync(
@@ -2135,7 +2126,8 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteMatrixResultPrivate>> requestRouteMatrixSyncWithResponseAsync(
@@ -2162,11 +2154,9 @@ public final class RoutesImpl {
             Context context) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.requestRouteMatrixSync(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -2336,7 +2326,7 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteMatrixResultPrivate> requestRouteMatrixSyncAsync(
@@ -2381,14 +2371,7 @@ public final class RoutesImpl {
                         useTrafficData,
                         routeType,
                         vehicleLoadType)
-                .flatMap(
-                        (Response<RouteMatrixResultPrivate> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2533,7 +2516,7 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteMatrixResultPrivate> requestRouteMatrixSyncAsync(
@@ -2580,14 +2563,7 @@ public final class RoutesImpl {
                         routeType,
                         vehicleLoadType,
                         context)
-                .flatMap(
-                        (Response<RouteMatrixResultPrivate> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2921,7 +2897,7 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Matrix call.
+     * @return this object is returned from a successful Route Matrix call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteMatrixResultPrivate> requestRouteMatrixSyncWithResponse(
@@ -3185,7 +3161,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirections>> getRouteDirectionsWithResponseAsync(
@@ -3234,11 +3211,9 @@ public final class RoutesImpl {
             Double auxiliaryPowerInKw) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.getRouteDirections(
@@ -3507,7 +3482,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirections>> getRouteDirectionsWithResponseAsync(
@@ -3557,11 +3533,9 @@ public final class RoutesImpl {
             Context context) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.getRouteDirections(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -3827,7 +3801,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteDirections> getRouteDirectionsAsync(
@@ -3918,14 +3892,7 @@ public final class RoutesImpl {
                         currentChargeInKwH,
                         maxChargeInKwH,
                         auxiliaryPowerInKw)
-                .flatMap(
-                        (Response<RouteDirections> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4143,7 +4110,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteDirections> getRouteDirectionsAsync(
@@ -4236,14 +4203,7 @@ public final class RoutesImpl {
                         maxChargeInKwH,
                         auxiliaryPowerInKw,
                         context)
-                .flatMap(
-                        (Response<RouteDirections> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4769,7 +4729,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteDirections> getRouteDirectionsWithResponse(
@@ -5093,7 +5053,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirections>> getRouteDirectionsWithAdditionalParametersWithResponseAsync(
@@ -5143,11 +5104,9 @@ public final class RoutesImpl {
             Double auxiliaryPowerInKw) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.getRouteDirectionsWithAdditionalParameters(
@@ -5431,7 +5390,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirections>> getRouteDirectionsWithAdditionalParametersWithResponseAsync(
@@ -5482,11 +5442,9 @@ public final class RoutesImpl {
             Context context) {
         final String accept = "application/json";
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.getRouteDirectionsWithAdditionalParameters(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -5767,7 +5725,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteDirections> getRouteDirectionsWithAdditionalParametersAsync(
@@ -5860,14 +5818,7 @@ public final class RoutesImpl {
                         currentChargeInKwH,
                         maxChargeInKwH,
                         auxiliaryPowerInKw)
-                .flatMap(
-                        (Response<RouteDirections> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6099,7 +6050,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteDirections> getRouteDirectionsWithAdditionalParametersAsync(
@@ -6194,14 +6145,7 @@ public final class RoutesImpl {
                         maxChargeInKwH,
                         auxiliaryPowerInKw,
                         context)
-                .flatMap(
-                        (Response<RouteDirections> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6757,7 +6701,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions call.
+     * @return this object is returned from a successful Route Directions call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteDirections> getRouteDirectionsWithAdditionalParametersWithResponse(
@@ -7025,7 +6969,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Reachable Range call.
+     * @return this object is returned from a successful Route Reachable Range call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteRangeResult>> getRouteRangeWithResponseAsync(
@@ -7067,11 +7012,9 @@ public final class RoutesImpl {
         String queryConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
                 context ->
                         service.getRouteRange(
@@ -7287,7 +7230,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Reachable Range call.
+     * @return this object is returned from a successful Route Reachable Range call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteRangeResult>> getRouteRangeWithResponseAsync(
@@ -7330,11 +7274,9 @@ public final class RoutesImpl {
         String queryConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
         List<String> avoidConverted =
-                Optional.ofNullable(avoid)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (avoid == null)
+                        ? new ArrayList<>()
+                        : avoid.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return service.getRouteRange(
                 this.client.getHost(),
                 this.client.getClientId(),
@@ -7547,7 +7489,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Reachable Range call.
+     * @return this object is returned from a successful Route Reachable Range call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteRangeResult> getRouteRangeAsync(
@@ -7620,14 +7563,7 @@ public final class RoutesImpl {
                         currentChargeInKwH,
                         maxChargeInKwH,
                         auxiliaryPowerInKw)
-                .flatMap(
-                        (Response<RouteRangeResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7801,7 +7737,8 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Reachable Range call.
+     * @return this object is returned from a successful Route Reachable Range call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteRangeResult> getRouteRangeAsync(
@@ -7876,14 +7813,7 @@ public final class RoutesImpl {
                         maxChargeInKwH,
                         auxiliaryPowerInKw,
                         context)
-                .flatMap(
-                        (Response<RouteRangeResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -8303,7 +8233,7 @@ public final class RoutesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Reachable Range call.
+     * @return this object is returned from a successful Route Reachable Range call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteRangeResult> getRouteRangeWithResponse(
@@ -8480,9 +8410,10 @@ public final class RoutesImpl {
      * @param routeDirectionsBatchQueries The list of route directions queries/requests to process. The list can contain
      *     a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesRequestRouteDirectionsBatchResponse> requestRouteDirectionsBatchWithResponseAsync(
@@ -8600,9 +8531,10 @@ public final class RoutesImpl {
      *     a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesRequestRouteDirectionsBatchResponse> requestRouteDirectionsBatchWithResponseAsync(
@@ -8717,9 +8649,10 @@ public final class RoutesImpl {
      * @param routeDirectionsBatchQueries The list of route directions queries/requests to process. The list can contain
      *     a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -8727,7 +8660,7 @@ public final class RoutesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.requestRouteDirectionsBatchWithResponseAsync(format, routeDirectionsBatchQueries),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
                 new TypeReferenceRouteDirectionsBatchResultPrivate(),
                 new TypeReferenceRouteDirectionsBatchResultPrivate());
     }
@@ -8832,9 +8765,10 @@ public final class RoutesImpl {
      *     a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -8843,7 +8777,7 @@ public final class RoutesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.requestRouteDirectionsBatchWithResponseAsync(format, routeDirectionsBatchQueries, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
                 new TypeReferenceRouteDirectionsBatchResultPrivate(),
                 new TypeReferenceRouteDirectionsBatchResultPrivate());
     }
@@ -8947,9 +8881,10 @@ public final class RoutesImpl {
      * @param routeDirectionsBatchQueries The list of route directions queries/requests to process. The list can contain
      *     a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -9057,9 +8992,10 @@ public final class RoutesImpl {
      *     a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -9114,9 +9050,10 @@ public final class RoutesImpl {
      *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesGetRouteDirectionsBatchResponse> getRouteDirectionsBatchWithResponseAsync(String batchId) {
@@ -9179,9 +9116,10 @@ public final class RoutesImpl {
      * @param batchId Batch id for querying the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoutesGetRouteDirectionsBatchResponse> getRouteDirectionsBatchWithResponseAsync(
@@ -9242,9 +9180,10 @@ public final class RoutesImpl {
      *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -9252,7 +9191,7 @@ public final class RoutesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getRouteDirectionsBatchWithResponseAsync(batchId),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, Context.NONE),
                 new TypeReferenceRouteDirectionsBatchResultPrivate(),
                 new TypeReferenceRouteDirectionsBatchResultPrivate());
     }
@@ -9304,9 +9243,10 @@ public final class RoutesImpl {
      * @param batchId Batch id for querying the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link PollerFlux} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -9314,7 +9254,7 @@ public final class RoutesImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.getRouteDirectionsBatchWithResponseAsync(batchId, context),
-                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline(), null, context),
                 new TypeReferenceRouteDirectionsBatchResultPrivate(),
                 new TypeReferenceRouteDirectionsBatchResultPrivate());
     }
@@ -9365,9 +9305,10 @@ public final class RoutesImpl {
      *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -9422,9 +9363,10 @@ public final class RoutesImpl {
      * @param batchId Batch id for querying the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the {@link SyncPoller} for polling of this object is returned from a successful Route Directions Batch
+     *     service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<RouteDirectionsBatchResultPrivate, RouteDirectionsBatchResultPrivate>
@@ -9480,7 +9422,8 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirectionsBatchResultPrivate>> requestRouteDirectionsBatchSyncWithResponseAsync(
@@ -9547,7 +9490,8 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteDirectionsBatchResultPrivate>> requestRouteDirectionsBatchSyncWithResponseAsync(
@@ -9611,20 +9555,14 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteDirectionsBatchResultPrivate> requestRouteDirectionsBatchSyncAsync(
             JsonFormat format, BatchRequest routeDirectionsBatchQueries) {
         return requestRouteDirectionsBatchSyncWithResponseAsync(format, routeDirectionsBatchQueries)
-                .flatMap(
-                        (Response<RouteDirectionsBatchResultPrivate> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -9676,20 +9614,14 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteDirectionsBatchResultPrivate> requestRouteDirectionsBatchSyncAsync(
             JsonFormat format, BatchRequest routeDirectionsBatchQueries, Context context) {
         return requestRouteDirectionsBatchSyncWithResponseAsync(format, routeDirectionsBatchQueries, context)
-                .flatMap(
-                        (Response<RouteDirectionsBatchResultPrivate> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -9797,7 +9729,8 @@ public final class RoutesImpl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return this object is returned from a successful Route Directions Batch service call along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteDirectionsBatchResultPrivate> requestRouteDirectionsBatchSyncWithResponse(

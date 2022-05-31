@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.23.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.27.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <!-- END: com.azure.maps.route.dependency -->
     <dependency>

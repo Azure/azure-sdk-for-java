@@ -45,7 +45,11 @@ public final class TravelMode extends ExpandableStringEnum<TravelMode> {
         return fromString(name, TravelMode.class);
     }
 
-    /** @return known TravelMode values. */
+    /**
+     * Gets known TravelMode values.
+     *
+     * @return known TravelMode values.
+     */
     public static Collection<TravelMode> values() {
         return values(TravelMode.class);
     }

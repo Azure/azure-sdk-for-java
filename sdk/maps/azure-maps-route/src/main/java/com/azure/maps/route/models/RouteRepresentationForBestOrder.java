@@ -30,7 +30,11 @@ public final class RouteRepresentationForBestOrder extends ExpandableStringEnum<
         return fromString(name, RouteRepresentationForBestOrder.class);
     }
 
-    /** @return known RouteRepresentationForBestOrder values. */
+    /**
+     * Gets known RouteRepresentationForBestOrder values.
+     *
+     * @return known RouteRepresentationForBestOrder values.
+     */
     public static Collection<RouteRepresentationForBestOrder> values() {
         return values(RouteRepresentationForBestOrder.class);
     }

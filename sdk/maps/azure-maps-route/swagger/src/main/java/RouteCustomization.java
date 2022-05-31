@@ -68,7 +68,7 @@ public class RouteCustomization extends Customization {
         ClassCustomization classCustomization = models.getClass("RouteLeg");
         classCustomization.removeMethod("getPoints");
         classCustomization.addMethod(getPointsMethod, Arrays.asList("java.util.List",
-            "java.util.stream.Collectors", "java.util.Arrays"));
+            "java.util.stream.Collectors", "java.util.Arrays", "com.azure.core.models.GeoPosition"));
     }
 
     // Customizes the RouteInstruction class
