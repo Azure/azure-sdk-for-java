@@ -22,13 +22,12 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
@@ -39,7 +38,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,13 +58,13 @@ public class OpenTelemetryHttpPolicyTests {
     private static final String X_MS_REQUEST_ID_1 = "response id 1";
     private static final String X_MS_REQUEST_ID_2 = "response id 2";
     private static final int RESPONSE_STATUS_CODE = 201;
-    private TestExporter exporter;
+    private InMemorySpanExporter exporter;
     private Tracer tracer;
     private static final String SPAN_NAME = "foo";
 
     @BeforeEach
     public void setUp(TestInfo testInfo) {
-        exporter = new TestExporter();
+        exporter = InMemorySpanExporter.create();
         SdkTracerProvider otelProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
@@ -99,7 +97,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpResponse response =  createHttpPipeline(tracer).send(request, tracingContext).block();
 
         // Assert
-        List<SpanData> exportedSpans = exporter.getSpans();
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         // rest proxy span is not exported as global otel is not configured
         assertEquals(1, exportedSpans.size());
 
@@ -156,7 +154,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpResponse response =  createHttpPipeline(tracer).send(request).block();
 
         // Assert
-        List<SpanData> exportedSpans = exporter.getSpans();
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         // rest proxy span is not exported as global otel is not configured
         assertEquals(0, exportedSpans.size());
         assertTrue(samplerCalled.get());
@@ -168,7 +166,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpResponse response =  createHttpPipeline(tracer, new RequestIdPolicy()).send(request).block();
 
         // Assert
-        List<SpanData> exportedSpans = exporter.getSpans();
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(1, exportedSpans.size());
 
         assertEquals("HTTP PUT", exportedSpans.get(0).getName());
@@ -226,7 +224,7 @@ public class OpenTelemetryHttpPolicyTests {
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
-        List<SpanData> exportedSpans = exporter.getSpans();
+        List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(2, exportedSpans.size());
 
         SpanData try503 = exportedSpans.get(0);
@@ -281,27 +279,4 @@ public class OpenTelemetryHttpPolicyTests {
         }
     }
 
-    static class TestExporter implements SpanExporter {
-
-        private final List<SpanData> exportedSpans = new ArrayList<>();
-        @Override
-        public CompletableResultCode export(Collection<SpanData> spans) {
-            exportedSpans.addAll(spans);
-            return CompletableResultCode.ofSuccess();
-        }
-
-        @Override
-        public CompletableResultCode flush() {
-            return CompletableResultCode.ofSuccess();
-        }
-
-        @Override
-        public CompletableResultCode shutdown() {
-            return CompletableResultCode.ofSuccess();
-        }
-
-        public List<SpanData> getSpans() {
-            return exportedSpans;
-        }
-    }
 }

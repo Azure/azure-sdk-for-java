@@ -188,7 +188,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     case ON_ERROR:
                         Throwable throwable = signal.getThrowable();
                         if (pagedFluxOptions.getCosmosAsyncClient() != null &&
-                            Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) &&
+                            BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()) &&
                             throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
                             // not adding diagnostics on trace event for exception as this information is already there as
@@ -232,7 +232,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         }
 
                         if (pagedFluxOptions.getCosmosAsyncClient() != null &&
-                            Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()))) {
+                            BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) {
                             if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
                                 fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), HttpConstants.StatusCodes.OK,
                                     pagedFluxOptions.getContainerId(),

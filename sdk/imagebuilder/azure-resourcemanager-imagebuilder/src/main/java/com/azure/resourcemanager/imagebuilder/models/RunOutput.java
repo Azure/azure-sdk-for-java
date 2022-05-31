@@ -16,14 +16,14 @@ public interface RunOutput {
     String id();
 
     /**
-     * Gets the name property: Resource name.
+     * Gets the name property: The name of the resource.
      *
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the type property: Resource type.
+     * Gets the type property: The type of the resource.
      *
      * @return the type value.
      */
