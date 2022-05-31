@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class JedisRedisCheckpointStore implements CheckpointStore {
 
-    JedisPool jedisPool = new JedisPool(); // Look into other constructors that need config data to initalize JedisPool
+    private JedisPool jedisPool = new JedisPool(); // Look into other constructors that need config data to initalize JedisPool
 
     /**
      * This method returns the list of partitions that were owned successfully.
