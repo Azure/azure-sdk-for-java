@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/copyright/bounding/json?api-version=2.1&mincoordinates=-100.0%2C-100.0&maxcoordinates=-100.0%2C-100.0&text=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 15:40:45 GMT",
+      "content-length" : "147",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 84D810FFFB3E4BFC9EDDCFFC54350AED Ref B: SIN30EDGE0309 Ref C: 2022-05-31T15:40:46Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided coordinates in maxcoordinates are invalid, out of range, or not in the expected format\"}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
