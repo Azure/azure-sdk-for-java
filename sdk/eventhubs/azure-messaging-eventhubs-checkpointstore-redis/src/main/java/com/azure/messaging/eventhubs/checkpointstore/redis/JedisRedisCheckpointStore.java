@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs.checkpointstore.redis;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import redis.clients.jedis.JedisPool;
@@ -18,8 +16,8 @@ import java.util.List;
  */
 public class JedisRedisCheckpointStore implements CheckpointStore {
 
-    private final JedisPool jedisPool = new JedisPool(); // Look into other constructors that need config data to initalize JedisPool
-    private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
+    private JedisPool jedisPool = new JedisPool(); // Look into other constructors that need config data to initalize JedisPool
+
     /**
      * This method returns the list of partitions that were owned successfully.
      *
@@ -65,21 +63,21 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         //Check if the checkpoint is valid - checkpoint is invalid if it is null or if sequence number is null and offset is null
         if (!isCheckpointValid(checkpoint)) {
-            throw LOGGER.logExceptionAsWarning(Exceptions.propagate(new IllegalStateException("Checkpoint is either null, or both the offset and the sequence number are null.")));
+            //TO DO 1: Throw exception
+            System.out.println("Checkpoint is not valid.");
         }
 
-        //TO DO 1: Get access to the Jedis resource
+        //TO DO 2: Get access to the Jedis resource
 
         //Getting access to the Partition ID for the current checkpoint
-
         String partitionID = checkpoint.getPartitionId();
         String eventHubName = checkpoint.getEventHubName();
         String fullyQualifiedNamespace = checkpoint.getFullyQualifiedNamespace();
         String consumerGroup = checkpoint.getConsumerGroup();
 
-        //TO DO 2: Use the above information to create a format to store each checkpoint and its associated metadata
+        //TO DO 3: Use the above information to create a format to store each checkpoint and its associated metadata
 
-        //TO DO 3: Add the above metadata to the Jedis Resource
+        //TO DO 4: Add the above metadata to the Jedis Resource
 
         return null;
     }
