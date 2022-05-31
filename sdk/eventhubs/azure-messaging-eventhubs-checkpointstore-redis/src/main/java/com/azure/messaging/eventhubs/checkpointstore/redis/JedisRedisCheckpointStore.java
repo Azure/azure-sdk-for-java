@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * This method updates the checkpoint in the Jedis resource for a given partition.
      *
      * @param checkpoint Checkpoint information for this partition
-     * @return The new eTag of the checkpoint that has been successfully added.
+     * @return Null
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
@@ -70,20 +71,17 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
 
         //TO DO 2: Get access to the Jedis resource
-
-        //Getting access to the Partition ID for the current checkpoint
-        //String partitionID = checkpoint.getPartitionId();
-        //String eventHubName = checkpoint.getEventHubName();
-        //String fullyQualifiedNamespace = checkpoint.getFullyQualifiedNamespace();
-        //String consumerGroup = checkpoint.getConsumerGroup();
-
+        Jedis jedis = jedisPool.getResource();
+        String key = keyBuilder(checkpoint);
         //TO DO 3: Use the above information to create a format to store each checkpoint and its associated metadata
 
         //TO DO 4: Add the above metadata to the Jedis Resource
-
+        jedisPool.returnResource(jedis);
         return null;
     }
-
+    private String keyBuilder(Checkpoint checkpoint) {
+        return checkpoint.getFullyQualifiedNamespace() + checkpoint.getEventHubName() + checkpoint.getConsumerGroup() + checkpoint.getPartitionId();
+    }
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
     }
