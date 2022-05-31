@@ -395,6 +395,12 @@ public final class Utils {
             storageProfile.append("\n\t\t\tCaching: ").append(resource.storageProfile().osDisk().caching());
             storageProfile.append("\n\t\t\tCreateOption: ").append(resource.storageProfile().osDisk().createOption());
             storageProfile.append("\n\t\t\tDiskSizeGB: ").append(resource.storageProfile().osDisk().diskSizeGB());
+            if (resource.storageProfile().osDisk().managedDisk() != null) {
+                if (resource.storageProfile().osDisk().managedDisk().diskEncryptionSet() != null) {
+                    storageProfile.append("\n\t\t\tDiskEncryptionSet Id: ")
+                        .append(resource.storageProfile().osDisk().managedDisk().diskEncryptionSet().id());
+                }
+            }
             if (resource.storageProfile().osDisk().image() != null) {
                 storageProfile.append("\n\t\t\tImage Uri: ").append(resource.storageProfile().osDisk().image().uri());
             }
@@ -429,6 +435,9 @@ public final class Utils {
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
                         storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
+                        if (disk.managedDisk().diskEncryptionSet() != null) {
+                            storageProfile.append("\n\t\t\tDiskEncryptionSet Id: ").append(disk.managedDisk().diskEncryptionSet().id());
+                        }
                     }
                 } else {
                     if (disk.vhd().uri() != null) {
