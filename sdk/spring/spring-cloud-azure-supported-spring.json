@@ -2,18 +2,18 @@
   {
     "current": true,
     "spring-boot-version": "2.7.0",
-    "spring-cloud-version": "2021.0.3-SNAPSHOT",
+    "spring-cloud-version": "2021.0.3",
     "releaseStatus": "GENERAL_AVAILABILITY",
     "snapshot": false,
-    "supportStatus": "supported"
+    "supportStatus": "SUPPORTED"
   },
   {
     "current": false,
     "spring-boot-version": "2.6.8",
-    "spring-cloud-version": "2021.0.2",
+    "spring-cloud-version": "2021.0.3",
     "releaseStatus": "GENERAL_AVAILABILITY",
     "snapshot": false,
-    "supportStatus": "supported"
+    "supportStatus": "SUPPORTED"
   },
   {
     "current": false,
@@ -21,6 +21,6 @@
     "spring-cloud-version": "2020.0.5",
     "releaseStatus": "GENERAL_AVAILABILITY",
     "snapshot": false,
-    "supportStatus": "supported"
+    "supportStatus": "SUPPORTED"
   }
 ]

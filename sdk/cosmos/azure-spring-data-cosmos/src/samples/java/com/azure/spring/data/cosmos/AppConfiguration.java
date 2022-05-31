@@ -40,6 +40,9 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
+    @Value("${azure.cosmos.maxDegreeOfParallelism}")
+    private int maxDegreeOfParallelism;
+
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
@@ -57,6 +60,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
+                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
