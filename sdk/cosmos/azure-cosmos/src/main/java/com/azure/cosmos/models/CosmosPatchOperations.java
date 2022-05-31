@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -256,10 +257,12 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    // NOTE returning this patchOperations means any
+    // modifications - like adding new entries is still
+    // thread-safe - but enumerating over the collection is not
+    // unless synchronized
     List<PatchOperation> getPatchOperations() {
-        synchronized (this.patchOperations) {
-            return new ArrayList<>(this.patchOperations);
-        }
+        return this.patchOperations;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
