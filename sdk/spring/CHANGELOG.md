@@ -3,12 +3,21 @@
 ## 4.3.0-beta.1 (Unreleased)
 
 ### Features Added
+- GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
++ Add `AzureStorageConfiguration` to make Azure storage service share common property configuration.
+    +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
+
 
 
 ## 4.2.0 (2022-05-26)
