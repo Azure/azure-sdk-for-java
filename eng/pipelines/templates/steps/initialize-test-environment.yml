@@ -71,7 +71,7 @@ steps:
     displayName: 'Generate FromSource POM and directories for sparse checkout'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
-      arguments: '--set-pipeline-variable SparseCheckoutDirectories --project-list $(ProjectList)'
+      arguments: '--project-list $(ProjectList)'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
