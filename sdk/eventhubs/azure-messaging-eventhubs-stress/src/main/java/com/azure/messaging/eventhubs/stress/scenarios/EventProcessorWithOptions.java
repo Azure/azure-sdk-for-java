@@ -50,16 +50,16 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     public void run() {
         final String storageConnStr = options.get(Constants.STORAGE_CONNECTION_STRING);
         final String containerName = options.get(Constants.STORAGE_CONTAINER_NAME);
-        final String eventHubConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        final String eventHub = options.get(Constants.EVENT_HUB_NAME);
-        final String consumerGroup = options.get(Constants.EVENT_HUB_CONSUMER_GROUP, EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME);
+        final String eventHubConnStr = options.get(Constants.EVENTHUBS_CONNECTION_STRING);
+        final String eventHub = options.get(Constants.EVENTHUBS_EVENT_HUB_NAME);
+        final String consumerGroup = options.get(Constants.EVENTHUBS_CONSUMER_GROUP, EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME);
 
         Objects.requireNonNull(options.get(Constants.UPDATE_CHECKPOINT), "UPDATE_CHECKPOINT argument required. value should be YES or NO");
         Objects.requireNonNull(options.get(Constants.NEED_SEND_EVENT_HUB), "NEED_SEND_EVENT_HUB argument required. value should be YES or NO");
         final boolean updateCheckpoint = "YES".equalsIgnoreCase(options.get(Constants.UPDATE_CHECKPOINT));
         final boolean needSendEventHub = "YES".equalsIgnoreCase(options.get(Constants.NEED_SEND_EVENT_HUB));
-        final String writeEventHub = options.get(Constants.SECOND_EVENT_HUB_NAME);
-        final String writeEventHubConnStr = options.get(Constants.SECOND_EVENT_HUBS_CONNECTION_STRING);
+        final String writeEventHubConnStr = options.get(Constants.SECOND_EVENTHUBS_CONNECTION_STRING);
+        final String writeEventHub = options.get(Constants.SECOND_EVENTHUBS_EVENT_HUB_NAME);
 
         EventHubProducerClient producerClient = new EventHubClientBuilder()
             .connectionString(writeEventHubConnStr, writeEventHub)

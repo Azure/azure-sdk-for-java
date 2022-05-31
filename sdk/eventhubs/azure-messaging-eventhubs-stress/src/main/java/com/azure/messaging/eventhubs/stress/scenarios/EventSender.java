@@ -24,8 +24,8 @@ public class EventSender extends EventHubsScenario {
 
     @Override
     public void run() {
-        final String eventHubConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        final String eventHub = options.get(Constants.EVENT_HUB_NAME);
+        final String eventHubConnStr = options.get(Constants.EVENTHUBS_CONNECTION_STRING);
+        final String eventHub = options.get(Constants.EVENTHUBS_EVENT_HUB_NAME);
 
         final byte[] payload = new byte[PAYLOAD_SIZE];
         (new Random()).nextBytes(payload);

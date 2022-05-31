@@ -98,10 +98,9 @@ var storageAccountId = storageAccount.id
 var storageAccountVersion = storageAccount.apiVersion
 var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${endpointSuffix};AccountKey=${listKeys(storageAccountId, storageAccountVersion).keys[0].value}'
 
-output RESOURCE_GROUP string = resourceGroup().name
-output EVENT_HUB_NAME string = eventHubName
-output EVENT_HUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
+output EVENTHUBS_EVENT_HUB_NAME string = eventHubName
+output EVENTHUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
 output STORAGE_CONTAINER_NAME string = storageContainerName
 output STORAGE_CONNECTION_STRING string = '"${storageConnectionString}"'
-output SECOND_EVENT_HUB_NAME string = secondEventHubName
-output SECOND_EVENT_HUBS_CONNECTION_STRING string = '"${secondEventHubsConnectionString}"'
+output SECOND_EVENTHUBS_EVENT_HUB_NAME string = secondEventHubName
+output SECOND_EVENTHUBS_CONNECTION_STRING string = '"${secondEventHubsConnectionString}"'

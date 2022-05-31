@@ -28,8 +28,8 @@ public class EventProcessor extends EventHubsScenario {
             .containerName(storageContainer)
             .buildAsyncClient();
 
-        final String eventHubsConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        final String eventHub = options.get(Constants.EVENT_HUB_NAME);
+        final String eventHubsConnStr = options.get(Constants.EVENTHUBS_CONNECTION_STRING);
+        final String eventHub = options.get(Constants.EVENTHUBS_EVENT_HUB_NAME);
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
