@@ -21,6 +21,7 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
         classCustomization = libraryCustomization.getPackage(MODELS_PACKAGE)
                 .getClass(CLASS_NAME);
         customizeClassDesc(classCustomization);
+        changeClassAnnotation(classCustomization);
         addConstructor(classCustomization);
         customizeTokenVariable(classCustomization);
         customizeAppIdVariable(classCustomization);
@@ -33,6 +34,11 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
                          "com.azure.communication.identity.CommunicationIdentityClient")
                  .getJavadoc()
                  .setDescription("Options class for configuring the {@link CommunicationIdentityAsyncClient#getTokenForTeamsUser(GetTokenForTeamsUserOptions)} and {@link CommunicationIdentityClient#getTokenForTeamsUser(GetTokenForTeamsUserOptions)} methods.");
+    }
+
+    private void changeClassAnnotation(ClassCustomization classCustomization){
+        classCustomization.removeAnnotation("@Fluent")
+                .addAnnotation("@Immutable");
     }
 
     private static String joinWithNewline(String... lines) {
