@@ -56,6 +56,9 @@ parameters:
 - name: EnableBatchRelease
   type: boolean
   default: false
+- name: UseEsrpRelease
+  type: boolean
+  default: true
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
@@ -121,6 +124,7 @@ stages:
           TestPipeline: ${{ parameters.TestPipeline }}
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
     - ${{ else }}:
       - template: archetype-java-release.yml
         parameters:
@@ -132,4 +136,5 @@ stages:
           TestPipeline: ${{ parameters.TestPipeline }}
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
 
