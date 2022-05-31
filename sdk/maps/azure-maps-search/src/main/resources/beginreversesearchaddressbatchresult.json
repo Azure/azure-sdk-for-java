@@ -1,0 +1,266 @@
+{
+    "batchSummary" : {
+      "successfulRequests" : 3,
+      "totalRequests" : 3
+    },
+    "batchItems" : [ {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : null,
+          "queryType" : null,
+          "queryTime" : 6,
+          "numResults" : 1,
+          "top" : null,
+          "skip" : null,
+          "totalResults" : null,
+          "fuzzyLevel" : null,
+          "geoBias" : null
+        },
+        "addresses" : [ {
+          "address" : {
+            "buildingNumber" : "5",
+            "street" : "Esplanade des Ouvriers de la Tour Eiffel",
+            "crossStreet" : null,
+            "streetNumber" : "5",
+            "routeNumbers" : [ ],
+            "streetName" : "Esplanade des Ouvriers de la Tour Eiffel",
+            "streetNameAndNumber" : "5 Esplanade des Ouvriers de la Tour Eiffel",
+            "municipality" : "Paris",
+            "municipalitySubdivision" : "7�me Arrondissement",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "Paris",
+            "countrySubdivision" : "�le-de-France",
+            "postalCode" : "75007",
+            "extendedPostalCode" : null,
+            "countryCode" : "FR",
+            "country" : "France",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "5 Esplanade des Ouvriers de la Tour Eiffel, 75007 Paris",
+            "countrySubdivisionName" : null,
+            "localName" : "Paris",
+            "boundingBox" : {
+              "topLeft" : {
+                "latitude" : 48.858576,
+                "longitude" : 2.294559,
+                "lon" : 2.294559,
+                "lat" : 48.858576
+              },
+              "bottomRight" : {
+                "latitude" : 48.858321,
+                "longitude" : 2.295027,
+                "lon" : 2.295027,
+                "lat" : 48.858321
+              },
+              "topRight" : {
+                "latitude" : 48.858576,
+                "longitude" : 2.295027,
+                "lon" : 2.295027,
+                "lat" : 48.858576
+              },
+              "bottomLeft" : {
+                "latitude" : 48.858321,
+                "longitude" : 2.294559,
+                "lon" : 2.294559,
+                "lat" : 48.858321
+              },
+              "northEast" : {
+                "latitude" : 48.858576,
+                "longitude" : 2.295027,
+                "lon" : 2.295027,
+                "lat" : 48.858576
+              },
+              "southWest" : {
+                "latitude" : 48.858321,
+                "longitude" : 2.294559,
+                "lon" : 2.294559,
+                "lat" : 48.858321
+              }
+            }
+          },
+          "position" : {
+            "latitude" : 48.858582,
+            "longitude" : 2.294525,
+            "lon" : 2.294525,
+            "lat" : 48.858582
+          },
+          "roadUse" : null,
+          "matchType" : null
+        } ]
+      }
+    }, {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : null,
+          "queryType" : null,
+          "queryTime" : 6,
+          "numResults" : 1,
+          "top" : null,
+          "skip" : null,
+          "totalResults" : null,
+          "fuzzyLevel" : null,
+          "geoBias" : null
+        },
+        "addresses" : [ {
+          "address" : {
+            "buildingNumber" : "16000",
+            "street" : "Northeast 31st Street",
+            "crossStreet" : null,
+            "streetNumber" : "16000",
+            "routeNumbers" : [ ],
+            "streetName" : "Northeast 31st Street",
+            "streetNameAndNumber" : "16000 Northeast 31st Street",
+            "municipality" : "Redmond",
+            "municipalitySubdivision" : null,
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98052",
+            "extendedPostalCode" : null,
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "16000 Northeast 31st Street, Bellevue, WA 98052",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Bellevue",
+            "boundingBox" : {
+              "topLeft" : {
+                "latitude" : 47.638953,
+                "longitude" : -122.126584,
+                "lon" : -122.126584,
+                "lat" : 47.638953
+              },
+              "bottomRight" : {
+                "latitude" : 47.638821,
+                "longitude" : -122.126573,
+                "lon" : -122.126573,
+                "lat" : 47.638821
+              },
+              "topRight" : {
+                "latitude" : 47.638953,
+                "longitude" : -122.126573,
+                "lon" : -122.126573,
+                "lat" : 47.638953
+              },
+              "bottomLeft" : {
+                "latitude" : 47.638821,
+                "longitude" : -122.126584,
+                "lon" : -122.126584,
+                "lat" : 47.638821
+              },
+              "northEast" : {
+                "latitude" : 47.638953,
+                "longitude" : -122.126573,
+                "lon" : -122.126573,
+                "lat" : 47.638953
+              },
+              "southWest" : {
+                "latitude" : 47.638821,
+                "longitude" : -122.126584,
+                "lon" : -122.126584,
+                "lat" : 47.638821
+              }
+            }
+          },
+          "position" : {
+            "latitude" : 47.638954,
+            "longitude" : -122.126572,
+            "lon" : -122.126572,
+            "lat" : 47.638954
+          },
+          "roadUse" : null,
+          "matchType" : null
+        } ]
+      }
+    }, {
+      "statusCode" : 200,
+      "error" : null,
+      "result" : {
+        "summary" : {
+          "query" : null,
+          "queryType" : null,
+          "queryTime" : 9,
+          "numResults" : 1,
+          "top" : null,
+          "skip" : null,
+          "totalResults" : null,
+          "fuzzyLevel" : null,
+          "geoBias" : null
+        },
+        "addresses" : [ {
+          "address" : {
+            "buildingNumber" : "410",
+            "street" : "Thomas Street",
+            "crossStreet" : null,
+            "streetNumber" : "410",
+            "routeNumbers" : [ ],
+            "streetName" : "Thomas Street",
+            "streetNameAndNumber" : "410 Thomas Street",
+            "municipality" : "Seattle",
+            "municipalitySubdivision" : "Queen Anne",
+            "countryTertiarySubdivision" : null,
+            "countrySecondarySubdivision" : "King",
+            "countrySubdivision" : "WA",
+            "postalCode" : "98109",
+            "extendedPostalCode" : null,
+            "countryCode" : "US",
+            "country" : "United States",
+            "countryCodeISO3" : null,
+            "freeformAddress" : "410 Thomas Street, Seattle, WA 98109",
+            "countrySubdivisionName" : "Washington",
+            "localName" : "Seattle",
+            "boundingBox" : {
+              "topLeft" : {
+                "latitude" : 47.620954,
+                "longitude" : -122.348498,
+                "lon" : -122.348498,
+                "lat" : 47.620954
+              },
+              "bottomRight" : {
+                "latitude" : 47.620944,
+                "longitude" : -122.347601,
+                "lon" : -122.347601,
+                "lat" : 47.620944
+              },
+              "topRight" : {
+                "latitude" : 47.620954,
+                "longitude" : -122.347601,
+                "lon" : -122.347601,
+                "lat" : 47.620954
+              },
+              "bottomLeft" : {
+                "latitude" : 47.620944,
+                "longitude" : -122.348498,
+                "lon" : -122.348498,
+                "lat" : 47.620944
+              },
+              "northEast" : {
+                "latitude" : 47.620954,
+                "longitude" : -122.347601,
+                "lon" : -122.347601,
+                "lat" : 47.620954
+              },
+              "southWest" : {
+                "latitude" : 47.620944,
+                "longitude" : -122.348498,
+                "lon" : -122.348498,
+                "lat" : 47.620944
+              }
+            }
+          },
+          "position" : {
+            "latitude" : 47.620945,
+            "longitude" : -122.348175,
+            "lon" : -122.348175,
+            "lat" : 47.620945
+          },
+          "roadUse" : null,
+          "matchType" : null
+        } ]
+      }
+    } ],
+    "batchId" : "7182fe38-603e-404a-aca0-10ee3c42f2a6"
+  }

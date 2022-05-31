@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/search/address/structured/json?api-version=1.0&countryCode=US",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 12 Apr 2022 06:10:33 GMT",
+      "content-length" : "671",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: F648F5FFCAE74E6CACA299347A9B1832 Ref B: SIN30EDGE0113 Ref C: 2022-04-12T06:10:33Z",
+      "vary" : "Accept-Encoding",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"summary\":{\"query\":\"us\",\"queryType\":\"NON_NEAR\",\"queryTime\":4,\"numResults\":1,\"offset\":0,\"totalResults\":8,\"fuzzyLevel\":1},\"results\":[{\"type\":\"Geography\",\"id\":\"US/GEO/p0/107779\",\"score\":2.7289803028,\"entityType\":\"Country\",\"address\":{\"countryCode\":\"US\",\"country\":\"United States\",\"countryCodeISO3\":\"USA\",\"freeformAddress\":\"United States\"},\"position\":{\"lat\":38.89206,\"lon\":-77.01991},\"viewport\":{\"topLeftPoint\":{\"lat\":71.39048,\"lon\":172.44475},\"btmRightPoint\":{\"lat\":18.91079,\"lon\":-66.95}},\"boundingBox\":{\"topLeftPoint\":{\"lat\":71.39048,\"lon\":172.44475},\"btmRightPoint\":{\"lat\":18.91079,\"lon\":-66.95}},\"dataSources\":{\"geometry\":{\"id\":\"8cc529f8-a9ac-46a3-91ee-2e3b6bcb2e5b\"}}}]}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

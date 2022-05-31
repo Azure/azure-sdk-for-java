@@ -1,0 +1,54 @@
+{
+    "summary": {
+        "query": "us",
+        "queryType": "NON_NEAR",
+        "queryTime": 14,
+        "numResults": 1,
+        "offset": 0,
+        "totalResults": 9,
+        "fuzzyLevel": 1
+    },
+    "results": [
+        {
+            "type": "Geography",
+            "id": "US/GEO/p0/64918",
+            "score": 2.7289803028,
+            "entityType": "Country",
+            "address": {
+                "countryCode": "US",
+                "country": "United States",
+                "countryCodeISO3": "USA",
+                "freeformAddress": "United States"
+            },
+            "position": {
+                "lat": 38.89206,
+                "lon": -77.01991
+            },
+            "viewport": {
+                "topLeftPoint": {
+                    "lat": 71.39048,
+                    "lon": 172.44475
+                },
+                "btmRightPoint": {
+                    "lat": 18.91079,
+                    "lon": -66.95
+                }
+            },
+            "boundingBox": {
+                "topLeftPoint": {
+                    "lat": 71.39048,
+                    "lon": 172.44475
+                },
+                "btmRightPoint": {
+                    "lat": 18.91079,
+                    "lon": -66.95
+                }
+            },
+            "dataSources": {
+                "geometry": {
+                    "id": "8cc529f8-a9ac-46a3-91ee-2e3b6bcb2e5b"
+                }
+            }
+        }
+    ]
+}
