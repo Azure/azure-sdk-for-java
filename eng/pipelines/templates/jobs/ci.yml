@@ -74,7 +74,6 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
             Paths:
-              - 'sdk/${{ parameters.ServiceDirectory }}'
               - '**/*.xml'
               - '**/*.md'
               - '!sdk/**/test-recordings'
@@ -91,24 +90,26 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      - ${{ parameters.PreBuildSteps }}
-
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
         inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the github service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            Paths: $(CheckoutDirectories)
+            Paths: $(SparseCheckoutDirectories)
             SkipDefaultCheckout: true
+
+      - ${{ parameters.PreBuildSteps }}
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -275,16 +276,18 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
 
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
         inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
 
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          Paths: $(CheckoutDirectories)
+          Paths: $(SparseCheckoutDirectories)
           SkipDefaultCheckout: true
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml

@@ -16,8 +16,6 @@ jobs:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
-                # Checkout Core as it triggers building all SDKs that use code-quality-reports
-                - 'sdk/core'
                 - '**/*.xml'
                 - '!sdk/**/test-recordings'
                 - '!sdk/**/session-records'
@@ -49,17 +47,21 @@ jobs:
               safeName: azurecore
           JobType: 'linting'
 
+      # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
+      # is for FromSource runs or, in the case of code quality reports, a run that needs to build
+      # everything using the latest source. It'll greedily set any service directories as it figures
+      # out what libraries, their dependents and so on, that need to be in ClientFromSourcePom.xml
       - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
+        displayName: 'Generate FromSource POM and directories for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --set-skip-linting-projects SkipLintingProjects --project-list $(ProjectList)'
+          arguments: '--set-pipeline-variable SparseCheckoutDirectories --set-skip-linting-projects SkipLintingProjects --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           SkipDefaultCheckout: true
-          Paths: $(CheckoutDirectories)
+          Paths: $(SparseCheckoutDirectories)
 
       - task: PowerShell@2
         inputs:
