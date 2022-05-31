@@ -55,7 +55,7 @@ jobs:
         displayName: 'Generate FromSource POM and directories for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable SparseCheckoutDirectories --set-skip-linting-projects SkipLintingProjects --project-list $(ProjectList)'
+          arguments: '--set-skip-linting-projects SkipLintingProjects --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
