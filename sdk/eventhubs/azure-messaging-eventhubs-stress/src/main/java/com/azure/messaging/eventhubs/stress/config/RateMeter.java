@@ -3,10 +3,9 @@
 
 package com.azure.messaging.eventhubs.stress.config;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Send metric telemetry periodically
  */
 public class RateMeter {
-    private static final Logger logger = LoggerFactory.getLogger(RateMeter.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RateMeter.class);
 
     private final Map<String, AtomicInteger> rateMap = new ConcurrentHashMap<>();
     private final TelemetryClient telemetryClient;
@@ -52,7 +51,7 @@ public class RateMeter {
                 metricTelemetryList.add(metricTelemetry);
             });
             metricTelemetryList.forEach(metricTelemetry -> {
-                logger.info("Metrics: {Duration: {}, Metric: {}}", periodicDuration, metricTelemetry);
+                LOGGER.info("Metrics: {Duration: {}, Metric: {}}", periodicDuration, metricTelemetry);
                 telemetryClient.trackMetric(metricTelemetry);
             });
         }, periodicDuration.toMillis(), periodicDuration.toMillis(), TimeUnit.MILLISECONDS);

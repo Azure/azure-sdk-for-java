@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.stress.scenarios;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
@@ -19,8 +20,6 @@ import com.azure.messaging.eventhubs.stress.util.Constants;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.microsoft.applicationinsights.core.dependencies.apachecommons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -40,7 +39,7 @@ import java.util.function.Consumer;
  */
 @Service("EventProcessorWithOptions")
 public class EventProcessorWithOptions extends EventHubsScenario {
-    private static final Logger logger = LoggerFactory.getLogger(EventProcessorWithOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventProcessorWithOptions.class);
 
     private static final int PARTITION_NUMBER = 64;
     private static final int EVENT_COUNT_THRESHOLD = 40;
@@ -118,7 +117,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         };
 
         Consumer<ErrorContext> processError = errorContext -> {
-            logger.error("Error while processing {}, {}, {}, {}", errorContext.getPartitionContext().getEventHubName(),
+            LOGGER.error("Error while processing {}, {}, {}, {}", errorContext.getPartitionContext().getEventHubName(),
                 errorContext.getPartitionContext().getConsumerGroup(),
                 errorContext.getPartitionContext().getPartitionId(),
                 ExceptionUtils.getStackTrace(errorContext.getThrowable()));
@@ -163,7 +162,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     }
 
     private void logEvent(String status, EventContext eventContext) {
-        logger.debug(
+        LOGGER.verbose(
             status + " event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}; offset = {}, enqueued time = {}",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
@@ -175,7 +174,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     }
 
     private void logEvent(String status, EventBatchContext eventContext) {
-        logger.debug(
+        LOGGER.verbose(
             status + " event: Event Hub name = {}; consumer group name = {}; partition id = {}; last sequence number = {}, batch size = {}",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
@@ -185,7 +184,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     }
 
     private void logEventError(EventContext eventContext, Throwable t) {
-        logger.debug(
+        LOGGER.verbose(
             "Checkpoint update failed: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}; offset = {}, enqueued time = {}, error = {}",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),

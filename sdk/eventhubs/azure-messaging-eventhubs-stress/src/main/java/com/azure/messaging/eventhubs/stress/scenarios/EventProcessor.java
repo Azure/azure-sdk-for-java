@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.stress.scenarios;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -10,13 +11,11 @@ import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.stress.util.Constants;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service("EventProcessor")
 public class EventProcessor extends EventHubsScenario {
-    private static final Logger logger = LoggerFactory.getLogger(EventProcessor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventProcessor.class);
 
     @Override
     public void run() {
@@ -36,11 +35,11 @@ public class EventProcessor extends EventHubsScenario {
             .connectionString(eventHubsConnStr, eventHub)
             .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
             .processEvent(eventContext -> {
-                logger.info("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                LOGGER.info("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                logger.info("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+                LOGGER.info("Error occurred while processing events " + errorContext.getThrowable().getMessage());
             })
             .buildEventProcessorClient();
 
