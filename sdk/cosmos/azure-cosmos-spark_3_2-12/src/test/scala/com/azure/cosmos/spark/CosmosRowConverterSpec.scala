@@ -467,6 +467,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "date and time in spark row" should "should honor dateTimeConversionMode config" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colName2 = "testCol2"
 
