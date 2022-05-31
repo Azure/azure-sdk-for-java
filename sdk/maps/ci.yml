@@ -8,7 +8,8 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/maps/
+      - sdk/maps/ci.yml
+      - sdk/maps/azure-resourcemanager-maps/
     exclude:
       - sdk/maps/pom.xml
       - sdk/maps/azure-resourcemanager-maps/pom.xml
@@ -22,7 +23,8 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/maps/
+      - sdk/maps/ci.yml
+      - sdk/maps/azure-resourcemanager-maps/
     exclude:
       - sdk/maps/pom.xml
       - sdk/maps/azure-resourcemanager-maps/pom.xml
