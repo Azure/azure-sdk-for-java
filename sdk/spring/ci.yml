@@ -185,6 +185,13 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstorage
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-storage-blob
         groupId: com.azure.spring
         safeName: springcloudazurestarterstorageblob

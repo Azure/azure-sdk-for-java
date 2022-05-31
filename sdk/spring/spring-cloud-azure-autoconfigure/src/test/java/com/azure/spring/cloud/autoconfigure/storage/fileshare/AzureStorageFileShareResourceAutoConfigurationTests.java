@@ -23,9 +23,9 @@ class AzureStorageFileShareResourceAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(accoutNameProperty)
             .run(context -> {
-                    assertThat(context).hasSingleBean(AzureStorageFileShareResourceAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class);
-                });
+                assertThat(context).hasSingleBean(AzureStorageFileShareResourceAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageFileProtocolResolver.class);
+            });
     }
 
     @ParameterizedTest
