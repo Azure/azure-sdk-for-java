@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * Represents a {@link HttpPipelinePolicy} that doesn't do any asynchronous or synchronously blocking operations.
  */
-public class HttpPipelineSynchronousPolicy implements HttpPipelinePolicy {
+public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
 
     /**
      * {@inheritDoc}

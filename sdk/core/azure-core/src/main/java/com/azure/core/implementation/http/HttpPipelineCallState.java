@@ -59,6 +59,15 @@ public class HttpPipelineCallState {
     }
 
     /**
+     * Retrieves the current policy in the pipeline.
+     *
+     * @return The current {@link HttpPipelinePolicy} in queue in the {@link HttpPipeline}.
+     */
+    public HttpPipelinePolicy getCurrentPolicy() {
+        return this.pipeline.getPolicy(this.currentPolicyIndex);
+    }
+
+    /**
      * Returns the current request specific contextual data.
      *
      * @return the current request specific contextual data.

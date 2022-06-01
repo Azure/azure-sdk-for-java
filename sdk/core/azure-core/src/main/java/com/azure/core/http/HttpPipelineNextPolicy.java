@@ -34,10 +34,11 @@ public class HttpPipelineNextPolicy {
      * Creates HttpPipelineNextPolicy.
      *
      * @param state the pipeline call state.
+     * @param originatedFromSyncPolicy boolean to indicate if the next policy originated from sync call stack.
      */
-    HttpPipelineNextPolicy(HttpPipelineCallState state, boolean originatedFromSyncContext) {
+    HttpPipelineNextPolicy(HttpPipelineCallState state, boolean originatedFromSyncPolicy) {
         this.state = state;
-        this.originatedFromSyncContext = originatedFromSyncContext;
+        this.originatedFromSyncContext = originatedFromSyncPolicy;
     }
 
     /**
@@ -54,7 +55,8 @@ public class HttpPipelineNextPolicy {
         } else {
             if (originatedFromSyncContext) {
                 LOGGER.warning("The pipeline switched from synchronous to asynchronous."
-                    + " Check if all policies override HttpPipelinePolicy.processSync");
+                    + "Check if {} does not override HttpPipelinePolicy.processSync",
+                    this.state.getCurrentPolicy().getClass().getSimpleName());
             }
 
             HttpPipelinePolicy nextPolicy = state.getNextPolicy();

@@ -19,7 +19,6 @@ public class HttpPipelineNextSyncPolicy {
 
     /**
      * Package Private ctr.
-     *
      * Creates HttpPipelineNextPolicy.
      *
      * @param state the pipeline call state.
@@ -46,7 +45,7 @@ public class HttpPipelineNextSyncPolicy {
     /**
      * Creates a new instance of this instance.
      *
-     * @return A new instance of this next pipeline policy.
+     * @return A new instance of this next pipeline sync policy.
      */
     @Override
     public HttpPipelineNextSyncPolicy clone() {

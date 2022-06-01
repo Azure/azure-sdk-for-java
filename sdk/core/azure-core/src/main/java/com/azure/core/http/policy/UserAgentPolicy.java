@@ -36,7 +36,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     public static final String APPEND_USER_AGENT_CONTEXT_KEY = "Append-User-Agent";
 
     private final String userAgent;
-    private final HttpPipelineSynchronousPolicy inner = new HttpPipelineSynchronousPolicy() {
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
         /**
          * Updates the "User-Agent" header with the value supplied in the policy.
          *
