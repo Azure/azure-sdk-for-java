@@ -14,6 +14,7 @@
       <modules>
         <module>azure-messaging-eventhubs</module>
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
+        <module>azure-messaging-eventhubs-checkpointstore-redis</module>
       </modules>
 
       <dependencies>
@@ -26,6 +27,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
           <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-messaging-eventhubs-checkpointstore-redis</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-redis;current} -->
         </dependency>
       </dependencies>
 
@@ -53,6 +59,7 @@
         <module>microsoft-azure-eventhubs-extensions</module>
         <module>azure-messaging-eventhubs</module>
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
+        <module>azure-messaging-eventhubs-checkpointstore-redis</module>
         <module>azure-messaging-eventhubs-track1-perf</module>
         <module>azure-messaging-eventhubs-track2-perf</module>
       </modules>

@@ -183,6 +183,10 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
         if 'resourcemanagerhybrid' in root:
             continue
 
+        # Also ignore sdk/e2e as this only creates noise during checkout as it uses many current dependencies but isn't an actual project we want to build.
+        if 'e2e' in root:
+            continue
+
         for file_name in files:
             file_path = root + os.sep + file_name
 

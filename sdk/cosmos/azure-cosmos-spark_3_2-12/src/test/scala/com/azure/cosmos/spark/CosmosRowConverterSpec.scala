@@ -10,7 +10,7 @@ import org.apache.spark.sql.catalyst.CatalystTypeConverters.convertToCatalyst
 import org.apache.spark.sql.catalyst.{CatalystTypeConverters, InternalRow}
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
-import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, Uuid}
+import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
@@ -291,6 +291,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "array in spark row" should "translate to ObjectNode" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colName3 = "testCol3"
@@ -464,6 +467,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "date and time in spark row" should "should honor dateTimeConversionMode config" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colName2 = "testCol2"
 
@@ -1006,6 +1012,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "null for decimal in ObjectNode" should "should not throw when nullable" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colVal1 = ""
 
@@ -1027,6 +1036,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   }
 
   "null for decimal in ObjectNode" should "should throw when not nullable" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val colName1 = "testCol1"
     val colVal1 = ""
 
