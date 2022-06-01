@@ -111,7 +111,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

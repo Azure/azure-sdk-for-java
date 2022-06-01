@@ -5,8 +5,9 @@
         "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
         "Pool": "azsdk-pool-mms-ubuntu-2004-general",
-        "OSVmImage": "MMSUbuntu2004"
-        }
+        "OSVmImage": "MMSUbuntu2004",
+        "JavaTestVersion": "1.11"
+      }
     }
   }
 }

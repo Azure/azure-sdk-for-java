@@ -8,11 +8,13 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.messaging.core.SendOperationTests;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
 
 import static com.azure.spring.messaging.AzureHeaders.PARTITION_ID;
@@ -29,11 +31,18 @@ import static org.mockito.Mockito.when;
 
 public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemplate> {
 
+    @Mock
     private EventHubsProducerFactory producerFactory;
+
+    @Mock
     private EventHubProducerAsyncClient mockProducerClient;
-    private static final String BUILD_PARTITION_SUPPLIER_METHOD_NAME = "buildPartitionSupplier";
+
+    private AutoCloseable mockCloseable;
+
     @BeforeEach
     public void setUp() {
+        mockCloseable = MockitoAnnotations.openMocks(this);
+
         this.mockProducerClient = mock(EventHubProducerAsyncClient.class);
         this.producerFactory = mock(EventHubsProducerFactory.class);
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
@@ -45,6 +54,13 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true);
 
         this.sendOperation = new EventHubsTemplate(producerFactory);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        if (mockCloseable != null) {
+            mockCloseable.close();
+        }
     }
 
     @Override
@@ -68,10 +84,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
         Message<String> message = MessageBuilder.withPayload("test")
                                                 .setHeader(PARTITION_ID, "partition-id")
                                                 .build();
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.sendOperation,
-            EventHubsTemplate.class,
-            BUILD_PARTITION_SUPPLIER_METHOD_NAME,
-            message);
+        PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertEquals(partitionSupplier.getPartitionId(), "partition-id");
         assertNull(partitionSupplier.getPartitionKey());
     }
@@ -81,10 +94,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
         Message<String> message = MessageBuilder.withPayload("test")
                                                 .setHeader(PARTITION_KEY, "partition-key")
                                                 .build();
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.sendOperation,
-            EventHubsTemplate.class,
-            BUILD_PARTITION_SUPPLIER_METHOD_NAME,
-            message);
+        PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertNull(partitionSupplier.getPartitionId());
         assertEquals(partitionSupplier.getPartitionKey(), "partition-key");
     }
@@ -95,10 +105,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
                                                 .setHeader(PARTITION_ID, "partition-id")
                                                 .setHeader(PARTITION_KEY, "partition-key")
                                                 .build();
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.sendOperation,
-            EventHubsTemplate.class,
-            BUILD_PARTITION_SUPPLIER_METHOD_NAME,
-            message);
+        PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertEquals(partitionSupplier.getPartitionId(), "partition-id");
         assertEquals(partitionSupplier.getPartitionKey(), "partition-key");
     }
@@ -106,10 +113,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
     @Test
     public void testFailToGetPartitionIFromMessageHeader() {
         Message<String> message = MessageBuilder.withPayload("test").build();
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.sendOperation,
-            EventHubsTemplate.class,
-            BUILD_PARTITION_SUPPLIER_METHOD_NAME,
-            message);
+        PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertNull(partitionSupplier.getPartitionId());
         assertNull(partitionSupplier.getPartitionKey());
     }

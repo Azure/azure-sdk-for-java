@@ -1,9 +1,9 @@
 variables:
   DocWardenVersion: '0.7.1'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
-  JavaBuildVersion: '1.11'
+  JavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
-  JavaTestVersion: '1.11'
+  JavaTestVersion: '1.17'
 
   # True if 'Enable system diagnostics' is checked when running a pipeline manually
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
