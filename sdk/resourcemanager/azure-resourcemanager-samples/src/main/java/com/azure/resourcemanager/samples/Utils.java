@@ -16,6 +16,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -71,8 +72,8 @@ import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
 import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.SoaRecord;
@@ -163,7 +164,6 @@ import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ManagementLock;
@@ -228,7 +228,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -3533,11 +3532,17 @@ public final class Utils {
             new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
         .build();
 
+    /**
+     * Get the size of the iterable.
+     *
+     * @param iterable iterable to count size
+     * @param <T> generic type parameter of the iterable
+     * @return size of the iterable
+     */
     public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-        Iterator<T> iterator = iterable.iterator();
-        while (iterator.hasNext()) {
-            iterator.next();
+        for (T t : iterable) {
+            res++;
         }
         return res;
     }
