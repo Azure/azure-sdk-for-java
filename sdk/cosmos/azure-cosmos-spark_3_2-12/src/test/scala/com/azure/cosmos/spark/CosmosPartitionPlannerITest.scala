@@ -138,7 +138,7 @@ class CosmosPartitionPlannerITest
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       1 * cosmosBEPartitionCount,
-      Some(200))
+      Some(100))
 
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
@@ -170,7 +170,7 @@ class CosmosPartitionPlannerITest
     evaluateStorageBasedStrategy(
       128 * 10 * 1024,
       4 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
-      Some(200),
+      Some(100),
       defaultMinimalPartitionCount = 4 * cosmosBEPartitionCount)
   }
 
@@ -189,7 +189,7 @@ class CosmosPartitionPlannerITest
       "Custom",
       128 * 10 * 1024,
       23 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
-      Some(200),
+      Some(100),
       customPartitionCount = Some(23 * cosmosBEPartitionCount))
 
     // targetPartitionCount is ignore when Strategy is != Custom
@@ -197,7 +197,7 @@ class CosmosPartitionPlannerITest
       "Default",
       128 * 10 * 1024,
       1 * cosmosBEPartitionCount, // would usually be just 1 because progress > 100%
-      Some(200),
+      Some(100),
       customPartitionCount = Some(23 * cosmosBEPartitionCount))
   }
 
