@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.IotDpsSkuDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available SKUs. */
 @Fluent
 public final class IotDpsSkuDefinitionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotDpsSkuDefinitionListResult.class);
-
     /*
      * The list of SKUs
      */

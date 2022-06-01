@@ -47,9 +47,6 @@ jobs:
             - name: azure-core
               groupId: com.azure
               safeName: azurecore
-          AdditionalModules:
-            - name: perf-test-core
-              groupId: com.azure
           JobType: 'linting'
 
       - task: PythonScript@0

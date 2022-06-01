@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Identity for the image template. */
 @Fluent
 public class ImageTemplateIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateIdentity.class);
-
     /*
      * The type of identity used for the image template. The type 'None' will
      * remove any identities from the image template.

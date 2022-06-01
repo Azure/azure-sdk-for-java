@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /*
  * Internal helper class that helps manage converting headers into their header collection.
@@ -24,6 +23,10 @@ import java.util.function.Function;
 final class HeaderCollectionHandler {
     private static final int CACHE_SIZE_LIMIT = 10000;
     private static final Map<Field, MethodHandle> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
+
+    // Dummy constant that indicates no setter was found for the Field.
+    private static final MethodHandle NO_SETTER_HANDLE = MethodHandles.identity(HeaderCollectionHandler.class);
+
     private final String prefix;
     private final int prefixLength;
     private final Map<String, String> values;
@@ -83,47 +86,9 @@ final class HeaderCollectionHandler {
         final String clazzSimpleName = clazz.getSimpleName();
         final String fieldName = declaringField.getName();
 
-        MethodHandle setterHandler = getFromCache(declaringField, field -> {
-            MethodHandles.Lookup lookupToUse;
-            try {
-                lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
-            } catch (Exception ex) {
-                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
-                return null;
-            }
+        MethodHandle setterHandler = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
 
-            String setterName = getPotentialSetterName(fieldName);
-
-            try {
-                MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
-                    MethodType.methodType(clazz, Map.class));
-
-                logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
-
-                return handle;
-            } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName, ex);
-            }
-
-            try {
-                Method setterMethod = deserializedHeaders.getClass()
-                    .getDeclaredMethod(setterName, Map.class);
-                MethodHandle handle = lookupToUse.unreflect(setterMethod);
-
-                logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName);
-
-                return handle;
-            } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName, ex);
-            }
-
-            return null;
-        });
-
-        if (setterHandler == null) {
+        if (setterHandler == NO_SETTER_HANDLE) {
             return false;
         }
 
@@ -147,11 +112,66 @@ final class HeaderCollectionHandler {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
     }
 
-    private static MethodHandle getFromCache(Field key, Function<Field, MethodHandle> compute) {
+    private static MethodHandle getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
+        String fieldName, ClientLogger logger) {
         if (FIELD_TO_SETTER_CACHE.size() >= CACHE_SIZE_LIMIT) {
             FIELD_TO_SETTER_CACHE.clear();
         }
 
-        return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, compute);
+        return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, field -> {
+            MethodHandles.Lookup lookupToUse;
+            try {
+                lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
+            } catch (Exception ex) {
+                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
+
+                // In a previous implementation compute returned null here in an attempt to indicate that there is no
+                // setter for the field. Unfortunately, null isn't a valid indicator to computeIfAbsent that a
+                // computation has been performed and this cache would never effectively be a cache as compute would
+                // always be performed when there was no setter for the field.
+                //
+                // Now the implementation returns a dummy constant when there is no setter for the field. This now
+                // results in this case properly inserting into the cache and only running when a new type is seen or
+                // the cache is cleared due to reaching capacity.
+                return NO_SETTER_HANDLE;
+            }
+
+            String setterName = getPotentialSetterName(fieldName);
+
+            try {
+                MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
+                    MethodType.methodType(clazz, Map.class));
+
+                logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
+
+                return handle;
+            } catch (ReflectiveOperationException ex) {
+                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}.", setterName,
+                    clazzSimpleName, ex);
+            }
+
+            try {
+                Method setterMethod = clazz.getDeclaredMethod(setterName, Map.class);
+                MethodHandle handle = lookupToUse.unreflect(setterMethod);
+
+                logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
+                    clazzSimpleName);
+
+                return handle;
+            } catch (ReflectiveOperationException ex) {
+                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}.", setterName,
+                    clazzSimpleName, ex);
+            }
+
+            // In a previous implementation compute returned null here in an attempt to indicate that there is no setter
+            // for the field. Unfortunately, null isn't a valid indicator to computeIfAbsent that a computation has been
+            // performed and this cache would never effectively be a cache as compute would always be performed when
+            // there was no setter for the field.
+            //
+            // Now the implementation returns a dummy constant when there is no setter for the field. This now results
+            // in this case properly inserting into the cache and only running when a new type is seen or the cache is
+            // cleared due to reaching capacity.
+            return NO_SETTER_HANDLE;
+        });
     }
 }
