@@ -17,9 +17,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 + Add `AzureStorageConfiguration` to make Azure storage service share common property configuration [#29094](https://github.com/Azure/azure-sdk-for-java/pull/29094).
     +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
-
-
-
+    
 ## 4.2.0 (2022-05-26)
 
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.8, 2.7.0. (Note: 2.5.x (x>14), 2.6.y (y>8) and 2.7.z (z>0) should be supported, but they aren't tested with this release.)
