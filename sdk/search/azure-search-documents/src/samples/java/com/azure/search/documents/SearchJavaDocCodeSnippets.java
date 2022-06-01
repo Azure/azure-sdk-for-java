@@ -1929,7 +1929,8 @@ public class SearchJavaDocCodeSnippets {
         SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
 
-        SearchIndexerDataSourceConnection updateDataSource = SEARCH_INDEXER_CLIENT.createOrUpdateDataSourceConnection(dataSource);
+        SearchIndexerDataSourceConnection updateDataSource = SEARCH_INDEXER_CLIENT
+            .createOrUpdateDataSourceConnection(dataSource);
         System.out.printf("The dataSource name is %s. The container name of dataSource is %s.%n",
             updateDataSource.getName(), updateDataSource.getContainer().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
@@ -2095,7 +2096,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillsetsWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context
-        PagedIterable<SearchIndexerSkillset> indexerSkillsets = SEARCH_INDEXER_CLIENT.listSkillsets(new Context(KEY_1, VALUE_1));
+        PagedIterable<SearchIndexerSkillset> indexerSkillsets = SEARCH_INDEXER_CLIENT
+            .listSkillsets(new Context(KEY_1, VALUE_1));
         System.out.println("The status code of the response is"
             + indexerSkillsets.iterableByPage().iterator().next().getStatusCode());
         for (SearchIndexerSkillset skillset: indexerSkillsets) {
@@ -2584,7 +2586,8 @@ public class SearchJavaDocCodeSnippets {
         SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
 
-        SearchIndexerDataSourceConnection updateDataSource = SEARCH_INDEXER_CLIENT.createOrUpdateDataSourceConnection(dataSource);
+        SearchIndexerDataSourceConnection updateDataSource = SEARCH_INDEXER_CLIENT
+            .createOrUpdateDataSourceConnection(dataSource);
         System.out.printf("The dataSource name is %s. The container name of dataSource is %s.%n",
             updateDataSource.getName(), updateDataSource.getContainer().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection

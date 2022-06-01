@@ -153,7 +153,7 @@ public final class SearchAsyncClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * searchAsyncClient.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * SEARCH_ASYNC_CLIENT.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;,
@@ -243,7 +243,7 @@ public final class SearchAsyncClient {
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;merge&quot;&#41;;
-     * searchAsyncClient.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * SEARCH_ASYNC_CLIENT.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -341,7 +341,7 @@ public final class SearchAsyncClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * searchAsyncClient.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * SEARCH_ASYNC_CLIENT.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;,
@@ -436,7 +436,7 @@ public final class SearchAsyncClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * searchAsyncClient.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * SEARCH_ASYNC_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -526,7 +526,7 @@ public final class SearchAsyncClient {
      * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
      * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
      * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
-     * searchAsyncClient.indexDocuments&#40;indexDocumentsBatch&#41;
+     * SEARCH_ASYNC_CLIENT.indexDocuments&#40;indexDocumentsBatch&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -624,7 +624,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class -->
      * <pre>
-     * searchAsyncClient.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;
+     * SEARCH_ASYNC_CLIENT.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : result.entrySet&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;,
@@ -657,7 +657,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List -->
      * <pre>
-     * searchAsyncClient.getDocumentWithResponse&#40;&quot;hotelId&quot;, SearchDocument.class, null&#41;
+     * SEARCH_ASYNC_CLIENT.getDocumentWithResponse&#40;&quot;hotelId&quot;, SearchDocument.class, null&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -716,7 +716,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentCount -->
      * <pre>
-     * searchAsyncClient.getDocumentCount&#40;&#41;
+     * SEARCH_ASYNC_CLIENT.getDocumentCount&#40;&#41;
      *     .subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are %d documents in service.&quot;, count&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.getDocumentCount -->
@@ -737,7 +737,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse -->
      * <pre>
-     * searchAsyncClient.getDocumentCountWithResponse&#40;&#41;
+     * SEARCH_ASYNC_CLIENT.getDocumentCountWithResponse&#40;&#41;
      *     .subscribe&#40;countResponse -&gt; &#123;
      *         System.out.println&#40;&quot;The status code of the response is &quot; + countResponse.getStatusCode&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;There are %d documents in service.&quot;, countResponse.getValue&#40;&#41;&#41;;
@@ -776,7 +776,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String -->
      * <pre>
-     * SearchPagedFlux searchPagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;&#41;;
+     * SearchPagedFlux searchPagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;&#41;;
      * searchPagedFlux.getTotalCount&#40;&#41;.subscribe&#40;
      *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;
      * &#41;;
@@ -816,7 +816,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
      * <pre>
-     * SearchPagedFlux pagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;,
+     * SearchPagedFlux pagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;,
      *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;;
      *
      * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
@@ -913,7 +913,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.suggest#String-String -->
      * <pre>
-     * searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
+     * SEARCH_ASYNC_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
      *     .subscribe&#40;results -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: results.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
@@ -943,7 +943,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions -->
      * <pre>
-     * searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     * SEARCH_ASYNC_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
      *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;
      *     .subscribe&#40;results -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: results.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -1002,7 +1002,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
      * <pre>
-     * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
+     * SEARCH_ASYNC_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
      *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
@@ -1025,7 +1025,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions -->
      * <pre>
-     * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     * SEARCH_ASYNC_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
      *     new AutocompleteOptions&#40;&#41;.setAutocompleteMode&#40;AutocompleteMode.ONE_TERM_WITH_CONTEXT&#41;&#41;
      *     .subscribe&#40;result -&gt;
      *         System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;
