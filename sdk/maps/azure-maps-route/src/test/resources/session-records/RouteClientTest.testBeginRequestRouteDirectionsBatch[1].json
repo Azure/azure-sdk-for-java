@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.microsoft.com/route/directions/batch/sync/json?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 23:55:00 GMT",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: E1D58A438ED942F2813796105CB66333 Ref B: SIN30EDGE0106 Ref C: 2022-05-31T23:54:59Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"batchItems\":[{\"statusCode\":400,\"response\":{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided coordinates in query are invalid, out of range, or not in the expected format\"}}},{\"statusCode\":400,\"response\":{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"The provided coordinates in query are invalid, out of range, or not in the expected format\"}}},{\"statusCode\":400,\"response\":{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"Bad request: one or more parameters were incorrectly specified or are mutually exclusive.\"}}}],\"summary\":{\"successfulRequests\":0,\"totalRequests\":3}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

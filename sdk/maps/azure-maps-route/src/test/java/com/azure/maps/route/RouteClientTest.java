@@ -46,7 +46,7 @@ public class RouteClientTest extends RouteTestBase {
     public void testBeginRequestRouteMatrix(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
         new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
         new GeoPoint(13.42937, 52.50931)));
@@ -67,7 +67,7 @@ public class RouteClientTest extends RouteTestBase {
     public void testBeginRequestRouteMatrixWithContext(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
         new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
         new GeoPoint(13.42937, 52.50931)));
@@ -88,7 +88,7 @@ public class RouteClientTest extends RouteTestBase {
     public void testBeginGetRouteMatrix(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
         new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
         new GeoPoint(13.42937, 52.50931)));
@@ -114,7 +114,7 @@ public class RouteClientTest extends RouteTestBase {
     public void testBeginGetRouteMatrixWithContext(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
         new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
         new GeoPoint(13.42937, 52.50931)));

@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.microsoft.com/route/matrix/json?api-version=1.0&waitForResults=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 23:55:00 GMT",
+      "content-length" : "1047",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: B6F148A2D9FD4838A529F63B6DA8B8B3 Ref B: SIN30EDGE0510 Ref C: 2022-05-31T23:54:59Z",
+      "vary" : "Accept-Encoding,User-Agent",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"formatVersion\":\"0.0.1\",\"matrix\":[[{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":495,\"travelTimeInSeconds\":128,\"trafficDelayInSeconds\":0,\"trafficLengthInMeters\":0,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T01:57:07+02:00\"}}},{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":669269,\"travelTimeInSeconds\":20741,\"trafficDelayInSeconds\":137,\"trafficLengthInMeters\":10183,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T07:40:40+02:00\"}}}],[{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":338,\"travelTimeInSeconds\":107,\"trafficDelayInSeconds\":0,\"trafficLengthInMeters\":0,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T01:56:46+02:00\"}}},{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":669112,\"travelTimeInSeconds\":20692,\"trafficDelayInSeconds\":137,\"trafficLengthInMeters\":10183,\"departureTime\":\"2022-06-01T01:54:59+02:00\",\"arrivalTime\":\"2022-06-01T07:39:50+02:00\"}}}]],\"summary\":{\"successfulRoutes\":4,\"totalRoutes\":4}}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/route/matrix/?api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 23:55:00 GMT",
+      "content-length" : "0",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: ECD008CBB1AD4B48A0A73535E6143257 Ref B: SIN30EDGE0510 Ref C: 2022-05-31T23:55:00Z",
+      "x-ms-azuremaps-region" : "West Europe",
+      "content-type" : "application/json",
+      "x-cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

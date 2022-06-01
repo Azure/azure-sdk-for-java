@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/route/range/json?api-version=1.0&query=50.97452%2C5.86605&timeBudgetInSec=6000.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 31 May 2022 23:54:59 GMT",
+      "content-length" : "2198",
+      "vary" : "Accept-Encoding",
+      "x-ms-azuremaps-region" : "West Europe",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-msedge-ref" : "Ref A: 3830B2CE846C4141B2523367821D96B6 Ref B: SIN30EDGE0720 Ref C: 2022-05-31T23:54:58Z",
+      "content-type" : "application/json; charset=utf-8",
+      "x-cache" : "CONFIG_NOCACHE",
+      "cache-control" : "no-transform, no-cache",
+      "Body" : "{\"formatVersion\":\"0.0.1\",\"reachableRange\":{\"center\":{\"latitude\":50.97452,\"longitude\":5.86605},\"boundary\":[{\"latitude\":52.19326,\"longitude\":5.72361},{\"latitude\":52.19378,\"longitude\":5.60227},{\"latitude\":52.24234,\"longitude\":5.47574},{\"latitude\":52.26774,\"longitude\":5.20307},{\"latitude\":52.30598,\"longitude\":5.14333},{\"latitude\":52.33462,\"longitude\":4.91241},{\"latitude\":52.09753,\"longitude\":4.72525},{\"latitude\":51.93473,\"longitude\":4.58591},{\"latitude\":51.93261,\"longitude\":4.44216},{\"latitude\":51.87003,\"longitude\":4.32538},{\"latitude\":51.69731,\"longitude\":4.21682},{\"latitude\":51.49769,\"longitude\":3.77494},{\"latitude\":51.20597,\"longitude\":3.56632},{\"latitude\":50.6812,\"longitude\":3.89212},{\"latitude\":50.50104,\"longitude\":3.93318},{\"latitude\":50.45356,\"longitude\":3.88682},{\"latitude\":50.28611,\"longitude\":4.48031},{\"latitude\":50.20361,\"longitude\":4.57552},{\"latitude\":50.0913,\"longitude\":4.99316},{\"latitude\":50.09283,\"longitude\":5.02918},{\"latitude\":49.91769,\"longitude\":5.25036},{\"latitude\":49.88972,\"longitude\":5.29216},{\"latitude\":49.77595,\"longitude\":5.54465},{\"latitude\":49.71719,\"longitude\":5.59733},{\"latitude\":49.77806,\"longitude\":5.75518},{\"latitude\":49.93278,\"longitude\":5.92101},{\"latitude\":49.93989,\"longitude\":6.08634},{\"latitude\":50.01647,\"longitude\":6.13682},{\"latitude\":50.08942,\"longitude\":6.2758},{\"latitude\":49.90509,\"longitude\":6.54177},{\"latitude\":50.00492,\"longitude\":6.6107},{\"latitude\":49.94768,\"longitude\":6.89826},{\"latitude\":50.22486,\"longitude\":6.67877},{\"latitude\":50.22978,\"longitude\":7.00975},{\"latitude\":50.15027,\"longitude\":7.59598},{\"latitude\":50.34891,\"longitude\":7.65119},{\"latitude\":50.44525,\"longitude\":7.80532},{\"latitude\":50.92663,\"longitude\":8.01386},{\"latitude\":51.067,\"longitude\":7.70357},{\"latitude\":51.38641,\"longitude\":7.73244},{\"latitude\":51.5336,\"longitude\":7.8367},{\"latitude\":51.68143,\"longitude\":7.36023},{\"latitude\":51.86162,\"longitude\":7.30756},{\"latitude\":52.0145,\"longitude\":7.0559},{\"latitude\":51.82713,\"longitude\":6.67268},{\"latitude\":51.81133,\"longitude\":6.48424},{\"latitude\":51.94838,\"longitude\":6.35413},{\"latitude\":52.23807,\"longitude\":6.23638},{\"latitude\":52.23927,\"longitude\":6.17699},{\"latitude\":52.33182,\"longitude\":6.00883}]}}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
