@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit&api-version=2022-03-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9308e893-7a61-4fef-99bb-8f6b3a96dce8",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "154",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "istio-envoy",
+      "apim-request-id" : "626e7e67-2459-4e9f-ab11-8a7a56ff6798",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://krpratic-form-westcentralus.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/626e7e67-2459-4e9f-ab11-8a7a56ff6798?api-version=2022-03-31-preview",
+      "Date" : "Thu, 12 May 2022 18:15:22 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/626e7e67-2459-4e9f-ab11-8a7a56ff6798?api-version=2022-03-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c756085a-6c7b-4313-93c2-a395e523f12f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "31",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "istio-envoy",
+      "apim-request-id" : "0406ba66-0569-48df-9712-4ca0cb0e531f",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-05-12T18:15:23Z\",\"lastUpdatedDateTime\":\"2022-05-12T18:15:26Z\",\"analyzeResult\":{\n  \"apiVersion\": \"2022-03-31-preview\",\n  \"modelId\": \"prebuilt-read\",\n  \"stringIndexType\": \"utf16CodeUnit\",\n  \"content\": \"\\r\\n        This is a html example.\\r\\n     \\nrow 1, cell 1\\nrow 1, cell 2\\nrow 2, cell 2\",\n  \"pages\": [],\n  \"blocks\": [\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"\\r\\n        This is a html example.\\r\\n     \",\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 40\n        }\n      ],\n      \"confidence\": 1\n    },\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"row 1, cell 1\",\n      \"spans\": [\n        {\n          \"offset\": 41,\n          \"length\": 13\n        }\n      ],\n      \"confidence\": 1\n    },\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"row 1, cell 2\",\n      \"spans\": [\n        {\n          \"offset\": 55,\n          \"length\": 13\n        }\n      ],\n      \"confidence\": 1\n    },\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"row 2, cell 2\",\n      \"spans\": [\n        {\n          \"offset\": 69,\n          \"length\": 13\n        }\n      ],\n      \"confidence\": 1\n    }\n  ],\n  \"languages\": [\n    {\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 40\n        }\n      ],\n      \"locale\": \"en\",\n      \"confidence\": 1\n    }\n  ]\n}}",
+      "Date" : "Thu, 12 May 2022 18:15:29 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/626e7e67-2459-4e9f-ab11-8a7a56ff6798?api-version=2022-03-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cda64b1b-a6ab-4c98-a9ff-d458bb63ba30"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "116",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Server" : "istio-envoy",
+      "apim-request-id" : "fa6d1e38-bd4f-4a89-a7c4-0cf7ed746a02",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-05-12T18:15:23Z\",\"lastUpdatedDateTime\":\"2022-05-12T18:15:26Z\",\"analyzeResult\":{\n  \"apiVersion\": \"2022-03-31-preview\",\n  \"modelId\": \"prebuilt-read\",\n  \"stringIndexType\": \"utf16CodeUnit\",\n  \"content\": \"\\r\\n        This is a html example.\\r\\n     \\nrow 1, cell 1\\nrow 1, cell 2\\nrow 2, cell 2\",\n  \"pages\": [],\n  \"blocks\": [\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"\\r\\n        This is a html example.\\r\\n     \",\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 40\n        }\n      ],\n      \"confidence\": 1\n    },\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"row 1, cell 1\",\n      \"spans\": [\n        {\n          \"offset\": 41,\n          \"length\": 13\n        }\n      ],\n      \"confidence\": 1\n    },\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"row 1, cell 2\",\n      \"spans\": [\n        {\n          \"offset\": 55,\n          \"length\": 13\n        }\n      ],\n      \"confidence\": 1\n    },\n    {\n      \"kind\": \"paragraph\",\n      \"boundingRegions\": [],\n      \"content\": \"row 2, cell 2\",\n      \"spans\": [\n        {\n          \"offset\": 69,\n          \"length\": 13\n        }\n      ],\n      \"confidence\": 1\n    }\n  ],\n  \"languages\": [\n    {\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 40\n        }\n      ],\n      \"locale\": \"en\",\n      \"confidence\": 1\n    }\n  ]\n}}",
+      "Date" : "Thu, 12 May 2022 18:15:29 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

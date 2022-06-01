@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.BoundingRegion;
+import com.azure.ai.formrecognizer.models.Point;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public final class BoundingRegionHelper {
      */
     public interface BoundingRegionAccessor {
         void setPageNumber(BoundingRegion boundingRegion, int pageNumber);
-        void setBoundingBox(BoundingRegion boundingRegion, List<Float> boundingBox);
+        void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> boundingPolygon);
     }
 
     /**
@@ -37,7 +38,7 @@ public final class BoundingRegionHelper {
         accessor.setPageNumber(boundingRegion, pageNumber);
     }
 
-    static void setBoundingBox(BoundingRegion boundingRegion, List<Float> boundingBox) {
-        accessor.setBoundingBox(boundingRegion, boundingBox);
+    static void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> BoundingRegionHelper) {
+        accessor.setBoundingPolygon(boundingRegion, BoundingRegionHelper);
     }
 }

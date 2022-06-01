@@ -39,7 +39,7 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_NO_SUB_LINE_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.LICENSE_CARD_JPG;
+import static com.azure.ai.formrecognizer.TestUtils.LICENSE_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_BUSINESS_CARD_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_INVOICE_PDF;
@@ -550,7 +550,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -565,7 +565,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 syncPoller.waitForCompletion();
 
                 adminClient.deleteModel(modelId);
-                validateJpegCustomDocument(syncPoller.getFinalResult(), modelId);
+                validateJpegCustomDocument(syncPoller.getFinalResult());
             }), CONTENT_FORM_JPG);
     }
 
@@ -582,7 +582,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -615,7 +615,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -664,7 +664,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -679,7 +679,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 syncPoller.waitForCompletion();
                 adminClient.deleteModel(modelId);
 
-                validateJpegCustomDocument(syncPoller.getFinalResult(), modelId);
+                validateJpegCustomDocument(syncPoller.getFinalResult());
             }), CONTENT_FORM_JPG);
     }
 
@@ -693,7 +693,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         dataRunner((data, dataLength) -> multipageTrainingRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
                 = adminClient
-                .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -707,7 +707,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             adminClient.deleteModel(modelId);
 
-            validateMultiPagePdfData(syncPoller.getFinalResult(), modelId);
+            validateMultiPagePdfData(syncPoller.getFinalResult());
         }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -721,7 +721,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             selectionMarkTrainingRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                        .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -753,7 +753,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         urlRunner((fileUrl) -> buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
                 = adminClient
-                .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -765,7 +765,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             adminClient.deleteModel(modelId);
 
-            validateJpegCustomDocument(syncPoller.getFinalResult(), modelId);
+            validateJpegCustomDocument(syncPoller.getFinalResult());
         }), CONTENT_FORM_JPG);
     }
 
@@ -778,7 +778,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         testingContainerUrlRunner((fileUrl) -> multipageTrainingRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
                 = adminClient
-                .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -790,7 +790,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             adminClient.deleteModel(modelId);
 
-            validateMultiPagePdfData(syncPoller.getFinalResult(), modelId);
+            validateMultiPagePdfData(syncPoller.getFinalResult());
         }), MULTIPAGE_INVOICE_PDF);
     }
 
@@ -808,7 +808,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller
                 = getDocumentModelAdminClient(httpClient, serviceVersion).beginBuildModel(trainingFilesUrl,
-                    DocumentBuildMode.TEMPLATE
+                    DocumentBuildMode.TEMPLATE, null
                 )
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -877,7 +877,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl -> {
                 SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
                     = adminClient
-                    .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                    .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                     .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
                 String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -904,7 +904,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             client = getDocumentAnalysisClient(httpClient, serviceVersion);
 
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
-                = adminClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                = adminClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -1334,7 +1334,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
-        }, LICENSE_CARD_JPG);
+        }, LICENSE_PNG);
     }
 
     /**
@@ -1363,7 +1363,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
-        }, LICENSE_CARD_JPG);
+        }, LICENSE_PNG);
     }
 
     /**
@@ -1418,7 +1418,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
-        }, LICENSE_CARD_JPG);
+        }, LICENSE_PNG);
     }
 
     /**

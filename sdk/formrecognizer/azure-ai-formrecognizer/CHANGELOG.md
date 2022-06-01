@@ -3,12 +3,20 @@
 ## 4.0.0-beta.5 (Unreleased)
 
 ### Features Added
+- Added support for address type field value.
+- Added support for vertex coordinates with model `Point` to represent polygon vertices in `boundingPolygon` property.
+- Added `paragraphs` property on `AnalyzeResult`.
+- Added a new `DocumentParagraph` model to represent document paragraphs.
+- Added `caption` and `footnotes` properties on `DocumentTable`.
+- Added `DocumentCaption` and `DocumentFootnote` models to represent captions and footnotes found in the document.
 
 ### Breaking Changes
 - Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
 - Renamed method `beginCopyModel` to `beginCopyModelTo`
-- Removed `modelId` as a required parameter from `beginBuildModel`, `beginCreateComposedModel` and `getCopyAuthorization`
-and moved to `BuildModelOptions`, `CreateComposedModelOptions` and `CopyAuthorizationOptions` respectively
+- Renamed property `boundingBox` in model `BoundingRegion`, `DocumentLine`, `DocumentWord`, and `DocumentSelectionMark`
+to `boundingPolygon`.
+- Removed `entities` property on model `AnalyzeResult`
+- Renamed `code` property on `DocumentLanguage` model to `locale`
 
 ### Bugs Fixed
 

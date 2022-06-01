@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8e73bccfad3f6873b9f91d3920ce0f96af554378/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/a479a2c8e2d6acb97c2a377745b9e1bb485a218f/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-06-30-preview/FormRecognizer.json?token=GHSAT0AAAAAABJXDFRPTGPKCJP3R2IPLGIOYUW6VFQ
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -45,5 +45,5 @@ directive:
     where: $.definitions.GetOperationResponse
     transform: >
       delete $.properties.result.type;
-      $.properties.result["$ref"] = "#/definitions/ModelInfo"; 
-```
+      $.properties.result["$ref"] = "#/definitions/ModelInfo";
+
