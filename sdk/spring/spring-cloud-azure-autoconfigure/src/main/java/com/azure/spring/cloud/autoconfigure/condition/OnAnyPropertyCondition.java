@@ -91,30 +91,24 @@ class OnAnyPropertyCondition extends PropertyCondition {
 
         private void collectProperties(PropertyResolver resolver, List<String> missing, List<String> nonMatching,
                                        List<String> matching) {
-            if (this.prefixes.size() > 0) {
-                for (String prefix : this.prefixes) {
-                    collectPropertiesWithPrefix(prefix, resolver, missing, nonMatching, matching);
-                }
-            } else {
-                collectPropertiesWithPrefix("", resolver, missing, nonMatching, matching);
+            if (this.prefixes.isEmpty()) {
+                this.prefixes.add("");
             }
-        }
-
-        private void collectPropertiesWithPrefix(String prefix, PropertyResolver resolver, List<String> missing, List<String> nonMatching,
-                                                            List<String> matching) {
-            for (String name : this.names) {
-                String key = prefix + name;
-                if (resolver.containsProperty(key)) {
-                    if (!isMatch(resolver.getProperty(key), this.havingValue)) {
-                        nonMatching.add(name);
+            for (String prefix : this.prefixes) {
+                for (String name : this.names) {
+                    String key = prefix + name;
+                    if (resolver.containsProperty(key)) {
+                        if (!isMatch(resolver.getProperty(key), this.havingValue)) {
+                            nonMatching.add(name);
+                        } else {
+                            matching.add(name);
+                        }
                     } else {
-                        matching.add(name);
-                    }
-                } else {
-                    if (!this.matchIfMissing) {
-                        missing.add(name);
-                    } else {
-                        matching.add(name);
+                        if (!this.matchIfMissing) {
+                            missing.add(name);
+                        } else {
+                            matching.add(name);
+                        }
                     }
                 }
             }
