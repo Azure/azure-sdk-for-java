@@ -15,6 +15,15 @@ public final class AddressValueHelper {
     }
 
     /**
+     * The method called from {@link AddressValue} to set it's accessor.
+     *
+     * @param addressValueAccessor The accessor.
+     */
+    public static void setAccessor(final AddressValueHelper.AddressValueAccessor addressValueAccessor) {
+        accessor = addressValueAccessor;
+    }
+
+    /**
      * Type defining the methods to set the non-public properties of an {@link AddressValue} instance.
      */
     public interface AddressValueAccessor {
@@ -27,45 +36,35 @@ public final class AddressValueHelper {
         void setCountryRegion(AddressValue addressValue, String countryRegion);
         void setStreetAddress(AddressValue addressValue, String streetAddress);
     }
-
-    /**
-     * The method called from {@link AddressValue} to set it's accessor.
-     *
-     * @param addressValueAccessor The accessor.
-     */
-    public static void setAccessor(final AddressValueAccessor addressValueAccessor) {
-        accessor = addressValueAccessor;
-    }
-
     static void setPoBox(AddressValue addressValue, String poBox) {
-        addressValue.setPoBox(poBox);
+        accessor.setPoBox(addressValue, poBox);
     }
 
     static void setHouseNumber(AddressValue addressValue, String houseNumber) {
-        addressValue.setHouseNumber(houseNumber);
+        accessor.setHouseNumber(addressValue, houseNumber);
     }
 
     static void setRoad(AddressValue addressValue, String road) {
-        addressValue.setRoad(road);
+        accessor.setRoad(addressValue, road);
     }
 
     static void setCity(AddressValue addressValue, String city) {
-        addressValue.setCity(city);
+        accessor.setCity(addressValue, city);
     }
 
     static void setState(AddressValue addressValue, String state) {
-        addressValue.setState(state);
+        accessor.setState(addressValue, state);
     }
 
     static void setPostalCode(AddressValue addressValue, String postalCode) {
-        addressValue.setPostalCode(postalCode);
+        accessor.setPostalCode(addressValue, postalCode);
     }
 
     static void setCountryRegion(AddressValue addressValue, String countryRegion) {
-        addressValue.setCountryRegion(countryRegion);
+        accessor.setCountryRegion(addressValue, countryRegion);
     }
 
     static void setStreetAddress(AddressValue addressValue, String streetAddress) {
-        addressValue.setStreetAddress(streetAddress);
+        accessor.setStreetAddress(addressValue, streetAddress);
     }
 }

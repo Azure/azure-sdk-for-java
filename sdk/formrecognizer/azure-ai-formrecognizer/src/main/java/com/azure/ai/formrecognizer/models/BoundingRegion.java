@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.ai.formrecognizer.implementation.util.BoundingRegionHelper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Bounding polygon on a specific page of the input.
@@ -62,17 +61,6 @@ public final class BoundingRegion {
      */
     void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
-    }
-
-    /**
-     * Returns a string representation of the {@link BoundingRegion#getBoundingPolygon()}.
-     *
-     * @return the string representation of the {@link BoundingRegion#getBoundingPolygon()}.
-     */
-    @Override
-    public String toString() {
-        return boundingPolygon.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
-            point.getY())).collect(Collectors.joining(", "));
     }
 
     static {
