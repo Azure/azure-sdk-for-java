@@ -248,6 +248,25 @@ Update `args` field in `job.yaml` to execute the new test class.
 
 Build out jar package and redeploy to cluster.
 
+### Add New Scenario Option
+
+We use [Spring][spring_configuration] to inject environment variable or 
+command line arguments as the scenario options. 
+
+You can add new scenario option in [ScenarioOptions][ScenarioOptions] with below format: 
+
+```java
+@Value("NEW_OPTION: default value")
+private Type newOption;
+
+public Type getNewOption() {
+    return newOption;
+}
+```
+
+It is recommended to provide a default value for the new option, as it will not have any impact 
+on the existing job configuration.
+
 ## Troubleshooting
 
 ## Next steps
@@ -276,3 +295,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
+[spring_configuration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config
+[ScenarioOptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-stress/src/main/java/com/azure/messaging/eventhubs/stress/util/ScenarioOptions.java
