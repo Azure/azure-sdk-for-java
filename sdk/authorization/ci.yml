@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/authorization/ci.yml
+      - sdk/authorization/azure-resourcemanager-authorization-generated/
+    exclude:
+      - sdk/authorization/pom.xml
+      - sdk/authorization/azure-resourcemanager-authorization-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/authorization/ci.yml
+      - sdk/authorization/azure-resourcemanager-authorization-generated/
+    exclude:
+      - sdk/authorization/pom.xml
+      - sdk/authorization/azure-resourcemanager-authorization-generated/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: authorization
+    Artifacts:
+      - name: azure-resourcemanager-authorization-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerauthorizationgenerated
