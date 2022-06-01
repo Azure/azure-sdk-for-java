@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
@@ -49,10 +50,12 @@ public class RequestOptionsTests {
 
         String expected = "{\"id\":\"123\"}";
 
+        BinaryData requestBody = BinaryData.fromString(expected);
         RequestOptions options = new RequestOptions()
-            .setBody(BinaryData.fromString(expected));
+            .setBody(requestBody);
         options.getRequestCallback().accept(request);
 
+        assertSame(requestBody, request.getBodyAsBinaryData());
         StepVerifier.create(BinaryData.fromFlux(request.getBody()).map(BinaryData::toString))
             .expectNext(expected)
             .verifyComplete();

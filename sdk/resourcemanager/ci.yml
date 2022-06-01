@@ -83,6 +83,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: resourcemanager
+    UseEsrpRelease: false
     Artifacts:
       - name: azure-resourcemanager
         groupId: com.azure.resourcemanager

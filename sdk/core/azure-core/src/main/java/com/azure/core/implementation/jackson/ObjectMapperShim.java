@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -45,8 +44,11 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
-    private static final Map<Type, Optional<MethodHandle>> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
+    private static final Map<Type, MethodHandle> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
         = new ConcurrentHashMap<>();
+
+    // Dummy constant that indicates an HttpHeaders-based constructor wasn't found for the Type.
+    private static final MethodHandle NO_CONSTRUCTOR_HANDLE = MethodHandles.identity(ObjectMapperShim.class);
 
     /**
      * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and
@@ -298,10 +300,10 @@ public final class ObjectMapperShim {
         }
 
         try {
-            Optional<MethodHandle> constructor = getFromHeadersConstructorCache(deserializedHeadersType);
+            MethodHandle constructor = getFromHeadersConstructorCache(deserializedHeadersType);
 
-            if (constructor.isPresent()) {
-                return (T) constructor.get().invokeWithArguments(headers);
+            if (constructor != NO_CONSTRUCTOR_HANDLE) {
+                return (T) constructor.invokeWithArguments(headers);
             }
         } catch (Throwable throwable) {
             if (throwable instanceof Error) {
@@ -421,7 +423,7 @@ public final class ObjectMapperShim {
         return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
     }
 
-    private static Optional<MethodHandle> getFromHeadersConstructorCache(Type key) {
+    private static MethodHandle getFromHeadersConstructorCache(Type key) {
         if (TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.size() >= CACHE_SIZE_LIMIT) {
             TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.clear();
         }
@@ -430,25 +432,23 @@ public final class ObjectMapperShim {
             try {
                 Class<?> headersClass = TypeUtil.getRawClass(type);
                 MethodHandles.Lookup lookup = ReflectionUtilsApi.INSTANCE.getLookupToUse(headersClass);
-                return Optional.of(lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class)));
+                return lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class));
             } catch (Throwable throwable) {
                 if (throwable instanceof Error) {
                     throw (Error) throwable;
                 }
 
-                // In a previous implementation the cache was a Map<Type, MethodHandle> and null was being returned
-                // here in an attempt to indicate that there is no HttpHeaders-based declared constructor.
-                // Unfortunately, null isn't a valid indicator to computeIfAbsent that a computation has been performed
-                // and this cache would never effectively be a cache as compute would always be performed when there
-                // was no matching constructor.
+                // In a previous implementation compute returned null here in an attempt to indicate that there is no
+                // HttpHeaders-based declared constructor. Unfortunately, null isn't a valid indicator to
+                // computeIfAbsent that a computation has been performed and this cache would never effectively be a
+                // cache as compute would always be performed when there was no matching constructor.
                 //
-                // Now the implementation for the cache is Map<Type, Optional<MethodHandle>> and Optional.empty is
-                // returned when there is no matching HttpHeaders-based constructor. This now results in this case
-                // properly inserting into the cache and only running when a new type is seen or the cache is cleared
-                // due to reaching capacity.
+                // Now the implementation returns a dummy constant when there is no matching HttpHeaders-based
+                // constructor. This now results in this case properly inserting into the cache and only running when a
+                // new type is seen or the cache is cleared due to reaching capacity.
                 //
                 // With this change, benchmarking deserialize(HttpHeaders, Type) saw a 20% performance improvement.
-                return Optional.empty();
+                return NO_CONSTRUCTOR_HANDLE;
             }
         });
     }

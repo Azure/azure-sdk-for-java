@@ -35,6 +35,9 @@ import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMEN
  */
 public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
+    /**
+     * The order value of the {@link KeyVaultEnvironmentPostProcessor}.
+     */
     public static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 1;
 
     private static final String SKIP_CONFIGURE_REASON_FORMAT = "Skip configuring Key Vault PropertySource because %s.";
