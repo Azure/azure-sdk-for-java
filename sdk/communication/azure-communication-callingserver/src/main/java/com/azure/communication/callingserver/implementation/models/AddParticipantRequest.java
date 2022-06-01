@@ -28,6 +28,12 @@ public final class AddParticipantRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * The callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
     /**
      * Get the alternateCallerId property: The alternate identity of source participant.
      *
@@ -85,6 +91,26 @@ public final class AddParticipantRequest {
      */
     public AddParticipantRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the AddParticipantRequest object itself.
+     */
+    public AddParticipantRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

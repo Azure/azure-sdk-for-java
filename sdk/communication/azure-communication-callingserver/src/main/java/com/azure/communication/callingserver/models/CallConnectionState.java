@@ -10,9 +10,6 @@ import java.util.Collection;
 
 /** Defines values for CallConnectionState. */
 public final class CallConnectionState extends ExpandableStringEnum<CallConnectionState> {
-    /** Static value unknown for CallConnectionState. */
-    public static final CallConnectionState UNKNOWN = fromString("unknown");
-
     /** Static value connecting for CallConnectionState. */
     public static final CallConnectionState CONNECTING = fromString("connecting");
 

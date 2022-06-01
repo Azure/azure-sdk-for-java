@@ -18,6 +18,12 @@ public final class RejectCallRequest {
     private String incomingCallContext;
 
     /*
+     * The callback uri.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
+    /*
      * The rejection reason.
      */
     @JsonProperty(value = "callRejectReason")
@@ -40,6 +46,26 @@ public final class RejectCallRequest {
      */
     public RejectCallRequest setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback uri.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback uri.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the RejectCallRequest object itself.
+     */
+    public RejectCallRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 

@@ -17,6 +17,12 @@ public final class RedirectCallRequest {
     private String incomingCallContext;
 
     /*
+     * The callback uri.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
+    /*
      * The target identity to redirect the call to.
      */
     @JsonProperty(value = "target", required = true)
@@ -39,6 +45,26 @@ public final class RedirectCallRequest {
      */
     public RedirectCallRequest setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback uri.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback uri.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the RedirectCallRequest object itself.
+     */
+    public RedirectCallRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 

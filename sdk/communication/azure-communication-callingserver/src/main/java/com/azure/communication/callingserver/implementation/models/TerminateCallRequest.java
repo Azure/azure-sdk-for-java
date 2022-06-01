@@ -7,14 +7,14 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for answering the call. */
+/** The request payload for terminating the call. */
 @Fluent
-public final class AnswerCallRequest {
+public final class TerminateCallRequest {
     /*
-     * The context associated with the call.
+     * The reason property.
      */
-    @JsonProperty(value = "incomingCallContext", required = true)
-    private String incomingCallContext;
+    @JsonProperty(value = "reason")
+    private String reason;
 
     /*
      * The callback uri.
@@ -23,22 +23,22 @@ public final class AnswerCallRequest {
     private String callbackUri;
 
     /**
-     * Get the incomingCallContext property: The context associated with the call.
+     * Get the reason property: The reason property.
      *
-     * @return the incomingCallContext value.
+     * @return the reason value.
      */
-    public String getIncomingCallContext() {
-        return this.incomingCallContext;
+    public String getReason() {
+        return this.reason;
     }
 
     /**
-     * Set the incomingCallContext property: The context associated with the call.
+     * Set the reason property: The reason property.
      *
-     * @param incomingCallContext the incomingCallContext value to set.
-     * @return the AnswerCallRequest object itself.
+     * @param reason the reason value to set.
+     * @return the TerminateCallRequest object itself.
      */
-    public AnswerCallRequest setIncomingCallContext(String incomingCallContext) {
-        this.incomingCallContext = incomingCallContext;
+    public TerminateCallRequest setReason(String reason) {
+        this.reason = reason;
         return this;
     }
 
@@ -55,9 +55,9 @@ public final class AnswerCallRequest {
      * Set the callbackUri property: The callback uri.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the AnswerCallRequest object itself.
+     * @return the TerminateCallRequest object itself.
      */
-    public AnswerCallRequest setCallbackUri(String callbackUri) {
+    public TerminateCallRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

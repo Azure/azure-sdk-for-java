@@ -4,16 +4,16 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload of the create call operation. */
-@Fluent
-public final class CreateCallResultInternal {
+/** The response payload of the answer call operation. */
+@Immutable
+public final class AnswerCallResponse {
     /*
      * The call leg id.
      */
-    @JsonProperty(value = "callLegId")
+    @JsonProperty(value = "callLegId", access = JsonProperty.Access.WRITE_ONLY)
     private String callLegId;
 
     /**
@@ -23,16 +23,5 @@ public final class CreateCallResultInternal {
      */
     public String getCallLegId() {
         return this.callLegId;
-    }
-
-    /**
-     * Set the callLegId property: The call leg id.
-     *
-     * @param callLegId the callLegId value to set.
-     * @return the CreateCallResultInternal object itself.
-     */
-    public CreateCallResultInternal setCallLegId(String callLegId) {
-        this.callLegId = callLegId;
-        return this;
     }
 }

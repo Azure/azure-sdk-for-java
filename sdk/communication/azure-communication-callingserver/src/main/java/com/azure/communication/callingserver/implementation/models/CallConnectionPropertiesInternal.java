@@ -5,20 +5,23 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.communication.callingserver.models.CallConnectionState;
-import com.azure.communication.callingserver.models.CallMediaType;
-import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The CallConnectionPropertiesInternal model. */
 @Fluent
 public final class CallConnectionPropertiesInternal {
     /*
-     * The call connection id.
+     * The call leg id.
      */
-    @JsonProperty(value = "callConnectionId")
-    private String callConnectionId;
+    @JsonProperty(value = "callLegId")
+    private String callLegId;
+
+    /*
+     * The server call id.
+     */
+    @JsonProperty(value = "serverCallId")
+    private String serverCallId;
 
     /*
      * The source of the call.
@@ -36,8 +39,8 @@ public final class CallConnectionPropertiesInternal {
     /*
      * The targets of the call.
      */
-    @JsonProperty(value = "targets")
-    private List<CommunicationIdentifierModel> targets;
+    @JsonProperty(value = "target")
+    private CommunicationIdentifierModel target;
 
     /*
      * The state of the call connection.
@@ -57,41 +60,43 @@ public final class CallConnectionPropertiesInternal {
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
-    /*
-     * The requested modalities.
-     */
-    @JsonProperty(value = "requestedMediaTypes")
-    private List<CallMediaType> requestedMediaTypes;
-
-    /*
-     * The requested call events to subscribe to.
-     */
-    @JsonProperty(value = "requestedCallEvents")
-    private List<CallingEventSubscriptionType> requestedCallEvents;
-
-    /*
-     * The call locator.
-     */
-    @JsonProperty(value = "callLocator")
-    private CallLocatorModel callLocator;
-
     /**
-     * Get the callConnectionId property: The call connection id.
+     * Get the callLegId property: The call leg id.
      *
-     * @return the callConnectionId value.
+     * @return the callLegId value.
      */
-    public String getCallConnectionId() {
-        return this.callConnectionId;
+    public String getCallLegId() {
+        return this.callLegId;
     }
 
     /**
-     * Set the callConnectionId property: The call connection id.
+     * Set the callLegId property: The call leg id.
      *
-     * @param callConnectionId the callConnectionId value to set.
+     * @param callLegId the callLegId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
+    public CallConnectionPropertiesInternal setCallLegId(String callLegId) {
+        this.callLegId = callLegId;
+        return this;
+    }
+
+    /**
+     * Get the serverCallId property: The server call id.
+     *
+     * @return the serverCallId value.
+     */
+    public String getServerCallId() {
+        return this.serverCallId;
+    }
+
+    /**
+     * Set the serverCallId property: The server call id.
+     *
+     * @param serverCallId the serverCallId value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
         return this;
     }
 
@@ -138,22 +143,22 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the targets property: The targets of the call.
+     * Get the target property: The targets of the call.
      *
-     * @return the targets value.
+     * @return the target value.
      */
-    public List<CommunicationIdentifierModel> getTargets() {
-        return this.targets;
+    public CommunicationIdentifierModel getTarget() {
+        return this.target;
     }
 
     /**
-     * Set the targets property: The targets of the call.
+     * Set the target property: The targets of the call.
      *
-     * @param targets the targets value to set.
+     * @param target the target value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setTargets(List<CommunicationIdentifierModel> targets) {
-        this.targets = targets;
+    public CallConnectionPropertiesInternal setTarget(CommunicationIdentifierModel target) {
+        this.target = target;
         return this;
     }
 
@@ -214,67 +219,6 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the requestedMediaTypes property: The requested modalities.
-     *
-     * @return the requestedMediaTypes value.
-     */
-    public List<CallMediaType> getRequestedMediaTypes() {
-        return this.requestedMediaTypes;
-    }
-
-    /**
-     * Set the requestedMediaTypes property: The requested modalities.
-     *
-     * @param requestedMediaTypes the requestedMediaTypes value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
-        this.requestedMediaTypes = requestedMediaTypes;
-        return this;
-    }
-
-    /**
-     * Get the requestedCallEvents property: The requested call events to subscribe to.
-     *
-     * @return the requestedCallEvents value.
-     */
-    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
-        return this.requestedCallEvents;
-    }
-
-    /**
-     * Set the requestedCallEvents property: The requested call events to subscribe to.
-     *
-     * @param requestedCallEvents the requestedCallEvents value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setRequestedCallEvents(
-            List<CallingEventSubscriptionType> requestedCallEvents) {
-        this.requestedCallEvents = requestedCallEvents;
-        return this;
-    }
-
-    /**
-     * Get the callLocator property: The call locator.
-     *
-     * @return the callLocator value.
-     */
-    public CallLocatorModel getCallLocator() {
-        return this.callLocator;
-    }
-
-    /**
-     * Set the callLocator property: The call locator.
-     *
-     * @param callLocator the callLocator value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setCallLocator(CallLocatorModel callLocator) {
-        this.callLocator = callLocator;
         return this;
     }
 }
