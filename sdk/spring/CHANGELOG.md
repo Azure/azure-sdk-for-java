@@ -3,13 +3,19 @@
 ## 4.3.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
++ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29163](https://github.com/Azure/azure-sdk-for-java/pull/29163).
+    + Add properties `spring.cloud.azure.keyvault`.
 
 ## 4.2.0 (2022-05-26)
 
