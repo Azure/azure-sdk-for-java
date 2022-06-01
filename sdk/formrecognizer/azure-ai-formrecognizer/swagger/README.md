@@ -45,5 +45,6 @@ directive:
     where: $.definitions.GetOperationResponse
     transform: >
       delete $.properties.result.type;
-      $.properties.result["$ref"] = "#/definitions/ModelInfo";
+      $.properties.result["$ref"] = "#/definitions/ModelInfo"; 
+```
 
