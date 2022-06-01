@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.stress.scenarios;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.stress.util.Constants;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -24,8 +23,8 @@ public class EventSender extends EventHubsScenario {
 
     @Override
     public void run() {
-        final String eventHubConnStr = options.get(Constants.EVENTHUBS_CONNECTION_STRING);
-        final String eventHub = options.get(Constants.EVENTHUBS_EVENT_HUB_NAME);
+        final String eventHubConnStr = options.getEventhubsConnectionString();
+        final String eventHub = options.getEventhubsEventHubName();
 
         final byte[] payload = new byte[PAYLOAD_SIZE];
         (new Random()).nextBytes(payload);

@@ -16,7 +16,6 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.stress.util.Constants;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.microsoft.applicationinsights.core.dependencies.apachecommons.lang3.exception.ExceptionUtils;
@@ -33,9 +32,11 @@ import java.util.function.Consumer;
 
 /**
  * Process events with options from application arguments. <br/>
- * Required options: <br/>
- * --UPDATE_CHECKPOINT=YES/NO <br/>
- * --NEED_SEND_EVENT_HUB=YES/NO <br/>
+ * Support options: <br/>
+ * --UPDATE_CHECKPOINT boolean <br/>
+ * --NEED_SEND_EVENT_HUB boolean <br/>
+ * --RECEIVE_BATCH_SIZE  int <br/>
+ * --RECEIVE_BATCH_TIMEOUT int <br/>
  */
 @Service("EventProcessorWithOptions")
 public class EventProcessorWithOptions extends EventHubsScenario {
@@ -47,25 +48,24 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
     @Override
     public void run() {
-        final String storageConnStr = options.get(Constants.STORAGE_CONNECTION_STRING);
-        final String containerName = options.get(Constants.STORAGE_CONTAINER_NAME);
-        final String eventHubConnStr = options.get(Constants.EVENTHUBS_CONNECTION_STRING);
-        final String eventHub = options.get(Constants.EVENTHUBS_EVENT_HUB_NAME);
-        final String consumerGroup = options.get(Constants.EVENTHUBS_CONSUMER_GROUP, EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME);
+        final String storageConnStr = options.getStorageConnectionString();
+        final String containerName = options.getStorageContainerName();
+        final String eventHubConnStr = options.getEventhubsConnectionString();
+        final String eventHub = options.getEventhubsEventHubName();
 
-        Objects.requireNonNull(options.get(Constants.UPDATE_CHECKPOINT), "UPDATE_CHECKPOINT argument required. value should be YES or NO");
-        Objects.requireNonNull(options.get(Constants.NEED_SEND_EVENT_HUB), "NEED_SEND_EVENT_HUB argument required. value should be YES or NO");
-        final boolean updateCheckpoint = "YES".equalsIgnoreCase(options.get(Constants.UPDATE_CHECKPOINT));
-        final boolean needSendEventHub = "YES".equalsIgnoreCase(options.get(Constants.NEED_SEND_EVENT_HUB));
-        final String writeEventHubConnStr = options.get(Constants.SECOND_EVENTHUBS_CONNECTION_STRING);
-        final String writeEventHub = options.get(Constants.SECOND_EVENTHUBS_EVENT_HUB_NAME);
+        final String consumerGroup = options.getEventHubsConsumerGroup();
+
+        final boolean updateCheckpoint = options.isUpdateCheckpoint();
+        final boolean needSendEventHub = options.isNeedSendEventHub();
+        final String writeEventHubConnStr = options.getSecondEventhubsConnectionString();
+        final String writeEventHub = options.getSecondEventhubsEventHubName();
 
         EventHubProducerClient producerClient = new EventHubClientBuilder()
             .connectionString(writeEventHubConnStr, writeEventHub)
             .buildProducerClient();
 
-        final String batchSize = options.get(Constants.RECEIVE_BATCH_SIZE);
-        final String batchTimeoutMs = options.get(Constants.RECEIVE_BATCH_TIMEOUT);
+        final int batchSize = options.getReceiveBatchSize();
+        final int batchTimeoutMs = options.getReceiveBatchTimeout();
 
         final int[] eventCounter = new int[PARTITION_NUMBER];
         final List<ArrayList<EventData>> eventsFromPartitions = new ArrayList<>(PARTITION_NUMBER);
@@ -117,16 +117,18 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         };
 
         Consumer<ErrorContext> processError = errorContext -> {
-            LOGGER.error("Error while processing {}, {}, {}, {}", errorContext.getPartitionContext().getEventHubName(),
+            LOGGER.error("Error while processing {}, {}, {}, {}",
+                errorContext.getPartitionContext().getEventHubName(),
                 errorContext.getPartitionContext().getConsumerGroup(),
                 errorContext.getPartitionContext().getPartitionId(),
                 ExceptionUtils.getStackTrace(errorContext.getThrowable()));
-            telemetryClient.trackException(new Exception(errorContext.getThrowable()), new HashMap<String, String>() {{
-                put("EventHub", errorContext.getPartitionContext().getEventHubName());
-                put("ConsumerGroup", errorContext.getPartitionContext().getConsumerGroup());
-                put("Partition", errorContext.getPartitionContext().getPartitionId());
-                put("ErrorTime", Instant.now().toString());
-            }}, null);
+            telemetryClient.trackException(new Exception(errorContext.getThrowable()),
+                new HashMap<String, String>() {{
+                    put("EventHub", errorContext.getPartitionContext().getEventHubName());
+                    put("ConsumerGroup", errorContext.getPartitionContext().getConsumerGroup());
+                    put("Partition", errorContext.getPartitionContext().getPartitionId());
+                    put("ErrorTime", Instant.now().toString());
+                }}, null);
         };
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
@@ -137,7 +139,7 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         BlobCheckpointStore checkpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
 
         Map<String, EventPosition> initialPositions = new HashMap<>();
-        final int partitionCount = this.getNumberOfPartitions(eventHubConnStr, eventHub);
+        final int partitionCount = getNumberOfPartitions(eventHubConnStr, eventHub, consumerGroup);
         for (int i = 0; i < partitionCount; i++) {
             initialPositions.put(String.valueOf(i), EventPosition.earliest());
         }
@@ -149,11 +151,11 @@ public class EventProcessorWithOptions extends EventHubsScenario {
             .initialPartitionEventPosition(initialPositions)
             .processError(processError)
             .checkpointStore(checkpointStore);
-        if (batchSize != null && batchTimeoutMs != null) {
-            eventProcessorClientBuilder.processEventBatch(processEventBatch, Integer.parseInt(batchSize),
-                Duration.ofMillis(Integer.parseInt(batchTimeoutMs)));
-        } else if (batchSize != null) {
-            eventProcessorClientBuilder.processEventBatch(processEventBatch, Integer.parseInt(batchSize));
+        if (batchSize != 0 && batchTimeoutMs != 0) {
+            eventProcessorClientBuilder.processEventBatch(processEventBatch, batchSize,
+                Duration.ofMillis(batchTimeoutMs));
+        } else if (batchSize != 0) {
+            eventProcessorClientBuilder.processEventBatch(processEventBatch, batchSize);
         } else {
             eventProcessorClientBuilder.processEvent(processEvent);
         }
@@ -163,7 +165,8 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
     private void logEvent(String status, EventContext eventContext) {
         LOGGER.verbose(
-            status + " event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}; offset = {}, enqueued time = {}",
+            status + " event: Event Hub name = {}; consumer group name = {}; " +
+                "partition id = {}; sequence number = {}; offset = {}, enqueued time = {}",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
             eventContext.getPartitionContext().getPartitionId(),
@@ -175,7 +178,8 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
     private void logEvent(String status, EventBatchContext eventContext) {
         LOGGER.verbose(
-            status + " event: Event Hub name = {}; consumer group name = {}; partition id = {}; last sequence number = {}, batch size = {}",
+            status + " event: Event Hub name = {}; consumer group name = {};" +
+                " partition id = {}; last sequence number = {}, batch size = {}",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
             eventContext.getPartitionContext().getPartitionId(),
@@ -185,7 +189,8 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
     private void logEventError(EventContext eventContext, Throwable t) {
         LOGGER.verbose(
-            "Checkpoint update failed: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}; offset = {}, enqueued time = {}, error = {}",
+            "Checkpoint update failed: Event Hub name = {}; consumer group name = {};" +
+                " partition id = {}; sequence number = {}; offset = {}, enqueued time = {}, error = {}",
             eventContext.getPartitionContext().getEventHubName(),
             eventContext.getPartitionContext().getConsumerGroup(),
             eventContext.getPartitionContext().getPartitionId(),
@@ -196,13 +201,14 @@ public class EventProcessorWithOptions extends EventHubsScenario {
     }
 
     private void trackEvent(EventContext eventContext, long startTime, long endTime) {
-        telemetryClient.trackEvent("updateCheckpoint takes long", new HashMap<String, String>() {{
-            put("Namespace", eventContext.getPartitionContext().getFullyQualifiedNamespace());
-            put("EventHub", eventContext.getPartitionContext().getEventHubName());
-            put("ConsumerGroup", eventContext.getPartitionContext().getConsumerGroup());
-            put("Partition", eventContext.getPartitionContext().getPartitionId());
-            put("TimeElapsed", String.valueOf(endTime - startTime));
-        }}, null);
+        telemetryClient.trackEvent("updateCheckpoint takes long",
+            new HashMap<String, String>() {{
+                put("Namespace", eventContext.getPartitionContext().getFullyQualifiedNamespace());
+                put("EventHub", eventContext.getPartitionContext().getEventHubName());
+                put("ConsumerGroup", eventContext.getPartitionContext().getConsumerGroup());
+                put("Partition", eventContext.getPartitionContext().getPartitionId());
+                put("TimeElapsed", String.valueOf(endTime - startTime));
+            }}, null);
     }
 
     private void trackMetric(EventContext eventContext) {
@@ -225,10 +231,10 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         rateMeter.add(metricKey, 1);
     }
 
-    private int getNumberOfPartitions(String connectionString, String eventHub) {
+    private int getNumberOfPartitions(String connectionString, String eventHub, String consumerGroup) {
         try (EventHubConsumerClient consumerClient = new EventHubClientBuilder()
             .connectionString(connectionString, eventHub)
-            .consumerGroup("$default")
+            .consumerGroup(consumerGroup)
             .buildConsumerClient()) {
             return (int) consumerClient.getEventHubProperties().getPartitionIds().stream().count();
         }

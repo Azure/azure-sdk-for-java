@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.stress.config;
 
-import com.azure.messaging.eventhubs.stress.util.Constants;
 import com.azure.messaging.eventhubs.stress.util.ScenarioOptions;
 import com.microsoft.applicationinsights.TelemetryClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class RateMeterConfig {
     @Bean
     public RateMeter rateMeter() {
         return new RateMeter(telemetryClient, Duration.ofSeconds(
-            Integer.parseInt(options.get(Constants.METRIC_INTERVAL_SEC, "60")))
+            options.getMetricIntervalSec())
         );
     }
 }

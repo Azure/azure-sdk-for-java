@@ -146,7 +146,7 @@ Scenario 1: receiver does not checkpoint and not write to another new event hub.
               source $ENV_FILE &&
               java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
               "org.springframework.boot.loader.JarLauncher" \
-              --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=NO --NEED_SEND_EVENT_HUB=NO
+              --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=false --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 Scenario 2: receiver does checkpoint and not write to another new event hub.
@@ -162,7 +162,7 @@ Scenario 2: receiver does checkpoint and not write to another new event hub.
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 
@@ -179,7 +179,7 @@ Scenario 3: receiver does checkpoint and write to another event hub.
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=YES
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=true
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 
@@ -196,7 +196,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver2
       image: {{ .Values.image }}
@@ -208,7 +208,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver3
       image: {{ .Values.image }}
@@ -220,7 +220,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver4
       image: {{ .Values.image }}
@@ -232,7 +232,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=YES --NEED_SEND_EVENT_HUB=NO
+          --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
 
@@ -247,7 +247,6 @@ Configure new class as bean and use class name as its bean name.
 Update `args` field in `job.yaml` to execute the new test class.
 
 Build out jar package and redeploy to cluster.
-
 
 ## Troubleshooting
 

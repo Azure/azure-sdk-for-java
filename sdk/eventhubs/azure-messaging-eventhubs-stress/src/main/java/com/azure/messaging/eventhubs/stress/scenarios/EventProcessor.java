@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.messaging.eventhubs.stress.util.Constants;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.stereotype.Service;
@@ -19,16 +18,16 @@ public class EventProcessor extends EventHubsScenario {
 
     @Override
     public void run() {
-        final String storageConnStr = options.get(Constants.STORAGE_CONNECTION_STRING);
-        final String storageContainer = options.get(Constants.STORAGE_CONTAINER_NAME);
+        final String storageConnStr = options.getStorageConnectionString();
+        final String storageContainer = options.getStorageContainerName();
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(storageConnStr)
             .containerName(storageContainer)
             .buildAsyncClient();
 
-        final String eventHubsConnStr = options.get(Constants.EVENTHUBS_CONNECTION_STRING);
-        final String eventHub = options.get(Constants.EVENTHUBS_EVENT_HUB_NAME);
+        final String eventHubsConnStr = options.getEventhubsConnectionString();
+        final String eventHub = options.getEventhubsEventHubName();
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
