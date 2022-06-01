@@ -95,6 +95,6 @@ public enum ShareServiceVersion implements ServiceVersion {
      * @return the latest {@link ShareServiceVersion}
      */
     public static ShareServiceVersion getLatest() {
-        return V2021_06_08;
+        return V2021_08_06;
     }
 }
