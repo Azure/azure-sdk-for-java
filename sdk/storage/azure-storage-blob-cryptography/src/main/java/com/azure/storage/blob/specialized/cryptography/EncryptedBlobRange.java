@@ -125,18 +125,21 @@ final class EncryptedBlobRange {
                 // are stored in the data, which skews our counting.
                 this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
 
-                // Get the end of the encryption region for the end of the original range
-                regionNumber = (originalRange.getOffset() + originalRange.getCount())
-                    / GCM_ENCRYPTION_REGION_LENGTH;
-                // Read: Get the starting offset for the last encryption region as above and add the length of a region
-                // to get the end offset for the region
-                long regionEndOffset = (regionNumber + 1)
-                    * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                if (originalRange.getCount() != null) {
+                    // Get the end of the encryption region for the end of the original range
+                    regionNumber = (originalRange.getOffset() + originalRange.getCount() - 1)
+                        / GCM_ENCRYPTION_REGION_LENGTH;
+                    // Read: Get the starting offset for the last encryption region as above and add the length of a region
+                    // to get the end offset for the region
+                    long regionEndOffset = (regionNumber + 1)
+                        * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                    // adjusted download count is the difference in the end and start of the range.
+                    this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
+                }
 
                 // Offset adjustment is difference in two starting values
                 this.offsetAdjustment = (int) (originalRange.getOffset() - regionStartOffset);
-                // adjusted download count is the difference in the end and start of the range.
-                this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
+
                 break;
             default:
                 throw new IllegalArgumentException();

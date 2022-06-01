@@ -119,55 +119,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
         cc.delete()
     }
 
-    def "v2 Encryption Test"() {
-        setup:
-        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .encryptionVersion(EncryptionVersion.V2)
-            .buildEncryptedBlobAsyncClient())
-        def data = getRandomData(20 * 1024 * 1024 - 10)
-
-        // 3000 passes
-        // 5 * 1024 * 1024 - 10 passes
-        // 20 * 1024 * 1024 - 10 passes
-        when:
-        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
-
-        and:
-        def outStream = new ByteArrayOutputStream()
-        def downloadResponse = cc.getBlobClient(beac.getBlobName()).downloadStreamWithResponse(outStream, null, null, null, false, null, null)
-        def ciphertextRawBites = outStream.toByteArray()
-        def ciphertextInputStream = new ByteArrayInputStream(ciphertextRawBites)
-        def plaintextOriginal = data.array()
-        def plaintextOutputStream = new ByteArrayOutputStream()
-
-        def encryptionData = new ObjectMapper().readValue(downloadResponse.getDeserializedHeaders().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
-            EncryptionDataV2.class)
-        def cek = fakeKey.unwrapKey(
-            encryptionData.getWrappedContentKey().getAlgorithm(),
-            encryptionData.getWrappedContentKey().getEncryptedKey()).block()
-        def keySpec = new SecretKeySpec(cek, CryptographyConstants.AES)
-
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding")
-
-        int numChunks = (int) Math.ceil(data.array().length / (4 * 1024 * 1024.0));
-
-        for (int i = 0; i < numChunks; i++) {
-            def IV = ciphertextInputStream.readNBytes(12)
-            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, IV)
-
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec)
-
-            plaintextOutputStream.write(cipher.doFinal(ciphertextInputStream.readNBytes((4 * 1024 * 1024) + 16)))
-        }
-        //ByteBuffer plaintextOut = ByteBuffer.allocate(3000)
-        //cipher.doFinal(ByteBuffer.wrap(ciphertextRawBites, 12, 3016), plaintextOut)
-
-        then:
-        ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
-    }
-
     def "v2 Download test"() {
         setup:
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
@@ -207,6 +158,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         encryptedBlobClient.downloadStreamWithResponse(plaintextOut, new BlobRange(offset, endRange - offset), null, null, false, null, null)
 
         then:
+        // TODO:
         // Shouldn't have to duplicate data, but something weird was happening around having to flip the data when I used the original source
         // <= 4mb and I had to flip. Otherwise I had to not flip?
         dataDuplicate == ByteBuffer.wrap(plaintextOut.toByteArray())
@@ -350,6 +302,63 @@ class EncyptedBlockBlobAPITest extends APISpec {
         GCM_ENCRYPTION_REGION_LENGTH + 10 * 3    | 1                 // 8 One buffer containing multiple encryption blocks
         5 * Constants.KB                         | 4 * Constants.KB  // 9 Large number of small buffers.
         20 * Constants.MB                        | 2                 // 10 Small number of large buffers.
+    }
+
+    @LiveOnly
+    def "Encryption v2 manual decryption"() {
+        setup:
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .encryptionVersion(EncryptionVersion.V2)
+            .buildEncryptedBlobAsyncClient())
+        def data = getRandomData(20 * 1024 * 1024 - 10)
+
+        when:
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
+
+        and:
+        def outStream = new ByteArrayOutputStream()
+        def downloadResponse = cc.getBlobClient(beac.getBlobName()).downloadStreamWithResponse(outStream, null, null, null, false, null, null)
+        def ciphertextRawBites = outStream.toByteArray()
+        def ciphertextInputStream = new ByteArrayInputStream(ciphertextRawBites)
+        def plaintextOriginal = data.array()
+        def plaintextOutputStream = new ByteArrayOutputStream()
+
+        def encryptionData = new ObjectMapper().readValue(downloadResponse.getDeserializedHeaders().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
+            EncryptionDataV2.class)
+        def cek = fakeKey.unwrapKey(
+            encryptionData.getWrappedContentKey().getAlgorithm(),
+            encryptionData.getWrappedContentKey().getEncryptedKey()).block()
+        def keySpec = new SecretKeySpec(cek, CryptographyConstants.AES)
+
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding")
+
+        int numChunks = (int) Math.ceil(data.array().length / (4 * 1024 * 1024.0));
+
+        for (int i = 0; i < numChunks; i++) {
+            def IV = ciphertextInputStream.readNBytes(12)
+            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, IV)
+
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec)
+
+            plaintextOutputStream.write(cipher.doFinal(ciphertextInputStream.readNBytes((4 * 1024 * 1024) + 16)))
+        }
+        //ByteBuffer plaintextOut = ByteBuffer.allocate(3000)
+        //cipher.doFinal(ByteBuffer.wrap(ciphertextRawBites, 12, 3016), plaintextOut)
+
+        // 3000 passes
+        // 5 * 1024 * 1024 - 10 passes
+        // 20 * 1024 * 1024 - 10 passes
+
+        then:
+        ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
+
+        where:
+        dataSize | _
+        3000 | _ // small
+        5 * 1024 * 1024 - 10 | _ // medium
+        20 * 1024 * 1024 - 10 | _ // large
     }
 
     boolean encryptionTestHelper(int size, int byteBufferCount) {
@@ -683,6 +692,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
+    // TODO:
     // Upload with old SDK download with new SDK.
     @LiveOnly
     def "Cross platform test upload old download new"() {

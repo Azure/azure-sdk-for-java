@@ -40,6 +40,7 @@ class BlobCryptographyBuilderTest extends APISpec {
 
     def "Pipeline integrity"() {
         expect:
+        // TODO: Check FetchEncryptionDataPolicy?
         // Http pipeline of encrypted client additionally includes decryption policy and blob user agent modification policy
         beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 2
 
