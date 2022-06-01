@@ -15,19 +15,19 @@ public class ScenarioOptions {
     @Value("${TEST_CLASS:#{null}}")
     private String testClass;
 
-    @Value("${EVENTHUBS_CONNECTION_STRING:}")
+    @Value("${EVENTHUBS_CONNECTION_STRING:#{null}}")
     private String eventhubsConnectionString;
 
-    @Value("${EVENTHUBS_EVENT_HUB_NAME:}")
+    @Value("${EVENTHUBS_EVENT_HUB_NAME:#{null}}")
     private String eventhubsEventHubName;
 
     @Value("${EVENTHUBS_CONSUMER_GROUP:" + EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME + "}")
     private String eventHubsConsumerGroup;
 
-    @Value("${STORAGE_CONNECTION_STRING:}")
+    @Value("${STORAGE_CONNECTION_STRING:#{null}}")
     private String storageConnectionString;
 
-    @Value("${STORAGE_CONTAINER_NAME:}")
+    @Value("${STORAGE_CONTAINER_NAME:#{null}}")
     private String storageContainerName;
 
     @Value("${METRIC_INTERVAL_SEC:60}")
@@ -39,10 +39,10 @@ public class ScenarioOptions {
     @Value("${NEED_SEND_EVENT_HUB:false}")
     private boolean needSendEventHub;
 
-    @Value("${SECOND_EVENTHUBS_CONNECTION_STRING:}")
+    @Value("${SECOND_EVENTHUBS_CONNECTION_STRING:#{null}}")
     private String secondEventhubsConnectionString;
 
-    @Value("${SECOND_EVENTHUBS_EVENT_HUB_NAME:}")
+    @Value("${SECOND_EVENTHUBS_EVENT_HUB_NAME:#{null}}")
     private String secondEventhubsEventHubName;
 
     @Value("${RECEIVE_BATCH_SIZE:0}")
