@@ -128,11 +128,11 @@ private[cosmos] case class PartitionMetadata
 
   def getAvgItemsPerLsn: Double = {
     if (this.firstLsn.isEmpty) {
-      math.max(1d, this.documentCount.toDouble / this.getAndValidateLatestLsn())
-    } else if (this.documentCount == 0 || (this.getAndValidateLatestLsn() - this.firstLsn.get) <= 0) {
+      math.max(1d, this.documentCount.toDouble / this.getAndValidateLatestLsn)
+    } else if (this.documentCount == 0 || (this.getAndValidateLatestLsn - this.firstLsn.get) <= 0) {
       1d
     } else {
-      this.documentCount.toDouble / (this.getAndValidateLatestLsn() - this.firstLsn.get)
+      this.documentCount.toDouble / (this.getAndValidateLatestLsn- this.firstLsn.get)
     }
   }
 
@@ -141,7 +141,7 @@ private[cosmos] case class PartitionMetadata
       // latestLsn == 0 but startLsn > 0 means there was an issue where change feed continuation
       // was null - endLsn created here will be used as the startLsn for the next micro batch iteration
       // so it should never be smaller than startLsn
-      math.max(this.latestLsn, this.startLsn)
+      this.startLsn
     } else {
       if (this.latestLsn < this.startLsn) {
         throw new IllegalStateException(
