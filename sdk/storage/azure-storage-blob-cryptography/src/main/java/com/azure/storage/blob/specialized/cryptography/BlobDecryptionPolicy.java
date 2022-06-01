@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.BufferStagingArea;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -101,7 +102,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // policy would have already fetched the encryption data
             EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
                 requestHeaders.getValue(RANGE_HEADER), encryptionData);
-        if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) != null) {
+        if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
             requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
         }
 
@@ -124,8 +125,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  */
                 EncryptionData encryptionDataFinal =
                     encryptionData == null ? EncryptionData.getAndValidateEncryptionData(
-                        httpResponse.getHeaderValue("x-ms-meta-" + ENCRYPTION_DATA_KEY), requiresEncryption)
-                        : encryptionData;
+                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY),
+                        requiresEncryption) : encryptionData;
 
                 /*
                  * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
