@@ -37,7 +37,6 @@ public final class DocumentCaption {
      * Set the content property: Table caption content.
      *
      * @param content the content value to set.
-     * @return the DocumentCaption object itself.
      */
     public void setContent(String content) {
         this.content = content;

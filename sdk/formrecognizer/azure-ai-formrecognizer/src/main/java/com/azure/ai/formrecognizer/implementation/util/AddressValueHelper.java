@@ -18,14 +18,14 @@ public final class AddressValueHelper {
      * Type defining the methods to set the non-public properties of an {@link AddressValue} instance.
      */
     public interface AddressValueAccessor {
-        public void setPoBox(AddressValue addressValue, String poBox);
-        public void setHouseNumber(AddressValue addressValue, String houseNumber);
-        public void setRoad(AddressValue addressValue, String road);
-        public void setCity(AddressValue addressValue, String city) ;
-        public void setState(AddressValue addressValue, String state);
-        public void setPostalCode(AddressValue addressValue, String postalCode);
-        public void setCountryRegion(AddressValue addressValue, String countryRegion);
-        public void setStreetAddress(AddressValue addressValue, String streetAddress);
+        void setPoBox(AddressValue addressValue, String poBox);
+        void setHouseNumber(AddressValue addressValue, String houseNumber);
+        void setRoad(AddressValue addressValue, String road);
+        void setCity(AddressValue addressValue, String city);
+        void setState(AddressValue addressValue, String state);
+        void setPostalCode(AddressValue addressValue, String postalCode);
+        void setCountryRegion(AddressValue addressValue, String countryRegion);
+        void setStreetAddress(AddressValue addressValue, String streetAddress);
     }
 
     /**

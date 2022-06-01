@@ -65,7 +65,6 @@ public final class AddressValue {
      * Set the houseNumber property: Building number.
      *
      * @param houseNumber the houseNumber value to set.
-     * @return the AddressValue object itself.
      */
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
@@ -84,7 +83,6 @@ public final class AddressValue {
      * Set the poBox property: Post office box number.
      *
      * @param poBox the poBox value to set.
-     * @return the AddressValue object itself.
      */
     public void setPoBox(String poBox) {
         this.poBox = poBox;
@@ -103,7 +101,6 @@ public final class AddressValue {
      * Set the road property: Street name.
      *
      * @param road the road value to set.
-     * @return the AddressValue object itself.
      */
     public void setRoad(String road) {
         this.road = road;
@@ -122,7 +119,6 @@ public final class AddressValue {
      * Set the city property: Name of city, town, village, etc.
      *
      * @param city the city value to set.
-     * @return the AddressValue object itself.
      */
     public void setCity(String city) {
         this.city = city;
@@ -141,7 +137,6 @@ public final class AddressValue {
      * Set the state property: First-level administrative division.
      *
      * @param state the state value to set.
-     * @return the AddressValue object itself.
      */
     public void setState(String state) {
         this.state = state;
@@ -160,7 +155,6 @@ public final class AddressValue {
      * Set the postalCode property: Postal code used for mail sorting.
      *
      * @param postalCode the postalCode value to set.
-     * @return the AddressValue object itself.
      */
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
@@ -179,7 +173,6 @@ public final class AddressValue {
      * Set the countryRegion property: Country/region.
      *
      * @param countryRegion the countryRegion value to set.
-     * @return the AddressValue object itself.
      */
     public void setCountryRegion(String countryRegion) {
         this.countryRegion = countryRegion;
@@ -198,7 +191,6 @@ public final class AddressValue {
      * Set the streetAddress property: Street-level address, excluding city, state, countryRegion, and postalCode.
      *
      * @param streetAddress the streetAddress value to set.
-     * @return the AddressValue object itself.
      */
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;

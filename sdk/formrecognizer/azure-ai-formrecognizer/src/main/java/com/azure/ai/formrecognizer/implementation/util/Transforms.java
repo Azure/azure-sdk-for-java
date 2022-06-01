@@ -197,8 +197,8 @@ public class Transforms {
                 .map(innerParagraph -> {
                     DocumentParagraph documentParagraph = new DocumentParagraph();
                     DocumentParagraphHelper.setContent(documentParagraph, innerParagraph.getContent());
-                    DocumentParagraphHelper.setRole(documentParagraph, innerParagraph.getRole() == null ? null :
-                        ParagraphRole.fromString(innerParagraph.getRole().toString()));
+                    DocumentParagraphHelper.setRole(documentParagraph, innerParagraph.getRole() == null ? null
+                        : ParagraphRole.fromString(innerParagraph.getRole().toString()));
                     DocumentParagraphHelper.setBoundingRegions(documentParagraph,
                         toBoundingRegions(innerParagraph.getBoundingRegions()));
                     DocumentParagraphHelper.setSpans(documentParagraph,

@@ -38,7 +38,7 @@ public final class BoundingRegionHelper {
         accessor.setPageNumber(boundingRegion, pageNumber);
     }
 
-    static void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> BoundingRegionHelper) {
-        accessor.setBoundingPolygon(boundingRegion, BoundingRegionHelper);
+    static void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> boundingRegionHelper) {
+        accessor.setBoundingPolygon(boundingRegion, boundingRegionHelper);
     }
 }

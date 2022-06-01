@@ -42,7 +42,6 @@ public final class DocumentParagraph {
      * Set the role property: Semantic role of the paragraph.
      *
      * @param role the role value to set.
-     * @return the DocumentParagraph object itself.
      */
     public void setRole(ParagraphRole role) {
         this.role = role;
