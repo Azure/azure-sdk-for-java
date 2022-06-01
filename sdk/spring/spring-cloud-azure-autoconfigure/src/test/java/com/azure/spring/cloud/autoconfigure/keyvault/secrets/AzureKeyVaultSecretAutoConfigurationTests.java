@@ -138,20 +138,6 @@ class AzureKeyVaultSecretAutoConfigurationTests {
             });
     }
 
-    @Test
-    void configurationGlobalPropertiesShouldBind() {
-        String endpoint = String.format(ENDPOINT, "mykv");
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.endpoint=" + endpoint
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
-                AzureKeyVaultSecretProperties properties = context.getBean(AzureKeyVaultSecretProperties.class);
-                assertEquals(endpoint, properties.getEndpoint());
-            });
-    }
-
     private static class SecretBuilderCustomizer extends TestBuilderCustomizer<SecretClientBuilder> {
 
     }

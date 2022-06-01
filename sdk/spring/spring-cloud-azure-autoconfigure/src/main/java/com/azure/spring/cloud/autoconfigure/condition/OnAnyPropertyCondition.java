@@ -12,8 +12,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 class OnAnyPropertyCondition extends PropertyCondition {
 
@@ -50,9 +54,7 @@ class OnAnyPropertyCondition extends PropertyCondition {
 
     private static class Spec {
 
-        private final String prefix;
-
-        private final String[] prefixes;
+        private final Set<String> prefixes;
 
         private final String havingValue;
 
@@ -61,8 +63,6 @@ class OnAnyPropertyCondition extends PropertyCondition {
         private final boolean matchIfMissing;
 
         Spec(AnnotationAttributes annotationAttributes) {
-            String prefixAttr = annotationAttributes.getString("prefix");
-            prefix = AzureStringUtils.ensureEndsWithSuffix(prefixAttr.trim(), PROPERTY_SUFFIX);
             this.prefixes = getPrefixes(annotationAttributes);
             this.havingValue = annotationAttributes.getString("havingValue");
             this.names = getNames(annotationAttributes);
@@ -79,31 +79,20 @@ class OnAnyPropertyCondition extends PropertyCondition {
             return (value.length > 0) ? value : name;
         }
 
-        private String[] getPrefixes(Map<String, Object> annotationAttributes) {
-            String[] prefixesAttr = (String[]) annotationAttributes.get("prefixes");
-            for(int i = 0; i < prefixesAttr.length; i++){
-                prefixesAttr[i] = AzureStringUtils.ensureEndsWithSuffix(prefixesAttr[i].trim(), PROPERTY_SUFFIX);
-            }
-            return prefixesAttr;
+        private Set<String> getPrefixes(AnnotationAttributes annotationAttributes) {
+            Set<String> prefixSet = new HashSet<>();
+            prefixSet.add(annotationAttributes.getString("prefix"));
+            prefixSet.addAll(Arrays.asList(annotationAttributes.getStringArray("prefixes")));
+            return prefixSet.stream()
+                .filter(item -> !item.isEmpty())
+                .map(p -> AzureStringUtils.ensureEndsWithSuffix(p.trim(), PROPERTY_SUFFIX))
+                .collect(Collectors.toSet());
         }
 
         private void collectProperties(PropertyResolver resolver, List<String> missing, List<String> nonMatching,
                                        List<String> matching) {
-            for (String name : this.names) {
-                String key = this.prefix + name;
-                if (resolver.containsProperty(key)) {
-                    if (!isMatch(resolver.getProperty(key), this.havingValue)) {
-                        nonMatching.add(name);
-                    } else {
-                        matching.add(name);
-                    }
-                } else {
-                    if (!this.matchIfMissing) {
-                        missing.add(name);
-                    } else {
-                        matching.add(name);
-                    }
-                }
+            if (this.prefixes.isEmpty()) {
+                this.prefixes.add("");
             }
             for (String prefix : this.prefixes) {
                 for (String name : this.names) {
@@ -136,14 +125,12 @@ class OnAnyPropertyCondition extends PropertyCondition {
         public String toString() {
             StringBuilder result = new StringBuilder();
             result.append("(");
-            if (this.prefix.length() > 1) {
-                result.append(this.prefix);
-            } else if (this.prefixes.length > 0) {
-                if (this.prefixes.length == 1) {
-                    result.append(this.prefixes[0]);
+            if (this.prefixes.size() > 0) {
+                if (this.prefixes.size() == 1) {
+                    result.append(this.prefixes.iterator().next());
                 } else {
                     result.append("[");
-                    result.append(StringUtils.arrayToCommaDelimitedString(this.prefixes));
+                    result.append(StringUtils.collectionToCommaDelimitedString(this.prefixes));
                     result.append("]");
                 }
             }

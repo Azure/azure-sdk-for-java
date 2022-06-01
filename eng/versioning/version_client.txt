@@ -182,6 +182,7 @@ com.azure.spring:spring-cloud-azure-starter-appconfiguration;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-cosmos;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-data-cosmos;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventhubs;4.2.0;4.3.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-keyvault;4.3.0-beta.1;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-servicebus-jms;4.2.0;4.3.0-beta.1
