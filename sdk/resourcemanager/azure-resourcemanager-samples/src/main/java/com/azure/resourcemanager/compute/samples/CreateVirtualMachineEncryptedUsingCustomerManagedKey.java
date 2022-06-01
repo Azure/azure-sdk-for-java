@@ -11,33 +11,33 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
+import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.keys.models.KeyType;
 
-import java.time.Duration;
-
 /**
- * Azure Compute sample for managing disk encryption sets -
- *  - Create a key vault kv1 and key k1
- *  - Create a disk encryption set, des1, with key vault kv1, key k1 and encryption type
- *     ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY
- *  - Grant the disk encryption set access to the key vault by defining key vault access policy
- *  - Create a new key vault kv2 with RBAC enabled and key k2
- *  - Create a new disk encryption set des2 with key vault kv2, key k2, encryption type
- *     ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS and grant it role-based access to kv2
- *  - Create a virtual machine, with os disk encrypted by des1 and a data disk encrypted by des2
+ * Azure Compute sample for managing virtual machines -
+ * - Create key vault and key
+ * - Create disk encryption set
+ * - Grant disk encryption set access to the key vault by defining key vault access policy
+ * - Create virtual machine with OS disk encrypted using customer managed keys and one data disk, lun1 encrypted using
+ *   platform-managed key
+ * - Deallocated vm, convert data disk lun1 encryption to customer-managed key, start vm
+ * - Create a new disk encrypted using customer-managed key
+ * - Attach the disk to the vm as lun2
  */
-public final class ManageDiskEncryptionSet {
+public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
     /**
      * Main function which runs the actual sample.
      * @param azureResourceManager instance of the azure client
@@ -45,26 +45,22 @@ public final class ManageDiskEncryptionSet {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
-        final Region region = Region.US_WEST;
-        String rgName = Utils.randomResourceName(azureResourceManager, "rg", 15);
-        String kv1Name = Utils.randomResourceName(azureResourceManager, "kv", 15);
-        String k1Name = Utils.randomResourceName(azureResourceManager, "k", 15);
-        String des1Name = Utils.randomResourceName(azureResourceManager, "des", 15);
-        String kv2Name = Utils.randomResourceName(azureResourceManager, "kv", 15);
-        String rbacName = Utils.randomUuid(azureResourceManager);
-        String k2Name = Utils.randomResourceName(azureResourceManager, "k", 15);
-        String des2Name = Utils.randomResourceName(azureResourceManager, "des", 15);
-        String vmName = Utils.randomResourceName(azureResourceManager, "vm", 15);
-
+        final Region region = Region.US_EAST;
+        String rgName = Utils.randomResourceName(azureResourceManager, "rg-", 15);
+        final String vaultName = Utils.randomResourceName(azureResourceManager, "vault-", 15);
+        final String keyName = Utils.randomResourceName(azureResourceManager, "key-", 15);
+        final String desName = Utils.randomResourceName(azureResourceManager, "des-", 15);
+        final String vmName = Utils.randomResourceName(azureResourceManager, "vm-", 15);
+        final String diskLun3Name = Utils.randomResourceName(azureResourceManager, "disk-", 15);
         final String password = Utils.password();
         final String sshPublicKey = Utils.sshPublicKey();
         try {
 
             //=============================================================
-            // Create a key vault kv1 and key k1
+            // Create key vault and key
 
-            Vault kv1 = azureResourceManager.vaults()
-                .define(kv1Name)
+            Vault vault = azureResourceManager.vaults()
+                .define(vaultName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
@@ -74,82 +70,41 @@ public final class ManageDiskEncryptionSet {
                 .withPurgeProtectionEnabled()
                 .create();
 
-            Key k1 = kv1.keys()
-                .define(k1Name)
+            Key vaultKey = vault.keys()
+                .define(keyName)
                 .withKeyTypeToCreate(KeyType.RSA)
                 .withKeySize(4096)
                 .create();
 
             //=============================================================
-            // Create a disk encryption set, des1, with key vault kv1, key k1 and encryption type
-            // ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY
+            // Create disk encryption set
 
-            DiskEncryptionSet des1 = azureResourceManager.diskEncryptionSets()
-                .define(des1Name)
+            DiskEncryptionSet des = azureResourceManager.diskEncryptionSets()
+                .define(desName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
-                .withExistingKeyVault(kv1.id())
-                .withExistingKey(k1.id())
+                .withExistingKeyVault(vault.id())
+                .withExistingKey(vaultKey.id())
                 .withSystemAssignedManagedServiceIdentity()
                 .withAutomaticKeyRotation()
                 .create();
 
             //=============================================================
-            // Grant the disk encryption set access to the key vault by defining key vault access policy
+            // Grant disk encryption set access to the key vault by defining key vault access policy
 
-            kv1.update()
+            vault.update()
                 .defineAccessPolicy()
-                    .forObjectId(des1.systemAssignedManagedServiceIdentityPrincipalId())
+                    .forObjectId(des.systemAssignedManagedServiceIdentityPrincipalId())
                     .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
                     .attach()
                 .apply();
 
             //=============================================================
-            // Create a new key vault kv2 with RBAC enabled and key k2
+            // Create virtual machine with OS disk encrypted using customer managed keys and one data disk lun1 encrypted using
+            // platform-managed key
 
-            Vault kv2 = azureResourceManager.vaults()
-                .define(kv2Name)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withRoleBasedAccessControl()
-                .withPurgeProtectionEnabled()
-                .create();
-
-            azureResourceManager.accessManagement().roleAssignments().define(rbacName)
-                .forServicePrincipal(clientId)
-                .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
-                .withResourceScope(kv2)
-                .create();
-            // wait for propagation time
-            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
-
-            Key k2 = kv2.keys()
-                .define(k2Name)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
-
-            //=============================================================
-            // Create a new disk encryption set des2 with key vault kv2, key k2, encryption type
-            // ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS and grant it role-based access to kv2
-
-            DiskEncryptionSet des2 = azureResourceManager.diskEncryptionSets()
-                .define(des2Name)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS)
-                .withExistingKeyVault(kv2.id())
-                .withExistingKey(k2.id())
-                .withSystemAssignedManagedServiceIdentity()
-                .withRoleBasedAccessToCurrentKeyVault()
-                .withAutomaticKeyRotation()
-                .create();
-
-            //=============================================================
-            // Create a virtual machine, with os disk encrypted by des1 and a data disk encrypted by des2
-
-            VirtualMachine vm = azureResourceManager.virtualMachines()
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
                 .define(vmName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
@@ -160,11 +115,46 @@ public final class ManageDiskEncryptionSet {
                 .withRootUsername("jvuser")
                 .withRootPassword(password)
                 .withSsh(sshPublicKey)
-                .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDiskEncryptionSet(des2.id()))
-                .withOSDiskDiskEncryptionSet(des1.id())
+                .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDiskEncryptionSet(null))
+                .withOSDiskDiskEncryptionSet(des.id())
+                .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                 .create();
-            System.out.println("Created virtual machine encrypted using customer managed keys: " + vm.id());
-            Utils.print(vm);
+            System.out.println("Created virtual machine, with OS disk encrypted using customer-managed key and a "
+                + "data disk lun1 encrypted using platform-managed key: " + linuxVM.id());
+            Utils.print(linuxVM);
+
+            //=============================================================
+            // Deallocated vm, convert data disk lun1 encryption to customer-managed key, start vm
+
+            linuxVM.deallocate();
+            Disk lun1 = azureResourceManager.disks().getById(linuxVM.dataDisks().get(1).id());
+            lun1.update()
+                .withDiskEncryptionSet(des.id(), EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
+                .apply();
+            linuxVM.start();
+            linuxVM.refresh();
+            System.out.println("Converted encryption of data disk lun2 to customer-managed keys: ");
+            Utils.print(linuxVM);
+
+            //=============================================================
+            // Create a new disk encrypted using customer-managed key
+
+            Disk lun2 = azureResourceManager.disks().define(diskLun3Name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(10)
+                .withDiskEncryptionSet(des.id())
+                .create();
+
+            //=============================================================
+            // Attach the disk to the vm as lun2
+
+            linuxVM.update()
+                .withExistingDataDisk(lun2, 2, CachingTypes.READ_WRITE)
+                .apply();
+            System.out.println("Updated virtual machine with 2 data disks all encrypted using customer-managed key");
+            Utils.print(linuxVM);
             return true;
         } finally {
             try {
@@ -211,7 +201,7 @@ public final class ManageDiskEncryptionSet {
         }
     }
 
-    private ManageDiskEncryptionSet() {
+    private CreateVirtualMachineEncryptedUsingCustomerManagedKey() {
 
     }
 }
