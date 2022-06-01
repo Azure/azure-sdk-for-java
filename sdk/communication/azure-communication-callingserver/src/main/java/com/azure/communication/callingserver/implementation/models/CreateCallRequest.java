@@ -4,11 +4,8 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The request payload for create call. */
 @Fluent
@@ -23,8 +20,8 @@ public final class CreateCallRequest {
     /*
      * The targets of the call.
      */
-    @JsonProperty(value = "targets", required = true)
-    private List<CommunicationIdentifierModel> targets;
+    @JsonProperty(value = "target", required = true)
+    private CommunicationIdentifierModel target;
 
     /*
      * The source of the call.
@@ -41,20 +38,8 @@ public final class CreateCallRequest {
     /*
      * The callback URI.
      */
-    @JsonProperty(value = "callbackUri", required = true)
+    @JsonProperty(value = "callbackUri")
     private String callbackUri;
-
-    /*
-     * The requested modalities.
-     */
-    @JsonProperty(value = "requestedMediaTypes")
-    private List<MediaType> requestedMediaTypes;
-
-    /*
-     * The requested call events to subscribe to.
-     */
-    @JsonProperty(value = "requestedCallEvents")
-    private List<EventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
@@ -79,22 +64,22 @@ public final class CreateCallRequest {
     }
 
     /**
-     * Get the targets property: The targets of the call.
+     * Get the target property: The targets of the call.
      *
-     * @return the targets value.
+     * @return the target value.
      */
-    public List<CommunicationIdentifierModel> getTargets() {
-        return this.targets;
+    public CommunicationIdentifierModel getTarget() {
+        return this.target;
     }
 
     /**
-     * Set the targets property: The targets of the call.
+     * Set the target property: The targets of the call.
      *
-     * @param targets the targets value to set.
+     * @param target the target value to set.
      * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequest setTargets(List<CommunicationIdentifierModel> targets) {
-        this.targets = targets;
+    public CreateCallRequest setTarget(CommunicationIdentifierModel target) {
+        this.target = target;
         return this;
     }
 
@@ -155,46 +140,6 @@ public final class CreateCallRequest {
      */
     public CreateCallRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the requestedMediaTypes property: The requested modalities.
-     *
-     * @return the requestedMediaTypes value.
-     */
-    public List<MediaType> getRequestedMediaTypes() {
-        return this.requestedMediaTypes;
-    }
-
-    /**
-     * Set the requestedMediaTypes property: The requested modalities.
-     *
-     * @param requestedMediaTypes the requestedMediaTypes value to set.
-     * @return the CreateCallRequest object itself.
-     */
-    public CreateCallRequest setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
-        this.requestedMediaTypes = requestedMediaTypes;
-        return this;
-    }
-
-    /**
-     * Get the requestedCallEvents property: The requested call events to subscribe to.
-     *
-     * @return the requestedCallEvents value.
-     */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
-        return this.requestedCallEvents;
-    }
-
-    /**
-     * Set the requestedCallEvents property: The requested call events to subscribe to.
-     *
-     * @param requestedCallEvents the requestedCallEvents value to set.
-     * @return the CreateCallRequest object itself.
-     */
-    public CreateCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
-        this.requestedCallEvents = requestedCallEvents;
         return this;
     }
 }

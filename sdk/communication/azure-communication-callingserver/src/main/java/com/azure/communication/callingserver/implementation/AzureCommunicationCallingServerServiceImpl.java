@@ -62,6 +62,18 @@ public final class AzureCommunicationCallingServerServiceImpl {
         return this.serializerAdapter;
     }
 
+    /** The ServerCallingsImpl object to access its operations. */
+    private final ServerCallingsImpl serverCallings;
+
+    /**
+     * Gets the ServerCallingsImpl object to access its operations.
+     *
+     * @return the ServerCallingsImpl object.
+     */
+    public ServerCallingsImpl getServerCallings() {
+        return this.serverCallings;
+    }
+
     /** The CallConnectionsImpl object to access its operations. */
     private final CallConnectionsImpl callConnections;
 
@@ -72,18 +84,6 @@ public final class AzureCommunicationCallingServerServiceImpl {
      */
     public CallConnectionsImpl getCallConnections() {
         return this.callConnections;
-    }
-
-    /** The ServerCallsImpl object to access its operations. */
-    private final ServerCallsImpl serverCalls;
-
-    /**
-     * Gets the ServerCallsImpl object to access its operations.
-     *
-     * @return the ServerCallsImpl object.
-     */
-    public ServerCallsImpl getServerCalls() {
-        return this.serverCalls;
     }
 
     /**
@@ -127,7 +127,7 @@ public final class AzureCommunicationCallingServerServiceImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
+        this.serverCallings = new ServerCallingsImpl(this);
         this.callConnections = new CallConnectionsImpl(this);
-        this.serverCalls = new ServerCallsImpl(this);
     }
 }
