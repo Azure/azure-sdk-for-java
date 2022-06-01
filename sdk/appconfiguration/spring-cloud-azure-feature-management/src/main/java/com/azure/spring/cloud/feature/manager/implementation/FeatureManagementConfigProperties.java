@@ -3,12 +3,10 @@
 package com.azure.spring.cloud.feature.manager.implementation;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * Feature Management configuration file properties.
  */
-@Validated
 @ConfigurationProperties(prefix = FeatureManagementConfigProperties.CONFIG_PREFIX)
 public class FeatureManagementConfigProperties {
 
