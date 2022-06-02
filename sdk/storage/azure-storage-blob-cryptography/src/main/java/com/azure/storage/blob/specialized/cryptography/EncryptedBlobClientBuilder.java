@@ -150,9 +150,22 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
+     * @deprecated Use {@link EncryptedBlobClientBuilder#EncryptedBlobClientBuilder(EncryptionVersion)}.
      */
+    @Deprecated
     public EncryptedBlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+    }
+
+    /**
+     *
+     * @param version The version of the client side encryption protocol to use. It is highly recommended that v2 be
+     * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
+     * client configured to encrypt using v2 can decrypt blobs that use the v1 protocol.
+     */
+    public EncryptedBlobClientBuilder(EncryptionVersion version) {
+        Objects.requireNonNull(version);
+        this.encryptionVersion = version;
     }
 
     /**
@@ -208,7 +221,7 @@ public final class EncryptedBlobClientBuilder implements
         if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
             LOGGER.warning("Client is being configured to use v1 of client side encryption, which is no longer "
                 + "considered secure. The default is v1 for compatibility reasons, but it is highly recommended "
-                + "the version be set to v2 using this builder");
+                + "the version be set to v2 using the constructor");
         }
         this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
 
@@ -897,18 +910,6 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
-        return this;
-    }
-
-    /**
-     * Sets the encryption version for this client. For any new workloads, using version 2 or above is highly
-     * encouraged as version 1 uses AES/CBC, which is no longer considered secure. For compatibility reasons, the
-     * default value is version 1.
-     * @param version The encryption version.
-     * @return The updated builder.
-     */
-    public EncryptedBlobClientBuilder encryptionVersion(EncryptionVersion version) {
-        this.encryptionVersion = version;
         return this;
     }
 }

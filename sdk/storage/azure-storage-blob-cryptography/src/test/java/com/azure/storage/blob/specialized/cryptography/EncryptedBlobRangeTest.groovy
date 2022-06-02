@@ -7,7 +7,7 @@ import spock.lang.Unroll
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*
 
 class EncryptedBlobRangeTest extends APISpec {
-    
+
     // This test checks that the EncryptedBlobRange cna be properly constructed from a BlobRange
     @Unroll
     def "Test constructor"() {

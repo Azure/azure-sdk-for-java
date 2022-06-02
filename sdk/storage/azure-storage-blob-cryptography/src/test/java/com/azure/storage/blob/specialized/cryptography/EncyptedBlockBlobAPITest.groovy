@@ -96,9 +96,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     def getEncryptionAsyncClient(EncryptionVersion version) {
         return mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl())
+            cc.getBlobContainerUrl(), version)
             .blobName(generateBlobName())
-            .encryptionVersion(version)
             .buildEncryptedBlobAsyncClient())
     }
 
@@ -109,9 +108,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def getEncryptionClient(EncryptionVersion version, String blobName) {
         blobName = blobName == null ? generateBlobName() : blobName
         return new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl().toString())
+            cc.getBlobContainerUrl().toString(), version)
             .blobName(blobName)
-            .encryptionVersion(version)
             .buildEncryptedBlobAsyncClient()))
     }
 
@@ -122,9 +120,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "v2 Download test"() {
         setup:
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl())
+            cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .encryptionVersion(EncryptionVersion.V2)
             .buildEncryptedBlobAsyncClient())
         def encryptedBlobClient = new EncryptedBlobClient(beac)
         def blobClient = cc.getBlobClient(beac.getBlobName())
@@ -308,9 +305,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Encryption v2 manual decryption"() {
         setup:
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl())
+            cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
-            .encryptionVersion(EncryptionVersion.V2)
             .buildEncryptedBlobAsyncClient())
         def data = getRandomData(20 * 1024 * 1024 - 10)
 
@@ -344,12 +340,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
             plaintextOutputStream.write(cipher.doFinal(ciphertextInputStream.readNBytes((4 * 1024 * 1024) + 16)))
         }
-        //ByteBuffer plaintextOut = ByteBuffer.allocate(3000)
-        //cipher.doFinal(ByteBuffer.wrap(ciphertextRawBites, 12, 3016), plaintextOut)
-
-        // 3000 passes
-        // 5 * 1024 * 1024 - 10 passes
-        // 20 * 1024 * 1024 - 10 passes
 
         then:
         ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
@@ -895,9 +885,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
          */
         setup:
         def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            ebc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+            ebc.getBlobUrl(), version, new MockRetryRangeResponsePolicy())
 
-        ebc = new EncryptedBlobClient(mockAesKey(builder.encryptionVersion(version).buildEncryptedBlobAsyncClient()))
+        ebc = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
 
         when:
         def range = new BlobRange(2, 5L)
