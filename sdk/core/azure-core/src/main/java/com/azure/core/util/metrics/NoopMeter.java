@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-final class NoopMeter implements AzureMeter {
+final class NoopMeter extends AzureMeter {
 
     public static final AzureMeter INSTANCE = new NoopMeter();
 
@@ -40,13 +40,5 @@ final class NoopMeter implements AzureMeter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
         return NOOP_LONG_COUNTER;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 }

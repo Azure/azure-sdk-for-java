@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-class OpenTelemetryMeter implements AzureMeter {
+class OpenTelemetryMeter extends AzureMeter {
     private final Meter meter;
     private final boolean isEnabled;
 

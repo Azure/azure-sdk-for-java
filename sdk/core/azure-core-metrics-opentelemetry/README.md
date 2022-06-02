@@ -25,7 +25,7 @@ documentation][OpenTelemetry] | [Samples][samples]
 
 ## Key concepts
 
-Check out [Metrics in OpenTelemetry](https://opentelemetry.io/docs/concepts/otel-concepts/#metrics-in-opentelemetry) for all the details on metrics. 
+Check out [Metrics in OpenTelemetry](https://opentelemetry.io/docs/concepts/signals/metrics/) for all the details on metrics. 
 
 ## Examples
 

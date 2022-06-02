@@ -40,7 +40,7 @@ import java.util.Map;
  * </pre>
  *  <!-- end com.azure.core.util.metrics.AzureMeter.longHistogram -->
  */
-public interface AzureMeter {
+public abstract class AzureMeter {
     /**
      * Creates histogram instrument allowing to record long values. Histograms should be used for latency or other measurements where
      * distribution of values is important and values are statistically bounded.
@@ -80,7 +80,7 @@ public interface AzureMeter {
      * @return new instance of {@link AzureLongCounter}
      * @throws NullPointerException if name or description is null.
      */
-    AzureLongHistogram createLongHistogram(String name, String description, String unit, Map<String, Object> attributes);
+    public abstract AzureLongHistogram createLongHistogram(String name, String description, String unit, Map<String, Object> attributes);
 
     /**
      * Creates counter instrument allowing to record long values. Counters should only be used for incrementing values
@@ -107,7 +107,7 @@ public interface AzureMeter {
      * @return new instance of {@link AzureLongCounter}
      * @throws NullPointerException if name or description is null.
      */
-    AzureLongCounter createLongCounter(String name, String description, String unit, Map<String, Object> attributes);
+    public abstract AzureLongCounter createLongCounter(String name, String description, String unit, Map<String, Object> attributes);
 
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,
@@ -115,5 +115,7 @@ public interface AzureMeter {
      *
      * @return {@code true} if enabled, {@code false} otherwise
      */
-    boolean isEnabled();
+    public boolean isEnabled() {
+        return false;
+    }
 }

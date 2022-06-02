@@ -101,7 +101,7 @@ public class MetricsJavaDocCodeSnippets {
     public void readmeSampleCustomSdkConfiguration() {
         // BEGIN: readme-sample-customConfiguration
 
-        // configure OpenTelemetry SDK as usual and register global configuration
+        // configure OpenTelemetry SDK as usual and register configuration
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
             .build();

@@ -36,7 +36,7 @@ public class MicrometerMeterProvider implements AzureMeterProvider {
     /**
      * Implements Micrometer version of {@link AzureMeter}
      */
-    private static class MicrometerMeter implements AzureMeter {
+    private static class MicrometerMeter extends AzureMeter {
         private final MeterRegistry registry;
 
         MicrometerMeter(String libraryName, String libraryVersion, MetricsOptions options) {
