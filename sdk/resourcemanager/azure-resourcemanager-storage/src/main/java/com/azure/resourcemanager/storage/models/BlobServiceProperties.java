@@ -134,6 +134,8 @@ public interface BlobServiceProperties
         interface WithBlobVersioning {
             /**
              * Enables blob versioning.
+             * <p>When blob versioning is enabled, you can access earlier versions of a blob to recover your data
+             * if it is modified or deleted.</p>
              * @return the next definition stage
              */
             WithCreate withBlobVersioningEnabled();
@@ -227,15 +229,17 @@ public interface BlobServiceProperties
         interface WithBlobVersioning {
             /**
              * Enables blob versioning.
+             * <p>When blob versioning is enabled, you can access earlier versions of a blob to recover your data
+             * if it is modified or deleted.</p>
              * @return the next update stage
              */
             Update withBlobVersioningEnabled();
 
             /**
              * Disables blob versioning.
-             * <p>After versioning is disabled, modifying the current version creates a blob that is not a version.
-             * All subsequent updates to the blob will overwrite its data without saving the previous state.
-             * All existing versions persist as previous versions.</p>
+             * <p>After versioning is disabled, modifying the blob with current version results in creating a blob that
+             * has no version. All subsequent updates to the blob will overwrite its data without saving the previous
+             * state. All existing versions persist as previous versions.</p>
              * <p>You can read or delete versions using the version ID after versioning is disabled.
              * You can also list a blob's versions after versioning is disabled.</p>
              * @return the next update stage
