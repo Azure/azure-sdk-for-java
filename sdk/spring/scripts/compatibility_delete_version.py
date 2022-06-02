@@ -36,9 +36,7 @@ def find_all_poms_do_version_control(directory):
                 delete_dependency_version(file_path)
 
 
-# Delete version managed by Spring Boot or Spring Cloud, such as:
-# <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
-# <version>3.1.0</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+# Delete explicit versions, and use versions from Spring Boot or Spring Cloud BOMs
 def delete_dependency_version(file_path):
     log.info("delete dependency version in " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
