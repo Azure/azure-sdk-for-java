@@ -3,16 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.condition;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.StandardEnvironment;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,16 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 class ConditionalOnAnyPropertyTests {
 
-    private ConfigurableApplicationContext context;
-
-    private final ConfigurableEnvironment environment = new StandardEnvironment();
-
-    @AfterEach
-    void tearDown() {
-        if (this.context != null) {
-            this.context.close();
-        }
-    }
+    private final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
     @Test
     void allPropertiesAreDefined() {
@@ -229,12 +215,6 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Test
-    void multiValuesAllSetPrefixes() {
-        load(MultiValuesConfigPrefixes.class, "spring.cloud.azure.first.my-property:bar", "spring.cloud.azure.second.my-another-property:bar");
-        assertThat(this.context.containsBean("foo")).isTrue();
-    }
-
-    @Test
     void multiValuesOnlyOneSetPrefix() {
         load(MultiValuesConfigPrefix.class, "spring.cloud.azure.my-property:bar");
         assertThat(this.context.containsBean("foo")).isTrue();
@@ -313,9 +293,9 @@ class ConditionalOnAnyPropertyTests {
     }
 
     private void load(Class<?> config, String... environment) {
-        TestPropertyValues.of(environment).applyTo(this.environment);
-        this.context = new SpringApplicationBuilder(config).environment(this.environment).web(WebApplicationType.NONE)
-            .run();
+        TestPropertyValues.of(environment).applyTo(this.context);
+        this.context.register(config);
+        this.context.refresh();
     }
 
     @Configuration(proxyBeanMethods = false)

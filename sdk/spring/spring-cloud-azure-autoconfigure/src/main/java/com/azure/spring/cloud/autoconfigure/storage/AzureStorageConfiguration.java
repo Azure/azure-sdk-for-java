@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration for Azure Storage support.
+ * Common configuration for Azure Storage support.
  *
  * @since 4.3.0
  */

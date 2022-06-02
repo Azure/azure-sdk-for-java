@@ -57,7 +57,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private static final AtomicBoolean configloaded = new AtomicBoolean(false);
 
-    private static final AtomicBoolean startup = new AtomicBoolean(true);
+    static final AtomicBoolean startup = new AtomicBoolean(true);
 
     /**
      * Loads all Azure App Configuration Property Sources configured.
@@ -95,7 +95,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE_NAME);
-        Collections.reverse(configStores); // Last store has highest precedence
+        Collections.reverse(configStores); // Last store has the highest precedence
 
         Iterator<ConfigStore> configStoreIterator = configStores.iterator();
         // Feature Management needs to be set in the last config store.
@@ -131,9 +131,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      *
      * @param composite PropertySource being added
      * @param store Config Store the PropertySource is being generated from
-     * @param applicationName Name of the application
      * @param profiles Active profiles in the Store
-     * @param storeContextsMap the Map storing the storeName -> List of contexts map
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
      * it needs to be in the last one.
      */
@@ -182,11 +180,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     }
 
     /**
-     * Creates a new set of AppConfigurationProertySources, 1 per Label.
+     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
      *
-     * @param context Context of the application, part of uniquely define a PropertySource
      * @param store Config Store the PropertySource is being generated from
-     * @param storeContextsMap the Map storing the storeName -> List of contexts map
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources

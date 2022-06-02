@@ -193,6 +193,7 @@ extends:
   parameters:
     ServiceDirectory: spring
     EnableBatchRelease: true
+    UseEsrpRelease: false
     Artifacts:
       - name: spring-cloud-azure-core
         groupId: com.azure.spring
