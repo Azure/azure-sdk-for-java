@@ -39,9 +39,6 @@ public class ScenarioOptions {
     @Value("${NEED_SEND_EVENT_HUB:false}")
     private boolean needSendEventHub;
 
-    @Value("${SECOND_EVENTHUBS_CONNECTION_STRING:#{null}}")
-    private String secondEventhubsConnectionString;
-
     @Value("${SECOND_EVENTHUBS_EVENT_HUB_NAME:#{null}}")
     private String secondEventhubsEventHubName;
 
@@ -85,10 +82,6 @@ public class ScenarioOptions {
 
     public boolean isNeedSendEventHub() {
         return needSendEventHub;
-    }
-
-    public String getSecondEventhubsConnectionString() {
-        return secondEventhubsConnectionString;
     }
 
     public String getSecondEventhubsEventHubName() {

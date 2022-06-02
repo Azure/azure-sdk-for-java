@@ -57,11 +57,10 @@ public class EventProcessorWithOptions extends EventHubsScenario {
 
         final boolean updateCheckpoint = options.isUpdateCheckpoint();
         final boolean needSendEventHub = options.isNeedSendEventHub();
-        final String writeEventHubConnStr = options.getSecondEventhubsConnectionString();
         final String writeEventHub = options.getSecondEventhubsEventHubName();
 
         EventHubProducerClient producerClient = new EventHubClientBuilder()
-            .connectionString(writeEventHubConnStr, writeEventHub)
+            .connectionString(eventHubConnStr, writeEventHub)
             .buildProducerClient();
 
         final int batchSize = options.getReceiveBatchSize();

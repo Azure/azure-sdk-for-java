@@ -7,9 +7,8 @@ param location string = resourceGroup().location
 var subBaseName = '${substring(baseName, 0, min(length(baseName), 12))}-${substring(guid(baseName), 0, 4)}'
 var eventHubsNamespaceName = '${subBaseName}-ehns'
 var eventHubName = 'test-event-hub'
-var eventHubAuthRulesName = '${subBaseName}-ehrl'
-var secondEventHubName = 'test-event-hub2'
-var secondEventHubAuthRulesName = '${subBaseName}-ehrl2'
+var eventHubsAuthRulesName = '${subBaseName}-ehrl'
+var secondEventHubName = 'test-event-hub-2'
 
 // storage account must be between 3 and 24 characters in length and use numbers and lower-case letters only
 var storageAccountName = replace('${subBaseName}ac', '-', '')
@@ -34,18 +33,6 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   }
 }
 
-resource eventHubAuthRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-11-01' = {
-  parent: eventHub
-  name: eventHubAuthRulesName
-  properties:  {
-    rights: [
-      'Manage'
-      'Send'
-      'Listen'
-    ]
-  }
-}
-
 resource secondEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   parent: eventHubsNamespace
   name: secondEventHubName
@@ -55,10 +42,10 @@ resource secondEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   }
 }
 
-resource secondEventHubAuthRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-11-01' = {
-  parent: secondEventHub
-  name: secondEventHubAuthRulesName
-  properties:  {
+resource eventHubsAuthRules 'Microsoft.EventHub/namespaces/authorizationRules@2021-11-01' = {
+  parent: eventHubsNamespace
+  name: eventHubsAuthRulesName
+  properties: {
     rights: [
       'Manage'
       'Send'
@@ -66,7 +53,6 @@ resource secondEventHubAuthRules 'Microsoft.EventHub/namespaces/eventhubs/author
     ]
   }
 }
-
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
@@ -89,8 +75,7 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
 
 // Construct eventhubs connection string
 var eventHubsVersion = eventHubsNamespace.apiVersion
-var eventHubsConnectionString = listkeys(eventHubAuthRulesName, eventHubsVersion).primaryConnectionString
-var secondEventHubsConnectionString = listkeys(secondEventHubAuthRulesName, eventHubsVersion).primaryConnectionString
+var eventHubsConnectionString = listkeys(eventHubsAuthRulesName, eventHubsVersion).primaryConnectionString
 
 // Construct storage account connection string
 var endpointSuffix = environment().suffixes.storage
@@ -103,4 +88,3 @@ output EVENTHUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
 output STORAGE_CONTAINER_NAME string = storageContainerName
 output STORAGE_CONNECTION_STRING string = '"${storageConnectionString}"'
 output SECOND_EVENTHUBS_EVENT_HUB_NAME string = secondEventHubName
-output SECOND_EVENTHUBS_CONNECTION_STRING string = '"${secondEventHubsConnectionString}"'
