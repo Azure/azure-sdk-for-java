@@ -237,11 +237,12 @@ public interface BlobServiceProperties
 
             /**
              * Disables blob versioning.
-             * <p>After versioning is disabled, modifying the blob with current version will result in creating a new blob
-             * that has no version. All subsequent updates will go to this new blob and overwrite its data without saving
-             * the previous state. All existing versions of the blob stay unaffected.</p>
-             * <p>You can still read or delete a specific version of a blob using the version ID after versioning is disabled.
-             * You can also list a blob's versions after versioning is disabled.</p>
+             * <p>After versioning is disabled, the first time you modify the blob with current version will result in
+             * creating a new blob that has no version. All subsequent updates will go to this new blob and overwrite
+             * its data without saving the previous state. All existing versions stay unaffected.</p>
+             * <p>You can still list a blob's versions after versioning is disabled, or read or delete a specific
+             * version of the blob using the version ID.
+             * </p>
              * @return the next update stage
              */
             Update withBlobVersioningDisabled();
