@@ -14,8 +14,10 @@ public class ServiceBusContainerProperties extends ProcessorProperties {
     private MessageListener<?> messageListener;
     private ServiceBusErrorHandler errorHandler;
 
+    /**
+     * The container properties should have no default value.
+     */
     public ServiceBusContainerProperties() {
-        // The container properties should have no default value
         this.setMaxConcurrentCalls(null);
         this.setAutoComplete(null);
         this.setMaxAutoLockRenewDuration(null);
