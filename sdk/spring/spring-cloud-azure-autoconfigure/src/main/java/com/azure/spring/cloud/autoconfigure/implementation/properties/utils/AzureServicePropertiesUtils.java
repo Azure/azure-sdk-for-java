@@ -8,7 +8,7 @@ import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
 /**
- * Util class for processor Azure Service properties.
+ * Util class for processing Azure Service properties.
  */
 public final class AzureServicePropertiesUtils {
 
