@@ -54,7 +54,11 @@ public final class TimeSeriesDatabaseConnectionState extends ExpandableStringEnu
         return fromString(name, TimeSeriesDatabaseConnectionState.class);
     }
 
-    /** @return known TimeSeriesDatabaseConnectionState values. */
+    /**
+     * Gets known TimeSeriesDatabaseConnectionState values.
+     *
+     * @return known TimeSeriesDatabaseConnectionState values.
+     */
     public static Collection<TimeSeriesDatabaseConnectionState> values() {
         return values(TimeSeriesDatabaseConnectionState.class);
     }

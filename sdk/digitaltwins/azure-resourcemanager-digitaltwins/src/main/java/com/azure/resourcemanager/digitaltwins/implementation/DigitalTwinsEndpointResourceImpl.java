@@ -38,6 +38,10 @@ public final class DigitalTwinsEndpointResourceImpl
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DigitalTwinsEndpointResourceInner innerModel() {
         return this.innerObject;
     }

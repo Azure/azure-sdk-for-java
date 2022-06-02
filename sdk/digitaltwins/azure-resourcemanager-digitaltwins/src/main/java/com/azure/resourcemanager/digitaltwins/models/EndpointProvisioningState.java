@@ -54,7 +54,11 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
         return fromString(name, EndpointProvisioningState.class);
     }
 
-    /** @return known EndpointProvisioningState values. */
+    /**
+     * Gets known EndpointProvisioningState values.
+     *
+     * @return known EndpointProvisioningState values.
+     */
     public static Collection<EndpointProvisioningState> values() {
         return values(EndpointProvisioningState.class);
     }
