@@ -18,7 +18,6 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
-import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
@@ -115,7 +114,7 @@ public final class CreateVirtualMachineEncryptedUsingCustomerManagedKey {
                 .withRootUsername("jvuser")
                 .withRootPassword(password)
                 .withSsh(sshPublicKey)
-                .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDiskEncryptionSet(null))
+                .withNewDataDisk(10, 1, CachingTypes.READ_WRITE)
                 .withOSDiskDiskEncryptionSet(des.id())
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
                 .create();
