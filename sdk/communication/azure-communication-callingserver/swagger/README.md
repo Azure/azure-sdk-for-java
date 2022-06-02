@@ -53,7 +53,10 @@ directive:
     to: CallRecordingStateChangeEventInternal    
 - rename-model:
     from: AddParticipantResultEvent
-    to: AddParticipantResultEventInternal    
+    to: AddParticipantResultEventInternal
+- rename-model:
+    from: TransferCallResultEvent
+    to: TransferCallResultEventInternal
 - rename-model:
     from: PlayAudioResultEvent
     to: PlayAudioResultEventInternal   
@@ -69,6 +72,12 @@ directive:
 - rename-model:
     from: CallParticipant
     to: CallParticipantInternal
+- rename-model:
+    from: AudioGroupResult
+    to: AudioGroupResultInternal
+- rename-model:
+    from: CreateAudioGroupResult
+    to: CreateAudioGroupResultInternal
 - rename-model:
     from: JoinCallResult
     to: JoinCallResultInternal
@@ -86,16 +95,22 @@ directive:
     to: CreateCallResultInternal
 - rename-model:
     from: AddParticipantResult
-    to: AddParticipantResultInternal    
+    to: AddParticipantResultInternal
 - rename-model:
-    from: CancelAllMediaOperationsResult
-    to: CancelAllMediaOperationsResultInternal
+    from: TransferCallResult
+    to: TransferCallResultInternal
 - rename-model:
-    from: ResultInfo
-    to: ResultInfoInternal
+    from: CallingOperationResultDetails
+    to: CallingOperationResultDetailsInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                                            
+    to: ToneInfoInternal
+- rename-model:
+    from: AnswerCallResult
+    to: AnswerCallResultInternal
+- rename-model:
+    from: CallConnectionProperties
+    to: CallConnectionPropertiesInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannel

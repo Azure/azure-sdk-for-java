@@ -4,13 +4,13 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.CallConnectionState;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.communication.callingserver.models.CallConnectionState;
 
-/** The CallConnectionProperties model. */
+/** The CallConnectionPropertiesInternal model. */
 @Fluent
-public final class CallConnectionProperties {
+public final class CallConnectionPropertiesInternal {
     /*
      * The call leg id.
      */
@@ -73,9 +73,9 @@ public final class CallConnectionProperties {
      * Set the callLegId property: The call leg id.
      *
      * @param callLegId the callLegId value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setCallLegId(String callLegId) {
+    public CallConnectionPropertiesInternal setCallLegId(String callLegId) {
         this.callLegId = callLegId;
         return this;
     }
@@ -93,9 +93,9 @@ public final class CallConnectionProperties {
      * Set the serverCallId property: The server call id.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setServerCallId(String serverCallId) {
+    public CallConnectionPropertiesInternal setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
@@ -113,9 +113,9 @@ public final class CallConnectionProperties {
      * Set the source property: The source of the call.
      *
      * @param source the source value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setSource(CommunicationIdentifierModel source) {
+    public CallConnectionPropertiesInternal setSource(CommunicationIdentifierModel source) {
         this.source = source;
         return this;
     }
@@ -135,9 +135,9 @@ public final class CallConnectionProperties {
      * number.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public CallConnectionPropertiesInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
@@ -155,9 +155,9 @@ public final class CallConnectionProperties {
      * Set the target property: The targets of the call.
      *
      * @param target the target value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setTarget(CommunicationIdentifierModel target) {
+    public CallConnectionPropertiesInternal setTarget(CommunicationIdentifierModel target) {
         this.target = target;
         return this;
     }
@@ -175,9 +175,9 @@ public final class CallConnectionProperties {
      * Set the callConnectionState property: The state of the call connection.
      *
      * @param callConnectionState the callConnectionState value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setCallConnectionState(CallConnectionState callConnectionState) {
+    public CallConnectionPropertiesInternal setCallConnectionState(CallConnectionState callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }
@@ -195,9 +195,9 @@ public final class CallConnectionProperties {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setSubject(String subject) {
+    public CallConnectionPropertiesInternal setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -215,9 +215,9 @@ public final class CallConnectionProperties {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the CallConnectionProperties object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionProperties setCallbackUri(String callbackUri) {
+    public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

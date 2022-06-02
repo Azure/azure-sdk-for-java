@@ -4,6 +4,13 @@
 
 package com.azure.communication.callingserver.implementation;
 
+import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
+import com.azure.communication.callingserver.implementation.models.CallParticipantCollection;
+import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -27,13 +34,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
-import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.CallConnectionProperties;
-import com.azure.communication.callingserver.implementation.models.CallParticipantCollection;
-import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 
 /** An instance of this class provides access to all the operations defined in CallConnections. */
 public final class CallConnectionsImpl {
@@ -67,7 +67,7 @@ public final class CallConnectionsImpl {
                 value = CommunicationErrorResponseException.class,
                 code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CallConnectionProperties>> getCall(
+        Mono<Response<CallConnectionPropertiesInternal>> getCall(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callLegId") String callLegId,
                 @QueryParam("api-version") String apiVersion,
@@ -197,7 +197,7 @@ public final class CallConnectionsImpl {
      * @return information of an existing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> getCallWithResponseAsync(String callLegId) {
+    public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(String callLegId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -218,7 +218,8 @@ public final class CallConnectionsImpl {
      * @return information of an existing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> getCallWithResponseAsync(String callLegId, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(
+            String callLegId, Context context) {
         final String accept = "application/json";
         return service.getCall(this.client.getEndpoint(), callLegId, this.client.getApiVersion(), accept, context);
     }
@@ -235,10 +236,10 @@ public final class CallConnectionsImpl {
      * @return information of an existing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> getCallAsync(String callLegId) {
+    public Mono<CallConnectionPropertiesInternal> getCallAsync(String callLegId) {
         return getCallWithResponseAsync(callLegId)
                 .flatMap(
-                        (Response<CallConnectionProperties> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -260,10 +261,10 @@ public final class CallConnectionsImpl {
      * @return information of an existing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> getCallAsync(String callLegId, Context context) {
+    public Mono<CallConnectionPropertiesInternal> getCallAsync(String callLegId, Context context) {
         return getCallWithResponseAsync(callLegId, context)
                 .flatMap(
-                        (Response<CallConnectionProperties> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -284,7 +285,7 @@ public final class CallConnectionsImpl {
      * @return information of an existing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionProperties getCall(String callLegId) {
+    public CallConnectionPropertiesInternal getCall(String callLegId) {
         return getCallAsync(callLegId).block();
     }
 
@@ -301,7 +302,7 @@ public final class CallConnectionsImpl {
      * @return information of an existing call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> getCallWithResponse(String callLegId, Context context) {
+    public Response<CallConnectionPropertiesInternal> getCallWithResponse(String callLegId, Context context) {
         return getCallWithResponseAsync(callLegId, context).block();
     }
 
