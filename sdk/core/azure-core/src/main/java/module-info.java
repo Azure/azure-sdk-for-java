@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.core.util.metrics.AzureMeterProvider;
-
 module com.azure.core {
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
@@ -63,5 +61,5 @@ module com.azure.core {
     uses com.azure.core.util.serializer.JsonSerializerProvider;
     uses com.azure.core.util.serializer.MemberNameConverterProvider;
     uses com.azure.core.util.tracing.Tracer;
-    uses AzureMeterProvider;
+    uses com.azure.core.util.metrics.AzureMeterProvider;
 }

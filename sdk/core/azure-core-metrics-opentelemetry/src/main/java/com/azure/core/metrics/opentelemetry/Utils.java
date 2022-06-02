@@ -51,10 +51,10 @@ class Utils {
         Optional<Object> traceContextOpt = azContext.getData(PARENT_TRACE_CONTEXT_KEY);
         if (traceContextOpt.isPresent()) {
             Object traceContextObj = traceContextOpt.get();
-            if (io.opentelemetry.context.Context.class.isAssignableFrom(traceContextObj.getClass())) {
+            if (traceContextObj instanceof io.opentelemetry.context.Context) {
                 return (io.opentelemetry.context.Context) traceContextObj;
-            } else {
-                LOGGER.warning("Expected {} type under `PARENT_TRACE_CONTEXT_KEY`, but got {}", io.opentelemetry.context.Context.class, traceContextObj.getClass());
+            } else if (traceContextObj != null) {
+                LOGGER.warning("Expected instance of `io.opentelemetry.context.Context` under `PARENT_TRACE_CONTEXT_KEY`, but got {}, ignoring it.", traceContextObj.getClass());
             }
         }
 

@@ -5,6 +5,7 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.AzureLongCounter;
 import com.azure.core.util.metrics.AzureLongHistogram;
 import com.azure.core.util.metrics.AzureMeter;
@@ -21,6 +22,7 @@ import java.util.Objects;
  * {@inheritDoc}
  */
 class OpenTelemetryMeter extends AzureMeter {
+    private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryMeter.class);
     private final Meter meter;
     private final boolean isEnabled;
 
@@ -29,8 +31,10 @@ class OpenTelemetryMeter extends AzureMeter {
         if (options != null) {
             if (options.isEnabled()) {
                 Object providerObj = options.getProvider();
-                if (providerObj != null && MeterProvider.class.isAssignableFrom(providerObj.getClass())) {
+                if (providerObj instanceof MeterProvider) {
                     otelProvider = (MeterProvider) options.getProvider();
+                } else if (providerObj != null) {
+                    LOGGER.warning("Expected instance of `io.opentelemetry.api.metrics.MeterProvider` instance under `MetricsOptions.getProvider()`, but got {}, ignoring it.", providerObj.getClass());
                 }
             }  else {
                 otelProvider = MeterProvider.noop();

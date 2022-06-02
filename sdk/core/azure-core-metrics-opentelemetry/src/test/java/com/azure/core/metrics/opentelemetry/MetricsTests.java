@@ -300,15 +300,4 @@ public class MetricsTests {
         assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", null, null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter("name", null, null, null));
     }
-
-    @Test
-    public void noGlobalOTelNullOptions() {
-        AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, null);
-        AzureLongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null, null);
-
-        longHistogram.record(1, Context.NONE);
-        testClock.advance(Duration.ofNanos(SECOND_NANOS));
-        assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
-        assertFalse(meter.isEnabled());
-    }
 }

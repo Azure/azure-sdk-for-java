@@ -20,15 +20,8 @@ public final class OpenTelemetryMeterProvider implements AzureMeterProvider {
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      * <pre>
      *
-     * &#47;&#47; configure OpenTelemetry SDK as usual and register global configuration
-     * SdkMeterProvider otelMeterProvider = SdkMeterProvider.builder&#40;&#41;
-     *     .registerMetricReader&#40;PeriodicMetricReader.builder&#40;OtlpGrpcMetricExporter.builder&#40;&#41;.build&#40;&#41;&#41;.build&#40;&#41;&#41;
-     *     .build&#40;&#41;;
-     *
-     * OpenTelemetry openTelemetry = OpenTelemetrySdk.builder&#40;&#41;
-     *     .setMeterProvider&#40;otelMeterProvider&#41;
-     *     .setPropagators&#40;ContextPropagators.create&#40;W3CTraceContextPropagator.getInstance&#40;&#41;&#41;&#41;
-     *     .buildAndRegisterGlobal&#40;&#41;;
+     * &#47;&#47; configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
+     * &#47;&#47; https:&#47;&#47;github.com&#47;open-telemetry&#47;opentelemetry-java&#47;blob&#47;main&#47;sdk-extensions&#47;autoconfigure&#47;README.md
      *
      * &#47;&#47; configure Azure Client, no metric configuration needed
      * AzureClient sampleClient = new AzureClientBuilder&#40;&#41;

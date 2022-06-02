@@ -40,15 +40,8 @@ public class MetricsJavaDocCodeSnippets {
     public void configureClientLibraryToUseDefaultMeter() {
         // BEGIN: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default
 
-        // configure OpenTelemetry SDK as usual and register global configuration
-        SdkMeterProvider otelMeterProvider = SdkMeterProvider.builder()
-            .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
-            .build();
-
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-            .setMeterProvider(otelMeterProvider)
-            .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
-            .buildAndRegisterGlobal();
+        // configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
+        // https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md
 
         // configure Azure Client, no metric configuration needed
         AzureClient sampleClient = new AzureClientBuilder()
@@ -76,18 +69,11 @@ public class MetricsJavaDocCodeSnippets {
     public void readmeSampleDefaultSdkConfiguration() {
         // BEGIN: readme-sample-defaultConfiguration
 
-        // configure OpenTelemetry SDK as usual and register global configuration
-        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-            .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
-            .build();
-
-        OpenTelemetrySdk.builder()
-            .setMeterProvider(meterProvider)
-            .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
-            .buildAndRegisterGlobal();
+        // configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
+        // https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md
 
         // configure Azure Client, no metric configuration needed
-        // client will use global OTel configuration
+        // client will use global OTel configured by OpenTelemetry autoconfigure package.
         AzureClient sampleClient = new AzureClientBuilder()
             .endpoint("https://my-client.azure.com")
             .build();
@@ -101,7 +87,7 @@ public class MetricsJavaDocCodeSnippets {
     public void readmeSampleCustomSdkConfiguration() {
         // BEGIN: readme-sample-customConfiguration
 
-        // configure OpenTelemetry SDK as usual and register configuration
+        // configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
         SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
             .build();

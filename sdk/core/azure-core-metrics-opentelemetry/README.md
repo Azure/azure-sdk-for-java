@@ -39,7 +39,7 @@ You can find more samples [here](https://github.com/Azure/azure-sdk-for-java/blo
 
 ### Default configuration: agent
 
-If you use OpenTelemetry Java agent or Application Insights Java agent version 3.3.0-beta or higher, no additional Azure SDK configuration is needed.
+If you use OpenTelemetry Java agent or Application Insights Java agent version 3.3.0-BETA or higher, no additional Azure SDK configuration is needed.
 
 ### Default configuration: OpenTelemetry SDK
 
@@ -47,18 +47,11 @@ Azure SDK uses global OpenTelemetry instance by default.
 
 ```java readme-sample-defaultConfiguration
 
-// configure OpenTelemetry SDK as usual and register global configuration
-SdkMeterProvider meterProvider = SdkMeterProvider.builder()
-    .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
-    .build();
-
-OpenTelemetrySdk.builder()
-    .setMeterProvider(meterProvider)
-    .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
-    .buildAndRegisterGlobal();
+// configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
+// https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md
 
 // configure Azure Client, no metric configuration needed
-// client will use global OTel configuration
+// client will use global OTel configured by OpenTelemetry autoconfigure package.
 AzureClient sampleClient = new AzureClientBuilder()
     .endpoint("https://my-client.azure.com")
     .build();
@@ -74,7 +67,7 @@ If you want to pass `MeterProvider` explicitly, you can do it using `MetricsOpti
 
 ```java readme-sample-customConfiguration
 
-// configure OpenTelemetry SDK as usual and register global configuration
+// configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
 SdkMeterProvider meterProvider = SdkMeterProvider.builder()
     .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
     .build();

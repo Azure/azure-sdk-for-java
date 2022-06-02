@@ -43,7 +43,7 @@ public class MicrometerMeterProvider implements AzureMeterProvider {
             // Check if metricsOptions contains MeterRegistry - this way it can be configured and passed to this code.
             // By default, global static singleton is used.
             Object providerObj = options == null ? null : options.getProvider();
-            if (providerObj != null && MeterRegistry.class.isAssignableFrom(providerObj.getClass())) {
+            if (providerObj instanceof MeterRegistry) {
                 registry = (MeterRegistry) providerObj;
             } else {
                 registry = Metrics.globalRegistry;
