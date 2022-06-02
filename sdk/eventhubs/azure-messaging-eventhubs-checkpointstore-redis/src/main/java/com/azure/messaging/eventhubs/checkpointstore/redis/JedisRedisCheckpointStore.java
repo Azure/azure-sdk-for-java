@@ -20,9 +20,13 @@ import redis.clients.jedis.Jedis;
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
  */
 public class JedisRedisCheckpointStore implements CheckpointStore {
+    private static final String SEQUENCE_NUMBER = "sequencenumber";
+    private static final String OFFSET = "offset";
+    private static final String OWNER_ID = "ownerid";
+    private static final String ETAG = "etag";
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     private final RedisClientConfig config = RedisClientConfig.getInstance();
-    private final JedisPool jedisPool = new JedisPool(config.POOL_CONFIG, config.HOST_NAME, config.getPort(), config.CONNECT_TIMEOUT_MILLS, config.OPERATION_TIMEOUT_MILLS, config.PASSWORD, Protocol.DEFAULT_DATABASE, config.CLIENT_NAME, config.USE_SSL, null, null, null);
+    private final JedisPool jedisPool = new JedisPool(config.POOL_CONFIG, config.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), config.getPassword(), Protocol.DEFAULT_DATABASE, config.getClientName(), config.getUseSSL(), null, null, null);
     /**
      * This method returns the list of partitions that were owned successfully.
      *
@@ -71,16 +75,24 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
 
-        String key = keyBuilder(checkpoint);
+        String key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
         Map<String, String> checkpointStorageMap = new HashMap<>();
         try (Jedis jedis = jedisPool.getResource()) {
+            //Here is where you add everything to the checkpointStorageMap
+            String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
+                : String.valueOf(checkpoint.getSequenceNumber());
+            checkpointStorageMap.put("SEQUENCE_NUMBER", sequenceNumber);
 
+            String offset = checkpoint.getOffset() == null ? null
+                : String.valueOf(checkpoint.getOffset());
+            checkpointStorageMap.put("OFFSET", offset);
+            jedis.hmset(key, checkpointStorageMap); // key -> { field: value, field:value}
             jedisPool.returnResource(jedis);
         }
         return null;
     }
-    private String keyBuilder(Checkpoint checkpoint) {
-        return checkpoint.getFullyQualifiedNamespace() + "\\" + checkpoint.getEventHubName() + "\\" + checkpoint.getConsumerGroup() + "\\" + checkpoint.getPartitionId();
+    private String keyBuilder(String fullyQualifiedNamespace,String eventHubName,  String consumerGroup, String partitionId) {
+        return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId;
     }
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
