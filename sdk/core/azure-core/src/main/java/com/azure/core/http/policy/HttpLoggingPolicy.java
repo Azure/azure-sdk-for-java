@@ -20,6 +20,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -68,6 +69,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Key for {@link Context} to pass request retry count metadata for logging.
      */
     public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
+
+    private static final String METHOD_LOGGING_KEY = "method";
+    private static final String URL_LOGGING_KEY = "url";
+    private static final String RETRY_COUNT_LOGGING_KEY = "retryCount";
+    private static final String CONTENT_LENGTH_LOGGING_KEY = "contentLength";
+    private static final String BODY_LOGGING_KEY = "body";
+    private static final String DURATION_LOGGING_KEY = "durationMs";
+    private static final String STATUS_CODE_LOGGING_KEY = "statusCode";
+    private static final String REQUEST_LOG_MESSAGE = "HTTP request";
+    private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
@@ -139,53 +150,44 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<Void> logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
-
-            if (!logger.canLogAtLevel(logLevel)) {
-                return Mono.empty();
+            if (logger.canLogAtLevel(logLevel)) {
+                log(logLevel, logger, loggingOptions);
             }
 
-            final HttpRequest request = loggingOptions.getHttpRequest();
+            return Mono.empty();
+        }
 
-            StringBuilder requestLogMessage = new StringBuilder();
+        private void log(LogLevel logLevel, ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+            final HttpRequest request = loggingOptions.getHttpRequest();
+            LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
+
             if (httpLogDetailLevel.shouldLogUrl()) {
-                requestLogMessage.append("--> ")
-                    .append(request.getHttpMethod())
-                    .append(" ")
-                    .append(getRedactedUrl(request.getUrl(), allowedQueryParameterNames))
-                    .append(System.lineSeparator());
+                logBuilder
+                    .addKeyValue(METHOD_LOGGING_KEY, request.getHttpMethod())
+                    .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
 
                 Integer retryCount = loggingOptions.getTryCount();
                 if (retryCount != null) {
-                    requestLogMessage.append("Try count: ")
-                        .append(retryCount)
-                        .append(System.lineSeparator());
+                    logBuilder.addKeyValue(RETRY_COUNT_LOGGING_KEY, retryCount);
                 }
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), requestLogMessage);
-            }
-
-            if (!httpLogDetailLevel.shouldLogBody()) {
-                logMessage(logger, logLevel, requestLogMessage);
-                return Mono.empty();
+                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), logBuilder);
             }
 
             if (request.getBody() == null) {
-                requestLogMessage.append("(empty body)")
-                    .append(System.lineSeparator())
-                    .append("--> END ")
-                    .append(request.getHttpMethod())
-                    .append(System.lineSeparator());
-
-                logMessage(logger, logLevel, requestLogMessage);
-                return Mono.empty();
+                logBuilder.addKeyValue(CONTENT_LENGTH_LOGGING_KEY, 0)
+                    .log(REQUEST_LOG_MESSAGE);
+                return;
             }
 
             String contentType = request.getHeaders().getValue("Content-Type");
             long contentLength = getContentLength(logger, request.getHeaders());
 
-            if (shouldBodyBeLogged(contentType, contentLength)) {
+            logBuilder.addKeyValue(CONTENT_LENGTH_LOGGING_KEY, contentLength);
+
+            if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
                 AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream((int) contentLength);
 
                 // Add non-mutating operators to the data stream.
@@ -199,31 +201,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                             }
                         })
                         .doFinally(ignored -> {
-                            requestLogMessage.append(contentLength)
-                                .append("-byte body:")
-                                .append(System.lineSeparator())
-                                .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
+                            logBuilder.addKeyValue(BODY_LOGGING_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
                                     new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                                .append(System.lineSeparator())
-                                .append("--> END ")
-                                .append(request.getHttpMethod())
-                                .append(System.lineSeparator());
+                                .log(REQUEST_LOG_MESSAGE);
 
-                            logMessage(logger, logLevel, requestLogMessage);
                         }));
-
-            } else {
-                requestLogMessage.append(contentLength)
-                    .append("-byte body: (content not logged)")
-                    .append(System.lineSeparator())
-                    .append("--> END ")
-                    .append(request.getHttpMethod())
-                    .append(System.lineSeparator());
-
-                logMessage(logger, logLevel, requestLogMessage);
+                return;
             }
 
-            return Mono.empty();
+            logBuilder.log(REQUEST_LOG_MESSAGE);
         }
     }
 
@@ -237,72 +223,34 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return Mono.just(response);
             }
 
+            LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
             String contentLengthString = response.getHeaderValue("Content-Length");
-            String bodySize = (CoreUtils.isNullOrEmpty(contentLengthString))
-                ? "unknown-length body"
-                : contentLengthString + "-byte body";
+            if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
+                logBuilder.addKeyValue(CONTENT_LENGTH_LOGGING_KEY, contentLengthString);
+            }
 
-            StringBuilder responseLogMessage = new StringBuilder();
             if (httpLogDetailLevel.shouldLogUrl()) {
-                responseLogMessage.append("<-- ")
-                    .append(response.getStatusCode())
-                    .append(" ")
-                    .append(getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                    .append(" (")
-                    .append(loggingOptions.getResponseDuration().toMillis())
-                    .append(" ms, ")
-                    .append(bodySize)
-                    .append(")")
-                    .append(System.lineSeparator());
+                logBuilder
+                    .addKeyValue(STATUS_CODE_LOGGING_KEY, response.getStatusCode())
+                    .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                    .addKeyValue(DURATION_LOGGING_KEY, loggingOptions.getResponseDuration().toMillis());
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), responseLogMessage);
+                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
             }
 
-            if (!httpLogDetailLevel.shouldLogBody()) {
-                responseLogMessage.append("<-- END HTTP");
-                logMessage(logger, logLevel, responseLogMessage);
-                return Mono.justOrEmpty(response);
+            if (httpLogDetailLevel.shouldLogBody()) {
+                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                long contentLength = getContentLength(logger, response.getHeaders());
+                if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                    return Mono.just(new LoggingHttpResponse(response, logBuilder, logger, logLevel,
+                        (int) contentLength, contentTypeHeader, prettyPrintBody));
+                }
             }
 
-            String contentTypeHeader = response.getHeaderValue("Content-Type");
-            long contentLength = getContentLength(logger, response.getHeaders());
-
-            if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                return Mono.just(new LoggingHttpResponse(response, responseLogMessage, logger, logLevel,
-                    (int) contentLength, contentTypeHeader, prettyPrintBody));
-            } else {
-                responseLogMessage.append("(body content not logged)")
-                    .append(System.lineSeparator())
-                    .append("<-- END HTTP");
-
-                logMessage(logger, logLevel, responseLogMessage);
-                return Mono.just(response);
-            }
-        }
-    }
-
-    private static void logMessage(ClientLogger logger, LogLevel logLevel, StringBuilder logMessageBuilder) {
-        switch (logLevel) {
-            case VERBOSE:
-                logger.verbose(logMessageBuilder.toString());
-                break;
-
-            case INFORMATIONAL:
-                logger.info(logMessageBuilder.toString());
-                break;
-
-            case WARNING:
-                logger.warning(logMessageBuilder.toString());
-                break;
-
-            case ERROR:
-                logger.error(logMessageBuilder.toString());
-                break;
-
-            default:
-                break;
+            logBuilder.log(RESPONSE_LOG_MESSAGE);
+            return Mono.just(response);
         }
     }
 
@@ -368,16 +316,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers, StringBuilder sb) {
+    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers, LoggingEventBuilder logBuilder) {
         for (HttpHeader header : headers) {
             String headerName = header.getName();
-            sb.append(headerName).append(":");
-            if (allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
-                sb.append(header.getValue());
-            } else {
-                sb.append(REDACTED_PLACEHOLDER);
-            }
-            sb.append(System.lineSeparator());
+            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT)) ? header.getValue() : REDACTED_PLACEHOLDER);
         }
     }
 
@@ -478,21 +420,35 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return CALLER_METHOD_LOGGER_CACHE.computeIfAbsent(methodName, ClientLogger::new);
     }
 
+    private static LoggingEventBuilder getLogBuilder(LogLevel logLevel, ClientLogger logger) {
+        switch (logLevel) {
+            case ERROR:
+                return logger.atError();
+            case WARNING:
+                return logger.atWarning();
+            case INFORMATIONAL:
+                return logger.atInfo();
+            case VERBOSE:
+            default:
+                return logger.atVerbose();
+        }
+    }
+
     private static final class LoggingHttpResponse extends HttpResponse {
         private final HttpResponse actualResponse;
-        private final StringBuilder responseLogMessage;
+        private final LoggingEventBuilder logBuilder;
         private final int contentLength;
         private final ClientLogger logger;
         private final boolean prettyPrintBody;
         private final String contentTypeHeader;
         private final LogLevel logLevel;
 
-        private LoggingHttpResponse(HttpResponse actualResponse, StringBuilder responseLogMessage,
+        private LoggingHttpResponse(HttpResponse actualResponse, LoggingEventBuilder logBuilder,
             ClientLogger logger, LogLevel logLevel, int contentLength, String contentTypeHeader,
             boolean prettyPrintBody) {
             super(actualResponse.getRequest());
             this.actualResponse = actualResponse;
-            this.responseLogMessage = responseLogMessage;
+            this.logBuilder = logBuilder;
             this.logger = logger;
             this.logLevel = logLevel;
             this.contentLength = contentLength;
@@ -528,14 +484,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     }
                 })
                 .doFinally(ignored -> {
-                    responseLogMessage.append("Response body:")
-                        .append(System.lineSeparator())
-                        .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
+                    logBuilder.addKeyValue(BODY_LOGGING_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
                             new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                        .append(System.lineSeparator())
-                        .append("<-- END HTTP");
-
-                    logMessage(logger, logLevel, responseLogMessage);
+                        .log(RESPONSE_LOG_MESSAGE);
                 });
         }
 
