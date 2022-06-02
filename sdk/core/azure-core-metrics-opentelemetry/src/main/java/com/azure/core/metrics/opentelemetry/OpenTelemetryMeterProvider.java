@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-public class OpenTelemetryMeterProvider implements AzureMeterProvider {
+public final class OpenTelemetryMeterProvider implements AzureMeterProvider {
     /**
      * Creates named and versioned OpenTelemetry-based implementation of {@link AzureMeter}
      *
