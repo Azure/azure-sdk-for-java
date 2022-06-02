@@ -52,6 +52,9 @@ parameters:
   - name: TestParallelization
     type: string
     default: '1C'
+  - name: JavaBuildVersion
+    type: string
+    default: $(JavaBuildVersion)
 
 jobs:
   - job: 'Build'
@@ -172,14 +175,14 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
-        displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
+        displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -340,6 +343,8 @@ jobs:
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
       - template: ../steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
@@ -350,7 +355,7 @@ jobs:
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -361,7 +366,7 @@ jobs:
           options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'

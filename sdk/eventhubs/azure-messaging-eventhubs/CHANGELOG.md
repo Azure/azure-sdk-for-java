@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes trace context propagation issue: links to *message* spans were not populated on *send* span. ([#28951](https://github.com/Azure/azure-sdk-for-java/pull/28951))  
+
 ### Other Changes
 
 ## 5.12.0 (2022-05-16)

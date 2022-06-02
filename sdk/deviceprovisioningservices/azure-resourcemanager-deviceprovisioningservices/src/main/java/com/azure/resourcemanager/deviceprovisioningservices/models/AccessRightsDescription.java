@@ -39,7 +39,11 @@ public final class AccessRightsDescription extends ExpandableStringEnum<AccessRi
         return fromString(name, AccessRightsDescription.class);
     }
 
-    /** @return known AccessRightsDescription values. */
+    /**
+     * Gets known AccessRightsDescription values.
+     *
+     * @return known AccessRightsDescription values.
+     */
     public static Collection<AccessRightsDescription> values() {
         return values(AccessRightsDescription.class);
     }

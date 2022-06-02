@@ -93,14 +93,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{name}")
+                + "/managedEnvironments/{environmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedEnvironmentInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -108,14 +108,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{name}")
+                + "/managedEnvironments/{environmentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedEnvironmentInner environmentEnvelope,
             @HeaderParam("Accept") String accept,
@@ -124,14 +124,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{name}")
+                + "/managedEnvironments/{environmentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -139,14 +139,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/managedEnvironments/{name}")
+                + "/managedEnvironments/{environmentName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedEnvironmentInner environmentEnvelope,
             @HeaderParam("Accept") String accept,
@@ -485,7 +485,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Get the properties of a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -494,7 +494,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedEnvironmentInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name) {
+        String resourceGroupName, String environmentName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -511,8 +511,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -523,7 +524,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            name,
+                            environmentName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -534,7 +535,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Get the properties of a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -544,7 +545,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedEnvironmentInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+        String resourceGroupName, String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -561,8 +562,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -571,7 +573,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                name,
+                environmentName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -581,7 +583,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Get the properties of a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -589,38 +591,31 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<ManagedEnvironmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<ManagedEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String environmentName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, environmentName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the properties of a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Managed Environment used to host container apps.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedEnvironmentInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
+    public ManagedEnvironmentInner getByResourceGroup(String resourceGroupName, String environmentName) {
+        return getByResourceGroupAsync(resourceGroupName, environmentName).block();
     }
 
     /**
      * Get the properties of a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -629,15 +624,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedEnvironmentInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
+        String resourceGroupName, String environmentName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -647,7 +642,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -664,8 +659,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (environmentEnvelope == null) {
             return Mono
@@ -682,7 +678,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            name,
+                            environmentName,
                             this.client.getApiVersion(),
                             environmentEnvelope,
                             accept,
@@ -694,7 +690,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -705,7 +701,10 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -722,8 +721,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (environmentEnvelope == null) {
             return Mono
@@ -738,7 +738,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                name,
+                environmentName,
                 this.client.getApiVersion(),
                 environmentEnvelope,
                 accept,
@@ -749,7 +749,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -758,9 +758,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, environmentEnvelope);
+            createOrUpdateWithResponseAsync(resourceGroupName, environmentName, environmentEnvelope);
         return this
             .client
             .<ManagedEnvironmentInner, ManagedEnvironmentInner>getLroResult(
@@ -775,7 +775,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -785,10 +785,13 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, environmentEnvelope, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, environmentName, environmentEnvelope, context);
         return this
             .client
             .<ManagedEnvironmentInner, ManagedEnvironmentInner>getLroResult(
@@ -803,7 +806,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -812,15 +815,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, environmentEnvelope).getSyncPoller();
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).getSyncPoller();
     }
 
     /**
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,15 +833,19 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, environmentEnvelope, context).getSyncPoller();
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -847,8 +854,8 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedEnvironmentInner> createOrUpdateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, environmentEnvelope)
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -857,7 +864,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,8 +874,11 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedEnvironmentInner> createOrUpdateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, environmentEnvelope, context)
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -877,7 +887,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -886,15 +896,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner createOrUpdate(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, name, environmentEnvelope).block();
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        return createOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).block();
     }
 
     /**
      * Creates or updates a Managed Environment used to host container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -904,22 +914,25 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner createOrUpdate(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return createOrUpdateAsync(resourceGroupName, name, environmentEnvelope, context).block();
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context).block();
     }
 
     /**
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String environmentName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -936,8 +949,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -948,7 +962,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            name,
+                            environmentName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -959,7 +973,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -968,7 +982,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+        String resourceGroupName, String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -985,8 +999,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -995,7 +1010,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                name,
+                environmentName,
                 this.client.getApiVersion(),
                 accept,
                 context);
@@ -1005,15 +1020,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String environmentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, environmentName);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1024,7 +1039,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1033,9 +1048,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String name, Context context) {
+        String resourceGroupName, String environmentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, environmentName, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1045,22 +1060,22 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName) {
+        return beginDeleteAsync(resourceGroupName, environmentName).getSyncPoller();
     }
 
     /**
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1068,30 +1083,33 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String environmentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, environmentName, context).getSyncPoller();
     }
 
     /**
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String environmentName) {
+        return beginDeleteAsync(resourceGroupName, environmentName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1099,44 +1117,46 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, Context context) {
+        return beginDeleteAsync(resourceGroupName, environmentName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name) {
-        deleteAsync(resourceGroupName, name).block();
+    public void delete(String resourceGroupName, String environmentName) {
+        deleteAsync(resourceGroupName, environmentName).block();
     }
 
     /**
      * Delete a Managed Environment if it does not have any container apps.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, Context context) {
-        deleteAsync(resourceGroupName, name, context).block();
+    public void delete(String resourceGroupName, String environmentName, Context context) {
+        deleteAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1145,7 +1165,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1162,8 +1182,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (environmentEnvelope == null) {
             return Mono
@@ -1180,7 +1201,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            name,
+                            environmentName,
                             this.client.getApiVersion(),
                             environmentEnvelope,
                             accept,
@@ -1192,7 +1213,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1202,7 +1223,10 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1219,8 +1243,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (environmentEnvelope == null) {
             return Mono
@@ -1235,7 +1260,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                name,
+                environmentName,
                 this.client.getApiVersion(),
                 environmentEnvelope,
                 accept,
@@ -1246,7 +1271,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1255,8 +1280,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, environmentEnvelope);
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, environmentName, environmentEnvelope);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1267,7 +1293,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1277,10 +1303,13 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, name, environmentEnvelope, context);
+            updateWithResponseAsync(resourceGroupName, environmentName, environmentEnvelope, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1290,7 +1319,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1299,15 +1328,15 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope).getSyncPoller();
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope).getSyncPoller();
     }
 
     /**
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1317,15 +1346,18 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope, context).getSyncPoller();
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context).getSyncPoller();
     }
 
     /**
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1333,8 +1365,9 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope)
+    private Mono<Void> updateAsync(
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1343,7 +1376,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1353,8 +1386,11 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return beginUpdateAsync(resourceGroupName, name, environmentEnvelope, context)
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, environmentName, environmentEnvelope, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1363,22 +1399,22 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope) {
-        updateAsync(resourceGroupName, name, environmentEnvelope).block();
+    public void update(String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
+        updateAsync(resourceGroupName, environmentName, environmentEnvelope).block();
     }
 
     /**
      * Patches a Managed Environment using JSON Merge Patch.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Environment.
+     * @param environmentName Name of the Environment.
      * @param environmentEnvelope Configuration details of the Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1387,8 +1423,11 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(
-        String resourceGroupName, String name, ManagedEnvironmentInner environmentEnvelope, Context context) {
-        updateAsync(resourceGroupName, name, environmentEnvelope, context).block();
+        String resourceGroupName,
+        String environmentName,
+        ManagedEnvironmentInner environmentEnvelope,
+        Context context) {
+        updateAsync(resourceGroupName, environmentName, environmentEnvelope, context).block();
     }
 
     /**

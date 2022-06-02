@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
-  <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
 
   <name>Spring Cloud Azure Starter Storage Blob</name>
   <description>Spring Cloud Azure Starter Storage Blob</description>
@@ -88,13 +88,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.16.1</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.17.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
   </dependencies>
 
@@ -158,18 +158,20 @@
             <phase>prepare-package</phase>
             <configuration>
               <target>
-                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                <echo>Deleting existing ${project.basedir}/javadocTemp and
+                  ${project.basedir}/sourceTemp</echo>
                 <delete includeEmptyDirs="true" quiet="true">
                   <fileset dir="${project.basedir}/javadocTemp"/>
+                  <fileset dir="${project.basedir}/sourceTemp"/>
                 </delete>
-                <echo>Copying ${project.basedir}/README.md to
+                <echo>Copying ${project.basedir}/../README.md to
                   ${project.basedir}/javadocTemp/README.md
                 </echo>
-                <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
-                <echo>Copying ${project.basedir}/README.md to
+                <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/javadocTemp/README.md" failonerror="false"/>
+                <echo>Copying ${project.basedir}/../README.md to
                   ${project.basedir}/sourceTemp/README.md
                 </echo>
-                <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/sourceTemp/README.md"/>
+                <copy file="${project.basedir}/../README.md" tofile="${project.basedir}/sourceTemp/README.md" failonerror="false"/>
               </target>
             </configuration>
             <goals>

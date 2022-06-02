@@ -19,20 +19,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +70,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private static final String PROFILE_NAME_1 = "dev";
 
     private static final String PROFILE_NAME_2 = "prod";
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting FEATURE_ITEM = createItem(".appconfig.featureflag/", "Alpha",
@@ -167,9 +166,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(emptyEnvironment.getPropertySources()).thenReturn(sources);
         when(devEnvironment.getPropertySources()).thenReturn(sources);
         when(multiEnvironment.getPropertySources()).thenReturn(sources);
-        
+
         when(properties.getStores()).thenReturn(configStoresMock);
         when(properties.isEnabled()).thenReturn(true);
+        when(properties.getRefreshInterval()).thenReturn(null);
         when(configStoresMock.iterator()).thenReturn(configStoreIterator);
         when(configStoreIterator.hasNext()).thenReturn(true).thenReturn(false);
         when(configStoreIterator.next()).thenReturn(configStoreMock);
@@ -210,12 +210,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.setAccessible(true);
-        field.set(null, new AtomicBoolean(true));
+        AppConfigurationPropertySourceLocator.startup.set(true);
         StateHolder.setLoadState(TEST_STORE_NAME, false);
     }
 
@@ -356,22 +351,16 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void refreshThrowException() throws IOException, NoSuchFieldException, SecurityException,
-        IllegalArgumentException, IllegalAccessException {
-        Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        field.setAccessible(true);
-        field.set(null, new AtomicBoolean(false));
+    public void refreshThrowException() throws IOException, IllegalArgumentException {
+        AppConfigurationPropertySourceLocator.startup.set(false);
         StateHolder.setLoadState(TEST_STORE_NAME, true);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
             clientStoreMock, tokenCredentialProvider, null, null);
 
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
+        when(clientStoreMock.getFeatureFlagWatchKey(any(), anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
-        assertNull(e.getMessage());
         assertNull(e.getMessage());
     }
 

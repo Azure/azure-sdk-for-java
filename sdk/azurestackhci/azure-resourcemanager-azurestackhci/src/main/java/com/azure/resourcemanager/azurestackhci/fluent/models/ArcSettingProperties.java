@@ -28,6 +28,30 @@ public final class ArcSettingProperties {
     private String arcInstanceResourceGroup;
 
     /*
+     * App id of arc AAD identity.
+     */
+    @JsonProperty(value = "arcApplicationClientId")
+    private String arcApplicationClientId;
+
+    /*
+     * Tenant id of arc AAD identity.
+     */
+    @JsonProperty(value = "arcApplicationTenantId")
+    private String arcApplicationTenantId;
+
+    /*
+     * Object id of arc AAD service principal.
+     */
+    @JsonProperty(value = "arcServicePrincipalObjectId")
+    private String arcServicePrincipalObjectId;
+
+    /*
+     * Object id of arc AAD identity.
+     */
+    @JsonProperty(value = "arcApplicationObjectId")
+    private String arcApplicationObjectId;
+
+    /*
      * Aggregate state of Arc agent across the nodes in this HCI cluster.
      */
     @JsonProperty(value = "aggregateState", access = JsonProperty.Access.WRITE_ONLY)
@@ -38,6 +62,12 @@ public final class ArcSettingProperties {
      */
     @JsonProperty(value = "perNodeDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<PerNodeState> perNodeDetails;
+
+    /*
+     * contains connectivity related configuration for ARC resources
+     */
+    @JsonProperty(value = "connectivityProperties")
+    private Object connectivityProperties;
 
     /**
      * Get the provisioningState property: Provisioning state of the ArcSetting proxy resource.
@@ -71,6 +101,86 @@ public final class ArcSettingProperties {
     }
 
     /**
+     * Get the arcApplicationClientId property: App id of arc AAD identity.
+     *
+     * @return the arcApplicationClientId value.
+     */
+    public String arcApplicationClientId() {
+        return this.arcApplicationClientId;
+    }
+
+    /**
+     * Set the arcApplicationClientId property: App id of arc AAD identity.
+     *
+     * @param arcApplicationClientId the arcApplicationClientId value to set.
+     * @return the ArcSettingProperties object itself.
+     */
+    public ArcSettingProperties withArcApplicationClientId(String arcApplicationClientId) {
+        this.arcApplicationClientId = arcApplicationClientId;
+        return this;
+    }
+
+    /**
+     * Get the arcApplicationTenantId property: Tenant id of arc AAD identity.
+     *
+     * @return the arcApplicationTenantId value.
+     */
+    public String arcApplicationTenantId() {
+        return this.arcApplicationTenantId;
+    }
+
+    /**
+     * Set the arcApplicationTenantId property: Tenant id of arc AAD identity.
+     *
+     * @param arcApplicationTenantId the arcApplicationTenantId value to set.
+     * @return the ArcSettingProperties object itself.
+     */
+    public ArcSettingProperties withArcApplicationTenantId(String arcApplicationTenantId) {
+        this.arcApplicationTenantId = arcApplicationTenantId;
+        return this;
+    }
+
+    /**
+     * Get the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
+     *
+     * @return the arcServicePrincipalObjectId value.
+     */
+    public String arcServicePrincipalObjectId() {
+        return this.arcServicePrincipalObjectId;
+    }
+
+    /**
+     * Set the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
+     *
+     * @param arcServicePrincipalObjectId the arcServicePrincipalObjectId value to set.
+     * @return the ArcSettingProperties object itself.
+     */
+    public ArcSettingProperties withArcServicePrincipalObjectId(String arcServicePrincipalObjectId) {
+        this.arcServicePrincipalObjectId = arcServicePrincipalObjectId;
+        return this;
+    }
+
+    /**
+     * Get the arcApplicationObjectId property: Object id of arc AAD identity.
+     *
+     * @return the arcApplicationObjectId value.
+     */
+    public String arcApplicationObjectId() {
+        return this.arcApplicationObjectId;
+    }
+
+    /**
+     * Set the arcApplicationObjectId property: Object id of arc AAD identity.
+     *
+     * @param arcApplicationObjectId the arcApplicationObjectId value to set.
+     * @return the ArcSettingProperties object itself.
+     */
+    public ArcSettingProperties withArcApplicationObjectId(String arcApplicationObjectId) {
+        this.arcApplicationObjectId = arcApplicationObjectId;
+        return this;
+    }
+
+    /**
      * Get the aggregateState property: Aggregate state of Arc agent across the nodes in this HCI cluster.
      *
      * @return the aggregateState value.
@@ -86,6 +196,26 @@ public final class ArcSettingProperties {
      */
     public List<PerNodeState> perNodeDetails() {
         return this.perNodeDetails;
+    }
+
+    /**
+     * Get the connectivityProperties property: contains connectivity related configuration for ARC resources.
+     *
+     * @return the connectivityProperties value.
+     */
+    public Object connectivityProperties() {
+        return this.connectivityProperties;
+    }
+
+    /**
+     * Set the connectivityProperties property: contains connectivity related configuration for ARC resources.
+     *
+     * @param connectivityProperties the connectivityProperties value to set.
+     * @return the ArcSettingProperties object itself.
+     */
+    public ArcSettingProperties withConnectivityProperties(Object connectivityProperties) {
+        this.connectivityProperties = connectivityProperties;
+        return this;
     }
 
     /**
