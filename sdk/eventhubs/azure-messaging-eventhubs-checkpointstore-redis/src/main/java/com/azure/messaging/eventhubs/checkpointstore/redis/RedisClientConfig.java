@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 package com.azure.messaging.eventhubs.checkpointstore.redis;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -11,43 +10,43 @@ import redis.clients.jedis.JedisPoolConfig;
 public final class RedisClientConfig {
     private RedisClientConfig() {
     }
-    private final String HOST_NAME = "hostname";
+    private final String hostName = "hostname";
 
     /**
      * This method returns the HOST_NAME.
      * @return Host Name, which is the domain assigned by the Azure Cache for Redis.
      */
     public String getHostName() {
-        return HOST_NAME;
+        return hostName;
     }
-    private final String PASSWORD = "access_key";
+    private final String password = "access_key";
 
     /**
      * This method returns the PASSWORD.
      * @return Primary Key used to connect to Azure Cache for Redis
      */
     public String getPassword() {
-        return PASSWORD;
+        return password;
     }
-    private final boolean USE_SSL = true;
+    private final boolean useSsl = true;
 
     /**
      * This method returns the USE_SSL field.
      * @return True or False based on if SSL is being used or not
      */
     public boolean getUseSSL() {
-        return USE_SSL;
+        return useSsl;
     }
-    private final int SSL_PORT = 6380;
-    private final int NON_SSL_PORT = 6379;
-    private final int CONNECT_TIMEOUT_MILLS = 5000;
+    private final int sslPort = 6380;
+    private final int nonSslPort = 6379;
+    private final int connectTimeoutMills = 5000;
 
     /**
      * This method returns CONNECT_TIMEOUT_MILLS, which is in milliseconds.
      * @return The amount of time before the connection will time out.
      */
     public int getConnectTimeoutMills() {
-        return CONNECT_TIMEOUT_MILLS;
+        return connectTimeoutMills;
     }
     private static final int OPERATION_TIMEOUT_MILLS = 1000;
     /**
@@ -57,16 +56,24 @@ public final class RedisClientConfig {
     public static int getOperationTimeoutMills() {
         return OPERATION_TIMEOUT_MILLS;
     }
-    private final String CLIENT_NAME = "clientName";
+    private final String clientName = "clientName";
 
     /**
      * This method returns the CLIENT_NAME.
      * @return The name of the client
      */
     public String getClientName() {
-        return CLIENT_NAME;
+        return clientName;
     }
-    public final GenericObjectPoolConfig POOL_CONFIG = createPoolConfig();
+    private final JedisPoolConfig POOL_CONFIG = createPoolConfig();
+
+    /**
+     * This method gets the JedisPoolConfig object.
+     * @return A JedisPoolConfig object
+     */
+    public JedisPoolConfig getPoolConfig() {
+        return POOL_CONFIG;
+    }
     private static final int POOL_MAX_TOTAL = 200;
     private static final int POOL_MAX_IDLE = 100;
     private static final int POOL_MIN_IDLE = 50;
@@ -92,7 +99,7 @@ public final class RedisClientConfig {
       * @return The Port being used by JedisPool object
       */
     public int getPort() {
-        return USE_SSL ? SSL_PORT : NON_SSL_PORT;
+        return useSsl ? sslPort : nonSslPort;
     }
      /**
       * This method returns an instance of RedisClientConfig.

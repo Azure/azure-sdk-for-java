@@ -26,7 +26,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     private static final String ETAG = "etag";
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     private final RedisClientConfig config = RedisClientConfig.getInstance();
-    private final JedisPool jedisPool = new JedisPool(config.POOL_CONFIG, config.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), config.getPassword(), Protocol.DEFAULT_DATABASE, config.getClientName(), config.getUseSSL(), null, null, null);
+    private final JedisPool jedisPool = new JedisPool(config.getPoolConfig(), config.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), config.getPassword(), Protocol.DEFAULT_DATABASE, config.getClientName(), config.getUseSSL(), null, null, null);
     /**
      * This method returns the list of partitions that were owned successfully.
      *
@@ -91,7 +91,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
         return null;
     }
-    private String keyBuilder(String fullyQualifiedNamespace,String eventHubName,  String consumerGroup, String partitionId) {
+    private String keyBuilder(String fullyQualifiedNamespace, String eventHubName,  String consumerGroup, String partitionId) {
         return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId;
     }
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
