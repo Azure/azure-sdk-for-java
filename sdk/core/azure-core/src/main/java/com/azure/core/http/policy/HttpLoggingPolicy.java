@@ -14,6 +14,7 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
+import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -70,12 +71,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
-    private static final String METHOD_LOGGING_KEY = "method";
     private static final String URL_LOGGING_KEY = "url";
-    private static final String RETRY_COUNT_LOGGING_KEY = "retryCount";
     private static final String CONTENT_LENGTH_LOGGING_KEY = "contentLength";
     private static final String BODY_LOGGING_KEY = "body";
-    private static final String DURATION_LOGGING_KEY = "durationMs";
     private static final String STATUS_CODE_LOGGING_KEY = "statusCode";
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
     private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
@@ -163,12 +161,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             if (httpLogDetailLevel.shouldLogUrl()) {
                 logBuilder
-                    .addKeyValue(METHOD_LOGGING_KEY, request.getHttpMethod())
+                    .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
                     .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
 
                 Integer retryCount = loggingOptions.getTryCount();
                 if (retryCount != null) {
-                    logBuilder.addKeyValue(RETRY_COUNT_LOGGING_KEY, retryCount);
+                    logBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount);
                 }
             }
 
@@ -233,7 +231,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 logBuilder
                     .addKeyValue(STATUS_CODE_LOGGING_KEY, response.getStatusCode())
                     .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                    .addKeyValue(DURATION_LOGGING_KEY, loggingOptions.getResponseDuration().toMillis());
+                    .addKeyValue(LoggingKeys.DURATION_KEY, loggingOptions.getResponseDuration().toMillis());
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
@@ -244,7 +242,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 String contentTypeHeader = response.getHeaderValue("Content-Type");
                 long contentLength = getContentLength(logger, response.getHeaders());
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                    return Mono.just(new LoggingHttpResponse(response, logBuilder, logger, logLevel,
+                    return Mono.just(new LoggingHttpResponse(response, logBuilder, logger,
                         (int) contentLength, contentTypeHeader, prettyPrintBody));
                 }
             }
@@ -342,7 +340,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);
                 result = PRETTY_PRINTER.writeValueAsString(deserialized);
             } catch (Exception e) {
-                logger.warning("Failed to pretty print JSON: {}", e.getMessage());
+                logger.warning("Failed to pretty print JSON", e);
             }
         }
         return result;
@@ -441,16 +439,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private final ClientLogger logger;
         private final boolean prettyPrintBody;
         private final String contentTypeHeader;
-        private final LogLevel logLevel;
 
         private LoggingHttpResponse(HttpResponse actualResponse, LoggingEventBuilder logBuilder,
-            ClientLogger logger, LogLevel logLevel, int contentLength, String contentTypeHeader,
+            ClientLogger logger, int contentLength, String contentTypeHeader,
             boolean prettyPrintBody) {
             super(actualResponse.getRequest());
             this.actualResponse = actualResponse;
             this.logBuilder = logBuilder;
             this.logger = logger;
-            this.logLevel = logLevel;
             this.contentLength = contentLength;
             this.contentTypeHeader = contentTypeHeader;
             this.prettyPrintBody = prettyPrintBody;

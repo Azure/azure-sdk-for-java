@@ -341,15 +341,19 @@ public final class CoreUtils {
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.verbose("{} was set to {} ms. Using timeout of 'Duration.ZERO' to indicate no timeout.",
-                    timeoutPropertyName, timeoutMillis);
+                logger.atVerbose()
+                    .addKeyValue(timeoutPropertyName, timeoutMillis)
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO'.");
                 return Duration.ZERO;
             }
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.warning("{} wasn't configured with a valid number. Using default of {}.", timeoutPropertyName,
-                defaultTimeout, ex);
+            logger.atWarning()
+                .addKeyValue(timeoutPropertyName, environmentTimeout)
+                .addKeyValue("defaultTimeout", defaultTimeout)
+                .log("Timeout is not valid number. Using default value.", ex);
+
             return defaultTimeout;
         }
     }

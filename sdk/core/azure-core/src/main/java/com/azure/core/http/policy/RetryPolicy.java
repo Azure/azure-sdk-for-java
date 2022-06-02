@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -127,8 +128,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                         retryAfterHeader, retryAfterTimeUnit);
-                    LOGGER.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
-                        delayDuration.getSeconds());
+                    LOGGER.atVerbose()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                        .addKeyValue(LoggingKeys.DURATION_KEY, delayDuration.toMillis())
+                        .log("Retrying");
 
                     Flux<ByteBuffer> responseBody = httpResponse.getBody();
                     if (responseBody == null) {
@@ -142,18 +145,24 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     }
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+                        LOGGER.atVerbose()
+                            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                            .log("Retry attempts have been exhausted.");
                     }
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(Exception.class, err -> {
                 if (shouldRetryException(err, tryCount)) {
-                    LOGGER.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                    LOGGER.atVerbose()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                            .log("Error resume", err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    LOGGER.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                    LOGGER.atVerbose()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                        .log("Retry attempts have been exhausted.");
                     return Mono.error(err);
                 }
             });

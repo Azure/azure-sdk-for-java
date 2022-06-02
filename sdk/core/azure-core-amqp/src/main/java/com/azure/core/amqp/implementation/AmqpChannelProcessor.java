@@ -37,7 +37,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         AtomicReferenceFieldUpdater.newUpdater(AmqpChannelProcessor.class, Subscription.class,
             "upstream");
 
-    private static final String RETRY_NUMBER_KEY = "retry";
+    private static final String RETRY_NUMBER_KEY = "retryCount";
 
     private final ClientLogger logger;
     private final AtomicBoolean isDisposed = new AtomicBoolean();

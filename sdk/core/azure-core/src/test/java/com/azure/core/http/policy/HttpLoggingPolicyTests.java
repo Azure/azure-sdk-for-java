@@ -297,7 +297,7 @@ public class HttpLoggingPolicyTests {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com")
             .setHeader("x-ms-client-request-id", "client-request-id");
 
-        byte [] responseBody = new byte[] {24, 42};
+        byte[] responseBody = new byte[] {24, 42};
         HttpHeaders responseHeaders = new HttpHeaders()
             .set("Content-Length", Integer.toString(responseBody.length))
             .set("x-ms-request-id", "server-request-id");
@@ -306,7 +306,7 @@ public class HttpLoggingPolicyTests {
             .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
             .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
                 ? Mono.error(new RuntimeException("Try again!"))
-                : Mono.fromCallable( () -> new com.azure.core.http.MockHttpResponse(ignored, 200, responseHeaders, responseBody)))
+                : Mono.fromCallable(() -> new com.azure.core.http.MockHttpResponse(ignored, 200, responseHeaders, responseBody)))
             .build();
 
         HttpLogMessage expectedRetry1 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
@@ -316,7 +316,7 @@ public class HttpLoggingPolicyTests {
             .setRetryCount(2)
             .setHeaders(request.getHeaders());
         HttpLogMessage expectedResponse = HttpLogMessage.response("https://test.com", responseBody, 200)
-            .setHeaders(responseHeaders);;
+            .setHeaders(responseHeaders);
 
         StepVerifier.create(pipeline.send(request, CONTEXT)
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
@@ -338,8 +338,8 @@ public class HttpLoggingPolicyTests {
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
     public void loggingHeadersAndBodyVerbose(HttpLogDetailLevel logLevel) throws JsonProcessingException {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
-        byte [] requestBody = new byte[] {42};
-        byte [] responseBody = new byte[] {24, 42};
+        byte[] requestBody = new byte[] {42};
+        byte[] responseBody = new byte[] {24, 42};
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://test.com")
             .setBody(requestBody)
             .setHeader("x-ms-client-request-id", "client-request-id");
