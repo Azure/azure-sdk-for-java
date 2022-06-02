@@ -35,7 +35,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
@@ -94,16 +93,16 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // Get the encryption data put in the pipeline by the FetchEncryptionDataPolicy.
         // This will be present if there was a range set on the request. It will not be present if this is
         // not a download or there was no range set.
-        EncryptionData encryptionData = (EncryptionData) context.getData(ENCRYPTION_DATA_KEY)
+        EncryptionData encryptionData = (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY)
             .orElse(null);
 
 
         // 1. Expand the range of download for decryption if a range was present. If the range was present, we know the
         // policy would have already fetched the encryption data
             EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                requestHeaders.getValue(RANGE_HEADER), encryptionData);
-        if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
-            requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
+                requestHeaders.getValue(CryptographyConstants.RANGE_HEADER), encryptionData);
+        if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) != null) {
+            requestHeaders.set(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
         }
 
         // 2. Replace the body of the response with a decrypted version of the body
@@ -116,7 +115,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * We will need to know the total size of the data to know when to finalize the decryption. If it was
                  * not set originally with the intent of downloading the whole blob, update it here.
                  */
-                encryptedRange.setAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+                encryptedRange.setAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(CryptographyConstants.CONTENT_LENGTH)));
 
                 /*
                  * If there was no range set on the request, we skipped doing a get properties first as we are getting
@@ -125,7 +124,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  */
                 EncryptionData encryptionDataFinal =
                     encryptionData == null ? EncryptionData.getAndValidateEncryptionData(
-                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY),
+                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-" + CryptographyConstants.ENCRYPTION_DATA_KEY),
                         requiresEncryption) : encryptionData;
 
                 /*
@@ -242,6 +241,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                             });
                         case ENCRYPTION_PROTOCOL_V2:
                             // Buffer an exact region with the nonce and tag
+                            EncryptionDataV2 encryptionDataV2 = (EncryptionDataV2) encryptionData;
+                            final int GCM_ENCRYPTION_REGION_LENGTH = Integer.parseInt(encryptionDataV2
+                                .getAuthenticationRegionInfo()
+                                .getEncryptionRegionLength());
+                            final int NONCE_LENGTH =
+                                Integer.parseInt(encryptionDataV2
+                                    .getAuthenticationRegionInfo()
+                                    .getNonceLength());
                             BufferStagingArea stagingArea =
                                 new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH,
                                 GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH);
@@ -430,22 +437,22 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Cipher getCipher(byte[] contentEncryptionKey, EncryptionData encryptionData,
         byte[] iv, boolean padding) throws InvalidKeyException {
         SecretKey keySpec = new SecretKeySpec(contentEncryptionKey, 0, contentEncryptionKey.length,
-            AES);
+            CryptographyConstants.AES);
         try {
             switch (encryptionData.getEncryptionAgent().getAlgorithm()) {
                 case AES_CBC_256:
                     Cipher cipher;
                     if (padding) {
-                        cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
+                        cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
                     } else {
-                        cipher = Cipher.getInstance(AES_CBC_NO_PADDING);
+                        cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_NO_PADDING);
                     }
                     IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 
                     cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
                     return cipher;
-                case AES_GMC_256:
-                    cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
+                case AES_GCM_256:
+                    cipher = Cipher.getInstance(CryptographyConstants.AES_GCM_NO_PADDING);
                     cipher.init(Cipher.DECRYPT_MODE, keySpec, new GCMParameterSpec(TAG_LENGTH * 8, iv));
                     return cipher;
                 default:
@@ -460,12 +467,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private Long blobSize(HttpHeaders headers) {
         // e.g. 0-5/1024
-        if (headers.getValue(CONTENT_RANGE) != null) {
-            String range = headers.getValue(CONTENT_RANGE);
+        if (headers.getValue(CryptographyConstants.CONTENT_RANGE) != null) {
+            String range = headers.getValue(CryptographyConstants.CONTENT_RANGE);
             return Long.valueOf(range.split("/")[1]);
         } else {
             // If there was no content range header, we requested a full blob, so the blobSize = contentLength
-            return Long.valueOf(headers.getValue(CONTENT_LENGTH));
+            return Long.valueOf(headers.getValue(CryptographyConstants.CONTENT_LENGTH));
         }
     }
 

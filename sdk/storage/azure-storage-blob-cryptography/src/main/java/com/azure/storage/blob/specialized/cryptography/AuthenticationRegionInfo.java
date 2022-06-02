@@ -6,8 +6,7 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class AuthenticationRegionInfo {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+final class AuthenticationRegionInfo {
 
     /**
      * The cipher text length.

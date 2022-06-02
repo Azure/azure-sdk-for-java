@@ -185,8 +185,4 @@ final class EncryptionDataV1 implements EncryptionData {
     public String toJsonString() throws JsonProcessingException {
         return MAPPER.writeValueAsString(this);
     }
-
-    static EncryptionDataV1 fromJsonString(String jsonString) throws JsonProcessingException {
-        return (EncryptionDataV1) EncryptionData.fromJsonString(jsonString, EncryptionDataV1.class);
-    }
 }

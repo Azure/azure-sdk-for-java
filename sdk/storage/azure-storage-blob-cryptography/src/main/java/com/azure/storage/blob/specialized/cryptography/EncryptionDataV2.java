@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Represents the encryption data that is stored on the service.
  */
-public class EncryptionDataV2 implements EncryptionData{
+final class EncryptionDataV2 implements EncryptionData{
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
@@ -118,7 +118,7 @@ public class EncryptionDataV2 implements EncryptionData{
      *
      * @return The authenticationBlockInfo property.
      */
-    AuthenticationRegionInfo getAuthenticationBlockInfo() {
+    AuthenticationRegionInfo getAuthenticationRegionInfo() {
         return authenticationRegionInfo;
     }
 
@@ -178,9 +178,5 @@ public class EncryptionDataV2 implements EncryptionData{
     @Override
     public String toJsonString() throws JsonProcessingException {
         return MAPPER.writeValueAsString(this);
-    }
-
-    static EncryptionDataV2 fromJsonString(String jsonString) throws JsonProcessingException {
-        return (EncryptionDataV2) EncryptionData.fromJsonString(jsonString, EncryptionDataV2.class);
     }
 }

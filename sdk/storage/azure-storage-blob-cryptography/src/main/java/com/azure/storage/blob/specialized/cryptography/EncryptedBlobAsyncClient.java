@@ -14,7 +14,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -28,7 +27,6 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -662,7 +660,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                             encryptionData = new EncryptionDataV2()
                                 .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
                                 .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V2,
-                                    EncryptionAlgorithm.AES_GMC_256))
+                                    EncryptionAlgorithm.AES_GCM_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setAuthenticationBlockInfo(new AuthenticationRegionInfo(
                                     GCM_ENCRYPTION_REGION_LENGTH + "", NONCE_LENGTH + ""))

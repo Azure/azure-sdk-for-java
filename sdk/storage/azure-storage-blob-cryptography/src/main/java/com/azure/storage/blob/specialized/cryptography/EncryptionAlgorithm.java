@@ -9,5 +9,8 @@ enum EncryptionAlgorithm {
      */
     AES_CBC_256,
 
-    AES_GMC_256
+    /**
+     * AES-GCM using a 256 bit key.
+     */
+    AES_GCM_256
 }

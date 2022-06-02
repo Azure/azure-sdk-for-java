@@ -4,16 +4,19 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 interface EncryptionData {
-    ObjectMapper MAPPER = new ObjectMapper();
+    ObjectSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
     ClientLogger LOGGER = new ClientLogger(FetchEncryptionVersionPolicy.class);
 
     String getEncryptionMode();
@@ -24,7 +27,8 @@ interface EncryptionData {
 
     static EncryptionData fromJsonString(String jsonString, Class<? extends EncryptionData> clazz)
         throws JsonProcessingException {
-        return MAPPER.readValue(jsonString, clazz);
+        return SERIALIZER.deserializeFromBytes(jsonString.getBytes(StandardCharsets.UTF_8),
+            TypeReference.createInstance(clazz));
     }
 
     static EncryptionData getAndValidateEncryptionData(String encryptionDataString, boolean requiresEncryption) {
