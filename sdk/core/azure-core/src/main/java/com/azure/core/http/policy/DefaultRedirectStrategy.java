@@ -31,6 +31,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     private static final Set<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS =
         new HashSet<>(Arrays.asList(HttpMethod.GET, HttpMethod.HEAD));
+    private static final String REDIRECT_URL_LOGGING_KEY = "redirectUrl";
 
     private final int maxAttempts;
     private final String locationHeader;
@@ -97,7 +98,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
                 LOGGER.atVerbose()
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue("redirectUrls", () -> attemptedRedirectUrls.toString())
+                    .addKeyValue(REDIRECT_URL_LOGGING_KEY, redirectUrl)
                     .log("Redirecting.");
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
@@ -150,7 +151,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
                                                 Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
-                .addKeyValue("redirectUrl", redirectUrl)
+                .addKeyValue(REDIRECT_URL_LOGGING_KEY, redirectUrl)
                 .log("Request was redirected more than once.");
 
             return true;

@@ -131,7 +131,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     LOGGER.atVerbose()
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                         .addKeyValue(LoggingKeys.DURATION_KEY, delayDuration.toMillis())
-                        .log("Retrying");
+                        .log("Retrying.");
 
                     Flux<ByteBuffer> responseBody = httpResponse.getBody();
                     if (responseBody == null) {
@@ -156,7 +156,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetryException(err, tryCount)) {
                     LOGGER.atVerbose()
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                            .log("Error resume", err);
+                            .log("Error resume.", err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
