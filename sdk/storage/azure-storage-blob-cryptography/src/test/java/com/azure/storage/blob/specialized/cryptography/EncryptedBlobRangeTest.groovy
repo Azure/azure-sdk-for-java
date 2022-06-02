@@ -5,6 +5,7 @@ import com.azure.storage.common.implementation.Constants
 import spock.lang.Unroll
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2
 
 class EncryptedBlobRangeTest extends APISpec {
 
@@ -76,6 +77,10 @@ class EncryptedBlobRangeTest extends APISpec {
     @Unroll
     def "Test from blob range header"() {
         setup:
+        def encryptionDataV1 = new EncryptionDataV1().setEncryptionAgent(
+            new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1))
+        def encryptionDataV2 = new EncryptionDataV2().setEncryptionAgent(
+            new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
         BlobRange range
         if (offset == null && count == null) {
             range = new BlobRange(0)
@@ -86,11 +91,16 @@ class EncryptedBlobRangeTest extends APISpec {
         }
 
         when:
-        EncryptedBlobRange encryptedRangeFromBlobRange = new EncryptedBlobRange(range)
-        EncryptedBlobRange encryptedRangeFromHeader = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue())
+        EncryptedBlobRange encryptedRangeFromBlobRangeV1 = new EncryptedBlobRange(range, encryptionDataV1)
+        EncryptedBlobRange encryptedRangeFromHeaderV1 =
+            EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue(), encryptionDataV1)
+        EncryptedBlobRange encryptedRangeFromBlobRangeV2 = new EncryptedBlobRange(range, encryptionDataV2)
+        EncryptedBlobRange encryptedRangeFromHeaderV2 =
+            EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue(), encryptionDataV2)
 
         then:
-        encryptedRangeFromBlobRange.toBlobRange().toHeaderValue() == encryptedRangeFromHeader.toBlobRange().toHeaderValue()
+        encryptedRangeFromBlobRangeV1.toBlobRange().toHeaderValue() == encryptedRangeFromHeaderV1.toBlobRange().toHeaderValue()
+        encryptedRangeFromBlobRangeV2.toBlobRange().toHeaderValue() == encryptedRangeFromHeaderV2.toBlobRange().toHeaderValue()
 
         where:
         offset | count

@@ -9,7 +9,6 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * This class provides ability buffer data chunks that are larger than single {@link ByteBuffer} size.
@@ -81,10 +80,10 @@ public final class BufferAggregator {
         }
         ByteBuffer data = ByteBuffer.allocate(numBytes);
         Iterator<ByteBuffer> bufferIterator = buffers.iterator();
-        while(data.hasRemaining()) {
+        while (data.hasRemaining()) {
             // No need to check hasNext as we already guaranteed the aggregator was big enough to fill the request.
             ByteBuffer source = bufferIterator.next();
-            while(source.hasRemaining() && data.hasRemaining()) {
+            while (source.hasRemaining() && data.hasRemaining()) {
                 data.put(source.get());
             }
         }
