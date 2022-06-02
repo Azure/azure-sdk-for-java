@@ -7,6 +7,13 @@
 
 import os
 import json
+import argparse
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
+    return parser.parse_args()
 
 
 def change_to_root_dir():
@@ -14,8 +21,8 @@ def change_to_root_dir():
     os.chdir('../../..')
 
 
-def get_spring_cloud_version_and_set_as_env(filepath):
-    spring_boot_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION")
+def get_spring_cloud_version(filepath):
+    spring_boot_version = get_args().spring_boot_dependencies_version
     spring_cloud_version = ""
     with open(filepath, 'r') as file:
         data = json.load(file)
@@ -29,7 +36,7 @@ def get_spring_cloud_version_and_set_as_env(filepath):
 
 def main():
     change_to_root_dir()
-    get_spring_cloud_version_and_set_as_env("./sdk/spring/spring-cloud-azure-supported-spring.json")
+    get_spring_cloud_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
 
 
 if __name__ == '__main__':

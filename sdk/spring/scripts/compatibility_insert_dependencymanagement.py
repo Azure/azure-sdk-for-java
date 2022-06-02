@@ -3,15 +3,24 @@
 # This script is used to insert dependency management, properties and repositories into ./sdk/spring/**/pom*.xml.
 #
 # Sample:
-# 1. python .\sdk\spring\scripts\compatibility_insert_dependencymanagement.py
+# 1. python .\sdk\spring\scripts\compatibility_insert_dependencymanagement.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3
+# 2. python .\sdk\spring\scripts\compatibility_insert_dependencymanagement.py -b 2.7.0 -c 2021.0.3
 #
 # The script must be run at the root of azure-sdk-for-java.
 
 
 import os
 import time
+import argparse
 
 from log import log
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
+    parser.add_argument('-c', '--spring_cloud_dependencies_version', type = str, required = True)
+    return parser.parse_args()
 
 
 def main():
@@ -87,7 +96,7 @@ def get_prop_content(pom_file_content):
 
 
 def add_dependency_management_for_file(file_path):
-    spring_cloud_version = os.getenv("SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION")
+    spring_cloud_version = get_args().spring_cloud_dependencies_version
     log.info("Add dependency management for file: " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
         pom_file_content = pom_file.read()
@@ -144,9 +153,9 @@ def get_properties_contend_with_tag():
 
 def get_properties_contend():
     return """
-    <spring.boot.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION}</spring.boot.version>
-    <spring.cloud.version>${env.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION}</spring.cloud.version>
-  """
+    <spring.boot.version>{}</spring.boot.version>
+    <spring.cloud.version>{}</spring.cloud.version>
+  """.format(get_args().spring_boot_dependencies_version, get_args().spring_cloud_dependencies_version)
 
 
 if __name__ == '__main__':

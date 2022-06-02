@@ -18,10 +18,10 @@ def change_to_root_dir():
     os.chdir('../../..')
 
 
-def update_json_file(filepath, suppoerted_spring_boot_version):
+def update_supported_version_matrix_json_file(filepath, suppoerted_spring_boot_version):
     names = {}
     for version in suppoerted_spring_boot_version:
-        names[version] = "springboot"+version.replace(".", "_")
+        names[version] = "springboot" + version.replace(".", "_")
     with open(filepath, 'r') as file:
         data = json.load(file)
         data['displayNames'] = names
@@ -46,7 +46,7 @@ def main():
     change_to_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     suppoerted_spring_boot_version = get_supported_spring_boot_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
-    update_json_file("./sdk/spring/supported-version-matrix.json", suppoerted_spring_boot_version)
+    update_supported_version_matrix_json_file("./sdk/spring/supported-version-matrix.json", suppoerted_spring_boot_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
