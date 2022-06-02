@@ -4,9 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported toggling blob versioning in `BlobServiceProperties`.
 
 ### Other Changes
 
