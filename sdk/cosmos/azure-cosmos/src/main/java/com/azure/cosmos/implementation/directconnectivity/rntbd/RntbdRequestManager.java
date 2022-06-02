@@ -335,7 +335,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                         final Throwable cause;
 
                         if (future.isSuccess()) {
-                            if (future.get() == RntbdConstants.RntbdHealthCheckResults.SuccessValue) {
+                            if (RntbdConstants.RntbdHealthCheckResults.SuccessValue.equals(future.get())) {
                                 return;
                             }
                             cause = new UnhealthyChannelException(future.get());
@@ -937,7 +937,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Types
 
-    final class UnhealthyChannelException extends ChannelException {
+    final static class UnhealthyChannelException extends ChannelException {
 
         UnhealthyChannelException(String reason) {
             super("health check failed, reason: " + reason);
