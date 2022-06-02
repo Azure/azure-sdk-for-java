@@ -4,9 +4,9 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.CallConnectionState;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.communication.callingserver.models.CallConnectionState;
 
 /** The CallConnectionProperties model. */
 @Fluent

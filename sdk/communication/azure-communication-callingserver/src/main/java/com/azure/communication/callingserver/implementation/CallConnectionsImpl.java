@@ -4,13 +4,6 @@
 
 package com.azure.communication.callingserver.implementation;
 
-import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.CallConnectionProperties;
-import com.azure.communication.callingserver.implementation.models.CallParticipantCollection;
-import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -34,6 +27,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
+import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.CallConnectionProperties;
+import com.azure.communication.callingserver.implementation.models.CallParticipantCollection;
+import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 
 /** An instance of this class provides access to all the operations defined in CallConnections. */
 public final class CallConnectionsImpl {
