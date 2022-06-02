@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The IoT hub cloud-to-device messaging properties. */
 @Fluent
 public final class CloudToDeviceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudToDeviceProperties.class);
-
     /*
      * The max delivery count for cloud-to-device messages in the device queue.
      * See:

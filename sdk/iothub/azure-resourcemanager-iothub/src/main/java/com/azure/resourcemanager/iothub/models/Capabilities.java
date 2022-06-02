@@ -27,7 +27,11 @@ public final class Capabilities extends ExpandableStringEnum<Capabilities> {
         return fromString(name, Capabilities.class);
     }
 
-    /** @return known Capabilities values. */
+    /**
+     * Gets known Capabilities values.
+     *
+     * @return known Capabilities values.
+     */
     public static Collection<Capabilities> values() {
         return values(Capabilities.class);
     }

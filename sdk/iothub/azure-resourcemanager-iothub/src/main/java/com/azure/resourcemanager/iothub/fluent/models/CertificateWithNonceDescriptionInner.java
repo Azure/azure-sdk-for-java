@@ -6,16 +6,12 @@ package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.CertificatePropertiesWithNonce;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X509 Certificate. */
 @Fluent
 public final class CertificateWithNonceDescriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateWithNonceDescriptionInner.class);
-
     /*
      * The description of an X509 CA Certificate including the challenge nonce
      * issued for the Proof-Of-Possession flow.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionProperties.class);
-
     /*
      * The private endpoint property of a private endpoint connection
      */
@@ -77,7 +74,7 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property privateLinkServiceConnectionState in model"
@@ -86,4 +83,6 @@ public final class PrivateEndpointConnectionProperties {
             privateLinkServiceConnectionState().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionProperties.class);
 }

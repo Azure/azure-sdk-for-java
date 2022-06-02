@@ -6,15 +6,12 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of an enrichment that your IoT hub applies to messages delivered to endpoints. */
 @Fluent
 public final class EnrichmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichmentProperties.class);
-
     /*
      * The key or name for the enrichment property.
      */
@@ -101,20 +98,22 @@ public final class EnrichmentProperties {
      */
     public void validate() {
         if (key() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property key in model EnrichmentProperties"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model EnrichmentProperties"));
         }
         if (endpointNames() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpointNames in model EnrichmentProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnrichmentProperties.class);
 }

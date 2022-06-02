@@ -71,7 +71,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a subscription.
+     * @return all the IoT hubs in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubDescription> list();
 
@@ -83,7 +83,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a subscription.
+     * @return all the IoT hubs in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubDescription> list(Context context);
 
@@ -95,7 +95,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a resource group.
+     * @return all the IoT hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubDescription> listByResourceGroup(String resourceGroupName);
 
@@ -108,7 +108,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a resource group.
+     * @return all the IoT hubs in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubDescription> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -148,7 +148,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs for an IoT hub.
+     * @return the list of valid SKUs for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubSkuDescription> getValidSkus(String resourceGroupName, String resourceName);
 
@@ -162,7 +162,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs for an IoT hub.
+     * @return the list of valid SKUs for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubSkuDescription> getValidSkus(String resourceGroupName, String resourceName, Context context);
 
@@ -176,7 +176,8 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
+     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(
         String resourceGroupName, String resourceName, String eventHubEndpointName);
@@ -192,7 +193,8 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
+     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventHubConsumerGroupInfo> listEventHubConsumerGroups(
         String resourceGroupName, String resourceName, String eventHubEndpointName, Context context);
@@ -273,7 +275,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the jobs in an IoT hub.
+     * @return a list of all the jobs in an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResponse> listJobs(String resourceGroupName, String resourceName);
 
@@ -288,7 +290,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the jobs in an IoT hub.
+     * @return a list of all the jobs in an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResponse> listJobs(String resourceGroupName, String resourceName, Context context);
 
@@ -333,7 +335,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota metrics for an IoT hub.
+     * @return the quota metrics for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubQuotaMetricInfo> getQuotaMetrics(String resourceGroupName, String resourceName);
 
@@ -347,7 +349,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota metrics for an IoT hub.
+     * @return the quota metrics for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IotHubQuotaMetricInfo> getQuotaMetrics(
         String resourceGroupName, String resourceName, Context context);
@@ -361,7 +363,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the health for routing endpoints.
+     * @return the health for routing endpoints as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EndpointHealthData> getEndpointHealth(String resourceGroupName, String iotHubName);
 
@@ -375,7 +377,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the health for routing endpoints.
+     * @return the health for routing endpoints as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EndpointHealthData> getEndpointHealth(String resourceGroupName, String iotHubName, Context context);
 
@@ -477,7 +479,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security metadata for an IoT hub.
+     * @return the security metadata for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(String resourceGroupName, String resourceName);
 
@@ -492,7 +494,7 @@ public interface IotHubResources {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security metadata for an IoT hub.
+     * @return the security metadata for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(
         String resourceGroupName, String resourceName, Context context);

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Use to provide parameters when requesting an export of all devices in the IoT hub. */
 @Fluent
 public final class ExportDevicesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportDevicesRequest.class);
-
     /*
      * The export blob container URI.
      */
@@ -214,7 +211,7 @@ public final class ExportDevicesRequest {
      */
     public void validate() {
         if (exportBlobContainerUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exportBlobContainerUri in model ExportDevicesRequest"));
@@ -223,4 +220,6 @@ public final class ExportDevicesRequest {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportDevicesRequest.class);
 }

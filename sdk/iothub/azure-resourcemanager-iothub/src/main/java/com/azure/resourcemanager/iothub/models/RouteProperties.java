@@ -6,15 +6,12 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a routing rule that your IoT hub uses to route messages to endpoints. */
 @Fluent
 public final class RouteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteProperties.class);
-
     /*
      * The name of the route. The name can only include alphanumeric
      * characters, periods, underscores, hyphens, has a maximum length of 64
@@ -167,19 +164,21 @@ public final class RouteProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RouteProperties"));
         }
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property source in model RouteProperties"));
         }
         if (endpointNames() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property endpointNames in model RouteProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RouteProperties.class);
 }

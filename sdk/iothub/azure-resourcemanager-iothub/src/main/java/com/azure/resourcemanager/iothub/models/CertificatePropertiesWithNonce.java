@@ -6,16 +6,12 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The description of an X509 CA Certificate including the challenge nonce issued for the Proof-Of-Possession flow. */
 @Immutable
 public final class CertificatePropertiesWithNonce {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificatePropertiesWithNonce.class);
-
     /*
      * The certificate's subject name.
      */

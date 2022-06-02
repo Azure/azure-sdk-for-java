@@ -100,6 +100,13 @@ public interface IotHubDescription {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.IotHubDescriptionInner object.
      *
      * @return the inner object.
@@ -296,7 +303,7 @@ public interface IotHubDescription {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security metadata for an IoT hub.
+     * @return the security metadata for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys();
 
@@ -309,7 +316,7 @@ public interface IotHubDescription {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security metadata for an IoT hub.
+     * @return the security metadata for an IoT hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(Context context);
 

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,8 +14,6 @@ import java.util.List;
  */
 @Fluent
 public final class FallbackRouteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FallbackRouteProperties.class);
-
     /*
      * The name of the route. The name can only include alphanumeric
      * characters, periods, underscores, hyphens, has a maximum length of 64
@@ -169,15 +166,17 @@ public final class FallbackRouteProperties {
      */
     public void validate() {
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property source in model FallbackRouteProperties"));
         }
         if (endpointNames() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpointNames in model FallbackRouteProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FallbackRouteProperties.class);
 }

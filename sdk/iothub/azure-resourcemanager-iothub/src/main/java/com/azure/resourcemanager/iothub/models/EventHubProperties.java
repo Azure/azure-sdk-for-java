@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of the provisioned Event Hub-compatible endpoint used by the IoT hub. */
 @Fluent
 public final class EventHubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubProperties.class);
-
     /*
      * The retention time for device-to-cloud messages in days. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages

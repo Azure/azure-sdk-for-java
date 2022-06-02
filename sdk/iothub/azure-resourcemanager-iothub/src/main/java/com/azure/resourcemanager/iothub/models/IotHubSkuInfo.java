@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the SKU of the IoT hub. */
 @Fluent
 public final class IotHubSkuInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubSkuInfo.class);
-
     /*
      * The name of the SKU.
      */
@@ -91,9 +88,11 @@ public final class IotHubSkuInfo {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model IotHubSkuInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IotHubSkuInfo.class);
 }

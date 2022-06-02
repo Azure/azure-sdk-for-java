@@ -18,7 +18,7 @@ public interface OperationsClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list IoT Hub operations.
+     * @return result of the request to list IoT Hub operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> list();
@@ -31,7 +31,7 @@ public interface OperationsClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list IoT Hub operations.
+     * @return result of the request to list IoT Hub operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> list(Context context);

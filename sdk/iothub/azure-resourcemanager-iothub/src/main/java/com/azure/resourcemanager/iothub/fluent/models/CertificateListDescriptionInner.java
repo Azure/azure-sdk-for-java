@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON-serialized array of Certificate objects. */
 @Fluent
 public final class CertificateListDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateListDescriptionInner.class);
-
     /*
      * The array of Certificate objects.
      */

@@ -31,7 +31,11 @@ public final class RoutingStorageContainerPropertiesEncoding
         return fromString(name, RoutingStorageContainerPropertiesEncoding.class);
     }
 
-    /** @return known RoutingStorageContainerPropertiesEncoding values. */
+    /**
+     * Gets known RoutingStorageContainerPropertiesEncoding values.
+     *
+     * @return known RoutingStorageContainerPropertiesEncoding values.
+     */
     public static Collection<RoutingStorageContainerPropertiesEncoding> values() {
         return values(RoutingStorageContainerPropertiesEncoding.class);
     }

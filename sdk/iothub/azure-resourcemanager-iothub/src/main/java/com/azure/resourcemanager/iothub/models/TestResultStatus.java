@@ -30,7 +30,11 @@ public final class TestResultStatus extends ExpandableStringEnum<TestResultStatu
         return fromString(name, TestResultStatus.class);
     }
 
-    /** @return known TestResultStatus values. */
+    /**
+     * Gets known TestResultStatus values.
+     *
+     * @return known TestResultStatus values.
+     */
     public static Collection<TestResultStatus> values() {
         return values(TestResultStatus.class);
     }

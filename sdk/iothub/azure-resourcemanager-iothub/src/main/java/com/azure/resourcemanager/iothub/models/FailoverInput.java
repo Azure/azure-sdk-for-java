@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Use to provide failover region when requesting manual Failover for a hub. */
 @Fluent
 public final class FailoverInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverInput.class);
-
     /*
      * Region the hub will be failed over to
      */
@@ -47,9 +44,11 @@ public final class FailoverInput {
      */
     public void validate() {
         if (failoverRegion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property failoverRegion in model FailoverInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FailoverInput.class);
 }

@@ -27,7 +27,11 @@ public final class RouteErrorSeverity extends ExpandableStringEnum<RouteErrorSev
         return fromString(name, RouteErrorSeverity.class);
     }
 
-    /** @return known RouteErrorSeverity values. */
+    /**
+     * Gets known RouteErrorSeverity values.
+     *
+     * @return known RouteErrorSeverity values.
+     */
     public static Collection<RouteErrorSeverity> values() {
         return values(RouteErrorSeverity.class);
     }

@@ -36,7 +36,11 @@ public final class EndpointHealthStatus extends ExpandableStringEnum<EndpointHea
         return fromString(name, EndpointHealthStatus.class);
     }
 
-    /** @return known EndpointHealthStatus values. */
+    /**
+     * Gets known EndpointHealthStatus values.
+     *
+     * @return known EndpointHealthStatus values.
+     */
     public static Collection<EndpointHealthStatus> values() {
         return values(EndpointHealthStatus.class);
     }

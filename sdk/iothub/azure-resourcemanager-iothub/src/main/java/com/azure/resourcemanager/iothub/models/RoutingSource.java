@@ -39,7 +39,11 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
         return fromString(name, RoutingSource.class);
     }
 
-    /** @return known RoutingSource values. */
+    /**
+     * Gets known RoutingSource values.
+     *
+     * @return known RoutingSource values.
+     */
     public static Collection<RoutingSource> values() {
         return values(RoutingSource.class);
     }

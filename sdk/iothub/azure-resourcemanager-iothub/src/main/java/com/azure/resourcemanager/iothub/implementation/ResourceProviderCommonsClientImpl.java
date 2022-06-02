@@ -20,7 +20,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.ResourceProviderCommonsClient;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
@@ -28,8 +27,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProviderCommonsClient. */
 public final class ResourceProviderCommonsClientImpl implements ResourceProviderCommonsClient {
-    private final ClientLogger logger = new ClientLogger(ResourceProviderCommonsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceProviderCommonsService service;
 
@@ -148,15 +145,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaAsync() {
-        return getSubscriptionQuotaWithResponseAsync()
-            .flatMap(
-                (Response<UserSubscriptionQuotaListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getSubscriptionQuotaWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

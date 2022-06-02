@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties related to service bus queue endpoint types. */
 @Fluent
 public final class RoutingServiceBusQueueEndpointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingServiceBusQueueEndpointProperties.class);
-
     /*
      * Id of the service bus queue endpoint
      */
@@ -269,10 +266,12 @@ public final class RoutingServiceBusQueueEndpointProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model RoutingServiceBusQueueEndpointProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutingServiceBusQueueEndpointProperties.class);
 }

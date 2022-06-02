@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IP filter rules for the IoT hub. */
 @Fluent
 public final class IpFilterRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpFilterRule.class);
-
     /*
      * The name of the IP filter rule.
      */
@@ -100,19 +97,21 @@ public final class IpFilterRule {
      */
     public void validate() {
         if (filterName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
         }
         if (action() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property action in model IpFilterRule"));
         }
         if (ipMask() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpFilterRule.class);
 }

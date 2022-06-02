@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-iothub</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.2.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

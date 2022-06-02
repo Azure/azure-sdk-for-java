@@ -27,7 +27,11 @@ public final class IotHubReplicaRoleType extends ExpandableStringEnum<IotHubRepl
         return fromString(name, IotHubReplicaRoleType.class);
     }
 
-    /** @return known IotHubReplicaRoleType values. */
+    /**
+     * Gets known IotHubReplicaRoleType values.
+     *
+     * @return known IotHubReplicaRoleType values.
+     */
     public static Collection<IotHubReplicaRoleType> values() {
         return values(IotHubReplicaRoleType.class);
     }

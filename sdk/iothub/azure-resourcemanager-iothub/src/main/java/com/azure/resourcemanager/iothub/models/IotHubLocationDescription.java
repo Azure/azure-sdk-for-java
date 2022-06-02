@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Public representation of one of the locations where a resource is provisioned. */
 @Fluent
 public final class IotHubLocationDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubLocationDescription.class);
-
     /*
      * The name of the Azure region
      */

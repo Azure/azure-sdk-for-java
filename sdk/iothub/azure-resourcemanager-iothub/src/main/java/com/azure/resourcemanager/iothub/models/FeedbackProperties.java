@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The properties of the feedback queue for cloud-to-device messages. */
 @Fluent
 public final class FeedbackProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeedbackProperties.class);
-
     /*
      * The lock duration for the feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.

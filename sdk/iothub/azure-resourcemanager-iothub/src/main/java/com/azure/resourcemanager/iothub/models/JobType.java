@@ -51,7 +51,11 @@ public final class JobType extends ExpandableStringEnum<JobType> {
         return fromString(name, JobType.class);
     }
 
-    /** @return known JobType values. */
+    /**
+     * Gets known JobType values.
+     *
+     * @return known JobType values.
+     */
     public static Collection<JobType> values() {
         return values(JobType.class);
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties related to a storage container endpoint. */
 @Fluent
 public final class RoutingStorageContainerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingStorageContainerProperties.class);
-
     /*
      * Id of the storage container endpoint
      */
@@ -384,16 +381,18 @@ public final class RoutingStorageContainerProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model RoutingStorageContainerProperties"));
         }
         if (containerName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property containerName in model RoutingStorageContainerProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutingStorageContainerProperties.class);
 }
