@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.commerce.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.commerce.models.InfoField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** Describes the usageAggregation. */
-@JsonFlatten
 @Fluent
-public class UsageAggregationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageAggregationInner.class);
-
+public final class UsageAggregationInner {
     /*
      * Unique Id for the usage aggregate.
      */
@@ -38,78 +32,10 @@ public class UsageAggregationInner {
     private String type;
 
     /*
-     * The subscription identifier for the Azure user.
+     * Usage data.
      */
-    @JsonProperty(value = "properties.subscriptionId")
-    private UUID subscriptionId;
-
-    /*
-     * Unique ID for the resource that was consumed (aka ResourceID).
-     */
-    @JsonProperty(value = "properties.meterId")
-    private String meterId;
-
-    /*
-     * UTC start time for the usage bucket to which this usage aggregate
-     * belongs.
-     */
-    @JsonProperty(value = "properties.usageStartTime")
-    private OffsetDateTime usageStartTime;
-
-    /*
-     * UTC end time for the usage bucket to which this usage aggregate belongs.
-     */
-    @JsonProperty(value = "properties.usageEndTime")
-    private OffsetDateTime usageEndTime;
-
-    /*
-     * The amount of the resource consumption that occurred in this time frame.
-     */
-    @JsonProperty(value = "properties.quantity")
-    private Float quantity;
-
-    /*
-     * The unit in which the usage for this resource is being counted, e.g.
-     * Hours, GB.
-     */
-    @JsonProperty(value = "properties.unit")
-    private String unit;
-
-    /*
-     * Friendly name of the resource being consumed.
-     */
-    @JsonProperty(value = "properties.meterName")
-    private String meterName;
-
-    /*
-     * Category of the consumed resource.
-     */
-    @JsonProperty(value = "properties.meterCategory")
-    private String meterCategory;
-
-    /*
-     * Sub-category of the consumed resource.
-     */
-    @JsonProperty(value = "properties.meterSubCategory")
-    private String meterSubCategory;
-
-    /*
-     * Region of the meterId used for billing purposes
-     */
-    @JsonProperty(value = "properties.meterRegion")
-    private String meterRegion;
-
-    /*
-     * Key-value pairs of instance details (legacy format).
-     */
-    @JsonProperty(value = "properties.infoFields")
-    private InfoField infoFields;
-
-    /*
-     * Key-value pairs of instance details represented as a string.
-     */
-    @JsonProperty(value = "properties.instanceData")
-    private String instanceData;
+    @JsonProperty(value = "properties")
+    private UsageSample innerProperties;
 
     /**
      * Get the id property: Unique Id for the usage aggregate.
@@ -172,12 +98,21 @@ public class UsageAggregationInner {
     }
 
     /**
+     * Get the innerProperties property: Usage data.
+     *
+     * @return the innerProperties value.
+     */
+    private UsageSample innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the subscriptionId property: The subscription identifier for the Azure user.
      *
      * @return the subscriptionId value.
      */
     public UUID subscriptionId() {
-        return this.subscriptionId;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
     }
 
     /**
@@ -187,7 +122,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withSubscriptionId(UUID subscriptionId) {
-        this.subscriptionId = subscriptionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withSubscriptionId(subscriptionId);
         return this;
     }
 
@@ -197,7 +135,7 @@ public class UsageAggregationInner {
      * @return the meterId value.
      */
     public String meterId() {
-        return this.meterId;
+        return this.innerProperties() == null ? null : this.innerProperties().meterId();
     }
 
     /**
@@ -207,7 +145,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withMeterId(String meterId) {
-        this.meterId = meterId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withMeterId(meterId);
         return this;
     }
 
@@ -217,7 +158,7 @@ public class UsageAggregationInner {
      * @return the usageStartTime value.
      */
     public OffsetDateTime usageStartTime() {
-        return this.usageStartTime;
+        return this.innerProperties() == null ? null : this.innerProperties().usageStartTime();
     }
 
     /**
@@ -227,7 +168,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withUsageStartTime(OffsetDateTime usageStartTime) {
-        this.usageStartTime = usageStartTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withUsageStartTime(usageStartTime);
         return this;
     }
 
@@ -237,7 +181,7 @@ public class UsageAggregationInner {
      * @return the usageEndTime value.
      */
     public OffsetDateTime usageEndTime() {
-        return this.usageEndTime;
+        return this.innerProperties() == null ? null : this.innerProperties().usageEndTime();
     }
 
     /**
@@ -247,7 +191,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withUsageEndTime(OffsetDateTime usageEndTime) {
-        this.usageEndTime = usageEndTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withUsageEndTime(usageEndTime);
         return this;
     }
 
@@ -257,7 +204,7 @@ public class UsageAggregationInner {
      * @return the quantity value.
      */
     public Float quantity() {
-        return this.quantity;
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
     }
 
     /**
@@ -267,7 +214,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withQuantity(Float quantity) {
-        this.quantity = quantity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withQuantity(quantity);
         return this;
     }
 
@@ -277,7 +227,7 @@ public class UsageAggregationInner {
      * @return the unit value.
      */
     public String unit() {
-        return this.unit;
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
     }
 
     /**
@@ -287,7 +237,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withUnit(String unit) {
-        this.unit = unit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withUnit(unit);
         return this;
     }
 
@@ -297,7 +250,7 @@ public class UsageAggregationInner {
      * @return the meterName value.
      */
     public String meterName() {
-        return this.meterName;
+        return this.innerProperties() == null ? null : this.innerProperties().meterName();
     }
 
     /**
@@ -307,7 +260,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withMeterName(String meterName) {
-        this.meterName = meterName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withMeterName(meterName);
         return this;
     }
 
@@ -317,7 +273,7 @@ public class UsageAggregationInner {
      * @return the meterCategory value.
      */
     public String meterCategory() {
-        return this.meterCategory;
+        return this.innerProperties() == null ? null : this.innerProperties().meterCategory();
     }
 
     /**
@@ -327,7 +283,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withMeterCategory(String meterCategory) {
-        this.meterCategory = meterCategory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withMeterCategory(meterCategory);
         return this;
     }
 
@@ -337,7 +296,7 @@ public class UsageAggregationInner {
      * @return the meterSubCategory value.
      */
     public String meterSubCategory() {
-        return this.meterSubCategory;
+        return this.innerProperties() == null ? null : this.innerProperties().meterSubCategory();
     }
 
     /**
@@ -347,7 +306,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withMeterSubCategory(String meterSubCategory) {
-        this.meterSubCategory = meterSubCategory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withMeterSubCategory(meterSubCategory);
         return this;
     }
 
@@ -357,7 +319,7 @@ public class UsageAggregationInner {
      * @return the meterRegion value.
      */
     public String meterRegion() {
-        return this.meterRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().meterRegion();
     }
 
     /**
@@ -367,7 +329,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withMeterRegion(String meterRegion) {
-        this.meterRegion = meterRegion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withMeterRegion(meterRegion);
         return this;
     }
 
@@ -377,7 +342,7 @@ public class UsageAggregationInner {
      * @return the infoFields value.
      */
     public InfoField infoFields() {
-        return this.infoFields;
+        return this.innerProperties() == null ? null : this.innerProperties().infoFields();
     }
 
     /**
@@ -387,7 +352,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withInfoFields(InfoField infoFields) {
-        this.infoFields = infoFields;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withInfoFields(infoFields);
         return this;
     }
 
@@ -397,7 +365,7 @@ public class UsageAggregationInner {
      * @return the instanceData value.
      */
     public String instanceData() {
-        return this.instanceData;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceData();
     }
 
     /**
@@ -407,7 +375,10 @@ public class UsageAggregationInner {
      * @return the UsageAggregationInner object itself.
      */
     public UsageAggregationInner withInstanceData(String instanceData) {
-        this.instanceData = instanceData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UsageSample();
+        }
+        this.innerProperties().withInstanceData(instanceData);
         return this;
     }
 
@@ -417,8 +388,8 @@ public class UsageAggregationInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (infoFields() != null) {
-            infoFields().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

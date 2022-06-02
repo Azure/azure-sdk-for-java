@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.commerce.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.commerce.fluent.models.UsageAggregationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Get UsageAggregates operation response. */
 @Fluent
 public final class UsageAggregationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageAggregationListResult.class);
-
     /*
      * Gets or sets details for the requested aggregation.
      */

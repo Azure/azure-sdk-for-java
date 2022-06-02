@@ -12,11 +12,10 @@ import com.azure.resourcemanager.commerce.fluent.models.UsageAggregationInner;
 import com.azure.resourcemanager.commerce.models.AggregationGranularity;
 import com.azure.resourcemanager.commerce.models.UsageAggregates;
 import com.azure.resourcemanager.commerce.models.UsageAggregation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 
 public final class UsageAggregatesImpl implements UsageAggregates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageAggregatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsageAggregatesImpl.class);
 
     private final UsageAggregatesClient innerClient;
 

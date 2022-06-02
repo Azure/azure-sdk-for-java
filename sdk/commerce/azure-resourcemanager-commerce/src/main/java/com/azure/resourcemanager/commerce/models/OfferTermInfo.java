@@ -4,62 +4,47 @@
 
 package com.azure.resourcemanager.commerce.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Describes the offer term. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "Name",
-    defaultImpl = OfferTermInfo.class)
-@JsonTypeName("OfferTermInfo")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Monetary Credit", value = MonetaryCredit.class),
-    @JsonSubTypes.Type(name = "Monetary Commitment", value = MonetaryCommitment.class),
-    @JsonSubTypes.Type(name = "Recurring Charge", value = RecurringCharge.class)
-})
-@Fluent
-public class OfferTermInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfferTermInfo.class);
+/** Defines values for OfferTermInfo. */
+public enum OfferTermInfo {
+    /** Enum value Recurring Charge. */
+    RECURRING_CHARGE("Recurring Charge"),
 
-    /*
-     * Indicates the date from which the offer term is effective.
-     */
-    @JsonProperty(value = "EffectiveDate")
-    private OffsetDateTime effectiveDate;
+    /** Enum value Monetary Commitment. */
+    MONETARY_COMMITMENT("Monetary Commitment"),
 
-    /**
-     * Get the effectiveDate property: Indicates the date from which the offer term is effective.
-     *
-     * @return the effectiveDate value.
-     */
-    public OffsetDateTime effectiveDate() {
-        return this.effectiveDate;
+    /** Enum value Monetary Credit. */
+    MONETARY_CREDIT("Monetary Credit");
+
+    /** The actual serialized value for a OfferTermInfo instance. */
+    private final String value;
+
+    OfferTermInfo(String value) {
+        this.value = value;
     }
 
     /**
-     * Set the effectiveDate property: Indicates the date from which the offer term is effective.
+     * Parses a serialized value to a OfferTermInfo instance.
      *
-     * @param effectiveDate the effectiveDate value to set.
-     * @return the OfferTermInfo object itself.
+     * @param value the serialized value to parse.
+     * @return the parsed OfferTermInfo object, or null if unable to parse.
      */
-    public OfferTermInfo withEffectiveDate(OffsetDateTime effectiveDate) {
-        this.effectiveDate = effectiveDate;
-        return this;
+    @JsonCreator
+    public static OfferTermInfo fromString(String value) {
+        OfferTermInfo[] items = OfferTermInfo.values();
+        for (OfferTermInfo item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
