@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks GetByResourceGroup. */
 public final class WorkbooksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet1.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet1.json
      */
     /**
      * Sample code: WorkbookGet1.
@@ -24,7 +24,7 @@ public final class WorkbooksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedGet.json
      */
     /**
      * Sample code: WorkbookManagedGet.
@@ -40,7 +40,7 @@ public final class WorkbooksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet.json
      */
     /**
      * Sample code: WorkbookGet.

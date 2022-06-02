@@ -180,15 +180,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentFeatureCapabilitiesInner> getAsync(
         String resourceGroupName, String resourceName) {
-        return getWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFeatureCapabilitiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

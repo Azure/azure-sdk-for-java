@@ -33,7 +33,11 @@ public final class CategoryType extends ExpandableStringEnum<CategoryType> {
         return fromString(name, CategoryType.class);
     }
 
-    /** @return known CategoryType values. */
+    /**
+     * Gets known CategoryType values.
+     *
+     * @return known CategoryType values.
+     */
     public static Collection<CategoryType> values() {
         return values(CategoryType.class);
     }
