@@ -41,6 +41,9 @@ public interface BlobServiceProperties
     /** @return the type value. */
     String type();
 
+    /** @return whether blob versioning is enabled */
+    Boolean isBlobVersioningEnabled();
+
     /** The entirety of the BlobServiceProperties definition. */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithCreate {
@@ -127,6 +130,15 @@ public interface BlobServiceProperties
             WithCreate withDeleteRetentionPolicyDisabled();
         }
 
+        /** The stage of the blobserviceproperties definition allowing to enable/disable blob versioning. */
+        interface WithBlobVersioning {
+            /**
+             * Enables blob versioning.
+             * @return the next definition stage
+             */
+            WithCreate withBlobVersioningEnabled();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
@@ -135,7 +147,8 @@ public interface BlobServiceProperties
             extends Creatable<BlobServiceProperties>,
                 DefinitionStages.WithCors,
                 DefinitionStages.WithDefaultServiceVersion,
-                DefinitionStages.WithDeleteRetentionPolicy {
+                DefinitionStages.WithDeleteRetentionPolicy,
+                DefinitionStages.WithBlobVersioning {
         }
     }
     /** The template for a BlobServiceProperties update operation, containing all the settings that can be modified. */
@@ -143,7 +156,8 @@ public interface BlobServiceProperties
         extends Appliable<BlobServiceProperties>,
             UpdateStages.WithCors,
             UpdateStages.WithDefaultServiceVersion,
-            UpdateStages.WithDeleteRetentionPolicy {
+            UpdateStages.WithDeleteRetentionPolicy,
+            UpdateStages.WithBlobVersioning {
     }
 
     /** Grouping of BlobServiceProperties update stages. */
@@ -207,6 +221,26 @@ public interface BlobServiceProperties
              * @return the next update stage
              */
             Update withDeleteRetentionPolicyDisabled();
+        }
+
+        /** The stage of the blobserviceproperties update allowing to enable/disable blob versioning. */
+        interface WithBlobVersioning {
+            /**
+             * Enables blob versioning.
+             * @return the next update stage
+             */
+            Update withBlobVersioningEnabled();
+
+            /**
+             * Disables blob versioning.
+             * <p>After versioning is disabled, modifying the current version creates a blob that is not a version.
+             * All subsequent updates to the blob will overwrite its data without saving the previous state.
+             * All existing versions persist as previous versions.</p>
+             * <p>You can read or delete versions using the version ID after versioning is disabled.
+             * You can also list a blob's versions after versioning is disabled.</p>
+             * @return the next update stage
+             */
+            Update withBlobVersioningDisabled();
         }
     }
 }
