@@ -49,7 +49,9 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
                     EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
                         props.getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY), requiresEncryption);
 
-                    context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
+                    if (encryptionData != null) {
+                        context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
+                    }
 
                     return props;
                 })

@@ -218,12 +218,12 @@ public final class EncryptedBlobClientBuilder implements
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
+        this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
         if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
             LOGGER.warning("Client is being configured to use v1 of client side encryption, which is no longer "
                 + "considered secure. The default is v1 for compatibility reasons, but it is highly recommended "
                 + "the version be set to v2 using the constructor");
         }
-        this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier

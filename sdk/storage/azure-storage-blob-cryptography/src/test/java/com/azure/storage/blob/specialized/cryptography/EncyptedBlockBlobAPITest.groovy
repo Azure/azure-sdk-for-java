@@ -617,6 +617,42 @@ class EncyptedBlockBlobAPITest extends APISpec {
         cac.delete()
     }
 
+    def "Download unencrypted data range"() {
+        setup:
+        // Create an async client
+        BlobContainerClient cac = getServiceClientBuilder(environment.primaryAccount)
+            .buildClient()
+            .getBlobContainerClient(generateContainerName())
+
+        cac.create()
+        def blobName = generateBlobName()
+
+        BlockBlobClient normalClient = cac.getBlobClient(blobName).getBlockBlobClient()
+
+        // Uses builder method that takes in regular blob clients
+        EncryptedBlobClient client = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null,
+            environment.primaryAccount.credential, cac.getBlobContainerUrl())
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()))
+
+        when:
+
+        // Upload encrypted data with regular client
+        normalClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
+            null, null, null, null, null)
+
+        // Download data with encrypted client - command should fail
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        client.downloadWithResponse(os, new BlobRange(3,2), null, null, false, null, null)
+
+        then:
+        notThrown(IllegalStateException)
+        ByteBuffer.wrap(os.toByteArray()) == data.defaultData.duplicate().position(3).limit(5)
+
+        cleanup:
+        cac.delete()
+    }
+
     // Tests key resolver
     @Unroll
     def "Key resolver used to decrypt data"() {

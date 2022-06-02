@@ -43,6 +43,10 @@ final class EncryptedBlobRange {
     private long amountPlaintextToSkip;
 
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange, EncryptionData encryptionData) {
+        if (encryptionData == null) {
+            return null;
+        }
+
         // Null case
         if (CoreUtils.isNullOrEmpty(stringRange)) {
             return new EncryptedBlobRange(null, null);

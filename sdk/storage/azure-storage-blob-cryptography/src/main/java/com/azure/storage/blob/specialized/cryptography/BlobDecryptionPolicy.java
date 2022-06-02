@@ -96,12 +96,13 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         EncryptionData encryptionData = (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY)
             .orElse(null);
 
-
         // 1. Expand the range of download for decryption if a range was present. If the range was present, we know the
-        // policy would have already fetched the encryption data
-            EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                requestHeaders.getValue(CryptographyConstants.RANGE_HEADER), encryptionData);
-        if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) != null) {
+        // policy would have already fetched the encryption data. If there was no encryptiondata, do not mess with the
+        // range.
+        EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
+            requestHeaders.getValue(CryptographyConstants.RANGE_HEADER), encryptionData);
+        if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) != null
+            && encryptionData != null) {
             requestHeaders.set(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
         }
 
@@ -111,21 +112,28 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             // response
             if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null) {
                 HttpHeaders responseHeaders = httpResponse.getHeaders();
-                /*
-                 * We will need to know the total size of the data to know when to finalize the decryption. If it was
-                 * not set originally with the intent of downloading the whole blob, update it here.
-                 */
-                encryptedRange.setAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(CryptographyConstants.CONTENT_LENGTH)));
 
                 /*
                  * If there was no range set on the request, we skipped doing a get properties first as we are getting
                  * the whole blob anyway, so we didn't have to know the version a priori to adjust the range.
                  * In that case, we deserialize the encryption data here.
+                 * If there is no encryption data set on the blob, then we would have skipped adjusting the range above
+                 * and we can just return the response as is.
                  */
                 EncryptionData encryptionDataFinal =
                     encryptionData == null ? EncryptionData.getAndValidateEncryptionData(
                         httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-" + CryptographyConstants.ENCRYPTION_DATA_KEY),
                         requiresEncryption) : encryptionData;
+                if (encryptionDataFinal == null) {
+                    return Mono.just(httpResponse);
+                }
+
+                /*
+                 * We will need to know the total size of the data to know when to finalize the decryption. If it was
+                 * not set originally with the intent of downloading the whole blob, update it here.
+                 */
+                encryptedRange.setAdjustedDownloadCount(
+                    Long.parseLong(responseHeaders.getValue(CryptographyConstants.CONTENT_LENGTH)));
 
                 /*
                  * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
@@ -171,129 +179,20 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 .flatMapMany(contentEncryptionKey -> {
                     switch (encryptionData.getEncryptionAgent().getProtocol()) {
                         case ENCRYPTION_PROTOCOL_V1:
-                            LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
-                                + "which is no longer secure. Uri: " + requestUri);
-                            EncryptionDataV1 encryptionDataV1 = (EncryptionDataV1) encryptionData;
-                            /*
-                             * Calculate the IV.
-                             *
-                             * If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
-                             * Reactor makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
-                             * As a workaround, we initialize the cipher with a garbage IV (empty byte array) and attempt to
-                             * decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
-                             * data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
-                             * of downloaded data are in position to be used as the IV for the data actually requested and we
-                             * are in the desired state.
-                             */
-                            byte[] iv;
-
-                            /*
-                             * Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
-                             * (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the
-                             * key is in the metadata.
-                             */
-                            if (encryptedBlobRange.getOffsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
-                                iv = encryptionDataV1.getContentEncryptionIV();
-                            } else {
-                                // Rather than try to buffer just the 16 bytes of the iv, we "decrypt" them with this garbage iv.
-                                // This makes counting easier.
-                                // We end up throwing that garbage decrypted data away when we trim the cipher uses the ciphertext as the iv
-                                // for the data we actually want.
-                                iv = new byte[ENCRYPTION_BLOCK_SIZE];
-                            }
-
-                            Cipher cipher;
-                            try {
-                                cipher = getCipher(contentEncryptionKey, encryptionDataV1, iv, padding);
-                            } catch (InvalidKeyException e) {
-                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                            }
-
-                            return encryptedFlux.map(encryptedByteBuffer -> {
-                                /*
-                                 * If we could potentially decrypt more bytes than encryptedByteBuffer can hold, allocate more
-                                 * room. Note that, because getOutputSize returns the size needed to store
-                                 * max(updateOutputSize, finalizeOutputSize), this is likely to produce a ByteBuffer slightly
-                                 * larger than what the real outputSize is. This is accounted for below.
-                                 */
-                                ByteBuffer plaintextByteBuffer = ByteBuffer
-                                    .allocate(cipher.getOutputSize(encryptedByteBuffer.remaining()));
-
-                                // First, determine if we should update or finalize and fill the output buffer.
-                                int bytesToInput = encryptedByteBuffer.remaining();
-                                try {
-                                    // We will have reached the end of the downloaded range, finalize.
-                                    if (totalInputBytes.longValue() + bytesToInput
-                                        >= encryptedBlobRange.getAdjustedDownloadCount()) {
-                                        cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
-                                    } else {
-                                        // We won't reach the end of the downloaded range, update.
-                                        cipher.update(encryptedByteBuffer, plaintextByteBuffer);
-                                    }
-                                } catch (GeneralSecurityException e) {
-                                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                                }
-                                totalInputBytes.addAndGet(bytesToInput);
-
-                                // Flip the buffer to set the position back to 0 and set the limit to the data size.
-                                plaintextByteBuffer.flip();
-                                return plaintextByteBuffer;
-                            });
+                            return decryptV1(encryptedFlux, encryptedBlobRange, padding,
+                                (EncryptionDataV1) encryptionData, requestUri, totalInputBytes, contentEncryptionKey);
                         case ENCRYPTION_PROTOCOL_V2:
-                            // Buffer an exact region with the nonce and tag
-                            EncryptionDataV2 encryptionDataV2 = (EncryptionDataV2) encryptionData;
-                            final int GCM_ENCRYPTION_REGION_LENGTH = Integer.parseInt(encryptionDataV2
-                                .getAuthenticationRegionInfo()
-                                .getEncryptionRegionLength());
-                            final int NONCE_LENGTH =
-                                Integer.parseInt(encryptionDataV2
-                                    .getAuthenticationRegionInfo()
-                                    .getNonceLength());
-                            BufferStagingArea stagingArea =
-                                new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH,
-                                GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH);
-
-                            return UploadUtils.chunkSource(encryptedFlux,
-                                    new com.azure.storage.common.ParallelTransferOptions()
-                                        .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH
-                                    + TAG_LENGTH + NONCE_LENGTH))
-                                .flatMapSequential(stagingArea::write)
-                                    .concatWith(Flux.defer(stagingArea::flush))
-                                    .flatMapSequential(aggregator -> {
-                                        // Get the IV out of the beginning of the aggregator
-                                        byte[] gmcIv = aggregator.getFirstNBytes(NONCE_LENGTH);
-
-                                        Cipher gmcCipher;
-                                        try {
-                                            gmcCipher = getCipher(contentEncryptionKey, encryptionData, gmcIv, false);
-                                        } catch (InvalidKeyException e) {
-                                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                                        }
-
-                                        ByteBuffer decryptedRegion = ByteBuffer.allocate(GCM_ENCRYPTION_REGION_LENGTH);
-                                        return aggregator.asFlux()
-                                            .map(buffer -> {
-                                                // Write into the preallocated buffer and always return this buffer.
-                                                try {
-                                                    gmcCipher.update(buffer, decryptedRegion);
-                                                } catch (ShortBufferException e) {
-                                                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                                                }
-                                                return decryptedRegion;
-                                            }).then(Mono.fromCallable(() -> {
-                                                // We have already written all the data to the cipher. Passing in a final
-                                                // empty buffer allows us to force completion and return the filled buffer.
-                                                gmcCipher.doFinal(ByteBuffer.allocate(0), decryptedRegion);
-                                                decryptedRegion.flip();
-                                                return decryptedRegion;
-                                            })).flux();
-                                    });
+                            return decryptV2(encryptedFlux, encryptionData, contentEncryptionKey);
                         default:
-                            throw new IllegalStateException();
+                            throw new IllegalStateException("Encryption protocl not recognized");
                     }
                 });
         }
 
+        return trimData(encryptedBlobRange, totalOutputBytes, dataToTrim);
+    }
+
+    private Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange, AtomicLong totalOutputBytes, Flux<ByteBuffer> dataToTrim) {
         return dataToTrim.map(plaintextByteBuffer -> {
             int decryptedBytes = plaintextByteBuffer.limit();
 
@@ -378,6 +277,131 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             }
 
             totalOutputBytes.addAndGet(decryptedBytes);
+            return plaintextByteBuffer;
+        });
+    }
+
+    private Flux<ByteBuffer> decryptV2(Flux<ByteBuffer> encryptedFlux, EncryptionData encryptionData,
+        byte[] contentEncryptionKey) {
+        // Buffer an exact region with the nonce and tag
+        EncryptionDataV2 encryptionDataV2 = (EncryptionDataV2) encryptionData;
+        final int GCM_ENCRYPTION_REGION_LENGTH = Integer.parseInt(encryptionDataV2
+            .getAuthenticationRegionInfo()
+            .getEncryptionRegionLength());
+        final int NONCE_LENGTH =
+            Integer.parseInt(encryptionDataV2
+                .getAuthenticationRegionInfo()
+                .getNonceLength());
+        BufferStagingArea stagingArea =
+            new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH,
+            GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH);
+
+        return UploadUtils.chunkSource(encryptedFlux,
+                new com.azure.storage.common.ParallelTransferOptions()
+                    .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH
+                        + TAG_LENGTH + NONCE_LENGTH))
+            .flatMapSequential(stagingArea::write)
+            .concatWith(Flux.defer(stagingArea::flush))
+            .flatMapSequential(aggregator -> {
+                // Get the IV out of the beginning of the aggregator
+                byte[] gmcIv = aggregator.getFirstNBytes(NONCE_LENGTH);
+
+                Cipher gmcCipher;
+                try {
+                    gmcCipher = getCipher(contentEncryptionKey, encryptionData, gmcIv, false);
+                } catch (InvalidKeyException e) {
+                    return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
+                }
+
+                ByteBuffer decryptedRegion = ByteBuffer.allocate(GCM_ENCRYPTION_REGION_LENGTH);
+                return aggregator.asFlux()
+                    .map(buffer -> {
+                        // Write into the preallocated buffer and always return this buffer.
+                        try {
+                            gmcCipher.update(buffer, decryptedRegion);
+                        } catch (ShortBufferException e) {
+                            return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
+                        }
+                        return decryptedRegion;
+                    }).then(Mono.fromCallable(() -> {
+                        // We have already written all the data to the cipher. Passing in a final
+                        // empty buffer allows us to force completion and return the filled buffer.
+                        gmcCipher.doFinal(ByteBuffer.allocate(0), decryptedRegion);
+                        decryptedRegion.flip();
+                        return decryptedRegion;
+                    })).flux();
+            });
+    }
+
+    private Flux<ByteBuffer> decryptV1(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
+        boolean padding, EncryptionDataV1 encryptionData, String requestUri,
+        AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
+        LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
+            + "which is no longer secure. Uri: " + requestUri);
+        EncryptionDataV1 encryptionDataV1 = encryptionData;
+        /*
+         * Calculate the IV.
+         *
+         * If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
+         * Reactor makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
+         * As a workaround, we initialize the cipher with a garbage IV (empty byte array) and attempt to
+         * decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
+         * data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
+         * of downloaded data are in position to be used as the IV for the data actually requested and we
+         * are in the desired state.
+         */
+        byte[] iv;
+
+        /*
+         * Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
+         * (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the
+         * key is in the metadata.
+         */
+        if (encryptedBlobRange.getOffsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
+            iv = encryptionDataV1.getContentEncryptionIV();
+        } else {
+            // Rather than try to buffer just the 16 bytes of the iv, we "decrypt" them with this garbage iv.
+            // This makes counting easier.
+            // We end up throwing that garbage decrypted data away when we trim the cipher uses the ciphertext as the iv
+            // for the data we actually want.
+            iv = new byte[ENCRYPTION_BLOCK_SIZE];
+        }
+
+        Cipher cipher;
+        try {
+            cipher = getCipher(contentEncryptionKey, encryptionDataV1, iv, padding);
+        } catch (InvalidKeyException e) {
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+        }
+
+        return encryptedFlux.map(encryptedByteBuffer -> {
+            /*
+             * If we could potentially decrypt more bytes than encryptedByteBuffer can hold, allocate more
+             * room. Note that, because getOutputSize returns the size needed to store
+             * max(updateOutputSize, finalizeOutputSize), this is likely to produce a ByteBuffer slightly
+             * larger than what the real outputSize is. This is accounted for below.
+             */
+            ByteBuffer plaintextByteBuffer = ByteBuffer
+                .allocate(cipher.getOutputSize(encryptedByteBuffer.remaining()));
+
+            // First, determine if we should update or finalize and fill the output buffer.
+            int bytesToInput = encryptedByteBuffer.remaining();
+            try {
+                // We will have reached the end of the downloaded range, finalize.
+                if (totalInputBytes.longValue() + bytesToInput
+                    >= encryptedBlobRange.getAdjustedDownloadCount()) {
+                    cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
+                } else {
+                    // We won't reach the end of the downloaded range, update.
+                    cipher.update(encryptedByteBuffer, plaintextByteBuffer);
+                }
+            } catch (GeneralSecurityException e) {
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            }
+            totalInputBytes.addAndGet(bytesToInput);
+
+            // Flip the buffer to set the position back to 0 and set the limit to the data size.
+            plaintextByteBuffer.flip();
             return plaintextByteBuffer;
         });
     }
