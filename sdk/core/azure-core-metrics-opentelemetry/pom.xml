@@ -119,12 +119,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-exporter-otlp</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
       <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
@@ -134,6 +128,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-otlp</artifactId>
+      <version>1.14.0</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -152,8 +152,8 @@
                 <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-testing:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-logging:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
