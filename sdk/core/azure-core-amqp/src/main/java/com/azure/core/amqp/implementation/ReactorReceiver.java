@@ -288,6 +288,14 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * internally when there is an error in the link, session or connection.
      * </p>
      *
+     * <p>
+     * Closing ReactorReceiver involves 3 stages, running in following order  -
+     * <ul>
+     *      <li>local-close (client to broker) via beginClose() </li>
+     *      <li>remote-close ack (broker to client)</li>
+     *      <li>disposal of ReactorReceiver resources via completeClose()</li>
+     * </ul>
+     *
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.
      */
@@ -375,7 +383,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             .timeout(retryOptions.getTryTimeout())
             .onErrorResume(error -> {
                 if (error instanceof TimeoutException) {
-                    logger.info("Timeout waiting for RemoteClose, Manually terminating EndpointStates and completing close.");
+                    logger.info("Timeout waiting for RemoteClose. Manually terminating EndpointStates and completing close.");
                     terminateEndpointState();
                     completeClose();
                 }

@@ -525,15 +525,15 @@ class ReactorReceiverTest {
         when(event.getLink()).thenReturn(receiver);
 
         doAnswer(invocation -> {
-            // The ReactorDispatcher running beginClose(...) work.
+            // The ReactorDispatcher running localClose() work scheduled by beginClose(...).
             final Runnable work = invocation.getArgument(0);
             work.run();
             return null;
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         doAnswer(invocationOnMock -> {
-            // The beginClose(...) initiates local-close via receiver.close(), here we mock
-            // broker's remote-close ack for that local-close.
+            // The localClose() initiated local-close via receiver.close(), here we mock scenario where
+            // broker responded with remote-close ack for the local-close.
             receiverHandler.onLinkRemoteClose(event);
             return null;
         }).when(receiver).close();
@@ -581,15 +581,15 @@ class ReactorReceiverTest {
         when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
         doAnswer(invocation -> {
-            // The ReactorDispatcher running localClose work scheduled by beginClose(...).
+            // The ReactorDispatcher running localClose() work scheduled by beginClose(...).
             final Runnable work = invocation.getArgument(0);
             work.run();
             return null;
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
-        // The beginClose(...) initiates local-close via receiver.close(),
-        // here we mock scenario where there is no ack from the broker hence
-        // do nothing i.e. no call to receiverHandler.onLinkRemoteClose(event);
+        // The localClose() initiated local-close via receiver.close(), here we mock scenario where
+        // there is no remote-close ack from the broker for the local-close, hence do nothing i.e. no
+        // call to receiverHandler.onLinkRemoteClose(event)
         doNothing().when(receiver).close();
 
         // Act
@@ -602,7 +602,7 @@ class ReactorReceiverTest {
 
         // Assert
         StepVerifier.create(reactorReceiver.getEndpointStates())
-            // Assert endpoint state completes (via timeout) when there is no broker ack for local-close.
+            // Assert endpoint state completes (via timeout) when there is no broker remote-close ack.
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
@@ -630,7 +630,7 @@ class ReactorReceiverTest {
 
         doAnswer(invocation -> {
             final Runnable work = invocation.getArgument(0);
-            // The localClose work from beginClose() but dispatcher rejected.
+            // The localClose() work from beginClose(), but dispatcher rejected it.
             throw new RejectedExecutionException("local-close scheduling rejected");
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
@@ -641,7 +641,7 @@ class ReactorReceiverTest {
 
         // Assert
         StepVerifier.create(reactorReceiver.getEndpointStates())
-            // Assert endpoint state completes if local-close scheduling was rejected.
+            // Assert endpoint state completes if localClose() scheduling was rejected.
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
@@ -682,7 +682,7 @@ class ReactorReceiverTest {
 
         doAnswer(invocationOnMock -> {
             eventLoopScheduler.schedule(() -> {
-                // mimicking remote-close ack from event-loop single-thread.
+                // mimicking broker's remote-close ack from event-loop single-thread.
                 receiverHandler.onLinkRemoteClose(event);
             });
             return null;
