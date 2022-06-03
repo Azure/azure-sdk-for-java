@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -131,8 +132,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 /*
                  * We will need to know the total size of the data to know when to finalize the decryption. If it was
                  * not set originally with the intent of downloading the whole blob, update it here.
+                 * If there was no range set on the request, we skipped instantiating a BlobRange as we did not have
+                 * encryption data at the time. Instantiate now with a BlobRange that indicates a full blob.
                  */
-                encryptedRange.setAdjustedDownloadCount(
+                EncryptedBlobRange encryptedRangeFinal = encryptedRange == null
+                    ? new EncryptedBlobRange(new BlobRange(0), encryptionDataFinal) : encryptedRange;
+                encryptedRangeFinal.setAdjustedDownloadCount(
                     Long.parseLong(responseHeaders.getValue(CryptographyConstants.CONTENT_LENGTH)));
 
                 /*
@@ -140,10 +145,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * block size. Padding is only ever present in track 1.
                  */
                 boolean padding = encryptionDataFinal.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
-                    && (encryptedRange.toBlobRange().getOffset()
-                    + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+                    && (encryptedRangeFinal.toBlobRange().getOffset()
+                    + encryptedRangeFinal.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
-                Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
+                Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRangeFinal, padding,
                     encryptionDataFinal, httpResponse.getRequest().getUrl().toString());
 
                 return Mono.just(new BlobDecryptionPolicy.DecryptedResponse(httpResponse, plainTextData));

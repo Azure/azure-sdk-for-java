@@ -40,6 +40,12 @@ final class EncryptedBlobRange {
      * Must be greater than or equal to 0 if specified.
      */
     private Long adjustedDownloadCount;
+
+    /**
+     * Identical to offsetAdjustment in v1, but v2 ciphertext includes the nonce and tag, which are removed during
+     * decryption, so we must separately track how much plaintext to skip distinct from how many extra bytes we
+     * download.
+     */
     private long amountPlaintextToSkip;
 
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange, EncryptionData encryptionData) {
