@@ -21,16 +21,13 @@ import static com.azure.core.util.FluxUtil.*;
  *
  * <p><strong>Instantiating an asynchronous job router Client</strong></p>
  *
- * <!-- src_embed com.azure.communication.jobrouter.jobrouterasyncclient.instantiation -->
+ * <!-- src_embed com.azure.communication.jobrouter.routerasyncclient.instantiation -->
  * <pre>
- *
- * &#47;&#47; Initialize the job router client builder
- * final JobRouterClientBuilder builder = new JobRouterClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;credential&#41;;
- *
- * &#47;&#47; Build the job router client
- * JobRouterAsyncClient jobRouterClient = builder.buildAsyncClient&#40;&#41;;
+ * &#47;&#47; Initialize the router client builder
+ * final RouterClientBuilder builder = new RouterClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * &#47;&#47; Build the router client
+ * RouterAsyncClient routerAsyncClient = builder.buildAsyncClient&#40;&#41;;
  *
  * </pre>
  * <!-- end com.azure.communication.jobrouter.routerasyncclient.instantiation -->

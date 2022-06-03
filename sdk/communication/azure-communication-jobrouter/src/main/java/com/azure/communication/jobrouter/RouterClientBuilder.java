@@ -264,11 +264,14 @@ public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuild
         if (httpPipeline != null) {
             pipeline = httpPipeline;
         } else {
+            retryOptions = retryOptions != null ? retryOptions : new RetryOptions(new FixedDelayOptions(3, Duration.ofMillis(5)));
+            logOptions = logOptions != null ? logOptions : new HttpLogOptions();
+            clientOptions = clientOptions != null ? clientOptions :  new ClientOptions();
             pipeline = BuilderHelper.buildPipeline(
                 new HmacAuthenticationPolicy(credential),
-                Objects.requireNonNullElse(retryOptions, new RetryOptions(new FixedDelayOptions(3, Duration.ofMillis(5)))),
-                Objects.requireNonNullElse(logOptions, new HttpLogOptions()),
-                Objects.requireNonNullElse(clientOptions, new ClientOptions()),
+                retryOptions,
+                logOptions,
+                clientOptions,
                 httpClient,
                 customPolicies,
                 null,
