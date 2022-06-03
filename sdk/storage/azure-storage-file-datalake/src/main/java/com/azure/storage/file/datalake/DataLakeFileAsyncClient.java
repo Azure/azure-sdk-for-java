@@ -42,7 +42,7 @@ import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
-import com.azure.storage.file.datalake.models.PathExpiryOptions;
+import com.azure.storage.file.datalake.models.PathExpiryMode;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
@@ -1402,21 +1402,21 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     Mono<Response<Void>> scheduleDeletionWithResponse(FileScheduleDeletionOptions options, Context context) {
-        PathExpiryOptions pathExpiryOptions;
+        PathExpiryMode pathExpiryOptions;
         context = context == null ? Context.NONE : context;
         String expiresOn = null;
         if (options != null && options.getExpiresOn() != null) {
-            pathExpiryOptions = PathExpiryOptions.ABSOLUTE;
+            pathExpiryOptions = PathExpiryMode.ABSOLUTE;
             expiresOn = new DateTimeRfc1123(options.getExpiresOn()).toString();
         } else if (options != null && options.getTimeToExpire() != null) {
             if (options.getExpiryRelativeTo() == FileExpirationOffset.CREATION_TIME) {
-                pathExpiryOptions = PathExpiryOptions.RELATIVE_TO_CREATION;
+                pathExpiryOptions = PathExpiryMode.RELATIVE_TO_CREATION;
             } else {
-                pathExpiryOptions = PathExpiryOptions.RELATIVE_TO_NOW;
+                pathExpiryOptions = PathExpiryMode.RELATIVE_TO_NOW;
             }
             expiresOn = Long.toString(options.getTimeToExpire().toMillis());
         } else {
-            pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
+            pathExpiryOptions = PathExpiryMode.NEVER_EXPIRE;
         }
         return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
             pathExpiryOptions, null,

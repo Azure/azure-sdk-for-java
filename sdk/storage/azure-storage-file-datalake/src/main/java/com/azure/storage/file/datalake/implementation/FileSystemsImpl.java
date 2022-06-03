@@ -23,8 +23,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateHeaders;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesHeaders;
@@ -39,6 +37,8 @@ import com.azure.storage.file.datalake.implementation.models.PathList;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileSystems. */
@@ -441,7 +441,9 @@ public final class FileSystemsImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listBlobHierarchySegment(
                 this.client.getUrl(),
                 this.client.getFileSystem(),

@@ -59,8 +59,10 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeAccessOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -396,8 +398,13 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions)
-                .setUmask(umask).setPathHttpHeaders(headers).setMetadata(metadata)
+            DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+                .setPermissions(permissions)
+                .setUmask(umask);
+
+            DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+                .setAccessOptions(accessOptions)
+                .setPathHttpHeaders(headers).setMetadata(metadata)
                 .setRequestConditions(requestConditions);
             return withContext(context -> createWithResponse(options));
         } catch (RuntimeException ex) {
@@ -423,10 +430,19 @@ public class DataLakePathAsyncClient {
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
-     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     * int duration = 15;
+     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
      *
      * client.createWithResponse&#40;options&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
@@ -461,15 +477,18 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
-        String acl = options.getAccessControlList() != null ? PathAccessControlEntry
-            .serializeList(options.getAccessControlList()) : null;
+        DataLakeAccessOptions accessOptions = options.getAccessOptions() == null ? new DataLakeAccessOptions() : options.getAccessOptions();
+
+        String acl = accessOptions.getAccessControlList() != null ? PathAccessControlEntry
+            .serializeList(accessOptions.getAccessControlList()) : null;
         String expiresOnString = setFieldsIfNull(options);
+        Long leaseDuration = (long) options.getLeaseDuration();
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
-                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
-                options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
-                options.getLeaseDuration(), options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
+                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), accessOptions.getPermissions(),
+                accessOptions.getUmask(), accessOptions.getOwner(), accessOptions.getGroup(), acl, options.getProposedLeaseId(),
+                leaseDuration, options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
                 lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
@@ -478,28 +497,30 @@ public class DataLakePathAsyncClient {
     }
 
     String setFieldsIfNull(DataLakePathCreateOptions options) {
+        DataLakePathScheduleDeletionOptions deletionOptions =
+            options.getScheduleDeletionOptions() == null ? new DataLakePathScheduleDeletionOptions() : options.getScheduleDeletionOptions();
         if (pathResourceType == PathResourceType.DIRECTORY) {
             if (options.getProposedLeaseId() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
             }
-            if (options.getLeaseDuration() != null) {
+            if (options.getLeaseDuration() != 0) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
             }
-            if (options.getTimeToExpire() != null) {
+            if (deletionOptions.getTimeToExpire() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
             }
-            if (options.getExpiresOn() != null) {
+            if (deletionOptions.getExpiresOn() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
             }
         }
-        if (options.getTimeToExpire() != null && options.getExpiresOn() != null) {
+        if (deletionOptions.getTimeToExpire() != null && deletionOptions.getExpiresOn() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
         }
         String expiresOn = null;
-        if (options.getTimeToExpire() != null) {
-            expiresOn = Long.toString(options.getTimeToExpire().toMillis());
-        } else if (options.getExpiresOn() != null) {
-            expiresOn = DateTimeRfc1123.toRfc1123String(options.getExpiresOn());
+        if (deletionOptions.getTimeToExpire() != null) {
+            expiresOn = Long.toString(deletionOptions.getTimeToExpire().toMillis());
+        } else if (deletionOptions.getExpiresOn() != null) {
+            expiresOn = DateTimeRfc1123.toRfc1123String(deletionOptions.getExpiresOn());
         }
         return expiresOn;
     }
@@ -540,8 +561,13 @@ public class DataLakePathAsyncClient {
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
+     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;metadata&#41;;
      *
      * client.createIfNotExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
      *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;

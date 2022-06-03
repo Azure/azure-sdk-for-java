@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.options.DataLakeAccessOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 
@@ -113,10 +114,19 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        Long duration = 15L;
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
-            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+        int duration = 15;
+        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessOptions(accessOptions)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
 
         Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, options, timeout,
             new Context(key1, value1));
@@ -188,10 +198,19 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        Long duration = 15L;
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
-            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+        int duration = 15;
+        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessOptions(accessOptions)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
 
         Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubdirectoryWithResponse(directoryName,
             options, timeout, new Context(key1, value1));
@@ -296,8 +315,13 @@ public class DataLakeDirectoryClientJavaDocSamples {
         PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+            .setPermissions(permissions)
+            .setUmask(umask);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessOptions(accessOptions)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeFileClient> response = client.createFileIfNotExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
@@ -350,8 +374,13 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+            .setPermissions(permissions)
+            .setUmask(umask);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessOptions(accessOptions)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeDirectoryClient> response = client.createSubdirectoryIfNotExistsWithResponse(directoryName,
             options, timeout, new Context(key1, value1));

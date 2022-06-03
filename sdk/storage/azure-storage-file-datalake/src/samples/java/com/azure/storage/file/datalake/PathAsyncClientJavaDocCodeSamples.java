@@ -13,6 +13,7 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeAccessOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
@@ -87,10 +88,19 @@ public class PathAsyncClientJavaDocCodeSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        Long duration = 15L;
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
-            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+        int duration = 15;
+        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessOptions(accessOptions)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
 
         client.createWithResponse(options).subscribe(response ->
             System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
@@ -500,8 +510,13 @@ public class PathAsyncClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
+        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+            .setPermissions(permissions)
+            .setUmask(umask);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessOptions(accessOptions)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata);
 
         client.createIfNotExistsWithResponse(options).subscribe(response -> {
             if (response.getStatusCode() == 409) {
