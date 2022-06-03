@@ -633,23 +633,23 @@ public class ShareFileAsyncClient {
 
         // check if only copy flag or smb properties are set (not both)
         CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
-        if (list.getFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
+        if (list.isFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetFileAttributes and smbProperties.ntfsFileAttributes cannot be set."));
         }
-        if (list.getCreatedOn() && tempSmbProperties.getFileCreationTime() != null) {
+        if (list.isCreatedOn() && tempSmbProperties.getFileCreationTime() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetCreatedOn and smbProperties.fileCreationTime cannot be set."));
         }
-        if (list.getLastWrittenOn() && tempSmbProperties.getFileLastWriteTime() != null) {
+        if (list.isLastWrittenOn() && tempSmbProperties.getFileLastWriteTime() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetLastWrittenOn and smbProperties.fileLastWriteTime cannot be set."));
         }
-        if (list.getChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
+        if (list.isChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
         }
 
-        String fileAttributes = list.getFileAttributes() ? FileConstants.COPY_SOURCE : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        String fileCreationTime = list.getCreatedOn()  ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
-        String fileLastWriteTime = list.getLastWrittenOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-        String fileChangedOnTime = list.getChangedOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+        String fileAttributes = list.isFileAttributes() ? FileConstants.COPY_SOURCE : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        String fileCreationTime = list.isCreatedOn()  ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        String fileLastWriteTime = list.isLastWrittenOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+        String fileChangedOnTime = list.isChangedOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
 
         final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
             .setFilePermissionCopyMode(options.getPermissionCopyModeType())

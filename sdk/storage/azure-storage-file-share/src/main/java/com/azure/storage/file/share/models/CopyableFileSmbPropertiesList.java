@@ -20,7 +20,7 @@ public final class CopyableFileSmbPropertiesList {
     /***
      * @return a flag indicating if no smb properties should be copied from source file.
      */
-    public Boolean getNone() {
+    public Boolean isNone() {
         return isSetNone;
     }
 
@@ -36,7 +36,7 @@ public final class CopyableFileSmbPropertiesList {
     /***
      * @return a flag indicating whether file attributes should be copied from source file.
      */
-    public Boolean getFileAttributes() {
+    public Boolean isFileAttributes() {
         return isSetFileAttributes;
 
     }
@@ -53,7 +53,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether created on timestamp should be copied from source file.
      */
-    public Boolean getCreatedOn() {
+    public Boolean isCreatedOn() {
         return isSetCreatedOn;
     }
 
@@ -69,7 +69,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether last written on timestamp should be copied from source file.
      */
-    public Boolean getLastWrittenOn() {
+    public Boolean isLastWrittenOn() {
         return isSetLastWrittenOn;
     }
 
@@ -85,7 +85,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether changed on timestamp should be copied from source file.
      */
-    public Boolean getChangedOn() {
+    public Boolean isChangedOn() {
         return isSetChangedOn;
     }
 
@@ -101,7 +101,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether all attributes should be copied from source file.
      */
-    public Boolean getAll() {
+    public Boolean isAll() {
         return isSetAll;
     }
 
@@ -120,25 +120,25 @@ public final class CopyableFileSmbPropertiesList {
     public List<CopyableFileSmbProperties> toList() {
         List<CopyableFileSmbProperties> details = new ArrayList<>();
         if (this.isSetNone) {
-            details.add(CopyableFileSmbProperties.IS_NONE);
+            details.add(CopyableFileSmbProperties.NONE);
         }
         if (this.isSetFileAttributes) {
-            details.add(CopyableFileSmbProperties.IS_FILE_ATTRIBUTES);
+            details.add(CopyableFileSmbProperties.FILE_ATTRIBUTES);
         }
         if (this.isSetFileAttributes) {
-            details.add(CopyableFileSmbProperties.IS_FILE_ATTRIBUTES);
+            details.add(CopyableFileSmbProperties.FILE_ATTRIBUTES);
         }
         if (this.isSetCreatedOn) {
-            details.add(CopyableFileSmbProperties.IS_CREATED_ON);
+            details.add(CopyableFileSmbProperties.CREATED_ON);
         }
         if (this.isSetLastWrittenOn) {
-            details.add(CopyableFileSmbProperties.IS_LAST_WRITTEN_ON);
+            details.add(CopyableFileSmbProperties.LAST_WRITTEN_ON);
         }
         if (this.isSetChangedOn) {
-            details.add(CopyableFileSmbProperties.IS_CHANGED_ON);
+            details.add(CopyableFileSmbProperties.CHANGED_ON);
         }
         if (this.isSetAll) {
-            details.add(CopyableFileSmbProperties.IS_ALL);
+            details.add(CopyableFileSmbProperties.ALL);
         }
         return details;
     }
