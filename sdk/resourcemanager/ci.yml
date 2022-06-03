@@ -162,7 +162,7 @@ extends:
         safeName: azureresourcemanagertrafficmanager
     AdditionalModules:
       - name: azure-resourcemanager-perf
-        groupId: com.azure
+        groupId: com.azure.resourcemanager
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
