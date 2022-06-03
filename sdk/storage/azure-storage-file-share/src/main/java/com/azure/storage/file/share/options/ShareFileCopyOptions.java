@@ -9,7 +9,6 @@ import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
-import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -24,7 +23,6 @@ public class ShareFileCopyOptions {
     private Boolean ignoreReadOnly;
     private Boolean setArchiveAttribute;
     private Map<String, String> metadata;
-    private Duration pollInterval;
     private ShareRequestConditions destinationRequestConditions;
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
 
@@ -88,7 +86,7 @@ public class ShareFileCopyOptions {
     /**
      * @return Optional boolean specifying to overwrite the target file if it already exists and has read-only attribute set.
      */
-    public Boolean getIgnoreReadOnly() {
+    public Boolean isIgnoreReadOnly() {
         return ignoreReadOnly;
     }
 
@@ -136,23 +134,6 @@ public class ShareFileCopyOptions {
      */
     public ShareFileCopyOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * @return Optional duration between each poll for the copy status. If none is specified, a default of one second is used.
-     */
-    public Duration getPollInterval() {
-        return pollInterval;
-    }
-
-    /**
-     * @param pollInterval Optional duration between each poll for the copy status. If none is specified, a default of
-     * one second is used.
-     * @return This updated options.
-     */
-    public ShareFileCopyOptions setPollInterval(Duration pollInterval) {
-        this.pollInterval = pollInterval;
         return this;
     }
 

@@ -430,7 +430,7 @@ public class DataLakePathAsyncClient {
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * int duration = 15;
+     * Long duration = 15L;
      * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
      *     .setUmask&#40;umask&#41;
@@ -482,13 +482,12 @@ public class DataLakePathAsyncClient {
         String acl = accessOptions.getAccessControlList() != null ? PathAccessControlEntry
             .serializeList(accessOptions.getAccessControlList()) : null;
         String expiresOnString = setFieldsIfNull(options);
-        Long leaseDuration = (long) options.getLeaseDuration();
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
                 options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), accessOptions.getPermissions(),
                 accessOptions.getUmask(), accessOptions.getOwner(), accessOptions.getGroup(), acl, options.getProposedLeaseId(),
-                leaseDuration, options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
+                options.getLeaseDuration(), options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
                 lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
@@ -503,7 +502,7 @@ public class DataLakePathAsyncClient {
             if (options.getProposedLeaseId() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
             }
-            if (options.getLeaseDuration() != 0) {
+            if (options.getLeaseDuration() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
             }
             if (deletionOptions.getTimeToExpire() != null) {

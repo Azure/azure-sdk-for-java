@@ -240,11 +240,11 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, ShareFileCopyOptions)}
+     * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, Duration, ShareFileCopyOptions)}
      */
     public void beginCopy3() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#String-ShareFileCopyOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#String-Duration-ShareFileCopyOptions
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -266,17 +266,16 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .setDestinationRequestConditions(requestConditions)
             .setSmbPropertiesToCopy(list)
             .setPermissionCopyModeType(PermissionCopyModeType.SOURCE)
-            .setMetadata(Collections.singletonMap("file", "metadata"))
-            .setPollInterval(Duration.ofSeconds(2));
+            .setMetadata(Collections.singletonMap("file", "metadata"));
 
         PollerFlux<ShareFileCopyInfo, Void> poller = shareFileAsyncClient.beginCopy(
-            "https://{accountName}.file.core.windows.net?{SASToken}", options);
+            "https://{accountName}.file.core.windows.net?{SASToken}", Duration.ofSeconds(2), options);
 
         poller.subscribe(response -> {
             final ShareFileCopyInfo value = response.getValue();
             System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
         }, error -> System.err.println("Error: " + error), () -> System.out.println("Complete copying the file."));
-        // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#String-ShareFileCopyOptions
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.beginCopy#String-Duration-ShareFileCopyOptions
     }
 
     /**

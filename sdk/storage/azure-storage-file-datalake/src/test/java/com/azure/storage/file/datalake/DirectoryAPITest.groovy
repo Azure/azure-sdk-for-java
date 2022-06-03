@@ -387,8 +387,8 @@ class DirectoryAPITest extends APISpec {
         leaseId                         | leaseDuration | expiresOn            | expiryOptions                     | timeToExpire
         UUID.randomUUID().toString()    | null          | null                 | null                              | null
         UUID.randomUUID().toString()    | 15            | null                 | null                              | null
-        UUID.randomUUID().toString()    | null          | OffsetDateTime.now() | PathExpiryMode.ABSOLUTE | null
-        UUID.randomUUID().toString()    | null          | null                 | PathExpiryMode.RELATIVE_TO_NOW | Duration.ofDays(6)
+        UUID.randomUUID().toString()    | null          | OffsetDateTime.now() | PathExpiryMode.ABSOLUTE           | null
+        UUID.randomUUID().toString()    | null          | null                 | PathExpiryMode.RELATIVE_TO_NOW    | Duration.ofDays(6)
     }
 
     def "Create if not exists min"() {

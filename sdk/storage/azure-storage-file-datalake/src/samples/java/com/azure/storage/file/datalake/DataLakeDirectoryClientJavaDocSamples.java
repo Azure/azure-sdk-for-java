@@ -114,7 +114,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        int duration = 15;
+        Long duration = 15L;
         DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
             .setPermissions(permissions)
             .setUmask(umask)
@@ -198,7 +198,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        int duration = 15;
+        Long duration = 15L;
         DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
             .setPermissions(permissions)
             .setUmask(umask)

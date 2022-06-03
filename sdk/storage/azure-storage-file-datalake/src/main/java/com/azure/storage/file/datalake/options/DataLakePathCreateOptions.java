@@ -23,7 +23,7 @@ public class DataLakePathCreateOptions {
     private DataLakeRequestConditions requestConditions;
     private String sourceLeaseId;
     private String proposedLeaseId;
-    private int leaseDuration;
+    private Long leaseDuration;
     private PathExpiryMode expiryOptions;
 
     /**
@@ -165,7 +165,7 @@ public class DataLakePathCreateOptions {
     /**
      * @return the lease duration in seconds.
      */
-    public int getLeaseDuration() {
+    public Long getLeaseDuration() {
         return leaseDuration;
     }
 
@@ -178,7 +178,7 @@ public class DataLakePathCreateOptions {
      * @param duration the new duration.
      * @return The updated options.
      */
-    public DataLakePathCreateOptions setLeaseDuration(int duration) {
+    public DataLakePathCreateOptions setLeaseDuration(Long duration) {
         leaseDuration = duration;
         return this;
     }

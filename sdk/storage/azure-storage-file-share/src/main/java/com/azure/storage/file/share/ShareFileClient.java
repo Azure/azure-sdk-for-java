@@ -370,8 +370,8 @@ public class ShareFileClient {
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
-        ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata).setPollInterval(pollInterval);
-        return this.beginCopy(sourceUrl, options);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata);
+        return this.beginCopy(sourceUrl, pollInterval, options);
     }
 
     /**
@@ -433,10 +433,9 @@ public class ShareFileClient {
             .setIgnoreReadOnly(ignoreReadOnly)
             .setSetArchiveAttribute(setArchiveAttribute)
             .setMetadata(metadata)
-            .setPollInterval(pollInterval)
             .setDestinationRequestConditions(destinationRequestConditions);
 
-        return beginCopy(sourceUrl, options);
+        return beginCopy(sourceUrl, pollInterval, options);
     }
 
     /**
@@ -446,7 +445,7 @@ public class ShareFileClient {
      *
      * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.beginCopy#String-ShareFileCopyOptions -->
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions -->
      * <pre>
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
      *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
@@ -479,18 +478,20 @@ public class ShareFileClient {
      * final ShareFileCopyInfo value = pollResponse.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Copy source: %s. Status: %s.%n&quot;, value.getCopySourceUrl&#40;&#41;, value.getCopyStatus&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.beginCopy#String-ShareFileCopyOptions -->
+     * <!-- end com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @param options {@link ShareFileCopyOptions}
      * @return A {@link SyncPoller} to poll the progress of copy operation.
      * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options) {
-        return shareFileAsyncClient.beginCopy(sourceUrl, options).getSyncPoller();
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval, ShareFileCopyOptions options) {
+        return shareFileAsyncClient.beginCopy(sourceUrl, pollInterval, options).getSyncPoller();
     }
 
     /**
