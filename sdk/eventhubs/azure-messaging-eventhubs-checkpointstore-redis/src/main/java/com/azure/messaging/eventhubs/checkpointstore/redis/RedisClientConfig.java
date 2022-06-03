@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.messaging.eventhubs.checkpointstore.redis;
-import redis.clients.jedis.JedisPoolConfig;
+
 
 /**
  * This class is used to create a JedisPool object using Azure Cache for Redis.
@@ -10,96 +10,96 @@ import redis.clients.jedis.JedisPoolConfig;
 public final class RedisClientConfig {
     private RedisClientConfig() {
     }
-    private final String hostName = "hostname";
-
+    private static final String HOSTNAME = "hostname";
     /**
      * This method returns the HOST_NAME.
      * @return Host Name, which is the domain assigned by the Azure Cache for Redis.
      */
-    public String getHostName() {
-        return hostName;
+    public static String getHostName() {
+        return HOSTNAME;
     }
-    private final String password = "access_key";
-
+    private static final String PASSWORD = "access_key";
     /**
      * This method returns the PASSWORD.
      * @return Primary Key used to connect to Azure Cache for Redis
      */
-    public String getPassword() {
-        return password;
+    public static String getPassword() {
+        return PASSWORD;
     }
-    private final boolean useSsl = true;
-
+    private static final boolean USE_SSL = true;
     /**
      * This method returns the USE_SSL field.
      * @return True or False based on if SSL is being used or not
      */
     public boolean getUseSSL() {
-        return useSsl;
+        return USE_SSL;
     }
-    private final int sslPort = 6380;
-    private final int nonSslPort = 6379;
-    private final int connectTimeoutMills = 5000;
+    private static final int CONNECT_TIMEOUT_MILLS = 5000;
 
     /**
      * This method returns CONNECT_TIMEOUT_MILLS, which is in milliseconds.
      * @return The amount of time before the connection will time out.
      */
     public int getConnectTimeoutMills() {
-        return connectTimeoutMills;
+        return CONNECT_TIMEOUT_MILLS;
     }
     private static final int OPERATION_TIMEOUT_MILLS = 1000;
     /**
      * This method returns OPERATION_TIMEOUT_MILLS, which is in milliseconds.
      * @return The amount of time before an operation will time out.
      */
-    public static int getOperationTimeoutMills() {
+    public int getOperationTimeoutMills() {
         return OPERATION_TIMEOUT_MILLS;
     }
-    private final String clientName = "clientName";
+    private static final String CLIENTNAME = "clientName";
 
     /**
      * This method returns the CLIENT_NAME.
      * @return The name of the client
      */
-    public String getClientName() {
-        return clientName;
-    }
-    private final JedisPoolConfig POOL_CONFIG = createPoolConfig();
-
-    /**
-     * This method gets the JedisPoolConfig object.
-     * @return A JedisPoolConfig object
-     */
-    public JedisPoolConfig getPoolConfig() {
-        return POOL_CONFIG;
+    public static String getClientName() {
+        return CLIENTNAME;
     }
     private static final int POOL_MAX_TOTAL = 200;
-    private static final int POOL_MAX_IDLE = 100;
-    private static final int POOL_MIN_IDLE = 50;
-    private static final boolean POOL_BLOCK_WHEN_EXHAUSTED = true;
-    private static final int POOL_MAX_WAIT_MILLIS = OPERATION_TIMEOUT_MILLS;
-    private final int RECONNECT_MAX_ATTEMPTS = 3;
-
-    private static final RedisClientConfig INSTANCE = new RedisClientConfig();
-
-    private static JedisPoolConfig createPoolConfig() {
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-
-        poolConfig.setMaxTotal(POOL_MAX_TOTAL);
-        poolConfig.setMaxIdle(POOL_MAX_IDLE);
-        poolConfig.setBlockWhenExhausted(POOL_BLOCK_WHEN_EXHAUSTED);
-        poolConfig.setMaxWaitMillis(POOL_MAX_WAIT_MILLIS);
-        poolConfig.setMinIdle(POOL_MIN_IDLE);
-        return poolConfig;
+    /**
+     * Get an integer representing how many resources a pool can have.
+     * @return poolMaxTotal
+     */
+    public int getPoolMaxTotal() {
+        return POOL_MAX_TOTAL;
     }
-
+    private static final int POOL_MAX_IDLE = 100;
+    /**
+     * Get an integer representing how many resources at max can be idle at a given time.
+     * @return poolMaxIdle
+     */
+    public int getPoolMaxIdle() {
+        return POOL_MAX_IDLE;
+    }
+    public static final int POOL_MIN_IDLE = 50;
+    /**
+     * Get an integer representing how many resources at minimum can be idle at a given time.
+     * @return poolMinIdle
+     */
+    public int getPoolMinIdle() {
+        return POOL_MIN_IDLE;
+    }
+    private static final boolean POOL_BLOCK_WHEN_EXHAUSTED = true;
+    /** Get if the pool should be blocked or not when it's resources are exhausted.
+     * @return True
+     */
+    public boolean getPoolBlockWhenExhausted() {
+        return POOL_BLOCK_WHEN_EXHAUSTED;
+    }
+    private static final int SSL_PORT = 6380;
+    private static final int NON_SSL_PORT = 6379;
+    private static final RedisClientConfig INSTANCE = new RedisClientConfig();
      /**
       * This method gets the port being used by the JedisPool
       * @return The Port being used by JedisPool object
       */
     public int getPort() {
-        return useSsl ? sslPort : nonSslPort;
+        return getUseSSL() ? SSL_PORT : NON_SSL_PORT;
     }
      /**
       * This method returns an instance of RedisClientConfig.

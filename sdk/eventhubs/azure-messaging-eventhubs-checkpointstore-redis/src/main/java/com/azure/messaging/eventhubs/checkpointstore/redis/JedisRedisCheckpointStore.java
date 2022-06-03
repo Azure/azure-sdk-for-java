@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
 import redis.clients.jedis.Jedis;
 
@@ -20,13 +21,17 @@ import redis.clients.jedis.Jedis;
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
  */
 public class JedisRedisCheckpointStore implements CheckpointStore {
-    private static final String SEQUENCE_NUMBER = "sequencenumber";
-    private static final String OFFSET = "offset";
-    private static final String OWNER_ID = "ownerid";
-    private static final String ETAG = "etag";
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     private final RedisClientConfig config = RedisClientConfig.getInstance();
-    private final JedisPool jedisPool = new JedisPool(config.getPoolConfig(), config.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), config.getPassword(), Protocol.DEFAULT_DATABASE, config.getClientName(), config.getUseSSL(), null, null, null);
+    private JedisPoolConfig createPoolConfig() {
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
+        poolConfig.setMaxTotal(config.getPoolMaxTotal());
+        poolConfig.setMaxIdle(config.getPoolMaxIdle());
+        poolConfig.setBlockWhenExhausted(config.getPoolBlockWhenExhausted());
+        poolConfig.setMinIdle(config.getPoolMinIdle());
+        return poolConfig;
+    }
+    private final JedisPool jedisPool = new JedisPool(this.createPoolConfig(), RedisClientConfig.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), RedisClientConfig.getPassword(), Protocol.DEFAULT_DATABASE, RedisClientConfig.getClientName(), config.getUseSSL(), null, null, null);
     /**
      * This method returns the list of partitions that were owned successfully.
      *
