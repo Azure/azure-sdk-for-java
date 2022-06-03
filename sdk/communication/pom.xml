@@ -20,6 +20,7 @@
         <module>azure-communication-networktraversal</module>
         <module>azure-communication-sms</module>
         <module>azure-communication-phonenumbers</module>
+        <module>azure-communication-jobrouter</module>
       </modules>
 
       <dependencies>
@@ -58,6 +59,11 @@
           <artifactId>azure-communication-sms</artifactId>
           <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-communication-jobrouter</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-jobrouter;current} -->
+        </dependency>
       </dependencies>
 
       <build>
@@ -94,6 +100,7 @@
         <module>azure-communication-sms</module>
         <module>azure-resourcemanager-communication</module>
         <module>azure-communication-common-perf</module>
+        <module>azure-communication-jobrouter</module>
       </modules>
     </profile>
   </profiles>
