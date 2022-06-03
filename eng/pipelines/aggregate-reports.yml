@@ -144,6 +144,9 @@ stages:
         timeoutInMinutes: 120
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
+          - name: DisableDockerDetector
+            value: false
+
         pool:
           # CredScan build task is Windows only (https://aka.ms/credscan).
           vmImage: 'windows-2019'
