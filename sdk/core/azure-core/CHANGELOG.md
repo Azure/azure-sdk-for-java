@@ -1,6 +1,6 @@
 # Release History
 
-## 1.29.0-beta.1 (Unreleased)
+## 1.29.0 (2022-06-03)
 
 ### Features Added
 
@@ -11,12 +11,6 @@
   - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
 - Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
   that represents slice of the file.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.28.0 (2022-05-06)
 

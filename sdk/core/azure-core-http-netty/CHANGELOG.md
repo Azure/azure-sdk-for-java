@@ -1,16 +1,14 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.12.1 (2022-06-03)
 
 ### Other Changes
 
 - Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
 
 ## 1.12.0 (2022-05-06)
 
