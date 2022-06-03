@@ -38,3 +38,9 @@ extends:
       - name: azure-ai-formrecognizer
         groupId: com.azure
         safeName: azureaiformrecognizer
+    AdditionalModules:
+      - name: azure-ai-formrecognizer-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure
