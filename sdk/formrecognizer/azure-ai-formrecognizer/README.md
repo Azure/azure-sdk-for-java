@@ -265,13 +265,13 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
-            documentSelectionMark.getBoundingBox().toString(),
+            documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
 
@@ -391,7 +391,7 @@ String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
         DocumentBuildMode.TEMPLATE,
-        new BuildModelOptions().setDescription("model desc"), Context.NONE);
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
 DocumentModel documentModel = buildOperationPoller.getFinalResult();
 
@@ -445,7 +445,7 @@ analyzeResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
