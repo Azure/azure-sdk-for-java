@@ -43,12 +43,13 @@ If you use OpenTelemetry Java agent or Application Insights Java agent version 3
 
 ### Default configuration: OpenTelemetry SDK
 
-Azure SDK uses global OpenTelemetry instance by default. 
+Azure SDK uses global OpenTelemetry instance by default. You can use [OpenTelemetry SDK Autoconfigure](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md)
+package to configure without writing any code.
 
 ```java readme-sample-defaultConfiguration
 
 // configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-// https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md
+AutoConfiguredOpenTelemetrySdk.initialize();
 
 // configure Azure Client, no metric configuration needed
 // client will use global OTel configured by OpenTelemetry autoconfigure package.

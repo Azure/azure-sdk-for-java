@@ -19,6 +19,7 @@ import io.opentelemetry.context.propagation.ContextPropagators;
 import io.opentelemetry.exporter.otlp.metrics.OtlpGrpcMetricExporter;
 import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -37,11 +38,11 @@ public class MetricsJavaDocCodeSnippets {
      * Code snippet for {@link com.azure.core.metrics.opentelemetry.OpenTelemetryMeterProvider#createMeter(String, String, MetricsOptions)}}
      */
     @SuppressWarnings("try")
-    public void configureClientLibraryToUseDefaultMeter() {
+    public void sampleDefaultSdkConfigurationWithMetricsAndTraces() {
         // BEGIN: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default
 
         // configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-        // https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md
+        AutoConfiguredOpenTelemetrySdk.initialize();
 
         // configure Azure Client, no metric configuration needed
         AzureClient sampleClient = new AzureClientBuilder()
@@ -70,7 +71,7 @@ public class MetricsJavaDocCodeSnippets {
         // BEGIN: readme-sample-defaultConfiguration
 
         // configure OpenTelemetry SDK using OpenTelemetry SDK Autoconfigure
-        // https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md
+        AutoConfiguredOpenTelemetrySdk.initialize();
 
         // configure Azure Client, no metric configuration needed
         // client will use global OTel configured by OpenTelemetry autoconfigure package.
@@ -116,21 +117,21 @@ public class MetricsJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom
 
         // configure OpenTelemetry SDK
-        SdkTracerProvider otelTracerProvider = SdkTracerProvider.builder()
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(BatchSpanProcessor.builder(OtlpGrpcSpanExporter.builder().build()).build())
             .build();
 
-        Tracer otelTracer = GlobalOpenTelemetry.getTracer("azure-core-samples");
-
-        SdkMeterProvider otelMeterProvider = SdkMeterProvider.builder()
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
             .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
             .build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder()
-            .setTracerProvider(otelTracerProvider)
-            .setMeterProvider(otelMeterProvider)
+            .setTracerProvider(tracerProvider)
+            .setMeterProvider(meterProvider)
             .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
             .build();
+
+        Tracer tracer = openTelemetry.getTracer("azure-core-samples");
 
         // pass custom OpenTelemetry SdkMeterProvider to MetricsOptions
         MetricsOptions metricsOptions = new MetricsOptions()
@@ -142,7 +143,7 @@ public class MetricsJavaDocCodeSnippets {
             .clientOptions(new ClientOptions().setMetricsOptions(metricsOptions))
             .build();
 
-        Span span = otelTracer.spanBuilder("doWork").startSpan();
+        Span span = tracer.spanBuilder("doWork").startSpan();
         io.opentelemetry.context.Context otelContext = io.opentelemetry.context.Context.current().with(span);
 
         // do some work
