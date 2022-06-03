@@ -305,13 +305,12 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 if (localCloseScheduled) {
                     return timeoutRemoteCloseAck();
                 } else {
-                    return Mono.fromRunnable(() -> {
+                    return Mono.<Void>fromRunnable(() -> {
                         terminateEndpointState();
                         completeClose();
                     }).subscribeOn(Schedulers.boundedElastic());
                 }
             })
-            .then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
     }
 
@@ -366,18 +365,17 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     /**
-     * Apply timeout on remote-close ack, the receiver-handler EndpointStates Flux terminates when
-     * receiving remote-close ack. If timeout happens, then this method terminate the Flux returned
-     * by getEndpointStates() and complete close.
+     * Apply timeout on remote-close ack. If timeout happens, i.e., if remote-close ack doesn't arrive within
+     * the timeout duration, then terminate the Flux returned by getEndpointStates() and complete close.
      *
      * a {@link Mono} that registers remote-close ack timeout based close cleanup.
      */
     private Mono<Void> timeoutRemoteCloseAck() {
-        return this.endpointStates.then()
+        return isClosedMono.asMono()
             .timeout(retryOptions.getTryTimeout())
             .onErrorResume(error -> {
                 if (error instanceof TimeoutException) {
-                    logger.info("Timeout waiting for EndpointStates termination, terminating EndpointStates manually");
+                    logger.info("Timeout waiting for RemoteClose, Manually terminating EndpointStates and completing close.");
                     terminateEndpointState();
                     completeClose();
                 }
@@ -394,7 +392,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * uses to either terminate its downstream or obtain a new ReactorReceiver to continue delivering events
      * downstream.
      * </p>
-     *
      */
     private void terminateEndpointState() {
         this.terminateEndpointStates.emitEmpty((signalType, emitResult) -> {
