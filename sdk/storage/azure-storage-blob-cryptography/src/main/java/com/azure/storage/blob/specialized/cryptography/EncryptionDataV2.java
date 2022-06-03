@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Represents the encryption data that is stored on the service.
  */
-final class EncryptionDataV2 implements EncryptionData{
+final class EncryptionDataV2 implements EncryptionData {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**

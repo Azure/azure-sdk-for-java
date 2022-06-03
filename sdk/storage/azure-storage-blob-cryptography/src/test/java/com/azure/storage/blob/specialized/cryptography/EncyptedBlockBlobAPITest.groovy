@@ -117,6 +117,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         cc.delete()
     }
 
+    @LiveOnly
     def "v2 Download test"() {
         setup:
         beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
@@ -372,6 +373,17 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ByteBuffer outputByteBuffer = collectBytesInBuffer(beac.download()).block()
 
         return compareListToBuffer(byteBufferList, outputByteBuffer)
+    }
+
+    def "Temp test for cross plat"() {
+        setup:
+        def data = getRandomByteArray(20 * Constants.MB)
+
+        def encryptedClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .blobName("java_encrypted_1")
+            .credential(environment.getPrimaryAccount().getCredential())
+
     }
 
     @Unroll

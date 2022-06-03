@@ -4,7 +4,6 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 final class AuthenticationRegionInfo {
 

@@ -4,11 +4,12 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
 
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
@@ -21,6 +22,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * to the entire range of the blob.
  */
 final class EncryptedBlobRange {
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobRange.class);
 
     /**
      * The BlobRange passed by the customer and the range we must actually return.
@@ -46,7 +48,7 @@ final class EncryptedBlobRange {
      * decryption, so we must separately track how much plaintext to skip distinct from how many extra bytes we
      * download.
      */
-    private long amountPlaintextToSkip;
+    private final long amountPlaintextToSkip;
 
     static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange, EncryptionData encryptionData) {
         if (encryptionData == null) {
@@ -77,6 +79,7 @@ final class EncryptedBlobRange {
         if (originalRange == null) {
             this.originalRange = new BlobRange(0);
             this.offsetAdjustment = 0;
+            this.amountPlaintextToSkip = 0; // In cases where this block is executed, this value does not matter
             return;
         }
 
@@ -152,7 +155,7 @@ final class EncryptedBlobRange {
 
                 break;
             default:
-                throw new IllegalArgumentException();
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected protocol version"));
         }
     }
 

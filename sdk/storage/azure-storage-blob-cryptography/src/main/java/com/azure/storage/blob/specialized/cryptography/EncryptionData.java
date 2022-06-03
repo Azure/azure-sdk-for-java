@@ -17,7 +17,7 @@ import java.util.Objects;
 
 interface EncryptionData {
     ObjectSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-    ClientLogger LOGGER = new ClientLogger(FetchEncryptionVersionPolicy.class);
+    ClientLogger LOGGER = new ClientLogger(EncryptionData.class);
 
     String getEncryptionMode();
     WrappedKey getWrappedContentKey();

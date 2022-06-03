@@ -7,14 +7,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
-import java.util.Locale;
-import java.util.Objects;
 
 // TODO: Access conditions, leases, etc from the download call that need to be applied to this request
 // TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
@@ -22,7 +16,7 @@ import java.util.Objects;
 // the context for this policy to skip
 // What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
 // Maybe we just respond to customers when they complain and tell them to adjust a bit.
-class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
+public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     private final BlobAsyncClient blobClient;
     private final boolean requiresEncryption;

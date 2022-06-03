@@ -189,7 +189,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                         case ENCRYPTION_PROTOCOL_V2:
                             return decryptV2(encryptedFlux, encryptionData, contentEncryptionKey);
                         default:
-                            throw new IllegalStateException("Encryption protocl not recognized");
+                            throw LOGGER.logExceptionAsError(
+                                new IllegalStateException("Encryption protocol not recognized"));
                     }
                 });
         }

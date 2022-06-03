@@ -315,54 +315,54 @@ public final class EncryptedBlobClientBuilder implements
 
         Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
 
-            // Closest to API goes first, closest to wire goes last.
-            List<HttpPipelinePolicy> policies = new ArrayList<>();
+        // Closest to API goes first, closest to wire goes last.
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-            policies.add(new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
-            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
-            String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
-                : logOptions.getApplicationId();
-            policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
-            policies.add(new RequestIdPolicy());
+        policies.add(new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
+        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
+            : logOptions.getApplicationId();
+        policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
+        policies.add(new RequestIdPolicy());
 
-            policies.addAll(perCallPolicies);
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
-            policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, LOGGER));
+        policies.addAll(perCallPolicies);
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, LOGGER));
 
-            policies.add(new AddDatePolicy());
+        policies.add(new AddDatePolicy());
 
-            // We need to place this policy right before the credential policy since headers may affect the string to sign
-            // of the request.
-            HttpHeaders headers = new HttpHeaders();
-            clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-            if (headers.getSize() > 0) {
-                policies.add(new AddHeadersPolicy(headers));
-            }
-            policies.add(new MetadataValidationPolicy());
+        // We need to place this policy right before the credential policy since headers may affect the string to sign
+        // of the request.
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.add(new MetadataValidationPolicy());
 
-            if (storageSharedKeyCredential != null) {
-                policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
-            } else if (tokenCredential != null) {
-                BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, LOGGER);
-                policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
-            } else if (azureSasCredential != null) {
-                policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
-            } else if (sasToken != null) {
-                policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
-            }
+        if (storageSharedKeyCredential != null) {
+            policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
+        } else if (tokenCredential != null) {
+            BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, LOGGER);
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
+        } else if (azureSasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+        } else if (sasToken != null) {
+            policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
+        }
 
-            policies.addAll(perRetryPolicies);
+        policies.addAll(perRetryPolicies);
 
-            HttpPolicyProviders.addAfterRetryPolicies(policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-            policies.add(new ResponseValidationPolicyBuilder()
-                .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-                .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-                .build());
+        policies.add(new ResponseValidationPolicyBuilder()
+            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+            .build());
 
-            policies.add(new HttpLoggingPolicy(logOptions));
+        policies.add(new HttpLoggingPolicy(logOptions));
 
-            policies.add(new ScrubEtagPolicy());
+        policies.add(new ScrubEtagPolicy());
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
