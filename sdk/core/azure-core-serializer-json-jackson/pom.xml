@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-json-jackson</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.17</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+  <version>1.2.18</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
 
   <name>Microsoft Azure Jackson JSON Serializer Library</name>
   <description>This package contains the Jackson JSON serializer client plugin for azure-core.</description>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.29.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
