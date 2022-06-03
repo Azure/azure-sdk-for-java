@@ -778,30 +778,30 @@ class ReactorReceiverTest {
             .verify(VERIFY_TIMEOUT);
     }
 
-//    @Test
-//    void closesWhenAuthorizationResultsComplete() throws IOException {
-//        // Arrange
-//        final Event event = mock(Event.class);
-//        final Link link = mock(Link.class);
-//
-//        when(event.getLink()).thenReturn(link);
-//        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
-//
-//        doAnswer(invocationOnMock -> {
-//            final Runnable work = invocationOnMock.getArgument(0);
-//            work.run();
-//            return null;
-//        }).when(reactorDispatcher).invoke(any(Runnable.class));
-//
-//        doAnswer(invocationOnMock -> {
-//            receiverHandler.onLinkRemoteClose(event);
-//            return null;
-//        }).when(receiver).close();
-//
-//        // Assert and Act
-//        StepVerifier.create(reactorReceiver.receive())
-//            .then(authorizationResults::complete)
-//            .expectComplete()
-//            .verify(VERIFY_TIMEOUT);
-//    }
+    @Test
+    void closesWhenAuthorizationResultsComplete() throws IOException {
+        // Arrange
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+
+        when(event.getLink()).thenReturn(link);
+        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        // Assert and Act
+        StepVerifier.create(reactorReceiver.receive())
+            .then(authorizationResults::complete)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+    }
 }
