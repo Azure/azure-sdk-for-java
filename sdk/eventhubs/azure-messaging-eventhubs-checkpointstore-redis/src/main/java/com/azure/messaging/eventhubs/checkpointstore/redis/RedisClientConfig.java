@@ -76,7 +76,7 @@ public final class RedisClientConfig {
     public int getPoolMaxIdle() {
         return POOL_MAX_IDLE;
     }
-    public static final int POOL_MIN_IDLE = 50;
+    private static final int POOL_MIN_IDLE = 50;
     /**
      * Get an integer representing how many resources at minimum can be idle at a given time.
      * @return poolMinIdle
