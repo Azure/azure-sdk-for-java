@@ -41,6 +41,8 @@ stages:
       AdditionalModules:
         - name: azure-storage-perf
           groupId: com.azure
+        - name: perf-test-core
+          groupId: com.azure
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
       Location: canadacentral
