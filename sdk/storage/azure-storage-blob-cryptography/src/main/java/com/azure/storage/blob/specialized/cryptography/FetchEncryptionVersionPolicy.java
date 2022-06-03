@@ -22,7 +22,7 @@ import java.util.Objects;
 // the context for this policy to skip
 // What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
 // Maybe we just respond to customers when they complain and tell them to adjust a bit.
-public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
+class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     private final BlobAsyncClient blobClient;
     private final boolean requiresEncryption;

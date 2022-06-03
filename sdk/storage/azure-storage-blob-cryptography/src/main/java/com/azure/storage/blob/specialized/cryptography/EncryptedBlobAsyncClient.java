@@ -193,7 +193,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * for a given scenario.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions -->
      * <pre>
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
@@ -240,7 +240,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * for a given scenario.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean -->
      * <pre>
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
@@ -298,7 +298,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * for a given scenario.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
@@ -367,7 +367,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * for a given scenario.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
@@ -425,7 +425,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * existing data
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String -->
      * <pre>
      * client.uploadFromFile&#40;filePath&#41;
@@ -448,7 +448,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * file.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean -->
      * <pre>
      * boolean overwrite = false; &#47;&#47; Default behavior
@@ -481,7 +481,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * file.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
@@ -534,7 +534,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * file.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;

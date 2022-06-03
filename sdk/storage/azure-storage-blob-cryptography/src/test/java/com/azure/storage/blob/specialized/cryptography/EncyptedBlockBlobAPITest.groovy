@@ -1008,7 +1008,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         3000000          | 15000000 // Bounds are in the middle of the regions. Expands to whole blob
         5000000          | 5000000 // Expands to adjacent regions in middle of blob
         5000000          | 10000000 // Expands to regions in middle of the blob with one region in between
-        500300           | 6000000 // All in one region
+        500300           | 600000 // All in one region
     }
 
     @Unroll
