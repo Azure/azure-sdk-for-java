@@ -19,6 +19,9 @@ import java.util.Map;
  */
 public class AadResourceServerProperties implements InitializingBean {
 
+    /**
+     * Properties prefix.
+     */
     public static final String PREFIX = "spring.cloud.azure.active-directory.resource-server";
 
     /**

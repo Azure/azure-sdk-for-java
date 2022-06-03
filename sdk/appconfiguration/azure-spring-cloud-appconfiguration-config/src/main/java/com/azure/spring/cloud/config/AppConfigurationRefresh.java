@@ -33,7 +33,6 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
  * Enables checking of Configuration updates.
- *
  */
 @Component
 public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
@@ -58,7 +57,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     /**
      * Component used for checking for and triggering configuration refreshes.
-     * 
+     *
      * @param properties Client properties to check against.
      * @param appProperties Library properties for configuring backoff
      * @param clientStore Clients stores used to connect to App Configuration.
@@ -304,7 +303,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     /**
      * Gets latest Health connection info for refresh.
-     * 
+     *
      * @return Map of String, endpoint, and Health information.
      */
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {

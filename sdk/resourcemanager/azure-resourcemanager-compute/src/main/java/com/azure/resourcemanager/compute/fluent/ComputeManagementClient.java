@@ -46,6 +46,90 @@ public interface ComputeManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    UsagesClient getUsages();
+
+    /**
+     * Gets the VirtualMachineSizesClient object to access its operations.
+     *
+     * @return the VirtualMachineSizesClient object.
+     */
+    VirtualMachineSizesClient getVirtualMachineSizes();
+
+    /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
+
+    /**
+     * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetExtensionsClient object.
+     */
+    VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions();
+
+    /**
+     * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetRollingUpgradesClient object.
+     */
+    VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades();
+
+    /**
+     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMExtensionsClient object.
+     */
+    VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions();
+
+    /**
+     * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMsClient object.
+     */
+    VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs();
+
+    /**
+     * Gets the VirtualMachineExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineExtensionsClient object.
+     */
+    VirtualMachineExtensionsClient getVirtualMachineExtensions();
+
+    /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     *
+     * @return the VirtualMachinesClient object.
+     */
+    VirtualMachinesClient getVirtualMachines();
+
+    /**
+     * Gets the VirtualMachineImagesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesClient object.
+     */
+    VirtualMachineImagesClient getVirtualMachineImages();
+
+    /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones();
+
+    /**
+     * Gets the VirtualMachineExtensionImagesClient object to access its operations.
+     *
+     * @return the VirtualMachineExtensionImagesClient object.
+     */
+    VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages();
+
+    /**
      * Gets the AvailabilitySetsClient object to access its operations.
      *
      * @return the AvailabilitySetsClient object.
@@ -81,62 +165,6 @@ public interface ComputeManagementClient {
     SshPublicKeysClient getSshPublicKeys();
 
     /**
-     * Gets the VirtualMachineExtensionImagesClient object to access its operations.
-     *
-     * @return the VirtualMachineExtensionImagesClient object.
-     */
-    VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages();
-
-    /**
-     * Gets the VirtualMachineExtensionsClient object to access its operations.
-     *
-     * @return the VirtualMachineExtensionsClient object.
-     */
-    VirtualMachineExtensionsClient getVirtualMachineExtensions();
-
-    /**
-     * Gets the VirtualMachineImagesClient object to access its operations.
-     *
-     * @return the VirtualMachineImagesClient object.
-     */
-    VirtualMachineImagesClient getVirtualMachineImages();
-
-    /**
-     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
-     *
-     * @return the VirtualMachineImagesEdgeZonesClient object.
-     */
-    VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones();
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     *
-     * @return the UsagesClient object.
-     */
-    UsagesClient getUsages();
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
-
-    /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetsClient object.
-     */
-    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
-
-    /**
-     * Gets the VirtualMachineSizesClient object to access its operations.
-     *
-     * @return the VirtualMachineSizesClient object.
-     */
-    VirtualMachineSizesClient getVirtualMachineSizes();
-
-    /**
      * Gets the ImagesClient object to access its operations.
      *
      * @return the ImagesClient object.
@@ -170,34 +198,6 @@ public interface ComputeManagementClient {
      * @return the CapacityReservationsClient object.
      */
     CapacityReservationsClient getCapacityReservations();
-
-    /**
-     * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetExtensionsClient object.
-     */
-    VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions();
-
-    /**
-     * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetRollingUpgradesClient object.
-     */
-    VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades();
-
-    /**
-     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetVMExtensionsClient object.
-     */
-    VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions();
-
-    /**
-     * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetVMsClient object.
-     */
-    VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs();
 
     /**
      * Gets the LogAnalyticsClient object to access its operations.

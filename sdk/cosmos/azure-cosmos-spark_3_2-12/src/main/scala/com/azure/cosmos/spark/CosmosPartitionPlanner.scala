@@ -543,17 +543,18 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       // Update endLsn - which depends on read limit
       .map(metadata => {
         val endLsn = readLimit match {
-          case _: ReadAllAvailable => metadata.latestLsn
+          case _: ReadAllAvailable => metadata.getAndValidateLatestLsn
           case maxRowsLimit: ReadMaxRows =>
             if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows) {
+              val effectiveLatestLsn = metadata.getAndValidateLatestLsn
               if (isDebugLogEnabled) {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
                   s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
                   s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
-                  s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn} maxRows ${maxRowsLimit.maxRows}"
+                  s"${metadata.getWeightedLsnGap} effectiveEndLsn $effectiveLatestLsn maxRows ${maxRowsLimit.maxRows}"
                 logDebug(calculateDebugLine)
               }
-              metadata.latestLsn
+              effectiveLatestLsn
             } else {
               // the weight of this feedRange compared to other feedRanges
               val feedRangeWeightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
@@ -561,11 +562,15 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
               val allowedRate = (feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn)
                 .toLong
                 .max(1)
-              val effectiveEndLsn = math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
+              val effectiveLatestLsn = metadata.getAndValidateLatestLsn
+              val effectiveEndLsn = math.min(
+                effectiveLatestLsn,
+                metadata.startLsn + allowedRate)
               if (isDebugLogEnabled) {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs/LSN: " +
                   s"${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
-                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn " +
+                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} " +
+                  s"effectiveLatestLsn $effectiveLatestLsn startLsn " +
                   s"${metadata.startLsn} allowedRate  $allowedRate weightedGap ${metadata.getWeightedLsnGap} " +
                   s"effectiveEndLsn $effectiveEndLsn maxRows $maxRowsLimit.maxRows"
                 logDebug(calculateDebugLine)
@@ -584,7 +589,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       storageSizeInMB: Double,
       metadata: PartitionMetadata): Double = {
 
-    val effectiveEndLsn = metadata.endLsn.getOrElse(metadata.latestLsn)
+    val effectiveLatestLsn = metadata.getAndValidateLatestLsn
+    val effectiveEndLsn = metadata.endLsn.getOrElse(effectiveLatestLsn)
     if (metadata.startLsn <= 0 || storageSizeInMB == 0) {
       // No progress has been made so far - use one Spark partition per GB
       1
@@ -595,7 +601,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     } else {
       // Use weight factor based on progress. This estimate assumes equal distribution of storage
       // size per LSN - which is a "good enough" simplification
-      (effectiveEndLsn - metadata.startLsn) / metadata.latestLsn.toDouble
+      (effectiveEndLsn - metadata.startLsn) / effectiveLatestLsn.toDouble
     }
   }
 

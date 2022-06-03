@@ -1,6 +1,10 @@
 # Release History
 
+<<<<<<< HEAD
 ## 1.0.0-beta.24 (2022-06-03)
+
+### Breaking Changes
+- Started suppressing spans for nested Azure client libraries public API calls with `INTERNAL` or `CLIENT` kind. ([#28998](https://github.com/Azure/azure-sdk-for-java/pull/28998))
 
 ### Other Changes
 

@@ -28,6 +28,14 @@ public final class AutomaticOSUpgradePolicy {
     @JsonProperty(value = "disableAutomaticRollback")
     private Boolean disableAutomaticRollback;
 
+    /*
+     * Indicates whether rolling upgrade policy should be used during Auto OS
+     * Upgrade. Default value is false. Auto OS Upgrade will fallback to the
+     * default policy if no policy is defined on the VMSS.
+     */
+    @JsonProperty(value = "useRollingUpgradePolicy")
+    private Boolean useRollingUpgradePolicy;
+
     /**
      * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
      * set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is
@@ -75,6 +83,30 @@ public final class AutomaticOSUpgradePolicy {
      */
     public AutomaticOSUpgradePolicy withDisableAutomaticRollback(Boolean disableAutomaticRollback) {
         this.disableAutomaticRollback = disableAutomaticRollback;
+        return this;
+    }
+
+    /**
+     * Get the useRollingUpgradePolicy property: Indicates whether rolling upgrade policy should be used during Auto OS
+     * Upgrade. Default value is false. Auto OS Upgrade will fallback to the default policy if no policy is defined on
+     * the VMSS.
+     *
+     * @return the useRollingUpgradePolicy value.
+     */
+    public Boolean useRollingUpgradePolicy() {
+        return this.useRollingUpgradePolicy;
+    }
+
+    /**
+     * Set the useRollingUpgradePolicy property: Indicates whether rolling upgrade policy should be used during Auto OS
+     * Upgrade. Default value is false. Auto OS Upgrade will fallback to the default policy if no policy is defined on
+     * the VMSS.
+     *
+     * @param useRollingUpgradePolicy the useRollingUpgradePolicy value to set.
+     * @return the AutomaticOSUpgradePolicy object itself.
+     */
+    public AutomaticOSUpgradePolicy withUseRollingUpgradePolicy(Boolean useRollingUpgradePolicy) {
+        this.useRollingUpgradePolicy = useRollingUpgradePolicy;
         return this;
     }
 

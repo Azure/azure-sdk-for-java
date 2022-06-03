@@ -6,18 +6,18 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes an image source that is a managed image in customer subscription. */
+/**
+ * Describes an image source that is a managed image in customer subscription. This image must reside in the same
+ * subscription and region as the Image Builder template.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ManagedImage")
 @Fluent
 public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateManagedImageSource.class);
-
     /*
      * ARM resource id of the managed image in customer subscription
      */
@@ -53,10 +53,12 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
     public void validate() {
         super.validate();
         if (imageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property imageId in model ImageTemplateManagedImageSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateManagedImageSource.class);
 }

@@ -49,6 +49,7 @@
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
 
