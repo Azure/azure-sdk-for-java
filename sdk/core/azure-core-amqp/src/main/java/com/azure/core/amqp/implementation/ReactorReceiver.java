@@ -300,57 +300,19 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("Setting error condition and disposing. {}", message);
 
-        final Mono<Void> beginCloseMono = Mono.fromRunnable(() -> {
-            try {
-                dispatcher.invoke(beginClose(errorCondition));
-            } catch (IOException e) {
-                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
-
-                beginClose(errorCondition).run();
-                completeClose();
-            } catch (RejectedExecutionException e) {
-                // Not logging error here again because we have to log the exception when we throw it.
-                logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
-
-                beginClose(errorCondition).run();
-                completeClose();
-            }
-        });
-
-        // After initiating receiver close through 'beginClose', if the receiver-handler
-        // endpoint-states-flux (this.endpointStates) didn't terminate (on-complete|on-error)
-        // within the timeout duration then terminate Flux returned by getEndpointStates() API.
-        //
-        // The termination of getEndpointStates() is the signal that "AmqpReceiveLinkProcessor"
-        // uses to either terminate its downstream or obtain a new ReactorReceiver to continue
-        // delivering events downstream.
-        //
-        final Mono<Void> timeoutEndpointStateMono = this.endpointStates.then()
-            .timeout(retryOptions.getTryTimeout())
-            .onErrorResume(error -> {
-                if (error instanceof TimeoutException) {
-                    logger.info("Timeout waiting for EndpointStates termination, terminating EndpointStates manually");
-                    // Signaling on-complete via (emitEmpty()) because had the client received
-                    // remote-close ack from the broker (in response to beginClose), the on-complete
-                    // would have triggered.
-                    this.terminateEndpointStates.emitEmpty((signalType, emitResult) -> {
-                        addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                            .log("Could not emit EndpointStates termination.");
-                        return false;
-                    });
-                    this.completeClose();
-                    return Mono.empty();
+        return beginClose(errorCondition)
+            .flatMap(localCloseScheduled -> {
+                if (localCloseScheduled) {
+                    return timeoutRemoteCloseAck();
+                } else {
+                    return Mono.fromRunnable(() -> {
+                        terminateEndpointState();
+                        completeClose();
+                    }).subscribeOn(Schedulers.boundedElastic());
                 }
-                // Other exceptions from the upstream receiver-handler endpoint-states-flux
-                // (this.endpointStates) is ignored, as it will anyway terminate getEndpointStates()
-                // by signaling on-error.
-                return Mono.empty();
-            });
-
-        return beginCloseMono
-        .then(timeoutEndpointStateMono.subscribeOn(Schedulers.boundedElastic()))
-        .then(isClosedMono.asMono())
-        .publishOn(Schedulers.boundedElastic());
+            })
+            .then(isClosedMono.asMono())
+            .publishOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -363,13 +325,15 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     /**
-     * Beings the client side closing of underlying receiver i.e. initiate local-close.
+     * Beings the client side close by initiating local-close on underlying receiver.
      *
      * @param errorCondition Error condition associated with close operation.
-     * @return a {@link Runnable} when called begins the underlying receiver close.
+     * @return a {@link Mono} when subscribed attempt to initiate local-close.
+     * The Mono emits {@code true} if local close is scheduled on the dispatcher,
+     * emits {@code false} if unable to schedule local-close that lead to manual close.
      */
-    private Runnable beginClose(ErrorCondition errorCondition) {
-        return () -> {
+    private Mono<Boolean> beginClose(ErrorCondition errorCondition) {
+        final Runnable localClose = () -> {
             if (receiver.getLocalState() != EndpointState.CLOSED) {
                 receiver.close();
 
@@ -378,6 +342,65 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 }
             }
         };
+
+        return Mono.create(sink -> {
+            boolean localCloseScheduled = false;
+            try {
+                dispatcher.invoke(localClose);
+                localCloseScheduled = true;
+            } catch (IOException e) {
+                logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
+
+                localClose.run();
+                completeClose();
+            } catch (RejectedExecutionException e) {
+                // Not logging error here again because we have to log the exception when we throw it.
+                logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
+
+                localClose.run();
+                completeClose();
+            } finally {
+                sink.success(localCloseScheduled);
+            }
+        });
+    }
+
+    /**
+     * After initiating local-close, if the client doesn't receive remote-close ack (terminating receiver-handler's
+     * EndpointState Flux) within the timeout duration, then terminate getEndpointStates() and complete close.
+     *
+     * @return A {@link Mono} when subscribed register timeout for remote close acknowledgment from the broker,
+     * and perform cleanup upon timeout.
+     */
+    private Mono<Void> timeoutRemoteCloseAck() {
+        return this.endpointStates.then()
+            .timeout(retryOptions.getTryTimeout())
+            .onErrorResume(error -> {
+                if (error instanceof TimeoutException) {
+                    logger.info("Timeout waiting for EndpointStates termination, terminating EndpointStates manually");
+                    terminateEndpointState();
+                    completeClose();
+                }
+                return Mono.empty();
+            })
+            .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    /**
+     * Terminate the Flux returned by the getEndpointStates() API.
+     *
+     * <p>
+     * The termination of getEndpointStates() is the signal that "AmqpReceiveLinkProcessor" uses to either
+     * terminate its downstream or obtain a new ReactorReceiver to continue delivering events downstream.
+     * </p>
+     *
+     */
+    private void terminateEndpointState() {
+        this.terminateEndpointStates.emitEmpty((signalType, emitResult) -> {
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                .log("Could not emit EndpointStates termination.");
+            return false;
+        });
     }
 
     /**
