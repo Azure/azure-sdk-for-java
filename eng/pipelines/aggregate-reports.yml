@@ -160,7 +160,7 @@ stages:
 
         - task: ms.nuget-security-analysis.nuget-security-analysis.nuget-security-analysis@0
           # Use the same conditions as the Component Detection
-          #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           displayName: 'Secure Supply Chain Analysis'
 
         # Run link verification at the end as it will run no matter the pipeline passing or failing.
