@@ -160,7 +160,7 @@
                 <include>io.opentelemetry:opentelemetry-exporter-logging:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
