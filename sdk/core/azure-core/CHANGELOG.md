@@ -1,6 +1,6 @@
 # Release History
 
-## 1.29.0-beta.1 (Unreleased)
+## 1.29.0 (2022-06-03)
 
 ### Features Added
 
@@ -9,12 +9,6 @@
   - Added `HttpRequest.getBodyAsBinaryData()`.
   - Added `HttpRequest.setBody(BinaryData)`.
   - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.28.0 (2022-05-06)
 
