@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
+
 ## 2.5.0 (2022-05-06)
 
 ### Features Added
