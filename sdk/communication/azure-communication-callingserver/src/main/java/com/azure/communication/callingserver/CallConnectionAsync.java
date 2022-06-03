@@ -3,7 +3,7 @@
 
 package com.azure.communication.callingserver;
 
-//import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.monoError;
 //import static com.azure.core.util.FluxUtil.withContext;
 
 //import java.net.URI;
@@ -13,9 +13,9 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 //import com.azure.communication.callingserver.implementation.converters.AddParticipantResultConverter;
 //import com.azure.communication.callingserver.implementation.converters.AudioGroupResultConverter;
-//import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 //import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
-//import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
+import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
 //import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 //import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 //import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
@@ -40,9 +40,9 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 //import com.azure.communication.callingserver.models.AddParticipantResult;
 //import com.azure.communication.callingserver.models.AudioGroupResult;
 //import com.azure.communication.callingserver.models.AudioRoutingMode;
-//import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.CallConnectionProperties;
 //import com.azure.communication.callingserver.models.CallParticipant;
-//import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 //import com.azure.communication.callingserver.models.CreateAudioGroupResult;
 //import com.azure.communication.callingserver.models.PlayAudioOptions;
 //import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -54,7 +54,11 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 //import com.azure.core.http.rest.Response;
 //import com.azure.core.http.rest.SimpleResponse;
 //import com.azure.core.util.Context;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 /**
  * Asynchronous client that supports call connection operations.
@@ -80,5 +84,22 @@ public class CallConnectionAsync {
         return callLegId;
     }
 
+    /**
+     * Get call connection properties.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallConnectionProperties> getCall() {
+        try {
 
+            return callConnectionInternal.getCallAsync(callLegId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(CallConnectionPropertiesConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }
