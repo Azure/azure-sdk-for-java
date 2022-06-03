@@ -69,7 +69,7 @@ public final class AnalyzeResult {
      *
      * @param paragraphs the paragraphs value to set.
      */
-    public void setParagraphs(List<DocumentParagraph> paragraphs) {
+    void setParagraphs(List<DocumentParagraph> paragraphs) {
         this.paragraphs = paragraphs;
     }
 

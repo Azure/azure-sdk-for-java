@@ -39,7 +39,7 @@ public final class DocumentFootnote {
      *
      * @param content the content value to set.
      */
-    public void setContent(String content) {
+    void setContent(String content) {
         this.content = content;
     }
 
@@ -57,7 +57,7 @@ public final class DocumentFootnote {
      *
      * @param boundingRegions the boundingRegions value to set.
      */
-    public void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -75,7 +75,7 @@ public final class DocumentFootnote {
      *
      * @param spans the spans value to set.
      */
-    public void setSpans(List<DocumentSpan> spans) {
+    void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 

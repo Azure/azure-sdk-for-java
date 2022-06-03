@@ -155,7 +155,7 @@ public final class DocumentTable {
      *
      * @param caption the caption value to set.
      */
-    public void setCaption(DocumentCaption caption) {
+    void setCaption(DocumentCaption caption) {
         this.caption = caption;
     }
 
@@ -173,7 +173,7 @@ public final class DocumentTable {
      *
      * @param footnotes the footnotes value to set.
      */
-    public void setFootnotes(List<DocumentFootnote> footnotes) {
+    void setFootnotes(List<DocumentFootnote> footnotes) {
         this.footnotes = footnotes;
     }
 

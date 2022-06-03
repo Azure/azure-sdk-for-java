@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum DocumentAnalysisServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2022-03-31-preview}.
+     * Service version {@code 2022-06-30-preview}.
      */
     V2022_06_30_PREVIEW("2022-06-30-preview");
 
@@ -19,7 +19,6 @@ public enum DocumentAnalysisServiceVersion implements ServiceVersion {
     DocumentAnalysisServiceVersion(String version) {
         this.version = version;
     }
-
 
     /** {@inheritDoc} */
     @Override

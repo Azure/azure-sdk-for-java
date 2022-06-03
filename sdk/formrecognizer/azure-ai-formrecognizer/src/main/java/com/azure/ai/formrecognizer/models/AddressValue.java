@@ -10,7 +10,6 @@ import com.azure.ai.formrecognizer.implementation.util.AddressValueHelper;
  */
 public final class AddressValue {
 
-
     /*
      * Building number.
      */
@@ -66,7 +65,7 @@ public final class AddressValue {
      *
      * @param houseNumber the houseNumber value to set.
      */
-    public void setHouseNumber(String houseNumber) {
+    void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 
@@ -84,7 +83,7 @@ public final class AddressValue {
      *
      * @param poBox the poBox value to set.
      */
-    public void setPoBox(String poBox) {
+    void setPoBox(String poBox) {
         this.poBox = poBox;
     }
 
@@ -102,7 +101,7 @@ public final class AddressValue {
      *
      * @param road the road value to set.
      */
-    public void setRoad(String road) {
+    void setRoad(String road) {
         this.road = road;
     }
 
@@ -120,7 +119,7 @@ public final class AddressValue {
      *
      * @param city the city value to set.
      */
-    public void setCity(String city) {
+    void setCity(String city) {
         this.city = city;
     }
 
@@ -138,7 +137,7 @@ public final class AddressValue {
      *
      * @param state the state value to set.
      */
-    public void setState(String state) {
+    void setState(String state) {
         this.state = state;
     }
 
@@ -156,7 +155,7 @@ public final class AddressValue {
      *
      * @param postalCode the postalCode value to set.
      */
-    public void setPostalCode(String postalCode) {
+    void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -174,7 +173,7 @@ public final class AddressValue {
      *
      * @param countryRegion the countryRegion value to set.
      */
-    public void setCountryRegion(String countryRegion) {
+    void setCountryRegion(String countryRegion) {
         this.countryRegion = countryRegion;
     }
 
@@ -192,7 +191,7 @@ public final class AddressValue {
      *
      * @param streetAddress the streetAddress value to set.
      */
-    public void setStreetAddress(String streetAddress) {
+    void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
     }
 
