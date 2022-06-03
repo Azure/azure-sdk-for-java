@@ -328,9 +328,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * Beings the client side close by initiating local-close on underlying receiver.
      *
      * @param errorCondition Error condition associated with close operation.
-     * @return a {@link Mono} when subscribed attempt to initiate local-close.
-     * The Mono emits {@code true} if local close is scheduled on the dispatcher,
-     * emits {@code false} if unable to schedule local-close that lead to manual close.
+     * @return a {@link Mono} when subscribed attempt to initiate local-close, emitting {@code true}
+     *     if local-close is scheduled on the dispatcher, emits {@code false} if unable to schedule
+     *     local-close that lead to manual close.
      */
     private Mono<Boolean> beginClose(ErrorCondition errorCondition) {
         final Runnable localClose = () -> {
@@ -366,11 +366,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     /**
-     * After initiating local-close, if the client doesn't receive remote-close ack (terminating receiver-handler's
-     * EndpointState Flux) within the timeout duration, then terminate getEndpointStates() and complete close.
+     * Apply timeout on remote-close ack, the receiver-handler EndpointStates Flux terminates when
+     * receiving remote-close ack. If timeout happens, then this method terminate the Flux returned
+     * by getEndpointStates() and complete close.
      *
-     * @return A {@link Mono} when subscribed register timeout for remote close acknowledgment from the broker,
-     * and perform cleanup upon timeout.
+     * a {@link Mono} that registers remote-close ack timeout based close cleanup.
      */
     private Mono<Void> timeoutRemoteCloseAck() {
         return this.endpointStates.then()
@@ -390,8 +390,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * Terminate the Flux returned by the getEndpointStates() API.
      *
      * <p>
-     * The termination of getEndpointStates() is the signal that "AmqpReceiveLinkProcessor" uses to either
-     * terminate its downstream or obtain a new ReactorReceiver to continue delivering events downstream.
+     * The termination of Flux returned by getEndpointStates() is the signal that "AmqpReceiveLinkProcessor"
+     * uses to either terminate its downstream or obtain a new ReactorReceiver to continue delivering events
+     * downstream.
      * </p>
      *
      */
