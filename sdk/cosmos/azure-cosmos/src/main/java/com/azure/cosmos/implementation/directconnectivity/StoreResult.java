@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,12 +123,19 @@ public class StoreResult {
     }
 
     private static void setRequestCharge(StoreResponse response, CosmosException cosmosException, double totalRequestCharge) {
-        String totalRequestChargeString = Double.toString(totalRequestCharge);
         if (cosmosException != null) {
-            cosmosException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE, totalRequestChargeString);
-        } else {
-            // Set total charge as final charge for the response.
-            response.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE, totalRequestChargeString);
+            cosmosException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(totalRequestCharge));
+        }
+        // Set total charge as final charge for the response.
+        else if (response.getResponseHeaderNames() != null) {
+            for (int i = 0; i < response.getResponseHeaderNames().length; ++i) {
+                if (Strings.areEqualIgnoreCase(
+                    response.getResponseHeaderNames()[i],
+                    HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
+                    response.getResponseHeaderValues()[i] = Double.toString(totalRequestCharge);
+                    break;
+                }
+            }
         }
     }
 }

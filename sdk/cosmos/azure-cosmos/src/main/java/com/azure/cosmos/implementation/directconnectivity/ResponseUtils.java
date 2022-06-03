@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 class ResponseUtils {
@@ -20,7 +19,7 @@ class ResponseUtils {
 
         return contentObservable.map(byteArrayContent -> {
             // transforms to Mono<StoreResponse>
-            return new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap()), byteArrayContent);
+            return new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()), byteArrayContent);
         });
     }
 }

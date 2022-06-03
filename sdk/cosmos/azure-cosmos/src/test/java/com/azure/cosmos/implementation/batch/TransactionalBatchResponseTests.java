@@ -72,7 +72,7 @@ public class TransactionalBatchResponseTests {
 
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
-            headers,
+            new ArrayList<>(headers.entrySet()),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
@@ -132,7 +132,7 @@ public class TransactionalBatchResponseTests {
 
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
-            new HashMap<>(),
+            new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(

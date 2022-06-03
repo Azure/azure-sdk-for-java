@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigur
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -344,7 +343,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                                validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
                                StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                                   HttpUtils.unescape(httpResponseHeaders.toMap()),
+                                   HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()),
                                    content);
                                if (reactorNettyRequestRecord != null) {
                                    rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
