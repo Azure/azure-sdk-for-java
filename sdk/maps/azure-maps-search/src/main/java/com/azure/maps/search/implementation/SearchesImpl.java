@@ -33,7 +33,6 @@ import com.azure.maps.search.implementation.models.JsonFormat;
 import com.azure.maps.search.implementation.models.PolygonResult;
 import com.azure.maps.search.implementation.models.ResponseFormat;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
 import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
@@ -51,6 +50,7 @@ import com.azure.maps.search.models.OperatingHoursRange;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.PointOfInterestExtendedPostalCodes;
 import com.azure.maps.search.models.ReverseSearchAddressResult;
+import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResult;
 import com.azure.maps.search.models.RoadUseType;
 import com.azure.maps.search.models.SearchAddressResult;
 import com.azure.maps.search.models.SearchIndexes;
@@ -271,7 +271,7 @@ public final class SearchesImpl {
         @Get("/search/address/reverse/crossStreet/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ReverseSearchCrossStreetAddressResultPrivate>> reverseSearchCrossStreetAddress(
+        Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddress(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -6198,15 +6198,14 @@ public final class SearchesImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchCrossStreetAddressResultPrivate>>
-            reverseSearchCrossStreetAddressWithResponseAsync(
-                    ResponseFormat format,
-                    List<Double> query,
-                    Integer top,
-                    Integer heading,
-                    Integer radiusInMeters,
-                    String language,
-                    LocalizedMapView localizedMapView) {
+    public Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponseAsync(
+            ResponseFormat format,
+            List<Double> query,
+            Integer top,
+            Integer heading,
+            Integer radiusInMeters,
+            String language,
+            LocalizedMapView localizedMapView) {
         final String accept = "application/json";
         String queryConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
@@ -6269,16 +6268,15 @@ public final class SearchesImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchCrossStreetAddressResultPrivate>>
-            reverseSearchCrossStreetAddressWithResponseAsync(
-                    ResponseFormat format,
-                    List<Double> query,
-                    Integer top,
-                    Integer heading,
-                    Integer radiusInMeters,
-                    String language,
-                    LocalizedMapView localizedMapView,
-                    Context context) {
+    public Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponseAsync(
+            ResponseFormat format,
+            List<Double> query,
+            Integer top,
+            Integer heading,
+            Integer radiusInMeters,
+            String language,
+            LocalizedMapView localizedMapView,
+            Context context) {
         final String accept = "application/json";
         String queryConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(query, CollectionFormat.CSV);
@@ -6338,7 +6336,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchCrossStreetAddressResultPrivate> reverseSearchCrossStreetAddressAsync(
+    public Mono<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddressAsync(
             ResponseFormat format,
             List<Double> query,
             Integer top,
@@ -6393,7 +6391,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchCrossStreetAddressResultPrivate> reverseSearchCrossStreetAddressAsync(
+    public Mono<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddressAsync(
             ResponseFormat format,
             List<Double> query,
             Integer top,
@@ -6447,7 +6445,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search Address Reverse CrossStreet call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReverseSearchCrossStreetAddressResultPrivate reverseSearchCrossStreetAddress(
+    public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(
             ResponseFormat format,
             List<Double> query,
             Integer top,
@@ -6502,7 +6500,7 @@ public final class SearchesImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReverseSearchCrossStreetAddressResultPrivate> reverseSearchCrossStreetAddressWithResponse(
+    public Response<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddressWithResponse(
             ResponseFormat format,
             List<Double> query,
             Integer top,

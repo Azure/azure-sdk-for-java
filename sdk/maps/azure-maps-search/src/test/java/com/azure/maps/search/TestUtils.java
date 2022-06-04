@@ -21,7 +21,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.search.implementation.helpers.Utility;
 import com.azure.maps.search.implementation.models.PolygonPrivate;
-import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
@@ -134,13 +133,12 @@ public class TestUtils {
     static ReverseSearchCrossStreetAddressResult getExpectedReverseSearchCrossStreetAddressResults() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("reversesearchcrossstreetaddressresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<ReverseSearchCrossStreetAddressResultPrivate> interimType = new TypeReference<ReverseSearchCrossStreetAddressResultPrivate>(){};
+        TypeReference<ReverseSearchCrossStreetAddressResult> interimType = new TypeReference<ReverseSearchCrossStreetAddressResult>(){};
         byte[] data = null;
         data = toByteArray(is);
-        ReverseSearchCrossStreetAddressResultPrivate reverseSearchCrossStreetAddressResultPrivate = null;
-        reverseSearchCrossStreetAddressResultPrivate = jacksonAdapter.<ReverseSearchCrossStreetAddressResultPrivate>deserialize(data, interimType.getJavaType(),
+        ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddressResult = null;
+        reverseSearchCrossStreetAddressResult = jacksonAdapter.<ReverseSearchCrossStreetAddressResult>deserialize(data, interimType.getJavaType(),
                SerializerEncoding.JSON);
-        ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddressResult = Utility.toReverseSearchCrossStreetAddressResult(reverseSearchCrossStreetAddressResultPrivate);
         return reverseSearchCrossStreetAddressResult;
     }
 

@@ -28,8 +28,6 @@ import com.azure.maps.search.implementation.models.GeoJsonObject;
 import com.azure.maps.search.implementation.models.PolygonPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultItemPrivate;
-import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.models.BaseSearchOptions;
@@ -53,20 +51,6 @@ import com.azure.maps.search.models.SearchAddressResult;
 public class Utility {
     private static final JacksonJsonSerializer serializer = new JacksonJsonSerializerProvider().createInstance();
     private static final Pattern uuidPattern = Pattern.compile("[0-9A-Fa-f\\-]{36}");
-
-    /**
-     * converts the internal representation of ReverseSearchCrossStreetAddressResult into the public one
-     */
-    public static SimpleResponse<ReverseSearchCrossStreetAddressResult> createReverseSearchCrossStreetResponse(
-            Response<ReverseSearchCrossStreetAddressResultPrivate> response) {
-        ReverseSearchCrossStreetAddressResult result = Utility.toReverseSearchCrossStreetAddressResult(response.getValue());
-        SimpleResponse<ReverseSearchCrossStreetAddressResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
-
-        return simpleResponse;
-    }
 
     /**
      * converts the internal representation of SearchAddressResult into the public one
@@ -183,24 +167,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    public static ReverseSearchCrossStreetAddressResultItem toReverseSearchCrossStreetAddressResultItem(
-            ReverseSearchCrossStreetAddressResultItemPrivate privateResultItem) {
-        ReverseSearchCrossStreetAddressResultItem resultItem = new ReverseSearchCrossStreetAddressResultItem();
-        ReverseSearchCrossStreetAddressResultItemPropertiesHelper.setFromReverseSearchCrossStreetAddressResultItemPrivate(
-            resultItem, privateResultItem);
-
-        return resultItem;
-    }
-
-    public static ReverseSearchCrossStreetAddressResult toReverseSearchCrossStreetAddressResult(
-            ReverseSearchCrossStreetAddressResultPrivate privateResult) {
-        ReverseSearchCrossStreetAddressResult result = new ReverseSearchCrossStreetAddressResult();
-        ReverseSearchCrossStreetAddressResultPropertiesHelper.setSummary(result, privateResult.getSummary());
-        ReverseSearchCrossStreetAddressResultPropertiesHelper.setAddresses(result, privateResult.getAddresses());
-
-        return result;
     }
 
     public static SearchAddressBatchItem toSearchAddressBatchItem(SearchAddressBatchItemPrivate item) {
