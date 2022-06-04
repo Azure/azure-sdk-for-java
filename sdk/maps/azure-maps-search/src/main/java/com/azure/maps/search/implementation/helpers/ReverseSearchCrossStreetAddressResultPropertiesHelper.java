@@ -3,7 +3,7 @@ package com.azure.maps.search.implementation.helpers;
 import java.util.List;
 
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultItemPrivate;
-import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
+import com.azure.maps.search.models.SearchSummary;
 import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResult;
 
 /**
@@ -18,7 +18,7 @@ public final class ReverseSearchCrossStreetAddressResultPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link ReverseSearchCrossStreetAddressResult} instance.
      */
     public interface ReverseSearchCrossStreetAddressResultAccessor {
-        void setSummary(ReverseSearchCrossStreetAddressResult result, SearchSummaryPrivate privateSearchSummary);
+        void setSummary(ReverseSearchCrossStreetAddressResult result, SearchSummary privateSearchSummary);
         void setAddresses(ReverseSearchCrossStreetAddressResult result, List<ReverseSearchCrossStreetAddressResultItemPrivate> privateResults);
     }
 
@@ -37,7 +37,7 @@ public final class ReverseSearchCrossStreetAddressResultPropertiesHelper {
      * @param result
      * @param privateSearchSummary
      */
-    public static void setSummary(ReverseSearchCrossStreetAddressResult result, SearchSummaryPrivate privateSearchSummary) {
+    public static void setSummary(ReverseSearchCrossStreetAddressResult result, SearchSummary privateSearchSummary) {
         accessor.setSummary(result, privateSearchSummary);
     }
 
