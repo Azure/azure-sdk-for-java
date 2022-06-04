@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.maps.search.models.Address;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result object for a Search Address Reverse Cross Street response. */
@@ -14,7 +15,7 @@ public final class ReverseSearchCrossStreetAddressResultItemPrivate {
      * The address of the result
      */
     @JsonProperty(value = "address", access = JsonProperty.Access.WRITE_ONLY)
-    private AddressPrivate address;
+    private Address address;
 
     /*
      * Position property in the form of "{latitude},{longitude}"
@@ -27,7 +28,7 @@ public final class ReverseSearchCrossStreetAddressResultItemPrivate {
      *
      * @return the address value.
      */
-    public AddressPrivate getAddress() {
+    public Address getAddress() {
         return this.address;
     }
 

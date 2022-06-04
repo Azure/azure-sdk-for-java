@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.maps.search.models.Address;
 import com.azure.maps.search.models.DataSource;
 import com.azure.maps.search.models.GeographicEntityType;
 import com.azure.maps.search.models.MatchType;
@@ -75,7 +76,7 @@ public final class SearchAddressResultItemPrivate {
      * The address of the result
      */
     @JsonProperty(value = "address", access = JsonProperty.Access.WRITE_ONLY)
-    private AddressPrivate address;
+    private Address address;
 
     /*
      * A location represented as a latitude and longitude using short names
@@ -215,7 +216,7 @@ public final class SearchAddressResultItemPrivate {
      *
      * @return the address value.
      */
-    public AddressPrivate getAddress() {
+    public Address getAddress() {
         return this.address;
     }
 

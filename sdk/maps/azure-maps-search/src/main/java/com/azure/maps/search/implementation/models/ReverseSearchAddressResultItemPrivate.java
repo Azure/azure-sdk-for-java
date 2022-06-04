@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.maps.search.models.Address;
 import com.azure.maps.search.models.MatchType;
 import com.azure.maps.search.models.RoadUseType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +18,7 @@ public final class ReverseSearchAddressResultItemPrivate {
      * The address of the result
      */
     @JsonProperty(value = "address", access = JsonProperty.Access.WRITE_ONLY)
-    private AddressPrivate address;
+    private Address address;
 
     /*
      * Position property in the form of "{latitude},{longitude}"
@@ -47,7 +48,7 @@ public final class ReverseSearchAddressResultItemPrivate {
      *
      * @return the address value.
      */
-    public AddressPrivate getAddress() {
+    public Address getAddress() {
         return this.address;
     }
 

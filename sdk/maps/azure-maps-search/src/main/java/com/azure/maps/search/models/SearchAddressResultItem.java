@@ -204,7 +204,7 @@ public final class SearchAddressResultItem {
         this.info = privateResultItem.getInfo();
         this.entityType = privateResultItem.getEntityType();
         this.pointOfInterest = privateResultItem.getPointOfInterest();
-        this.address = Utility.toAddress(privateResultItem.getAddress());
+        this.address = privateResultItem.getAddress();
         this.position = new GeoPosition(privateResultItem.getPosition().getLon(),
             privateResultItem.getPosition().getLat());
         this.dataSource = privateResultItem.getDataSources();

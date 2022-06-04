@@ -73,7 +73,7 @@ public final class ReverseSearchAddressResultItem {
 
     // private setter
     private void setFromReverseSearchAddressResultItemPrivate(ReverseSearchAddressResultItemPrivate privateItem) {
-        this.address = Utility.toAddress(privateItem.getAddress());
+        this.address = privateItem.getAddress();
         this.roadUse = privateItem.getRoadUse();
         this.matchType = privateItem.getMatchType();
 
