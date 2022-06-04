@@ -39,16 +39,8 @@ public class SearchCustomization extends Customization {
         // customize ReverseSearchCrossStreetAddressResultItem
         customizeReverseSearchCrossStreetAddressResultItem(models);
 
-        /*
-        // customize route range
-        customizeRouteRange(models);
-
-        // customize route matrix
-        customizeRouteMatrix(models);
-
-        // customize route batch item
-        customizeDirectionsBatchItem(models);
-        */
+        // customizePolygon
+        customizePolygon(models);
     }
 
     // Customizes the Address class by changing the type of BoundingBox
@@ -157,7 +149,6 @@ public class SearchCustomization extends Customization {
         classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
 
-
     // Customizes the ReverseSearchCrossStreetAddressResultItem class
     private void customizeReverseSearchCrossStreetAddressResultItem(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("ReverseSearchCrossStreetAddressResultItem");
@@ -170,96 +161,17 @@ public class SearchCustomization extends Customization {
         classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
 
-    // Customizes the RouteLeg class
-    private void customizeRouteLeg(PackageCustomization models) {
-        final String getPointsMethod =
-            "/** " +
-            "* Returns a list of {@link GeoPosition} coordinates." +
-            "*" +
-            "* return the coordinates" +
-            "*/" +
-            "public List<GeoPosition> getPoints() {" +
-            "    return this.points" +
-            "        .stream()" +
-            "        .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))" +
-            "        .collect(Collectors.toList());" +
-            "}";
+    // Customizes the Polygon class
+    private void customizePolygon(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("Polygon");
 
-        ClassCustomization classCustomization = models.getClass("RouteLeg");
-        classCustomization.removeMethod("getPoints");
-        classCustomization.addMethod(getPointsMethod, Arrays.asList("java.util.List",
-            "java.util.stream.Collectors", "java.util.Arrays", "com.azure.core.models.GeoPosition"));
-    }
+        // getGeometryData
+        MethodCustomization nameCustomization = classCustomization.getMethod("getGeometryData");
+        MethodCustomization geometryCustomization = nameCustomization.rename("getGeometry");
 
-    // Customizes the RouteInstruction class
-    private void customizeRouteInstruction(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteInstruction");
-        MethodCustomization methodCustomization = classCustomization.getMethod("getPoint");
-        methodCustomization.setReturnType("GeoPosition", "new GeoPosition(returnValue.getLongitude(), " +
-            "returnValue.getLatitude())");
-        classCustomization.removeMethod("setPoint");
-    }
+        geometryCustomization.setReturnType("GeoObject",
+            "com.azure.maps.search.implementation.helpers.Utility.toGeoObject(returnValue)");
 
-    // Customizes the RouteRange class
-    private void customizeRouteRange(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteRange");
-
-        // replaces getBoundary()
-        final String getBoundaryMethod =
-            "/** " +
-            "* Returns a list of {@link GeoPosition} coordinates." +
-            "* " +
-            "* return the coordinates" +
-            "*/" +
-            "public List<GeoPosition> getBoundary() {" +
-            "    return this.boundary" +
-            "        .stream()" +
-            "        .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))" +
-            "        .collect(Collectors.toList());" +
-            "}";
-
-        classCustomization.removeMethod("getBoundary");
-        classCustomization.addMethod(getBoundaryMethod, Arrays.asList("java.util.List",
-            "java.util.stream.Collectors", "java.util.Arrays"));
-
-        // changes the Center property to be GeoPosition
-        MethodCustomization methodCustomization = classCustomization.getMethod("getCenter");
-        methodCustomization.setReturnType("GeoPosition", "new GeoPosition(returnValue.getLongitude(), " +
-            "returnValue.getLatitude())");
-        classCustomization.removeMethod("setCenter");
-    }
-
-    // Customizes the RouteDirectionsBatchItem class
-    private void customizeDirectionsBatchItem(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RouteDirectionsBatchItem");
-
-        // replaces getResponse() with getError
-        final String getErrorMethod =
-            "/** " +
-            "* Returns the {@link ErrorDetail} in case of an error response." +
-            "* " +
-            "* return {@code ErrorDetail}" +
-            "*/" +
-            "public ErrorDetail getError() {" +
-            "    return this.response.getError();" +
-            "}";
-
-        // classCustomization.removeMethod("getResponse");
-        classCustomization.addMethod(getErrorMethod);
-
-        // Adds getRouteDirections()
-        final String getRouteDirectionsMethod =
-            "/** " +
-            "* Returns the {@link RouteDirections} associated with the response." +
-            "* " +
-            "* return {@code RouteDirections}" +
-            "*/" +
-            "public RouteDirections getRouteDirections() {" +
-            "    return (RouteDirections)this.response;" +
-            "}";
-        classCustomization.addMethod(getRouteDirectionsMethod);
-
-        // remove getResponse
-        classCustomization.removeMethod("getResponse");
+        classCustomization.addImports("com.azure.core.models.GeoObject");
     }
 }

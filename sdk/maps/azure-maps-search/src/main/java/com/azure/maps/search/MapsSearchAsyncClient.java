@@ -131,7 +131,7 @@ public final class MapsSearchAsyncClient {
         Mono<Response<PolygonResult>> result = this.serviceClient.listPolygonsWithResponseAsync(JsonFormat.JSON,
             geometryIds, context);
         return result.flatMap(response -> {
-            List<Polygon> polygons = Utility.toPolygonList(response.getValue().getPolygons());
+            List<Polygon> polygons = response.getValue().getPolygons();
             Response<List<Polygon>> simpleResponse = new SimpleResponse<List<Polygon>>(response,
                 polygons);
             return Mono.just(simpleResponse);
