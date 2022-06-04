@@ -336,10 +336,8 @@ public final class Address {
      *
      * @return the boundingBox value.
      */
-    /*
     public GeoBoundingBox getBoundingBox() {
         BoundingBoxCompassNotation returnValue = this.boundingBox;
         return com.azure.maps.search.implementation.helpers.Utility.toGeoBoundingBox(returnValue);
     }
-    */
 }
