@@ -27,6 +27,9 @@ public class SearchCustomization extends Customization {
         // customize EntryPoint
         customizeEntryPoint(models);
 
+        // customize SearchAddressResultItem
+        customizeSearchAddressResultItem(models);
+
         /*
         // customize route instruction
         customizeRouteInstruction(models);
@@ -89,6 +92,39 @@ public class SearchCustomization extends Customization {
             classCustomization.removeMethod(method);
         }
         classCustomization.addImports("com.azure.core.models.GeoPosition");
+    }
+
+    // Customizes the SearchAddressResultItem class
+    private void customizeSearchAddressResultItem(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("SearchAddressResultItem");
+        String[] methods = new String[] {"setPosition"};
+
+        // getPosition
+        MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
+        toCustomization.setReturnType("GeoPosition",
+           "new GeoPosition(returnValue.getLon(), returnValue.getLat())");
+
+        // getViewport
+        MethodCustomization viewportCustomization = classCustomization.getMethod("getViewport");
+        viewportCustomization.rename("getBoundingBox");
+        viewportCustomization = classCustomization.getMethod("getBoundingBox");
+
+        viewportCustomization.setReturnType("GeoBoundingBox",
+            " new GeoBoundingBox(returnValue.getTopLeft().getLon(), " +
+            " returnValue.getTopLeft().getLat(), " +
+            " returnValue.getBottomRight().getLon(), " +
+            " returnValue.getBottomRight().getLat())");
+
+        // data sources
+        MethodCustomization dsCustomization = classCustomization.getMethod("getDataSources");
+        dsCustomization.rename("getDataSource");
+
+        // remove setters
+        for (String method : methods) {
+            classCustomization.removeMethod(method);
+        }
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
+        classCustomization.addImports("com.azure.core.models.GeoBoundingBox");
     }
 
     // Customizes the RouteLeg class
