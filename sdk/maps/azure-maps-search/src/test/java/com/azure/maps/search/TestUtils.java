@@ -23,7 +23,6 @@ import com.azure.maps.search.implementation.helpers.Utility;
 import com.azure.maps.search.implementation.models.PolygonPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
-import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
@@ -67,11 +66,11 @@ public class TestUtils {
 
     static SearchAddressResult getSearchAddressResult(byte[] data) throws IOException {
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<SearchAddressResultPrivate> interimType = new TypeReference<SearchAddressResultPrivate>(){};
-        SearchAddressResultPrivate searchAddressResultPrivate = null;
-        searchAddressResultPrivate = jacksonAdapter.<SearchAddressResultPrivate>deserialize(data, interimType.getJavaType(),
+        TypeReference<SearchAddressResult> interimType = new TypeReference<SearchAddressResult>(){};
+        SearchAddressResult searchAddressResult = null;
+        searchAddressResult = jacksonAdapter.<SearchAddressResult>deserialize(data, interimType.getJavaType(),
                SerializerEncoding.JSON);
-        return Utility.toSearchAddressResult(searchAddressResultPrivate);
+        return searchAddressResult;
     }
 
     static SearchAddressResult getExpectedFuzzySearchResults() throws IOException {

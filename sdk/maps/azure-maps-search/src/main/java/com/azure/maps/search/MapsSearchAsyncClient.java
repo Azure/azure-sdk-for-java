@@ -34,7 +34,6 @@ import com.azure.maps.search.implementation.models.PolygonResult;
 import com.azure.maps.search.implementation.models.ResponseFormat;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
-import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
 import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
 import com.azure.maps.search.models.BatchReverseSearchResult;
@@ -175,7 +174,7 @@ public final class MapsSearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> fuzzySearchWithResponse(FuzzySearchOptions options, Context context) {
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.fuzzySearchWithResponseAsync(
                 ResponseFormat.JSON,
                 options.getQuery(),
@@ -200,12 +199,6 @@ public final class MapsSearchAsyncClient {
                 options.getLocalizedMapView(),
                 options.getOperatingHours(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -243,7 +236,7 @@ public final class MapsSearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options,
             Context context) {
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchPointOfInterestWithResponseAsync(
                 ResponseFormat.JSON,
                 options.getQuery(),
@@ -264,12 +257,6 @@ public final class MapsSearchAsyncClient {
                 options.getLocalizedMapView(),
                 options.getOperatingHours(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -319,7 +306,7 @@ public final class MapsSearchAsyncClient {
         // this should throw an exception if the coordinates are null, as for
         // this method they are mandatory
         final GeoPosition coordinates = options.getCoordinates().get();
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchNearbyPointOfInterestWithResponseAsync(
                 ResponseFormat.JSON,
                 coordinates.getLatitude(),
@@ -335,12 +322,6 @@ public final class MapsSearchAsyncClient {
                 options.getElectricVehicleConnectorFilter(),
                 options.getLocalizedMapView(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -384,7 +365,7 @@ public final class MapsSearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
                 SearchPointOfInterestCategoryOptions options, Context context) {
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchPointOfInterestCategoryWithResponseAsync(
                 ResponseFormat.JSON,
                 options.getQuery(),
@@ -405,12 +386,6 @@ public final class MapsSearchAsyncClient {
                 options.getLocalizedMapView(),
                 options.getOperatingHours(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -508,7 +483,7 @@ public final class MapsSearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchAddressWithResponse(SearchAddressOptions options, Context context) {
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchAddressWithResponseAsync(
                 ResponseFormat.JSON,
                 options.getQuery(),
@@ -526,12 +501,6 @@ public final class MapsSearchAsyncClient {
                 options.getEntityType(),
                 options.getLocalizedMapView(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -709,7 +678,7 @@ public final class MapsSearchAsyncClient {
             StructuredAddress address, SearchStructuredAddressOptions options, Context context) {
         final SearchStructuredAddressOptions param = Optional.ofNullable(options)
             .orElse(new SearchStructuredAddressOptions());
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchStructuredAddressWithResponseAsync(
                 ResponseFormat.JSON,
                 address.getCountryCode(),
@@ -729,12 +698,6 @@ public final class MapsSearchAsyncClient {
                 param.getEntityType(),
                 param.getLocalizedMapView(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -779,7 +742,7 @@ public final class MapsSearchAsyncClient {
     Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options,
             Context context) {
         GeoJsonObject geoJsonObject = Utility.toGeoJsonObject(options.getGeometry());
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchInsideGeometryWithResponseAsync(
                 ResponseFormat.JSON,
                 options.getQuery(),
@@ -792,12 +755,6 @@ public final class MapsSearchAsyncClient {
                 options.getLocalizedMapView(),
                 options.getOperatingHours(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
@@ -842,7 +799,7 @@ public final class MapsSearchAsyncClient {
     Mono<Response<SearchAddressResult>> searchAlongRouteWithResponse(SearchAlongRouteOptions options,
             Context context) {
         GeoJsonLineString geoJsonLineString = (GeoJsonLineString) Utility.toGeoJsonObject(options.getRoute());
-        Mono<Response<SearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.searchAlongRouteWithResponseAsync(
                 ResponseFormat.JSON,
                 options.getQuery(),
@@ -855,12 +812,6 @@ public final class MapsSearchAsyncClient {
                 options.getLocalizedMapView(),
                 options.getOperatingHours(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<SearchAddressResult> simpleResponse = Utility.createSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
