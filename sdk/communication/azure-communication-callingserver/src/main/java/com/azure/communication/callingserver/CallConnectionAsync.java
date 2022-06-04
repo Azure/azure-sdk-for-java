@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import static com.azure.core.util.FluxUtil.monoError;
 //import static com.azure.core.util.FluxUtil.withContext;
+//import static com.azure.core.util.FluxUtil.withContext;
 
 //import java.net.URI;
 //import java.util.List;
@@ -57,6 +58,9 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -94,10 +98,69 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionProperties> getCall() {
         try {
-
             return callConnectionInternal.getCallAsync(callLegId)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(CallConnectionPropertiesConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallConnectionProperties> getCall(Context context) {
+        try {
+            if (context == null) {
+                return getCall();
+            }
+            return callConnectionInternal.getCallAsync(callLegId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(CallConnectionPropertiesConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallConnectionProperties>> getCallWithResponse() {
+        return callConnectionInternal.getCallWithResponseAsync(callLegId)
+            .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+            .map(response ->
+                new SimpleResponse<>(response, CallConnectionPropertiesConverter.convert(response.getValue())));
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CallConnectionProperties>> getCallWithResponse(Context context) {
+        try {
+            if (context == null) {
+                return getCallWithResponse();
+            }
+            return callConnectionInternal.getCallWithResponseAsync(callLegId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .map(response ->
+                    new SimpleResponse<>(response, CallConnectionPropertiesConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
