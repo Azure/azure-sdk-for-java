@@ -11,7 +11,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.maps.search.implementation.helpers.ReverseSearchCrossStreetAddressResultPropertiesHelper;
 import com.azure.maps.search.implementation.helpers.Utility;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultItemPrivate;
-import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
+import com.azure.maps.search.models.SearchSummary;
 
 /** This object is returned from a successful Search Address Reverse CrossStreet call. */
 @Immutable
@@ -24,7 +24,7 @@ public final class ReverseSearchCrossStreetAddressResult {
             new ReverseSearchCrossStreetAddressResultPropertiesHelper
                 .ReverseSearchCrossStreetAddressResultAccessor() {
             @Override
-            public void setSummary(ReverseSearchCrossStreetAddressResult result, SearchSummaryPrivate privateSearchSummary) {
+            public void setSummary(ReverseSearchCrossStreetAddressResult result, SearchSummary privateSearchSummary) {
                 result.setSummary(privateSearchSummary);
             }
 
@@ -54,8 +54,8 @@ public final class ReverseSearchCrossStreetAddressResult {
     }
 
     // private setters
-    private void setSummary(SearchSummaryPrivate privateSearchSummary) {
-        this.summary = Utility.toSearchSummary(privateSearchSummary);
+    private void setSummary(SearchSummary privateSearchSummary) {
+        this.summary = privateSearchSummary;
     }
 
     private void setAddresses(List<ReverseSearchCrossStreetAddressResultItemPrivate> privateResults) {

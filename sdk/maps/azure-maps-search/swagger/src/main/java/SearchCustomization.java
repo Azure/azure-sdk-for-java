@@ -30,10 +30,10 @@ public class SearchCustomization extends Customization {
         // customize SearchAddressResultItem
         customizeSearchAddressResultItem(models);
 
-        /*
-        // customize route instruction
-        customizeRouteInstruction(models);
+        // customize SearchSummary
+        customizeSearchSummary(models);
 
+        /*
         // customize route range
         customizeRouteRange(models);
 
@@ -125,6 +125,19 @@ public class SearchCustomization extends Customization {
         }
         classCustomization.addImports("com.azure.core.models.GeoPosition");
         classCustomization.addImports("com.azure.core.models.GeoBoundingBox");
+    }
+
+
+    // Customizes the SearchSummary class
+    private void customizeSearchSummary(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("SearchSummary");
+
+        // getPosition
+        MethodCustomization toCustomization = classCustomization.getMethod("getGeoBias");
+        toCustomization.setReturnType("GeoPosition",
+            "returnValue != null ? new GeoPosition(returnValue.getLon(), returnValue.getLat()) : null");
+
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
 
     // Customizes the RouteLeg class

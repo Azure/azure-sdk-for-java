@@ -2,7 +2,7 @@ package com.azure.maps.search.implementation.helpers;
 
 import java.util.List;
 
-import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
+import com.azure.maps.search.models.SearchSummary;
 import com.azure.maps.search.models.SearchAddressResult;
 import com.azure.maps.search.models.SearchAddressResultItem;
 
@@ -18,7 +18,7 @@ public final class SearchAddressResultPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link SearchAddressResult} instance.
      */
     public interface SearchAddressResultAccessor {
-        void setSummary(SearchAddressResult result, SearchSummaryPrivate privateSearchSummary);
+        void setSummary(SearchAddressResult result, SearchSummary privateSearchSummary);
         void setResults(SearchAddressResult result, List<SearchAddressResultItem> privateResults);
     }
 
@@ -37,7 +37,7 @@ public final class SearchAddressResultPropertiesHelper {
      * @param result
      * @param privateSearchSummary
      */
-    public static void setSummary(SearchAddressResult result, SearchSummaryPrivate privateSearchSummary) {
+    public static void setSummary(SearchAddressResult result, SearchSummary privateSearchSummary) {
         accessor.setSummary(result, privateSearchSummary);
     }
 

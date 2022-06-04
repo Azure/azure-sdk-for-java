@@ -35,7 +35,6 @@ import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddre
 import com.azure.maps.search.implementation.models.SearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
-import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
 import com.azure.maps.search.models.BaseSearchOptions;
 import com.azure.maps.search.models.BatchResultSummary;
 import com.azure.maps.search.models.BatchReverseSearchResult;
@@ -227,13 +226,6 @@ public class Utility {
         SearchAddressResultPropertiesHelper.setResults(result, privateResult.getResults());
 
         return result;
-    }
-
-    public static SearchSummary toSearchSummary(SearchSummaryPrivate privateSearchSummary) {
-        SearchSummary summary = new SearchSummary();
-        SearchSummaryPropertiesHelper.setFromPrivateSearchSummary(summary, privateSearchSummary);
-
-        return summary;
     }
 
     public static ReverseSearchAddressResultItem toReverseSearchAddressResultItem(ReverseSearchAddressResultItemPrivate privateResultItem) {

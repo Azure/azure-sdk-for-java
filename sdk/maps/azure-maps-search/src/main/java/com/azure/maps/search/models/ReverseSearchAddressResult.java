@@ -13,7 +13,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.maps.search.implementation.helpers.ReverseSearchAddressResultPropertiesHelper;
 import com.azure.maps.search.implementation.helpers.Utility;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressResultItemPrivate;
-import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
+import com.azure.maps.search.models.SearchSummary;
 
 /** This object is returned from a successful Search Address Reverse call. */
 @Immutable
@@ -23,7 +23,7 @@ public final class ReverseSearchAddressResult {
         ReverseSearchAddressResultPropertiesHelper.setAccessor(new ReverseSearchAddressResultPropertiesHelper
             .ReverseSearchAddressResultAccessor() {
             @Override
-            public void setSummary(ReverseSearchAddressResult result, SearchSummaryPrivate privateSearchSummary) {
+            public void setSummary(ReverseSearchAddressResult result, SearchSummary privateSearchSummary) {
                 result.setSummary(privateSearchSummary);
             }
 
@@ -56,8 +56,8 @@ public final class ReverseSearchAddressResult {
     }
 
     // private setters
-    private void setSummary(SearchSummaryPrivate privateSearchSummary) {
-        this.summary = Utility.toSearchSummary(privateSearchSummary);
+    private void setSummary(SearchSummary privateSearchSummary) {
+        this.summary = privateSearchSummary;
     }
 
     private void setAddresses(List<ReverseSearchAddressResultItemPrivate> privateResults) {

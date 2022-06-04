@@ -52,9 +52,6 @@ directive:
       from: ReverseSearchCrossStreetAddressResultItem
       to: ReverseSearchCrossStreetAddressResultItemPrivate   
   - rename-model:
-      from: SearchSummary
-      to: SearchSummaryPrivate
-  - rename-model:
       from: SearchAddressBatchResult
       to: SearchAddressBatchResultPrivate
   - rename-model:
@@ -89,7 +86,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: Address,AddressRanges,EntryPoint,BatchResultSummary,BrandName,Classification,ClassificationName,DataSource,ErrorAdditionalInfo,ErrorDetail,ErrorResponseException,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursTime,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchIndexes,ErrorResponse,QueryType
+custom-types: Address,AddressRanges,EntryPoint,BatchResultSummary,BrandName,Classification,ClassificationName,DataSource,ErrorAdditionalInfo,ErrorDetail,ErrorResponseException,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursTime,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,ErrorResponse,QueryType
 customization-jar-path: target/azure-maps-search-customization-1.0.0-beta.1.jar
 customization-class: SearchCustomization
 ```

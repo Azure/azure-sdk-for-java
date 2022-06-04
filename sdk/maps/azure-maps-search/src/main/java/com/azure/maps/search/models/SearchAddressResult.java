@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.azure.core.annotation.Immutable;
 import com.azure.maps.search.implementation.helpers.SearchAddressResultPropertiesHelper;
 import com.azure.maps.search.implementation.helpers.Utility;
-import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
+import com.azure.maps.search.models.SearchSummary;
 
 /** This object is returned from a successful Search calls. */
 @Immutable
@@ -22,7 +22,7 @@ public final class SearchAddressResult {
         SearchAddressResultPropertiesHelper.setAccessor(new SearchAddressResultPropertiesHelper
             .SearchAddressResultAccessor() {
             @Override
-            public void setSummary(SearchAddressResult result, SearchSummaryPrivate privateSearchSummary) {
+            public void setSummary(SearchAddressResult result, SearchSummary privateSearchSummary) {
                 result.setSummary(privateSearchSummary);
             }
 
@@ -53,8 +53,8 @@ public final class SearchAddressResult {
     }
 
     // private setters
-    private void setSummary(SearchSummaryPrivate privateSearchSummary) {
-        this.summary = Utility.toSearchSummary(privateSearchSummary);
+    private void setSummary(SearchSummary privateSearchSummary) {
+        this.summary = privateSearchSummary;
     }
 
     private void setResults(List<SearchAddressResultItem> privateResults) {
