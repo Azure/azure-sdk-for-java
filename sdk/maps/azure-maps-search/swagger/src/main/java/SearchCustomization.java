@@ -33,6 +33,9 @@ public class SearchCustomization extends Customization {
         // customize SearchSummary
         customizeSearchSummary(models);
 
+        // customize ReverseSearchAddressResultItem
+        customizeReverseSearchAddressResultItem(models);
+
         /*
         // customize route range
         customizeRouteRange(models);
@@ -127,7 +130,6 @@ public class SearchCustomization extends Customization {
         classCustomization.addImports("com.azure.core.models.GeoBoundingBox");
     }
 
-
     // Customizes the SearchSummary class
     private void customizeSearchSummary(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("SearchSummary");
@@ -136,6 +138,18 @@ public class SearchCustomization extends Customization {
         MethodCustomization toCustomization = classCustomization.getMethod("getGeoBias");
         toCustomization.setReturnType("GeoPosition",
             "returnValue != null ? new GeoPosition(returnValue.getLon(), returnValue.getLat()) : null");
+
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
+    }
+
+    // Customizes the ReverseSearchAddressResultItem class
+    private void customizeReverseSearchAddressResultItem(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("ReverseSearchAddressResultItem");
+
+        // getPosition
+        MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
+        toCustomization.setReturnType("GeoPosition",
+            "com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(position)");
 
         classCustomization.addImports("com.azure.core.models.GeoPosition");
     }

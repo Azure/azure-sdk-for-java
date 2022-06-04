@@ -35,13 +35,7 @@ directive:
     where: "$"
     transform: >
         $["security"] = [];
-         
-  - rename-model:
-      from: ReverseSearchAddressResult
-      to: ReverseSearchAddressResultPrivate     
-  - rename-model:
-      from: ReverseSearchAddressResultItem
-      to: ReverseSearchAddressResultItemPrivate  
+            
   - rename-model:
       from: ReverseSearchCrossStreetAddressResult
       to: ReverseSearchCrossStreetAddressResultPrivate
@@ -83,7 +77,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: Address,AddressRanges,EntryPoint,BatchResultSummary,BrandName,Classification,ClassificationName,DataSource,ErrorAdditionalInfo,ErrorDetail,ErrorResponseException,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursTime,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,SearchAddressResult,ErrorResponse,QueryType
+custom-types: Address,AddressRanges,EntryPoint,BatchResultSummary,BrandName,Classification,ClassificationName,DataSource,ErrorAdditionalInfo,ErrorDetail,ErrorResponseException,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursTime,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,ReverseSearchAddressResult,ReverseSearchAddressResultItem,RoadUseType,SearchAddressResultType,SearchAddressResultItem,SearchSummary,SearchIndexes,SearchAddressResult,ErrorResponse,QueryType
 customization-jar-path: target/azure-maps-search-customization-1.0.0-beta.1.jar
 customization-class: SearchCustomization
 ```

@@ -21,7 +21,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.search.implementation.helpers.Utility;
 import com.azure.maps.search.implementation.models.PolygonPrivate;
-import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
@@ -123,13 +122,12 @@ public class TestUtils {
     static ReverseSearchAddressResult getExpectedReverseSearchAddressResults() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("reversesearchaddressresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<ReverseSearchAddressResultPrivate> interimType = new TypeReference<ReverseSearchAddressResultPrivate>(){};
+        TypeReference<ReverseSearchAddressResult> interimType = new TypeReference<ReverseSearchAddressResult>(){};
         byte[] data = null;
         data = toByteArray(is);
-        ReverseSearchAddressResultPrivate searchReverseAddressResultPrivate = null;
-        searchReverseAddressResultPrivate = jacksonAdapter.<ReverseSearchAddressResultPrivate>deserialize(data, interimType.getJavaType(),
+        ReverseSearchAddressResult reverseSearchAddressResult = null;
+        reverseSearchAddressResult = jacksonAdapter.<ReverseSearchAddressResult>deserialize(data, interimType.getJavaType(),
                SerializerEncoding.JSON);
-        ReverseSearchAddressResult reverseSearchAddressResult = Utility.toReverseSearchAddressResult(searchReverseAddressResultPrivate);
         return reverseSearchAddressResult;
     }
 
