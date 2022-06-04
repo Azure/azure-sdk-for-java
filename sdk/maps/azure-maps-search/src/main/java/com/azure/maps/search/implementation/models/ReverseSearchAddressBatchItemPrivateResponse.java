@@ -6,13 +6,14 @@ package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.maps.search.models.ErrorDetail;
+import com.azure.maps.search.models.ReverseSearchAddressResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The result of the query. SearchAddressReverseResponse if the query completed successfully, ErrorResponse otherwise.
  */
 @Fluent
-public final class ReverseSearchAddressBatchItemPrivateResponse extends ReverseSearchAddressResultPrivate {
+public final class ReverseSearchAddressBatchItemPrivateResponse extends ReverseSearchAddressResult {
     /*
      * The error object.
      */

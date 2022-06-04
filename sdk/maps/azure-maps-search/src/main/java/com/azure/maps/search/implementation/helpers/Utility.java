@@ -28,8 +28,6 @@ import com.azure.maps.search.implementation.models.GeoJsonObject;
 import com.azure.maps.search.implementation.models.PolygonPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.ReverseSearchAddressResultItemPrivate;
-import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultItemPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchItemPrivate;
@@ -43,13 +41,11 @@ import com.azure.maps.search.models.Polygon;
 import com.azure.maps.search.models.ReverseSearchAddressBatchItem;
 import com.azure.maps.search.models.ReverseSearchAddressOptions;
 import com.azure.maps.search.models.ReverseSearchAddressResult;
-import com.azure.maps.search.models.ReverseSearchAddressResultItem;
 import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResult;
 import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResultItem;
 import com.azure.maps.search.models.SearchAddressBatchItem;
 import com.azure.maps.search.models.SearchAddressOptions;
 import com.azure.maps.search.models.SearchAddressResult;
-import com.azure.maps.search.models.SearchSummary;
 
 /**
  * Utility method class.
@@ -57,20 +53,6 @@ import com.azure.maps.search.models.SearchSummary;
 public class Utility {
     private static final JacksonJsonSerializer serializer = new JacksonJsonSerializerProvider().createInstance();
     private static final Pattern uuidPattern = Pattern.compile("[0-9A-Fa-f\\-]{36}");
-
-    /**
-     * converts the internal representation of ReverseSearchAddressResult into the public one
-     */
-    public static SimpleResponse<ReverseSearchAddressResult> createReverseSearchResponse(
-            Response<ReverseSearchAddressResultPrivate> response) {
-        ReverseSearchAddressResult result = Utility.toReverseSearchAddressResult(response.getValue());
-        SimpleResponse<ReverseSearchAddressResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
-
-        return simpleResponse;
-    }
 
     /**
      * converts the internal representation of ReverseSearchCrossStreetAddressResult into the public one
@@ -203,22 +185,6 @@ public class Utility {
         return null;
     }
 
-    public static ReverseSearchAddressResultItem toReverseSearchAddressResultItem(ReverseSearchAddressResultItemPrivate privateResultItem) {
-        ReverseSearchAddressResultItem resultItem = new ReverseSearchAddressResultItem();
-        ReverseSearchAddressResultItemPropertiesHelper.setFromReverseSearchAddressResultItemPrivate(
-            resultItem, privateResultItem);
-
-        return resultItem;
-    }
-
-    public static ReverseSearchAddressResult toReverseSearchAddressResult(ReverseSearchAddressResultPrivate privateResult) {
-        ReverseSearchAddressResult result = new ReverseSearchAddressResult();
-        ReverseSearchAddressResultPropertiesHelper.setSummary(result, privateResult.getSummary());
-        ReverseSearchAddressResultPropertiesHelper.setAddresses(result, privateResult.getAddresses());
-
-        return result;
-    }
-
     public static ReverseSearchCrossStreetAddressResultItem toReverseSearchCrossStreetAddressResultItem(
             ReverseSearchCrossStreetAddressResultItemPrivate privateResultItem) {
         ReverseSearchCrossStreetAddressResultItem resultItem = new ReverseSearchCrossStreetAddressResultItem();
@@ -261,7 +227,7 @@ public class Utility {
         ReverseSearchAddressBatchItem resultItem = new ReverseSearchAddressBatchItem();
         ReverseSearchAddressBatchItemPropertiesHelper.setErrorDetail(resultItem, item.getResponse().getError());
         ReverseSearchAddressBatchItemPropertiesHelper.setStatusCode(resultItem, item.getStatusCode());
-        ReverseSearchAddressResult result = toReverseSearchAddressResult(item.getResponse());
+        ReverseSearchAddressResult result = item.getResponse();
         ReverseSearchAddressBatchItemPropertiesHelper.setReverseSearchAddressResult(resultItem, result);
 
         return resultItem;

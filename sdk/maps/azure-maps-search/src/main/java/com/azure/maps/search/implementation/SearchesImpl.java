@@ -33,7 +33,6 @@ import com.azure.maps.search.implementation.models.JsonFormat;
 import com.azure.maps.search.implementation.models.PolygonResult;
 import com.azure.maps.search.implementation.models.ResponseFormat;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
@@ -51,6 +50,7 @@ import com.azure.maps.search.models.LocalizedMapView;
 import com.azure.maps.search.models.OperatingHoursRange;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.PointOfInterestExtendedPostalCodes;
+import com.azure.maps.search.models.ReverseSearchAddressResult;
 import com.azure.maps.search.models.RoadUseType;
 import com.azure.maps.search.models.SearchAddressResult;
 import com.azure.maps.search.models.SearchIndexes;
@@ -248,7 +248,7 @@ public final class SearchesImpl {
         @Get("/search/address/reverse/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ReverseSearchAddressResultPrivate>> reverseSearchAddress(
+        Mono<Response<ReverseSearchAddressResult>> reverseSearchAddress(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -5661,7 +5661,7 @@ public final class SearchesImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchAddressResultPrivate>> reverseSearchAddressWithResponseAsync(
+    public Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponseAsync(
             ResponseFormat format,
             List<Double> query,
             String language,
@@ -5762,7 +5762,7 @@ public final class SearchesImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReverseSearchAddressResultPrivate>> reverseSearchAddressWithResponseAsync(
+    public Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponseAsync(
             ResponseFormat format,
             List<Double> query,
             String language,
@@ -5861,7 +5861,7 @@ public final class SearchesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchAddressResultPrivate> reverseSearchAddressAsync(
+    public Mono<ReverseSearchAddressResult> reverseSearchAddressAsync(
             ResponseFormat format,
             List<Double> query,
             String language,
@@ -5949,7 +5949,7 @@ public final class SearchesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReverseSearchAddressResultPrivate> reverseSearchAddressAsync(
+    public Mono<ReverseSearchAddressResult> reverseSearchAddressAsync(
             ResponseFormat format,
             List<Double> query,
             String language,
@@ -6037,7 +6037,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search Address Reverse call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReverseSearchAddressResultPrivate reverseSearchAddress(
+    public ReverseSearchAddressResult reverseSearchAddress(
             ResponseFormat format,
             List<Double> query,
             String language,
@@ -6124,7 +6124,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search Address Reverse call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReverseSearchAddressResultPrivate> reverseSearchAddressWithResponse(
+    public Response<ReverseSearchAddressResult> reverseSearchAddressWithResponse(
             ResponseFormat format,
             List<Double> query,
             String language,

@@ -32,7 +32,6 @@ import com.azure.maps.search.implementation.models.GeoJsonObject;
 import com.azure.maps.search.implementation.models.JsonFormat;
 import com.azure.maps.search.implementation.models.PolygonResult;
 import com.azure.maps.search.implementation.models.ResponseFormat;
-import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
 import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
@@ -544,7 +543,7 @@ public final class MapsSearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(
                 ReverseSearchAddressOptions options, Context context) {
-        Mono<Response<ReverseSearchAddressResultPrivate>> responseMono =
+        return
             this.serviceClient.reverseSearchAddressWithResponseAsync(
                 ResponseFormat.JSON,
                 Arrays.asList(options.getCoordinates().getLatitude(), options.getCoordinates().getLongitude()),
@@ -560,12 +559,6 @@ public final class MapsSearchAsyncClient {
                 options.getEntityType(),
                 options.getLocalizedMapView(),
                 context);
-
-        // convert to the right (public) SearchAddressResult
-        return responseMono.flatMap(response -> {
-            Response<ReverseSearchAddressResult> simpleResponse = Utility.createReverseSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
     }
 
     /**
