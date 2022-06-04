@@ -34,7 +34,6 @@ import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddre
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.SearchAddressResultItemPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
 import com.azure.maps.search.models.BaseSearchOptions;
@@ -52,7 +51,6 @@ import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResultItem;
 import com.azure.maps.search.models.SearchAddressBatchItem;
 import com.azure.maps.search.models.SearchAddressOptions;
 import com.azure.maps.search.models.SearchAddressResult;
-import com.azure.maps.search.models.SearchAddressResultItem;
 import com.azure.maps.search.models.SearchSummary;
 
 /**
@@ -221,14 +219,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    public static SearchAddressResultItem toSearchAddressResultItem(SearchAddressResultItemPrivate privateResultItem) {
-        SearchAddressResultItem resultItem = new SearchAddressResultItem();
-        SearchAddressResultItemPropertiesHelper.setFromSearchAddressResultItemPrivate(resultItem,
-            privateResultItem);
-
-        return resultItem;
     }
 
     public static SearchAddressResult toSearchAddressResult(SearchAddressResultPrivate privateResult) {
