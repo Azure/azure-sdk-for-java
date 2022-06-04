@@ -21,6 +21,9 @@ public class SearchCustomization extends Customization {
         // customize Address
         customizeAddress(models);
 
+        // customize AddressRanges
+        customizeAddressRanges(models);
+
         /*
         // customize route instruction
         customizeRouteInstruction(models);
@@ -43,7 +46,29 @@ public class SearchCustomization extends Customization {
         methodCustomization.setReturnType("GeoBoundingBox",
             "com.azure.maps.search.implementation.helpers.Utility.toGeoBoundingBox(returnValue)");
         classCustomization.addImports("com.azure.core.models.GeoBoundingBox");
+    }
 
+
+    // Customizes the Address class by changing the type of BoundingBox
+    private void customizeAddressRanges(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("AddressRanges");
+        String[] methods = new String[] {"setRangeRight", "setRangeLeft", "setTo", "setFrom"};
+
+        // getTo
+        MethodCustomization toCustomization = classCustomization.getMethod("getTo");
+        toCustomization.setReturnType("GeoPosition",
+            "new GeoPosition(returnValue.getLon(), returnValue.getLat())");
+
+        // getFrom
+        MethodCustomization fromCustomization = classCustomization.getMethod("getFrom");
+        fromCustomization.setReturnType("GeoPosition",
+            "new GeoPosition(returnValue.getLon(), returnValue.getLat())");
+
+        // remove setters
+        for (String method : methods) {
+            classCustomization.removeMethod(method);
+        }
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
 
     // Customizes the RouteLeg class

@@ -6,6 +6,7 @@ package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.maps.search.models.Address;
+import com.azure.maps.search.models.AddressRanges;
 import com.azure.maps.search.models.DataSource;
 import com.azure.maps.search.models.GeographicEntityType;
 import com.azure.maps.search.models.MatchType;
@@ -106,7 +107,7 @@ public final class SearchAddressResultItemPrivate {
      * are included.
      */
     @JsonProperty(value = "addressRanges", access = JsonProperty.Access.WRITE_ONLY)
-    private AddressRangesPrivate addressRanges;
+    private AddressRanges addressRanges;
 
     /*
      * Optional section. Reference geometry id for use with the [Get Search
@@ -269,7 +270,7 @@ public final class SearchAddressResultItemPrivate {
      *
      * @return the addressRanges value.
      */
-    public AddressRangesPrivate getAddressRanges() {
+    public AddressRanges getAddressRanges() {
         return this.addressRanges;
     }
 
