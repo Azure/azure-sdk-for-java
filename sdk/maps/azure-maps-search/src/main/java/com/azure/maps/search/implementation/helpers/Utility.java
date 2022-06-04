@@ -23,7 +23,6 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.search.implementation.models.BatchRequestItem;
 import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
-import com.azure.maps.search.implementation.models.EntryPointPrivate;
 import com.azure.maps.search.implementation.models.GeoJsonFeatureCollection;
 import com.azure.maps.search.implementation.models.GeoJsonObject;
 import com.azure.maps.search.implementation.models.PolygonPrivate;
@@ -42,7 +41,6 @@ import com.azure.maps.search.models.BaseSearchOptions;
 import com.azure.maps.search.models.BatchResultSummary;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
-import com.azure.maps.search.models.EntryPoint;
 import com.azure.maps.search.models.FuzzySearchOptions;
 import com.azure.maps.search.models.Polygon;
 import com.azure.maps.search.models.ReverseSearchAddressBatchItem;
@@ -223,14 +221,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    public static EntryPoint toEntryPoint(EntryPointPrivate entryPointPrivate) {
-        EntryPoint entryPoint = new EntryPoint();
-        EntryPointPropertiesHelper.setPosition(entryPoint, entryPointPrivate.getPosition());
-        EntryPointPropertiesHelper.setType(entryPoint, entryPointPrivate.getType());
-
-        return entryPoint;
     }
 
     public static SearchAddressResultItem toSearchAddressResultItem(SearchAddressResultItemPrivate privateResultItem) {

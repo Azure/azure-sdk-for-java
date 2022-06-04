@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.maps.search.models.Address;
 import com.azure.maps.search.models.AddressRanges;
 import com.azure.maps.search.models.DataSource;
+import com.azure.maps.search.models.EntryPoint;
 import com.azure.maps.search.models.GeographicEntityType;
 import com.azure.maps.search.models.MatchType;
 import com.azure.maps.search.models.PointOfInterest;
@@ -99,7 +100,7 @@ public final class SearchAddressResultItemPrivate {
      * door, or a lobby, and "minor", for side and back doors.
      */
     @JsonProperty(value = "entryPoints", access = JsonProperty.Access.WRITE_ONLY)
-    private List<EntryPointPrivate> entryPoints;
+    private List<EntryPoint> entryPoints;
 
     /*
      * Describes the address range on both sides of the street for a search
@@ -260,7 +261,7 @@ public final class SearchAddressResultItemPrivate {
      *
      * @return the entryPoints value.
      */
-    public List<EntryPointPrivate> getEntryPoints() {
+    public List<EntryPoint> getEntryPoints() {
         return this.entryPoints;
     }
 
