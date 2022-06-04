@@ -211,7 +211,7 @@ class FileAPITests extends APISpec {
             null, null, null, null, null)
 
         then:
-        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     def "Create file with args error"() {

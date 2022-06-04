@@ -214,7 +214,7 @@ class DirectoryAPITests extends APISpec {
             null, null)
 
         then:
-        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     @Unroll
