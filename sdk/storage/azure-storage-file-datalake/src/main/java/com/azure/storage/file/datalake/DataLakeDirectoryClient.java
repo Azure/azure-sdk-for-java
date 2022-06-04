@@ -329,12 +329,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-                                                               Duration timeout, Context context) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
+        Duration timeout, Context context) {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);
@@ -691,11 +689,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public Response<DataLakeDirectoryClient> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);

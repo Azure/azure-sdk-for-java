@@ -272,8 +272,7 @@ class FileAPITest extends APISpec {
     def "Create options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
-        def accessOptions = new DataLakeAccessOptions().setAccessControlList(pathAccessControlEntries)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
         def client = fc.createWithResponse(options, null, null).getValue()
         client.getProperties().toString()
 
@@ -288,8 +287,7 @@ class FileAPITest extends APISpec {
         when:
         def ownerName = namer.getRandomUuid()
         def groupName = namer.getRandomUuid()
-        def accessOptions = new DataLakeAccessOptions().setOwner(ownerName).setGroup(groupName)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
         fc.createWithResponse(options, null, null)
 
         then:
@@ -300,8 +298,7 @@ class FileAPITest extends APISpec {
 
     def "Create options with null owner and group"() {
         when:
-        def accessOptions = new DataLakeAccessOptions().setOwner(null).setGroup(null)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
         fc.createWithResponse(options, null, null)
 
         then:
@@ -366,8 +363,7 @@ class FileAPITest extends APISpec {
         setup:
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions().setPermissions(permissions).setUmask(umask)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
         fc.createWithResponse(options, null, null)
 
         when:
@@ -553,13 +549,15 @@ class FileAPITest extends APISpec {
         setup:
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask)
 
         expect:
         def client = fsc.getFileClient(generatePathName())
-        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setAccessOptions(accessOptions), null, Context.NONE).getStatusCode() == 201
+        client.createIfNotExistsWithResponse(
+            new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask),
+            null,
+            Context.NONE).getStatusCode() == 201
     }
 
 
@@ -567,8 +565,7 @@ class FileAPITest extends APISpec {
         when:
         fc = fsc.getFileClient(generatePathName())
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
-        def accessOptions = new DataLakeAccessOptions().setAccessControlList(pathAccessControlEntries)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
         def client = fc.createIfNotExistsWithResponse(options, null, null).getValue()
         client.getProperties().toString()
 
@@ -584,8 +581,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
         def ownerName = namer.getRandomUuid()
         def groupName = namer.getRandomUuid()
-        def accessOptions = new DataLakeAccessOptions().setOwner(ownerName).setGroup(groupName)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
         fc.createIfNotExistsWithResponse(options, null, null)
 
         then:
@@ -597,8 +593,7 @@ class FileAPITest extends APISpec {
     def "Create if not exists options with null owner and group"() {
         when:
         fc = fsc.getFileClient(generatePathName())
-        def accessOptions = new DataLakeAccessOptions().setOwner(null).setGroup(null)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
         fc.createIfNotExistsWithResponse(options, null, null)
 
         then:
@@ -666,8 +661,7 @@ class FileAPITest extends APISpec {
         fc = fsc.getFileClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions().setPermissions(permissions).setUmask(umask)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
         fc.createIfNotExistsWithResponse(options, null, null)
 
         when:

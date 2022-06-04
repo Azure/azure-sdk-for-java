@@ -52,6 +52,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathExpiryMode;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -398,12 +399,9 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-                .setPermissions(permissions)
-                .setUmask(umask);
-
             DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-                .setAccessOptions(accessOptions)
+                .setPermissions(permissions)
+                .setUmask(umask)
                 .setPathHttpHeaders(headers).setMetadata(metadata)
                 .setRequestConditions(requestConditions);
             return withContext(context -> createWithResponse(options));
@@ -477,17 +475,22 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
-        DataLakeAccessOptions accessOptions = options.getAccessOptions() == null ? new DataLakeAccessOptions() : options.getAccessOptions();
+        String acl = options.getAccessControlList() != null ? PathAccessControlEntry
+            .serializeList(options.getAccessControlList()) : null;
+        PathExpiryMode expiryMode = setFieldsIfNull(options);
 
-        String acl = accessOptions.getAccessControlList() != null ? PathAccessControlEntry
-            .serializeList(accessOptions.getAccessControlList()) : null;
-        String expiresOnString = setFieldsIfNull(options);
+        String expiresOnString = null; // maybe return string instead and do check for expiryOptions in here
+        if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            expiresOnString = DateTimeRfc1123.toRfc1123String(options.getScheduleDeletionOptions().getExpiresOn());
+        } else if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+            expiresOnString = Long.toString(options.getScheduleDeletionOptions().getTimeToExpire().toMillis());
+        }
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
-                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), accessOptions.getPermissions(),
-                accessOptions.getUmask(), accessOptions.getOwner(), accessOptions.getGroup(), acl, options.getProposedLeaseId(),
-                options.getLeaseDuration(), options.getExpiryOptions(), expiresOnString, options.getPathHttpHeaders(),
+                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
+                options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
+                options.getLeaseDuration(), expiryMode, expiresOnString, options.getPathHttpHeaders(),
                 lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
@@ -495,7 +498,7 @@ public class DataLakePathAsyncClient {
                 response.getDeserializedHeaders().getXMsEncryptionKeySha256())));
     }
 
-    String setFieldsIfNull(DataLakePathCreateOptions options) {
+    PathExpiryMode setFieldsIfNull(DataLakePathCreateOptions options) {
         DataLakePathScheduleDeletionOptions deletionOptions =
             options.getScheduleDeletionOptions() == null ? new DataLakePathScheduleDeletionOptions() : options.getScheduleDeletionOptions();
         if (pathResourceType == PathResourceType.DIRECTORY) {
@@ -515,13 +518,13 @@ public class DataLakePathAsyncClient {
         if (deletionOptions.getTimeToExpire() != null && deletionOptions.getExpiresOn() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
         }
-        String expiresOn = null;
+        PathExpiryMode expiryMode = null;
         if (deletionOptions.getTimeToExpire() != null) {
-            expiresOn = Long.toString(deletionOptions.getTimeToExpire().toMillis());
+            expiryMode = PathExpiryMode.RELATIVE_TO_NOW;
         } else if (deletionOptions.getExpiresOn() != null) {
-            expiresOn = DateTimeRfc1123.toRfc1123String(deletionOptions.getExpiresOn());
+            expiryMode = PathExpiryMode.ABSOLUTE;
         }
-        return expiresOn;
+        return expiryMode;
     }
 
     /**

@@ -115,13 +115,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
         Long duration = 15L;
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
             .setUmask(umask)
             .setOwner(owner)
-            .setGroup(group);
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setGroup(group)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions)
             .setMetadata(metadata)
@@ -199,13 +197,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
         Long duration = 15L;
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
             .setUmask(umask)
             .setOwner(owner)
-            .setGroup(group);
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setGroup(group)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions)
             .setMetadata(metadata)
@@ -315,11 +311,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
         PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(Collections.singletonMap("metadata", "value"));
 
@@ -374,11 +368,9 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(Collections.singletonMap("metadata", "value"));
 

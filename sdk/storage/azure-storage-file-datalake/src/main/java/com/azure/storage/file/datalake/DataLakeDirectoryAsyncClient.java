@@ -399,11 +399,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);
@@ -796,11 +794,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);
@@ -934,9 +930,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         options = options == null ? new DataLakePathCreateOptions() : options;
         options.setRequestConditions(new DataLakeRequestConditions()
             .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
-        DataLakeAccessOptions accessOptions = options.getAccessOptions() == null ? new DataLakeAccessOptions() : options.getAccessOptions();
         try {
-            return createSubdirectoryWithResponse(subdirectoryName, accessOptions.getPermissions(), accessOptions.getUmask(),
+            return createSubdirectoryWithResponse(subdirectoryName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions())
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409,

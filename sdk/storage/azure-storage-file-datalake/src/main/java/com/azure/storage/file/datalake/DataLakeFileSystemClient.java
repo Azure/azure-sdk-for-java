@@ -762,11 +762,9 @@ public class DataLakeFileSystemClient {
     public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
                                                                Duration timeout, Context context) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);
@@ -1101,11 +1099,9 @@ public class DataLakeFileSystemClient {
     public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);

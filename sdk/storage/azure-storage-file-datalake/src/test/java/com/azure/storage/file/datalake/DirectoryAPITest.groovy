@@ -86,8 +86,10 @@ class DirectoryAPITest extends APISpec {
         def options = new DataLakePathCreateOptions()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
-        options.setMetadata(metadata).setRequestConditions(new DataLakeRequestConditions()).setPathHttpHeaders(new PathHttpHeaders())
-            .setAccessOptions(new DataLakeAccessOptions().setAccessControlList(pathAccessControlEntries))
+        options.setMetadata(metadata)
+            .setRequestConditions(new DataLakeRequestConditions())
+            .setPathHttpHeaders(new PathHttpHeaders())
+            .setAccessControlList(pathAccessControlEntries)
 
         when:
         def createResponse = dc.createWithResponse(options, null, null)
@@ -255,8 +257,8 @@ class DirectoryAPITest extends APISpec {
     def "Create options with ACL"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
-        def accessOptions = new DataLakeAccessOptions().setAccessControlList(pathAccessControlEntries)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions()
+            .setAccessControlList(pathAccessControlEntries)
         dc.createWithResponse(options, null, null)
 
         then:
@@ -271,8 +273,9 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
         def ownerName = namer.getRandomUuid()
         def groupName = namer.getRandomUuid()
-        def accessOptions = new DataLakeAccessOptions().setOwner(ownerName).setGroup(groupName)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions()
+            .setOwner(ownerName)
+            .setGroup(groupName)
         dc.createWithResponse(options, null, null)
 
         then:
@@ -284,8 +287,9 @@ class DirectoryAPITest extends APISpec {
     def "Create options with null owner and group"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
-        def accessOptions = new DataLakeAccessOptions().setOwner(owner).setGroup(group)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions()
+            .setOwner(owner)
+            .setGroup(group)
         dc.createWithResponse(options, null, null)
 
         then:
@@ -351,8 +355,9 @@ class DirectoryAPITest extends APISpec {
         dc = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions().setPermissions(permissions).setUmask(umask)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
         dc.createWithResponse(options, null, null)
 
         when:
@@ -373,7 +378,6 @@ class DirectoryAPITest extends APISpec {
             .setScheduleDeletionOptions(deletionOptions)
             .setProposedLeaseId(leaseId)
             .setLeaseDuration(leaseDuration)
-            .setExpiryOptions(expiryOptions)
 
 
         when:
@@ -384,11 +388,11 @@ class DirectoryAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        leaseId                         | leaseDuration | expiresOn            | expiryOptions                     | timeToExpire
-        UUID.randomUUID().toString()    | null          | null                 | null                              | null
-        UUID.randomUUID().toString()    | 15            | null                 | null                              | null
-        UUID.randomUUID().toString()    | null          | OffsetDateTime.now() | PathExpiryMode.ABSOLUTE           | null
-        UUID.randomUUID().toString()    | null          | null                 | PathExpiryMode.RELATIVE_TO_NOW    | Duration.ofDays(6)
+        leaseId                         | leaseDuration | expiresOn            | timeToExpire
+        UUID.randomUUID().toString()    | null          | null                 | null
+        UUID.randomUUID().toString()    | 15            | null                 | null
+        UUID.randomUUID().toString()    | null          | OffsetDateTime.now() | null
+        UUID.randomUUID().toString()    | null          | null                 | Duration.ofDays(6)
     }
 
     def "Create if not exists min"() {
@@ -501,8 +505,10 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions().setPermissions(permissions).setUmask(umask)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def accessOptions = new DataLakeAccessOptions()
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
 
         expect:
         client.createIfNotExistsWithResponse(options, null, Context.NONE).getStatusCode() == 201
@@ -2946,8 +2952,9 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions().setPermissions(permissions).setUmask(umask)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
 
         expect:
         client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
@@ -3407,8 +3414,9 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions().setPermissions(permissions).setUmask(umask)
-        def options = new DataLakePathCreateOptions().setAccessOptions(accessOptions)
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
 
         expect:
         client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201

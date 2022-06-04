@@ -908,11 +908,9 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
+            .setPermissions(permissions)
+            .setUmask(umask)
             .setPathHttpHeaders(headers)
             .setMetadata(metadata)
             .setRequestConditions(requestConditions);
@@ -1041,9 +1039,8 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         options = options == null ? new DataLakePathCreateOptions() : options;
-        DataLakeAccessOptions accessOptions = options.getAccessOptions() == null ? new DataLakeAccessOptions() : options.getAccessOptions();
         try {
-            return createFileWithResponse(fileName, accessOptions.getPermissions(), accessOptions.getUmask(),
+            return createFileWithResponse(fileName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(), requestConditions)
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409,
@@ -1272,12 +1269,12 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
-            .setPermissions(permissions)
-            .setUmask(umask);
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
-            .setAccessOptions(accessOptions)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
         try {
             return createDirectoryWithResponse(directoryName, options);
         } catch (RuntimeException ex) {
@@ -1410,9 +1407,7 @@ public class DataLakeFileSystemAsyncClient {
         DataLakePathCreateOptions options) {
         try {
             options = options == null ? new DataLakePathCreateOptions() : options;
-            DataLakeAccessOptions accessOptions = options.getAccessOptions() == null ? new DataLakeAccessOptions() : options.getAccessOptions();
-
-            return createDirectoryWithResponse(directoryName, accessOptions.getPermissions(), accessOptions.getUmask(),
+            return createDirectoryWithResponse(directoryName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(),
                 new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
