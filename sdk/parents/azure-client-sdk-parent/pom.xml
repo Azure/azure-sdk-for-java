@@ -980,7 +980,7 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>${java.vm.specification.version}</release>
+                  <release>11</release>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -1000,7 +1000,7 @@
               <execution>
                 <id>default-testCompile</id>
                 <configuration>
-                  <testRelease>${java.vm.specification.version}</testRelease>
+                  <testRelease>11</testRelease>
                 </configuration>
               </execution>
               <!-- then compile with Java 8 -->

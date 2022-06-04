@@ -1,5 +1,13 @@
 # Release History
 
+## 1.9.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
 ## 1.9.0 (2022-06-03)
 
 ### Features Added

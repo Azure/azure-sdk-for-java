@@ -1,5 +1,10 @@
 # Release History
 
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
 ## 1.29.0 (2022-06-03)
 
 ### Features Added
