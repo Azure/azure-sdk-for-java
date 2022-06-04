@@ -295,6 +295,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      *      <li>remote-close ack (broker to client)</li>
      *      <li>disposal of ReactorReceiver resources via completeClose()</li>
      * </ul>
+     * Ref:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/docs/reactor-receiver-closeflow.png
      *
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.
@@ -313,10 +314,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 if (localCloseScheduled) {
                     return timeoutRemoteCloseAck();
                 } else {
-                    return Mono.<Void>fromRunnable(() -> {
-                        terminateEndpointState();
-                        completeClose();
-                    }).subscribeOn(Schedulers.boundedElastic());
+                    return Mono.empty();
                 }
             })
             .publishOn(Schedulers.boundedElastic());
@@ -359,12 +357,14 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 logger.warning("IO sink was closed when scheduling work. Manually invoking and completing close.", e);
 
                 localClose.run();
+                terminateEndpointState();
                 completeClose();
             } catch (RejectedExecutionException e) {
                 // Not logging error here again because we have to log the exception when we throw it.
                 logger.info("RejectedExecutionException when scheduling on ReactorDispatcher. Manually invoking and completing close.");
 
                 localClose.run();
+                terminateEndpointState();
                 completeClose();
             } finally {
                 sink.success(localCloseScheduled);
