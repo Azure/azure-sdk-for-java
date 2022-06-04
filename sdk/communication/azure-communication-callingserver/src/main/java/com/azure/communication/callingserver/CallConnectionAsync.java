@@ -5,7 +5,6 @@ package com.azure.communication.callingserver;
 
 import static com.azure.core.util.FluxUtil.monoError;
 //import static com.azure.core.util.FluxUtil.withContext;
-//import static com.azure.core.util.FluxUtil.withContext;
 
 //import java.net.URI;
 //import java.util.List;
@@ -41,6 +40,7 @@ import com.azure.communication.callingserver.implementation.converters.CallConne
 //import com.azure.communication.callingserver.models.AddParticipantResult;
 //import com.azure.communication.callingserver.models.AudioGroupResult;
 //import com.azure.communication.callingserver.models.AudioRoutingMode;
+import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 //import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -165,4 +165,178 @@ public class CallConnectionAsync {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Hangup a call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful hangup request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> hangup() {
+        try {
+            return callConnectionInternal.hangUpCallAsync(callLegId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Hangup a call.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful hangup request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> hangup(Context context) {
+        if (context == null) {
+            return hangup();
+        }
+        try {
+            return callConnectionInternal.hangUpCallAsync(callLegId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Hangup a call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful hangup request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> hangupWithResponse() {
+        try {
+            return callConnectionInternal.hangUpCallWithResponseAsync(callLegId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Hangup a call.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful hangup request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> hangupWithResponse(Context context) {
+        if (context == null) {
+            return hangupWithResponse();
+        }
+        try {
+            return callConnectionInternal.hangUpCallWithResponseAsync(callLegId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @param reason A {@link String} representing the reason of termination.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> terminateCall(String reason, String callbackUri) {
+        try {
+            TerminateCallRequest request = new TerminateCallRequest()
+                .setReason(reason)
+                .setCallbackUri(callbackUri);
+            return callConnectionInternal.terminateCallAsync(callLegId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     * @param reason A {@link String} representing the reason of termination.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> terminateCall(String reason, String callbackUri, Context context) {
+        if (context == null) {
+            return terminateCall(reason, callbackUri);
+        }
+        try {
+            TerminateCallRequest request = new TerminateCallRequest()
+                .setReason(reason)
+                .setCallbackUri(callbackUri);
+            return callConnectionInternal.terminateCallAsync(callLegId, request, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     * @param reason A {@link String} representing the reason of termination.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> terminateCallWithResponse(String reason, String callbackUri) {
+        try {
+            TerminateCallRequest request = new TerminateCallRequest()
+                .setReason(reason)
+                .setCallbackUri(callbackUri);
+            return callConnectionInternal.terminateCallWithResponseAsync(callLegId, request)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     * @param reason A {@link String} representing the reason of termination.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> terminateCallWithResponse(String reason, String callbackUri, Context context) {
+        if (context == null) {
+            return terminateCallWithResponse(reason, callbackUri);
+        }
+        try {
+            TerminateCallRequest request = new TerminateCallRequest()
+                .setReason(reason)
+                .setCallbackUri(callbackUri);
+            return callConnectionInternal.terminateCallWithResponseAsync(callLegId, request, context)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
 }
