@@ -59,6 +59,27 @@ public interface SourceControlConfigurationClient {
     OperationStatusClient getOperationStatus();
 
     /**
+     * Gets the FluxConfigurationsClient object to access its operations.
+     *
+     * @return the FluxConfigurationsClient object.
+     */
+    FluxConfigurationsClient getFluxConfigurations();
+
+    /**
+     * Gets the FluxConfigOperationStatusClient object to access its operations.
+     *
+     * @return the FluxConfigOperationStatusClient object.
+     */
+    FluxConfigOperationStatusClient getFluxConfigOperationStatus();
+
+    /**
+     * Gets the SourceControlConfigurationsClient object to access its operations.
+     *
+     * @return the SourceControlConfigurationsClient object.
+     */
+    SourceControlConfigurationsClient getSourceControlConfigurations();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

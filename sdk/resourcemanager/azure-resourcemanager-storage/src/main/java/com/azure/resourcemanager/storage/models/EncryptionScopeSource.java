@@ -27,7 +27,11 @@ public final class EncryptionScopeSource extends ExpandableStringEnum<Encryption
         return fromString(name, EncryptionScopeSource.class);
     }
 
-    /** @return known EncryptionScopeSource values. */
+    /**
+     * Gets known EncryptionScopeSource values.
+     *
+     * @return known EncryptionScopeSource values.
+     */
     public static Collection<EncryptionScopeSource> values() {
         return values(EncryptionScopeSource.class);
     }

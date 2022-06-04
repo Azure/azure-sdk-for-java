@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Salesforce Marketing Cloud linked service properties. */
 @Fluent
 public final class SalesforceMarketingCloudLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SalesforceMarketingCloudLinkedServiceTypeProperties.class);
-
     /*
      * Properties used to connect to Salesforce Marketing Cloud. It is mutually
      * exclusive with any other properties in the linked service. Type: object.

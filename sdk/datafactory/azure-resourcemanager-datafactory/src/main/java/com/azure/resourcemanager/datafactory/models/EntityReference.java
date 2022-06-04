@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The entity reference. */
 @Fluent
 public final class EntityReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityReference.class);
-
     /*
      * The type of this referenced entity.
      */

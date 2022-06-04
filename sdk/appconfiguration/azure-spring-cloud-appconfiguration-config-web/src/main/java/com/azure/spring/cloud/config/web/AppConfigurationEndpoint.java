@@ -6,12 +6,20 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.DATA;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.SYNC_TOKEN;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_TOPIC;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Common class for authenticating refresh requests.
@@ -28,24 +36,50 @@ public class AppConfigurationEndpoint {
 
     private final Map<String, String> allRequestParams;
 
+    private final String syncToken;
+
+    private final JsonNode validationResponse;
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     /**
      * Base Authentication for refresh endpoints.
      * 
      * @param request Json body of the request
      * @param configStores List of all of the config stores that request could be for
      * @param allRequestParams paramaters to validate the request.
+     * @throws IOException Failed to read the Request body or parse it to json
      * @throws IllegalArgumentException Request missing valid topic field.
      */
-    public AppConfigurationEndpoint(JsonNode request, List<ConfigStore> configStores,
-        Map<String, String> allRequestParams) {
+    public AppConfigurationEndpoint(HttpServletRequest request, List<ConfigStore> configStores,
+        Map<String, String> allRequestParams) throws IOException {
         this.configStores = configStores;
         this.allRequestParams = allRequestParams;
 
-        JsonNode requestTopic = request.findValue(VALIDATION_TOPIC);
+        String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+
+        JsonNode requestBody = OBJECT_MAPPER.readTree(reference);
+
+        JsonNode data = requestBody.findValue(DATA);
+
+        String sToken = null;
+        if (data != null) {
+            JsonNode syncTokenNode = data.findValue(SYNC_TOKEN);
+            if (syncTokenNode != null) {
+                sToken = syncTokenNode.asText();
+            }
+        }
+
+        syncToken = sToken;
+
+        validationResponse = requestBody.findValue(VALIDATION_CODE_KEY);
+
+        JsonNode requestTopic = requestBody.findValue(VALIDATION_TOPIC);
         if (requestTopic != null) {
             String topic = requestTopic.asText();
-            store = topic.substring(topic.toLowerCase(Locale.ROOT).indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
-            endpoint = String.format("https://%s.azconfig.io", store);
+            store = topic.substring(
+                topic.toLowerCase(Locale.ROOT).indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
+            endpoint = String.format("https://%s.", store);
         } else {
             throw new IllegalArgumentException("Refresh request missing topic field.");
         }
@@ -59,7 +93,7 @@ public class AppConfigurationEndpoint {
      */
     public boolean authenticate() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().equals(endpoint)) {
+            if (configStore.getEndpoint().startsWith(endpoint)) {
                 PushNotification pushNotification = configStore.getMonitoring().getPushNotification();
 
                 // One of these need to be set
@@ -94,11 +128,26 @@ public class AppConfigurationEndpoint {
      */
     public boolean triggerRefresh() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().equals(endpoint) && configStore.getMonitoring().isEnabled()) {
+            if (configStore.getEndpoint().startsWith(endpoint) && configStore.getMonitoring().isEnabled()) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Returns the syncToken from the event grid request
+     * @return string value of sync token or null if it doesn't exist.
+     */
+    public String getSyncToken() {
+        return syncToken;
+    }
+
+    /**
+     * @return the validationResponse
+     */
+    public JsonNode getValidationResponse() {
+        return validationResponse;
     }
 
     /**

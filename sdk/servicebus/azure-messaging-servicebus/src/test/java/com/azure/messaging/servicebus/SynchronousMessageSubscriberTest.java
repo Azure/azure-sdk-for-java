@@ -17,15 +17,12 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -124,15 +121,11 @@ public class SynchronousMessageSubscriberTest {
     }
 
     /**
-     * Verifies that this processes multiple work items.
+     * Verifies that this processes multiple work items and current work encounter timeout
      */
     @Test
-    public void processesMultipleWorkItems() {
+    public void processesMultipleWorkItemsAndCurrentWorkTimeout() {
         // Arrange
-        final SynchronousReceiveWork work3 = mock(SynchronousReceiveWork.class);
-        when(work3.getId()).thenReturn(3L);
-        when(work3.getNumberOfEvents()).thenReturn(1);
-
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
@@ -154,8 +147,14 @@ public class SynchronousMessageSubscriberTest {
         doAnswer(invocation -> isTerminal.get()).when(work1).isTerminal();
         doAnswer(invocation -> remaining.get()).when(work1).getRemainingEvents();
 
+        // WORK 2 is update to current work after the work1 is terminal and successfully emits message3
         when(work2.emitNext(message3)).thenReturn(true);
         when(work2.isTerminal()).thenReturn(false);
+
+        // WORK 3 is placed in queue
+        final SynchronousReceiveWork work3 = mock(SynchronousReceiveWork.class);
+        when(work3.getId()).thenReturn(3L);
+        when(work3.getNumberOfEvents()).thenReturn(1);
 
         syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
         syncSubscriber.queueWork(work2);
@@ -188,15 +187,79 @@ public class SynchronousMessageSubscriberTest {
         //     - work2.getNumberOfEvents() - (REQUESTED - work1.getRemainingItems());
         verify(subscription, times(2)).request(subscriptionArgumentCaptor.capture());
         final List<Long> allRequests = subscriptionArgumentCaptor.getAllValues();
-        final Set<Long> expected = new HashSet<>();
-        expected.add((long) work1.getNumberOfEvents());
+        assertEquals(NUMBER_OF_WORK_ITEMS, allRequests.get(0));
 
         final long requestedAfterWork1 = NUMBER_OF_WORK_ITEMS - remaining.get();
         final long expectedDifference = work2.getNumberOfEvents() - requestedAfterWork1;
-        expected.add(expectedDifference);
+        assertEquals(expectedDifference, allRequests.get(1));
+    }
 
-        assertEquals(expected.size(), allRequests.size());
-        allRequests.forEach(r -> assertTrue(expected.contains(r)));
+    /**
+     * Verifies that this processes multiple work items and current work can emit all messages successfully
+     */
+    @Test
+    public void processesMultipleWorkItemsAndCurrentWorkEmitAllMessages() {
+        // Arrange
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message5 = mock(ServiceBusReceivedMessage.class);
+
+        // WORK 1 successfully emits all messages and is terminal after emit message4.
+        final AtomicBoolean isTerminal = new AtomicBoolean(false);
+        final AtomicInteger remaining = new AtomicInteger(NUMBER_OF_WORK_ITEMS);
+        doAnswer(invocation -> {
+            ServiceBusReceivedMessage arg = invocation.getArgument(0);
+            remaining.decrementAndGet();
+            if (arg == message4) {
+                isTerminal.set(true);
+            }
+            return true;
+        }).when(work1).emitNext(any(ServiceBusReceivedMessage.class));
+        doAnswer(invocation -> isTerminal.get()).when(work1).isTerminal();
+        doAnswer(invocation -> remaining.get()).when(work1).getRemainingEvents();
+
+        // WORK 2 is updated to current work after work1 completed and successfully emit message5
+        when(work2.isTerminal()).thenReturn(false);
+        when(work2.emitNext(message5)).thenReturn(true);
+
+        // WORK 3 is placed in queue
+        final SynchronousReceiveWork work3 = mock(SynchronousReceiveWork.class);
+        when(work3.getId()).thenReturn(3L);
+        when(work3.getNumberOfEvents()).thenReturn(1);
+
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
+        syncSubscriber.queueWork(work2);
+        syncSubscriber.queueWork(work3);
+
+        syncSubscriber.hookOnSubscribe(subscription);
+
+        assertEquals(2, syncSubscriber.getWorkQueueSize());
+
+        // Act
+        syncSubscriber.hookOnNext(message1);
+        syncSubscriber.hookOnNext(message2);
+        syncSubscriber.hookOnNext(message3);
+        syncSubscriber.hookOnNext(message4);
+
+        // Assert
+        verify(work2).start();
+
+        // work2 emits message5
+        syncSubscriber.hookOnNext(message5);
+
+        verify(work2).emitNext(message5);
+
+        assertEquals(1, syncSubscriber.getWorkQueueSize());
+
+        // Verify that we requested:
+        // 1st time: hookOnSubscribe(work1.getNumberOfEvents())
+        // 2nd time: requestUpstream(work2.getNumberOfEvents()) and REQUESTED = 0
+        verify(subscription, times(2)).request(subscriptionArgumentCaptor.capture());
+        final List<Long> allRequests = subscriptionArgumentCaptor.getAllValues();
+        assertEquals(NUMBER_OF_WORK_ITEMS, allRequests.get(0));
+        assertEquals(NUMBER_OF_WORK_ITEMS_2, allRequests.get(1));
     }
 
     /**

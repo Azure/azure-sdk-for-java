@@ -17,8 +17,6 @@ import java.util.Map;
 /** Activity dependency information. */
 @Fluent
 public final class ActivityDependency {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityDependency.class);
-
     /*
      * Activity name.
      */
@@ -112,15 +110,17 @@ public final class ActivityDependency {
      */
     public void validate() {
         if (activity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property activity in model ActivityDependency"));
         }
         if (dependencyConditions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dependencyConditions in model ActivityDependency"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActivityDependency.class);
 }

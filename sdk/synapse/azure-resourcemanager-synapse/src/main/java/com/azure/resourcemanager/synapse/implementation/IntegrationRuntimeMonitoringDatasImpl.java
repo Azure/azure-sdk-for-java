@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeMonitoringData
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeMonitoringDataInner;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeMonitoringData;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeMonitoringDatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeMonitoringDatasImpl implements IntegrationRuntimeMonitoringDatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeMonitoringDatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeMonitoringDatasImpl.class);
 
     private final IntegrationRuntimeMonitoringDatasClient innerClient;
 

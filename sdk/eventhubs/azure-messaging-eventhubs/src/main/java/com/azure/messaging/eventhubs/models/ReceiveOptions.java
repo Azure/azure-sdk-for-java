@@ -14,7 +14,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerClient;
  */
 @Fluent
 public class ReceiveOptions {
-    private final ClientLogger logger = new ClientLogger(ReceiveOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiveOptions.class);
     private Long ownerLevel;
     private boolean trackLastEnqueuedEventProperties;
 
@@ -49,7 +49,7 @@ public class ReceiveOptions {
      */
     public ReceiveOptions setOwnerLevel(Long priority) {
         if (priority != null && priority < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'priority' cannot be a negative value. Please specify a zero or positive long value."));
         }
 

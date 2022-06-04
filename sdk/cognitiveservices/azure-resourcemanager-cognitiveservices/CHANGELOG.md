@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,42 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2022-04-11)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2022-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AccountModel` was added
+
+* `models.ModelDeprecationInfo` was added
+
+* `models.AccountModelListResult` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.Accounts` was modified
+
+* `listModels(java.lang.String,java.lang.String)` was added
+* `listModels(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AccountProperties` was modified
+
+* `withDynamicThrottlingEnabled(java.lang.Boolean)` was added
+* `deletionDate()` was added
+* `dynamicThrottlingEnabled()` was added
+* `scheduledPurgeDate()` was added
+
+#### `CognitiveServicesManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.DeploymentScaleSettings` was modified
+
+* `activeCapacity()` was added
 
 ## 1.0.0-beta.3 (2021-11-17)
 

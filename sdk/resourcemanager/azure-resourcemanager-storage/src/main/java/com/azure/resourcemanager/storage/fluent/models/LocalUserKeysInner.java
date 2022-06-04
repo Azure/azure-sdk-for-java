@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.SshPublicKey;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Storage Account Local User keys. */
 @Fluent
 public final class LocalUserKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalUserKeysInner.class);
-
     /*
      * Optional, local user ssh authorized keys for SFTP.
      */

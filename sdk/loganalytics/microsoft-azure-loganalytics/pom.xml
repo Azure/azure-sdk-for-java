@@ -13,7 +13,11 @@
     <version>1.0.0-beta.2</version> <!-- {x-version-update;com.microsoft.azure:azure-loganalytics;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Log Analytics</name>
-    <description>This package contains Microsoft Log Analytics SDK.</description>
+    <description>
+        Please note, a newer package azure-monitor-query for querying logs from Azure Monitor is available at
+        https://search.maven.org/artifact/com.azure/azure-monitor-query as of October 2021. While this package
+        will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the migration guide
+        at https://aka.ms/azsdk/java/migrate/monitorquery for more details.</description>
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-data-sdk-parent</artifactId>
@@ -71,7 +75,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.7.9</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>

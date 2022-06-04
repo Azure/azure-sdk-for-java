@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.ThreatIntelligenceIndicatorMetricsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceMetricsListInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ThreatIntelligenceIndicatorMetricsClient.
  */
 public final class ThreatIntelligenceIndicatorMetricsClientImpl implements ThreatIntelligenceIndicatorMetricsClient {
-    private final ClientLogger logger = new ClientLogger(ThreatIntelligenceIndicatorMetricsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ThreatIntelligenceIndicatorMetricsService service;
 
@@ -185,15 +182,7 @@ public final class ThreatIntelligenceIndicatorMetricsClientImpl implements Threa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ThreatIntelligenceMetricsListInner> listAsync(String resourceGroupName, String workspaceName) {
-        return listWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<ThreatIntelligenceMetricsListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

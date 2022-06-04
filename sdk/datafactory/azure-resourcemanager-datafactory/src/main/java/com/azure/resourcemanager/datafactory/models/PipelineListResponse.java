@@ -7,15 +7,12 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.PipelineResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of pipeline resources. */
 @Fluent
 public final class PipelineListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineListResponse.class);
-
     /*
      * List of pipelines.
      */
@@ -75,11 +72,13 @@ public final class PipelineListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model PipelineListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineListResponse.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Anomalies property bag. */
 @Immutable
 public final class AnomaliesSettingsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AnomaliesSettingsProperties.class);
-
     /*
      * Determines whether the setting is enable or disabled.
      */

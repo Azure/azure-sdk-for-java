@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
@@ -120,7 +121,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return attemptSync(context, next, context.getHttpRequest(), 0);
     }
 
@@ -146,7 +147,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return Mono.just(httpResponse);
                 }
             })
-            .onErrorResume(err -> {
+            .onErrorResume(Exception.class, err -> {
                 if (shouldRetryException(err, tryCount)) {
                     LOGGER.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
@@ -158,7 +159,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             });
     }
 
-    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
+    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextSyncPolicy next,
                                             final HttpRequest originalHttpRequest, final int tryCount) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
@@ -174,7 +175,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("interrupted", ie));
                 }
                 return attemptSync(context, next, originalHttpRequest, tryCount + 1);
             } else {

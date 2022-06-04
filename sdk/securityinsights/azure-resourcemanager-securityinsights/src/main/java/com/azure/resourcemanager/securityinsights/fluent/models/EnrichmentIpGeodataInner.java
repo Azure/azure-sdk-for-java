@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Geodata information for a given IP address. */
 @Fluent
 public final class EnrichmentIpGeodataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichmentIpGeodataInner.class);
-
     /*
      * The autonomous system number associated with this IP address
      */

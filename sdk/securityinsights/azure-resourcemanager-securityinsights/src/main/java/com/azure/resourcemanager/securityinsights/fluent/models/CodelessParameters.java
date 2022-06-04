@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.CodelessUiConnectorConfigProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents Codeless UI data connector. */
 @Fluent
 public final class CodelessParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CodelessParameters.class);
-
     /*
      * Config to describe the instructions blade
      */

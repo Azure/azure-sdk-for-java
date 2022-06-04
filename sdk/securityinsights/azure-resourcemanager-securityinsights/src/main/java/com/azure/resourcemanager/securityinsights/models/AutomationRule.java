@@ -62,7 +62,7 @@ public interface AutomationRule {
     int order();
 
     /**
-     * Gets the triggeringLogic property: The triggering logic of the automation rule.
+     * Gets the triggeringLogic property: Describes automation rule triggering logic.
      *
      * @return the triggeringLogic value.
      */
@@ -76,13 +76,6 @@ public interface AutomationRule {
     List<AutomationRuleAction> actions();
 
     /**
-     * Gets the createdTimeUtc property: The time the automation rule was created.
-     *
-     * @return the createdTimeUtc value.
-     */
-    OffsetDateTime createdTimeUtc();
-
-    /**
      * Gets the lastModifiedTimeUtc property: The last time the automation rule was updated.
      *
      * @return the lastModifiedTimeUtc value.
@@ -90,18 +83,32 @@ public interface AutomationRule {
     OffsetDateTime lastModifiedTimeUtc();
 
     /**
-     * Gets the createdBy property: Describes the client that created the automation rule.
+     * Gets the createdTimeUtc property: The time the automation rule was created.
+     *
+     * @return the createdTimeUtc value.
+     */
+    OffsetDateTime createdTimeUtc();
+
+    /**
+     * Gets the lastModifiedBy property: Information on the client (user or application) that made some action.
+     *
+     * @return the lastModifiedBy value.
+     */
+    ClientInfo lastModifiedBy();
+
+    /**
+     * Gets the createdBy property: Information on the client (user or application) that made some action.
      *
      * @return the createdBy value.
      */
     ClientInfo createdBy();
 
     /**
-     * Gets the lastModifiedBy property: Describes the client that last updated the automation rule.
+     * Gets the name of the resource group.
      *
-     * @return the lastModifiedBy value.
+     * @return the name of the resource group.
      */
-    ClientInfo lastModifiedBy();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.AutomationRuleInner object.
@@ -112,7 +119,13 @@ public interface AutomationRule {
 
     /** The entirety of the AutomationRule definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithParentResource,
+            DefinitionStages.WithDisplayName,
+            DefinitionStages.WithOrder,
+            DefinitionStages.WithTriggeringLogic,
+            DefinitionStages.WithActions,
+            DefinitionStages.WithCreate {
     }
     /** The AutomationRule definition stages. */
     interface DefinitionStages {
@@ -128,18 +141,53 @@ public interface AutomationRule {
              * @param workspaceName The name of the workspace.
              * @return the next definition stage.
              */
-            WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
+            WithDisplayName withExistingWorkspace(String resourceGroupName, String workspaceName);
+        }
+        /** The stage of the AutomationRule definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: The display name of the automation rule.
+             *
+             * @param displayName The display name of the automation rule.
+             * @return the next definition stage.
+             */
+            WithOrder withDisplayName(String displayName);
+        }
+        /** The stage of the AutomationRule definition allowing to specify order. */
+        interface WithOrder {
+            /**
+             * Specifies the order property: The order of execution of the automation rule.
+             *
+             * @param order The order of execution of the automation rule.
+             * @return the next definition stage.
+             */
+            WithTriggeringLogic withOrder(int order);
+        }
+        /** The stage of the AutomationRule definition allowing to specify triggeringLogic. */
+        interface WithTriggeringLogic {
+            /**
+             * Specifies the triggeringLogic property: Describes automation rule triggering logic.
+             *
+             * @param triggeringLogic Describes automation rule triggering logic.
+             * @return the next definition stage.
+             */
+            WithActions withTriggeringLogic(AutomationRuleTriggeringLogic triggeringLogic);
+        }
+        /** The stage of the AutomationRule definition allowing to specify actions. */
+        interface WithActions {
+            /**
+             * Specifies the actions property: The actions to execute when the automation rule is triggered.
+             *
+             * @param actions The actions to execute when the automation rule is triggered.
+             * @return the next definition stage.
+             */
+            WithCreate withActions(List<AutomationRuleAction> actions);
         }
         /**
          * The stage of the AutomationRule definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithEtag,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithOrder,
-                DefinitionStages.WithTriggeringLogic,
-                DefinitionStages.WithActions {
+        interface WithCreate extends DefinitionStages.WithEtag {
             /**
              * Executes the create request.
              *
@@ -164,46 +212,6 @@ public interface AutomationRule {
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
-        }
-        /** The stage of the AutomationRule definition allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: The display name of the automation rule.
-             *
-             * @param displayName The display name of the automation rule.
-             * @return the next definition stage.
-             */
-            WithCreate withDisplayName(String displayName);
-        }
-        /** The stage of the AutomationRule definition allowing to specify order. */
-        interface WithOrder {
-            /**
-             * Specifies the order property: The order of execution of the automation rule.
-             *
-             * @param order The order of execution of the automation rule.
-             * @return the next definition stage.
-             */
-            WithCreate withOrder(int order);
-        }
-        /** The stage of the AutomationRule definition allowing to specify triggeringLogic. */
-        interface WithTriggeringLogic {
-            /**
-             * Specifies the triggeringLogic property: The triggering logic of the automation rule.
-             *
-             * @param triggeringLogic The triggering logic of the automation rule.
-             * @return the next definition stage.
-             */
-            WithCreate withTriggeringLogic(AutomationRuleTriggeringLogic triggeringLogic);
-        }
-        /** The stage of the AutomationRule definition allowing to specify actions. */
-        interface WithActions {
-            /**
-             * Specifies the actions property: The actions to execute when the automation rule is triggered.
-             *
-             * @param actions The actions to execute when the automation rule is triggered.
-             * @return the next definition stage.
-             */
-            WithCreate withActions(List<AutomationRuleAction> actions);
         }
     }
     /**
@@ -270,9 +278,9 @@ public interface AutomationRule {
         /** The stage of the AutomationRule update allowing to specify triggeringLogic. */
         interface WithTriggeringLogic {
             /**
-             * Specifies the triggeringLogic property: The triggering logic of the automation rule.
+             * Specifies the triggeringLogic property: Describes automation rule triggering logic.
              *
-             * @param triggeringLogic The triggering logic of the automation rule.
+             * @param triggeringLogic Describes automation rule triggering logic.
              * @return the next definition stage.
              */
             Update withTriggeringLogic(AutomationRuleTriggeringLogic triggeringLogic);

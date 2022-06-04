@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
@@ -24,7 +25,6 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HttpPipelinePolicyTests {
 
@@ -87,21 +87,6 @@ public class HttpPipelinePolicyTests {
         );
     }
 
-    @Test
-    public void throwsIfAsyncPolicyCallsIntoSyncInAsyncContext() throws Exception {
-        SyncAsyncPolicy policy1 = new SyncAsyncPolicy();
-        SyncAsyncPolicy policy2 = new SyncAsyncPolicy();
-        HttpPipelinePolicy badPolicy = (context, next) -> Mono.fromCallable(next::processSync);
-        URL url = new URL("http://localhost/");
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(policy1, badPolicy, policy2)
-            .build();
-
-        assertThrows(IllegalStateException.class, () -> pipeline.send(new HttpRequest(HttpMethod.GET, url)).block());
-    }
-
     /**
      * This is to cover case when reactor could complain about blocking on non blocking thread.
      * @throws MalformedURLException ignored.
@@ -136,7 +121,7 @@ public class HttpPipelinePolicyTests {
         }
 
         @Override
-        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
             syncCalls.incrementAndGet();
             return next.processSync();
         }

@@ -9,7 +9,43 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions Get. */
 public final class EventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicHybridConnectionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicServiceBusTopicDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResourceGroup.
@@ -27,7 +63,25 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_EventHubDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_EventHubDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicEventHubDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetForSubscription.
@@ -43,7 +97,43 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_WebhookDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_WebhookDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicWebhookDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicAzureFunctionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic.
@@ -61,7 +151,25 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_StorageQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicStorageQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResource.
@@ -73,6 +181,24 @@ public final class EventSubscriptionsGetSamples {
             .eventSubscriptions()
             .getWithResponse(
                 "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicServiceBusQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
                 "examplesubscription1",
                 Context.NONE);
     }

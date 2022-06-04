@@ -19,7 +19,7 @@ public interface ProductGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation.
+     * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<GroupContract> listByProduct(String resourceGroupName, String serviceName, String productId);
 
@@ -39,7 +39,7 @@ public interface ProductGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation.
+     * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<GroupContract> listByProduct(
         String resourceGroupName,
@@ -74,7 +74,7 @@ public interface ProductGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> checkEntityExistsWithResponse(
         String resourceGroupName, String serviceName, String productId, String groupId, Context context);
@@ -104,7 +104,7 @@ public interface ProductGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contract details.
+     * @return contract details along with {@link Response}.
      */
     Response<GroupContract> createOrUpdateWithResponse(
         String resourceGroupName, String serviceName, String productId, String groupId, Context context);
@@ -133,7 +133,7 @@ public interface ProductGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String productId, String groupId, Context context);

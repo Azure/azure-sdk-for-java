@@ -125,7 +125,8 @@ class CBSChannelTest extends IntegrationTestBase {
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience))
             .assertNext(expiration -> OffsetDateTime.now().isBefore(expiration))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
@@ -155,7 +156,7 @@ class CBSChannelTest extends IntegrationTestBase {
                 Assertions.assertFalse(exception.isTransient());
                 Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
             })
-            .verify();
+            .verify(TIMEOUT);
     }
 
     private static final class TestReactorConnection extends ReactorConnection {

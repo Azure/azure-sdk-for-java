@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption identity for the storage account. */
 @Fluent
 public class EncryptionIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionIdentity.class);
-
     /*
      * Resource identifier of the UserAssigned identity to be associated with
      * server-side encryption on the storage account.

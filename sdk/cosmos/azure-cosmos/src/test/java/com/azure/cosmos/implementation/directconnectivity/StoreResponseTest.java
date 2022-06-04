@@ -19,7 +19,7 @@ public class StoreResponseTest {
         headerMap.put("key1", "value1");
         headerMap.put("key2", "value2");
 
-        StoreResponse sp = new StoreResponse(200, new ArrayList<>(headerMap.entrySet()), getUTF8BytesOrNull(content));
+        StoreResponse sp = new StoreResponse(200, headerMap, getUTF8BytesOrNull(content));
 
         assertThat(sp.getStatus()).isEqualTo(200);
         assertThat(sp.getResponseBody()).isEqualTo(getUTF8BytesOrNull(content));

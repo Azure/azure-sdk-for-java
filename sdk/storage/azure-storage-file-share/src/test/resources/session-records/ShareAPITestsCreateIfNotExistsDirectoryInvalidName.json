@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/6f0a1dfc6f0a1dfcf0840584f8b21dda60c64b09ba?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b0c5ff6-6c3b-43f2-8eb6-568e91de71cf"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F7BFCEF97F0",
+      "Last-Modified" : "Sat, 16 Apr 2022 07:37:41 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b5ba6645-001a-0007-1664-517e9b000000",
+      "x-ms-client-request-id" : "7b0c5ff6-6c3b-43f2-8eb6-568e91de71cf",
+      "Date" : "Sat, 16 Apr 2022 07:37:40 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/6f0a1dfc6f0a1dfcf0840584f8b21dda60c64b09ba/test%2Fdirectory?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5045523-ddd3-441f-aed6-4c4cbaf81d98"
+    },
+    "Response" : {
+      "content-length" : "224",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "6af41a6e-401a-0029-1164-512c8c000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:6af41a6e-401a-0029-1164-512c8c000000\nTime:2022-04-16T07:37:41.3686890Z</Message></Error>",
+      "x-ms-client-request-id" : "f5045523-ddd3-441f-aed6-4c4cbaf81d98",
+      "Date" : "Sat, 16 Apr 2022 07:37:40 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "6f0a1dfc6f0a1dfcf0840584f8b21dda60c64b09ba" ]
+}

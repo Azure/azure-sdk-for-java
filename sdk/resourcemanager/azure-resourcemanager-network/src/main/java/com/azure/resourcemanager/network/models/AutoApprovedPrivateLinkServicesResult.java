@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AutoApprovedPrivateLinkServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of private link service id that can be linked to a private end point with auto approved. */
 @Fluent
 public final class AutoApprovedPrivateLinkServicesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoApprovedPrivateLinkServicesResult.class);
-
     /*
      * An array of auto approved private link service.
      */

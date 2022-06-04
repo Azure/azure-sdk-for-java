@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ASC (Azure Security Center) requirements check properties. */
 @Fluent
 public final class AscCheckRequirementsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AscCheckRequirementsProperties.class);
-
     /*
      * The subscription id to connect to, and get the data from.
      */

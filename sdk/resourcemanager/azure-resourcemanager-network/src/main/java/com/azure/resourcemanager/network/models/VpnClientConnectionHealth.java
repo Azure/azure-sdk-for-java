@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnClientConnectionHealth properties. */
 @Fluent
 public final class VpnClientConnectionHealth {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealth.class);
-
     /*
      * Total of the Ingress Bytes Transferred in this P2S Vpn connection.
      */

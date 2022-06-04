@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeAuthKey
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeAuthKeys;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeAuthKeysOperations;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeAuthKeysOperationsImpl implements IntegrationRuntimeAuthKeysOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeAuthKeysOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeAuthKeysOperationsImpl.class);
 
     private final IntegrationRuntimeAuthKeysOperationsClient innerClient;
 

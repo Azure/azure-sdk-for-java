@@ -13,10 +13,10 @@ import com.azure.resourcemanager.securityinsights.fluent.WatchlistsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistInner;
 import com.azure.resourcemanager.securityinsights.models.Watchlist;
 import com.azure.resourcemanager.securityinsights.models.Watchlists;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.securityinsights.models.WatchlistsDeleteResponse;
 
 public final class WatchlistsImpl implements Watchlists {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchlistsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WatchlistsImpl.class);
 
     private final WatchlistsClient innerClient;
 
@@ -34,8 +34,10 @@ public final class WatchlistsImpl implements Watchlists {
         return Utils.mapPage(inner, inner1 -> new WatchlistImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Watchlist> list(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<WatchlistInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, context);
+    public PagedIterable<Watchlist> list(
+        String resourceGroupName, String workspaceName, String skipToken, Context context) {
+        PagedIterable<WatchlistInner> inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, skipToken, context);
         return Utils.mapPage(inner, inner1 -> new WatchlistImpl(inner1, this.manager()));
     }
 
@@ -67,7 +69,7 @@ public final class WatchlistsImpl implements Watchlists {
         this.serviceClient().delete(resourceGroupName, workspaceName, watchlistAlias);
     }
 
-    public Response<Void> deleteWithResponse(
+    public WatchlistsDeleteResponse deleteWithResponse(
         String resourceGroupName, String workspaceName, String watchlistAlias, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, context);
     }
@@ -75,7 +77,7 @@ public final class WatchlistsImpl implements Watchlists {
     public Watchlist getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,14 +85,14 @@ public final class WatchlistsImpl implements Watchlists {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
@@ -101,7 +103,7 @@ public final class WatchlistsImpl implements Watchlists {
     public Response<Watchlist> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,14 +111,14 @@ public final class WatchlistsImpl implements Watchlists {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
@@ -127,7 +129,7 @@ public final class WatchlistsImpl implements Watchlists {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,14 +137,14 @@ public final class WatchlistsImpl implements Watchlists {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));
@@ -150,10 +152,10 @@ public final class WatchlistsImpl implements Watchlists {
         this.deleteWithResponse(resourceGroupName, workspaceName, watchlistAlias, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public WatchlistsDeleteResponse deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,14 +163,14 @@ public final class WatchlistsImpl implements Watchlists {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String watchlistAlias = Utils.getValueFromIdByName(id, "watchlists");
         if (watchlistAlias == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchlists'.", id)));

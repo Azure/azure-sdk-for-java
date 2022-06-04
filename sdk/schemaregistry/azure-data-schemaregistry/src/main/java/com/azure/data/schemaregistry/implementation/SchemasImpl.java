@@ -52,7 +52,7 @@ public final class SchemasImpl {
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "AzureSchemaRegistryS")
-    private interface SchemasService {
+    public interface SchemasService {
         @Get("/$schemaGroups/$schemas/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)

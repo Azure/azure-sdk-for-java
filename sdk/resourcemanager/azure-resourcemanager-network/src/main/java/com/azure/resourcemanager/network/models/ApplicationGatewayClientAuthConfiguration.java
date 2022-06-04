@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application gateway client authentication configuration. */
 @Fluent
 public final class ApplicationGatewayClientAuthConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayClientAuthConfiguration.class);
-
     /*
      * Verify client certificate issuer name on the application gateway.
      */

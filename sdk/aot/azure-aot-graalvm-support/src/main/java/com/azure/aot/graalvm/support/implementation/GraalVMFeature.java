@@ -44,21 +44,19 @@ public interface GraalVMFeature extends Feature {
         // Before we do that, we validate each of the classes specified can be found on the classpath.
         // If we can't find **all** of them, we don't proceed and we log an error to the console.
         final Set<String> missingClasses = new TreeSet<>(String::compareTo);
-        if (!reflectionClasses.isEmpty()) {
-            reflectionClasses.forEach(cls -> {
-                if (!findClass(access, cls.getName()).isPresent()) {
-                    missingClasses.add(cls.getName());
+        reflectionClasses.forEach(cls -> {
+            if (!findClass(access, cls.getName()).isPresent()) {
+                missingClasses.add(cls.getName());
+            }
+        });
+
+        dynamicProxies.forEach(interfaces -> {
+            Arrays.stream(interfaces).forEach(cls -> {
+                if (!findClass(access, cls).isPresent()) {
+                    missingClasses.add(cls);
                 }
             });
-
-            dynamicProxies.forEach(interfaces -> {
-                Arrays.stream(interfaces).forEach(cls -> {
-                    if (!findClass(access, cls).isPresent()) {
-                        missingClasses.add(cls);
-                    }
-                });
-            });
-        }
+        });
 
         if (!missingClasses.isEmpty()) {
             System.out.println("AZURE SDK: Not registering Azure GraalVM support for " + getClass()

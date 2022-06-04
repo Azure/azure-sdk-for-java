@@ -53,7 +53,7 @@ public final class EntitiesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface EntitiesService {
+    public interface EntitiesService {
         @Post("/atlas/v2/entity")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

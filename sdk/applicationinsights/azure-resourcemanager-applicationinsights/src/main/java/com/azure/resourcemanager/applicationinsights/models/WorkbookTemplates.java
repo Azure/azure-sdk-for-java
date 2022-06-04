@@ -17,7 +17,8 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group.
+     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkbookTemplate> listByResourceGroup(String resourceGroupName);
 
@@ -29,7 +30,8 @@ public interface WorkbookTemplates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group.
+     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkbookTemplate> listByResourceGroup(String resourceGroupName, Context context);
 

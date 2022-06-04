@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** siteCollection. */
 @Fluent
 public final class MicrosoftGraphSiteCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSiteCollection.class);
-
     /*
      * The geographic region code for where this site collection resides.
      * Read-only.
@@ -35,6 +33,7 @@ public final class MicrosoftGraphSiteCollection {
      * root
      */
     @JsonProperty(value = "root")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*

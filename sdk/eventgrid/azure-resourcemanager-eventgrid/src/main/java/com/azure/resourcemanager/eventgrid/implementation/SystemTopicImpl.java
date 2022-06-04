@@ -45,12 +45,12 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         }
     }
 
-    public IdentityInfo identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public IdentityInfo identity() {
+        return this.innerModel().identity();
     }
 
     public ResourceProvisioningState provisioningState() {
@@ -75,6 +75,10 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SystemTopicInner innerModel() {

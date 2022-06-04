@@ -16,7 +16,7 @@ public interface TagResourceContract {
     TagResourceContractProperties tag();
 
     /**
-     * Gets the api property: Api associated with the tag.
+     * Gets the api property: API associated with the tag.
      *
      * @return the api value.
      */

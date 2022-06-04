@@ -10,6 +10,27 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks ListByResourceGroup. */
 public final class WorkbooksListByResourceGroupSamples {
     /*
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksManagedList.json
+     */
+    /**
+     * Sample code: WorkbooksManagedList.
+     *
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void workbooksManagedList(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager
+            .workbooks()
+            .listByResourceGroup(
+                "my-resource-group",
+                CategoryType.WORKBOOK,
+                null,
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
+                null,
+                Context.NONE);
+    }
+
+    /*
      * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList.json
      */
     /**
@@ -24,7 +45,7 @@ public final class WorkbooksListByResourceGroupSamples {
                 "my-resource-group",
                 CategoryType.WORKBOOK,
                 null,
-                "/subscriptions/ad2f1a83-caac-4e21-9d2a-9ca3f87105e2/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/MyTestApp-CodeLens1",
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
                 null,
                 Context.NONE);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Plan for the resource. */
 @Fluent
 public final class Plan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Plan.class);
-
     /*
      * The plan ID.
      */

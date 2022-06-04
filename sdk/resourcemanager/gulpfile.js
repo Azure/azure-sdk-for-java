@@ -35,12 +35,12 @@ async function defaultInfo() {
     });
 
     console.log("--autorest");
-    console.log("\tThe version of AutoRest Core. E.g. 3.0.6368, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
+    console.log("\tThe version of AutoRest Core. E.g. 3.8.1, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
 
     console.log("--autorest-java");
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
-    console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+    console.log("\tSee https://github.com/Azure/autorest/blob/main/docs/developer/writing-an-extension.md");
 
     console.log("--debug");
     console.log("\tFlag that allows you to attach a debugger to the autorest.java generator.");
@@ -55,7 +55,7 @@ async function defaultInfo() {
 
 const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var projects = args['projects'];
-var autoRestVersion = 'latest'; // default
+var autoRestVersion = '3.8.1'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -131,7 +131,7 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true ' +
+                        ' --modelerfour.additional-checks=false --modelerfour.lenient-model-deduplication=true ' +
                         ' --generate-samples ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
@@ -155,6 +155,7 @@ function codegen(project, cb) {
     // move generated samples to azure-resourcemanager
     generatedSamplesSource = path.join(mappings[project].dir, '/src/samples/java/', packagePath, 'generated');
     generatedSamplesTarget = path.join('azure-resourcemanager/src/samples/java/', packagePath);
+    
     copyFolderRecursiveSync(generatedSamplesSource, generatedSamplesTarget);
     deleteFolderRecursive(generatedSamplesSource);
 
@@ -193,25 +194,27 @@ function copyFileSync(source, target) {
 }
 
 function copyFolderRecursiveSync(source, target) {
-    var files = [];
+    if (fs.existsSync(source)) {
+        var files = [];
 
-    // Check if folder needs to be created or integrated
-    var targetFolder = path.join( target, path.basename( source ) );
-    if ( !fs.existsSync( targetFolder ) ) {
-        fs.mkdirSync( targetFolder, { recursive: true } );
-    }
+        // Check if folder needs to be created or integrated
+        var targetFolder = path.join( target, path.basename( source ) );
+        if ( !fs.existsSync( targetFolder ) ) {
+            fs.mkdirSync( targetFolder, { recursive: true } );
+        }
 
-    // Copy
-    if ( fs.lstatSync( source ).isDirectory() ) {
-        files = fs.readdirSync( source );
-        files.forEach( function ( file ) {
-            var curSource = path.join( source, file );
-            if ( fs.lstatSync( curSource ).isDirectory() ) {
-                copyFolderRecursiveSync( curSource, targetFolder );
-            } else {
-                copyFileSync( curSource, targetFolder );
-            }
-        } );
+        // Copy
+        if ( fs.lstatSync( source ).isDirectory() ) {
+            files = fs.readdirSync( source );
+            files.forEach( function ( file ) {
+                var curSource = path.join( source, file );
+                if ( fs.lstatSync( curSource ).isDirectory() ) {
+                    copyFolderRecursiveSync( curSource, targetFolder );
+                } else {
+                    copyFileSync( curSource, targetFolder );
+                }
+            } );
+        }
     }
 }
 

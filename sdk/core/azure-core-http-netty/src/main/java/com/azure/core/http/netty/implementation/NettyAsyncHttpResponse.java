@@ -10,6 +10,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.http.client.HttpClientResponse;
@@ -17,8 +18,12 @@ import reactor.netty.http.client.HttpClientResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 import static com.azure.core.http.netty.implementation.Utility.deepCopyBuffer;
@@ -79,22 +84,65 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // However it seems that buffers here don't have backing arrays. And for files we should probably have
         // writeTo(Channel) API.
         byte[] buffer = new byte[8 * 1024];
-        bodyIntern().flatMap(byteBuff -> {
-            while (byteBuff.isReadable()) {
+        bodyIntern()
+            .retain()
+            // https://github.com/reactor/reactor-netty/issues/2096#issuecomment-1068832894
+            .publishOn(Schedulers.boundedElastic())
+            .map(byteBuff -> {
                 try {
-                    // TODO (kasobol-msft) this could be optimized further,i.e. make sure we're utilizing
-                    // whole buffer before passing to outputstream.
-                    int numberOfBytes = Math.min(buffer.length, byteBuff.readableBytes());
-                    byteBuff.readBytes(buffer, 0, numberOfBytes);
-                    // TODO (kasobol-msft) consider farming this out to Schedulers.boundedElastic.
-                    // https://github.com/reactor/reactor-netty/issues/2096#issuecomment-1068832894
-                    outputStream.write(buffer, 0, numberOfBytes);
+                    while (byteBuff.isReadable()) {
+                        // TODO (kasobol-msft) this could be optimized further,i.e. make sure we're utilizing
+                        // whole buffer before passing to outputstream.
+                        int numberOfBytes = Math.min(buffer.length, byteBuff.readableBytes());
+                        byteBuff.readBytes(buffer, 0, numberOfBytes);
+                        outputStream.write(buffer, 0, numberOfBytes);
+                    }
                 } catch (IOException e) {
-                    return Mono.error(e);
+                    throw new UncheckedIOException(e);
+                } finally {
+                    byteBuff.release();
                 }
-            }
-            return Mono.empty();
-        }).blockLast();
+                return byteBuff;
+            }).blockLast();
+    }
+
+    @Override
+    public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        // The code below uses ByteBuff.retain/release internally to make sure that buffers are not reclaimed
+        // before AsynchronousFileChannel finishes async writes.
+        /*
+        TODO (kasobol-msft) this implementation process buffer by buffer to keep track of write position.
+        We should consider a position tracker that's based on buffer sizes and then issue multiple
+        simultaneous writes.
+         */
+        return Utility.writeFile(
+            bodyIntern().doFinally(ignored -> close()),
+            asynchronousFileChannel,
+            position
+        );
+    }
+
+    @Override
+    public void writeBodyTo(FileChannel fileChannel, long position) {
+        AtomicLong currentPosition = new AtomicLong(position);
+        bodyIntern()
+            .retain()
+            // https://github.com/reactor/reactor-netty/issues/2096#issuecomment-1068832894
+            .publishOn(Schedulers.boundedElastic())
+            .map(buffer -> {
+                try {
+                    ByteBuffer nioBuffer = buffer.nioBuffer();
+                    while (nioBuffer.hasRemaining()) {
+                        int written = fileChannel.write(nioBuffer, currentPosition.get());
+                        currentPosition.addAndGet(written);
+                    }
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                } finally {
+                    buffer.release();
+                }
+                return buffer;
+            }).blockLast();
     }
 
     private ByteBufFlux bodyIntern() {

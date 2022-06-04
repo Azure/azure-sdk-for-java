@@ -7,14 +7,11 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Create subscription operation. */
 @Fluent
 public final class SubscriptionCreateParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionCreateParameterProperties.class);
-
     /*
      * User (user id path) for whom subscription is being created in form
      * /users/{userId}
@@ -229,16 +226,18 @@ public final class SubscriptionCreateParameterProperties {
      */
     public void validate() {
         if (scope() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scope in model SubscriptionCreateParameterProperties"));
         }
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model SubscriptionCreateParameterProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionCreateParameterProperties.class);
 }

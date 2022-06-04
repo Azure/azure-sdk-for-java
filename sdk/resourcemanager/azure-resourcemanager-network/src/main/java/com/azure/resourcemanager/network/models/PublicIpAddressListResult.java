@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListPublicIpAddresses API service call. */
 @Fluent
 public final class PublicIpAddressListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressListResult.class);
-
     /*
      * A list of public IP addresses that exists in a resource group.
      */

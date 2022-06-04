@@ -22,7 +22,7 @@ public interface WatchlistItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items.
+     * @return all watchlist Items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WatchlistItemInner> list(String resourceGroupName, String workspaceName, String watchlistAlias);
@@ -33,15 +33,18 @@ public interface WatchlistItemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param watchlistAlias Watchlist Alias.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items.
+     * @return all watchlist Items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WatchlistItemInner> list(
-        String resourceGroupName, String workspaceName, String watchlistAlias, Context context);
+        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken, Context context);
 
     /**
      * Gets a watchlist, without its watchlist items.

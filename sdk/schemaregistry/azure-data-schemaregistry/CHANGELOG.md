@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2022-05-13)
+
+### Features Added
+
+- Added `SchemaProperties.getGroupName()`.
+- Added `SchemaProperties.getName()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.28.0`.
+- Update `azure-core-http-netty` dependency to `1.12.0`.
+
+## 1.1.1 (2022-04-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.27.0`.
+- Update `azure-core-http-netty` dependency to `1.11.9`.
 
 ## 1.1.0 (2022-03-15)
 

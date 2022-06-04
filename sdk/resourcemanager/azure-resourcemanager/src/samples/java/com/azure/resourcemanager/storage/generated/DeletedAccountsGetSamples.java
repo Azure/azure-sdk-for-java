@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DeletedAccounts Get. */
 public final class DeletedAccountsGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/DeletedAccountGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/DeletedAccountGet.json
      */
     /**
      * Sample code: DeletedAccountGet.

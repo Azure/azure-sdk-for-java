@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligence;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +14,6 @@ import java.util.UUID;
 /** IoTDevice entity property bag. */
 @Immutable
 public final class IoTDeviceEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTDeviceEntityProperties.class);
-
     /*
      * The ID of the IoT Device in the IoT Hub
      */

@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.EntitiesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityExpandResponseInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityGetInsightsResponseInner;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EntitiesClient. */
 public final class EntitiesClientImpl implements EntitiesClient {
-    private final ClientLogger logger = new ClientLogger(EntitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EntitiesService service;
 
@@ -278,7 +275,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entities.
+     * @return all entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -295,7 +292,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entities.
+     * @return all entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityInner> listAsync(String resourceGroupName, String workspaceName, Context context) {
@@ -312,7 +309,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entities.
+     * @return all entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityInner> list(String resourceGroupName, String workspaceName) {
@@ -328,7 +325,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entities.
+     * @return all entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityInner> list(String resourceGroupName, String workspaceName, Context context) {
@@ -453,14 +450,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EntityInner> getAsync(String resourceGroupName, String workspaceName, String entityId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, entityId)
-            .flatMap(
-                (Response<EntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -637,14 +627,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     private Mono<EntityExpandResponseInner> expandAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityExpandParameters parameters) {
         return expandWithResponseAsync(resourceGroupName, workspaceName, entityId, parameters)
-            .flatMap(
-                (Response<EntityExpandResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -820,14 +803,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     private Mono<GetQueriesResponseInner> queriesAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityItemQueryKind kind) {
         return queriesWithResponseAsync(resourceGroupName, workspaceName, entityId, kind)
-            .flatMap(
-                (Response<GetQueriesResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1007,14 +983,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
     private Mono<EntityGetInsightsResponseInner> getInsightsAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityGetInsightsParameters parameters) {
         return getInsightsWithResponseAsync(resourceGroupName, workspaceName, entityId, parameters)
-            .flatMap(
-                (Response<EntityGetInsightsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

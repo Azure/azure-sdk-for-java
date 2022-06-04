@@ -1,6 +1,6 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.15.0 (2022-05-25)
+
+### Bugs Fixed
+
+- Fixed a bug that configure of `RetryOptions` does not take effect.
+
+## 2.14.0 (2022-04-11)
+
+### Features Added
+
+- Supported `authenticate(HttpPipeline, AzureProfile)` in managers.
 
 ## 2.13.0 (2022-03-11)
 

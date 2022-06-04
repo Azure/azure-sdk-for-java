@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.BookmarkRelationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import com.azure.resourcemanager.securityinsights.models.RelationList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BookmarkRelationsClient. */
 public final class BookmarkRelationsClientImpl implements BookmarkRelationsClient {
-    private final ClientLogger logger = new ClientLogger(BookmarkRelationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BookmarkRelationsService service;
 
@@ -318,7 +315,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations.
+     * @return all bookmark relations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(
@@ -343,7 +340,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations.
+     * @return all bookmark relations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(String resourceGroupName, String workspaceName, String bookmarkId) {
@@ -372,7 +369,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations.
+     * @return all bookmark relations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationInner> listAsync(
@@ -400,7 +397,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations.
+     * @return all bookmark relations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(String resourceGroupName, String workspaceName, String bookmarkId) {
@@ -428,7 +425,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmark relations.
+     * @return all bookmark relations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelationInner> list(
@@ -574,14 +571,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
     private Mono<RelationInner> getAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, relationName)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -780,14 +770,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
         String relationName,
         RelationInner relation) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, relationName, relation)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -970,7 +953,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, relationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.ManagementLocksClient;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -43,8 +42,6 @@ public final class ManagementLocksClientImpl
         InnerSupportsListing<ManagementLockObjectInner>,
         InnerSupportsDelete<Void>,
         ManagementLocksClient {
-    private final ClientLogger logger = new ClientLogger(ManagementLocksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagementLocksService service;
 
@@ -85,7 +82,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks"
                 + "/{lockName}")
@@ -97,6 +94,7 @@ public final class ManagementLocksClientImpl
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -127,7 +125,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Authorization/locks/{lockName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -136,6 +134,7 @@ public final class ManagementLocksClientImpl
             @PathParam("scope") String scope,
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -171,7 +170,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks"
@@ -188,6 +187,7 @@ public final class ManagementLocksClientImpl
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -223,7 +223,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -232,6 +232,7 @@ public final class ManagementLocksClientImpl
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -477,14 +478,7 @@ public final class ManagementLocksClientImpl
     public Mono<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(
         String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -561,6 +555,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -571,6 +566,7 @@ public final class ManagementLocksClientImpl
                             lockName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -608,6 +604,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -616,6 +613,7 @@ public final class ManagementLocksClientImpl
                 lockName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -632,7 +630,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String lockName) {
-        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -776,14 +774,7 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getByResourceGroupAsync(String resourceGroupName, String lockName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -931,14 +922,7 @@ public final class ManagementLocksClientImpl
     public Mono<ManagementLockObjectInner> createOrUpdateByScopeAsync(
         String scope, String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateByScopeWithResponseAsync(scope, lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1008,12 +992,13 @@ public final class ManagementLocksClientImpl
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .deleteByScope(
-                            this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), context))
+                            this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1042,8 +1027,10 @@ public final class ManagementLocksClientImpl
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), context);
+        return service
+            .deleteByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1058,7 +1045,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByScopeAsync(String scope, String lockName) {
-        return deleteByScopeWithResponseAsync(scope, lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteByScopeWithResponseAsync(scope, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1169,15 +1156,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getByScopeAsync(String scope, String lockName) {
-        return getByScopeWithResponseAsync(scope, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByScopeWithResponseAsync(scope, lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1421,14 +1400,7 @@ public final class ManagementLocksClientImpl
                 resourceName,
                 lockName,
                 parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1568,6 +1540,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1582,6 +1555,7 @@ public final class ManagementLocksClientImpl
                             lockName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1646,6 +1620,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteAtResourceLevel(
@@ -1658,6 +1633,7 @@ public final class ManagementLocksClientImpl
                 lockName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1686,7 +1662,7 @@ public final class ManagementLocksClientImpl
         String lockName) {
         return deleteAtResourceLevelWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1931,14 +1907,7 @@ public final class ManagementLocksClientImpl
         String lockName) {
         return getAtResourceLevelWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2122,14 +2091,7 @@ public final class ManagementLocksClientImpl
     public Mono<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(
         String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtSubscriptionLevelWithResponseAsync(lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2198,6 +2160,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2207,6 +2170,7 @@ public final class ManagementLocksClientImpl
                             lockName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2239,6 +2203,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteAtSubscriptionLevel(
@@ -2246,6 +2211,7 @@ public final class ManagementLocksClientImpl
                 lockName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -2261,7 +2227,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionLevelAsync(String lockName) {
-        return deleteAtSubscriptionLevelWithResponseAsync(lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtSubscriptionLevelWithResponseAsync(lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2388,15 +2354,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getAtSubscriptionLevelAsync(String lockName) {
-        return getAtSubscriptionLevelWithResponseAsync(lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtSubscriptionLevelWithResponseAsync(lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

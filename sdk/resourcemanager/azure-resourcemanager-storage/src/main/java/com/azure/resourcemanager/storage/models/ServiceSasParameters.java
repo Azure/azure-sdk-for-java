@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The parameters to list service SAS credentials of a specific resource. */
 @Fluent
 public final class ServiceSasParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSasParameters.class);
-
     /*
      * The canonical path to the signed resource.
      */
@@ -500,10 +497,12 @@ public final class ServiceSasParameters {
      */
     public void validate() {
         if (canonicalizedResource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property canonicalizedResource in model ServiceSasParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceSasParameters.class);
 }

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.securityinsights.fluent.DomainWhoisClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EnrichmentDomainWhoisInner;
 import com.azure.resourcemanager.securityinsights.models.DomainWhois;
 import com.azure.resourcemanager.securityinsights.models.EnrichmentDomainWhois;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DomainWhoisImpl implements DomainWhois {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainWhoisImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DomainWhoisImpl.class);
 
     private final DomainWhoisClient innerClient;
 

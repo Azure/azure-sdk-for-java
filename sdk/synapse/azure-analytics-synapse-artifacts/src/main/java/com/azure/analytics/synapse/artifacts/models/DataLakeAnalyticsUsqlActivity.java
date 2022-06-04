@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Data Lake Analytics U-SQL activity. */
@@ -216,6 +217,48 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      */
     public DataLakeAnalyticsUsqlActivity setCompilationMode(Object compilationMode) {
         this.compilationMode = compilationMode;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataLakeAnalyticsUsqlActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

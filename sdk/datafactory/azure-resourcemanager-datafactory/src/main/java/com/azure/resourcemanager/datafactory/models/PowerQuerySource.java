@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Power query source. */
 @Fluent
 public final class PowerQuerySource extends DataFlowSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerQuerySource.class);
-
     /*
      * source script.
      */

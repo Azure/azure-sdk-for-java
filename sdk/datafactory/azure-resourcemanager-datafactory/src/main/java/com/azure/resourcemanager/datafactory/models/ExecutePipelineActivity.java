@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ExecutePipelineActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,37 @@ import java.util.Map;
 @JsonTypeName("ExecutePipeline")
 @Fluent
 public final class ExecutePipelineActivity extends ControlActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutePipelineActivity.class);
+    /*
+     * Execute pipeline activity policy.
+     */
+    @JsonProperty(value = "policy")
+    private ExecutePipelineActivityPolicy policy;
 
     /*
      * Execute pipeline activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ExecutePipelineActivityTypeProperties innerTypeProperties = new ExecutePipelineActivityTypeProperties();
+
+    /**
+     * Get the policy property: Execute pipeline activity policy.
+     *
+     * @return the policy value.
+     */
+    public ExecutePipelineActivityPolicy policy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Execute pipeline activity policy.
+     *
+     * @param policy the policy value to set.
+     * @return the ExecutePipelineActivity object itself.
+     */
+    public ExecutePipelineActivity withPolicy(ExecutePipelineActivityPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
 
     /**
      * Get the innerTypeProperties property: Execute pipeline activity properties.
@@ -143,8 +166,11 @@ public final class ExecutePipelineActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
+        if (policy() != null) {
+            policy().validate();
+        }
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ExecutePipelineActivity"));
@@ -152,4 +178,6 @@ public final class ExecutePipelineActivity extends ControlActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecutePipelineActivity.class);
 }

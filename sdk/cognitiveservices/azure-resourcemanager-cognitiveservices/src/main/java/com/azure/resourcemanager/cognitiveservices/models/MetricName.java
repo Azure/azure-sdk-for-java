@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A metric name. */
 @Fluent
 public final class MetricName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricName.class);
-
     /*
      * The name of the metric.
      */

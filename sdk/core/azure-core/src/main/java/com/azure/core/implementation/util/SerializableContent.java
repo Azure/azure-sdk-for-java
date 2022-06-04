@@ -73,7 +73,7 @@ public final class SerializableContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Mono.fromSupplier(this::toByteBuffer).flux();
+        return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes())).flux();
     }
 
     private byte[] getBytes() {

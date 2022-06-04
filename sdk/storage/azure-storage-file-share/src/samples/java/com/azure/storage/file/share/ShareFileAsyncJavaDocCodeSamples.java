@@ -1139,4 +1139,33 @@ public class ShareFileAsyncJavaDocCodeSamples {
         shareFileAsyncClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#deleteIfExists()},
+     * {@link ShareFileAsyncClient#deleteIfExistsWithResponse()} and
+     * {@link ShareFileAsyncClient#deleteIfExistsWithResponse(ShareRequestConditions)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
+        shareFileAsyncClient.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
+    }
 }

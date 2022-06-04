@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Microsoft Teams channel. */
 @Fluent
 public final class SkypeChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkypeChannelProperties.class);
-
     /*
      * Enable messaging for Skype channel
      */

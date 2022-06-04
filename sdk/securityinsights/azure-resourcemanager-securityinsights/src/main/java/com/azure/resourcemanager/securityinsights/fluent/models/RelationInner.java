@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a relation between two resources. */
 @Fluent
 public final class RelationInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationInner.class);
-
     /*
      * Relation properties
      */

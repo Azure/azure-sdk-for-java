@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListSubnets API service callRetrieves all subnet that belongs to a virtual network. */
 @Fluent
 public final class SubnetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetListResult.class);
-
     /*
      * The subnets in a virtual network.
      */

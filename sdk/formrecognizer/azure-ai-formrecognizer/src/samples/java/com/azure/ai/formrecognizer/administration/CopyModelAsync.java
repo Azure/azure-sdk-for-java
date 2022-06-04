@@ -36,7 +36,7 @@ public class CopyModelAsync {
         String copyModelId = "copy-model-ID";
 
         // Get authorization to copy the model to target resource
-        targetClient.getCopyAuthorization(copiedModelId)
+        targetClient.getCopyAuthorization()
             // Start copy operation from the source client
             // The ID of the model that needs to be copied to the target resource
             .subscribe(copyAuthorization -> sourceClient.beginCopyModelTo(copyModelId, copyAuthorization)

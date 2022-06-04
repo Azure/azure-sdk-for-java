@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.ServiceTagsClient;
 import com.azure.resourcemanager.network.fluent.models.ServiceTagsListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceTagsClient. */
 public final class ServiceTagsClientImpl implements ServiceTagsClient {
-    private final ClientLogger logger = new ClientLogger(ServiceTagsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServiceTagsService service;
 

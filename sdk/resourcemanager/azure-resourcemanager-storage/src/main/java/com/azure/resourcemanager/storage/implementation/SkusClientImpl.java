@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 import com.azure.resourcemanager.storage.fluent.models.SkuInformationInner;
 import com.azure.resourcemanager.storage.models.StorageSkuListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SkusClient. */
 public final class SkusClientImpl implements SkusClient {
-    private final ClientLogger logger = new ClientLogger(SkusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SkusService service;
 

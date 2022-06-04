@@ -9,14 +9,11 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Inbound NAT pool. */
 @Fluent
 public final class InboundNatPoolPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatPoolPropertiesFormat.class);
-
     /*
      * A reference to frontend IP addresses.
      */
@@ -273,10 +270,12 @@ public final class InboundNatPoolPropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model InboundNatPoolPropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InboundNatPoolPropertiesFormat.class);
 }

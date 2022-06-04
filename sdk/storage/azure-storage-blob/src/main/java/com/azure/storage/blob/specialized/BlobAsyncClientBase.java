@@ -84,6 +84,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -94,6 +95,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -109,8 +111,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
@@ -1019,7 +1027,7 @@ public class BlobAsyncClientBase {
         try {
             new URL(options.getCopySource());
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url.", ex));
         }
         String sourceAuth = options.getSourceAuthorization() == null
             ? null : options.getSourceAuthorization().toString();
@@ -1033,7 +1041,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
             tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.hasLegalHold(), sourceAuth, this.encryptionScope, context)
+            options.hasLegalHold(), sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 
@@ -1062,8 +1070,10 @@ public class BlobAsyncClientBase {
      * <p>This method will be deprecated in the future. Use {@link #downloadStream()} instead.
      *
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStream()} instead.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
     public Flux<ByteBuffer> download() {
         return downloadStream();
     }
@@ -1160,8 +1170,10 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob data.
+     * @deprecated use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
@@ -1623,9 +1635,48 @@ public class BlobAsyncClientBase {
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
+    Response<BlobProperties> downloadToFileWithResponseSync(BlobDownloadToFileOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+
+        BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        BlobRequestConditions finalConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+
+        // Default behavior is not to overwrite
+        Set<OpenOption> openOptions = options.getOpenOptions();
+        if (openOptions == null) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE_NEW);
+            openOptions.add(StandardOpenOption.WRITE);
+            openOptions.add(StandardOpenOption.READ);
+        }
+
+        boolean finished = false;
+        FileChannel channel = downloadToFileResourceSupplierSync(options.getFilePath(), openOptions);
+        try {
+            Response<BlobProperties> blobPropertiesResponse = this.downloadToFileImplSync(
+                channel, finalRange, finalParallelTransferOptions,
+                options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(), context);
+            finished = true;
+            return blobPropertiesResponse;
+        } finally {
+            this.downloadToFileCleanupSync(channel, options.getFilePath(), finished);
+        }
+    }
+
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), openOptions, null);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private FileChannel downloadToFileResourceSupplierSync(String filePath, Set<OpenOption> openOptions) {
+        try {
+            return FileChannel.open(Paths.get(filePath), openOptions);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -1670,6 +1721,106 @@ public class BlobAsyncClientBase {
             });
     }
 
+    private static final ExecutorService SHARED_BLOB_EXECUTOR = Executors.newCachedThreadPool(new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            thread.setName("BlobExecutor");
+            return thread;
+        }
+    });
+
+    private Response<BlobProperties> downloadToFileImplSync(
+        FileChannel file, BlobRange finalRange,
+        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
+        DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
+        Context context) {
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        Lock progressLock = new ReentrantLock();
+        AtomicLong totalProgress = new AtomicLong(0);
+
+        /*
+         * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
+         */
+        // TODO (kasobol-msft) how do we retry
+        BiFunction<BlobRange, BlobRequestConditions, StreamResponse> downloadFunc =
+            (range, conditions) -> this.downloadRangeSync(range, conditions, conditions.getIfMatch(),
+                rangeGetContentMd5, context);
+
+        Tuple3<Long, BlobRequestConditions, StreamResponse> setupTuple3 =
+            ChunkedDownloadUtils.downloadFirstChunkSync(finalRange, finalParallelTransferOptions, requestConditions,
+            downloadFunc, true);
+        long newCount = setupTuple3.getT1();
+        BlobRequestConditions finalConditions = setupTuple3.getT2();
+
+        int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
+            finalParallelTransferOptions.getBlockSizeLong());
+
+        // In case it is an empty blob, this ensures we still actually perform a download operation.
+        numChunks = numChunks == 0 ? 1 : numChunks;
+
+        StreamResponse initialResponse = setupTuple3.getT3();
+
+        Semaphore semaphore = new Semaphore(finalParallelTransferOptions.getMaxConcurrency());
+        CountDownLatch countDownLatch = new CountDownLatch(numChunks);
+        AtomicReference<RuntimeException> downloadException = new AtomicReference<>();
+
+        if (numChunks > 1) {
+            Thread schedulingThread = Thread.currentThread();
+            for (int chunkNum = 0; chunkNum < numChunks; chunkNum++) {
+                if (downloadException.get() != null) {
+                    throw LOGGER.logExceptionAsError(downloadException.get());
+                }
+                int finalChunkNum = chunkNum;
+                try {
+                    semaphore.acquire(); // TODO (kasobol-msft) timeout
+                } catch (InterruptedException e) {
+                    if (downloadException.get() != null) {
+                        throw LOGGER.logExceptionAsError(downloadException.get());
+                    }
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                }
+                SHARED_BLOB_EXECUTOR.submit(() -> {
+                    try {
+                        // TODO (kasobol-msft) add retry logic similarly to outputstream download
+                        ChunkedDownloadUtils.downloadChunkSync(finalChunkNum, initialResponse,
+                            finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                            response -> writeBodyToFileSync(response, file, finalChunkNum, finalParallelTransferOptions,
+                                progressLock, totalProgress));
+                    } catch (RuntimeException e) {
+                        downloadException.set(e);
+                        schedulingThread.interrupt();
+                    } finally {
+                        semaphore.release();
+                        countDownLatch.countDown();
+                    }
+                });
+            }
+
+            if (downloadException.get() != null) {
+                throw LOGGER.logExceptionAsError(downloadException.get());
+            }
+            try {
+                countDownLatch.await(); // TODO (kasobol-msft) timeout ?
+            } catch (InterruptedException e) {
+                if (downloadException.get() != null) {
+                    throw LOGGER.logExceptionAsError(downloadException.get());
+                }
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        } else {
+            // TODO (kasobol-msft) add retry logic similarly to outputstream download
+            // TODO (kasobol-msft) this could use sync FileChannel.
+            ChunkedDownloadUtils.downloadChunkSync(0, initialResponse,
+                finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                response -> writeBodyToFileSync(response, file, 0, finalParallelTransferOptions,
+                    progressLock, totalProgress));
+        }
+
+        return ModelHelper.buildBlobPropertiesResponse(initialResponse);
+    }
+
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
         AtomicLong totalProgress) {
@@ -1683,7 +1834,27 @@ public class BlobAsyncClientBase {
             totalProgress);
 
         // Write to the file.
+        // TODO (kasobol-msft) this should some day use StreamResponse.writeTo(AsynchronousFileChannel).
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+    }
+
+    private static void writeBodyToFileSync(
+        StreamResponse response, FileChannel file,
+        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
+        AtomicLong totalProgress) {
+
+        // Report progress as necessary.
+        // TODO (kasobol-msft) this should be hooked up into channel.
+        //data = ProgressReporter.addParallelProgressReporting(data,
+        //    ModelHelper.wrapCommonReceiver(finalParallelTransferOptions.getProgressReceiver()), progressLock,
+        //    totalProgress);
+
+        // Write to the file.
+        try {
+            response.writeBodyTo(file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
@@ -1698,9 +1869,21 @@ public class BlobAsyncClientBase {
         }
     }
 
+    private void downloadToFileCleanupSync(FileChannel channel, String filePath, boolean finished) {
+        try {
+            channel.close();
+            if (!finished) {
+                Files.deleteIfExists(Paths.get(filePath));
+                LOGGER.verbose("Downloading to file failed. Cleaning up resources.");
+            }
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
     /**
      * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
-     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
+     * {@link #deleteIfExistsWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
      * {@code DeleteSnapshotsOptionType} to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1762,6 +1945,89 @@ public class BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Deletes the specified blob or snapshot if it exists. To delete a blob with its snapshots use
+     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
+     * @return A reactive response signaling completion. {@code true} indicates that the blob was deleted.
+     * {@code false} indicates the blob does not exist at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified blob or snapshot if it exists. To delete a blob with its snapshots set {@code DeleteSnapshotsOptionType}
+     * to INCLUDE.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
+     * <pre>
+     * client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
+     * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
+     * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
+     * deleted, you must pass null.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the base blob was
+     * successfully deleted. If status code is 404, the base blob does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+        BlobRequestConditions requestConditions) {
+        try {
+            return withContext(context -> deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
+                requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+        BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+
+        return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**

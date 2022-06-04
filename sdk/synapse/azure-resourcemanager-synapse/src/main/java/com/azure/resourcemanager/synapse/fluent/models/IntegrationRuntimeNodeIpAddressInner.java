@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IP address of self-hosted integration runtime node. */
 @Immutable
 public final class IntegrationRuntimeNodeIpAddressInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodeIpAddressInner.class);
-
     /*
      * The IP address of self-hosted integration runtime node.
      */

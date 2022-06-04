@@ -56,7 +56,7 @@ public final class MetadataPoliciesImpl {
      */
     @Host("{Endpoint}/policyStore")
     @ServiceInterface(name = "PurviewMetadataClien")
-    private interface MetadataPoliciesService {
+    public interface MetadataPoliciesService {
         @Get("/metadataPolicies")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> listAll(

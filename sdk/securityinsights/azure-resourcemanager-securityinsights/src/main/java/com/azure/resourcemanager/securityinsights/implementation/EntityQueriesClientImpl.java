@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.EntityQueriesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryInner;
 import com.azure.resourcemanager.securityinsights.models.CustomEntityQuery;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EntityQueriesClient. */
 public final class EntityQueriesClientImpl implements EntityQueriesClient {
-    private final ClientLogger logger = new ClientLogger(EntityQueriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EntityQueriesService service;
 
@@ -265,7 +262,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityQueryInner> listAsync(
@@ -283,7 +280,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityQueryInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -303,7 +300,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EntityQueryInner> listAsync(
@@ -321,7 +318,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryInner> list(String resourceGroupName, String workspaceName) {
@@ -339,7 +336,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EntityQueryInner> list(
@@ -465,14 +462,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EntityQueryInner> getAsync(String resourceGroupName, String workspaceName, String entityQueryId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, entityQueryId)
-            .flatMap(
-                (Response<EntityQueryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -647,14 +637,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     private Mono<EntityQueryInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String entityQueryId, CustomEntityQuery entityQuery) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, entityQueryId, entityQuery)
-            .flatMap(
-                (Response<EntityQueryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -817,7 +800,7 @@ public final class EntityQueriesClientImpl implements EntityQueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String entityQueryId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, entityQueryId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

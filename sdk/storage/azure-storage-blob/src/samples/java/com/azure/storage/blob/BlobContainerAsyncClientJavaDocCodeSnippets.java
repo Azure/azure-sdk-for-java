@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -438,6 +439,66 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#createIfNotExists()} and
+     * {@link BlobContainerAsyncClient#createIfNotExistsWithResponse(BlobContainerCreateOptions)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(created -> {
+            if (created) {
+                System.out.println("successfully created.");
+            } else {
+                System.out.println("Already exists.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
+
+        client.createIfNotExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#deleteIfExists()} and
+     * {@link BlobContainerAsyncClient#deleteIfExistsWithResponse(BlobRequestConditions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
     }
 
 //    /**

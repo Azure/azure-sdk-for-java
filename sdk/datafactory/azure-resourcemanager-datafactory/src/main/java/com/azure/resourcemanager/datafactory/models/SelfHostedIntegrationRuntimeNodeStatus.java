@@ -43,7 +43,11 @@ public final class SelfHostedIntegrationRuntimeNodeStatus
         return fromString(name, SelfHostedIntegrationRuntimeNodeStatus.class);
     }
 
-    /** @return known SelfHostedIntegrationRuntimeNodeStatus values. */
+    /**
+     * Gets known SelfHostedIntegrationRuntimeNodeStatus values.
+     *
+     * @return known SelfHostedIntegrationRuntimeNodeStatus values.
+     */
     public static Collection<SelfHostedIntegrationRuntimeNodeStatus> values() {
         return values(SelfHostedIntegrationRuntimeNodeStatus.class);
     }

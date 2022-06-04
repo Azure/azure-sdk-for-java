@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicatorModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,8 +21,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "indicator", value = ThreatIntelligenceIndicatorModel.class)})
 @Fluent
 public class ThreatIntelligenceInformationInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceInformationInner.class);
-
     /** {@inheritDoc} */
     @Override
     public ThreatIntelligenceInformationInner withEtag(String etag) {

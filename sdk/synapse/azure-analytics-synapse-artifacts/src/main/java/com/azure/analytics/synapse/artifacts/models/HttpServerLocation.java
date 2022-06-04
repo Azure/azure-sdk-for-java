@@ -42,4 +42,18 @@ public final class HttpServerLocation extends DatasetLocation {
         this.relativeUrl = relativeUrl;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpServerLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpServerLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
+        return this;
+    }
 }

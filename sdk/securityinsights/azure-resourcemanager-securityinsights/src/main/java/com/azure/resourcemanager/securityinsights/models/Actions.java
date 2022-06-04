@@ -19,7 +19,7 @@ public interface Actions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule.
+     * @return all actions of alert rule as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ActionResponse> listByAlertRule(String resourceGroupName, String workspaceName, String ruleId);
 
@@ -33,7 +33,7 @@ public interface Actions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all actions of alert rule.
+     * @return all actions of alert rule as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ActionResponse> listByAlertRule(
         String resourceGroupName, String workspaceName, String ruleId, Context context);

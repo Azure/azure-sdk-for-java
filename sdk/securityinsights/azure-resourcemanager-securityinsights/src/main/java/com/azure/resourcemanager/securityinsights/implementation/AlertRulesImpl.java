@@ -13,10 +13,9 @@ import com.azure.resourcemanager.securityinsights.fluent.AlertRulesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleInner;
 import com.azure.resourcemanager.securityinsights.models.AlertRule;
 import com.azure.resourcemanager.securityinsights.models.AlertRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AlertRulesImpl implements AlertRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AlertRulesImpl.class);
 
     private final AlertRulesClient innerClient;
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of an application gateway. */
 @Fluent
 public final class ApplicationGatewaySku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySku.class);
-
     /*
      * Name of an application gateway SKU.
      */

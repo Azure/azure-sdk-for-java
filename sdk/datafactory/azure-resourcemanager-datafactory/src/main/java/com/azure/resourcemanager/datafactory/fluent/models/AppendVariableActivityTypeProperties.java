@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AppendVariable activity properties. */
 @Fluent
 public final class AppendVariableActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppendVariableActivityTypeProperties.class);
-
     /*
      * Name of the variable whose value needs to be appended to.
      */

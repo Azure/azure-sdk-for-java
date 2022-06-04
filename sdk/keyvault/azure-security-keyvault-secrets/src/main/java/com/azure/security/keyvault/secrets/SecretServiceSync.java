@@ -17,6 +17,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.secrets.implementation.SecretRequestParameters;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 
 /**

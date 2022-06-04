@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +32,7 @@ public class HttpPipelineSynchronousPolicy implements HttpPipelinePolicy {
      * {@inheritDoc}
      */
     @Override
-    public final HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public final HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         beforeSendingRequest(context);
         HttpResponse response = next.processSync();
         return afterReceivedResponse(context, response);

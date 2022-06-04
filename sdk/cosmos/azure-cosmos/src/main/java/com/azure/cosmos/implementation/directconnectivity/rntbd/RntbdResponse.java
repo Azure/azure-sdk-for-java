@@ -356,11 +356,12 @@ public final class RntbdResponse implements ReferenceCounted {
         if (length == 0) {
             content = null;
         } else {
+            //  TODO (kuthapar): Add a byte array pool instead of creating a new array every time.
             content = new byte[length];
             this.content.getBytes(0, content);
         }
 
-        return new StoreResponse(this.getStatus().code(), this.headers.asList(context, this.getActivityId()), content);
+        return new StoreResponse(this.getStatus().code(), this.headers.asMap(context, this.getActivityId()), content);
     }
 
     // endregion

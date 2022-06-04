@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.QueuesClient;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueInner;
 import com.azure.resourcemanager.storage.fluent.models.StorageQueueInner;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueuesClient. */
 public final class QueuesClientImpl implements QueuesClient {
-    private final ClientLogger logger = new ClientLogger(QueuesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QueuesService service;
 
@@ -303,14 +300,7 @@ public final class QueuesClientImpl implements QueuesClient {
     public Mono<StorageQueueInner> createAsync(
         String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
         return createWithResponseAsync(resourceGroupName, accountName, queueName, queue)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -504,14 +494,7 @@ public final class QueuesClientImpl implements QueuesClient {
     public Mono<StorageQueueInner> updateAsync(
         String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
         return updateWithResponseAsync(resourceGroupName, accountName, queueName, queue)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -692,14 +675,7 @@ public final class QueuesClientImpl implements QueuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageQueueInner> getAsync(String resourceGroupName, String accountName, String queueName) {
         return getWithResponseAsync(resourceGroupName, accountName, queueName)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -874,8 +850,7 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String queueName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, queueName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, queueName).flatMap(ignored -> Mono.empty());
     }
 
     /**

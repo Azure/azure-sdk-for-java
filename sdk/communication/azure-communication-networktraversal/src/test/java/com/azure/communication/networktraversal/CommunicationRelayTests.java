@@ -17,6 +17,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -262,9 +264,11 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             Response<CommunicationRelayConfiguration> response;
 
             GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
-            options.setTtl(5000);
-            OffsetDateTime requestedTime = OffsetDateTime.now();
-            requestedTime.plusSeconds(5000);
+            int ttl = 5000;
+            options.setTtl(ttl);
+
+            Instant now = Instant.now();
+            OffsetDateTime requestedTime = now.atOffset(ZoneOffset.UTC).plusSeconds(ttl);
 
             // Action & Assert
             response = client.getRelayConfigurationWithResponse(options, Context.NONE);
@@ -276,6 +280,8 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
 
             if (getTestMode() != TestMode.PLAYBACK) {
                 assertTrue(requestedTime.compareTo(response.getValue().getExpiresOn()) <= 0);
+                OffsetDateTime limitedTime = requestedTime.plusSeconds(10);
+                assertTrue(response.getValue().getExpiresOn().compareTo(limitedTime) < 0);
             }
 
             for (CommunicationIceServer iceS : iceServers) {

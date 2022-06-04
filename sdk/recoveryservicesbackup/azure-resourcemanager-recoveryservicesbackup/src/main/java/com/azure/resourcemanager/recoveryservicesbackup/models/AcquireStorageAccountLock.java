@@ -27,7 +27,11 @@ public final class AcquireStorageAccountLock extends ExpandableStringEnum<Acquir
         return fromString(name, AcquireStorageAccountLock.class);
     }
 
-    /** @return known AcquireStorageAccountLock values. */
+    /**
+     * Gets known AcquireStorageAccountLock values.
+     *
+     * @return known AcquireStorageAccountLock values.
+     */
     public static Collection<AcquireStorageAccountLock> values() {
         return values(AcquireStorageAccountLock.class);
     }

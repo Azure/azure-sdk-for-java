@@ -33,4 +33,17 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
 service-interface-as-public: true
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
+```
+
+### Change GetOperationResponse result from Object to ModelInfo
+
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.GetOperationResponse
+    transform: >
+      delete $.properties.result.type;
+      $.properties.result["$ref"] = "#/definitions/ModelInfo"; 
 ```

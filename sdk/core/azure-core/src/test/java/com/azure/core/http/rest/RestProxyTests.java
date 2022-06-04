@@ -9,93 +9,41 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
-    private static final byte[] EXPECTED = new byte[]{0, 1, 2, 3, 4};
-
-    @Test
-    public void emptyRequestBody() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
-
-        StepVerifier.create(RestProxy.validateLength(httpRequest))
-            .verifyComplete();
-    }
-
-    @Test
-    public void expectedBodyLength() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED)
-            .setHeader("Content-Length", "5");
-
-        StepVerifier.create(collectRequest(httpRequest))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
-            .verifyComplete();
-    }
-
-    @Test
-    public void unexpectedBodyLength() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED);
-
-        StepVerifier.create(collectRequest(httpRequest.setHeader("Content-Length", "4")))
-            .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof UnexpectedLengthException);
-                assertEquals("Request body emitted 5 bytes, more than the expected 4 bytes.", throwable.getMessage());
-            });
-
-        StepVerifier.create(collectRequest(httpRequest.setHeader("Content-Length", "6")))
-            .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof UnexpectedLengthException);
-                assertEquals("Request body emitted 5 bytes, less than the expected 6 bytes.", throwable.getMessage());
-            });
-    }
-
-    @Test
-    public void multipleSubscriptionsToCheckBodyLength() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED)
-            .setHeader("Content-Length", "5");
-
-        Flux<ByteBuffer> verifierFlux = RestProxy.validateLength(httpRequest);
-
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
-            .verifyComplete();
-
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
-            .verifyComplete();
-    }
 
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
@@ -104,6 +52,14 @@ public class RestProxyTests {
         @ExpectedResponses({200})
         Mono<Response<Void>> testMethod(
             @BodyParam("application/octet-stream") Flux<ByteBuffer> request,
+            @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Length") Long contentLength
+        );
+
+        @Post("my/url/path")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> testMethod(
+            @BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
@@ -124,10 +80,90 @@ public class RestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
+    @ParameterizedTest
+    @MethodSource("knownLengthBinaryDataIsPassthroughArgumentProvider")
+    public void knownLengthBinaryDataIsPassthrough(BinaryData data, long contentLength) {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<Void> response = testInterface.testMethod(data,
+                "application/json", contentLength)
+            .block();
+        assertEquals(200, response.getStatusCode());
+        assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
+    }
+
+    private static Stream<Arguments> knownLengthBinaryDataIsPassthroughArgumentProvider() throws Exception {
+        String string = "hello";
+        byte[] bytes = string.getBytes();
+        Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
+        file.toFile().deleteOnExit();
+        Files.write(file, bytes);
+        return Stream.of(
+            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
+            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
+            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
+            Arguments.of(Named.of("flux with length",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
+            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
+                BinaryData.fromObject(bytes).getLength())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("doesNotChangeBinaryDataContentTypeDataProvider")
+    public void doesNotChangeBinaryDataContentType(BinaryData data, long contentLength) {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+        Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
+
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<Void> response = testInterface.testMethod(data,
+                "application/json", contentLength)
+            .block();
+        assertEquals(200, response.getStatusCode());
+
+        Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper.getContent(
+            client.getLastHttpRequest().getBodyAsBinaryData()).getClass();
+        assertEquals(expectedContentClazz, actualContentClazz);
+    }
+
+    private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
+        String string = "hello";
+        byte[] bytes = string.getBytes();
+        Path file = Files.createTempFile("doesNotChangeBinaryDataContentTypeDataProvider", null);
+        file.toFile().deleteOnExit();
+        Files.write(file, bytes);
+        ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+        return Stream.of(
+            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
+            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
+            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
+            Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
+            Arguments.of(Named.of("eager flux with length",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
+            Arguments.of(Named.of("lazy flux",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block()), bytes.length),
+            Arguments.of(Named.of("lazy flux with length",
+                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), (long) bytes.length, false).block()), bytes.length),
+            Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
+                BinaryData.fromObject(bytes).getLength())
+        );
+    }
+
     private static final class LocalHttpClient implements HttpClient {
+
+        private volatile HttpRequest lastHttpRequest;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
+            lastHttpRequest = request;
             boolean success = request.getHeaders()
                 .stream()
                 .filter(header -> header.getName().equals("Content-Type"))
@@ -136,10 +172,10 @@ public class RestProxyTests {
             int statusCode = success ? 200 : 400;
             return Mono.just(new MockHttpResponse(request, statusCode));
         }
-    }
 
-    private static Mono<byte[]> collectRequest(HttpRequest request) {
-        return FluxUtil.collectBytesInByteBufferStream(RestProxy.validateLength(request));
+        public HttpRequest getLastHttpRequest() {
+            return lastHttpRequest;
+        }
     }
 
     @ParameterizedTest

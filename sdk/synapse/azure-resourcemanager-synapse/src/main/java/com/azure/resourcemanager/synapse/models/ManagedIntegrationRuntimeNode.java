@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Properties of integration runtime node. */
 @Fluent
 public final class ManagedIntegrationRuntimeNode {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeNode.class);
-
     /*
      * The managed integration runtime node id.
      */

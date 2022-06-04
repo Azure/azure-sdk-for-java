@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** chatMessage. */
 @Fluent
 public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphChatMessage.class);
-
     /*
      * Attached files. Attachments are currently read-only – sending
      * attachments is not supported.
@@ -59,7 +56,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private MicrosoftGraphIdentitySet from;
 
     /*
-     * The importance property.
+     * chatMessageImportance
      */
     @JsonProperty(value = "importance")
     private MicrosoftGraphChatMessageImportance importance;
@@ -93,7 +90,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     private List<MicrosoftGraphChatMessageMention> mentions;
 
     /*
-     * The messageType property.
+     * chatMessageType
      */
     @JsonProperty(value = "messageType")
     private MicrosoftGraphChatMessageType messageType;
@@ -279,7 +276,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the importance property: The importance property.
+     * Get the importance property: chatMessageImportance.
      *
      * @return the importance value.
      */
@@ -288,7 +285,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the importance property: The importance property.
+     * Set the importance property: chatMessageImportance.
      *
      * @param importance the importance value to set.
      * @return the MicrosoftGraphChatMessage object itself.
@@ -385,7 +382,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the messageType property: The messageType property.
+     * Get the messageType property: chatMessageType.
      *
      * @return the messageType value.
      */
@@ -394,7 +391,7 @@ public final class MicrosoftGraphChatMessage extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the messageType property: The messageType property.
+     * Set the messageType property: chatMessageType.
      *
      * @param messageType the messageType value to set.
      * @return the MicrosoftGraphChatMessage object itself.

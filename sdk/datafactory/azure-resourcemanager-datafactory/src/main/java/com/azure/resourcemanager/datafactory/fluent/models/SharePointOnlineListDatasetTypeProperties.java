@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sharepoint online list dataset properties. */
 @Fluent
 public final class SharePointOnlineListDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharePointOnlineListDatasetTypeProperties.class);
-
     /*
      * The name of the SharePoint Online list. Type: string (or Expression with
      * resultType string).

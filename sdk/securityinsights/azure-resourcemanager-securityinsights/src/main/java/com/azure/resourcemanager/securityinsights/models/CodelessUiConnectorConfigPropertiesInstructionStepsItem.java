@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /** The CodelessUiConnectorConfigPropertiesInstructionStepsItem model. */
 @Fluent
 public final class CodelessUiConnectorConfigPropertiesInstructionStepsItem extends InstructionSteps {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CodelessUiConnectorConfigPropertiesInstructionStepsItem.class);
-
     /** {@inheritDoc} */
     @Override
     public CodelessUiConnectorConfigPropertiesInstructionStepsItem withTitle(String title) {

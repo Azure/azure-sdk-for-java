@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PrivateLinkServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListPrivateLinkService API service call. */
 @Fluent
 public final class PrivateLinkServiceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceListResult.class);
-
     /*
      * A list of PrivateLinkService resources in a resource group.
      */

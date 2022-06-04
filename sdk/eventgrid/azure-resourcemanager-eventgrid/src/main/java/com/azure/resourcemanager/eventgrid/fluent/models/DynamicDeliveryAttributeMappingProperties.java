@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of dynamic delivery attribute mapping. */
 @Fluent
 public final class DynamicDeliveryAttributeMappingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicDeliveryAttributeMappingProperties.class);
-
     /*
      * JSON path in the event which contains attribute value.
      */

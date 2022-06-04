@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,13 +29,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "MicrosoftThreatProtection", value = MtpCheckRequirements.class),
     @JsonSubTypes.Type(name = "OfficeATP", value = OfficeAtpCheckRequirements.class),
     @JsonSubTypes.Type(name = "OfficeIRM", value = OfficeIrmCheckRequirements.class),
+    @JsonSubTypes.Type(name = "Office365Project", value = Office365ProjectCheckRequirements.class),
+    @JsonSubTypes.Type(name = "OfficePowerBI", value = OfficePowerBICheckRequirements.class),
     @JsonSubTypes.Type(name = "ThreatIntelligence", value = TICheckRequirements.class),
-    @JsonSubTypes.Type(name = "ThreatIntelligenceTaxii", value = TiTaxiiCheckRequirements.class)
+    @JsonSubTypes.Type(name = "ThreatIntelligenceTaxii", value = TiTaxiiCheckRequirements.class),
+    @JsonSubTypes.Type(name = "IOT", value = IoTCheckRequirements.class)
 })
 @Immutable
 public class DataConnectorsCheckRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectorsCheckRequirements.class);
-
     /**
      * Validates the instance.
      *

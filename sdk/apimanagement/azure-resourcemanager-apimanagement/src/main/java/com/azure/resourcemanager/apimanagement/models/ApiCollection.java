@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Paged Api list representation. */
+/** Paged API list representation. */
 @Fluent
 public final class ApiCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiCollection.class);
-
     /*
      * Page values.
      */

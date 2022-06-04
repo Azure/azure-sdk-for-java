@@ -13,10 +13,9 @@ import com.azure.resourcemanager.securityinsights.fluent.SourceControlsOperation
 import com.azure.resourcemanager.securityinsights.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.securityinsights.models.SourceControl;
 import com.azure.resourcemanager.securityinsights.models.SourceControlsOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SourceControlsOperationsImpl implements SourceControlsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlsOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlsOperationsImpl.class);
 
     private final SourceControlsOperationsClient innerClient;
 
@@ -75,7 +74,7 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
     public SourceControl getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,14 +82,14 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sourceControlId = Utils.getValueFromIdByName(id, "sourcecontrols");
         if (sourceControlId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,7 +101,7 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
     public Response<SourceControl> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,14 +109,14 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sourceControlId = Utils.getValueFromIdByName(id, "sourcecontrols");
         if (sourceControlId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,14 +136,14 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sourceControlId = Utils.getValueFromIdByName(id, "sourcecontrols");
         if (sourceControlId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,7 +155,7 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,14 +163,14 @@ public final class SourceControlsOperationsImpl implements SourceControlsOperati
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sourceControlId = Utils.getValueFromIdByName(id, "sourcecontrols");
         if (sourceControlId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

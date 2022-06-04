@@ -54,7 +54,7 @@ public interface PrivateEndpointConnectionDescription {
     PrivateEndpointConnectionProvisioningState provisioningState();
 
     /**
-     * Gets the systemData property: System metadata for this resource.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
      */

@@ -47,7 +47,7 @@ public final class FiltersImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface FiltersService {
+    public interface FiltersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(

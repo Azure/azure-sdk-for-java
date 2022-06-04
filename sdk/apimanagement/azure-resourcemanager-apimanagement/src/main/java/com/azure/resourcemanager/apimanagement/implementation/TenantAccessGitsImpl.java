@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.TenantAccessGitsClient;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 import com.azure.resourcemanager.apimanagement.models.TenantAccessGits;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TenantAccessGitsImpl implements TenantAccessGits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantAccessGitsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TenantAccessGitsImpl.class);
 
     private final TenantAccessGitsClient innerClient;
 

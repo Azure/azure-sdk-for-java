@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.WebCategoriesClient;
 import com.azure.resourcemanager.network.fluent.models.AzureWebCategoryInner;
 import com.azure.resourcemanager.network.models.AzureWebCategoryListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WebCategoriesClient. */
 public final class WebCategoriesClientImpl implements WebCategoriesClient {
-    private final ClientLogger logger = new ClientLogger(WebCategoriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WebCategoriesService service;
 

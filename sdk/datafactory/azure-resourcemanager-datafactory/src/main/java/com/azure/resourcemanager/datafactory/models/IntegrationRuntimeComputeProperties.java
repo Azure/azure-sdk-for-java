@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The compute resource properties for managed integration runtime. */
 @Fluent
 public final class IntegrationRuntimeComputeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeComputeProperties.class);
-
     /*
      * The location for managed integration runtime. The supported regions
      * could be found on

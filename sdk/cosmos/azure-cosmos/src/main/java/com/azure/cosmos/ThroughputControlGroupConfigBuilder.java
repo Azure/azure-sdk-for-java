@@ -13,10 +13,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroupConfigBuilder {
+    private static final boolean DEFAULT_CONTINUE_ON_INIT_ERROR = false;
     private String groupName;
     private Integer targetThroughput;
     private Double targetThroughputThreshold;
     private boolean isDefault;
+    private boolean continueOnInitError = DEFAULT_CONTINUE_ON_INIT_ERROR;
 
     /**
      * Set the throughput control group name.
@@ -24,8 +26,23 @@ public class ThroughputControlGroupConfigBuilder {
      * @param groupName The throughput control group name.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
+    @Deprecated
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setGroupName(String groupName) {
+        checkArgument(StringUtils.isNotEmpty(groupName), "Group name cannot be null nor empty");
+
+        this.groupName = groupName;
+        return this;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param groupName The throughput control group name.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder groupName(String groupName) {
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name cannot be null nor empty");
 
         this.groupName = groupName;
@@ -40,8 +57,25 @@ public class ThroughputControlGroupConfigBuilder {
      * @param targetThroughput The target throughput for the control group.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
+    @Deprecated
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setTargetThroughput(int targetThroughput) {
+        checkArgument(targetThroughput > 0, "Target throughput should be greater than 0");
+
+        this.targetThroughput = targetThroughput;
+        return this;
+    }
+
+    /**
+     * Set the throughput control group target throughput.
+     *
+     * The target throughput value should be greater than 0.
+     *
+     * @param targetThroughput The target throughput for the control group.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder targetThroughput(int targetThroughput) {
         checkArgument(targetThroughput > 0, "Target throughput should be greater than 0");
 
         this.targetThroughput = targetThroughput;
@@ -56,6 +90,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @param targetThroughputThreshold The target throughput threshold for the control group.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
+    @Deprecated
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setTargetThroughputThreshold(double targetThroughputThreshold) {
         checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should between (0, 1]");
@@ -64,6 +99,21 @@ public class ThroughputControlGroupConfigBuilder {
         return this;
     }
 
+    /**
+     * Set the throughput control group target throughput threshold.
+     *
+     * The target throughput threshold value should be between (0, 1].
+     *
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder targetThroughputThreshold(double targetThroughputThreshold) {
+        checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should between (0, 1]");
+
+        this.targetThroughputThreshold = targetThroughputThreshold;
+        return this;
+    }
 
     /**
      * Set whether this throughput control group will be used by default.
@@ -72,9 +122,36 @@ public class ThroughputControlGroupConfigBuilder {
      * @param aDefault The flag to indicate whether the throughput control group will be used by default.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
+    @Deprecated
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setDefault(boolean aDefault) {
-        isDefault = aDefault;
+        this.isDefault = aDefault;
+        return this;
+    }
+
+    /**
+     * Set whether this throughput control group will be used by default.
+     * If set to true, requests without explicit override of the throughput control group will be routed to this group.
+     *
+     * @param aDefault The flag to indicate whether the throughput control group will be used by default.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder defaultControlGroup(boolean aDefault) {
+        this.isDefault = aDefault;
+        return this;
+    }
+
+    /**
+     * Set whether allow request to continue on original request flow if throughput control controller failed on initialization.
+     * If set to true, requests will be able to fall back to original request flow if throughput control controller failed on initialization.
+     *
+     * @param continueOnInitError The flag to indicate whether request is allowed to fall back to original request flow.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder continueOnInitError(boolean continueOnInitError) {
+        this.continueOnInitError = continueOnInitError;
         return this;
     }
 
@@ -92,6 +169,11 @@ public class ThroughputControlGroupConfigBuilder {
             throw new IllegalArgumentException("Neither targetThroughput nor targetThroughputThreshold is defined.");
         }
 
-        return new ThroughputControlGroupConfig(groupName, this.targetThroughput, this.targetThroughputThreshold, isDefault);
+        return new ThroughputControlGroupConfig(
+                this.groupName,
+                this.targetThroughput,
+                this.targetThroughputThreshold,
+                this.isDefault,
+                this.continueOnInitError);
     }
 }

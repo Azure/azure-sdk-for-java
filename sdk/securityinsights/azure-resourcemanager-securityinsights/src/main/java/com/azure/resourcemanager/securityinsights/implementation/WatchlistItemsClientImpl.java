@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.WatchlistItemsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInner;
 import com.azure.resourcemanager.securityinsights.models.WatchlistItemList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WatchlistItemsClient. */
 public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
-    private final ClientLogger logger = new ClientLogger(WatchlistItemsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WatchlistItemsService service;
 
@@ -75,6 +72,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
+            @QueryParam("$skipToken") String skipToken,
             @PathParam("watchlistAlias") String watchlistAlias,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -151,6 +149,9 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param watchlistAlias Watchlist Alias.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,7 +159,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatchlistItemInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String watchlistAlias) {
+        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -192,6 +193,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
+                            skipToken,
                             watchlistAlias,
                             accept,
                             context))
@@ -213,6 +215,9 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param watchlistAlias Watchlist Alias.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -221,7 +226,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WatchlistItemInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String watchlistAlias, Context context) {
+        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -253,6 +258,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
+                skipToken,
                 watchlistAlias,
                 accept,
                 context)
@@ -273,16 +279,19 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param watchlistAlias Watchlist Alias.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items.
+     * @return all watchlist Items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WatchlistItemInner> listAsync(
-        String resourceGroupName, String workspaceName, String watchlistAlias) {
+        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, watchlistAlias),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, watchlistAlias, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -292,17 +301,40 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param watchlistAlias Watchlist Alias.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all watchlist Items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<WatchlistItemInner> listAsync(
+        String resourceGroupName, String workspaceName, String watchlistAlias) {
+        final String skipToken = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, watchlistAlias, skipToken),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all watchlist Items.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param watchlistAlias Watchlist Alias.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items.
+     * @return all watchlist Items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WatchlistItemInner> listAsync(
-        String resourceGroupName, String workspaceName, String watchlistAlias, Context context) {
+        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, watchlistAlias, context),
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, watchlistAlias, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -315,12 +347,13 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items.
+     * @return all watchlist Items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatchlistItemInner> list(
         String resourceGroupName, String workspaceName, String watchlistAlias) {
-        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, watchlistAlias));
+        final String skipToken = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, watchlistAlias, skipToken));
     }
 
     /**
@@ -329,16 +362,19 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param watchlistAlias Watchlist Alias.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlist Items.
+     * @return all watchlist Items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WatchlistItemInner> list(
-        String resourceGroupName, String workspaceName, String watchlistAlias, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, watchlistAlias, context));
+        String resourceGroupName, String workspaceName, String watchlistAlias, String skipToken, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, watchlistAlias, skipToken, context));
     }
 
     /**
@@ -479,14 +515,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
     private Mono<WatchlistItemInner> getAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId)
-            .flatMap(
-                (Response<WatchlistItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -666,7 +695,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String watchlistAlias, String watchlistItemId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, watchlistAlias, watchlistItemId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -872,14 +901,7 @@ public final class WatchlistItemsClientImpl implements WatchlistItemsClient {
         WatchlistItemInner watchlistItem) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, watchlistAlias, watchlistItemId, watchlistItem)
-            .flatMap(
-                (Response<WatchlistItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

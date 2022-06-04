@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Public Land Mobile Network (PLMN) ID. */
 @Fluent
 public final class PlmnId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlmnId.class);
-
     /*
      * Mobile Country Code (MCC).
      */
@@ -73,12 +70,14 @@ public final class PlmnId {
      */
     public void validate() {
         if (mcc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property mcc in model PlmnId"));
         }
         if (mnc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property mnc in model PlmnId"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PlmnId.class);
 }

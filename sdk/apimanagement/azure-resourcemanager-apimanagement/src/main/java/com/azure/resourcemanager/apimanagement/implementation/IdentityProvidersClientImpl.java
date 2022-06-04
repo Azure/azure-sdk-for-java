@@ -31,7 +31,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.IdentityProvidersClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderContractInner;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IdentityProvidersClient. */
 public final class IdentityProvidersClientImpl implements IdentityProvidersClient {
-    private final ClientLogger logger = new ClientLogger(IdentityProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IdentityProvidersService service;
 
@@ -209,7 +206,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityProviderContractInner>> listByServiceSinglePageAsync(
@@ -267,7 +265,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityProviderContractInner>> listByServiceSinglePageAsync(
@@ -321,7 +320,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IdentityProviderContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
@@ -339,7 +339,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IdentityProviderContractInner> listByServiceAsync(
@@ -357,7 +358,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityProviderContractInner> listByService(String resourceGroupName, String serviceName) {
@@ -373,7 +375,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityProviderContractInner> listByService(
@@ -390,7 +393,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the identityProvider specified by its identifier.
+     * @return the entity state (Etag) version of the identityProvider specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -445,7 +449,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the identityProvider specified by its identifier.
+     * @return the entity state (Etag) version of the identityProvider specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -496,7 +501,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the identityProvider specified by its identifier.
+     * @return the entity state (Etag) version of the identityProvider specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(
@@ -547,7 +553,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration details of the identity Provider configured in specified service instance.
+     * @return the configuration details of the identity Provider configured in specified service instance on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersGetResponse> getWithResponseAsync(
@@ -602,7 +609,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration details of the identity Provider configured in specified service instance.
+     * @return the configuration details of the identity Provider configured in specified service instance on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersGetResponse> getWithResponseAsync(
@@ -653,7 +661,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration details of the identity Provider configured in specified service instance.
+     * @return the configuration details of the identity Provider configured in specified service instance on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProviderContractInner> getAsync(
@@ -715,7 +724,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -783,7 +792,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -848,7 +857,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProviderContractInner> createOrUpdateAsync(
@@ -879,7 +888,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProviderContractInner> createOrUpdateAsync(
@@ -961,7 +970,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersUpdateResponse> updateWithResponseAsync(
@@ -1033,7 +1042,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersUpdateResponse> updateWithResponseAsync(
@@ -1102,7 +1111,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return identity Provider details.
+     * @return identity Provider details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProviderContractInner> updateAsync(
@@ -1185,7 +1194,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1246,7 +1255,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1307,7 +1316,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1346,7 +1355,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1367,7 +1376,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the Identity Provider.
+     * @return the client secret details of the Identity Provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersListSecretsResponse> listSecretsWithResponseAsync(
@@ -1422,7 +1431,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the Identity Provider.
+     * @return the client secret details of the Identity Provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IdentityProvidersListSecretsResponse> listSecretsWithResponseAsync(
@@ -1473,7 +1482,7 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the Identity Provider.
+     * @return the client secret details of the Identity Provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClientSecretContractInner> listSecretsAsync(
@@ -1531,7 +1540,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityProviderContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1567,7 +1577,8 @@ public final class IdentityProvidersClientImpl implements IdentityProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the Identity Providers configured on the service instance.
+     * @return list of all the Identity Providers configured on the service instance along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityProviderContractInner>> listByServiceNextSinglePageAsync(

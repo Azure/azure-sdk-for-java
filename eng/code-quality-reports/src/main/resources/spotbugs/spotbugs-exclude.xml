@@ -153,7 +153,7 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
- <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
+  <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
   <Match>
     <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
     <Method name="createJsonMapper"/>
@@ -385,7 +385,9 @@
   <Match>
     <Or>
       <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+      <Class name="com.azure.core.http.HttpPipelineNextSyncPolicy"/>
       <Class name="com.azure.core.http.HttpRequest"/>
+      <Class name="com.azure.core.implementation.http.HttpPipelineCallState"/>
     </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -411,7 +413,10 @@
 
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
-    <Class name="com.azure.core.implementation.TypeUtil"/>
+    <Or>
+      <Class name="com.azure.core.implementation.TypeUtil"/>
+      <Class name="com.azure.core.implementation.ReflectionUtils"/>
+    </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
@@ -575,7 +580,7 @@
       <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.SecretKey"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.implementation.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
@@ -636,6 +641,8 @@
   <Match>
     <Or>
       <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
+      <Class name="com.azure.core.http.rest.ResponseExceptionConstructorCache"/>
+      <Class name="com.azure.core.tracing.opentelemetry.implementation.OpenTelemetrySpanSuppressionHelper"/>
     </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
@@ -664,6 +671,12 @@
   <!-- Return value not needed -->
   <Match>
     <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase"/>
+    <Method name="downloadToFileImplSync"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
   </Match>
 
@@ -1330,7 +1343,7 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
-    <!-- Exception is required to handle when getting java version  -->
+  <!-- Exception is required to handle when getting java version  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.Utils"/>
     <Method name="getJavaVersion"/>
@@ -2185,7 +2198,7 @@
     UWF_UNWRITTEN_FIELD"/>
   </Match>
 
-    <!-- Exclude AAP source code types from spotbug -->
+  <!-- Exclude AAP source code types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.encryption\.implementation\.mdesrc(.+)"/>
     <Bug pattern="DM_CONVERT_CASE,
@@ -2223,6 +2236,37 @@
     SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
     CI_CONFUSED_INHERITANCE,
     MS_SHOULD_BE_FINAL"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncClientEncryptionKeyHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncContainerHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosAsyncDatabaseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchOperationResultHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBatchResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkExecutionOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkExecutionThresholdsStateHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosBulkItemResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosChangeFeedRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientBuilderHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosClientHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosContainerPropertiesHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosDiagnosticsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosExceptionHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPageFluxHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPatchOperationsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosQueryRequestOptionsHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
+      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
+    </Or>
+    <Bug pattern="DM_EXIT"/>
   </Match>
 
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
@@ -2326,31 +2370,29 @@
 
   <!-- Exclude from spring related classes -->
   <Match>
-    <Or>
-      <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
-                  NP_LOAD_OF_KNOWN_NULL_VALUE,
-                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
-                  RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+    <And>
+      <Or>
+        <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureKeyCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.core.implementation.credential.resolver.AzureSasCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.service.implementation.storage.credential.StorageSharedKeyCredentialResolver"/>
+      </Or>
+      <Method name="resolve"/>
+    </And>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- This match should be removed after fixing https://github.com/Azure/azure-sdk-for-java/issues/26356 -->
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation"/>
+    <Field name="timer"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
 
   <Match>
-    <Or>
-      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
-      <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
-    </Or>
-    <Method name="OnCloseSessionAsync"/>
-    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
-  </Match>
-
-  <Match>
-    <Bug pattern="UWF_NULL_FIELD"/>
-    <Class name="com.azure.spring.integration.core.AbstractInboundChannelAdapter"/>
-    <Or>
-      <Field name="subscribeByGroupOperation"/>
-      <Field name="subscribeOperation"/>
-    </Or>
+    <Class name="com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration$AzureServiceClientBuilderFactoryPostProcessor"/>
+    <Field name="beanFactory"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <Match>
@@ -2358,9 +2400,17 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <!-- Suppressing error for using anonymous inner classes. -->
   <Match>
-    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier"/>
+    <Method name="is2_6"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier"/>
+    <Method name="is2_5"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
   <!-- The transient fields are not used if deserialization happens. -->
@@ -2509,7 +2559,7 @@
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
-   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
+  <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
     <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
     <Field name="content"/>
@@ -2615,6 +2665,86 @@
       <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
+  <Match>
+    <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+    <Method name="propertyOnlyFlattenSerialize"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody"/>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody"/>
+    </Or>
+    <Method name="writeTo"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
+    <Or>
+      <Method name="getCustomEntitiesTaskParameters"/>
+      <Method name="getCustomMultiLabelClassificationTaskParameters"/>
+      <Method name="getCustomSingleClassificationTaskParameters"/>
+      <Method name="getEntitiesTaskParameters"/>
+      <Method name="getEntityLinkingTaskParameters"/>
+      <Method name="getExtractiveSummarizationTaskParameters"/>
+      <Method name="getHealthcareTaskParameters"/>
+      <Method name="getKeyPhraseTaskParameters"/>
+      <Method name="getPiiTaskParameters"/>
+      <Method name="getSentimentAnalysisTaskParameters"/>
+    </Or>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Or>
+      <Method name="beginAnalyzeHealthcareEntities"/>
+      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
+    <Or>
+      <Method name="beginAnalyzeHealthcareEntities"/>
+      <Method name="beginAnalyzeHealthcarePagedIterable"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
+    <Method name="getAnalyzedSentimentResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
+    <Method name="getDetectedLanguageResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
+    <Method name="getExtractedKeyPhrasesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
+    <Method name="getRecognizedEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
+    <Method name="getRecognizedLinkedEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
+    <Method name="getRecognizePiiEntitiesResponse"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
   <!-- False-positive non-null check when using try-with-resources -->

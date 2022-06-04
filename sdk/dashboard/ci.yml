@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/dashboard/ci.yml
+      - sdk/dashboard/azure-resourcemanager-dashboard/
+    exclude:
+      - sdk/dashboard/pom.xml
+      - sdk/dashboard/azure-resourcemanager-dashboard/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/dashboard/ci.yml
+      - sdk/dashboard/azure-resourcemanager-dashboard/
+    exclude:
+      - sdk/dashboard/pom.xml
+      - sdk/dashboard/azure-resourcemanager-dashboard/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: dashboard
+    Artifacts:
+      - name: azure-resourcemanager-dashboard
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdashboard

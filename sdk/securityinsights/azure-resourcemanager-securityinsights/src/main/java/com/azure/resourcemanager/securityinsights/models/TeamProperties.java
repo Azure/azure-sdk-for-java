@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +13,6 @@ import java.util.UUID;
 /** Describes team properties. */
 @Fluent
 public final class TeamProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TeamProperties.class);
-
     /*
      * The name of the team
      */
@@ -127,9 +124,11 @@ public final class TeamProperties {
      */
     public void validate() {
         if (teamName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property teamName in model TeamProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TeamProperties.class);
 }

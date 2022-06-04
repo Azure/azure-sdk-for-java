@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow sink. */
 @Fluent
 public class DataFlowSink extends Transformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSink.class);
-
     /*
      * Schema linked service reference.
      */
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
+
+    /*
+     * Rejected data linked service reference.
+     */
+    @JsonProperty(value = "rejectedDataLinkedService")
+    private LinkedServiceReference rejectedDataLinkedService;
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
@@ -37,6 +39,26 @@ public class DataFlowSink extends Transformation {
      */
     public DataFlowSink withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         this.schemaLinkedService = schemaLinkedService;
+        return this;
+    }
+
+    /**
+     * Get the rejectedDataLinkedService property: Rejected data linked service reference.
+     *
+     * @return the rejectedDataLinkedService value.
+     */
+    public LinkedServiceReference rejectedDataLinkedService() {
+        return this.rejectedDataLinkedService;
+    }
+
+    /**
+     * Set the rejectedDataLinkedService property: Rejected data linked service reference.
+     *
+     * @param rejectedDataLinkedService the rejectedDataLinkedService value to set.
+     * @return the DataFlowSink object itself.
+     */
+    public DataFlowSink withRejectedDataLinkedService(LinkedServiceReference rejectedDataLinkedService) {
+        this.rejectedDataLinkedService = rejectedDataLinkedService;
         return this;
     }
 
@@ -85,6 +107,9 @@ public class DataFlowSink extends Transformation {
         super.validate();
         if (schemaLinkedService() != null) {
             schemaLinkedService().validate();
+        }
+        if (rejectedDataLinkedService() != null) {
+            rejectedDataLinkedService().validate();
         }
     }
 }

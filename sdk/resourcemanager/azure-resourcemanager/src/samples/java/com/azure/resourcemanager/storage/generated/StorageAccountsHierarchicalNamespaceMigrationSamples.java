@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageAccounts HierarchicalNamespaceMigration. */
 public final class StorageAccountsHierarchicalNamespaceMigrationSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountHierarchicalNamespaceMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountHierarchicalNamespaceMigration.json
      */
     /**
      * Sample code: StorageAccountHierarchicalNamespaceMigration.

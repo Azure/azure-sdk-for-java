@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The expansion result values. */
 @Fluent
 public final class BookmarkExpandResponseValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BookmarkExpandResponseValue.class);
-
     /*
      * Array of the expansion result entities.
      */

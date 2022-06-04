@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Query filter option for listing runs. */
 @Fluent
 public final class RunQueryFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunQueryFilter.class);
-
     /*
      * Parameter name to be used for filter. The allowed operands to query
      * pipeline runs are PipelineName, RunStart, RunEnd and Status; to query
@@ -110,19 +107,21 @@ public final class RunQueryFilter {
      */
     public void validate() {
         if (operand() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operand in model RunQueryFilter"));
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model RunQueryFilter"));
         }
         if (values() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property values in model RunQueryFilter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunQueryFilter.class);
 }

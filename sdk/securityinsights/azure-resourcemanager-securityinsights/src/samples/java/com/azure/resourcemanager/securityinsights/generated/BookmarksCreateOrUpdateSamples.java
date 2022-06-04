@@ -4,6 +4,9 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
+import com.azure.resourcemanager.securityinsights.models.AttackTactic;
+import com.azure.resourcemanager.securityinsights.models.BookmarkEntityMappings;
+import com.azure.resourcemanager.securityinsights.models.EntityFieldMapping;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -12,7 +15,7 @@ import java.util.UUID;
 /** Samples for Bookmarks CreateOrUpdate. */
 public final class BookmarksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/bookmarks/CreateBookmark.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/bookmarks/CreateBookmark.json
      */
     /**
      * Sample code: Creates or updates a bookmark.
@@ -35,6 +38,19 @@ public final class BookmarksCreateOrUpdateSamples {
             .withQueryResult("Security Event query result")
             .withUpdated(OffsetDateTime.parse("2021-09-01T13:15:30Z"))
             .withUpdatedBy(new UserInfo().withObjectId(UUID.fromString("2046feea-040d-4a46-9e2b-91c2941bfa70")))
+            .withEntityMappings(
+                Arrays
+                    .asList(
+                        new BookmarkEntityMappings()
+                            .withEntityType("Account")
+                            .withFieldMappings(
+                                Arrays
+                                    .asList(
+                                        new EntityFieldMapping()
+                                            .withIdentifier("Fullname")
+                                            .withValue("johndoe@microsoft.com")))))
+            .withTactics(Arrays.asList(AttackTactic.EXECUTION))
+            .withTechniques(Arrays.asList("T1609"))
             .create();
     }
 }

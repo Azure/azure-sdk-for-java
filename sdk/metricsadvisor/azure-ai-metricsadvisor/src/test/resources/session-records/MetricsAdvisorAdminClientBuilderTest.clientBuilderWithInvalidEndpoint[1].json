@@ -3,8 +3,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "59d897bd-0bb9-43d4-90fd-bb7bb695c82b"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be4025ba-9b1b-4396-b934-05efc42b4e93"
     },
     "Response" : null,
     "Exception" : {
@@ -15,8 +15,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "59d897bd-0bb9-43d4-90fd-bb7bb695c82b"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be4025ba-9b1b-4396-b934-05efc42b4e93"
     },
     "Response" : null,
     "Exception" : {
@@ -27,8 +27,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "59d897bd-0bb9-43d4-90fd-bb7bb695c82b"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be4025ba-9b1b-4396-b934-05efc42b4e93"
     },
     "Response" : null,
     "Exception" : {
@@ -39,8 +39,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/dataFeeds",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "59d897bd-0bb9-43d4-90fd-bb7bb695c82b"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be4025ba-9b1b-4396-b934-05efc42b4e93"
     },
     "Response" : null,
     "Exception" : {

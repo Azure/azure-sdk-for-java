@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.ProviderResourceTypesClient;
 import com.azure.resourcemanager.resources.fluent.models.ProviderResourceTypeListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProviderResourceTypesClient. */
 public final class ProviderResourceTypesClientImpl implements ProviderResourceTypesClient {
-    private final ClientLogger logger = new ClientLogger(ProviderResourceTypesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProviderResourceTypesService service;
 
@@ -179,14 +176,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace, String expand) {
         return listWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderResourceTypeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -202,14 +192,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace) {
         final String expand = null;
         return listWithResponseAsync(resourceProviderNamespace, expand)
-            .flatMap(
-                (Response<ProviderResourceTypeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

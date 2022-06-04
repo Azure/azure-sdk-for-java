@@ -7,7 +7,6 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ExemptionCategory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.List;
 /** The policy exemption properties. */
 @Fluent
 public final class PolicyExemptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyExemptionProperties.class);
-
     /*
      * The ID of the policy assignment that is being exempted.
      */
@@ -215,16 +212,18 @@ public final class PolicyExemptionProperties {
      */
     public void validate() {
         if (policyAssignmentId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property policyAssignmentId in model PolicyExemptionProperties"));
         }
         if (exemptionCategory() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exemptionCategory in model PolicyExemptionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyExemptionProperties.class);
 }

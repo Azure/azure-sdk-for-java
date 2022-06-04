@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
 import com.azure.resourcemanager.datafactory.models.SwitchCase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Switch activity properties. */
 @Fluent
 public final class SwitchActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwitchActivityTypeProperties.class);
-
     /*
      * An expression that would evaluate to a string or integer. This is used
      * to determine the block of activities in cases that will be executed.
@@ -114,7 +111,7 @@ public final class SwitchActivityTypeProperties {
      */
     public void validate() {
         if (on() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property on in model SwitchActivityTypeProperties"));
         } else {
@@ -127,4 +124,6 @@ public final class SwitchActivityTypeProperties {
             defaultActivities().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SwitchActivityTypeProperties.class);
 }

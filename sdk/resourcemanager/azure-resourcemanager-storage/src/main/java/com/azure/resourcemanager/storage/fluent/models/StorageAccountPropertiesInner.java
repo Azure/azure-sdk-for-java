@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
 import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
+import com.azure.resourcemanager.storage.models.DnsEndpointType;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
@@ -24,7 +24,7 @@ import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuConversionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -32,8 +32,6 @@ import java.util.List;
 /** Properties of the storage account. */
 @Fluent
 public final class StorageAccountPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesInner.class);
-
     /*
      * Gets the status of the storage account at the time the operation was
      * called.
@@ -134,7 +132,9 @@ public final class StorageAccountPropertiesInner {
 
     /*
      * Required for storage accounts where kind = BlobStorage. The access tier
-     * used for billing.
+     * is used for billing. The 'Premium' access tier is the default value for
+     * premium block blobs storage account type and it cannot be changed for
+     * the premium block blobs storage account type.
      */
     @JsonProperty(value = "accessTier", access = JsonProperty.Access.WRITE_ONLY)
     private AccessTier accessTier;
@@ -281,6 +281,22 @@ public final class StorageAccountPropertiesInner {
     @JsonProperty(value = "allowedCopyScope")
     private AllowedCopyScope allowedCopyScope;
 
+    /*
+     * This property is readOnly and is set by server during asynchronous
+     * storage account sku conversion operations.
+     */
+    @JsonProperty(value = "storageAccountSkuConversionStatus")
+    private StorageAccountSkuConversionStatus storageAccountSkuConversionStatus;
+
+    /*
+     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to
+     * create a large number of accounts in a single subscription, which
+     * creates accounts in an Azure DNS Zone and the endpoint URL will have an
+     * alphanumeric DNS Zone identifier.
+     */
+    @JsonProperty(value = "dnsEndpointType")
+    private DnsEndpointType dnsEndpointType;
+
     /**
      * Get the provisioningState property: Gets the status of the storage account at the time the operation was called.
      *
@@ -416,8 +432,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -821,6 +838,53 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
+     * Get the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
+     * asynchronous storage account sku conversion operations.
+     *
+     * @return the storageAccountSkuConversionStatus value.
+     */
+    public StorageAccountSkuConversionStatus storageAccountSkuConversionStatus() {
+        return this.storageAccountSkuConversionStatus;
+    }
+
+    /**
+     * Set the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
+     * asynchronous storage account sku conversion operations.
+     *
+     * @param storageAccountSkuConversionStatus the storageAccountSkuConversionStatus value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withStorageAccountSkuConversionStatus(
+        StorageAccountSkuConversionStatus storageAccountSkuConversionStatus) {
+        this.storageAccountSkuConversionStatus = storageAccountSkuConversionStatus;
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.dnsEndpointType;
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountPropertiesInner object itself.
+     */
+    public StorageAccountPropertiesInner withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        this.dnsEndpointType = dnsEndpointType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -867,6 +931,9 @@ public final class StorageAccountPropertiesInner {
         }
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
+        }
+        if (storageAccountSkuConversionStatus() != null) {
+            storageAccountSkuConversionStatus().validate();
         }
     }
 }

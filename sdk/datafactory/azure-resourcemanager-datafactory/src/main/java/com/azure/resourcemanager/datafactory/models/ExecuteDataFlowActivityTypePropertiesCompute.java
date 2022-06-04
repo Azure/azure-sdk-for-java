@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Compute properties for data flow activity. */
 @Fluent
 public final class ExecuteDataFlowActivityTypePropertiesCompute {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExecuteDataFlowActivityTypePropertiesCompute.class);
-
     /*
      * Compute type of the cluster which will execute data flow job. Possible
      * values include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type:

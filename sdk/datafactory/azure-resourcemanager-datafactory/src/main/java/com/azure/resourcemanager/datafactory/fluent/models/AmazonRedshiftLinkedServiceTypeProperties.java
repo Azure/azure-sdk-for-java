@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon Redshift linked service properties. */
 @Fluent
 public final class AmazonRedshiftLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRedshiftLinkedServiceTypeProperties.class);
-
     /*
      * The name of the Amazon Redshift server. Type: string (or Expression with
      * resultType string).
@@ -195,7 +192,7 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
      */
     public void validate() {
         if (server() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property server in model AmazonRedshiftLinkedServiceTypeProperties"));
@@ -204,10 +201,12 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
             password().validate();
         }
         if (database() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property database in model AmazonRedshiftLinkedServiceTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonRedshiftLinkedServiceTypeProperties.class);
 }

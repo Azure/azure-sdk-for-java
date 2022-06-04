@@ -38,9 +38,22 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      Configs configs,
                                      AzureKeyCredential credential,
                                      boolean contentResponseOnWriteEnabled,
-                                     ApiType apiType) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
-              false, contentResponseOnWriteEnabled, null, apiType);
+                                     ApiType apiType,
+                                     ClientTelemetryConfig clientTelemetryConfig) {
+        super(
+                serviceEndpoint,
+                masterKey,
+                connectionPolicy,
+                consistencyLevel,
+                configs,
+                credential,
+                null,
+                false,
+                false,
+                contentResponseOnWriteEnabled,
+                null,
+                apiType,
+                clientTelemetryConfig);
         init(null, null);
     }
 

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Settings controlling Data Network use. */
 @Fluent
 public final class DataNetworkConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataNetworkConfiguration.class);
-
     /*
      * A reference to the Data Network that these settings apply to
      */
@@ -312,7 +309,7 @@ public final class DataNetworkConfiguration {
      */
     public void validate() {
         if (dataNetwork() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataNetwork in model DataNetworkConfiguration"));
@@ -320,7 +317,7 @@ public final class DataNetworkConfiguration {
             dataNetwork().validate();
         }
         if (sessionAmbr() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sessionAmbr in model DataNetworkConfiguration"));
@@ -328,7 +325,7 @@ public final class DataNetworkConfiguration {
             sessionAmbr().validate();
         }
         if (allowedServices() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property allowedServices in model DataNetworkConfiguration"));
@@ -336,4 +333,6 @@ public final class DataNetworkConfiguration {
             allowedServices().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataNetworkConfiguration.class);
 }

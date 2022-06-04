@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Db2AuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DB2 linked service properties. */
 @Fluent
 public final class Db2LinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Db2LinkedServiceTypeProperties.class);
-
     /*
      * The connection string. It is mutually exclusive with server, database,
      * authenticationType, userName, packageCollection and

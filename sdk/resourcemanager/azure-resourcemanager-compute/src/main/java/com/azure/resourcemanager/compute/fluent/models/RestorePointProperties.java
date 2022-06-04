@@ -37,10 +37,12 @@ public final class RestorePointProperties {
     private String provisioningState;
 
     /*
-     * Gets the consistency mode for the restore point. Please refer to
-     * https://aka.ms/RestorePoints for more details.
+     * ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a
+     * valid input. Please refer to https://aka.ms/RestorePoints for more
+     * details.
      */
-    @JsonProperty(value = "consistencyMode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "consistencyMode")
     private ConsistencyModeTypes consistencyMode;
 
     /*
@@ -103,13 +105,27 @@ public final class RestorePointProperties {
     }
 
     /**
-     * Get the consistencyMode property: Gets the consistency mode for the restore point. Please refer to
+     * Get the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
      *
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
         return this.consistencyMode;
+    }
+
+    /**
+     * Set the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
+     * https://aka.ms/RestorePoints for more details.
+     *
+     * @param consistencyMode the consistencyMode value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withConsistencyMode(ConsistencyModeTypes consistencyMode) {
+        this.consistencyMode = consistencyMode;
+        return this;
     }
 
     /**

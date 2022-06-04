@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of Big Data pools Collection of Big Data pool information. */
 @Fluent
 public final class BigDataPoolResourceInfoListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolResourceInfoListResult.class);
-
     /*
      * Link to the next page of results
      */

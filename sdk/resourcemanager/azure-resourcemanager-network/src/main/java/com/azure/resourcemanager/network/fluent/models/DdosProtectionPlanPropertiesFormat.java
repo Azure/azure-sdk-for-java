@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** DDoS protection plan properties. */
 @Immutable
 public final class DdosProtectionPlanPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanPropertiesFormat.class);
-
     /*
      * The resource GUID property of the DDoS protection plan resource. It
      * uniquely identifies the resource, even if the user changes its name or

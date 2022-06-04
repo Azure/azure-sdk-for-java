@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagementLocks GetAtSubscriptionLevel. */
 public final class ManagementLocksGetAtSubscriptionLevelSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ManagementLocks_GetAtSubscriptionLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_GetAtSubscriptionLevel.json
      */
     /**
      * Sample code: Get management lock at subscription level.

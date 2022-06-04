@@ -14,33 +14,6 @@ import com.azure.resourcemanager.securityinsights.fluent.models.AutomationRuleIn
 /** An instance of this class provides access to all the operations defined in AutomationRulesClient. */
 public interface AutomationRulesClient {
     /**
-     * Gets all automation rules.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all automation rules.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AutomationRuleInner> list(String resourceGroupName, String workspaceName);
-
-    /**
-     * Gets all automation rules.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all automation rules.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AutomationRuleInner> list(String resourceGroupName, String workspaceName, Context context);
-
-    /**
      * Gets the automation rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -76,15 +49,13 @@ public interface AutomationRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param automationRuleId Automation rule ID.
-     * @param automationRule The automation rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an automation rule.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AutomationRuleInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String automationRuleId, AutomationRuleInner automationRule);
+    AutomationRuleInner createOrUpdate(String resourceGroupName, String workspaceName, String automationRuleId);
 
     /**
      * Creates or updates the automation rule.
@@ -92,19 +63,19 @@ public interface AutomationRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param automationRuleId Automation rule ID.
-     * @param automationRule The automation rule.
+     * @param automationRuleToUpsert The automation rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an automation rule along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AutomationRuleInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String automationRuleId,
-        AutomationRuleInner automationRule,
+        AutomationRuleInner automationRuleToUpsert,
         Context context);
 
     /**
@@ -116,9 +87,10 @@ public interface AutomationRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String automationRuleId);
+    Object delete(String resourceGroupName, String workspaceName, String automationRuleId);
 
     /**
      * Delete the automation rule.
@@ -130,9 +102,36 @@ public interface AutomationRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
+    Response<Object> deleteWithResponse(
         String resourceGroupName, String workspaceName, String automationRuleId, Context context);
+
+    /**
+     * Gets all automation rules.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all automation rules as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AutomationRuleInner> list(String resourceGroupName, String workspaceName);
+
+    /**
+     * Gets all automation rules.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all automation rules as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AutomationRuleInner> list(String resourceGroupName, String workspaceName, Context context);
 }

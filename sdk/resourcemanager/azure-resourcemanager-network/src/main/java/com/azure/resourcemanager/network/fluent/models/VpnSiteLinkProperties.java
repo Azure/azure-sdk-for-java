@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
 import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters for VpnSite. */
 @Fluent
 public final class VpnSiteLinkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteLinkProperties.class);
-
     /*
      * The link provider properties.
      */

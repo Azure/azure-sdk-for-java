@@ -590,14 +590,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
     public Mono<UpdateDomainInner> getUpdateDomainAsync(
         String resourceGroupName, String cloudServiceName, int updateDomain) {
         return getUpdateDomainWithResponseAsync(resourceGroupName, cloudServiceName, updateDomain)
-            .flatMap(
-                (Response<UpdateDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -238,7 +238,7 @@ public interface GatewayContract {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> regenerateKeyWithResponse(GatewayKeyRegenerationRequestContract parameters, Context context);
 
@@ -261,7 +261,7 @@ public interface GatewayContract {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Shared Access Authorization Token for the gateway.
+     * @return the Shared Access Authorization Token for the gateway along with {@link Response}.
      */
     Response<GatewayTokenContract> generateTokenWithResponse(GatewayTokenRequestContract parameters, Context context);
 }

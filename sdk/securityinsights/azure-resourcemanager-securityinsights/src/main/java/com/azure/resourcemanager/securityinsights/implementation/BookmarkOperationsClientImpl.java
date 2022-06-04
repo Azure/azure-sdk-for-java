@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.BookmarkOperationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.BookmarkExpandResponseInner;
 import com.azure.resourcemanager.securityinsights.models.BookmarkExpandParameters;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BookmarkOperationsClient. */
 public final class BookmarkOperationsClientImpl implements BookmarkOperationsClient {
-    private final ClientLogger logger = new ClientLogger(BookmarkOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BookmarkOperationsService service;
 
@@ -214,14 +211,7 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
     private Mono<BookmarkExpandResponseInner> expandAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, BookmarkExpandParameters parameters) {
         return expandWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, parameters)
-            .flatMap(
-                (Response<BookmarkExpandResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

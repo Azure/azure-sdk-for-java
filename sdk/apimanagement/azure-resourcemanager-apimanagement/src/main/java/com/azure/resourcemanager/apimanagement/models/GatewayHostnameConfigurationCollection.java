@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayHostnameConfigurationContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged Gateway hostname configuration list representation. */
 @Immutable
 public final class GatewayHostnameConfigurationCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayHostnameConfigurationCollection.class);
-
     /*
      * Page values.
      */

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DynamicsCrmSource")
 @Fluent
 public final class DynamicsCrmSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsCrmSource.class);
-
     /*
      * FetchXML is a proprietary query language that is used in Microsoft
      * Dynamics CRM (online & on-premises). Type: string (or Expression with

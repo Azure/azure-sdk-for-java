@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.EntityRelationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EntityRelationsClient. */
 public final class EntityRelationsClientImpl implements EntityRelationsClient {
-    private final ClientLogger logger = new ClientLogger(EntityRelationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EntityRelationsService service;
 
@@ -203,14 +200,7 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
     private Mono<RelationInner> getRelationAsync(
         String resourceGroupName, String workspaceName, String entityId, String relationName) {
         return getRelationWithResponseAsync(resourceGroupName, workspaceName, entityId, relationName)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

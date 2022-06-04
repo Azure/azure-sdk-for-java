@@ -6,7 +6,11 @@ omitted_paths:
   - sdk/authorization/microsoft-azure-authentication-msi-token-provider/*
   - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
-  - sdk/spring/azure-spring-boot-samples/*
+  - sdk/boms/spring-cloud-azure-dependencies/*
+  - sdk/spring/*
+  - "sdk/spring/*/*"
+  - sdk/spring-experimental/*
+  - "sdk/spring-experimental/*/*"
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
@@ -119,6 +123,7 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/local-emulator.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/quick-start.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/Samples/DatabricksLiveContainerMigration/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']

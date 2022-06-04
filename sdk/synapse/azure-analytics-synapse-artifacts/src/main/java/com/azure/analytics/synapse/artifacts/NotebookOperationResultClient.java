@@ -19,7 +19,7 @@ public final class NotebookOperationResultClient {
     @Generated private final NotebookOperationResultsImpl serviceClient;
 
     /**
-     * Initializes an instance of NotebookOperationResults client.
+     * Initializes an instance of NotebookOperationResultClient class.
      *
      * @param serviceClient the service client implementation.
      */

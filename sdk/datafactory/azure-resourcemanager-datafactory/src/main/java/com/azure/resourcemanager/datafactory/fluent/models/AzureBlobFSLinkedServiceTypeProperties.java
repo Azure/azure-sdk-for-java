@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Lake Storage Gen2 linked service properties. */
 @Fluent
 public final class AzureBlobFSLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSLinkedServiceTypeProperties.class);
-
     /*
      * Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or
      * Expression with resultType string).
@@ -330,7 +327,7 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model AzureBlobFSLinkedServiceTypeProperties"));
@@ -345,4 +342,6 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
             servicePrincipalCredential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFSLinkedServiceTypeProperties.class);
 }

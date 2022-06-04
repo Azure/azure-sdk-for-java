@@ -17,13 +17,12 @@ import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.synapse.models.OperationResource;
 import com.azure.resourcemanager.synapse.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 

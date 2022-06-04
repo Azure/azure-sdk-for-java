@@ -36,7 +36,11 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
         return fromString(name, HttpAuthenticationType.class);
     }
 
-    /** @return known HttpAuthenticationType values. */
+    /**
+     * Gets known HttpAuthenticationType values.
+     *
+     * @return known HttpAuthenticationType values.
+     */
     public static Collection<HttpAuthenticationType> values() {
         return values(HttpAuthenticationType.class);
     }

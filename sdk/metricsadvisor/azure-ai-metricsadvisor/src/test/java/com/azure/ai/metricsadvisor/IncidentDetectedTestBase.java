@@ -20,8 +20,8 @@ public abstract class IncidentDetectedTestBase extends MetricsAdvisorClientTestB
     // Pre-configured test resource.
     protected static class ListIncidentsDetectedInput {
         static final ListIncidentsDetectedInput INSTANCE = new ListIncidentsDetectedInput();
-        final OffsetDateTime startTime = OffsetDateTime.parse("2021-01-01T00:00:00.000Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2021-10-21T00:00:00.000Z");
+        final OffsetDateTime startTime = OffsetDateTime.parse("2022-01-01T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2022-03-22T00:00:00Z");
         final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
             .setMaxPageSize(1000);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;

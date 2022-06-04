@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient;
 import com.azure.resourcemanager.resources.fluent.models.PolicyExemptionInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in PolicyExemptionsClient. */
 public final class PolicyExemptionsClientImpl
     implements InnerSupportsListing<PolicyExemptionInner>, InnerSupportsDelete<Void>, PolicyExemptionsClient {
-    private final ClientLogger logger = new ClientLogger(PolicyExemptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyExemptionsService service;
 
@@ -300,7 +297,7 @@ public final class PolicyExemptionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String scope, String policyExemptionName) {
-        return deleteWithResponseAsync(scope, policyExemptionName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(scope, policyExemptionName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -471,14 +468,7 @@ public final class PolicyExemptionsClientImpl
     public Mono<PolicyExemptionInner> createOrUpdateAsync(
         String scope, String policyExemptionName, PolicyExemptionInner parameters) {
         return createOrUpdateWithResponseAsync(scope, policyExemptionName, parameters)
-            .flatMap(
-                (Response<PolicyExemptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -621,15 +611,7 @@ public final class PolicyExemptionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyExemptionInner> getAsync(String scope, String policyExemptionName) {
-        return getWithResponseAsync(scope, policyExemptionName)
-            .flatMap(
-                (Response<PolicyExemptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope, policyExemptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

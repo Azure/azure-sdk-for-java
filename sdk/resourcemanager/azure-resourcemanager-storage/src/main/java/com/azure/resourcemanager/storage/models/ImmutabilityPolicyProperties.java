@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of an ImmutabilityPolicy of a blob container. */
 @Fluent
 public final class ImmutabilityPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyProperties.class);
-
     /*
      * The properties of an ImmutabilityPolicy of a blob container.
      */

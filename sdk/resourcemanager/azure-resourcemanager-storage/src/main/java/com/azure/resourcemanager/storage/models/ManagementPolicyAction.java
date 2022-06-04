@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Actions are applied to the filtered blobs when the execution condition is met. */
 @Fluent
 public final class ManagementPolicyAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyAction.class);
-
     /*
      * The management policy action for base blob
      */

@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
 import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.BlobServiceItems;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BlobServicesClient. */
 public final class BlobServicesClientImpl implements BlobServicesClient {
-    private final ClientLogger logger = new ClientLogger(BlobServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BlobServicesService service;
 
@@ -429,14 +426,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
     public Mono<BlobServicePropertiesInner> setServicePropertiesAsync(
         String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<BlobServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -605,14 +595,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<BlobServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

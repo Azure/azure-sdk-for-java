@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Action for alert rule. */
 @Fluent
 public final class ActionResponseInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionResponseInner.class);
-
     /*
      * Action properties for get request
      */

@@ -57,7 +57,11 @@ public final class ScriptActivityParameterType extends ExpandableStringEnum<Scri
         return fromString(name, ScriptActivityParameterType.class);
     }
 
-    /** @return known ScriptActivityParameterType values. */
+    /**
+     * Gets known ScriptActivityParameterType values.
+     *
+     * @return known ScriptActivityParameterType values.
+     */
     public static Collection<ScriptActivityParameterType> values() {
         return values(ScriptActivityParameterType.class);
     }

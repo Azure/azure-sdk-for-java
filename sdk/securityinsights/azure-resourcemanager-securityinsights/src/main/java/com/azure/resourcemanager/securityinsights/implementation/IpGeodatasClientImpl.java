@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.IpGeodatasClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EnrichmentIpGeodataInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IpGeodatasClient. */
 public final class IpGeodatasClientImpl implements IpGeodatasClient {
-    private final ClientLogger logger = new ClientLogger(IpGeodatasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IpGeodatasService service;
 
@@ -175,15 +172,7 @@ public final class IpGeodatasClientImpl implements IpGeodatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnrichmentIpGeodataInner> getAsync(String resourceGroupName, String ipAddress) {
-        return getWithResponseAsync(resourceGroupName, ipAddress)
-            .flatMap(
-                (Response<EnrichmentIpGeodataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, ipAddress).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.ServiceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for Services API service call. */
 @Fluent
 public final class ServiceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceListResult.class);
-
     /*
      * A list of Services.
      */

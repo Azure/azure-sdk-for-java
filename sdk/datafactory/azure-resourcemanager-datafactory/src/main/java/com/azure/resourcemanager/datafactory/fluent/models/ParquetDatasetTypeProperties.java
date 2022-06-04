@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parquet dataset properties. */
 @Fluent
 public final class ParquetDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParquetDatasetTypeProperties.class);
-
     /*
      * The location of the parquet storage.
      */
@@ -77,7 +74,7 @@ public final class ParquetDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model ParquetDatasetTypeProperties"));
@@ -85,4 +82,6 @@ public final class ParquetDatasetTypeProperties {
             location().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ParquetDatasetTypeProperties.class);
 }

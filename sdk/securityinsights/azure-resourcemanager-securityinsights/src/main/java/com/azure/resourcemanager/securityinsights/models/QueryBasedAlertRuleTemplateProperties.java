@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Query based alert rule template base property bag. */
 @Fluent
 public class QueryBasedAlertRuleTemplateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryBasedAlertRuleTemplateProperties.class);
-
     /*
      * The query that creates alerts for this rule.
      */
@@ -28,12 +24,6 @@ public class QueryBasedAlertRuleTemplateProperties {
      */
     @JsonProperty(value = "severity")
     private AlertSeverity severity;
-
-    /*
-     * The tactics of the alert rule
-     */
-    @JsonProperty(value = "tactics")
-    private List<AttackTactic> tactics;
 
     /*
      * The version of this template - in format <a.b.c>, where all are numbers.
@@ -99,26 +89,6 @@ public class QueryBasedAlertRuleTemplateProperties {
      */
     public QueryBasedAlertRuleTemplateProperties withSeverity(AlertSeverity severity) {
         this.severity = severity;
-        return this;
-    }
-
-    /**
-     * Get the tactics property: The tactics of the alert rule.
-     *
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.tactics;
-    }
-
-    /**
-     * Set the tactics property: The tactics of the alert rule.
-     *
-     * @param tactics the tactics value to set.
-     * @return the QueryBasedAlertRuleTemplateProperties object itself.
-     */
-    public QueryBasedAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
-        this.tactics = tactics;
         return this;
     }
 

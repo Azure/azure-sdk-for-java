@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.ObjectReplicationPoliciesOperationsClient;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicies;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ObjectReplicationPoliciesOperationsClient.
  */
 public final class ObjectReplicationPoliciesOperationsClientImpl implements ObjectReplicationPoliciesOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ObjectReplicationPoliciesOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ObjectReplicationPoliciesOperationsService service;
 
@@ -456,14 +453,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
     public Mono<ObjectReplicationPolicyInner> getAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -681,14 +671,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         String objectReplicationPolicyId,
         ObjectReplicationPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -888,7 +871,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

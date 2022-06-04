@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the VM to check security groups for. */
 @Fluent
 public final class SecurityGroupViewParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupViewParameters.class);
-
     /*
      * ID of the target VM.
      */
@@ -47,10 +44,12 @@ public final class SecurityGroupViewParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceId in model SecurityGroupViewParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityGroupViewParameters.class);
 }

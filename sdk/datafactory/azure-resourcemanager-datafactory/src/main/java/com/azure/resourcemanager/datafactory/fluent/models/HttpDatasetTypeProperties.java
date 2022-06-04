@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this dataset type. */
 @Fluent
 public final class HttpDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpDatasetTypeProperties.class);
-
     /*
      * The relative URL based on the URL in the HttpLinkedService refers to an
      * HTTP file Type: string (or Expression with resultType string).

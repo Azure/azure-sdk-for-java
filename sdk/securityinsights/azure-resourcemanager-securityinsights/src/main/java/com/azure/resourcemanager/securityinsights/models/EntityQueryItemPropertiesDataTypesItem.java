@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EntityQueryItemPropertiesDataTypesItem model. */
 @Fluent
 public final class EntityQueryItemPropertiesDataTypesItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityQueryItemPropertiesDataTypesItem.class);
-
     /*
      * Data type name
      */

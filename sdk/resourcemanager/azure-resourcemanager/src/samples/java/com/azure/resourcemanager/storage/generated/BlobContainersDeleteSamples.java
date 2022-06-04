@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BlobContainers Delete. */
 public final class BlobContainersDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobContainersDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersDelete.json
      */
     /**
      * Sample code: DeleteContainers.

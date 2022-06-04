@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventTypeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the List Event Types operation. */
 @Fluent
 public final class EventTypesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventTypesListResult.class);
-
     /*
      * A collection of event types
      */

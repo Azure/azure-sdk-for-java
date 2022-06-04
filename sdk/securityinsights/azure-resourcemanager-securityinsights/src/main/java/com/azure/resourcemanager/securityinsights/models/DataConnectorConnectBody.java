@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents Codeless API Polling data connector. */
 @Fluent
 public final class DataConnectorConnectBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectorConnectBody.class);
-
     /*
      * The authentication kind used to poll the data
      */

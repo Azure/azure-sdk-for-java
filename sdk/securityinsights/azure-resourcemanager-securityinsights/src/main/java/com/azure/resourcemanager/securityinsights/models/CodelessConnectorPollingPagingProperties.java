@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describe the properties needed to make a pagination call. */
 @Fluent
 public final class CodelessConnectorPollingPagingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CodelessConnectorPollingPagingProperties.class);
-
     /*
      * Describes the type. could be 'None', 'PageToken', 'PageCount',
      * 'TimeStamp'
@@ -261,10 +258,12 @@ public final class CodelessConnectorPollingPagingProperties {
      */
     public void validate() {
         if (pagingType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property pagingType in model CodelessConnectorPollingPagingProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingPagingProperties.class);
 }

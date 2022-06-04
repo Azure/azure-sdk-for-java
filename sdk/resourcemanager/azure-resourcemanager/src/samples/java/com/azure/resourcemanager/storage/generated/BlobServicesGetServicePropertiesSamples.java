@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BlobServices GetServiceProperties. */
 public final class BlobServicesGetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobServicesGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobServicesGet.json
      */
     /**
      * Sample code: GetBlobServices.

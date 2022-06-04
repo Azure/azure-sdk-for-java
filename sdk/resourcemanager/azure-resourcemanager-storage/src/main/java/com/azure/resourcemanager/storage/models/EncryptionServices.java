@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A list of services that support encryption. */
 @Fluent
 public final class EncryptionServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionServices.class);
-
     /*
      * The encryption function of the blob storage service.
      */

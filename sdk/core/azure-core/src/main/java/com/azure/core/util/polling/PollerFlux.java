@@ -488,8 +488,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 // or duration specified in the last retry-after response header elapses.
                 return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
             })
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new IllegalStateException(
-                    "PollOperation returned Mono.empty()."))))
+                .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
@@ -593,8 +592,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                     }
                     return activationMono
                         .map(this.activationPollResponseMapper)
-                        .switchIfEmpty(Mono.defer(() ->
-                            Mono.just(new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null))))
+                        .switchIfEmpty(Mono.fromSupplier(() ->
+                            new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
                         .map(activationResponse -> {
                             this.rootContext.setOnetimeActivationResponse(activationResponse);
                             this.activated = true;

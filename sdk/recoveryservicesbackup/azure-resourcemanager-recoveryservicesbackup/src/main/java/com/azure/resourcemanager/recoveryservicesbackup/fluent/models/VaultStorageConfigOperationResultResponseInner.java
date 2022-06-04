@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,9 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "PrepareDataMoveResponse", value = PrepareDataMoveResponse.class)})
 @Immutable
 public class VaultStorageConfigOperationResultResponseInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VaultStorageConfigOperationResultResponseInner.class);
-
     /**
      * Validates the instance.
      *

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.iotcentral.models.OperationInputs;
 /** Samples for Apps CheckSubdomainAvailability. */
 public final class AppsCheckSubdomainAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CheckSubdomainAvailability.json
+     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CheckSubdomainAvailability.json
      */
     /**
      * Sample code: Apps_SubdomainAvailability.

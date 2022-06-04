@@ -7,10 +7,28 @@
 ### Breaking Changes
 - Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
 - Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Removed `modelId` as a required parameter from `beginBuildModel`, `beginCreateComposedModel` and `getCopyAuthorization`
+and moved to `BuildModelOptions`, `CreateComposedModelOptions` and `CopyAuthorizationOptions` respectively
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 3.1.11 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+
+## 3.1.10 (2022-04-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
 
 ## 3.1.9 (2022-03-08)
 ### Bug Fixes

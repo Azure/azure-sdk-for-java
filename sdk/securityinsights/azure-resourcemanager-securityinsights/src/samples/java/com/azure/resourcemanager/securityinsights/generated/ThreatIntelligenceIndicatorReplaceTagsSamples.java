@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicatorModelForRequestBody;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceResourceKindEnum;
+import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceIndicatorModel;
 import java.util.Arrays;
 
 /** Samples for ThreatIntelligenceIndicator ReplaceTags. */
 public final class ThreatIntelligenceIndicatorReplaceTagsSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2021-09-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/threatintelligence/ReplaceTagsThreatIntelligence.json
      */
     /**
      * Sample code: Replace tags to a Threat Intelligence.
@@ -27,8 +26,7 @@ public final class ThreatIntelligenceIndicatorReplaceTagsSamples {
                 "myRg",
                 "myWorkspace",
                 "d9cd6f0b-96b9-3984-17cd-a779d1e15a93",
-                new ThreatIntelligenceIndicatorModelForRequestBody()
-                    .withKind(ThreatIntelligenceResourceKindEnum.INDICATOR)
+                new ThreatIntelligenceIndicatorModel()
                     .withEtag("\"0000262c-0000-0800-0000-5e9767060000\"")
                     .withThreatIntelligenceTags(Arrays.asList("patching tags")),
                 Context.NONE);

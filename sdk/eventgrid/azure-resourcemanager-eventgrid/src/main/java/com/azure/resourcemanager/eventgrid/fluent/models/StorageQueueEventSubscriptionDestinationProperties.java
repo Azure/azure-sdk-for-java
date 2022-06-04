@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for a storage queue destination. */
 @Fluent
 public final class StorageQueueEventSubscriptionDestinationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StorageQueueEventSubscriptionDestinationProperties.class);
-
     /*
      * The Azure Resource ID of the storage account that contains the queue
      * that is the destination of an event subscription.

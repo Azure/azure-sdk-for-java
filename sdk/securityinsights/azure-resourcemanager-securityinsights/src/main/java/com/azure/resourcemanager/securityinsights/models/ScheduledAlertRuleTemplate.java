@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleTemplateInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.ScheduledAlertRuleTemplateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,8 +20,6 @@ import java.util.Map;
 @JsonTypeName("Scheduled")
 @Fluent
 public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduledAlertRuleTemplate.class);
-
     /*
      * Scheduled alert rule template properties
      */
@@ -37,6 +33,140 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
      */
     private ScheduledAlertRuleTemplateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
+     *
+     * @return the alertRulesCreatedByTemplateCount value.
+     */
+    public Integer alertRulesCreatedByTemplateCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().alertRulesCreatedByTemplateCount();
+    }
+
+    /**
+     * Set the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
+     *
+     * @param alertRulesCreatedByTemplateCount the alertRulesCreatedByTemplateCount value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withAlertRulesCreatedByTemplateCount(alertRulesCreatedByTemplateCount);
+        return this;
+    }
+
+    /**
+     * Get the createdDateUtc property: The time that this alert rule template has been added.
+     *
+     * @return the createdDateUtc value.
+     */
+    public OffsetDateTime createdDateUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDateUtc();
+    }
+
+    /**
+     * Get the lastUpdatedDateUtc property: The time that this alert rule template was last updated.
+     *
+     * @return the lastUpdatedDateUtc value.
+     */
+    public OffsetDateTime lastUpdatedDateUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedDateUtc();
+    }
+
+    /**
+     * Get the description property: The description of the alert rule template.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of the alert rule template.
+     *
+     * @param description the description value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name for alert rule template.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name for alert rule template.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the requiredDataConnectors property: The required data connectors for this template.
+     *
+     * @return the requiredDataConnectors value.
+     */
+    public List<AlertRuleTemplateDataSource> requiredDataConnectors() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredDataConnectors();
+    }
+
+    /**
+     * Set the requiredDataConnectors property: The required data connectors for this template.
+     *
+     * @param requiredDataConnectors the requiredDataConnectors value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withRequiredDataConnectors(
+        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withRequiredDataConnectors(requiredDataConnectors);
+        return this;
+    }
+
+    /**
+     * Get the status property: The alert rule template status.
+     *
+     * @return the status value.
+     */
+    public TemplateStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: The alert rule template status.
+     *
+     * @param status the status value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withStatus(TemplateStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
     }
 
     /**
@@ -59,6 +189,52 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
             this.innerProperties = new ScheduledAlertRuleTemplateProperties();
         }
         this.innerProperties().withQuery(query);
+        return this;
+    }
+
+    /**
+     * Get the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
+     *
+     * @return the queryFrequency value.
+     */
+    public Duration queryFrequency() {
+        return this.innerProperties() == null ? null : this.innerProperties().queryFrequency();
+    }
+
+    /**
+     * Set the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
+     *
+     * @param queryFrequency the queryFrequency value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withQueryFrequency(Duration queryFrequency) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withQueryFrequency(queryFrequency);
+        return this;
+    }
+
+    /**
+     * Get the queryPeriod property: The period (in ISO 8601 duration format) that this alert rule looks at.
+     *
+     * @return the queryPeriod value.
+     */
+    public Duration queryPeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().queryPeriod();
+    }
+
+    /**
+     * Set the queryPeriod property: The period (in ISO 8601 duration format) that this alert rule looks at.
+     *
+     * @param queryPeriod the queryPeriod value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withQueryPeriod(Duration queryPeriod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withQueryPeriod(queryPeriod);
         return this;
     }
 
@@ -86,7 +262,53 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
     }
 
     /**
-     * Get the tactics property: The tactics of the alert rule.
+     * Get the triggerOperator property: The operation against the threshold that triggers alert rule.
+     *
+     * @return the triggerOperator value.
+     */
+    public TriggerOperator triggerOperator() {
+        return this.innerProperties() == null ? null : this.innerProperties().triggerOperator();
+    }
+
+    /**
+     * Set the triggerOperator property: The operation against the threshold that triggers alert rule.
+     *
+     * @param triggerOperator the triggerOperator value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withTriggerOperator(TriggerOperator triggerOperator) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withTriggerOperator(triggerOperator);
+        return this;
+    }
+
+    /**
+     * Get the triggerThreshold property: The threshold triggers this alert rule.
+     *
+     * @return the triggerThreshold value.
+     */
+    public Integer triggerThreshold() {
+        return this.innerProperties() == null ? null : this.innerProperties().triggerThreshold();
+    }
+
+    /**
+     * Set the triggerThreshold property: The threshold triggers this alert rule.
+     *
+     * @param triggerThreshold the triggerThreshold value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withTriggerThreshold(Integer triggerThreshold) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withTriggerThreshold(triggerThreshold);
+        return this;
+    }
+
+    /**
+     * Get the tactics property: The tactics of the alert rule template.
      *
      * @return the tactics value.
      */
@@ -95,7 +317,7 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
     }
 
     /**
-     * Set the tactics property: The tactics of the alert rule.
+     * Set the tactics property: The tactics of the alert rule template.
      *
      * @param tactics the tactics value to set.
      * @return the ScheduledAlertRuleTemplate object itself.
@@ -105,6 +327,29 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
             this.innerProperties = new ScheduledAlertRuleTemplateProperties();
         }
         this.innerProperties().withTactics(tactics);
+        return this;
+    }
+
+    /**
+     * Get the techniques property: The techniques of the alert rule.
+     *
+     * @return the techniques value.
+     */
+    public List<String> techniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().techniques();
+    }
+
+    /**
+     * Set the techniques property: The techniques of the alert rule.
+     *
+     * @param techniques the techniques value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withTechniques(List<String> techniques) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withTechniques(techniques);
         return this;
     }
 
@@ -130,6 +375,29 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
             this.innerProperties = new ScheduledAlertRuleTemplateProperties();
         }
         this.innerProperties().withVersion(version);
+        return this;
+    }
+
+    /**
+     * Get the eventGroupingSettings property: The event grouping settings.
+     *
+     * @return the eventGroupingSettings value.
+     */
+    public EventGroupingSettings eventGroupingSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventGroupingSettings();
+    }
+
+    /**
+     * Set the eventGroupingSettings property: The event grouping settings.
+     *
+     * @param eventGroupingSettings the eventGroupingSettings value to set.
+     * @return the ScheduledAlertRuleTemplate object itself.
+     */
+    public ScheduledAlertRuleTemplate withEventGroupingSettings(EventGroupingSettings eventGroupingSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withEventGroupingSettings(eventGroupingSettings);
         return this;
     }
 
@@ -199,255 +467,6 @@ public final class ScheduledAlertRuleTemplate extends AlertRuleTemplateInner {
             this.innerProperties = new ScheduledAlertRuleTemplateProperties();
         }
         this.innerProperties().withAlertDetailsOverride(alertDetailsOverride);
-        return this;
-    }
-
-    /**
-     * Get the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
-     *
-     * @return the queryFrequency value.
-     */
-    public Duration queryFrequency() {
-        return this.innerProperties() == null ? null : this.innerProperties().queryFrequency();
-    }
-
-    /**
-     * Set the queryFrequency property: The frequency (in ISO 8601 duration format) for this alert rule to run.
-     *
-     * @param queryFrequency the queryFrequency value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withQueryFrequency(Duration queryFrequency) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withQueryFrequency(queryFrequency);
-        return this;
-    }
-
-    /**
-     * Get the queryPeriod property: The period (in ISO 8601 duration format) that this alert rule looks at.
-     *
-     * @return the queryPeriod value.
-     */
-    public Duration queryPeriod() {
-        return this.innerProperties() == null ? null : this.innerProperties().queryPeriod();
-    }
-
-    /**
-     * Set the queryPeriod property: The period (in ISO 8601 duration format) that this alert rule looks at.
-     *
-     * @param queryPeriod the queryPeriod value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withQueryPeriod(Duration queryPeriod) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withQueryPeriod(queryPeriod);
-        return this;
-    }
-
-    /**
-     * Get the triggerOperator property: The operation against the threshold that triggers alert rule.
-     *
-     * @return the triggerOperator value.
-     */
-    public TriggerOperator triggerOperator() {
-        return this.innerProperties() == null ? null : this.innerProperties().triggerOperator();
-    }
-
-    /**
-     * Set the triggerOperator property: The operation against the threshold that triggers alert rule.
-     *
-     * @param triggerOperator the triggerOperator value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withTriggerOperator(TriggerOperator triggerOperator) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withTriggerOperator(triggerOperator);
-        return this;
-    }
-
-    /**
-     * Get the triggerThreshold property: The threshold triggers this alert rule.
-     *
-     * @return the triggerThreshold value.
-     */
-    public Integer triggerThreshold() {
-        return this.innerProperties() == null ? null : this.innerProperties().triggerThreshold();
-    }
-
-    /**
-     * Set the triggerThreshold property: The threshold triggers this alert rule.
-     *
-     * @param triggerThreshold the triggerThreshold value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withTriggerThreshold(Integer triggerThreshold) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withTriggerThreshold(triggerThreshold);
-        return this;
-    }
-
-    /**
-     * Get the eventGroupingSettings property: The event grouping settings.
-     *
-     * @return the eventGroupingSettings value.
-     */
-    public EventGroupingSettings eventGroupingSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().eventGroupingSettings();
-    }
-
-    /**
-     * Set the eventGroupingSettings property: The event grouping settings.
-     *
-     * @param eventGroupingSettings the eventGroupingSettings value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withEventGroupingSettings(EventGroupingSettings eventGroupingSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withEventGroupingSettings(eventGroupingSettings);
-        return this;
-    }
-
-    /**
-     * Get the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
-     *
-     * @return the alertRulesCreatedByTemplateCount value.
-     */
-    public Integer alertRulesCreatedByTemplateCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().alertRulesCreatedByTemplateCount();
-    }
-
-    /**
-     * Set the alertRulesCreatedByTemplateCount property: the number of alert rules that were created by this template.
-     *
-     * @param alertRulesCreatedByTemplateCount the alertRulesCreatedByTemplateCount value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withAlertRulesCreatedByTemplateCount(Integer alertRulesCreatedByTemplateCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withAlertRulesCreatedByTemplateCount(alertRulesCreatedByTemplateCount);
-        return this;
-    }
-
-    /**
-     * Get the lastUpdatedDateUtc property: The last time that this alert rule template has been updated.
-     *
-     * @return the lastUpdatedDateUtc value.
-     */
-    public OffsetDateTime lastUpdatedDateUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedDateUtc();
-    }
-
-    /**
-     * Get the createdDateUtc property: The time that this alert rule template has been added.
-     *
-     * @return the createdDateUtc value.
-     */
-    public OffsetDateTime createdDateUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdDateUtc();
-    }
-
-    /**
-     * Get the description property: The description of the alert rule template.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: The description of the alert rule template.
-     *
-     * @param description the description value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
-     * Get the displayName property: The display name for alert rule template.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
-    }
-
-    /**
-     * Set the displayName property: The display name for alert rule template.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withDisplayName(String displayName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withDisplayName(displayName);
-        return this;
-    }
-
-    /**
-     * Get the requiredDataConnectors property: The required data sources for this template.
-     *
-     * @return the requiredDataConnectors value.
-     */
-    public List<AlertRuleTemplateDataSource> requiredDataConnectors() {
-        return this.innerProperties() == null ? null : this.innerProperties().requiredDataConnectors();
-    }
-
-    /**
-     * Set the requiredDataConnectors property: The required data sources for this template.
-     *
-     * @param requiredDataConnectors the requiredDataConnectors value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withRequiredDataConnectors(
-        List<AlertRuleTemplateDataSource> requiredDataConnectors) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withRequiredDataConnectors(requiredDataConnectors);
-        return this;
-    }
-
-    /**
-     * Get the status property: The alert rule template status.
-     *
-     * @return the status value.
-     */
-    public TemplateStatus status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: The alert rule template status.
-     *
-     * @param status the status value to set.
-     * @return the ScheduledAlertRuleTemplate object itself.
-     */
-    public ScheduledAlertRuleTemplate withStatus(TemplateStatus status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ScheduledAlertRuleTemplateProperties();
-        }
-        this.innerProperties().withStatus(status);
         return this;
     }
 

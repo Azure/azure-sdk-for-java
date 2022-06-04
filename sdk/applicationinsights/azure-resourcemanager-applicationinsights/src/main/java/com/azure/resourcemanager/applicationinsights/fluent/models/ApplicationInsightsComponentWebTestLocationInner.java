@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties that define a web test location available to an Application Insights Component. */
 @Immutable
 public final class ApplicationInsightsComponentWebTestLocationInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentWebTestLocationInner.class);
-
     /*
      * The display name of the web test location.
      */

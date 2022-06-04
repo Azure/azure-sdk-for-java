@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.ThreatIntelligenceIndicatorsOperationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceInformationInner;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceInformationList;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
  */
 public final class ThreatIntelligenceIndicatorsOperationsClientImpl
     implements ThreatIntelligenceIndicatorsOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ThreatIntelligenceIndicatorsOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ThreatIntelligenceIndicatorsOperationsService service;
 
@@ -251,7 +248,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all threat intelligence indicators.
+     * @return all threat intelligence indicators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ThreatIntelligenceInformationInner> listAsync(
@@ -269,7 +266,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all threat intelligence indicators.
+     * @return all threat intelligence indicators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ThreatIntelligenceInformationInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -297,7 +294,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all threat intelligence indicators.
+     * @return all threat intelligence indicators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ThreatIntelligenceInformationInner> listAsync(
@@ -321,7 +318,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all threat intelligence indicators.
+     * @return all threat intelligence indicators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ThreatIntelligenceInformationInner> list(String resourceGroupName, String workspaceName) {
@@ -347,7 +344,7 @@ public final class ThreatIntelligenceIndicatorsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all threat intelligence indicators.
+     * @return all threat intelligence indicators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ThreatIntelligenceInformationInner> list(

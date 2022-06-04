@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.LinkedServicesClient;
 import com.azure.resourcemanager.datafactory.fluent.models.LinkedServiceResourceInner;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceListResponse;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LinkedServicesClient. */
 public final class LinkedServicesClientImpl implements LinkedServicesClient {
-    private final ClientLogger logger = new ClientLogger(LinkedServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LinkedServicesService service;
 

@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CommissionedState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Custom IP prefix properties. */
 @Fluent
 public final class CustomIpPrefixPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixPropertiesFormat.class);
-
     /*
      * The prefix range in CIDR notation. Should include the start address and
      * the prefix length.

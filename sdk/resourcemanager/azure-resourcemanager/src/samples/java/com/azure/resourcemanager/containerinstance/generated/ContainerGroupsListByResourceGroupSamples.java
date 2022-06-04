@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerGroups ListByResourceGroup. */
 public final class ContainerGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsListByResourceGroup.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsListByResourceGroup.json
      */
     /**
      * Sample code: ContainerGroupsListByResourceGroup.

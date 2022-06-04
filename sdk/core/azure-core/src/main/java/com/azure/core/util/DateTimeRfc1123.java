@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
@@ -45,6 +46,23 @@ public final class DateTimeRfc1123 {
      */
     public OffsetDateTime getDateTime() {
         return this.dateTime;
+    }
+
+    /**
+     * JSON creator for DateTimeRfc1123.
+     * <p>
+     * If {@code date} is null or an empty string null will be returned.
+     *
+     * @param date RFC1123 datetime string.
+     * @return The DateTimeRfc1123 representation of the datetime string, or null if {@code date} is null or empty.
+     */
+    @JsonCreator
+    static DateTimeRfc1123 fromString(final String date) {
+        if (CoreUtils.isNullOrEmpty(date)) {
+            return null;
+        }
+
+        return new DateTimeRfc1123(date);
     }
 
     /**
@@ -152,6 +170,8 @@ public final class DateTimeRfc1123 {
      *
      * @param dateTime The date time in OffsetDateTime format.
      * @return The date time string in RFC1123 format.
+     * @throws IllegalArgumentException If {@link OffsetDateTime#getDayOfWeek()} or
+     * {@link OffsetDateTime#getDayOfMonth()} is an unknown value.
      */
     public static String toRfc1123String(OffsetDateTime dateTime) {
         // ensure datetime is UTC offset.

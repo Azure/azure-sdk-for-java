@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.SourceControlsOperationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.securityinsights.models.SourceControlList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SourceControlsOperationsClient. */
 public final class SourceControlsOperationsClientImpl implements SourceControlsOperationsClient {
-    private final ClientLogger logger = new ClientLogger(SourceControlsOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SourceControlsOperationsService service;
 
@@ -260,7 +257,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all source controls, without source control items.
+     * @return all source controls, without source control items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SourceControlInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -277,7 +274,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all source controls, without source control items.
+     * @return all source controls, without source control items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SourceControlInner> listAsync(String resourceGroupName, String workspaceName, Context context) {
@@ -294,7 +291,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all source controls, without source control items.
+     * @return all source controls, without source control items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> list(String resourceGroupName, String workspaceName) {
@@ -310,7 +307,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all source controls, without source control items.
+     * @return all source controls, without source control items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> list(String resourceGroupName, String workspaceName, Context context) {
@@ -437,14 +434,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SourceControlInner> getAsync(String resourceGroupName, String workspaceName, String sourceControlId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sourceControlId)
-            .flatMap(
-                (Response<SourceControlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -601,7 +591,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sourceControlId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sourceControlId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -779,14 +769,7 @@ public final class SourceControlsOperationsClientImpl implements SourceControlsO
     private Mono<SourceControlInner> createAsync(
         String resourceGroupName, String workspaceName, String sourceControlId, SourceControlInner sourceControl) {
         return createWithResponseAsync(resourceGroupName, workspaceName, sourceControlId, sourceControl)
-            .flatMap(
-                (Response<SourceControlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

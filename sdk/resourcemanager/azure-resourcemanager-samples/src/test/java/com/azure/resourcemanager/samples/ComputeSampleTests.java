@@ -150,13 +150,11 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Disabled("Skipping for now - looks like a service side issue")
     public void testManageStorageFromMSIEnabledVirtualMachine() {
         Assertions.assertTrue(ManageStorageFromMSIEnabledVirtualMachine.runSample(azureResourceManager));
     }
 
     @Test
-    @Disabled("Skipping for now - looks like a service side issue")
     public void testManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
         Assertions.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azureResourceManager));
     }

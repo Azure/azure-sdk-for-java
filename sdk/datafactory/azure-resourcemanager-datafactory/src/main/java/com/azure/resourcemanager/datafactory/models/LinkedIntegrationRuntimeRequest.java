@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data factory name for linked integration runtime request. */
 @Fluent
 public final class LinkedIntegrationRuntimeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedIntegrationRuntimeRequest.class);
-
     /*
      * The data factory name for linked integration runtime.
      */
@@ -47,10 +44,12 @@ public final class LinkedIntegrationRuntimeRequest {
      */
     public void validate() {
         if (linkedFactoryName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedFactoryName in model LinkedIntegrationRuntimeRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedIntegrationRuntimeRequest.class);
 }

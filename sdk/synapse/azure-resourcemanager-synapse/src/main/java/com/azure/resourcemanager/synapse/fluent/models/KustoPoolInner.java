@@ -13,15 +13,12 @@ import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import com.azure.resourcemanager.synapse.models.OptimizedAutoscale;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
 import com.azure.resourcemanager.synapse.models.State;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Class representing a Kusto kusto pool. */
 @Fluent
 public final class KustoPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolInner.class);
-
     /*
      * The SKU of the kusto pool.
      */
@@ -261,7 +258,7 @@ public final class KustoPoolInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model KustoPoolInner"));
         } else {
@@ -271,4 +268,6 @@ public final class KustoPoolInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolInner.class);
 }

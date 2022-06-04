@@ -15,6 +15,8 @@ import com.azure.resourcemanager.servicebus.implementation.ServiceBusManagementC
 import com.azure.resourcemanager.servicebus.implementation.ServiceBusNamespacesImpl;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 
+import java.util.Objects;
+
 /**
  * Entry point to Azure ServiceBus management.
  */
@@ -39,17 +41,21 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
      * @return the ServiceBusManager
      */
     public static ServiceBusManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ServiceBusManager that exposes servicebus management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the ServiceBusManager
      */
-    private static ServiceBusManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ServiceBusManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new ServiceBusManager(httpPipeline, profile);
     }
 

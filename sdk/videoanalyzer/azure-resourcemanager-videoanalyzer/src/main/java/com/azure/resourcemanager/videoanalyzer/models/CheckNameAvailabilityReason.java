@@ -27,7 +27,11 @@ public final class CheckNameAvailabilityReason extends ExpandableStringEnum<Chec
         return fromString(name, CheckNameAvailabilityReason.class);
     }
 
-    /** @return known CheckNameAvailabilityReason values. */
+    /**
+     * Gets known CheckNameAvailabilityReason values.
+     *
+     * @return known CheckNameAvailabilityReason values.
+     */
     public static Collection<CheckNameAvailabilityReason> values() {
         return values(CheckNameAvailabilityReason.class);
     }

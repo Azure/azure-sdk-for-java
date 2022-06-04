@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tenant access information update parameters of the API Management service. */
 @Fluent
 public final class AccessInformationCreateParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessInformationCreateParameterProperties.class);
-
     /*
      * Principal (User) Identifier.
      */

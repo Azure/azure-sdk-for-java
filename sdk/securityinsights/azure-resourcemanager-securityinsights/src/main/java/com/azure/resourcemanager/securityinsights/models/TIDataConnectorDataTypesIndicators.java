@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Data type for indicators connection. */
 @Fluent
 public final class TIDataConnectorDataTypesIndicators extends DataConnectorDataTypeCommon {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TIDataConnectorDataTypesIndicators.class);
-
     /** {@inheritDoc} */
     @Override
     public TIDataConnectorDataTypesIndicators withState(DataTypeState state) {

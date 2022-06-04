@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources ListByStorageAccount. */
 public final class PrivateLinkResourcesListByStorageAccountSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountListPrivateLinkResources.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountListPrivateLinkResources.json
      */
     /**
      * Sample code: StorageAccountListPrivateLinkResources.

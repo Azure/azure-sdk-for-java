@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessTokenCache;
 import com.azure.core.util.logging.ClientLogger;
@@ -117,12 +118,12 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        HttpPipelineNextPolicy nextPolicy = next.clone();
+        HttpPipelineNextSyncPolicy nextPolicy = next.clone();
 
         authorizeRequestSync(context);
 

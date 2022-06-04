@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The mapping of content type to a repo path. */
 @Fluent
 public final class ContentPathMap {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentPathMap.class);
-
     /*
      * Content type.
      */

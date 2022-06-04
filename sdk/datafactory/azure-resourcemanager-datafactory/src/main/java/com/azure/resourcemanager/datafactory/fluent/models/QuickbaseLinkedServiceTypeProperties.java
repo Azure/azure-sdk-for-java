@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quickbase linked service type properties. */
 @Fluent
 public final class QuickbaseLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuickbaseLinkedServiceTypeProperties.class);
-
     /*
      * The url to connect Quickbase source. Type: string (or Expression with
      * resultType string).
@@ -105,13 +102,13 @@ public final class QuickbaseLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model QuickbaseLinkedServiceTypeProperties"));
         }
         if (userToken() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property userToken in model QuickbaseLinkedServiceTypeProperties"));
@@ -119,4 +116,6 @@ public final class QuickbaseLinkedServiceTypeProperties {
             userToken().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QuickbaseLinkedServiceTypeProperties.class);
 }

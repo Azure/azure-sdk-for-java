@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The static IP configuration for the sim to use at the defined network scope. */
 @Fluent
 public final class SimStaticIpPropertiesStaticIp {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SimStaticIpPropertiesStaticIp.class);
-
     /*
      * The IPv4 address assigned to the sim at this network scope. This address
      * must be in the userEquipmentStaticAddressPoolPrefix defined in the

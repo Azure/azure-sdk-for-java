@@ -35,6 +35,7 @@ tag: package-chat-2021-09-07
 require:
     - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8dbeba81f3a838cd4b7efd70234f29cc1cdc7374/specification/communication/data-plane/Chat/readme.md
 java: true
+title: AzureCommunicationChatService
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
@@ -43,12 +44,15 @@ custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChat
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
+service-interface-as-public: true
 generate-sync-async-clients: false
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 enable-xml: false
 required-parameter-client-methods: true
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
 
 ### Rename AddChatParticipantsRequest to AddChatParticipantsOptions
@@ -154,7 +158,7 @@ directive:
   transform: >
     if (!$.TypingNotificationOptions) {
       $.TypingNotificationOptions = $.SendTypingNotificationRequest;
-      delete $.TypingNotificationRequest;
+      delete $.SendTypingNotificationRequest;
     }
 - from: swagger-document
   where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]

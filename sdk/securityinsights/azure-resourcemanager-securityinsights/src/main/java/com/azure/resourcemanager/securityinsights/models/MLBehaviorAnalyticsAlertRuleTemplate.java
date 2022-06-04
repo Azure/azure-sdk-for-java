@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleTemplateInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.MLBehaviorAnalyticsAlertRuleTemplateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +18,6 @@ import java.util.List;
 @JsonTypeName("MLBehaviorAnalytics")
 @Fluent
 public final class MLBehaviorAnalyticsAlertRuleTemplate extends AlertRuleTemplateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MLBehaviorAnalyticsAlertRuleTemplate.class);
-
     /*
      * MLBehaviorAnalytics alert rule template properties.
      */
@@ -61,7 +57,7 @@ public final class MLBehaviorAnalyticsAlertRuleTemplate extends AlertRuleTemplat
     }
 
     /**
-     * Get the tactics property: The tactics of the alert rule template.
+     * Get the tactics property: The tactics of the alert rule.
      *
      * @return the tactics value.
      */
@@ -70,7 +66,7 @@ public final class MLBehaviorAnalyticsAlertRuleTemplate extends AlertRuleTemplat
     }
 
     /**
-     * Set the tactics property: The tactics of the alert rule template.
+     * Set the tactics property: The tactics of the alert rule.
      *
      * @param tactics the tactics value to set.
      * @return the MLBehaviorAnalyticsAlertRuleTemplate object itself.
@@ -80,6 +76,29 @@ public final class MLBehaviorAnalyticsAlertRuleTemplate extends AlertRuleTemplat
             this.innerProperties = new MLBehaviorAnalyticsAlertRuleTemplateProperties();
         }
         this.innerProperties().withTactics(tactics);
+        return this;
+    }
+
+    /**
+     * Get the techniques property: The techniques of the alert rule.
+     *
+     * @return the techniques value.
+     */
+    public List<String> techniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().techniques();
+    }
+
+    /**
+     * Set the techniques property: The techniques of the alert rule.
+     *
+     * @param techniques the techniques value to set.
+     * @return the MLBehaviorAnalyticsAlertRuleTemplate object itself.
+     */
+    public MLBehaviorAnalyticsAlertRuleTemplate withTechniques(List<String> techniques) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MLBehaviorAnalyticsAlertRuleTemplateProperties();
+        }
+        this.innerProperties().withTechniques(techniques);
         return this;
     }
 

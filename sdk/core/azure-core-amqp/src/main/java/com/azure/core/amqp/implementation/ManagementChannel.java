@@ -57,9 +57,9 @@ public class ManagementChannel implements AmqpManagementNode {
             return channel.sendWithAck(protonJMessage)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new AmqpException(true, String.format(
+                .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
                     "entityPath[%s] No response received from management channel.", entityPath),
-                    channel.getErrorContext()))));
+                    channel.getErrorContext())));
         }));
     }
 
@@ -72,9 +72,9 @@ public class ManagementChannel implements AmqpManagementNode {
             return channel.sendWithAck(protonJMessage, protonJDeliveryState)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new AmqpException(true, String.format(
+                .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
                     "entityPath[%s] outcome[%s] No response received from management channel.", entityPath,
-                    deliveryOutcome.getDeliveryState()), channel.getErrorContext()))));
+                    deliveryOutcome.getDeliveryState()), channel.getErrorContext())));
         }));
     }
 
@@ -127,8 +127,8 @@ public class ManagementChannel implements AmqpManagementNode {
     private Mono<Void> isAuthorized() {
         return tokenManager.getAuthorizationResults()
             .next()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(
-                new AmqpException(false, "Did not get response from tokenManager: " + entityPath, getErrorContext()))))
+            .switchIfEmpty(Mono.error(() -> new AmqpException(false,
+                "Did not get response from tokenManager: " + entityPath, getErrorContext())))
             .handle((response, sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.complete();

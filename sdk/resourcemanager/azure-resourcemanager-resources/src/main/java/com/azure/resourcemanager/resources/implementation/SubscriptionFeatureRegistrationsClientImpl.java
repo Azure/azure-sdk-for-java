@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.SubscriptionFeatureRegistrationsClient;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionFeatureRegistrationInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
  */
 public final class SubscriptionFeatureRegistrationsClientImpl
     implements InnerSupportsDelete<Void>, SubscriptionFeatureRegistrationsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionFeatureRegistrationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubscriptionFeatureRegistrationsService service;
 
@@ -270,15 +267,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> getAsync(String providerNamespace, String featureName) {
-        return getWithResponseAsync(providerNamespace, featureName)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(providerNamespace, featureName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -441,14 +430,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         String featureName,
         SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType) {
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -466,14 +448,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         String providerNamespace, String featureName) {
         final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -620,7 +595,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String providerNamespace, String featureName) {
-        return deleteWithResponseAsync(providerNamespace, featureName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(providerNamespace, featureName).flatMap(ignored -> Mono.empty());
     }
 
     /**

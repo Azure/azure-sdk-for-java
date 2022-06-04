@@ -16,8 +16,6 @@ import java.util.Map;
 /** The compression method used on a dataset. */
 @Fluent
 public final class DatasetCompression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetCompression.class);
-
     /*
      * Type of dataset compression. Type: string (or Expression with resultType
      * string).
@@ -113,9 +111,11 @@ public final class DatasetCompression {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model DatasetCompression"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetCompression.class);
 }

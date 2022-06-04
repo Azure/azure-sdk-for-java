@@ -36,7 +36,11 @@ public final class RestorePointType extends ExpandableStringEnum<RestorePointTyp
         return fromString(name, RestorePointType.class);
     }
 
-    /** @return known RestorePointType values. */
+    /**
+     * Gets known RestorePointType values.
+     *
+     * @return known RestorePointType values.
+     */
     public static Collection<RestorePointType> values() {
         return values(RestorePointType.class);
     }

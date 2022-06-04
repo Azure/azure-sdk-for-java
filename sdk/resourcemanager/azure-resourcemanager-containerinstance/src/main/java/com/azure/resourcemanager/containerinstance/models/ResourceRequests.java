@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource requests. */
 @Fluent
 public final class ResourceRequests {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceRequests.class);
-
     /*
      * The memory request in GB of this container instance.
      */

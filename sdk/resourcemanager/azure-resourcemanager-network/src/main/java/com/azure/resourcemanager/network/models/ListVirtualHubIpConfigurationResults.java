@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.HubIpConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualHubIpConfigurations list. */
 @Fluent
 public final class ListVirtualHubIpConfigurationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVirtualHubIpConfigurationResults.class);
-
     /*
      * The list of VirtualHubIpConfigurations.
      */

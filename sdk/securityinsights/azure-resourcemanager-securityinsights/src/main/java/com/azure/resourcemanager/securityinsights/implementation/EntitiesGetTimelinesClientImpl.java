@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.EntitiesGetTimelinesClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityTimelineResponseInner;
 import com.azure.resourcemanager.securityinsights.models.EntityTimelineParameters;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EntitiesGetTimelinesClient. */
 public final class EntitiesGetTimelinesClientImpl implements EntitiesGetTimelinesClient {
-    private final ClientLogger logger = new ClientLogger(EntitiesGetTimelinesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EntitiesGetTimelinesService service;
 
@@ -215,14 +212,7 @@ public final class EntitiesGetTimelinesClientImpl implements EntitiesGetTimeline
     private Mono<EntityTimelineResponseInner> listAsync(
         String resourceGroupName, String workspaceName, String entityId, EntityTimelineParameters parameters) {
         return listWithResponseAsync(resourceGroupName, workspaceName, entityId, parameters)
-            .flatMap(
-                (Response<EntityTimelineResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

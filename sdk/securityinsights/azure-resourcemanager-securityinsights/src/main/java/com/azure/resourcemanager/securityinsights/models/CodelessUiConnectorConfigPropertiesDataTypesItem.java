@@ -5,15 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The CodelessUiConnectorConfigPropertiesDataTypesItem model. */
 @Fluent
 public final class CodelessUiConnectorConfigPropertiesDataTypesItem extends LastDataReceivedDataType {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CodelessUiConnectorConfigPropertiesDataTypesItem.class);
-
     /** {@inheritDoc} */
     @Override
     public CodelessUiConnectorConfigPropertiesDataTypesItem withName(String name) {

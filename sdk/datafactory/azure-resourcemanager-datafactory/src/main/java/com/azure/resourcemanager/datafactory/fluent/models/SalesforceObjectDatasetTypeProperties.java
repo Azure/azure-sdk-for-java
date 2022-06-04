@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Salesforce object dataset properties. */
 @Fluent
 public final class SalesforceObjectDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SalesforceObjectDatasetTypeProperties.class);
-
     /*
      * The Salesforce object API name. Type: string (or Expression with
      * resultType string).

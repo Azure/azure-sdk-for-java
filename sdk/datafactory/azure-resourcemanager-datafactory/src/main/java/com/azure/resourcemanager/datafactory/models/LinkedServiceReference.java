@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Linked service reference type. */
 @Fluent
 public final class LinkedServiceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedServiceReference.class);
-
     /*
      * Linked service reference type.
      */
@@ -107,10 +104,12 @@ public final class LinkedServiceReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property referenceName in model LinkedServiceReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedServiceReference.class);
 }

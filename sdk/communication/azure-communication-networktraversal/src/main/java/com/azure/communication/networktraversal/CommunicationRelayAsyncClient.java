@@ -151,6 +151,10 @@ public final class CommunicationRelayAsyncClient {
                 if (options.getRouteType() != null) {
                     body.setRouteType(options.getRouteType());
                 }
+
+                if (options.getTtl() != null) {
+                    body.setTtl(options.getTtl());
+                }
             }
             return client.issueRelayConfigurationWithResponseAsync(body, context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> e);

@@ -35,4 +35,39 @@ public final class DataFlowSink extends Transformation {
         this.schemaLinkedService = schemaLinkedService;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink setDataset(DatasetReference dataset) {
+        super.setDataset(dataset);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink setLinkedService(LinkedServiceReference linkedService) {
+        super.setLinkedService(linkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink setFlowlet(DataFlowReference flowlet) {
+        super.setFlowlet(flowlet);
+        return this;
+    }
 }

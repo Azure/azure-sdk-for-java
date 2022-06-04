@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Customs permissions required for the connector. */
 @Fluent
 public class Customs extends CustomsPermission {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Customs.class);
-
     /** {@inheritDoc} */
     @Override
     public Customs withName(String name) {

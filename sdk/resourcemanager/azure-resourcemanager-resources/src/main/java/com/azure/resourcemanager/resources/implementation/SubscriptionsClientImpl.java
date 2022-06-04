@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.resources.fluent.models.CheckZonePeersResultInner;
 import com.azure.resourcemanager.resources.fluent.models.LocationInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
 public final class SubscriptionsClientImpl implements SubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubscriptionsService service;
 
@@ -357,15 +354,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionInner> getAsync(String subscriptionId) {
-        return getWithResponseAsync(subscriptionId)
-            .flatMap(
-                (Response<SubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -606,14 +595,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     public Mono<CheckZonePeersResultInner> checkZonePeersAsync(
         String subscriptionId, CheckZonePeersRequest parameters) {
         return checkZonePeersWithResponseAsync(subscriptionId, parameters)
-            .flatMap(
-                (Response<CheckZonePeersResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

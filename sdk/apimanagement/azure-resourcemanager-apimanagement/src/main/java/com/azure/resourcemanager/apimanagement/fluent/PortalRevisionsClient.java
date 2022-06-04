@@ -24,7 +24,7 @@ public interface PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of portal revisions.
+     * @return paged list of portal revisions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PortalRevisionContractInner> listByService(String resourceGroupName, String serviceName);
@@ -44,7 +44,7 @@ public interface PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of portal revisions.
+     * @return paged list of portal revisions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PortalRevisionContractInner> listByService(
@@ -121,13 +121,13 @@ public interface PortalRevisionsClient {
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return the {@link SyncPoller} for polling of portal Revision's contract details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters);
 
@@ -139,14 +139,14 @@ public interface PortalRevisionsClient {
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return the {@link SyncPoller} for polling of portal Revision's contract details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
@@ -162,11 +162,11 @@ public interface PortalRevisionsClient {
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionContractInner createOrUpdate(
@@ -180,12 +180,12 @@ public interface PortalRevisionsClient {
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionContractInner createOrUpdate(
@@ -204,13 +204,13 @@ public interface PortalRevisionsClient {
      *     instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return the {@link SyncPoller} for polling of portal Revision's contract details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
@@ -227,14 +227,14 @@ public interface PortalRevisionsClient {
      *     instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return the {@link SyncPoller} for polling of portal Revision's contract details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
@@ -252,11 +252,11 @@ public interface PortalRevisionsClient {
      *     instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionContractInner update(
@@ -275,12 +275,12 @@ public interface PortalRevisionsClient {
      *     instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
-     * @param parameters Portal revisions contract details.
+     * @param parameters Portal Revision's contract details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return portal revisions contract details.
+     * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionContractInner update(

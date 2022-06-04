@@ -204,9 +204,9 @@ public final class ServiceBusClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
 
     private final Object connectionLock = new Object();
-    private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
@@ -260,7 +260,7 @@ public final class ServiceBusClientBuilder implements
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return this;
@@ -268,7 +268,7 @@ public final class ServiceBusClientBuilder implements
 
     private String getAndValidateFullyQualifiedNamespace() {
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return fullyQualifiedNamespace;
@@ -287,15 +287,15 @@ public final class ServiceBusClientBuilder implements
         try {
             tokenCredential = getTokenCredential(properties);
         } catch (Exception e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
 
         String entityPath = properties.getEntityPath();
-        if (CoreUtils.isNullOrEmpty(entityPath)) {
-            logger.atInfo()
+        if (!CoreUtils.isNullOrEmpty(entityPath)) {
+            LOGGER.atInfo()
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Setting entity from connection string.");
             this.connectionStringEntityName = entityPath;
@@ -382,7 +382,7 @@ public final class ServiceBusClientBuilder implements
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -425,7 +425,7 @@ public final class ServiceBusClientBuilder implements
             "'fullyQualifiedNamespace' cannot be null.");
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -473,7 +473,7 @@ public final class ServiceBusClientBuilder implements
         Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
@@ -615,7 +615,7 @@ public final class ServiceBusClientBuilder implements
     void onClientClose() {
         synchronized (connectionLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
-            logger.atInfo()
+            LOGGER.atInfo()
                 .addKeyValue("numberOfOpenClients", numberOfOpenClients)
                 .log("Closing a dependent client.");
 
@@ -624,18 +624,18 @@ public final class ServiceBusClientBuilder implements
             }
 
             if (numberOfOpenClients < 0) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue("numberOfOpenClients", numberOfOpenClients)
                     .log("There should not be less than 0 clients.");
             }
 
-            logger.info("No more open clients, closing shared connection.");
+            LOGGER.info("No more open clients, closing shared connection.");
 
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
             } else {
-                logger.warning("Shared ServiceBusConnectionProcessor was already disposed.");
+                LOGGER.warning("Shared ServiceBusConnectionProcessor was already disposed.");
             }
         }
     }
@@ -672,7 +672,7 @@ public final class ServiceBusClientBuilder implements
         }
 
         final int numberOfOpenClients = openClients.incrementAndGet();
-        logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
+        LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
         return sharedConnection;
     }
@@ -680,7 +680,7 @@ public final class ServiceBusClientBuilder implements
     private ConnectionOptions getConnectionOptions() {
         configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
         if (credentials == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                 + "They can be set using: connectionString(String), connectionString(String, String), "
                 + "or credentials(String, String, TokenCredential)"
             ));
@@ -690,7 +690,7 @@ public final class ServiceBusClientBuilder implements
         // is not AMQP_WEB_SOCKETS.
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Cannot use a proxy when TransportType is not AMQP."));
         }
 
@@ -752,7 +752,7 @@ public final class ServiceBusClientBuilder implements
             return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         } else {
-            logger.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
+            LOGGER.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
                 + "set or was false.");
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
@@ -762,7 +762,7 @@ public final class ServiceBusClientBuilder implements
         return item == null || item.isEmpty();
     }
 
-    private static MessagingEntityType validateEntityPaths(ClientLogger logger, String connectionStringEntityName,
+    private static MessagingEntityType validateEntityPaths(String connectionStringEntityName,
         String topicName, String queueName) {
 
         final boolean hasTopicName = !isNullOrEmpty(topicName);
@@ -772,14 +772,14 @@ public final class ServiceBusClientBuilder implements
         final MessagingEntityType entityType;
 
         if (!hasConnectionStringEntity && !hasQueueName && !hasTopicName) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(
                 "Cannot build client without setting either a queueName or topicName."));
         } else if (hasQueueName && hasTopicName) {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+            throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot build client with both queueName (%s) and topicName (%s) set.", queueName, topicName)));
         } else if (hasQueueName) {
             if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                     "queueName (%s) is different than the connectionString's EntityPath (%s).",
                     queueName, connectionStringEntityName)));
             }
@@ -787,7 +787,7 @@ public final class ServiceBusClientBuilder implements
             entityType = MessagingEntityType.QUEUE;
         } else if (hasTopicName) {
             if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                     "topicName (%s) is different than the connectionString's EntityPath (%s).",
                     topicName, connectionStringEntityName)));
             }
@@ -801,7 +801,7 @@ public final class ServiceBusClientBuilder implements
         return entityType;
     }
 
-    private static String getEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
+    private static String getEntityPath(MessagingEntityType entityType, String queueName,
         String topicName, String subscriptionName, SubQueue subQueue) {
 
         String entityPath;
@@ -811,7 +811,7 @@ public final class ServiceBusClientBuilder implements
                 break;
             case SUBSCRIPTION:
                 if (isNullOrEmpty(subscriptionName)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                         "topicName (%s) must have a subscriptionName associated with it.", topicName)));
                 }
 
@@ -819,7 +819,7 @@ public final class ServiceBusClientBuilder implements
                     subscriptionName);
                 break;
             default:
-                throw logger.logExceptionAsError(
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Unknown entity type: " + entityType));
         }
 
@@ -837,7 +837,7 @@ public final class ServiceBusClientBuilder implements
                 entityPath += DEAD_LETTER_QUEUE_NAME_SUFFIX;
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported value of subqueue type: "
+                throw ServiceBusClientBuilder.LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported value of subqueue type: "
                     + subQueue));
         }
 
@@ -896,7 +896,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
 
             final String entityName;
@@ -911,7 +911,7 @@ public final class ServiceBusClientBuilder implements
                     entityName = connectionStringEntityName;
                     break;
                 default:
-                    throw logger.logExceptionAsError(
+                    throw LOGGER.logExceptionAsError(
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
@@ -1031,7 +1031,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
             if (maxConcurrentSessions < 1) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'maxConcurrentSessions' cannot be less than 1"));
             }
             sessionReceiverClientBuilder.maxConcurrentSessions(maxConcurrentSessions);
@@ -1153,7 +1153,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
@@ -1260,7 +1260,7 @@ public final class ServiceBusClientBuilder implements
          */
         ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
             if (maxConcurrentSessions < 1) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "maxConcurrentSessions cannot be less than 1."));
             }
 
@@ -1368,13 +1368,13 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
                 subQueue);
 
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
-                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
@@ -1434,17 +1434,17 @@ public final class ServiceBusClientBuilder implements
         }
 
         private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                logger.warning(
+                LOGGER.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
-                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
@@ -1650,7 +1650,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
@@ -1868,17 +1868,17 @@ public final class ServiceBusClientBuilder implements
         }
 
         ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed) {
-            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
-            final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
                 subQueue);
 
             if (!isAutoCompleteAllowed && enableAutoComplete) {
-                logger.warning(
+                LOGGER.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
             } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
-                logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
@@ -1898,14 +1898,14 @@ public final class ServiceBusClientBuilder implements
 
     private void validateAndThrow(int prefetchCount) {
         if (prefetchCount < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "prefetchCount (%s) cannot be less than 0.", prefetchCount)));
         }
     }
 
     private void validateAndThrow(Duration maxLockRenewalDuration) {
         if (maxLockRenewalDuration != null && maxLockRenewalDuration.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         }
     }

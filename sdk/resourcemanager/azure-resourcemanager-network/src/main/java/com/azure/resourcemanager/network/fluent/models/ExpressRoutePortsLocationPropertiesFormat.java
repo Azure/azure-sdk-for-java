@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationBandwidths;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ExpressRoutePorts Location Properties Properties specific to ExpressRoutePorts peering location resources. */
 @Fluent
 public final class ExpressRoutePortsLocationPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationPropertiesFormat.class);
-
     /*
      * Address of peering location.
      */

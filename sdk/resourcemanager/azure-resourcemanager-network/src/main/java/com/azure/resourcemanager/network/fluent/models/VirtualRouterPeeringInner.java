@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Router Peering resource. */
 @Fluent
 public final class VirtualRouterPeeringInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualRouterPeeringInner.class);
-
     /*
      * The properties of the Virtual Router Peering.
      */

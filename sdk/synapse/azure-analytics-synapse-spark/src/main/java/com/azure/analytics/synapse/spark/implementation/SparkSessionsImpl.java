@@ -58,7 +58,7 @@ public final class SparkSessionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SparkClientSparkSess")
-    private interface SparkSessionsService {
+    public interface SparkSessionsService {
         @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/sessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

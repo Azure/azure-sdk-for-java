@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Installation of Azure PowerShell type properties. */
 @Fluent
 public final class AzPowerShellSetupTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzPowerShellSetupTypeProperties.class);
-
     /*
      * The required version of Azure PowerShell to install.
      */
@@ -47,10 +44,12 @@ public final class AzPowerShellSetupTypeProperties {
      */
     public void validate() {
         if (version() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property version in model AzPowerShellSetupTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzPowerShellSetupTypeProperties.class);
 }

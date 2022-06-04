@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagementPoliciesClient. */
 public final class ManagementPoliciesClientImpl implements ManagementPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(ManagementPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagementPoliciesService service;
 
@@ -237,14 +234,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
     public Mono<ManagementPolicyInner> getAsync(
         String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
-            .flatMap(
-                (Response<ManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -440,14 +430,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         ManagementPolicyName managementPolicyName,
         ManagementPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, properties)
-            .flatMap(
-                (Response<ManagementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -623,7 +606,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
     public Mono<Void> deleteAsync(
         String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

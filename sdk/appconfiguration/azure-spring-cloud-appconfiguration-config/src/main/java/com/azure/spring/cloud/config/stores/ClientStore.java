@@ -43,9 +43,9 @@ public final class ClientStore {
     private final ConfigurationClientBuilderSetup clientProvider;
 
     private final HashMap<String, ConfigurationClient> clients;
-    
+
     private final boolean isDev;
-    
+
     private final boolean isKeyVaultConfigurated;
 
     /**
@@ -75,7 +75,7 @@ public final class ClientStore {
         }
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
-        
+
         ConfigurationClientBuilder builder = getBuilder()
             .addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigurated))
             .retryPolicy(new RetryPolicy(retryPolicy));
@@ -149,7 +149,7 @@ public final class ClientStore {
 
     /**
      * Gets the Configuration Setting for the given config store that match the Setting Selector criteria. Follows
-     * retry-after-ms heards.
+     * retry-after-ms header.
      *
      * @param key String value of the watch key
      * @param label String value of the watch key, use \0 for null.
@@ -167,7 +167,8 @@ public final class ClientStore {
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
-    public PagedIterable<ConfigurationSetting> getFeatureFlagWatchKey(SettingSelector settingSelector, String storeName) {
+    public PagedIterable<ConfigurationSetting> getFeatureFlagWatchKey(SettingSelector settingSelector,
+        String storeName) {
         return getClient(storeName).listConfigurationSettings(settingSelector);
     }
 
@@ -180,6 +181,17 @@ public final class ClientStore {
      */
     public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
         return getClient(storeName).listConfigurationSettings(settingSelector);
+    }
+
+    /**
+     * Update the sync token for a client store.
+     * @param storeName the name of the client store.
+     * @param syncToken the sync token.
+     */
+    public void updateSyncToken(String storeName, String syncToken) {
+        if (syncToken != null) {
+            getClient(storeName).updateSyncToken(syncToken);
+        }
     }
 
     ConfigurationClientBuilder getBuilder() {

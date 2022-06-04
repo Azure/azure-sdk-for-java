@@ -3,7 +3,7 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.util.Configuration;
+import com.azure.core.implementation.util.EnvironmentConfiguration;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -35,7 +35,7 @@ public class LoggingBenchmark {
 
     @Setup
     public void setup() {
-        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
+        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
         this.logger = new ClientLogger(LoggingBenchmark.class);
 
         System.setOut(new PrintStream(new OutputStream() {

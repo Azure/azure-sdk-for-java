@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component Continuous Export configuration request definition. */
 @Fluent
 public final class ApplicationInsightsComponentExportRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentExportRequest.class);
-
     /*
      * The document types to be exported, as comma separated values. Allowed
      * values include 'Requests', 'Event', 'Exceptions', 'Metrics',

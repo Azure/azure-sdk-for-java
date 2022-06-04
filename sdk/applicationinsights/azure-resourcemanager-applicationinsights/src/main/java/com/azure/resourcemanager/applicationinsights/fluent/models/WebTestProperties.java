@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Metadata describing a web test for an Azure resource. */
 @Fluent
 public final class WebTestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTestProperties.class);
-
     /*
      * Unique ID of this WebTest. This is typically the same value as the Name
      * field.
@@ -312,23 +309,23 @@ public final class WebTestProperties {
      */
     public void validate() {
         if (syntheticMonitorId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property syntheticMonitorId in model WebTestProperties"));
         }
         if (webTestName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property webTestName in model WebTestProperties"));
         }
         if (webTestKind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property webTestKind in model WebTestProperties"));
         }
         if (locations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property locations in model WebTestProperties"));
         } else {
@@ -338,4 +335,6 @@ public final class WebTestProperties {
             configuration().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebTestProperties.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListInboundNatRule API service call. */
 @Fluent
 public final class InboundNatRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRuleListResult.class);
-
     /*
      * A list of inbound NAT rules in a load balancer.
      */

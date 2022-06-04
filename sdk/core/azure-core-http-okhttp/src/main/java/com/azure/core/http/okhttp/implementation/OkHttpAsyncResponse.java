@@ -10,6 +10,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.StreamUtils;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.BufferedSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -19,6 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Default HTTP response for OkHttp.
@@ -109,6 +115,81 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     @Override
     public void writeBodyTo(OutputStream outputStream) throws IOException {
         StreamUtils.INSTANCE.transfer(responseBody.byteStream(), outputStream);
+    }
+
+    @Override
+    public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        return Mono.defer(
+            () -> {
+                AtomicLong currentPosition = new AtomicLong(position);
+                byte[] buffer = new byte[8 * 1024];
+                ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+                BufferedSource source = responseBody.source();
+                try {
+                    int read = source.read(buffer);
+                    byteBuffer.position(0);
+                    byteBuffer.limit(read);
+
+                    // TODO (kasobol-msft) consider using just reactor here.
+                    CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+
+                    writeToChannel(
+                        asynchronousFileChannel, currentPosition, buffer, byteBuffer, source, completableFuture);
+
+                    return Mono.fromFuture(completableFuture);
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
+            }
+        ).doFinally(ignored -> close());
+    }
+
+    @Override
+    public void writeBodyTo(FileChannel fileChannel, long position) throws IOException {
+        long maxTransferSize = responseBody.contentLength();
+        if (maxTransferSize < 0) {
+            // unknown body length fallback to Long.MAX
+            maxTransferSize = Long.MAX_VALUE;
+        }
+        fileChannel.transferFrom(responseBody.source(), position, maxTransferSize);
+    }
+
+    private void writeToChannel(
+        AsynchronousFileChannel asynchronousFileChannel, AtomicLong currentPosition,
+        byte[] buffer, ByteBuffer byteBuffer, BufferedSource source, CompletableFuture<Void> completableFuture) {
+        asynchronousFileChannel.write(byteBuffer, currentPosition.get(), byteBuffer,
+            new CompletionHandler<Integer, ByteBuffer>() {
+                @Override
+                public void completed(Integer result, ByteBuffer attachment) {
+                    currentPosition.addAndGet(result);
+
+                    if (byteBuffer.hasRemaining()) {
+                        // If the entire ByteBuffer hasn't been written send it to be written again until it completes.
+                        writeToChannel(
+                            asynchronousFileChannel, currentPosition, buffer, byteBuffer, source, completableFuture);
+                    } else {
+                        try {
+                            if (!source.exhausted()) {
+                                int read = source.read(buffer);
+                                byteBuffer.position(0);
+                                byteBuffer.limit(read);
+                                writeToChannel(
+                                    asynchronousFileChannel, currentPosition, buffer,
+                                    byteBuffer, source, completableFuture);
+                            } else {
+                                completableFuture.complete(null);
+                            }
+                        } catch (IOException e) {
+                            completableFuture.completeExceptionally(e);
+                        }
+                    }
+                }
+
+                @Override
+                public void failed(Throwable exc, ByteBuffer attachment) {
+                    completableFuture.completeExceptionally(exc);
+                }
+            });
     }
 
     @Override

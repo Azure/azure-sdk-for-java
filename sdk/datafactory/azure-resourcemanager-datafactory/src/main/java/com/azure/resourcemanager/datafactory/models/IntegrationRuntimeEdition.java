@@ -27,7 +27,11 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
         return fromString(name, IntegrationRuntimeEdition.class);
     }
 
-    /** @return known IntegrationRuntimeEdition values. */
+    /**
+     * Gets known IntegrationRuntimeEdition values.
+     *
+     * @return known IntegrationRuntimeEdition values.
+     */
     public static Collection<IntegrationRuntimeEdition> values() {
         return values(IntegrationRuntimeEdition.class);
     }

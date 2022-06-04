@@ -7,17 +7,13 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The storage account blob inventory policy. */
 @Fluent
 public final class BlobInventoryPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyInner.class);
-
     /*
      * Returns the storage account blob inventory policy rules.
      */

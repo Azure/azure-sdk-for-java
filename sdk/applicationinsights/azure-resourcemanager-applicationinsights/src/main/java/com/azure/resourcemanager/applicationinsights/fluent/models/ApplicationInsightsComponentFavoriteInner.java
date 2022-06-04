@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.FavoriteType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties that define a favorite that is associated to an Application Insights component. */
 @Fluent
 public final class ApplicationInsightsComponentFavoriteInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentFavoriteInner.class);
-
     /*
      * The user-defined name of the favorite.
      */

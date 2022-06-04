@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MongoDB Atlas linked service properties. */
 @Fluent
 public final class MongoDbAtlasLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbAtlasLinkedServiceTypeProperties.class);
-
     /*
      * The MongoDB Atlas connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or
@@ -80,16 +77,18 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model MongoDbAtlasLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property database in model MongoDbAtlasLinkedServiceTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDbAtlasLinkedServiceTypeProperties.class);
 }

@@ -23,22 +23,22 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-administration</artifactId>
-          <version>4.1.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.3.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+          <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-keys</artifactId>
-          <version>4.4.0-beta.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+          <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.4.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+          <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
         </dependency>
       </dependencies>
 
@@ -47,7 +47,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>

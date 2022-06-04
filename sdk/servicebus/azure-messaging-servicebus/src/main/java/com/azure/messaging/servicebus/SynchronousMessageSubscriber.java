@@ -27,7 +27,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
 class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
-    private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SynchronousMessageSubscriber.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger wip = new AtomicInteger();
     private final ConcurrentLinkedQueue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
@@ -79,7 +79,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         this.isPrefetchDisabled = isPrefetchDisabled;
         if (initialWork.getNumberOfEvents() < 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
         }
 
@@ -94,7 +94,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
         if (!Operators.setOnce(UPSTREAM, this, subscription)) {
-            logger.warning("This should only be subscribed to once. Ignoring subscription.");
+            LOGGER.warning("This should only be subscribed to once. Ignoring subscription.");
             return;
         }
 
@@ -131,14 +131,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         workQueue.add(work);
 
-        LoggingEventBuilder logBuilder = logger.atVerbose()
+        LoggingEventBuilder logBuilder = LOGGER.atVerbose()
             .addKeyValue(WORK_ID_KEY, work.getId())
             .addKeyValue("numberOfEvents", work.getNumberOfEvents())
             .addKeyValue("timeout", work.getTimeout());
 
-        // If previous work items were completed, the message queue is empty and currentWork == null. Update the
-        // current work and request items upstream if we need to.
-        if (workQueue.peek() == work) {
+        // If previous work items were completed, the message queue is empty, and currentWork is null or terminal,
+        // Update the current work and request items upstream if we need to.
+        if (workQueue.peek() == work && (currentWork == null || currentWork.isTerminal())) {
             logBuilder.log("First work in queue. Requesting upstream if needed.");
             getOrUpdateCurrentWork();
         } else {
@@ -213,10 +213,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     if (isPrefetchDisabled) {
                         // release is enabled only for no-prefetch scenario.
                         asyncClient.release(message).subscribe(__ -> { },
-                            error -> logger.atWarning()
+                            error -> LOGGER.atWarning()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Couldn't release the message.", error),
-                            () -> logger.atVerbose()
+                            () -> LOGGER.atVerbose()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Message successfully released."));
                     } else {
@@ -235,6 +235,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             if (requestedMessages != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
             }
+        }
+        if (numberRequested == 0L) {
+            LOGGER.atVerbose()
+                .log("Current work is completed. Schedule next work.");
+            getOrUpdateCurrentWork();
         }
     }
 
@@ -272,37 +277,19 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
 
             currentWork = workQueue.poll();
-            while (currentWork != null) {
-                // For the terminal work, subtract the remaining number of messages from our current request
-                // count. This is so we don't keep adding credits for work that was expired, but we never
-                // received messages for.
-                if (currentWork.isTerminal()) {
-                    REQUESTED.updateAndGet(this, currentRequest -> {
-                        final int remainingEvents = currentWork.getRemainingEvents();
+            //The work in queue will not be terminal, here is double check
+            while (currentWork != null && currentWork.isTerminal()) {
+                LOGGER.atVerbose()
+                    .addKeyValue(WORK_ID_KEY, currentWork.getId())
+                    .addKeyValue("numberOfEvents", currentWork.getNumberOfEvents())
+                    .log("This work from queue is terminal. Skip it.");
 
-                        // The work had probably emitted all its messages and then terminated.
-                        // The currentRequest is fine.
-                        if (remainingEvents < 1) {
-                            return currentRequest;
-                        }
+                currentWork = workQueue.poll();
+            }
 
-                        final long difference = currentRequest - remainingEvents;
-
-                        logger.atVerbose()
-                            .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, currentRequest)
-                            .addKeyValue("remainingEvents", remainingEvents)
-                            .addKeyValue("difference", difference)
-                            .log("Updating REQUESTED because current work item is terminal.");
-
-                        return difference < 0 ? 0 : difference;
-                    });
-
-                    currentWork = workQueue.poll();
-                    continue;
-                }
-
+            if (currentWork != null) {
                 final SynchronousReceiveWork work = currentWork;
-                logger.atVerbose()
+                LOGGER.atVerbose()
                     .addKeyValue(WORK_ID_KEY, work.getId())
                     .addKeyValue("numberOfEvents", work.getNumberOfEvents())
                     .log("Current work updated.");
@@ -312,8 +299,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 // Now that we updated REQUESTED to account for credits already on the line, we're good to
                 // place any credits for this new work item.
                 requestUpstream(work.getNumberOfEvents());
-
-                return work;
             }
 
             return currentWork;
@@ -328,20 +313,20 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     private void requestUpstream(long numberOfMessages) {
         if (isTerminated()) {
-            logger.info("Cannot request more messages upstream. Subscriber is terminated.");
+            LOGGER.info("Cannot request more messages upstream. Subscriber is terminated.");
             return;
         }
 
         final Subscription subscription = UPSTREAM.get(this);
         if (subscription == null) {
-            logger.info("There is no upstream to request messages from.");
+            LOGGER.info("There is no upstream to request messages from.");
             return;
         }
 
         final long currentRequested = REQUESTED.get(this);
         final long difference = numberOfMessages - currentRequested;
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, currentRequested)
             .addKeyValue("numberOfMessages", numberOfMessages)
             .addKeyValue("difference", difference)

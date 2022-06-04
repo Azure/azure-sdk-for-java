@@ -7,6 +7,7 @@ import com.azure.perf.test.core.PerfStressProgram;
 import com.azure.storage.blob.perf.DownloadBlobTest;
 import com.azure.storage.blob.perf.DownloadBlobToFileTest;
 import com.azure.storage.blob.perf.ListBlobsTest;
+import com.azure.storage.blob.perf.DownloadBlobNonSharedClientTest;
 import com.azure.storage.blob.perf.UploadBlobNoLengthTest;
 import com.azure.storage.blob.perf.UploadBlobTest;
 import com.azure.storage.blob.perf.UploadBlockBlobTest;
@@ -49,7 +50,8 @@ public class App {
             AppendFileDatalakeTest.class,
             ReadFileDatalakeTest.class,
             UploadFileDatalakeTest.class,
-            UploadFromFileDatalakeTest.class
+            UploadFromFileDatalakeTest.class,
+            DownloadBlobNonSharedClientTest.class
         }, args);
     }
 }

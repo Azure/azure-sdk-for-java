@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an incident label. */
 @Fluent
 public final class IncidentLabel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentLabel.class);
-
     /*
      * The name of the label
      */
@@ -62,9 +59,11 @@ public final class IncidentLabel {
      */
     public void validate() {
         if (labelName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property labelName in model IncidentLabel"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IncidentLabel.class);
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AlertStatus;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.securityinsights.models.ConfidenceScoreStatus;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.KillChainIntent;
 import com.azure.resourcemanager.securityinsights.models.SecurityAlertPropertiesConfidenceReasonsItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.List;
 /** SecurityAlert entity property bag. */
 @Fluent
 public final class SecurityAlertProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityAlertProperties.class);
-
     /*
      * The display name of the alert.
      */

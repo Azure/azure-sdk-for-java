@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.AttachedDataNetworksClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AttachedDataNetworksClient. */
 public final class AttachedDataNetworksClientImpl implements AttachedDataNetworksClient {
-    private final ClientLogger logger = new ClientLogger(AttachedDataNetworksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AttachedDataNetworksService service;
 
@@ -79,12 +76,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -97,12 +94,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDataNetworkInner>> get(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -115,12 +112,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AttachedDataNetworkInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -134,12 +131,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDataNetworkInner>> updateTags(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @PathParam("attachedDataNetworkName") String attachedDataNetworkName,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") TagsObject parameters,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -153,11 +150,11 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDataNetworkListResult>> listByPacketCoreDataPlane(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("packetCoreControlPlaneName") String packetCoreControlPlaneName,
             @PathParam("packetCoreDataPlaneName") String packetCoreDataPlaneName,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -196,6 +193,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -216,12 +219,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -229,12 +226,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     service
                         .delete(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             packetCoreControlPlaneName,
                             packetCoreDataPlaneName,
                             attachedDataNetworkName,
                             this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -266,6 +263,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -286,23 +289,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
                 attachedDataNetworkName,
                 this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
                 accept,
                 context);
     }
@@ -547,6 +544,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -567,12 +570,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -580,12 +577,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     service
                         .get(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             packetCoreControlPlaneName,
                             packetCoreDataPlaneName,
                             attachedDataNetworkName,
                             this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -618,6 +615,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -638,23 +641,17 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
                 attachedDataNetworkName,
                 this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
                 accept,
                 context);
     }
@@ -766,6 +763,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -786,12 +789,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -804,12 +801,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             packetCoreControlPlaneName,
                             packetCoreDataPlaneName,
                             attachedDataNetworkName,
                             this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
                             parameters,
                             accept,
                             context))
@@ -844,6 +841,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -864,12 +867,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -880,12 +877,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
                 attachedDataNetworkName,
                 this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
                 parameters,
                 accept,
                 context);
@@ -1180,6 +1177,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1200,12 +1203,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -1218,12 +1215,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     service
                         .updateTags(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             packetCoreControlPlaneName,
                             packetCoreDataPlaneName,
                             attachedDataNetworkName,
                             this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
                             parameters,
                             accept,
                             context))
@@ -1258,6 +1255,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1278,12 +1281,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter attachedDataNetworkName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
@@ -1294,12 +1291,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         return service
             .updateTags(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
                 attachedDataNetworkName,
                 this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
                 parameters,
                 accept,
                 context);
@@ -1423,6 +1420,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1438,12 +1441,6 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1451,11 +1448,11 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     service
                         .listByPacketCoreDataPlane(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             packetCoreControlPlaneName,
                             packetCoreDataPlaneName,
                             this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
                             accept,
                             context))
             .<PagedResponse<AttachedDataNetworkInner>>map(
@@ -1492,6 +1489,12 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -1507,22 +1510,16 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 .error(
                     new IllegalArgumentException("Parameter packetCoreDataPlaneName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByPacketCoreDataPlane(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 packetCoreControlPlaneName,
                 packetCoreDataPlaneName,
                 this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
                 accept,
                 context)
             .map(

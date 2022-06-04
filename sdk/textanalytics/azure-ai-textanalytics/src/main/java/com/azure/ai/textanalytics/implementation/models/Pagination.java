@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Pagination model. */
 @Fluent
-public class Pagination {
+public final class Pagination {
     /*
-     * The @nextLink property.
+     * The nextLink property.
      */
-    @JsonProperty(value = "@nextLink")
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the nextLink property: The @nextLink property.
+     * Get the nextLink property: The nextLink property.
      *
      * @return the nextLink value.
      */
@@ -26,7 +26,7 @@ public class Pagination {
     }
 
     /**
-     * Set the nextLink property: The @nextLink property.
+     * Set the nextLink property: The nextLink property.
      *
      * @param nextLink the nextLink value to set.
      * @return the Pagination object itself.

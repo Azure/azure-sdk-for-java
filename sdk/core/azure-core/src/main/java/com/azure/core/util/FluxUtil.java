@@ -26,6 +26,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.context.ContextView;
 
 import java.io.FileInputStream;
@@ -42,6 +43,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -574,6 +576,49 @@ public final class FluxUtil {
         }
 
         return Mono.create(emitter -> content.subscribe(new FileWriteSubscriber(outFile, position, emitter)));
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * FileChannel} starting at the given {@code position} in the file.
+     * <p>
+     * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null or {@code position}
+     * is less than 0. Additionally, an error will be emitted if the {@code outFile} wasn't opened with the proper open
+     * options, such as {@link StandardOpenOption#WRITE}.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param outFile The {@link FileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * FileChannel}.
+     */
+    public static Mono<Void> writeFile(Flux<ByteBuffer> content, FileChannel outFile, long position) {
+        if (content == null && outFile == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'outFile' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (outFile == null) {
+            return monoError(LOGGER, new NullPointerException("'outFile' cannot be null."));
+        } else if (position < 0) {
+            return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
+        }
+
+        AtomicLong currentPosition = new AtomicLong(position);
+        return content
+            .publishOn(Schedulers.boundedElastic())
+            .flatMap(buffer -> {
+                while (buffer.hasRemaining()) {
+                    try {
+                        int written = outFile.write(buffer, currentPosition.get());
+                        currentPosition.addAndGet(written);
+                    } catch (IOException e) {
+                        return Mono.error(e);
+                    }
+                }
+                return Mono.empty();
+            }).then();
     }
 
     /**

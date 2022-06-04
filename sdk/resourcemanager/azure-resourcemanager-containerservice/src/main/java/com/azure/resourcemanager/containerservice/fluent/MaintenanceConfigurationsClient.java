@@ -18,7 +18,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets a list of maintenance configurations in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +32,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets a list of maintenance configurations in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,7 +46,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets a list of maintenance configurations in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,7 +62,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets the specified maintenance configuration of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +78,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets the specified maintenance configuration of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +92,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets the specified maintenance configuration of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +106,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Gets the specified maintenance configuration of a managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
@@ -122,7 +122,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @param parameters The maintenance configuration to create or update.
@@ -139,7 +139,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @param parameters The maintenance configuration to create or update.
@@ -156,7 +156,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @param parameters The maintenance configuration to create or update.
@@ -172,7 +172,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Creates or updates a maintenance configuration in the specified managed cluster.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @param parameters The maintenance configuration to create or update.
@@ -194,7 +194,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Deletes a maintenance configuration.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +208,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Deletes a maintenance configuration.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Deletes a maintenance configuration.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,7 +235,7 @@ public interface MaintenanceConfigurationsClient {
     /**
      * Deletes a maintenance configuration.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.

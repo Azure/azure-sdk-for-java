@@ -21,6 +21,10 @@ public final class TopicTypePropertiesSupportedScopesForSourceItem
     public static final TopicTypePropertiesSupportedScopesForSourceItem AZURE_SUBSCRIPTION =
         fromString("AzureSubscription");
 
+    /** Static value ManagementGroup for TopicTypePropertiesSupportedScopesForSourceItem. */
+    public static final TopicTypePropertiesSupportedScopesForSourceItem MANAGEMENT_GROUP =
+        fromString("ManagementGroup");
+
     /**
      * Creates or finds a TopicTypePropertiesSupportedScopesForSourceItem from its string representation.
      *
@@ -32,7 +36,11 @@ public final class TopicTypePropertiesSupportedScopesForSourceItem
         return fromString(name, TopicTypePropertiesSupportedScopesForSourceItem.class);
     }
 
-    /** @return known TopicTypePropertiesSupportedScopesForSourceItem values. */
+    /**
+     * Gets known TopicTypePropertiesSupportedScopesForSourceItem values.
+     *
+     * @return known TopicTypePropertiesSupportedScopesForSourceItem values.
+     */
     public static Collection<TopicTypePropertiesSupportedScopesForSourceItem> values() {
         return values(TopicTypePropertiesSupportedScopesForSourceItem.class);
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.LinkedStorageAccountsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component linked storage accounts patch. */
 @Fluent
 public final class ComponentLinkedStorageAccountsPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentLinkedStorageAccountsPatch.class);
-
     /*
      * The properties of the linked storage accounts.
      */

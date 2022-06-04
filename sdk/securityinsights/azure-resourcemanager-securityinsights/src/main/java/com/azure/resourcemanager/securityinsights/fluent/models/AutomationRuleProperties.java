@@ -9,18 +9,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AutomationRuleAction;
 import com.azure.resourcemanager.securityinsights.models.AutomationRuleTriggeringLogic;
 import com.azure.resourcemanager.securityinsights.models.ClientInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes automation rule properties. */
+/** Automation rule properties. */
 @Fluent
 public final class AutomationRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRuleProperties.class);
-
     /*
-     * The display name of the automation  rule
+     * The display name of the automation rule
      */
     @JsonProperty(value = "displayName", required = true)
     private String displayName;
@@ -32,7 +29,7 @@ public final class AutomationRuleProperties {
     private int order;
 
     /*
-     * The triggering logic of the automation rule
+     * Describes automation rule triggering logic
      */
     @JsonProperty(value = "triggeringLogic", required = true)
     private AutomationRuleTriggeringLogic triggeringLogic;
@@ -44,28 +41,28 @@ public final class AutomationRuleProperties {
     private List<AutomationRuleAction> actions;
 
     /*
-     * The time the automation rule was created
-     */
-    @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTimeUtc;
-
-    /*
      * The last time the automation rule was updated
      */
     @JsonProperty(value = "lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTimeUtc;
 
     /*
-     * Describes the client that created the automation rule
+     * The time the automation rule was created
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
-    private ClientInfo createdBy;
+    @JsonProperty(value = "createdTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdTimeUtc;
 
     /*
-     * Describes the client that last updated the automation rule
+     * Information on the client (user or application) that made some action
      */
     @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private ClientInfo lastModifiedBy;
+
+    /*
+     * Information on the client (user or application) that made some action
+     */
+    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    private ClientInfo createdBy;
 
     /**
      * Get the displayName property: The display name of the automation rule.
@@ -108,7 +105,7 @@ public final class AutomationRuleProperties {
     }
 
     /**
-     * Get the triggeringLogic property: The triggering logic of the automation rule.
+     * Get the triggeringLogic property: Describes automation rule triggering logic.
      *
      * @return the triggeringLogic value.
      */
@@ -117,7 +114,7 @@ public final class AutomationRuleProperties {
     }
 
     /**
-     * Set the triggeringLogic property: The triggering logic of the automation rule.
+     * Set the triggeringLogic property: Describes automation rule triggering logic.
      *
      * @param triggeringLogic the triggeringLogic value to set.
      * @return the AutomationRuleProperties object itself.
@@ -148,15 +145,6 @@ public final class AutomationRuleProperties {
     }
 
     /**
-     * Get the createdTimeUtc property: The time the automation rule was created.
-     *
-     * @return the createdTimeUtc value.
-     */
-    public OffsetDateTime createdTimeUtc() {
-        return this.createdTimeUtc;
-    }
-
-    /**
      * Get the lastModifiedTimeUtc property: The last time the automation rule was updated.
      *
      * @return the lastModifiedTimeUtc value.
@@ -166,21 +154,30 @@ public final class AutomationRuleProperties {
     }
 
     /**
-     * Get the createdBy property: Describes the client that created the automation rule.
+     * Get the createdTimeUtc property: The time the automation rule was created.
      *
-     * @return the createdBy value.
+     * @return the createdTimeUtc value.
      */
-    public ClientInfo createdBy() {
-        return this.createdBy;
+    public OffsetDateTime createdTimeUtc() {
+        return this.createdTimeUtc;
     }
 
     /**
-     * Get the lastModifiedBy property: Describes the client that last updated the automation rule.
+     * Get the lastModifiedBy property: Information on the client (user or application) that made some action.
      *
      * @return the lastModifiedBy value.
      */
     public ClientInfo lastModifiedBy() {
         return this.lastModifiedBy;
+    }
+
+    /**
+     * Get the createdBy property: Information on the client (user or application) that made some action.
+     *
+     * @return the createdBy value.
+     */
+    public ClientInfo createdBy() {
+        return this.createdBy;
     }
 
     /**
@@ -190,13 +187,13 @@ public final class AutomationRuleProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model AutomationRuleProperties"));
         }
         if (triggeringLogic() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property triggeringLogic in model AutomationRuleProperties"));
@@ -204,18 +201,20 @@ public final class AutomationRuleProperties {
             triggeringLogic().validate();
         }
         if (actions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property actions in model AutomationRuleProperties"));
         } else {
             actions().forEach(e -> e.validate());
         }
-        if (createdBy() != null) {
-            createdBy().validate();
-        }
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }
+        if (createdBy() != null) {
+            createdBy().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutomationRuleProperties.class);
 }

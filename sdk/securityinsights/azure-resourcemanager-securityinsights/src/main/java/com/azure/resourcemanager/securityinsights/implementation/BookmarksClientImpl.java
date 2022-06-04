@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.BookmarksClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.BookmarkInner;
 import com.azure.resourcemanager.securityinsights.models.BookmarkList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BookmarksClient. */
 public final class BookmarksClientImpl implements BookmarksClient {
-    private final ClientLogger logger = new ClientLogger(BookmarksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BookmarksService service;
 
@@ -256,7 +253,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmarks.
+     * @return all bookmarks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BookmarkInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -273,7 +270,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmarks.
+     * @return all bookmarks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BookmarkInner> listAsync(String resourceGroupName, String workspaceName, Context context) {
@@ -290,7 +287,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmarks.
+     * @return all bookmarks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookmarkInner> list(String resourceGroupName, String workspaceName) {
@@ -306,7 +303,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all bookmarks.
+     * @return all bookmarks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookmarkInner> list(String resourceGroupName, String workspaceName, Context context) {
@@ -431,14 +428,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BookmarkInner> getAsync(String resourceGroupName, String workspaceName, String bookmarkId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, bookmarkId)
-            .flatMap(
-                (Response<BookmarkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -611,14 +601,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
     private Mono<BookmarkInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, BookmarkInner bookmark) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, bookmark)
-            .flatMap(
-                (Response<BookmarkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -775,8 +758,7 @@ public final class BookmarksClientImpl implements BookmarksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String bookmarkId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId).flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Per-slice settings. */
 @Fluent
 public final class SliceConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SliceConfiguration.class);
-
     /*
      * A reference to the Slice that these settings apply to
      */
@@ -107,14 +104,14 @@ public final class SliceConfiguration {
      */
     public void validate() {
         if (slice() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property slice in model SliceConfiguration"));
         } else {
             slice().validate();
         }
         if (defaultDataNetwork() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property defaultDataNetwork in model SliceConfiguration"));
@@ -122,7 +119,7 @@ public final class SliceConfiguration {
             defaultDataNetwork().validate();
         }
         if (dataNetworkConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataNetworkConfigurations in model SliceConfiguration"));
@@ -130,4 +127,6 @@ public final class SliceConfiguration {
             dataNetworkConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SliceConfiguration.class);
 }

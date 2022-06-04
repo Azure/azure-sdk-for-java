@@ -28,7 +28,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the FeatureClientImpl type. */
 @ServiceClient(builder = FeatureClientBuilder.class)
 public final class FeatureClientImpl extends AzureServiceClient implements FeatureClient {
-    private final ClientLogger logger = new ClientLogger(FeatureClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FeatureClientService service;
 

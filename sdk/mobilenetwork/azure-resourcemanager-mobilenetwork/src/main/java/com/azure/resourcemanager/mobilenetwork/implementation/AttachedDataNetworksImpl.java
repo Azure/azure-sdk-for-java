@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.AttachedDataNetworksClient
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetwork;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetworks;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDataNetworksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AttachedDataNetworksImpl.class);
 
     private final AttachedDataNetworksClient innerClient;
 
@@ -119,7 +118,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
     public AttachedDataNetwork getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +126,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String attachedDataNetworkName = Utils.getValueFromIdByName(id, "attachedDataNetworks");
         if (attachedDataNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
     public Response<AttachedDataNetwork> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -176,7 +175,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +185,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +195,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String attachedDataNetworkName = Utils.getValueFromIdByName(id, "attachedDataNetworks");
         if (attachedDataNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -216,7 +215,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -224,7 +223,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -234,7 +233,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,7 +243,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String attachedDataNetworkName = Utils.getValueFromIdByName(id, "attachedDataNetworks");
         if (attachedDataNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -264,7 +263,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -272,7 +271,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -282,7 +281,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String packetCoreDataPlaneName = Utils.getValueFromIdByName(id, "packetCoreDataPlanes");
         if (packetCoreDataPlaneName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -292,7 +291,7 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
         }
         String attachedDataNetworkName = Utils.getValueFromIdByName(id, "attachedDataNetworks");
         if (attachedDataNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

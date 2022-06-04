@@ -35,4 +35,11 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
         this.properties = properties;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedServiceDebugResource setName(String name) {
+        super.setName(name);
+        return this;
+    }
 }

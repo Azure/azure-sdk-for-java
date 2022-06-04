@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration runtime authentication keys. */
 @Fluent
 public final class IntegrationRuntimeAuthKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeAuthKeysInner.class);
-
     /*
      * The primary integration runtime authentication key.
      */
