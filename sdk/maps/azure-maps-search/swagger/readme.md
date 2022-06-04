@@ -37,9 +37,6 @@ directive:
         $["security"] = [];
 
   - rename-model:
-      from: Address
-      to: AddressPrivate
-  - rename-model:
       from: AddressRanges
       to: AddressRangesPrivate
   - rename-model:
@@ -101,5 +98,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: BatchResultSummary,BrandName,Classification,ClassificationName,DataSource,ErrorAdditionalInfo,ErrorDetail,ErrorResponseException,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursTime,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,RoadUseType,SearchAddressResultType,SearchIndexes,ErrorResponse,QueryType
+custom-types: Address,BatchResultSummary,BrandName,Classification,ClassificationName,DataSource,ErrorAdditionalInfo,ErrorDetail,ErrorResponseException,ElectricVehicleConnector,EntryPointType,GeographicEntityType,GeometryIdentifier,LocalizedMapView,OperatingHoursTime,OperatingHoursRange,MatchType,OperatingHours,OperatingHoursTimeRange,PointOfInterest,PointOfInterestCategory,PointOfInterestCategorySet,PointOfInterestCategoryTreeResult,PointOfInterestExtendedPostalCodes,RoadUseType,SearchAddressResultType,SearchIndexes,ErrorResponse,QueryType
+customization-jar-path: target/azure-maps-search-customization-1.0.0-beta.1.jar
+customization-class: SearchCustomization
 ```

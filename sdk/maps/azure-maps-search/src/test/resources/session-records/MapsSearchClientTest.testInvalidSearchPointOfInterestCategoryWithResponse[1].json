@@ -6,10 +6,10 @@
       "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Tue, 12 Apr 2022 06:10:34 GMT",
+      "date" : "Sat, 04 Jun 2022 07:06:34 GMT",
       "content-length" : "128",
       "x-content-type-options" : "nosniff",
-      "x-msedge-ref" : "Ref A: EC7092A4A44C47ABBF3B79673E898FED Ref B: SIN30EDGE0808 Ref C: 2022-04-12T06:10:34Z",
+      "x-msedge-ref" : "Ref A: 8B6A1D1B1A774FC29D23E9686B2CA549 Ref B: SIN30EDGE0515 Ref C: 2022-06-04T07:06:35Z",
       "x-ms-azuremaps-region" : "West Europe",
       "content-type" : "application/json; charset=utf-8",
       "x-cache" : "CONFIG_NOCACHE",

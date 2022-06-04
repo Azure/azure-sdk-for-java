@@ -50,7 +50,7 @@ public final class ReverseSearchCrossStreetAddressResultItem {
     // private setter
     private void setFromReverseSearchCrossStreetAddressResultItemPrivate(
             ReverseSearchCrossStreetAddressResultItemPrivate privateItem) {
-        this.address = Utility.toAddress(privateItem.getAddress());
+        this.address = privateItem.getAddress();
 
         // position in the internal model is a string separated by commas
         final String position = privateItem.getPosition();

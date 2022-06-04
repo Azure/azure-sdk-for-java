@@ -21,7 +21,6 @@ import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.search.implementation.models.AddressPrivate;
 import com.azure.maps.search.implementation.models.AddressRangesPrivate;
 import com.azure.maps.search.implementation.models.BatchRequestItem;
 import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
@@ -227,13 +226,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    public static Address toAddress(AddressPrivate addressPrivate) {
-        Address address = new Address();
-        AddressPropertiesHelper.setFromAddressPrivate(address, addressPrivate);
-
-        return address;
     }
 
     public static AddressRanges toAddressRanges(AddressRangesPrivate addressRangesPrivate) {
