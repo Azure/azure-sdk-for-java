@@ -218,11 +218,7 @@ public final class SearchAddressResultItem {
         final double east = viewport.getBottomRight().getLon();
         final double south = viewport.getBottomRight().getLat();
         this.viewport = new GeoBoundingBox(west, south, east, north);
-
-        // convert address ranges
-        if (privateResultItem.getAddressRanges() != null) {
-            this.addressRanges = Utility.toAddressRanges(privateResultItem.getAddressRanges());
-        }
+        this.addressRanges = privateResultItem.getAddressRanges();
 
         // convert entry points
         List<EntryPointPrivate> privateEntryPoints = privateResultItem.getEntryPoints();

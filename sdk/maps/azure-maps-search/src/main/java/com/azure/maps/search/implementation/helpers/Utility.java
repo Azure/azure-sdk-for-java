@@ -21,7 +21,6 @@ import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.search.implementation.models.AddressRangesPrivate;
 import com.azure.maps.search.implementation.models.BatchRequestItem;
 import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
 import com.azure.maps.search.implementation.models.EntryPointPrivate;
@@ -39,8 +38,6 @@ import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAddressResultItemPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchSummaryPrivate;
-import com.azure.maps.search.models.Address;
-import com.azure.maps.search.models.AddressRanges;
 import com.azure.maps.search.models.BaseSearchOptions;
 import com.azure.maps.search.models.BatchResultSummary;
 import com.azure.maps.search.models.BatchReverseSearchResult;
@@ -226,13 +223,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    public static AddressRanges toAddressRanges(AddressRangesPrivate addressRangesPrivate) {
-        AddressRanges addressRanges = new AddressRanges();
-        AddressRangesPropertiesHelper.setFromAddressRangesPrivate(addressRanges, addressRangesPrivate);
-
-        return addressRanges;
     }
 
     public static EntryPoint toEntryPoint(EntryPointPrivate entryPointPrivate) {
