@@ -25,7 +25,6 @@ import com.azure.maps.search.implementation.models.BatchRequestItem;
 import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
 import com.azure.maps.search.implementation.models.GeoJsonFeatureCollection;
 import com.azure.maps.search.implementation.models.GeoJsonObject;
-import com.azure.maps.search.implementation.models.PolygonPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResult;
 import com.azure.maps.search.implementation.models.SearchAddressBatchItemPrivate;
@@ -206,21 +205,6 @@ public class Utility {
             .collect(Collectors.toList());
 
         return new BatchReverseSearchResult(summary, items);
-    }
-
-    public static Polygon toPolygon(PolygonPrivate privatePolygon) {
-        Polygon polygon = new Polygon();
-        PolygonPropertiesHelper.setGeometry(polygon, privatePolygon.getGeometryData());
-        PolygonPropertiesHelper.setProviderID(polygon, privatePolygon.getProviderID());
-
-        return polygon;
-    }
-
-    public static List<Polygon> toPolygonList(List<PolygonPrivate> privatePolygonList) {
-        List<Polygon> polygons = privatePolygonList.stream().map(item -> toPolygon(item))
-            .collect(Collectors.toList());
-
-        return polygons;
     }
 
     public static GeoJsonObject toGeoJsonObject(GeoObject object) {

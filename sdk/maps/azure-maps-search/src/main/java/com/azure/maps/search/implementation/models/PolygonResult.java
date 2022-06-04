@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.maps.search.models.Polygon;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,14 +16,14 @@ public final class PolygonResult {
      * Results array
      */
     @JsonProperty(value = "additionalData", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PolygonPrivate> polygons;
+    private List<Polygon> polygons;
 
     /**
      * Get the polygons property: Results array.
      *
      * @return the polygons value.
      */
-    public List<PolygonPrivate> getPolygons() {
+    public List<Polygon> getPolygons() {
         return this.polygons;
     }
 }

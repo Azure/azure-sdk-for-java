@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.params.provider.Arguments;
+
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoLineString;
 import com.azure.core.models.GeoObject;
@@ -19,8 +21,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.search.implementation.helpers.Utility;
-import com.azure.maps.search.implementation.models.PolygonPrivate;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
@@ -31,8 +31,6 @@ import com.azure.maps.search.models.SearchAddressResult;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 
-import org.junit.jupiter.params.provider.Arguments;
-
 
 public class TestUtils {
 
@@ -41,13 +39,12 @@ public class TestUtils {
 
     static Polygon getPolygon(InputStream is) throws IOException {
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<PolygonPrivate> interimType = new TypeReference<PolygonPrivate>(){};
+        TypeReference<Polygon> interimType = new TypeReference<Polygon>(){};
         byte[] data = null;
         data = toByteArray(is);
-        PolygonPrivate polygonPrivate = null;
-        polygonPrivate = jacksonAdapter.<PolygonPrivate>deserialize(data, interimType.getJavaType(),
+        Polygon polygon = null;
+        polygon = jacksonAdapter.<Polygon>deserialize(data, interimType.getJavaType(),
                SerializerEncoding.JSON);
-        Polygon polygon = Utility.toPolygon(polygonPrivate);
         return polygon;
     }
 
