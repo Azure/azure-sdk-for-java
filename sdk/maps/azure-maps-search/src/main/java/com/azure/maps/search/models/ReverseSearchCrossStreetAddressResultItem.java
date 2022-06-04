@@ -39,6 +39,6 @@ public final class ReverseSearchCrossStreetAddressResultItem {
      */
     public GeoPosition getPosition() {
         String returnValue = this.position;
-        return com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(position);
+        return com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(returnValue);
     }
 }

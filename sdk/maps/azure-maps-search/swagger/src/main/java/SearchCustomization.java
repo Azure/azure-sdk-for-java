@@ -152,7 +152,7 @@ public class SearchCustomization extends Customization {
         // getPosition
         MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
         toCustomization.setReturnType("GeoPosition",
-            "com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(position)");
+            "com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(returnValue)");
 
         classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
@@ -165,7 +165,7 @@ public class SearchCustomization extends Customization {
         // getPosition
         MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
         toCustomization.setReturnType("GeoPosition",
-            "com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(position)");
+            "com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(returnValue)");
 
         classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
