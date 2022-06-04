@@ -6,11 +6,12 @@ package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.maps.search.models.ErrorDetail;
+import com.azure.maps.search.models.SearchAddressResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of the query. SearchAddressResponse if the query completed successfully, ErrorResponse otherwise. */
 @Fluent
-public final class SearchAddressBatchItemPrivateResponse extends SearchAddressResultPrivate {
+public final class SearchAddressBatchItemPrivateResponse extends SearchAddressResult {
     /*
      * The error object.
      */

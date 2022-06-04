@@ -36,7 +36,6 @@ import com.azure.maps.search.implementation.models.ReverseSearchAddressBatchResu
 import com.azure.maps.search.implementation.models.ReverseSearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAlongRouteRequest;
 import com.azure.maps.search.implementation.models.SearchInsideGeometryRequest;
 import com.azure.maps.search.implementation.models.SearchesFuzzySearchBatchResponse;
@@ -53,6 +52,7 @@ import com.azure.maps.search.models.OperatingHoursRange;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.PointOfInterestExtendedPostalCodes;
 import com.azure.maps.search.models.RoadUseType;
+import com.azure.maps.search.models.SearchAddressResult;
 import com.azure.maps.search.models.SearchIndexes;
 import java.time.Duration;
 import java.util.List;
@@ -100,7 +100,7 @@ public final class SearchesImpl {
         @Get("/search/fuzzy/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> fuzzySearch(
+        Mono<Response<SearchAddressResult>> fuzzySearch(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -132,7 +132,7 @@ public final class SearchesImpl {
         @Get("/search/poi/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchPointOfInterest(
+        Mono<Response<SearchAddressResult>> searchPointOfInterest(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -160,7 +160,7 @@ public final class SearchesImpl {
         @Get("/search/nearby/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchNearbyPointOfInterest(
+        Mono<Response<SearchAddressResult>> searchNearbyPointOfInterest(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -183,7 +183,7 @@ public final class SearchesImpl {
         @Get("/search/poi/category/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchPointOfInterestCategory(
+        Mono<Response<SearchAddressResult>> searchPointOfInterestCategory(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -223,7 +223,7 @@ public final class SearchesImpl {
         @Get("/search/address/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchAddress(
+        Mono<Response<SearchAddressResult>> searchAddress(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -288,7 +288,7 @@ public final class SearchesImpl {
         @Get("/search/address/structured/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchStructuredAddress(
+        Mono<Response<SearchAddressResult>> searchStructuredAddress(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -315,7 +315,7 @@ public final class SearchesImpl {
         @Post("/search/geometry/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchInsideGeometry(
+        Mono<Response<SearchAddressResult>> searchInsideGeometry(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -335,7 +335,7 @@ public final class SearchesImpl {
         @Post("/search/alongRoute/{format}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<SearchAddressResultPrivate>> searchAlongRoute(
+        Mono<Response<SearchAddressResult>> searchAlongRoute(
                 @HostParam("$host") String host,
                 @HeaderParam("x-ms-client-id") String clientId,
                 @QueryParam("api-version") String apiVersion,
@@ -809,7 +809,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> fuzzySearchWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> fuzzySearchWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -1040,7 +1040,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> fuzzySearchWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> fuzzySearchWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -1268,7 +1268,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> fuzzySearchAsync(
+    public Mono<SearchAddressResult> fuzzySearchAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -1467,7 +1467,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> fuzzySearchAsync(
+    public Mono<SearchAddressResult> fuzzySearchAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -1667,7 +1667,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate fuzzySearch(
+    public SearchAddressResult fuzzySearch(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -1866,7 +1866,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> fuzzySearchWithResponse(
+    public Response<SearchAddressResult> fuzzySearchWithResponse(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2024,7 +2024,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchPointOfInterestWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2198,7 +2198,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchPointOfInterestWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2369,7 +2369,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchPointOfInterestAsync(
+    public Mono<SearchAddressResult> searchPointOfInterestAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2517,7 +2517,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchPointOfInterestAsync(
+    public Mono<SearchAddressResult> searchPointOfInterestAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2666,7 +2666,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchPointOfInterest(
+    public SearchAddressResult searchPointOfInterest(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2814,7 +2814,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchPointOfInterestWithResponse(
+    public Response<SearchAddressResult> searchPointOfInterestWithResponse(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -2963,7 +2963,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchNearbyPointOfInterestWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchNearbyPointOfInterestWithResponseAsync(
             ResponseFormat format,
             double lat,
             double lon,
@@ -3126,7 +3126,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchNearbyPointOfInterestWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchNearbyPointOfInterestWithResponseAsync(
             ResponseFormat format,
             double lat,
             double lon,
@@ -3286,7 +3286,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchNearbyPointOfInterestAsync(
+    public Mono<SearchAddressResult> searchNearbyPointOfInterestAsync(
             ResponseFormat format,
             double lat,
             double lon,
@@ -3423,7 +3423,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchNearbyPointOfInterestAsync(
+    public Mono<SearchAddressResult> searchNearbyPointOfInterestAsync(
             ResponseFormat format,
             double lat,
             double lon,
@@ -3561,7 +3561,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchNearbyPointOfInterest(
+    public SearchAddressResult searchNearbyPointOfInterest(
             ResponseFormat format,
             double lat,
             double lon,
@@ -3698,7 +3698,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchNearbyPointOfInterestWithResponse(
+    public Response<SearchAddressResult> searchNearbyPointOfInterestWithResponse(
             ResponseFormat format,
             double lat,
             double lon,
@@ -3848,7 +3848,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchPointOfInterestCategoryWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -4032,7 +4032,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchPointOfInterestCategoryWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -4213,7 +4213,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchPointOfInterestCategoryAsync(
+    public Mono<SearchAddressResult> searchPointOfInterestCategoryAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -4371,7 +4371,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchPointOfInterestCategoryAsync(
+    public Mono<SearchAddressResult> searchPointOfInterestCategoryAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -4530,7 +4530,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchPointOfInterestCategory(
+    public SearchAddressResult searchPointOfInterestCategory(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -4688,7 +4688,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchPointOfInterestCategoryWithResponse(
+    public Response<SearchAddressResult> searchPointOfInterestCategoryWithResponse(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -4993,7 +4993,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchAddressWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchAddressWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -5118,7 +5118,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchAddressWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchAddressWithResponseAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -5240,7 +5240,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchAddressAsync(
+    public Mono<SearchAddressResult> searchAddressAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -5349,7 +5349,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchAddressAsync(
+    public Mono<SearchAddressResult> searchAddressAsync(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -5459,7 +5459,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchAddress(
+    public SearchAddressResult searchAddress(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -5568,7 +5568,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchAddressWithResponse(
+    public Response<SearchAddressResult> searchAddressWithResponse(
             ResponseFormat format,
             String query,
             Boolean isTypeAhead,
@@ -6590,7 +6590,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchStructuredAddressWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponseAsync(
             ResponseFormat format,
             String countryCode,
             String language,
@@ -6717,7 +6717,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchStructuredAddressWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponseAsync(
             ResponseFormat format,
             String countryCode,
             String language,
@@ -6841,7 +6841,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchStructuredAddressAsync(
+    public Mono<SearchAddressResult> searchStructuredAddressAsync(
             ResponseFormat format,
             String countryCode,
             String language,
@@ -6954,7 +6954,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchStructuredAddressAsync(
+    public Mono<SearchAddressResult> searchStructuredAddressAsync(
             ResponseFormat format,
             String countryCode,
             String language,
@@ -7068,7 +7068,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchStructuredAddress(
+    public SearchAddressResult searchStructuredAddress(
             ResponseFormat format,
             String countryCode,
             String language,
@@ -7181,7 +7181,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchStructuredAddressWithResponse(
+    public Response<SearchAddressResult> searchStructuredAddressWithResponse(
             ResponseFormat format,
             String countryCode,
             String language,
@@ -7310,7 +7310,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchInsideGeometryWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponseAsync(
             ResponseFormat format,
             String query,
             SearchInsideGeometryRequest geometry,
@@ -7445,7 +7445,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchInsideGeometryWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponseAsync(
             ResponseFormat format,
             String query,
             SearchInsideGeometryRequest geometry,
@@ -7577,7 +7577,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchInsideGeometryAsync(
+    public Mono<SearchAddressResult> searchInsideGeometryAsync(
             ResponseFormat format,
             String query,
             SearchInsideGeometryRequest geometry,
@@ -7690,7 +7690,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchInsideGeometryAsync(
+    public Mono<SearchAddressResult> searchInsideGeometryAsync(
             ResponseFormat format,
             String query,
             SearchInsideGeometryRequest geometry,
@@ -7804,7 +7804,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchInsideGeometry(
+    public SearchAddressResult searchInsideGeometry(
             ResponseFormat format,
             String query,
             SearchInsideGeometryRequest geometry,
@@ -7917,7 +7917,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchInsideGeometryWithResponse(
+    public Response<SearchAddressResult> searchInsideGeometryWithResponse(
             ResponseFormat format,
             String query,
             SearchInsideGeometryRequest geometry,
@@ -8032,7 +8032,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchAlongRouteWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchAlongRouteWithResponseAsync(
             ResponseFormat format,
             String query,
             int maxDetourTime,
@@ -8163,7 +8163,7 @@ public final class SearchesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAddressResultPrivate>> searchAlongRouteWithResponseAsync(
+    public Mono<Response<SearchAddressResult>> searchAlongRouteWithResponseAsync(
             ResponseFormat format,
             String query,
             int maxDetourTime,
@@ -8291,7 +8291,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchAlongRouteAsync(
+    public Mono<SearchAddressResult> searchAlongRouteAsync(
             ResponseFormat format,
             String query,
             int maxDetourTime,
@@ -8404,7 +8404,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAddressResultPrivate> searchAlongRouteAsync(
+    public Mono<SearchAddressResult> searchAlongRouteAsync(
             ResponseFormat format,
             String query,
             int maxDetourTime,
@@ -8518,7 +8518,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResultPrivate searchAlongRoute(
+    public SearchAddressResult searchAlongRoute(
             ResponseFormat format,
             String query,
             int maxDetourTime,
@@ -8631,7 +8631,7 @@ public final class SearchesImpl {
      * @return this object is returned from a successful Search calls along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAddressResultPrivate> searchAlongRouteWithResponse(
+    public Response<SearchAddressResult> searchAlongRouteWithResponse(
             ResponseFormat format,
             String query,
             int maxDetourTime,

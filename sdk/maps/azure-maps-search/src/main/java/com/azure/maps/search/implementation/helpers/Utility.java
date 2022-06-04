@@ -34,7 +34,6 @@ import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddre
 import com.azure.maps.search.implementation.models.ReverseSearchCrossStreetAddressResultPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchItemPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressBatchResult;
-import com.azure.maps.search.implementation.models.SearchAddressResultPrivate;
 import com.azure.maps.search.models.BaseSearchOptions;
 import com.azure.maps.search.models.BatchResultSummary;
 import com.azure.maps.search.models.BatchReverseSearchResult;
@@ -58,22 +57,6 @@ import com.azure.maps.search.models.SearchSummary;
 public class Utility {
     private static final JacksonJsonSerializer serializer = new JacksonJsonSerializerProvider().createInstance();
     private static final Pattern uuidPattern = Pattern.compile("[0-9A-Fa-f\\-]{36}");
-
-        /**
-     * converts the internal representation of SearchAddressResult into the public one
-     * @param response
-     * @return
-     */
-    public static SimpleResponse<SearchAddressResult> createSearchResponse(
-            Response<SearchAddressResultPrivate> response) {
-        SearchAddressResult result = Utility.toSearchAddressResult(response.getValue());
-        SimpleResponse<SearchAddressResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
-
-        return simpleResponse;
-    }
 
     /**
      * converts the internal representation of ReverseSearchAddressResult into the public one
@@ -220,14 +203,6 @@ public class Utility {
         return null;
     }
 
-    public static SearchAddressResult toSearchAddressResult(SearchAddressResultPrivate privateResult) {
-        SearchAddressResult result = new SearchAddressResult();
-        SearchAddressResultPropertiesHelper.setSummary(result, privateResult.getSummary());
-        SearchAddressResultPropertiesHelper.setResults(result, privateResult.getResults());
-
-        return result;
-    }
-
     public static ReverseSearchAddressResultItem toReverseSearchAddressResultItem(ReverseSearchAddressResultItemPrivate privateResultItem) {
         ReverseSearchAddressResultItem resultItem = new ReverseSearchAddressResultItem();
         ReverseSearchAddressResultItemPropertiesHelper.setFromReverseSearchAddressResultItemPrivate(
@@ -266,7 +241,7 @@ public class Utility {
         SearchAddressBatchItem resultItem = new SearchAddressBatchItem();
         SearchAddressBatchItemPropertiesHelper.setErrorDetail(resultItem, item.getResponse().getError());
         SearchAddressBatchItemPropertiesHelper.setStatusCode(resultItem, item.getStatusCode());
-        SearchAddressResult result = toSearchAddressResult(item.getResponse());
+        SearchAddressResult result = item.getResponse();
         SearchAddressBatchItemPropertiesHelper.setSearchAddressResult(resultItem, result);
 
         return resultItem;
