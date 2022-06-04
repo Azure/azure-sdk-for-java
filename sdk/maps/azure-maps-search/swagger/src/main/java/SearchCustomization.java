@@ -36,6 +36,9 @@ public class SearchCustomization extends Customization {
         // customize ReverseSearchAddressResultItem
         customizeReverseSearchAddressResultItem(models);
 
+        // customize ReverseSearchCrossStreetAddressResultItem
+        customizeReverseSearchCrossStreetAddressResultItem(models);
+
         /*
         // customize route range
         customizeRouteRange(models);
@@ -145,6 +148,19 @@ public class SearchCustomization extends Customization {
     // Customizes the ReverseSearchAddressResultItem class
     private void customizeReverseSearchAddressResultItem(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("ReverseSearchAddressResultItem");
+
+        // getPosition
+        MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
+        toCustomization.setReturnType("GeoPosition",
+            "com.azure.maps.search.implementation.helpers.Utility.fromCommaSeparatedString(position)");
+
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
+    }
+
+
+    // Customizes the ReverseSearchCrossStreetAddressResultItem class
+    private void customizeReverseSearchCrossStreetAddressResultItem(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("ReverseSearchCrossStreetAddressResultItem");
 
         // getPosition
         MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
