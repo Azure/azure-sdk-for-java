@@ -5,15 +5,12 @@
 package com.azure.maps.search.models;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.maps.search.implementation.helpers.SearchAddressResultItemPropertiesHelper;
-import com.azure.maps.search.implementation.helpers.Utility;
 import com.azure.maps.search.implementation.models.BoundingBoxPrivate;
-import com.azure.maps.search.implementation.models.EntryPointPrivate;
 import com.azure.maps.search.implementation.models.SearchAddressResultItemPrivate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -219,13 +216,6 @@ public final class SearchAddressResultItem {
         final double south = viewport.getBottomRight().getLat();
         this.viewport = new GeoBoundingBox(west, south, east, north);
         this.addressRanges = privateResultItem.getAddressRanges();
-
-        // convert entry points
-        List<EntryPointPrivate> privateEntryPoints = privateResultItem.getEntryPoints();
-
-        if (privateEntryPoints != null) {
-            this.entryPoints = privateEntryPoints.stream()
-                .map(item -> Utility.toEntryPoint(item)).collect(Collectors.toList());
-        }
+        this.entryPoints = privateResultItem.getEntryPoints();
     }
 }

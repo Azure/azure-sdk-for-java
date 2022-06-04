@@ -24,6 +24,9 @@ public class SearchCustomization extends Customization {
         // customize AddressRanges
         customizeAddressRanges(models);
 
+        // customize EntryPoint
+        customizeEntryPoint(models);
+
         /*
         // customize route instruction
         customizeRouteInstruction(models);
@@ -49,7 +52,7 @@ public class SearchCustomization extends Customization {
     }
 
 
-    // Customizes the Address class by changing the type of BoundingBox
+    // Customizes the AddressRanges class
     private void customizeAddressRanges(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("AddressRanges");
         String[] methods = new String[] {"setRangeRight", "setRangeLeft", "setTo", "setFrom"};
@@ -62,6 +65,23 @@ public class SearchCustomization extends Customization {
         // getFrom
         MethodCustomization fromCustomization = classCustomization.getMethod("getFrom");
         fromCustomization.setReturnType("GeoPosition",
+            "new GeoPosition(returnValue.getLon(), returnValue.getLat())");
+
+        // remove setters
+        for (String method : methods) {
+            classCustomization.removeMethod(method);
+        }
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
+    }
+
+    // Customizes the EntryPoint class
+    private void customizeEntryPoint(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("EntryPoint");
+        String[] methods = new String[] {"setPosition"};
+
+        // getPosition
+        MethodCustomization toCustomization = classCustomization.getMethod("getPosition");
+        toCustomization.setReturnType("GeoPosition",
             "new GeoPosition(returnValue.getLon(), returnValue.getLat())");
 
         // remove setters
