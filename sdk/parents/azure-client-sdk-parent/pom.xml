@@ -957,93 +957,11 @@
       </reporting>
     </profile>
 
-    <!-- Setup for Java 9 to 16 -->
+    <!-- Setup for Java 9+ -->
     <profile>
-      <id>java9to16</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[9,17)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <configuration>
-              <compilerArgs combine.children="append">
-                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-              </compilerArgs>
-            </configuration>
-            <executions>
-              <!-- compile first with module-info for Java 9+ -->
-              <execution>
-                <id>default-compile</id>
-                <configuration>
-                  <release>11</release>
-                </configuration>
-              </execution>
-              <!-- then compile without module-info for Java 8 -->
-              <execution>
-                <id>base-compile</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <release>8</release>
-                  <excludes>
-                    <exclude>module-info.java</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-              <!-- compile tests fir with Java 9+ -->
-              <execution>
-                <id>default-testCompile</id>
-                <configuration>
-                  <testRelease>11</testRelease>
-                </configuration>
-              </execution>
-              <!-- then compile with Java 8 -->
-              <execution>
-                <id>base-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <testRelease>8</testRelease>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
-              </systemPropertyVariables>
-              <argLine>
-                ${defaultSurefireArgLine}
-                ${javaModulesSurefireArgLine}
-                ${defaultJavaModulesSurefireArgLine}
-                <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
-                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
-                --add-opens java.base/java.lang.invoke=com.azure.core
-                ${additionalSurefireArgLine}
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Profile activates when the Java version is 17 or above -->
-    <profile>
-      <id>java17plus</id>
-      <activation>
-        <jdk>[17,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
