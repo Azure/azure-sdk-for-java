@@ -16,8 +16,8 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 //import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
-//import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-//import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 //import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 //import com.azure.communication.callingserver.implementation.converters.RemoveParticipantRequestConverter;
 //import com.azure.communication.callingserver.implementation.converters.TransferToCallRequestConverter;
@@ -33,7 +33,8 @@ import com.azure.communication.callingserver.implementation.converters.CallConne
 //import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 //import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
 //import com.azure.communication.callingserver.implementation.models.AddToDefaultAudioGroupRequest;
-//import com.azure.communication.callingserver.implementation.models.TransferToCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+//import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 //import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequest;
 //import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 //import com.azure.communication.callingserver.implementation.models.UpdateAudioGroupRequest;
@@ -48,7 +49,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 //import com.azure.communication.callingserver.models.PlayAudioOptions;
 //import com.azure.communication.callingserver.models.PlayAudioResult;
 //import com.azure.communication.callingserver.models.TransferCallResult;
-//import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 //import com.azure.communication.common.PhoneNumberIdentifier;
 //import com.azure.core.annotation.ReturnType;
 //import com.azure.core.annotation.ServiceMethod;
@@ -56,6 +57,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 //import com.azure.core.http.rest.SimpleResponse;
 //import com.azure.core.util.Context;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.models.TransferCallOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -269,6 +271,7 @@ public class CallConnectionAsync {
 
     /**
      * Terminates the conversation for all participants in the call.
+     *
      * @param reason A {@link String} representing the reason of termination.
      * @param callbackUri A {@link String} representing the callback uri.
      * @param context A {@link Context} representing the request context.
@@ -295,6 +298,7 @@ public class CallConnectionAsync {
 
     /**
      * Terminates the conversation for all participants in the call.
+     *
      * @param reason A {@link String} representing the reason of termination.
      * @param callbackUri A {@link String} representing the callback uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -316,6 +320,7 @@ public class CallConnectionAsync {
 
     /**
      * Terminates the conversation for all participants in the call.
+     *
      * @param reason A {@link String} representing the reason of termination.
      * @param callbackUri A {@link String} representing the callback uri.
      * @param context A {@link Context} representing the request context.
@@ -339,4 +344,125 @@ public class CallConnectionAsync {
         }
     }
 
+    /**
+     * Transfer the call
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param targetCallLegId A {@link String} representing the call leg id of the target call.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> transferCall(CommunicationIdentifier targetParticipant, String targetCallLegId,
+                                   String callbackUri, TransferCallOptions options) {
+        try {
+            TransferCallRequest request = new TransferCallRequest()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTargetCallLegId(targetCallLegId)
+                .setCallbackUri(callbackUri)
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
+                .setUserToUserInformation(options.getUserToUserInformation());
+            return callConnectionInternal.transferCallAsync(callLegId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param targetCallLegId A {@link String} representing the call leg id of the target call.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> transferCall(CommunicationIdentifier targetParticipant, String targetCallLegId,
+                                   String callbackUri, TransferCallOptions options, Context context) {
+        if (context == null) {
+            return transferCall(targetParticipant, targetCallLegId, callbackUri, options);
+        }
+        try {
+            TransferCallRequest request = new TransferCallRequest()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTargetCallLegId(targetCallLegId)
+                .setCallbackUri(callbackUri)
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
+                .setUserToUserInformation(options.getUserToUserInformation());
+            return callConnectionInternal.transferCallAsync(callLegId, request, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param targetCallLegId A {@link String} representing the call leg id of the target call.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallLegId,
+                                                         String callbackUri, TransferCallOptions options) {
+        try {
+            TransferCallRequest request = new TransferCallRequest()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTargetCallLegId(targetCallLegId)
+                .setCallbackUri(callbackUri)
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
+                .setUserToUserInformation(options.getUserToUserInformation());
+            return callConnectionInternal.transferCallWithResponseAsync(callLegId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Transfer the call
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param targetCallLegId A {@link String} representing the call leg id of the target call.
+     * @param callbackUri A {@link String} representing the callback uri.
+     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallLegId,
+                                                  String callbackUri, TransferCallOptions options, Context context) {
+        if (context == null) {
+            return transferCallWithResponse(targetParticipant, targetCallLegId, callbackUri, options);
+        }
+        try {
+            TransferCallRequest request = new TransferCallRequest()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTargetCallLegId(targetCallLegId)
+                .setCallbackUri(callbackUri)
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
+                .setUserToUserInformation(options.getUserToUserInformation());
+            return callConnectionInternal.transferCallWithResponseAsync(callLegId, request, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }
