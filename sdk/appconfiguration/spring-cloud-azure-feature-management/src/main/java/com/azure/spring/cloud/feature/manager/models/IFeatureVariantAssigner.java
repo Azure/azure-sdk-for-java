@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 /**
  * Provides a method to assign a variant of a dynamic feature to be used based off of custom conditions.
  */
-public interface IFeatureVariantAssigner extends IFeatureVariantAssignerMetadata {
+public interface IFeatureVariantAssigner {
     
     /**
      * Assign a variant of a dynamic feature to be used based off of customized criteria.

@@ -128,7 +128,8 @@ public class TargetingEvaluatorTest {
 		variants.add(createFeatureVariant(true));
 
 		FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
-		assertNull(returnedVariant);
+		assertNotNull(returnedVariant);
+		assertEquals(variants.get(0), returnedVariant);
 	}
 
 	@Test
