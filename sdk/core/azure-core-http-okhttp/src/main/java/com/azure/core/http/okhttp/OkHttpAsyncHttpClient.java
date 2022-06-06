@@ -178,7 +178,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @SuppressWarnings("NullableProblems")
         @Override
         public void onFailure(okhttp3.Call call, IOException e) {
-            sink.error(e);
+            if (e.getSuppressed().length == 1) {
+                // Propagate suppressed exception when there is one.
+                // This happens when body emission fails in the middle.
+                sink.error(e.getSuppressed()[0]);
+            } else {
+                sink.error(e);
+            }
         }
 
         @SuppressWarnings("NullableProblems")

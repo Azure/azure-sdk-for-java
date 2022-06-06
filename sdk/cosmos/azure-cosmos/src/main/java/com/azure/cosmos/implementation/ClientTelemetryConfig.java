@@ -77,13 +77,28 @@ public class ClientTelemetryConfig {
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(
-                            "Enable proxy with type {}, host {}, port {}",
+                            "Enable proxy with type {}, host {}, port {}, userName {}, password length {}",
                             type,
                             proxyOptionsConfig.host,
-                            proxyOptionsConfig.port);
+                            proxyOptionsConfig.port,
+                            proxyOptionsConfig.username,
+                            proxyOptionsConfig.password != null ? proxyOptionsConfig.password.length() : -1
+                        );
                 }
 
-                return new ProxyOptions(type, new InetSocketAddress(proxyOptionsConfig.host, proxyOptionsConfig.port));
+                ProxyOptions proxyOptions = new ProxyOptions(
+                    type,
+                    new InetSocketAddress(proxyOptionsConfig.host, proxyOptionsConfig.port));
+
+                if (!Strings.isNullOrEmpty(proxyOptionsConfig.username) ||
+                    !Strings.isNullOrEmpty(proxyOptionsConfig.password)) {
+
+                    proxyOptions.setCredentials(
+                        proxyOptionsConfig.username != null ? proxyOptionsConfig.username : "",
+                        proxyOptionsConfig.password != null ? proxyOptionsConfig.password : "");
+                }
+
+                return proxyOptions;
             } catch (JsonProcessingException e) {
                 logger.error("Failed to parse client telemetry proxy option config", e);
             }
@@ -99,12 +114,18 @@ public class ClientTelemetryConfig {
         private int port;
         @JsonProperty
         private String type;
+        @JsonProperty
+        private String username;
+        @JsonProperty
+        private String password;
 
         private JsonProxyOptionsConfig() {}
-        private JsonProxyOptionsConfig(String host, int port, String type) {
+        private JsonProxyOptionsConfig(String host, int port, String type, String username, String password) {
             this.host = host;
             this.port = port;
             this.type = type;
+            this.username = username;
+            this.password = password;
         }
     }
 }
