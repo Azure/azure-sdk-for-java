@@ -450,6 +450,7 @@ final class PartitionBasedLoadBalancer {
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()));
 
+        morePartitionsToClaim.set(true);
         checkpointStore
             .claimOwnership(partitionsToClaim)
             .doOnNext(partitionOwnership -> LOGGER.atInfo()
@@ -464,7 +465,6 @@ final class PartitionBasedLoadBalancer {
                 consumerGroupName)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
-                morePartitionsToClaim.set(true);
                 ownedPartitionCheckpointsTuple.getT1()
                     .stream()
                     .forEach(po -> partitionPumpManager.startPartitionPump(po,

@@ -115,8 +115,8 @@ public class EventProcessorClientTest {
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
+
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
-        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
@@ -156,6 +156,7 @@ public class EventProcessorClientTest {
             1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
+
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
 
