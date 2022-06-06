@@ -19,6 +19,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.rx.proxy.HttpProxyServer;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
@@ -39,9 +40,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ClientTelemetryTest extends TestSuiteBase {
-    CosmosClient gatewayClient = null;
-    CosmosClient directClient = null;
-    CosmosClient telemetryDisabledClient = null;
+    private CosmosClient gatewayClient = null;
+    private CosmosClient directClient = null;
+    private CosmosClient telemetryDisabledClient = null;
+    private HttpProxyServer httpProxyServer;
 
     @BeforeClass(groups = {"emulator"})
     public void beforeClass() {
@@ -72,6 +74,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
             .contentResponseOnWriteEnabled(true)
             .directMode()
             .buildClient();
+
+        httpProxyServer = new HttpProxyServer();
+        httpProxyServer.start();
     }
 
     @AfterClass(groups = {"emulator"})
@@ -87,6 +92,10 @@ public class ClientTelemetryTest extends TestSuiteBase {
         if (this.telemetryDisabledClient != null) {
             this.telemetryDisabledClient.close();
         }
+
+        if (this.httpProxyServer != null) {
+            this.httpProxyServer.shutDown();
+        }
     }
 
     @DataProvider(name = "clients")
@@ -94,6 +103,15 @@ public class ClientTelemetryTest extends TestSuiteBase {
         return new Object[][]{
             {gatewayClient},
             {directClient}
+        };
+    }
+
+
+    @DataProvider(name = "useProxy", parallel = false)
+    public static Object[][] useProxy() {
+        return new Object[][]{
+                { true },
+                { false }
         };
     }
 
@@ -212,20 +230,6 @@ public class ClientTelemetryTest extends TestSuiteBase {
         }
     }
 
-    //Setting priority = 1 as system properties below interfering in other tests in this file
-    @Test(groups = {"unit"}, priority = 1)
-    public void clientTelemetryEnabledFlag() {
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
-        assertThat(cosmosClientBuilder.isClientTelemetryEnabled()).isFalse();
-        assertThat(Configs.isClientTelemetryEnabled(cosmosClientBuilder.isClientTelemetryEnabled())).isFalse();
-
-        System.setProperty("COSMOS.CLIENT_TELEMETRY_ENABLED", "true");
-        assertThat(Configs.isClientTelemetryEnabled(cosmosClientBuilder.isClientTelemetryEnabled())).isTrue();
-
-        System.setProperty("COSMOS.CLIENT_TELEMETRY_ENABLED", "false");// setting it back for other tests
-        assertThat(Configs.isClientTelemetryEnabled(cosmosClientBuilder.isClientTelemetryEnabled())).isFalse();
-    }
-
     @Test(groups = {"unit"})
     public void clientTelemetryScheduling() {
         assertThat(Configs.getClientTelemetrySchedulingInSec()).isEqualTo(600);
@@ -237,8 +241,8 @@ public class ClientTelemetryTest extends TestSuiteBase {
     }
 
     @SuppressWarnings("unchecked")
-    @Test(groups = {"non-emulator"}, timeOut = TIMEOUT)
-    public void clientTelemetryWithStageJunoEndpoint() throws InterruptedException, NoSuchFieldException,
+    @Test(groups = {"non-emulator"}, dataProvider = "useProxy", timeOut = TIMEOUT)
+    public void clientTelemetryWithStageJunoEndpoint(boolean useProxy) throws InterruptedException, NoSuchFieldException,
         IllegalAccessException {
         CosmosClient cosmosClient = null;
         String databaseId = UUID.randomUUID().toString();
@@ -249,11 +253,20 @@ public class ClientTelemetryTest extends TestSuiteBase {
             String host = credentialList[0].substring("AccountEndpoint=".length());
             String key = credentialList[1].substring("AccountKey=".length());
 
+            if (useProxy) {
+                System.setProperty(
+                        "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG",
+                        String.format("{\"type\":\"HTTP\", \"host\": \"%s\", \"port\": %d}", this.httpProxyServer.getHost(), this.httpProxyServer.getPort()));
+            } else {
+                System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
+            }
+
             cosmosClient = new CosmosClientBuilder()
                 .endpoint(host)
                 .key(key)
                 .clientTelemetryEnabled(true)
                 .buildClient();
+
             String containerId = UUID.randomUUID().toString();
             cosmosClient.createDatabase(databaseId);
 
@@ -270,9 +283,13 @@ public class ClientTelemetryTest extends TestSuiteBase {
             // in test env we add the env property with cosmos-client-telemetry-endpoint variable in tests.yml,
             // which gets its value from key vault TestSecrets-Cosmos
 
-            logger.info("clientTelemetryWithStageJunoEndpoint client telemetry endpoint {}",  System.getProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT").split("/")[2]);
-            logger.info("clientTelemetryWithStageJunoEndpoint cosmos account name  {}",
-                ReflectionUtils.getGlobalEndpointManager((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient)).getLatestDatabaseAccount().getResourceId());
+            logger.info(
+                    "clientTelemetryWithStageJunoEndpoint client telemetry endpoint {}",
+                    System.getProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT").split("/")[2]);
+            logger.info(
+                    "clientTelemetryWithStageJunoEndpoint cosmos account name  {}",
+                    ReflectionUtils.getGlobalEndpointManager(
+                            (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient)).getLatestDatabaseAccount().getResourceId());
 
 
             HttpClient httpClient = ReflectionUtils.getHttpClient(clientTelemetry);
@@ -300,6 +317,9 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 cosmosClient.getDatabase(databaseId).delete();
             }
             safeCloseSyncClient(cosmosClient);
+
+            // clear system property
+            System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
         }
     }
 

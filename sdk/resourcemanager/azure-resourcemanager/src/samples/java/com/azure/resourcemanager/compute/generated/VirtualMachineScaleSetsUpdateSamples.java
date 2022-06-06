@@ -72,6 +72,8 @@ import com.azure.resourcemanager.compute.models.WinRMConfiguration;
 import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
+import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
+import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
 import java.io.IOException;
 import java.util.Arrays;
@@ -81,7 +83,7 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSets Update. */
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MinimumSet_Gen.
@@ -99,7 +101,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MaximumSet_Gen.
@@ -167,9 +169,14 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                             .withContent("aaaaaaaaaaaaaaaaaaaa")))
                                             .withPatchSettings(
                                                 new PatchSettings()
-                                                    .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_OS)
+                                                    .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
                                                     .withEnableHotpatching(true)
-                                                    .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT))
+                                                    .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
+                                                    .withAutomaticByPlatformSettings(
+                                                        new WindowsVMGuestPatchAutomaticByPlatformSettings()
+                                                            .withRebootSetting(
+                                                                WindowsVMGuestPatchAutomaticByPlatformRebootSetting
+                                                                    .NEVER)))
                                             .withWinRM(
                                                 new WinRMConfiguration()
                                                     .withListeners(

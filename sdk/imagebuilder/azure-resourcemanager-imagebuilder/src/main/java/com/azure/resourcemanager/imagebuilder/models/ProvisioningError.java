@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the error happened when create or update an image template. */
 @Fluent
 public final class ProvisioningError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProvisioningError.class);
-
     /*
      * Error code of the provisioning failure
      */

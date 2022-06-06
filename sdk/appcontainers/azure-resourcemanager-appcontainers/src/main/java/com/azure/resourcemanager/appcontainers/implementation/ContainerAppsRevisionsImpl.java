@@ -40,8 +40,8 @@ public final class ContainerAppsRevisionsImpl implements ContainerAppsRevisions 
         return Utils.mapPage(inner, inner1 -> new RevisionImpl(inner1, this.manager()));
     }
 
-    public Revision getRevision(String resourceGroupName, String containerAppName, String name) {
-        RevisionInner inner = this.serviceClient().getRevision(resourceGroupName, containerAppName, name);
+    public Revision getRevision(String resourceGroupName, String containerAppName, String revisionName) {
+        RevisionInner inner = this.serviceClient().getRevision(resourceGroupName, containerAppName, revisionName);
         if (inner != null) {
             return new RevisionImpl(inner, this.manager());
         } else {
@@ -50,9 +50,9 @@ public final class ContainerAppsRevisionsImpl implements ContainerAppsRevisions 
     }
 
     public Response<Revision> getRevisionWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
+        String resourceGroupName, String containerAppName, String revisionName, Context context) {
         Response<RevisionInner> inner =
-            this.serviceClient().getRevisionWithResponse(resourceGroupName, containerAppName, name, context);
+            this.serviceClient().getRevisionWithResponse(resourceGroupName, containerAppName, revisionName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -64,31 +64,37 @@ public final class ContainerAppsRevisionsImpl implements ContainerAppsRevisions 
         }
     }
 
-    public void activateRevision(String resourceGroupName, String containerAppName, String name) {
-        this.serviceClient().activateRevision(resourceGroupName, containerAppName, name);
+    public void activateRevision(String resourceGroupName, String containerAppName, String revisionName) {
+        this.serviceClient().activateRevision(resourceGroupName, containerAppName, revisionName);
     }
 
     public Response<Void> activateRevisionWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
-        return this.serviceClient().activateRevisionWithResponse(resourceGroupName, containerAppName, name, context);
+        String resourceGroupName, String containerAppName, String revisionName, Context context) {
+        return this
+            .serviceClient()
+            .activateRevisionWithResponse(resourceGroupName, containerAppName, revisionName, context);
     }
 
-    public void deactivateRevision(String resourceGroupName, String containerAppName, String name) {
-        this.serviceClient().deactivateRevision(resourceGroupName, containerAppName, name);
+    public void deactivateRevision(String resourceGroupName, String containerAppName, String revisionName) {
+        this.serviceClient().deactivateRevision(resourceGroupName, containerAppName, revisionName);
     }
 
     public Response<Void> deactivateRevisionWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
-        return this.serviceClient().deactivateRevisionWithResponse(resourceGroupName, containerAppName, name, context);
+        String resourceGroupName, String containerAppName, String revisionName, Context context) {
+        return this
+            .serviceClient()
+            .deactivateRevisionWithResponse(resourceGroupName, containerAppName, revisionName, context);
     }
 
-    public void restartRevision(String resourceGroupName, String containerAppName, String name) {
-        this.serviceClient().restartRevision(resourceGroupName, containerAppName, name);
+    public void restartRevision(String resourceGroupName, String containerAppName, String revisionName) {
+        this.serviceClient().restartRevision(resourceGroupName, containerAppName, revisionName);
     }
 
     public Response<Void> restartRevisionWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context) {
-        return this.serviceClient().restartRevisionWithResponse(resourceGroupName, containerAppName, name, context);
+        String resourceGroupName, String containerAppName, String revisionName, Context context) {
+        return this
+            .serviceClient()
+            .restartRevisionWithResponse(resourceGroupName, containerAppName, revisionName, context);
     }
 
     private ContainerAppsRevisionsClient serviceClient() {

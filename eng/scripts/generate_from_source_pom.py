@@ -9,6 +9,12 @@
 # Flags
 #   --project-list/--pl: List of project included in the From Source run.
 #
+# Output:
+# 1. ClientFromSourcePom.xml which is the aggregate pom required by the From Source run
+# Set following environment variables in JSON format:
+# 2. SparseCheckoutDirectories - This the list of sparse checkout paths that will be used by sparse-checkout.yml
+# 3. ServiceDirectories - A list of ServiceDirectories.
+#
 # For example: To create an aggregate POM for Azure Storage
 #    python eng/scripts/generate_from_source_pom.py --pl com.azure:azure-storage-blob,com.azure:azure-storage-common,...
 #
@@ -91,7 +97,7 @@ pom_file_end = '''  </modules>
 maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_skip_linting_projects: str, match_any_version: bool):
+def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
@@ -129,9 +135,36 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
 
         fromSourcePom.write(pom_file_end)
 
-    if set_pipeline_variable:
-        checkout_paths = list(set(sorted([p.directory_path for p in source_projects])))
-        print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(checkout_paths)))
+    # The directory_path is too granular. There are build rules for some libraries that
+    # create empty sources/javadocs jars using the README.md. Not every library
+    # has a README.md and, in these cases, it uses the README.md from the root service
+    # directory. This will also trim the number of paths down considerably.
+    sparse_checkout_directories: Set[str] = set()
+    service_directories: Set[str] = set()
+    sdk_string = "/sdk/"
+    for p in source_projects:
+        # get the service directory, which is one level up from the library's directory
+        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+        sparse_checkout_directories.add(sparse_checkout_directory)
+        # The ServiceDirectories list should only ever contain the list of service
+        # directories for the project list and nothing else.
+        if p.identifier in project_list_identifiers:
+            # Sparse checkout directories can contain directories that aren't service directories.
+            # (aka. /common). Any service directory will start with "/sdk/", everything else is
+            # would be attributed to supporting libraries (ex. perf-test-core).
+            if sdk_string in sparse_checkout_directory:
+                service_directory = sparse_checkout_directory.replace(sdk_string, "")
+                service_directories.add(service_directory)
+
+    # output the SparseCheckoutDirectories environment variable
+    sparse_checkout_paths = list(sorted(sparse_checkout_directories))
+    print('setting env variable SparseCheckoutDirectories = {}'.format(sparse_checkout_paths))
+    print('##vso[task.setvariable variable=SparseCheckoutDirectories;]{}'.format(json.dumps(sparse_checkout_paths)))
+
+    # output the ServiceDirectories environment variable
+    service_dirs = list(sorted(service_directories))
+    print('setting env variable ServiceDirectories = {}'.format(service_dirs))
+    print('##vso[task.setvariable variable=ServiceDirectories;]{}'.format(json.dumps(service_dirs)))
 
     # Sets the DevOps variable that is used to skip certain projects during linting validation.
     if set_skip_linting_projects:
@@ -139,7 +172,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
         for maven_identifier in sorted([p.identifier for p in source_projects]):
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
-
+        print('setting env variable {} = {}'.format(set_skip_linting_projects, skip_linting_projects))
         print('##vso[task.setvariable variable={};]{}'.format(set_skip_linting_projects, ','.join(list(set(skip_linting_projects)))))
 
 
@@ -170,6 +203,10 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     for root, _, files in os.walk(root_path):
         # Ignore sdk/resourcemanagerhybrid
         if 'resourcemanagerhybrid' in root:
+            continue
+
+        # Also ignore sdk/e2e as this only creates noise during checkout as it uses many current dependencies but isn't an actual project we want to build.
+        if 'e2e' in root:
             continue
 
         for file_name in files:
@@ -316,14 +353,13 @@ def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
-    parser.add_argument('--set-pipeline-variable', type=str)
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list, args.set_pipeline_variable, args.set_skip_linting_projects, args.match_any_version)
+    create_from_source_pom(args.project_list, args.set_skip_linting_projects, args.match_any_version)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')

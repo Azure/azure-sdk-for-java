@@ -19,6 +19,8 @@ stages:
           Path: sdk/cosmos/platform-matrix.json
           Selection: all
           GenerateVMJobs: true
+      MatrixReplace:
+        - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
       ServiceDirectory: cosmos
       Artifacts:
         - name: azure-cosmos
@@ -48,6 +50,8 @@ stages:
           Path: sdk/cosmos/integration-matrix.json
           Selection: all
           GenerateVMJobs: true
+      MatrixReplace:
+        - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
       ServiceDirectory: cosmos
       Artifacts:
         - name: azure-spring-data-cosmos-test

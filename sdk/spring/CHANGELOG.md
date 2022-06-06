@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0-beta.1 (Unreleased)
+## 4.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+- Fix the `ServiceBusContainerProperties` constructor with overriding the default field values [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
+- Restrict the concurrency value to be int format in `ServiceBusListener` [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
+
+## 4.2.0 (2022-05-26)
+
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.8, 2.7.0. (Note: 2.5.x (x>14), 2.6.y (y>8) and 2.7.z (z>0) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.5, 2021.0.0-2021.0.2. (Note: 2020.0.x (x>5) and 2021.0.y (y>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.2.
+- Upgrade `azure-spring-data-cosmos` to 3.21.0.
 
 ## 4.1.0 (2022-05-05)
 - This release is compatible with Spring Boot 2.5.0-2.5.13, 2.6.0-2.6.7. (Note: 2.5.x (x>13) and 2.6.y (y>7) should be supported, but they aren't tested with this release.)
@@ -20,16 +36,19 @@
 ### Features Added
 - GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
 
-### Bugs Fixed
-- Fix the bean `AzureTokenCredentialAutoConfiguration` initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
-- Fix incorrect bean name `staticStorageBlobConnectionStringProvider` in the auto-configuration of `AzureStorageFileShareAutoConfiguration` [#28464](https://github.com/Azure/azure-sdk-for-java/issues/28464).
-- Fix application startup issue by changing property names in configuration metadata from camel-case to kebab-case [#28312](https://github.com/Azure/azure-sdk-for-java/issues/28312).
-
 ### Spring Cloud Azure Dependencies (BOM)
 #### Dependency Updates
 - Upgrade `azure-resourcemanager` to 2.14.0.
 - Upgrade `azure-sdk-bom` to 1.2.1 [#28586](https://github.com/Azure/azure-sdk-for-java/pull/28586).
 - Use `azure-cosmos:4.29.1` instead of the version `4.28.1` in `azure-sdk-bom` [#28555](https://github.com/Azure/azure-sdk-for-java/pull/28555).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Fix the bean `AzureTokenCredentialAutoConfiguration` initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
+- Fix incorrect bean name `staticStorageBlobConnectionStringProvider` in the auto-configuration of `AzureStorageFileShareAutoConfiguration` [#28464](https://github.com/Azure/azure-sdk-for-java/issues/28464).
+- Fix application startup issue by changing property names in configuration metadata from camel-case to kebab-case [#28312](https://github.com/Azure/azure-sdk-for-java/issues/28312).
 
 ## 4.0.0 (2022-03-28)
 - This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5. (Note: 2.5.x (x>11) and 2.6.y (y>5) should be supported, but they aren't tested with this release.)

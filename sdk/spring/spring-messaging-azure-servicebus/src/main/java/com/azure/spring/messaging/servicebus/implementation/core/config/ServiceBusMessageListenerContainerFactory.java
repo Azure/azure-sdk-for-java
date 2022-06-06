@@ -4,6 +4,7 @@
 package com.azure.spring.messaging.servicebus.implementation.core.config;
 
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.spring.messaging.implementation.config.AbstractAzureListenerEndpoint;
 import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.implementation.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
@@ -43,6 +44,15 @@ public class ServiceBusMessageListenerContainerFactory
         containerProperties.setEntityName(endpoint.getDestination());
         containerProperties.setSubscriptionName(endpoint.getGroup());
         containerProperties.setErrorHandler(this.errorHandler);
+
+        if (endpoint instanceof AbstractAzureListenerEndpoint) {
+            String concurrency = ((AbstractAzureListenerEndpoint) endpoint).getConcurrency();
+            try {
+                containerProperties.setMaxConcurrentCalls(Integer.parseInt(concurrency));
+            } catch (NumberFormatException e) {
+                LOGGER.debug("The set concurrency {} must be an integer!", concurrency);
+            }
+        }
 
         return new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
     }
