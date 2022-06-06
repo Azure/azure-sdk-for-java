@@ -204,6 +204,7 @@
         <module>azure-resourcemanager-monitor</module>
         <module>azure-resourcemanager-msi</module>
         <module>azure-resourcemanager-network</module>
+        <module>azure-resourcemanager-perf</module>
         <module>azure-resourcemanager-privatedns</module>
         <module>azure-resourcemanager-resources</module>
         <module>azure-resourcemanager-redis</module>
