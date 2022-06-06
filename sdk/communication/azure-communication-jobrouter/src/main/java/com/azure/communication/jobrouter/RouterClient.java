@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
 
@@ -32,9 +31,7 @@ import java.time.OffsetDateTime;
  * @see RouterClientBuilder
  */
 @ServiceClient(builder = RouterClientBuilder.class, isAsync = false)
-public class RouterClient {
-
-    private final ClientLogger logger = new ClientLogger(RouterClient.class);
+public final class RouterClient {
 
     private final RouterAsyncClient client;
 
@@ -49,10 +46,14 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates classification policy.
-     * @param id
-     * @param classificationPolicy
-     * @return
+     * Upsert a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> upsertClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
@@ -60,11 +61,15 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates classification policy.
-     * @param id
-     * @param classificationPolicy
-     * @param context
-     * @return
+     * Upsert a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
@@ -73,8 +78,12 @@ public class RouterClient {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the classification policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> getClassificationPolicy(String id) {
@@ -83,9 +92,13 @@ public class RouterClient {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the classification policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> getClassificationPolicyWithResponse(String id, Context context) {
@@ -93,9 +106,13 @@ public class RouterClient {
     }
 
     /**
-     * Deletes a Classification Policy by Id.
-     * @param id
-     * @return
+     * Delete a classification policy by Id.
+     *
+     * @param id Id of the classification policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationPolicy(String id) {
@@ -103,10 +120,14 @@ public class RouterClient {
     }
 
     /**
-     * Deletes a Classification Policy by Id.
-     * @param id
-     * @param context
-     * @return
+     * Delete a classification policy by Id.
+     *
+     * @param id Id of the classification policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationPolicyWithResponse(String id, Context context) {
@@ -115,8 +136,12 @@ public class RouterClient {
 
     /**
      * Retrieves existing classification policies.
-     * @param maxPageSize
-     * @return
+     *
+     * @param maxPageSize Maximum page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of classification policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedClassificationPolicy> listClassificationPolicies(Integer maxPageSize) {
@@ -125,7 +150,10 @@ public class RouterClient {
 
     /**
      * Retrieves existing classification policies.
-     * @return
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of classification policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedClassificationPolicy> listClassificationPolicies() {
@@ -133,10 +161,14 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a distribution policy.
-     * @param id
-     * @param distributionPolicy
-     * @return
+     * Upsert a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> upsertDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
@@ -144,11 +176,15 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a distribution policy.
-     * @param id
-     * @param distributionPolicy
-     * @param context
-     * @return
+     * Upsert a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
@@ -157,8 +193,12 @@ public class RouterClient {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the distribution policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> getDistributionPolicy(String id) {
@@ -167,9 +207,13 @@ public class RouterClient {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the distribution policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> getDistributionPolicyWithResponse(String id, Context context) {
@@ -178,8 +222,12 @@ public class RouterClient {
 
     /**
      * Delete a distribution policy by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the distribution policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDistributionPolicy(String id) {
@@ -188,9 +236,13 @@ public class RouterClient {
 
     /**
      * Delete a distribution policy by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the distribution policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDistributionPolicyWithResponse(String id, Context context) {
@@ -199,8 +251,12 @@ public class RouterClient {
 
     /**
      * Retrieves existing distribution policies.
-     * @param maxPageSize
-     * @return
+     *
+     * @param maxPageSize Maximum page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of distribution policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedDistributionPolicy> listDistributionPolicies(Integer maxPageSize) {
@@ -209,7 +265,10 @@ public class RouterClient {
 
     /**
      * Retrieves existing distribution policies.
-     * @return
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of distribution policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedDistributionPolicy> listDistributionPolicies() {
@@ -217,10 +276,14 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a exception policy.
-     * @param id
-     * @param exceptionPolicy
-     * @return
+     * Upsert a exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> upsertExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
@@ -228,11 +291,15 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a exception policy.
-     * @param id
-     * @param exceptionPolicy
-     * @param context
-     * @return
+     * Upsert a exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
@@ -241,8 +308,12 @@ public class RouterClient {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the exception policy to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> getExceptionPolicy(String id) {
@@ -251,9 +322,13 @@ public class RouterClient {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the exception policy to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> getExceptionPolicyWithResponse(String id, Context context) {
@@ -262,8 +337,12 @@ public class RouterClient {
 
     /**
      * Deletes a exception policy by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the exception policy to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteExceptionPolicy(String id) {
@@ -272,9 +351,13 @@ public class RouterClient {
 
     /**
      * Deletes a exception policy by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the exception policy to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteExceptionPolicyWithResponse(String id, Context context) {
@@ -283,7 +366,10 @@ public class RouterClient {
 
     /**
      * Retrieves existing exception policies.
-     * @return
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of exception policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedExceptionPolicy> listExceptionPolicies() {
@@ -292,8 +378,12 @@ public class RouterClient {
 
     /**
      * Retrieves existing exception policies.
-     * @param maxPageSize
-     * @return
+     *
+     * @param maxPageSize Maximum Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of exception policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedExceptionPolicy> listExceptionPolicies(Integer maxPageSize) {
@@ -301,10 +391,14 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a job to be routed.
-     * @param id
-     * @param routerJob
-     * @return
+     * Upsert a job.
+     *
+     * @param id Id of the job.
+     * @param routerJob Model of job properties to be created or patched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> upsertJob(String id, RouterJob routerJob) {
@@ -312,11 +406,15 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a job to be routed.
-     * @param id
-     * @param routerJob
-     * @param context
-     * @return
+     * Upsert a job.
+     *
+     * @param id Id of the job.
+     * @param routerJob Model of job properties to be created or patched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> upsertJobWithResponse(String id, RouterJob routerJob, Context context) {
@@ -335,9 +433,13 @@ public class RouterClient {
 
     /**
      * Retrieves an existing job by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the job to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> getJobWithResponse(String id, Context context) {
@@ -345,9 +447,13 @@ public class RouterClient {
     }
 
     /**
-     * Deletes an existing job by Id.
-     * @param id
-     * @return
+     * Deletes a job and all of its traces.
+     *
+     * @param id Id of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJob(String id) {
@@ -355,10 +461,14 @@ public class RouterClient {
     }
 
     /**
-     * Deletes an existing job by Id.
-     * @param id
-     * @param context
-     * @return
+     * Deletes a job and all of its traces.
+     *
+     * @param id Id of the job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String id, Context context) {
@@ -366,10 +476,14 @@ public class RouterClient {
     }
 
     /**
-     * Updates an existing job by Id and forcing it to be reclassified.
-     * @param id
-     * @param reclassifyJobRequest
-     * @return
+     * Reclassify a job.
+     *
+     * @param id Id of the job.
+     * @param reclassifyJobRequest Request object for reclassifying a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> reclassifyJobAction(String id, Object reclassifyJobRequest) {
@@ -377,11 +491,15 @@ public class RouterClient {
     }
 
     /**
-     * Updates an existing job by Id and forcing it to be reclassified.
-     * @param id
-     * @param reclassifyJobRequest
-     * @param context
-     * @return
+     * Reclassify a job.
+     *
+     * @param id Id of the job.
+     * @param reclassifyJobRequest Request object for reclassifying a job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest, Context context) {
@@ -390,10 +508,15 @@ public class RouterClient {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * @param id
-     * @param note
-     * @param dispositionCode
-     * @return
+     *
+     * @param id Id of the job.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
+     *     provided, default value of "Cancelled" is set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> cancelJobAction(String id, String note, String dispositionCode) {
@@ -402,11 +525,16 @@ public class RouterClient {
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
-     * @param id
-     * @param note
-     * @param dispositionCode
-     * @param context
-     * @return
+     *
+     * @param id Id of the job.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
+     *     provided, default value of "Cancelled" is set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> cancelJobActionWithResponse(String id, String note, String dispositionCode, Context context) {
@@ -415,10 +543,14 @@ public class RouterClient {
 
     /**
      * Completes an assigned job.
-     * @param id
-     * @param assignmentId
-     * @param note
-     * @return
+     *
+     * @param id Id of the job.
+     * @param assignmentId The assignment within the job to complete.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> completeJobAction(String id, String assignmentId, String note) {
@@ -427,11 +559,15 @@ public class RouterClient {
 
     /**
      * Completes an assigned job.
-     * @param id
-     * @param assignmentId
-     * @param note
-     * @param context
-     * @return
+     *
+     * @param id Id of the job.
+     * @param assignmentId The assignment within the job to complete.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> completeJobActionWithResponse(String id, String assignmentId, String note, Context context) {
@@ -440,12 +576,18 @@ public class RouterClient {
 
     /**
      * Closes a completed job.
-     * @param id
-     * @param assignmentId
-     * @param dispositionCode
-     * @param closeTime
-     * @param note
-     * @return
+     *
+     * @param id Id of the job.
+     * @param assignmentId The assignment within which the job is to be closed.
+     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
+     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
+     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
+     *     time.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> closeJobAction(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
@@ -454,13 +596,19 @@ public class RouterClient {
 
     /**
      * Closes a completed job.
-     * @param id
-     * @param assignmentId
-     * @param dispositionCode
-     * @param closeTime
-     * @param note
-     * @param context
-     * @return
+     *
+     * @param id Id of the job.
+     * @param assignmentId The assignment within which the job is to be closed.
+     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
+     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
+     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
+     *     time.
+     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> closeJobActionWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
@@ -468,8 +616,11 @@ public class RouterClient {
     }
 
     /**
-     * Retrieves list of jobs.
-     * @return
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of jobs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedJob> listJobs() {
@@ -477,12 +628,16 @@ public class RouterClient {
     }
 
     /**
-     * Retrieves list of jobs based on filters.
-     * @param jobStateSelector
-     * @param queueId
-     * @param channelId
-     * @param maxPageSize
-     * @return
+     * Retrieves list of jobs based on filter parameters.
+     *
+     * @param jobStateSelector (Optional) If specified, filter jobs by status.
+     * @param queueId (Optional) If specified, filter jobs by queue.
+     * @param channelId (Optional) If specified, filter jobs by channel.
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of jobs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedJob> listJobs(JobStateSelector jobStateSelector, String queueId, String channelId, Integer maxPageSize) {
@@ -490,9 +645,13 @@ public class RouterClient {
     }
 
     /**
-     * Gets a job's position details
-     * @param id
-     * @return
+     * Gets a job's position details.
+     *
+     * @param id Id of the job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job's position details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobPositionDetails> getInQueuePosition(String id) {
@@ -500,10 +659,14 @@ public class RouterClient {
     }
 
     /**
-     * Gets a job's position details
-     * @param id
-     * @param context
-     * @return
+     * Gets a job's position details.
+     *
+     * @param id Id of the job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job's position details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
@@ -512,9 +675,13 @@ public class RouterClient {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * @param offerId
-     * @param workerId
-     * @return
+     *
+     * @param offerId Id of the offer.
+     * @param workerId Id of the worker.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcceptJobOfferResponse> acceptJobAction(String offerId, String workerId) {
@@ -523,10 +690,14 @@ public class RouterClient {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * @param offerId
-     * @param workerId
-     * @param context
-     * @return
+     *
+     * @param offerId Id of the offer.
+     * @param workerId Id of the worker.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcceptJobOfferResponse> acceptJobActionWithResponse(String offerId, String workerId, Context context) {
@@ -535,9 +706,13 @@ public class RouterClient {
 
     /**
      * Declines an offer to work on a job.
-     * @param offerId
-     * @param workerId
-     * @return
+     *
+     * @param offerId Id of the offer.
+     * @param workerId Id of the worker.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> declineJobAction(String offerId, String workerId) {
@@ -546,10 +721,14 @@ public class RouterClient {
 
     /**
      * Declines an offer to work on a job.
-     * @param offerId
-     * @param workerId
-     * @param context
-     * @return
+     *
+     * @param offerId Id of the offer.
+     * @param workerId Id of the worker.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> declineJobActionWithResponse(String offerId, String workerId, Context context) {
@@ -557,10 +736,14 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a queue.
-     * @param id
-     * @param jobQueue
-     * @return
+     * Upsert a queue.
+     *
+     * @param id Id of the queue.
+     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobQueue> upsertQueue(String id, JobQueue jobQueue) {
@@ -568,11 +751,15 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a queue.
-     * @param id
-     * @param jobQueue
-     * @param context
-     * @return
+     * Upsert a queue.
+     *
+     * @param id Id of the queue.
+     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobQueue> upsertQueueWithResponse(String id, JobQueue jobQueue, Context context) {
@@ -581,8 +768,12 @@ public class RouterClient {
 
     /**
      * Retrieves an existing queue by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the queue to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobQueue> getQueue(String id) {
@@ -591,9 +782,13 @@ public class RouterClient {
 
     /**
      * Retrieves an existing queue by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the queue to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobQueue> getQueueWithResponse(String id, Context context) {
@@ -602,8 +797,12 @@ public class RouterClient {
 
     /**
      * Deletes a queue by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the queue to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String id) {
@@ -612,9 +811,13 @@ public class RouterClient {
 
     /**
      * Deletes a queue by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the queue to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String id, Context context) {
@@ -623,7 +826,10 @@ public class RouterClient {
 
     /**
      * Retrieves existing queues.
-     * @return
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of queues.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedQueue> listQueues() {
@@ -632,8 +838,12 @@ public class RouterClient {
 
     /**
      * Retrieves existing queues.
-     * @param maxPageSize
-     * @return
+     *
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of queues.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedQueue> listQueues(Integer maxPageSize) {
@@ -641,9 +851,13 @@ public class RouterClient {
     }
 
     /**
-     * Retrieves a queue's statistics by Id.
-     * @param id
-     * @return
+     * Retrieves a queue's statistics.
+     *
+     * @param id Id of the queue to retrieve statistics.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for the queue.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueStatistics> getQueueStatistics(String id) {
@@ -651,10 +865,14 @@ public class RouterClient {
     }
 
     /**
-     * Retrieves a queue's statistics by Id.
-     * @param id
-     * @param context
-     * @return
+     * Retrieves a queue's statistics.
+     *
+     * @param id Id of the queue to retrieve statistics.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for the queue.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueStatistics> getQueueStatisticsWithResponse(String id, Context context) {
@@ -673,11 +891,15 @@ public class RouterClient {
     }
 
     /**
-     * Creates or updates a worker to process jobs.
-     * @param id
-     * @param routerWorker
-     * @param context
-     * @return
+     * Upsert a worker.
+     *
+     * @param id Id of the worker.
+     * @param routerWorker Model of worker properties to be patched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> upsertWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
@@ -686,8 +908,12 @@ public class RouterClient {
 
     /**
      * Retrieves an existing worker by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the worker to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> getWorker(String id) {
@@ -696,9 +922,13 @@ public class RouterClient {
 
     /**
      * Retrieves an existing worker by Id.
-     * @param id
-     * @param context
-     * @return
+     *
+     * @param id Id of the worker to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> getWorkerWithResponse(String id, Context context) {
@@ -706,9 +936,13 @@ public class RouterClient {
     }
 
     /**
-     * Deletes a worker by Id.
-     * @param id
-     * @return
+     * Deletes a worker and all of its traces.
+     *
+     * @param id Id of the worker to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWorkerWithResponse(String id) {
@@ -716,10 +950,14 @@ public class RouterClient {
     }
 
     /**
-     * Deletes a worker by Id.
-     * @param id
-     * @param context
-     * @return
+     * Deletes a worker and all of its traces.
+     *
+     * @param id Id of the worker to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWorkerWithResponse(String id, Context context) {
@@ -728,7 +966,10 @@ public class RouterClient {
 
     /**
      * Retrieves existing workers.
-     * @return
+     *
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of workers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedWorker> listWorkers() {
@@ -737,12 +978,18 @@ public class RouterClient {
 
     /**
      * Retrieves existing workers.
-     * @param workerStateSelector
-     * @param channelId
-     * @param queueId
-     * @param hasCapacity
-     * @param maxPageSize
-     * @return
+     *
+     * @param workerStateSelector (Optional) If specified, select workers by worker status.
+     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
+     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
+     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
+     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
+     *     including workers without any capacity for jobs. Defaults to false.
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of workers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedWorker> listWorkers(WorkerStateSelector workerStateSelector, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
