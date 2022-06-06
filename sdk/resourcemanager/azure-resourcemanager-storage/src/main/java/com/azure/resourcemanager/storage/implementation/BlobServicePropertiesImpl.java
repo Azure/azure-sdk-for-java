@@ -6,15 +6,15 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
+import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 import com.azure.resourcemanager.storage.models.BlobServiceProperties;
 import com.azure.resourcemanager.storage.models.CorsRule;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
-import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 class BlobServicePropertiesImpl
     extends CreatableUpdatableImpl<BlobServiceProperties, BlobServicePropertiesInner, BlobServicePropertiesImpl>
@@ -105,6 +105,11 @@ class BlobServicePropertiesImpl
     }
 
     @Override
+    public Boolean isBlobVersioningEnabled() {
+        return this.innerModel().isVersioningEnabled();
+    }
+
+    @Override
     public BlobServicePropertiesImpl withExistingStorageAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -153,6 +158,18 @@ class BlobServicePropertiesImpl
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicyDisabled() {
         this.innerModel().withDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(false));
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withBlobVersioningEnabled() {
+        this.innerModel().withIsVersioningEnabled(true);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withBlobVersioningDisabled() {
+        this.innerModel().withIsVersioningEnabled(false);
         return this;
     }
 }
