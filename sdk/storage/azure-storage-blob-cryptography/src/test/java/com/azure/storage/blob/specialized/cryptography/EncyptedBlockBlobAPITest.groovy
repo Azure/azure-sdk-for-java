@@ -1405,6 +1405,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    // TODO: Add test to check what happens if the blob gets deleted between the getProps for encryption version and the download
+
     @LiveOnly
     def "Download file count null"() {
         setup:
@@ -1504,6 +1506,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Download file etag lock"() {
         setup:
+        // Is the buffer just not getting duplicated or flipped or something?
         def file = getRandomFile(Constants.MB)
         ebc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())

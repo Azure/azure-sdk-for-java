@@ -268,6 +268,7 @@ public final class EncryptedBlobClientBuilder implements
             .encryptionScope(encryptionScope == null ? null : encryptionScope.getEncryptionScope())
             .versionId(versionId)
             .serviceVersion(version)
+            .pipeline(this.httpPipeline)
             .httpClient(httpClient);
         // Is this missing some things? Refactor to use the pipeline builder code below?
 

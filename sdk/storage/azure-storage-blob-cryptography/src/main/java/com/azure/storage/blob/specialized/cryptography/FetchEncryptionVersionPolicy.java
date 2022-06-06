@@ -3,14 +3,17 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import reactor.core.publisher.Mono;
 
-// TODO: Access conditions, leases, etc from the download call that need to be applied to this request
+// TODO: Access conditions, leases, etc from the download call that need to be applied to this request. Copy them from the outgoing request headers.
 // TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
 // Current thinking is override anything that manages large downloads and do the getProps up front and then pass it through
 // the context for this policy to skip
@@ -39,15 +42,25 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
         if (context.getHttpRequest().getHeaders().getValue(CryptographyConstants.RANGE_HEADER) == null) {
             return nextPolicy.process();
         } else {
-            return this.blobClient.getProperties().map(props -> {
+            HttpHeaders headers = context.getHttpRequest().getHeaders();
+            BlobRequestConditions rc = new BlobRequestConditions()
+                // Todo: Refactor into a method if this logic stays
+                .setLeaseId(headers.getValue("x-ms-lease-id"))
+                .setIfUnmodifiedSince(headers.getValue("If-Unmodified-Since") == null ? null
+                    : new DateTimeRfc1123(headers.getValue("If-Unmodified-Since")).getDateTime())
+                .setIfNoneMatch(headers.getValue("If-None-Match"))
+                .setIfMatch(headers.getValue("If-Match"))
+                .setIfModifiedSince(headers.getValue("If-Modified-Since") == null ? null
+                    : new DateTimeRfc1123(headers.getValue("If-Modified-Since")).getDateTime());
+            return this.blobClient.getPropertiesWithResponse(rc).map(response -> {
                     EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                        props.getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY), requiresEncryption);
+                        response.getValue().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY), requiresEncryption);
 
                     if (encryptionData != null) {
                         context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
                     }
 
-                    return props;
+                    return response;
                 })
                 .then(Mono.defer(nextPolicy::process));
         }
