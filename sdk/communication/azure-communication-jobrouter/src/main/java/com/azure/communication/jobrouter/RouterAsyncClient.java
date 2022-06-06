@@ -46,7 +46,12 @@ public class RouterAsyncClient {
         this.jobRouter = jobRouterService.getJobRouters();
     }
 
-    // Classification policies
+    /**
+     * Creates or updates classification policy.
+     * @param id
+     * @param classificationPolicy
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
         try {
@@ -64,6 +69,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves an existing classification policy by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponse(String id) {
         try {
@@ -81,6 +91,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Deletes a Classification Policy by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationPolicyWithResponse(String id) {
         try {
@@ -98,6 +113,10 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing classification policies.
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPolicies() {
         try {
@@ -107,6 +126,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing classification policies.
+     * @param maxPageSize
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPolicies(Integer maxPageSize) {
         try {
@@ -116,8 +140,12 @@ public class RouterAsyncClient {
         }
     }
 
-    // Distribution Policies
-
+    /**
+     * Creates or updates a distribution policy.
+     * @param id
+     * @param distributionPolicy
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
         try {
@@ -135,6 +163,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves an existing distribution policy by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponse(String id) {
         try {
@@ -152,6 +185,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Delete a distribution policy by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDistributionPolicyWithResponse(String id) {
         try {
@@ -169,6 +207,10 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing distribution policies.
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPolicies() {
         try {
@@ -178,6 +220,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing distribution policies.
+     * @param maxPageSize
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPolicies(Integer maxPageSize) {
         try {
@@ -187,7 +234,12 @@ public class RouterAsyncClient {
         }
     }
 
-    // Exception Policies
+    /**
+     * Creates or updates a exception policy.
+     * @param id
+     * @param exceptionPolicy
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
         try {
@@ -205,6 +257,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves an existing exception policy by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponse(String id) {
         try {
@@ -222,6 +279,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Deletes a exception policy by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteExceptionPolicyWithResponse(String id) {
         try {
@@ -239,6 +301,10 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing exception policies.
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPolicies() {
         try {
@@ -248,6 +314,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing exception policies.
+     * @param maxPageSize
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPolicies(Integer maxPageSize) {
         try {
@@ -257,7 +328,12 @@ public class RouterAsyncClient {
         }
     }
 
-    // Jobs
+    /**
+     * Creates or updates a job to be routed.
+     * @param id
+     * @param routerJob
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJob routerJob) {
         try {
@@ -275,6 +351,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves an existing job by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> getJobWithResponse(String id) {
         try {
@@ -292,6 +373,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Deletes an existing job by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponse(String id) {
         try {
@@ -309,6 +395,12 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Updates an existing job by Id and forcing it to be reclassified.
+     * @param id
+     * @param reclassifyJobRequest
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest) {
         try {
@@ -326,6 +418,13 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
+     * @param id
+     * @param note
+     * @param dispositionCode
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> cancelJobActionWithResponse(String id, String note, String dispositionCode) {
         try {
@@ -343,6 +442,13 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Completes an assigned job.
+     * @param id
+     * @param assignmentId
+     * @param note
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> completeJobActionWithResponse(String id, String assignmentId, String note) {
         try {
@@ -360,6 +466,15 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Closes a completed job.
+     * @param id
+     * @param assignmentId
+     * @param dispositionCode
+     * @param closeTime
+     * @param note
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> closeJobActionWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
         try {
@@ -377,6 +492,10 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves list of jobs.
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobs() {
         try {
@@ -386,6 +505,14 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves list of jobs based on filters.
+     * @param jobStateSelector
+     * @param queueId
+     * @param channelId
+     * @param maxPageSize
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobs(JobStateSelector jobStateSelector, String queueId, String channelId, Integer maxPageSize) {
         try {
@@ -395,6 +522,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Gets a job's position details
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponse(String id) {
         try {
@@ -412,7 +544,12 @@ public class RouterAsyncClient {
         }
     }
 
-    // Offers
+    /**
+     * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
+     * @param offerId
+     * @param workerId
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponse(String offerId, String workerId) {
         try {
@@ -430,6 +567,12 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Declines an offer to work on a job.
+     * @param offerId
+     * @param workerId
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> declineJobActionWithResponse(String offerId, String workerId) {
         try {
@@ -447,7 +590,12 @@ public class RouterAsyncClient {
         }
     }
 
-    // Queues
+    /**
+     * Creates or updates a queue.
+     * @param id
+     * @param jobQueue
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue) {
         try {
@@ -465,6 +613,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves an existing queue by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> getQueueWithResponse(String id) {
         try {
@@ -482,6 +635,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Deletes a queue by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String id) {
         try {
@@ -499,6 +657,10 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing queues.
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueues() {
         try {
@@ -508,6 +670,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing queues.
+     * @param maxPageSize
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueues(Integer maxPageSize) {
         try {
@@ -517,6 +684,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves a queue's statistics by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponse(String id) {
         try {
@@ -534,7 +706,12 @@ public class RouterAsyncClient {
         }
     }
 
-    // Workers
+    /**
+     * Creates or updates a worker to process jobs.
+     * @param id
+     * @param routerWorker
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker) {
         try {
@@ -552,6 +729,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves an existing worker by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> getWorkerWithResponse(String id) {
         try {
@@ -569,6 +751,11 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Deletes a worker by Id.
+     * @param id
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWorkerWithResponse(String id) {
         try {
@@ -586,6 +773,10 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing workers.
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkers() {
         try {
@@ -595,6 +786,15 @@ public class RouterAsyncClient {
         }
     }
 
+    /**
+     * Retrieves existing workers based on filters.
+     * @param workerStateSelector
+     * @param channelId
+     * @param queueId
+     * @param hasCapacity
+     * @param maxPageSize
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkers(WorkerStateSelector workerStateSelector, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
         try {
