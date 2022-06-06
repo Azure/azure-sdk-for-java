@@ -17,8 +17,14 @@ public class AppConfigurationConstants {
      */
     public static final String KEY_VAULT_CONTENT_TYPE = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
+    /**
+     * App Configurations Dynamic Feature Content Type
+     */
     public static final String DYNAMIC_FEATURE_CONTENT_TYPE = "application/vnd.microsoft.appconfig.df+json;charset=utf-8";
     
+    /**
+     * Environment variable name for the feature management schema
+     */
     public static final String AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION = "AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION";
     
     /**
@@ -31,10 +37,19 @@ public class AppConfigurationConstants {
      */
     public static final String FEATURE_MANAGEMENT_KEY_V2 = "feature-management.feature-flags";
     
+    /**
+     * Value of Feature Management Schema V1
+     */
     public static final Integer FEATURE_MANAGEMENT_V1_SCHEMA = 1;
     
+    /**
+     * Value of Feature Management Schema V2
+     */
     public static final Integer FEATURE_MANAGEMENT_V2_SCHEMA = 2;
     
+    /**
+     * Prefix for Dynamic Feature property keys names
+     */
     public static final String DYNAMIC_FEATURE_KEY = "feature-management.dynamic-features.";
 
     /**
