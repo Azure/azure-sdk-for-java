@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -19,7 +22,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the top value.
-     * @return
+     * @return the top value.
      */
     public Integer getTop() {
         return top;
@@ -27,7 +30,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the skip value.
-     * @return
+     * @return the skip value.
      */
     public Integer getSkip() {
         return skip;
@@ -35,7 +38,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the country filter.
-     * @return
+     * @return the country filter.
      */
     public List<String> getCountryFilter() {
         return countryFilter;
@@ -43,7 +46,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the radius in meters.
-     * @return
+     * @return the radius in meters.
      */
     public Integer getRadiusInMeters() {
         return radiusInMeters;
@@ -51,7 +54,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the bounding box.
-     * @return
+     * @return the bounding box.
      */
     public Optional<GeoBoundingBox> getBoundingBox() {
         return Optional.ofNullable(boundingBox);
@@ -59,7 +62,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the language.
-     * @return
+     * @return the language.
      */
     public String getLanguage() {
         return language;
@@ -67,7 +70,7 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Returns the localized map view.
-     * @return
+     * @return the localized map view.
      */
     public LocalizedMapView getLocalizedMapView() {
         return localizedMapView;
@@ -75,8 +78,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the top value.
-     * @param top
-     * @return
+     * @param top the top value.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setTop(Integer top) {
@@ -86,8 +89,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the skip value.
-     * @param skip
-     * @return
+     * @param skip the skip value.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setSkip(Integer skip) {
@@ -97,8 +100,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the country filter.
-     * @param countryFilter
-     * @return
+     * @param countryFilter the country filter.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setCountryFilter(List<String> countryFilter) {
@@ -108,8 +111,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the radius in meters.
-     * @param radiusInMeters
-     * @return
+     * @param radiusInMeters the radius in meters.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setRadiusInMeters(Integer radiusInMeters) {
@@ -119,8 +122,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the bounding box.
-     * @param box
-     * @return
+     * @param box the bounding box.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setGeoBoundingBox(GeoBoundingBox box) {
@@ -130,8 +133,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the language.
-     * @param language
-     * @return
+     * @param language the language.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setLanguage(String language) {
@@ -141,8 +144,8 @@ public abstract class BaseSearchOptions<T extends BaseSearchOptions<T>> {
 
     /**
      * Sets the localized map view.
-     * @param localizedMapView
-     * @return
+     * @param localizedMapView the localized map view.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setLocalizedMapView(LocalizedMapView localizedMapView) {

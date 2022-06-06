@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

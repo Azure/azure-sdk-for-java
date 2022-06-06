@@ -29,13 +29,13 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.search.implementation.SearchClientImpl;
 import com.azure.maps.search.implementation.SearchClientImplBuilder;
 
 /**
- * Builder class used to instantiate both synchronous and asynchronous {@link MapsSearchClient} clients.<br/>
+ * Builder class used to instantiate both synchronous and asynchronous {@link MapsSearchClient} clients.
  * <p><b>Example usage</b></p>
- * <p/>
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.search.sync.builder.key.instantiation -->
  * <pre>
@@ -48,24 +48,6 @@ import com.azure.maps.search.implementation.SearchClientImplBuilder;
  * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
  *
  * &#47;&#47; Builds the client
- * MapsSearchClient client = builder.buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.maps.search.sync.builder.key.instantiation -->
- * Creating a sync client using a {@link TokenCredential}:
- * <p/>
- * <!-- src_embed com.azure.maps.search.sync.builder.ad.instantiation -->
- * <pre>
- * &#47;&#47; Authenticates using Azure AD building a default credential
- * &#47;&#47; This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
- * DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
- *
- * &#47;&#47; Creates a builder
- * MapsSearchClientBuilder builder = new MapsSearchClientBuilder&#40;&#41;;
- * builder.credential&#40;tokenCredential&#41;;
- * builder.mapsClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;;
- * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
- *
- * &#47;&#47; Builds a client
  * MapsSearchClient client = builder.buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.search.sync.builder.ad.instantiation -->
@@ -83,6 +65,7 @@ public final class MapsSearchClientBuilder {
     //subscription-key
 
     // instance fields
+    private final ClientLogger logger = new ClientLogger(MapsSearchClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
     private String endpoint;
     private MapsSearchServiceVersion serviceVersion;
@@ -115,7 +98,7 @@ public final class MapsSearchClientBuilder {
      * @return the SearchClientBuilder.
      */
     public MapsSearchClientBuilder mapsClientId(String mapsClientId) {
-        this.mapsClientId = Objects.requireNonNull(mapsClientId, "'mapsClientId' cannot be null.");;
+        this.mapsClientId = Objects.requireNonNull(mapsClientId, "'mapsClientId' cannot be null.");
         return this;
     }
 
@@ -176,7 +159,7 @@ public final class MapsSearchClientBuilder {
      * @return the SearchClientBuilder.
      */
     public MapsSearchClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");;
+        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
 
@@ -303,7 +286,8 @@ public final class MapsSearchClientBuilder {
         // Authentications
         if (tokenCredential != null) {
             if (this.mapsClientId == null) {
-                throw new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -316,7 +300,8 @@ public final class MapsSearchClientBuilder {
             policies.add(new AzureKeyCredentialPolicy(MAPS_SUBSCRIPTION_KEY, keyCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            throw new IllegalArgumentException("Missing credential information while building a client.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
 
         // Add final policies

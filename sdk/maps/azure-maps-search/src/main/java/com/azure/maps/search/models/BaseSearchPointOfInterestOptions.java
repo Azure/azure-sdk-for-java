@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -17,7 +20,7 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Returns the category filter.
-     * @return
+     * @return the category filter.
      */
     public List<Integer> getCategoryFilter() {
         return categoryFilter;
@@ -25,7 +28,7 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Returns the brand filter.
-     * @return
+     * @return the brand filter.
      */
     public List<String> getBrandFilter() {
         return brandFilter;
@@ -33,7 +36,7 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Returns the electric vehicle connect filter.
-     * @return
+     * @return the electric vehicle connect filter.
      */
     public List<ElectricVehicleConnector> getElectricVehicleConnectorFilter() {
         return electricVehicleConnectorFilter;
@@ -41,7 +44,7 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Returns the operating hours.
-     * @return
+     * @return the operating hours.
      */
     public OperatingHoursRange getOperatingHours() {
         return operatingHours;
@@ -49,7 +52,7 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Returns the coordinates.
-     * @return
+     * @return the coordinates.
      */
     public Optional<GeoPosition> getCoordinates() {
         return Optional.ofNullable(coordinates);
@@ -57,8 +60,8 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Sets the category filter.
-     * @param categoryFilter
-     * @return
+     * @param categoryFilter the category filter.
+     * @return a reference to this {@code T} class
      */
     @SuppressWarnings("unchecked")
     public T setCategoryFilter(List<Integer> categoryFilter) {
@@ -68,8 +71,8 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Sets the brand filter.
-     * @param brandFilter
-     * @return
+     * @param brandFilter the brand filter.
+     * @return a reference to this {@code T} class
      */
     @SuppressWarnings("unchecked")
     public T setBrandFilter(List<String> brandFilter) {
@@ -79,8 +82,8 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Sets the electric vehicle connector filter.
-     * @param electricVehicleConnectorFilter
-     * @return
+     * @param electricVehicleConnectorFilter the electric vehicle connector filter.
+     * @return a reference to this {@code T} class
      */
     @SuppressWarnings("unchecked")
     public T setElectricVehicleConnectorFilter(List<ElectricVehicleConnector> electricVehicleConnectorFilter) {
@@ -90,8 +93,8 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Sets the operating hours.
-     * @param operatingHours
-     * @return
+     * @param operatingHours the operating hours.
+     * @return a reference to this {@code T} class
      */
     @SuppressWarnings("unchecked")
     public T setOperatingHours(OperatingHoursRange operatingHours) {
@@ -101,8 +104,8 @@ public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPoint
 
     /**
      * Sets the coordinates.
-     * @param coordinates
-     * @return
+     * @param coordinates the coordinates.
+     * @return a reference to this {@code T} class
      */
     @SuppressWarnings("unchecked")
     public T setCoordinates(GeoPosition coordinates) {

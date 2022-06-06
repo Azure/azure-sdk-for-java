@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -15,6 +18,8 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Create a new options object with query and Geometry.
+     * @param query query string
+     * @param geometry the {@code GeoObject} geometry inside which the search will be performed.
      */
     public SearchInsideGeometryOptions(String query, GeoObject geometry) {
         this.geometry = geometry;
@@ -23,7 +28,7 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Returns the language.
-     * @return
+     * @return the language
      */
     public String getLanguage() {
         return this.language;
@@ -31,7 +36,7 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Returns the extended postal codes.
-     * @return
+     * @return the extended postal codes used for search
      */
     public List<SearchIndexes> getExtendedPostalCodesFor() {
         return this.extendedPostalCodesFor;
@@ -39,7 +44,7 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Returns the index set.
-     * @return
+     * @return the index set.
      */
     public List<SearchIndexes> getIndexFilter() {
         return this.indexFilter;
@@ -47,7 +52,7 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Returns the geometry used for search.
-     * @return
+     * @return the geometry used for search.
      */
     public GeoObject getGeometry() {
         return this.geometry;
@@ -55,8 +60,8 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Sets the language.
-     * @param language
-     * @return
+     * @param language the language.
+     * @return a reference to this {@code SearchInsideGeometryOptions}
      */
     public SearchInsideGeometryOptions setLanguage(String language) {
         this.language = language;
@@ -65,8 +70,8 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Sets the extended postal codes.
-     * @param extendedPostalCodesFor
-     * @return
+     * @param extendedPostalCodesFor the extended postal codes used for search
+     * @return a reference to this {@code SearchInsideGeometryOptions}
      */
     public SearchInsideGeometryOptions setExtendedPostalCodesFor(List<SearchIndexes> extendedPostalCodesFor) {
         this.extendedPostalCodesFor = extendedPostalCodesFor;
@@ -74,9 +79,9 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
     }
 
     /**
-     * Sets the idx set.
-     * @param indexFilter
-     * @return
+     * Sets the index filter.
+     * @param indexFilter the index filter
+     * @return a reference to this {@code SearchInsideGeometryOptions}
      */
     public SearchInsideGeometryOptions setIndexFilter(List<SearchIndexes> indexFilter) {
         this.indexFilter = indexFilter;
@@ -85,8 +90,8 @@ public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions
 
     /**
      * Sets the geometry
-     * @param geometry
-     * @return
+     * @param geometry the geometry used for search.
+     * @return a reference to this {@code SearchInsideGeometryOptions}
      */
     public SearchInsideGeometryOptions setGeometry(GeoObject geometry) {
         this.geometry = geometry;

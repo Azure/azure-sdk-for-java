@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -14,7 +17,7 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Returns the localized map view.
-     * @return
+     * @return the localized map view.
      */
     public LocalizedMapView getLocalizedMapView() {
         return localizedMapView;
@@ -22,7 +25,7 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Returns the category filter.
-     * @return
+     * @return the category filter.
      */
     public List<Integer> getCategoryFilter() {
         return categoryFilter;
@@ -30,7 +33,7 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Returns the top results.
-     * @return
+     * @return the top results.
      */
     public Integer getTop() {
         return top;
@@ -38,7 +41,7 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Returns the operating hours.
-     * @return
+     * @return the operating hours.
      */
     public OperatingHoursRange getOperatingHours() {
         return operatingHours;
@@ -46,6 +49,7 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Returns the query string.
+     * @return the query string.
      */
     public String getQuery() {
         return query;
@@ -53,8 +57,8 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Sets the category filter.
-     * @param categoryFilter
-     * @return
+     * @param categoryFilter the category filter.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setCategoryFilter(List<Integer> categoryFilter) {
@@ -64,8 +68,8 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Sets the top value.
-     * @param top
-     * @return
+     * @param top the top value.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setTop(Integer top) {
@@ -75,8 +79,8 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Sets the localized map view.
-     * @param localizedMapView
-     * @return
+     * @param localizedMapView the localized map view.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setLocalizedMapView(LocalizedMapView localizedMapView) {
@@ -86,8 +90,8 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Sets the operating hours.
-     * @param operatingHours
-     * @return
+     * @param operatingHours the operating hours.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setOperatingHours(OperatingHoursRange operatingHours) {
@@ -97,8 +101,8 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
 
     /**
      * Sets the query string.
-     * @param query
-     * @return
+     * @param query the query string.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setQuery(String query) {

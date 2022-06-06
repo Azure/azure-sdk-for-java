@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.samples;
 
 import java.io.IOException;
@@ -137,8 +140,8 @@ public class BuilderSamples {
         MapsCommon.print(client.reverseSearchAddressWithResponse(
             new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337))
                 .setIncludeSpeedLimit(true)
-                .setEntityType(GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION) // returns only city
-            , null).getStatusCode());
+                .setEntityType(GeographicEntityType.COUNTRY_SECONDARY_SUBDIVISION),
+                null).getStatusCode());
 
         // Search address reverse cross street -
         // https://docs.microsoft.com/en-us/rest/api/maps/search/get-search-address-reverse-cross-street
@@ -214,10 +217,10 @@ public class BuilderSamples {
         ids.add(id);
 
         if (ids != null && !ids.isEmpty()) {
-           System.out.println("Get Polygon: " + ids);
-           // MapsCommon.print(client.getPolygons(ids).get(1));
-           MapsCommon.print(client.getPolygons(ids));
-           MapsCommon.print(client.getPolygonsWithResponse(ids, null).getValue().getClass());
+            System.out.println("Get Polygon: " + ids);
+            // MapsCommon.print(client.getPolygons(ids).get(1));
+            MapsCommon.print(client.getPolygons(ids));
+            MapsCommon.print(client.getPolygonsWithResponse(ids, null).getValue().getClass());
         }
 
         // Search POI -
@@ -374,7 +377,7 @@ public class BuilderSamples {
         reverseOptionsList.add(
             new ReverseSearchAddressOptions(new GeoPosition(-122.127896, 47.639765))
                 .setRadiusInMeters(5000)
-            );
+        );
         reverseOptionsList.add(new ReverseSearchAddressOptions(new GeoPosition(-122.348170, 47.621028)));
 
         System.out.println("Reverse Search Address Batch Async");

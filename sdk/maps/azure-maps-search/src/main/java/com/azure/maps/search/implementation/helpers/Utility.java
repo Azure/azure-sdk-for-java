@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.implementation.helpers;
 
 import java.io.ByteArrayOutputStream;
@@ -34,12 +37,9 @@ import com.azure.maps.search.models.BatchResultSummary;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.FuzzySearchOptions;
-import com.azure.maps.search.models.Polygon;
 import com.azure.maps.search.models.ReverseSearchAddressBatchItem;
 import com.azure.maps.search.models.ReverseSearchAddressOptions;
 import com.azure.maps.search.models.ReverseSearchAddressResult;
-import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResult;
-import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResultItem;
 import com.azure.maps.search.models.SearchAddressBatchItem;
 import com.azure.maps.search.models.SearchAddressOptions;
 import com.azure.maps.search.models.SearchAddressResult;
@@ -48,8 +48,8 @@ import com.azure.maps.search.models.SearchAddressResult;
  * Utility method class.
  */
 public class Utility {
-    private static final JacksonJsonSerializer serializer = new JacksonJsonSerializerProvider().createInstance();
-    private static final Pattern uuidPattern = Pattern.compile("[0-9A-Fa-f\\-]{36}");
+    private static final JacksonJsonSerializer SERIALIZER = new JacksonJsonSerializerProvider().createInstance();
+    private static final Pattern UUID_PATTERN = Pattern.compile("[0-9A-Fa-f\\-]{36}");
 
     /**
      * converts the internal representation of SearchAddressResult into the public one
@@ -89,13 +89,15 @@ public class Utility {
     public static String getBatchId(HttpHeaders headers) {
         // this can happen when deserialization is happening
         // to convert the private model to public model (see BatchResponseSerializer)
-        if (headers == null) return null;
+        if (headers == null) {
+            return null;
+        }
 
         // if not, let's go
         final String location = headers.getValue("Location");
 
         if (location != null) {
-            Matcher matcher = uuidPattern.matcher(location);
+            Matcher matcher = UUID_PATTERN.matcher(location);
             matcher.find();
             return matcher.group();
         }
@@ -109,12 +111,10 @@ public class Utility {
      * @return
      */
     public static GeoPosition fromCommaSeparatedString(String position) {
-        if (position != null) {
-            final String[] coords = position.split(",");
+        final String[] coords = position.split(",");
 
-            if (coords != null && coords.length == 2) {
-                return new GeoPosition(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
-            }
+        if (coords.length == 2) {
+            return new GeoPosition(Double.parseDouble(coords[1]), Double.parseDouble(coords[0]));
         }
 
         return null;
@@ -160,7 +160,7 @@ public class Utility {
     private static GeoPosition stringToCoordinate(String s) {
         final String[] coordinateString = s.split(",");
 
-        if (coordinateString != null && coordinateString.length == 2) {
+        if (coordinateString.length == 2) {
             return new GeoPosition(Double.parseDouble(coordinateString[1]),
                 Double.parseDouble(coordinateString[0]));
         }
@@ -210,23 +210,27 @@ public class Utility {
     public static GeoJsonObject toGeoJsonObject(GeoObject object) {
         // serialize to GeoJson
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        serializer.serialize(baos, object);
+        SERIALIZER.serialize(baos, object);
 
         // deserialize into GeoJsonObject
-        final TypeReference<GeoJsonObject> typeReference = new TypeReference<GeoJsonObject>(){};
-        return serializer.deserializeFromBytes(baos.toByteArray(), typeReference);
+        final TypeReference<GeoJsonObject> typeReference = new TypeReference<GeoJsonObject>() { };
+        return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 
     public static GeoObject toGeoObject(GeoJsonObject object) {
         // serialize to GeoJson
-        // TODO Review this for other types of returned FeatureCollection
-        GeoJsonFeatureCollection fc = (GeoJsonFeatureCollection) object;
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        serializer.serialize(baos, fc.getFeatures().get(0).getGeometry());
+        // TODO (khmic5) Review this for other types of returned FeatureCollection
+        if (object instanceof GeoJsonFeatureCollection) {
+            GeoJsonFeatureCollection fc = (GeoJsonFeatureCollection) object;
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            SERIALIZER.serialize(baos, fc.getFeatures().get(0).getGeometry());
 
-        // deserialize into GeoObject
-        final TypeReference<GeoObject> typeReference = new TypeReference<GeoObject>(){};
-        return serializer.deserializeFromBytes(baos.toByteArray(), typeReference);
+            // deserialize into GeoObject
+            final TypeReference<GeoObject> typeReference = new TypeReference<GeoObject>() { };
+            return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
+        }
+
+        return null;
     }
 
     public static BatchRequestItem toSearchBatchRequestItem(SearchAddressOptions options) {
@@ -331,11 +335,10 @@ public class Utility {
         BatchRequestItem item = new BatchRequestItem();
         UrlBuilder urlBuilder = new UrlBuilder();
 
-        for (String key : params.keySet()) {
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
             try {
-                urlBuilder.addQueryParameter(key, URLEncoder.encode(params.get(key).toString(), "UTF-8"));
-            }
-            catch (UnsupportedEncodingException e) {
+                urlBuilder.addQueryParameter(entry.getKey(), URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
         }

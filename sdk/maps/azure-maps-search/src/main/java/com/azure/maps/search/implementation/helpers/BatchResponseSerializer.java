@@ -32,6 +32,9 @@ public final class BatchResponseSerializer implements JsonSerializer {
     private final SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final ClientLogger logger = new ClientLogger(BatchResponseSerializer.class);
 
+    static class SearchTypeReference extends TypeReference<SearchAddressBatchResult> { };
+    static class ReverseSearchTypeReference extends TypeReference<ReverseSearchAddressBatchResult> { };
+
     /**
      * Performs deserialization from {@link SearchAddressBatchResult} or {@link ReverseSearchAddressBatchResult}
      * and conversion to {@link BatchSearchResult}.
@@ -41,28 +44,20 @@ public final class BatchResponseSerializer implements JsonSerializer {
     public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
         try {
             if (typeReference.getJavaType().getTypeName().contains("BatchSearchResult")) {
-                TypeReference<SearchAddressBatchResult> interimType = new TypeReference<SearchAddressBatchResult>(){};
+                TypeReference<SearchAddressBatchResult> interimType = new SearchTypeReference();
                 SearchAddressBatchResult interimResult = jacksonAdapter
                     .<SearchAddressBatchResult>deserialize(data, interimType.getJavaType(),
                         SerializerEncoding.JSON);
                 BatchSearchResult result = Utility.toBatchSearchResult(interimResult);
-                if (result == null) {
-                    result = new BatchSearchResult();
-                }
                 return (T) result;
-            }
-            else if (typeReference.getJavaType().getTypeName().contains("BatchReverseSearchResult")){
-                TypeReference<ReverseSearchAddressBatchResult> interimType = new TypeReference<ReverseSearchAddressBatchResult>(){};
+            } else if (typeReference.getJavaType().getTypeName().contains("BatchReverseSearchResult")) {
+                TypeReference<ReverseSearchAddressBatchResult> interimType = new ReverseSearchTypeReference();
                 ReverseSearchAddressBatchResult interimResult = jacksonAdapter
                     .<ReverseSearchAddressBatchResult>deserialize(data, interimType.getJavaType(),
                         SerializerEncoding.JSON);
                 BatchReverseSearchResult result = Utility.toBatchReverseSearchResult(interimResult);
-                if (result == null) {
-                    result = new BatchReverseSearchResult();
-                }
                 return (T) result;
-            }
-            else {
+            } else {
                 return jacksonAdapter.deserialize(data, typeReference.getJavaType(), SerializerEncoding.JSON);
             }
         } catch (IOException e) {

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -15,6 +18,9 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Create search along route options.
+     * @param query the search query
+     * @param maxDetourTime the maximum detour time allowed
+     * @param route the {@code GeoLineString} geometry representing the route
      */
     public SearchAlongRouteOptions(String query, int maxDetourTime, GeoLineString route) {
         this.maxDetourTime = maxDetourTime;
@@ -24,7 +30,7 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Returns the brand filter.
-     * @return
+     * @return the brand filter.
      */
     public List<String> getBrandFilter() {
         return brandFilter;
@@ -32,13 +38,15 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Returns the max detour time.
+     * @return the max detour time.
      */
     public int getMaxDetourTime() {
         return this.maxDetourTime;
     }
 
     /**
-     * @return GeoJsonLineString return the route
+     * Returns the route used in the search.
+     * @return {@code GeoJsonLineString} return the route used in the search.
      */
     public GeoLineString getRoute() {
         return route;
@@ -46,7 +54,7 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Returns the electric vehicle connector filter.
-     * @return
+     * @return the electric vehicle connector filter.
      */
     public List<ElectricVehicleConnector> getElectricVehicleConnectorFilter() {
         return electricVehicleConnectorFilter;
@@ -54,8 +62,8 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Sets the brand filter.
-     * @param brandFilter
-     * @return
+     * @param brandFilter the brand filter.
+     * @return a reference to this {@code SearchAlongRouteOptions}
      */
     public SearchAlongRouteOptions setBrandFilter(List<String> brandFilter) {
         this.brandFilter = brandFilter;
@@ -64,8 +72,8 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Sets the route.
-     * @param route
-     * @return
+     * @param route the {@code GeoLineString} geometry representing the route.
+     * @return a reference to this {@code SearchAlongRouteOptions}
      */
     public SearchAlongRouteOptions setRoute(GeoLineString route) {
         this.route = route;
@@ -74,8 +82,8 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Sets the electric vehicle connector filter.
-     * @param electricVehicleConnectorFilter
-     * @return
+     * @param electricVehicleConnectorFilter the electric vehicle connector filter.
+     * @return a reference to this {@code SearchAlongRouteOptions}
      */
     public SearchAlongRouteOptions setElectricVehicleConnectorFilter(List<ElectricVehicleConnector> electricVehicleConnectorFilter) {
         this.electricVehicleConnectorFilter = electricVehicleConnectorFilter;
@@ -84,8 +92,8 @@ public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<Sea
 
     /**
      * Sets the max detour time.
-     * @param maxDetourTime
-     * @return
+     * @param maxDetourTime the max detour time.
+     * @return a reference to this {@code SearchAlongRouteOptions}
      */
     public SearchAlongRouteOptions setMaxDetourTime(int maxDetourTime) {
         this.maxDetourTime = maxDetourTime;

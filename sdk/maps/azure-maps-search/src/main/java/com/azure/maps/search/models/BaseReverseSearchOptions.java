@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import com.azure.core.models.GeoPosition;
@@ -54,8 +57,8 @@ public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOption
 
     /**
      * Sets the radius in meters.
-     * @param radiusInMeters
-     * @return
+     * @param radiusInMeters the radius in meters.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setRadiusInMeters(Integer radiusInMeters) {
@@ -65,8 +68,8 @@ public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOption
 
     /**
      * Sets the heading.
-     * @param heading
-     * @return
+     * @param heading the heading.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setHeading(Integer heading) {
@@ -76,8 +79,8 @@ public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOption
 
     /**
      * Sets the language.
-     * @param language
-     * @return
+     * @param language the language.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setLanguage(String language) {
@@ -87,8 +90,8 @@ public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOption
 
     /**
      * Sets the localized map view.
-     * @param localizedMapView
-     * @return
+     * @param localizedMapView the localized map view.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setLocalizedMapView(LocalizedMapView localizedMapView) {
@@ -98,8 +101,8 @@ public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOption
 
     /**
      * Sets the coordinates.
-     * @param coordinates
-     * @return
+     * @param coordinates the coordinates.
+     * @return a reference to this {@code T} class.
      */
     @SuppressWarnings("unchecked")
     public T setCoordinates(GeoPosition coordinates) {
