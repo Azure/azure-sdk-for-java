@@ -3,15 +3,22 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.ImmutableTag;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tag;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Sample implementation of Micrometer {@link AzureMeterProvider}. Should be resolved using SPI and registered in provider
@@ -36,7 +43,7 @@ public class MicrometerMeterProvider implements AzureMeterProvider {
     /**
      * Implements Micrometer version of {@link AzureMeter}
      */
-    private static class MicrometerMeter extends AzureMeter {
+    private class MicrometerMeter extends AzureMeter {
         private final MeterRegistry registry;
 
         MicrometerMeter(String libraryName, String libraryVersion, MetricsOptions options) {
@@ -54,47 +61,24 @@ public class MicrometerMeterProvider implements AzureMeterProvider {
          * {@inheritDoc}
          */
         @Override
-        public AzureLongHistogram createLongHistogram(String name, String description, String unit, Map<String, Object> attributes) {
-            DistributionSummary.Builder summaryBuilder = DistributionSummary.builder(name);
-            if (attributes != null && !attributes.isEmpty()) {
-                for (Map.Entry<String, Object> tag : attributes.entrySet()) {
-                    summaryBuilder.tag(tag.getKey(), tag.getValue().toString());
-                }
-            }
-
-            if (!CoreUtils.isNullOrEmpty(unit)) {
-                summaryBuilder.baseUnit(unit);
-            }
-
-            DistributionSummary summary = summaryBuilder
-                .description(description)
-                .publishPercentileHistogram(true)
-                .register(registry);
-
-            return new MicrometerLongHistogram(summary);
+        public AzureLongHistogram createLongHistogram(String name, String description, String unit) {
+            return new MicrometerLongHistogram(name, description, unit);
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public AzureLongCounter createLongCounter(String name, String description, String unit, Map<String, Object> attributes) {
-            Counter.Builder counterBuilder = Counter.builder(name);
-            if (attributes != null && !attributes.isEmpty()) {
-                for (Map.Entry<String, Object> tag : attributes.entrySet()) {
-                    counterBuilder.tag(tag.getKey(), tag.getValue().toString());
-                }
-            }
+        public AzureLongCounter createLongCounter(String name, String description, String unit) {
+            return new MicrometerLongCounter(name, description, unit);
+        }
 
-            if (!CoreUtils.isNullOrEmpty(unit)) {
-                counterBuilder.baseUnit(unit);
-            }
-
-            Counter counter = counterBuilder
-                .description(description)
-                .register(registry);
-
-            return new MicrometerLongCounter(counter);
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public AttributeBuilder createAttributesBuilder() {
+            return new MicrometerTags();
         }
 
         /**
@@ -108,40 +92,155 @@ public class MicrometerMeterProvider implements AzureMeterProvider {
         /**
          * Simple wrapper over Micrometer {@link Counter}
          */
-        private static final class MicrometerLongCounter implements AzureLongCounter {
+        private final class MicrometerLongCounter implements AzureLongCounter {
+            private final static Map<InstrumentInfo, Counter> counterCache = Collections.synchronizedMap(new WeakHashMap<>());
+            private final String name;
+            private final String description;
+            private final String unit;
 
-            private final Counter counter;
-
-            MicrometerLongCounter(Counter counter) {
-                this.counter = counter;
+            MicrometerLongCounter(String name, String description, String unit) {
+                this.name = name;
+                this.description = description;
+                this.unit = unit;
             }
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void add(long value, Context context) {
+            public void add(long value, AttributeBuilder attributes, Context context) {
+                MicrometerTags tags = MicrometerTags.EMPTY;
+                if (attributes instanceof MicrometerTags) {
+                    tags = ((MicrometerTags) attributes);
+                }
+
+                Counter counter = counterCache.computeIfAbsent(new InstrumentInfo(name, tags), this::createCounter);
                 counter.increment(value);
+            }
+
+            private Counter createCounter(InstrumentInfo info) {
+                Counter.Builder counterBuilder = Counter.builder(info.name)
+                    .description(description)
+                    .tags(info.tags.getAttributes());
+
+                if (!CoreUtils.isNullOrEmpty(unit)) {
+                    counterBuilder.baseUnit(unit);
+                }
+
+                return counterBuilder.register(registry);
             }
         }
 
         /**
          * Simple wrapper over Micrometer {@link DistributionSummary}
          */
-        private static final class MicrometerLongHistogram implements AzureLongHistogram {
+        private final class MicrometerLongHistogram implements AzureLongHistogram {
+            private final static Map<InstrumentInfo, DistributionSummary> summaryCache = Collections.synchronizedMap(new WeakHashMap<>());
+            private final String name;
+            private final String description;
+            private final String unit;
 
-            private final DistributionSummary summary;
-
-            MicrometerLongHistogram(DistributionSummary summary) {
-                this.summary = summary;
+            MicrometerLongHistogram(String name, String description, String unit) {
+                this.name = name;
+                this.description = description;
+                this.unit = unit;
             }
 
             /**
              * {@inheritDoc}
              */
             @Override
-            public void record(long value, Context context) {
+            public void record(long value, AttributeBuilder attributes, Context context) {
+                MicrometerTags tags = MicrometerTags.EMPTY;
+                if (attributes instanceof MicrometerTags) {
+                    tags = ((MicrometerTags) attributes);
+                }
+
+                DistributionSummary summary = summaryCache.computeIfAbsent(new InstrumentInfo(name, tags), this::createSummary);
                 summary.record(value);
+            }
+
+            private DistributionSummary createSummary(InstrumentInfo info) {
+                DistributionSummary.Builder summaryBuilder = DistributionSummary.builder(info.name)
+                    .description(description)
+                    .publishPercentileHistogram(true)
+                    .tags(info.tags.getAttributes());
+
+                if (!CoreUtils.isNullOrEmpty(unit)) {
+                    summaryBuilder.baseUnit(unit);
+                }
+
+                return summaryBuilder.register(registry);
+            }
+        }
+
+        private static class InstrumentInfo {
+            public String name;
+            public MicrometerTags tags;
+
+            public InstrumentInfo(String name, MicrometerTags tags) {
+                this.name = name;
+                this.tags = tags;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (o == this) {
+                    return true;
+                }
+
+                if (!(o instanceof  InstrumentInfo)) {
+                    return false;
+                }
+
+                InstrumentInfo other = (InstrumentInfo) o;
+
+                return this.name.equals(other.name) && this.tags == other.tags;
+            }
+
+            @Override
+            public int hashCode() {
+                int hash = 7;
+                hash = 31 * hash + name.hashCode();
+                hash = 31 * hash + tags.hashCode();
+                return hash;
+            }
+        }
+
+        private static class MicrometerTags implements AttributeBuilder<Iterable<Tag>> {
+            private static final MicrometerTags EMPTY = new MicrometerTags();
+            private List<Tag> tags;
+            public MicrometerTags() {
+                tags = new ArrayList<>();
+            }
+
+            @Override
+            public AttributeBuilder addAttribute(String key, String value) {
+                tags.add(new ImmutableTag(key, value));
+
+                return this;
+            }
+
+            @Override
+            public AttributeBuilder addAttribute(String key, long value) {
+                tags.add(new ImmutableTag(key, String.valueOf(value)));
+                return this;
+            }
+
+            @Override
+            public AttributeBuilder addAttribute(String key, double value) {
+                tags.add(new ImmutableTag(key, String.valueOf(value)));
+                return this;
+            }
+
+            @Override
+            public AttributeBuilder addAttribute(String key, boolean value) {
+                tags.add(new ImmutableTag(key, String.valueOf(value)));
+                return this;
+            }
+
+            public Iterable<Tag> getAttributes() {
+                return tags;
             }
         }
     }

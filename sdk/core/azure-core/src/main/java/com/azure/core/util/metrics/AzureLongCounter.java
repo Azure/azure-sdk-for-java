@@ -3,6 +3,7 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.Context;
 
 /**
@@ -18,5 +19,5 @@ public interface AzureLongCounter {
      * @param value The amount of the measurement.
      * @param context The explicit context to associate with this measurement.
      */
-    void add(long value, Context context);
+    void add(long value, AttributeBuilder attributes, Context context);
 }

@@ -3,14 +3,11 @@
 
 package com.azure.core.metrics.opentelemetry;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.AzureLongHistogram;
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.metrics.LongHistogram;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -18,24 +15,21 @@ import java.util.Objects;
 class OpenTelemetryLongHistogram implements AzureLongHistogram {
 
     private final LongHistogram histogram;
-    private final Attributes commonAttributes;
-    OpenTelemetryLongHistogram(LongHistogram histogram, Map<String, Object> attributes) {
+    OpenTelemetryLongHistogram(LongHistogram histogram) {
         this.histogram = histogram;
-        if (attributes == null || attributes.isEmpty()) {
-            this.commonAttributes = Attributes.empty();
-        } else {
-            AttributesBuilder attributesBuilder = Attributes.builder();
-            attributes.forEach((key, value) -> Utils.addAttribute(attributesBuilder, key, value));
-            this.commonAttributes = attributesBuilder.build();
-        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void record(long value, Context context) {
-        Objects.requireNonNull(context, "'context' cannot be null.");
-        histogram.record(value, this.commonAttributes, Utils.getTraceContextOrCurrent(context));
+    public void record(long value, AttributeBuilder attributeCollection, Context context) {
+
+        Attributes attributes = Attributes.empty();
+        if (attributeCollection instanceof OpenTelemetryAttributeBuilder) {
+            attributes = ((OpenTelemetryAttributeBuilder) attributeCollection).getAttributes();
+        }
+
+        histogram.record(value, attributes, Utils.getTraceContextOrCurrent(context));
     }
 }

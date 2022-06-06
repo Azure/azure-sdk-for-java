@@ -3,6 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.AzureLongCounter;
@@ -23,12 +24,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
+import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.attributeEntry;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,7 +36,7 @@ public class MetricsTests {
     private static final long SECOND_NANOS = 1_000_000_000;
     private static final Resource RESOURCE =
         Resource.create(Attributes.of(stringKey("resource_key"), "resource_value"));
-    private static final Map<String, Object> METRIC_ATTRIBUTES = Collections.singletonMap("key", "value");
+    private static final AttributeBuilder METRIC_ATTRIBUTES = new OpenTelemetryAttributeBuilder().addAttribute("key", "value");
     private static final Attributes EXPECTED_ATTRIBUTES = Attributes.builder().put("key", "value").build();
 
     private InMemoryMetricReader sdkMeterReader;
@@ -65,9 +64,9 @@ public class MetricsTests {
     public void basicHistogram() {
         AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new MetricsOptions().setProvider(sdkMeterProvider));
         assertTrue(meter.isEnabled());
-        AzureLongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null, null);
+        AzureLongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAttributeBuilder(), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -101,9 +100,9 @@ public class MetricsTests {
         MetricsOptions options = new MetricsOptions().setProvider(sdkMeterProvider).enable(false);
         AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
         AzureLongHistogram longHistogram = meter
-            .createLongHistogram("az.sdk.test-histogram", "important metric", null, null);
+            .createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAttributeBuilder(), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
         assertFalse(meter.isEnabled());
@@ -115,9 +114,9 @@ public class MetricsTests {
         AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
         AzureLongHistogram longHistogram = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", null, new MetricsOptions().setProvider(MeterProvider.noop()))
-            .createLongHistogram("az.sdk.test-histogram", "important metric", null, null);
+            .createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAttributeBuilder(), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
         assertFalse(meter.isEnabled());
@@ -127,10 +126,10 @@ public class MetricsTests {
     public void histogramWithAttributes() {
         AzureLongHistogram longHistogram = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
-            .createLongHistogram("az.sdk.test-histogram", "important metric", "ms", METRIC_ATTRIBUTES);
+            .createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
 
-        longHistogram.record(42, Context.NONE);
-        longHistogram.record(420, Context.NONE);
+        longHistogram.record(42, METRIC_ATTRIBUTES, Context.NONE);
+        longHistogram.record(420, METRIC_ATTRIBUTES, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -161,13 +160,56 @@ public class MetricsTests {
     }
 
     @Test
+    public void histogramWithDifferentAttributes() {
+        AzureLongHistogram longHistogram = AzureMeterProvider.getDefaultProvider()
+            .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
+            .createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
+
+        AttributeBuilder attributes1 = new OpenTelemetryAttributeBuilder().addAttribute("key1", "value1");
+        AttributeBuilder attributes2 = new OpenTelemetryAttributeBuilder().addAttribute("key2", "value2");
+        longHistogram.record(42, attributes1, Context.NONE);
+        longHistogram.record(1, attributes1, Context.NONE);
+        longHistogram.record(420, attributes2, Context.NONE);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(
+                metric ->
+                    assertThat(metric)
+                        .hasResource(RESOURCE)
+                        .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", "1.0.0-beta.1", null))
+                        .hasName("az.sdk.test-histogram")
+                        .hasDescription("important metric")
+                        .hasUnit("ms")
+                        .hasHistogramSatisfying(
+                            histogram ->
+                                histogram
+                                    .isCumulative()
+                                    .hasPointsSatisfying(
+                                        point ->
+                                            point
+                                                .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                                                .hasEpochNanos(testClock.now())
+                                                .hasAttributes(attributeEntry("key1", "value1"))
+                                                .hasCount(2)
+                                                .hasSum(43),
+                                        point ->
+                                            point
+                                                .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                                                .hasEpochNanos(testClock.now())
+                                                .hasAttributes(attributeEntry("key2", "value2"))
+                                                .hasCount(1)
+                                                .hasSum(420))));
+
+    }
+
+    @Test
     public void basicCounter() {
         AzureLongCounter longCounter = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
-            .createLongCounter("az.sdk.test-counter", "important metric", "bytes", METRIC_ATTRIBUTES);
+            .createLongCounter("az.sdk.test-counter", "important metric", "bytes");
 
-        longCounter.add(42, Context.NONE);
-        longCounter.add(420, Context.NONE);
+        longCounter.add(42, METRIC_ATTRIBUTES, Context.NONE);
+        longCounter.add(420, METRIC_ATTRIBUTES, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -194,35 +236,25 @@ public class MetricsTests {
 
     @Test
     public void attributeTypes() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("string", "foo");
-        attributes.put("boolean", true);
-        attributes.put("double", 0.42d);
-        attributes.put("long", 42L);
-        attributes.put("string-array", new String[] {"foo", "bar"});
-        attributes.put("long-array", new long[] {1L, 2L});
-        attributes.put("double-array", new double[] {0.1d, 0.2d});
-        attributes.put("boolean-array", new boolean[] {false, true});
-        attributes.put("unsupported", RESOURCE);
-        attributes.put("null", null);
+        AttributeBuilder attributes = new OpenTelemetryAttributeBuilder()
+            .addAttribute("string", "foo")
+//            .addAttribute("boolean", true)
+            .addAttribute("double", 0.42d)
+             .addAttribute("long", 42L);
 
         Attributes expected = Attributes.builder()
             .put(AttributeKey.stringKey("string"), "foo")
-            .put(AttributeKey.booleanKey("boolean"), true)
+            //.put(AttributeKey.booleanKey("boolean"), true)
             .put(AttributeKey.doubleKey("double"), 0.42d)
             .put(AttributeKey.longKey("long"), 42L)
-            .put(AttributeKey.stringArrayKey("string-array"), "foo", "bar")
-            .put(AttributeKey.longArrayKey("long-array"), 1L, 2L)
-            .put(AttributeKey.doubleArrayKey("double-array"), 0.1d, 0.2d)
-            .put(AttributeKey.booleanArrayKey("boolean-array"), false, true)
             .build();
 
         AzureLongCounter longCounter = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
-            .createLongCounter("az.sdk.test-counter", "important metric", "bytes", attributes);
+            .createLongCounter("az.sdk.test-counter", "important metric", "bytes");
 
-        longCounter.add(42, Context.NONE);
-        longCounter.add(420, Context.NONE);
+        longCounter.add(42, attributes, Context.NONE);
+        longCounter.add(420, attributes, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -248,15 +280,15 @@ public class MetricsTests {
 
 
     @Test
-    public void multipleMeters() {
+    public void multipleMetersSameName() {
         AzureMeter meter = AzureMeterProvider.getDefaultProvider()
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider));
 
-        AzureLongHistogram longHistogram1 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms", METRIC_ATTRIBUTES);
-        AzureLongHistogram longHistogram2 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms", METRIC_ATTRIBUTES);
+        AzureLongHistogram longHistogram1 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
+        AzureLongHistogram longHistogram2 = meter.createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
 
-        longHistogram1.record(42, Context.NONE);
-        longHistogram2.record(420, Context.NONE);
+        longHistogram1.record(42, METRIC_ATTRIBUTES, Context.NONE);
+        longHistogram2.record(420, METRIC_ATTRIBUTES, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -295,9 +327,9 @@ public class MetricsTests {
     @Test
     public void noopMeterCreateInstrumentInvalidArgumentsThrow() {
         AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("foo", null, null);
-        assertThrows(NullPointerException.class, () -> meter.createLongHistogram(null, "description", null, null));
-        assertThrows(NullPointerException.class, () -> meter.createLongHistogram("name", null, null, null));
-        assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", null, null));
-        assertThrows(NullPointerException.class, () -> meter.createLongCounter("name", null, null, null));
+        assertThrows(NullPointerException.class, () -> meter.createLongHistogram(null, "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongHistogram("name", null, null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongCounter("name", null, null));
     }
 }

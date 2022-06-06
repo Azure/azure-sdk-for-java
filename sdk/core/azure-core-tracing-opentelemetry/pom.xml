@@ -137,6 +137,13 @@
       <version>5.12.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-testing</artifactId>
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

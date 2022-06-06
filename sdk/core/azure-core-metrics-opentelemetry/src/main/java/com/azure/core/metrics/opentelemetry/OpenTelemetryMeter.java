@@ -3,6 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,7 +16,6 @@ import io.opentelemetry.api.metrics.LongHistogramBuilder;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.metrics.MeterProvider;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -51,7 +51,7 @@ class OpenTelemetryMeter extends AzureMeter {
      * {@inheritDoc}
      */
     @Override
-    public AzureLongHistogram createLongHistogram(String name, String description, String unit, Map<String, Object> attributes) {
+    public AzureLongHistogram createLongHistogram(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
 
@@ -62,14 +62,14 @@ class OpenTelemetryMeter extends AzureMeter {
             otelMetricBuilder.setUnit(unit);
         }
 
-        return new OpenTelemetryLongHistogram(otelMetricBuilder.build(), attributes);
+        return new OpenTelemetryLongHistogram(otelMetricBuilder.build());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AzureLongCounter createLongCounter(String name, String description, String unit, Map<String, Object> attributes) {
+    public AzureLongCounter createLongCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
 
@@ -80,7 +80,15 @@ class OpenTelemetryMeter extends AzureMeter {
             otelMetricBuilder.setUnit(unit);
         }
 
-        return new OpenTelemetryLongCounter(otelMetricBuilder.build(), attributes);
+        return new OpenTelemetryLongCounter(otelMetricBuilder.build());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AttributeBuilder createAttributesBuilder() {
+        return new OpenTelemetryAttributeBuilder();
     }
 
     /**

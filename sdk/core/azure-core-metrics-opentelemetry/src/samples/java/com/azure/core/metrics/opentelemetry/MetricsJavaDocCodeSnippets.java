@@ -3,6 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
@@ -26,7 +27,6 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 import java.time.Instant;
-import java.util.Collections;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
@@ -187,9 +187,12 @@ public class MetricsJavaDocCodeSnippets {
     private final class AzureClient {
         private final AzureMeter meter;
         private final AzureLongHistogram callDuration;
+        private final AttributeBuilder attributes;
         AzureClient(String endpoint, ClientOptions options) {
             meter = AzureMeterProvider.getDefaultProvider().createMeter("azure-core-samples", "1.0.0", options == null ? null : options.getMetricsOptions());
-            callDuration = meter.createLongHistogram("az.sample.method.duration", "Duration of sample method call", "ms", Collections.singletonMap("endpoint", endpoint));
+            callDuration = meter.createLongHistogram("az.sample.method.duration", "Duration of sample method call", "ms");
+            attributes = meter.createAttributesBuilder()
+                .addAttribute("endpoint", endpoint);
         }
 
         public String methodCall(String request, com.azure.core.util.Context context) {
@@ -197,7 +200,7 @@ public class MetricsJavaDocCodeSnippets {
 
             // call service and get response
             if (meter.isEnabled()) {
-                callDuration.record(Instant.now().toEpochMilli() - start.toEpochMilli(), context);
+                callDuration.record(Instant.now().toEpochMilli() - start.toEpochMilli(), attributes, context);
             }
             return "done";
         }

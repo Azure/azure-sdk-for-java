@@ -3,7 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import java.util.Map;
+import com.azure.core.util.AttributeBuilder;
 
 /**
  * Meter is generally associated with Azure Service Client instance and allows creating
@@ -75,12 +75,10 @@ public abstract class AzureMeter {
      * @param name short histogram name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the instrument
      * @param unit optional unit of measurement.
-     * @param attributes map of metric dimensions that includes low-cardinality values such as endpoint or error code.
-     *                   Attributes can only be specified at counter creation time to avoid dynamic, high-cardinality values.
      * @return new instance of {@link AzureLongCounter}
      * @throws NullPointerException if name or description is null.
      */
-    public abstract AzureLongHistogram createLongHistogram(String name, String description, String unit, Map<String, Object> attributes);
+    public abstract AzureLongHistogram createLongHistogram(String name, String description, String unit);
 
     /**
      * Creates counter instrument allowing to record long values. Counters should only be used for incrementing values
@@ -102,12 +100,23 @@ public abstract class AzureMeter {
      * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
-     * @param attributes map of metric dimensions that includes low-cardinality values such as endpoint or error code.
-     *                   Attributes can only be specified at counter creation time to avoid dynamic, high-cardinality values.
      * @return new instance of {@link AzureLongCounter}
      * @throws NullPointerException if name or description is null.
      */
-    public abstract AzureLongCounter createLongCounter(String name, String description, String unit, Map<String, Object> attributes);
+    public abstract AzureLongCounter createLongCounter(String name, String description, String unit);
+
+    /**
+     * Creates and returns attribute collection implementation specific to the meter implementation.
+     * Attribute collections differ in how they support different types of attributes and internal datastructures they use.
+     *
+     * For the best performance, client libraries should create and cache attribute collections
+     * for the client lifetime and pass cached instance when recoding new measurements.
+     *
+     * <!-- src_embed com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag -->
+     * <!-- end com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag -->
+     * @return
+     */
+    public abstract AttributeBuilder createAttributesBuilder();
 
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,

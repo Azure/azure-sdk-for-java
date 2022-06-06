@@ -60,9 +60,9 @@ public class GlobalOpenTelemetryMetricsTests {
 
         AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, null);
         assertTrue(meter.isEnabled());
-        AzureLongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null, null);
+        AzureLongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, Context.NONE);
+        longHistogram.record(1, null, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(

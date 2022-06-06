@@ -3,14 +3,12 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
 
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Contains code snippets for {@link AzureMeter} showing how to use it in Azure client libraries.
@@ -31,23 +29,24 @@ public class MetricsJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AzureMeter#createLongCounter(String, String, String, Map)}}
+     * Code snippet for {@link AzureMeter#createLongCounter(String, String, String)}}
      */
     public void createCounter() {
         Context currentContext = Context.NONE;
         // BEGIN: com.azure.core.util.metrics.AzureMeter.longCounter
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("endpoint", "http://service-endpoint.azure.com");
+        AttributeBuilder attributes = defaultMeter.createAttributesBuilder()
+            .addAttribute("endpoint", "http://service-endpoint.azure.com")
+            .addAttribute("error", true);
 
         AzureLongCounter createdHttpConnections = defaultMeter.createLongCounter("az.core.http.connections",
-            "Number of created HTTP connections", null, attributes);
+            "Number of created HTTP connections", null);
 
-        createdHttpConnections.add(1, currentContext);
+        createdHttpConnections.add(1, attributes, currentContext);
         // END: com.azure.core.util.metrics.AzureMeter.longCounter
     }
 
     /**
-     * Code snippet for {@link AzureMeter#createLongHistogram(String, String, String, Map)}}
+     * Code snippet for {@link AzureMeter#createLongHistogram(String, String, String)}}
      */
     public void createHistogram() {
         Context currentContext = Context.NONE;
@@ -60,8 +59,9 @@ public class MetricsJavaDocCodeSnippets {
             .createMeter("azure-core", "1.0.0", new MetricsOptions());
 
         AzureLongHistogram amqpLinkDuration = meter
-            .createLongHistogram("az.core.amqp.link.duration", "AMQP link response time.", "ms",
-                Collections.singletonMap("endpoint", "http://service-endpoint.azure.com"));
+            .createLongHistogram("az.core.amqp.link.duration", "AMQP link response time.", "ms");
+
+        AttributeBuilder attributes = meter.createAttributesBuilder().addAttribute("endpoint", "http://service-endpoint.azure.com");
 
         // when measured operation starts, record the measurement
         Instant start = Instant.now();
@@ -70,50 +70,45 @@ public class MetricsJavaDocCodeSnippets {
 
         // optionally check if meter is operational for the best performance
         if (meter.isEnabled()) {
-            amqpLinkDuration.record(Instant.now().toEpochMilli() - start.toEpochMilli(), currentContext);
+            amqpLinkDuration.record(Instant.now().toEpochMilli() - start.toEpochMilli(), attributes, currentContext);
         }
         // END: com.azure.core.util.metrics.AzureMeter.longHistogram
     }
 
     /**
-     * Code snippet for {@link AzureMeter#createLongCounter(String, String, String, Map)}}
+     * Code snippet for {@link AzureMeter#createLongCounter(String, String, String)}}
      */
     public void createCounterWithErrorFlag() {
         Context currentContext = Context.NONE;
 
         // BEGIN: com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag
 
-        // Create attributes with possible error status could be created upfront, usually along with client instance.
-        Map<String, Object> successAttributes = getAttributes("http://service-endpoint.azure.com", false);
-        Map<String, Object> errorAttributes = getAttributes("http://service-endpoint.azure.com", true);
+        // Create attributes for possible error codes. Can be done lazily once specific error code is received.
+        AttributeBuilder successAttributes = defaultMeter.createAttributesBuilder()
+            .addAttribute("endpoint", "http://service-endpoint.azure.com")
+            .addAttribute("error", true);
 
-        // Create instruments for possible error codes. Can be done lazily once specific error code is received.
-        AzureLongCounter successfulHttpConnections = defaultMeter.createLongCounter("az.core.http.connections",
-            "Number of created HTTP connections", null, successAttributes);
+        AttributeBuilder errorAttributes =  defaultMeter.createAttributesBuilder()
+            .addAttribute("endpoint", "http://service-endpoint.azure.com")
+            .addAttribute("error", false);
 
-        AzureLongCounter failedHttpConnections = defaultMeter.createLongCounter("az.core.http.connections",
-            "Number of created HTTP connections", null, errorAttributes);
+        AzureLongCounter httpConnections = defaultMeter.createLongCounter("az.core.http.connections",
+            "Number of created HTTP connections", null);
 
         boolean success = false;
         try {
             success = doThings();
         } finally {
-            if (success) {
-                successfulHttpConnections.add(1, currentContext);
-            } else {
-                failedHttpConnections.add(1, currentContext);
-            }
+            httpConnections.add(1, success ? successAttributes : errorAttributes, currentContext);
         }
 
         // END: com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag
     }
 
-    private static Map<String, Object> getAttributes(String endpoint, boolean error) {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("endpoint", endpoint);
-        attributes.put("error", error);
-
-        return attributes;
+    private static AttributeBuilder getAttributes(AzureMeter meter, String endpoint, boolean error) {
+        return meter.createAttributesBuilder()
+            .addAttribute("endpoint", endpoint)
+            .addAttribute("error", error);
     }
 
     private boolean doThings() {
