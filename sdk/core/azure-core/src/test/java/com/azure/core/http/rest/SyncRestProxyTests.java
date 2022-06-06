@@ -17,6 +17,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,7 +48,7 @@ public class SyncRestProxyTests {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         try {
-            SyncRestProxy.validateLengthSync(httpRequest);
+            RestProxyUtils.validateLengthSync(httpRequest);
         } catch (Exception e) {
             fail("The test Should not have thrown any exception.");
         }
@@ -120,14 +121,14 @@ public class SyncRestProxyTests {
     }
 
     private static byte[] collectRequest(HttpRequest request) {
-        return SyncRestProxy.validateLengthSync(request).toBytes();
+        return RestProxyUtils.validateLengthSync(request).toBytes();
     }
 
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
         Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = SyncRestProxy.mergeRequestOptionsContext(context, options).getValues();
+        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
