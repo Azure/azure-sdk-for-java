@@ -71,10 +71,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
-    private static final String URL_LOGGING_KEY = "url";
-    private static final String CONTENT_LENGTH_LOGGING_KEY = "contentLength";
-    private static final String BODY_LOGGING_KEY = "body";
-    private static final String STATUS_CODE_LOGGING_KEY = "statusCode";
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
     private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
 
@@ -162,7 +158,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (httpLogDetailLevel.shouldLogUrl()) {
                 logBuilder
                     .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, request.getHttpMethod())
-                    .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
+                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(request.getUrl(), allowedQueryParameterNames));
 
                 Integer retryCount = loggingOptions.getTryCount();
                 if (retryCount != null) {
@@ -175,7 +171,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (request.getBody() == null) {
-                logBuilder.addKeyValue(CONTENT_LENGTH_LOGGING_KEY, 0)
+                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, 0)
                     .log(REQUEST_LOG_MESSAGE);
                 return;
             }
@@ -183,7 +179,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             String contentType = request.getHeaders().getValue("Content-Type");
             long contentLength = getContentLength(logger, request.getHeaders());
 
-            logBuilder.addKeyValue(CONTENT_LENGTH_LOGGING_KEY, contentLength);
+            logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
 
             if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
                 AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream((int) contentLength);
@@ -199,7 +195,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                             }
                         })
                         .doFinally(ignored -> {
-                            logBuilder.addKeyValue(BODY_LOGGING_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
+                            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
                                     new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
                                 .log(REQUEST_LOG_MESSAGE);
 
@@ -224,13 +220,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
             String contentLengthString = response.getHeaderValue("Content-Length");
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
-                logBuilder.addKeyValue(CONTENT_LENGTH_LOGGING_KEY, contentLengthString);
+                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
 
             if (httpLogDetailLevel.shouldLogUrl()) {
                 logBuilder
-                    .addKeyValue(STATUS_CODE_LOGGING_KEY, response.getStatusCode())
-                    .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
+                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
                     .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
             }
 
@@ -480,7 +476,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     }
                 })
                 .doFinally(ignored -> {
-                    logBuilder.addKeyValue(BODY_LOGGING_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
+                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
                             new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
                         .log(RESPONSE_LOG_MESSAGE);
                 });
