@@ -6,6 +6,7 @@ package com.azure.spring.cloud.core.resource;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -111,13 +112,7 @@ public final class StorageBlobResource extends AzureStorageResource {
     @Override
     public OutputStream getOutputStream() throws IOException {
         try {
-            if (!exists()) {
-                if (autoCreateFiles) {
-                    create();
-                } else {
-                    throw new FileNotFoundException("The blob was not found: " + this.location);
-                }
-            }
+            this.blobContainerClient.createIfNotExists();
             BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions();
             if (StringUtils.hasText(contentType)) {
                 BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
@@ -137,7 +132,7 @@ public final class StorageBlobResource extends AzureStorageResource {
      */
     @Override
     public boolean exists() {
-        return this.blobContainerClient.exists() && blockBlobClient.exists();
+        return blockBlobClient.exists();
     }
 
     /**
@@ -227,29 +222,19 @@ public final class StorageBlobResource extends AzureStorageResource {
     @Override
     public InputStream getInputStream() throws IOException {
         try {
-            assertExisted();
             return this.blockBlobClient.openInputStream();
         } catch (BlobStorageException e) {
-            throw new IOException(MSG_FAIL_OPEN_INPUT, e);
+            if(e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND){
+                throw new FileNotFoundException("Blob or container not existed.");
+
+            }else {
+                throw new IOException(MSG_FAIL_OPEN_INPUT, e);
+            }
         }
     }
 
     @Override
     StorageType getStorageType() {
         return StorageType.BLOB;
-    }
-
-    private void assertExisted() throws FileNotFoundException {
-        if (!exists()) {
-            throw new FileNotFoundException("Blob or container not existed.");
-        }
-    }
-
-    private void create() {
-        if (!this.blobContainerClient.exists()) {
-            LOGGER.debug("Blob container {} doesn't exist, now creating it",
-                blobContainerClient.getBlobContainerName());
-            this.blobContainerClient.create();
-        }
     }
 }
