@@ -111,7 +111,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method, LOGGER);
+        RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         final SwaggerMethodParser methodParser = getMethodParser(method);
         HttpRequest request;
@@ -141,7 +141,7 @@ public final class SyncRestProxy implements InvocationHandler {
             }
 
             if (request.getBodyAsBinaryData() != null) {
-                request.setBody(validateLengthSync(request));
+                request.setBody(RestProxyUtils.validateLengthSync(request));
             }
 
             final HttpResponse response = send(request, context);
@@ -154,52 +154,6 @@ public final class SyncRestProxy implements InvocationHandler {
             if (decodedResponse != null || throwable != null) {
                 endTracingSpan(decodedResponse, throwable, context);
             }
-        }
-    }
-
-    static BinaryData validateLengthSync(final HttpRequest request) {
-        final BinaryData binaryData = request.getBodyAsBinaryData();
-        if (binaryData == null) {
-            return binaryData;
-        }
-
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-        Long length = binaryData.getLength();
-        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
-        if (length == null) {
-            if (bdc instanceof FluxByteBufferContent) {
-                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
-            } else if (bdc instanceof InputStreamContent) {
-                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
-                InputStream inputStream = inputStreamContent.toStream();
-                LengthValidatingInputStream lengthValidatingInputStream =
-                    new LengthValidatingInputStream(inputStream, expectedLength);
-                return BinaryData.fromStream(lengthValidatingInputStream);
-            } else {
-                byte[] b = (bdc).toBytes();
-                long len = b.length;
-                if (len > expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        len, expectedLength), len, expectedLength);
-                }
-
-                if (len < expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                        len, expectedLength), len, expectedLength);
-                }
-                return BinaryData.fromBytes(b);
-            }
-        } else {
-            if (length > expectedLength) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                    length, expectedLength), length, expectedLength);
-            }
-
-            if (length < expectedLength) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                    length, expectedLength), length, expectedLength);
-            }
-            return binaryData;
         }
     }
 

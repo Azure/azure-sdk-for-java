@@ -99,7 +99,7 @@ public final class RestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method, LOGGER);
+        RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         try {
             final SwaggerMethodParser methodParser = getMethodParser(method);

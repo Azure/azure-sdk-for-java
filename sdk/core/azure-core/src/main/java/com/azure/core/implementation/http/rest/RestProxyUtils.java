@@ -3,7 +3,14 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.*;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.DecodeException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.TooManyRedirectsException;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -17,6 +24,7 @@ import com.azure.core.implementation.ResponseExceptionConstructorCache;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -46,6 +54,8 @@ public final class RestProxyUtils {
         new ResponseExceptionConstructorCache();
     public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
+    public static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
+
 
     private RestProxyUtils() {
     }
@@ -117,6 +127,64 @@ public final class RestProxyUtils {
         });
     }
 
+    /**
+     * Validates the Length of the input request matches its configured Content Length.
+     * @param request the input request to validate.
+     * @return the requests body as BinaryData on successful validation.
+     */
+    public static BinaryData validateLengthSync(final HttpRequest request) {
+        final BinaryData binaryData = request.getBodyAsBinaryData();
+        if (binaryData == null) {
+            return binaryData;
+        }
+
+        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+        Long length = binaryData.getLength();
+        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
+        if (length == null) {
+            if (bdc instanceof FluxByteBufferContent) {
+                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
+            } else if (bdc instanceof InputStreamContent) {
+                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
+                InputStream inputStream = inputStreamContent.toStream();
+                com.azure.core.implementation.util.LengthValidatingInputStream lengthValidatingInputStream =
+                    new com.azure.core.implementation.util.LengthValidatingInputStream(inputStream, expectedLength);
+                return BinaryData.fromStream(lengthValidatingInputStream);
+            } else {
+                byte[] b = (bdc).toBytes();
+                long len = b.length;
+                if (len > expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        len, expectedLength), len, expectedLength);
+                }
+
+                if (len < expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                        len, expectedLength), len, expectedLength);
+                }
+                return BinaryData.fromBytes(b);
+            }
+        } else {
+            if (length > expectedLength) {
+                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                    length, expectedLength), length, expectedLength);
+            }
+
+            if (length < expectedLength) {
+                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                    length, expectedLength), length, expectedLength);
+            }
+            return binaryData;
+        }
+    }
+
+    /**
+     * Merges the Context with the Context provided with Options.
+     *
+     * @param context the Context to merge
+     * @param options the options holding the context to merge with
+     * @return the merged context.
+     */
     public static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
         if (options == null) {
             return context;
@@ -130,15 +198,29 @@ public final class RestProxyUtils {
         return context;
     }
 
+    /**
+     * Validates the input Method is not annotated with Resume Operation
+     * @param method the method input to validate
+     * @throws IllegalStateException if the input method is annotated with the Resume Operation.
+     */
     @SuppressWarnings("deprecation")
-    public static void validateResumeOperationIsNotPresent(Method method, ClientLogger logger) {
+    public static void validateResumeOperationIsNotPresent(Method method) {
         // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
         // marked as deprecated.
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw logger.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
         }
     }
 
+    /**
+     * Creates the Unexpected Exception using the details provided in http response and its content.
+     *
+     * @param exception the excepion holding UnexpectedException's details.
+     * @param httpResponse the http response to parse when constructing exception
+     * @param responseContent the response body to use when constructing exception
+     * @param responseDecodedContent the decoded response content to use when constructing exception
+     * @return the Unexpected Exception
+     */
     public static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
                                                            final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
