@@ -9,9 +9,6 @@ import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * EventHubs message listener container using {@link EventProcessorClient} to subscribe to event hubs and consume events
@@ -28,8 +25,6 @@ import org.slf4j.LoggerFactory;
  * @see AbstractMessageListenerContainer
  */
 public class EventHubsMessageListenerContainer extends AbstractMessageListenerContainer {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageListenerContainer.class);
 
     private final EventHubsProcessorFactory processorFactory;
     private final EventHubsContainerProperties containerProperties;
@@ -62,7 +57,9 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
 
     @Override
     protected void doStop() {
-        this.delegate.stop();
+        if (this.delegate != null) {
+            this.delegate.stop();
+        }
     }
 
     @Override

@@ -60,7 +60,7 @@ public final class PipelinesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientPipel")
-    private interface PipelinesService {
+    public interface PipelinesService {
         @Get("/pipelines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

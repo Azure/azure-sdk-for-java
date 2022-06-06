@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.LivePipelineState;
 import com.azure.resourcemanager.videoanalyzer.models.ParameterDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Live pipeline properties. */
 @Fluent
 public final class LivePipelineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LivePipelineProperties.class);
-
     /*
      * The reference to an existing pipeline topology defined for real-time
      * content processing. When activated, this live pipeline will process
@@ -174,7 +171,7 @@ public final class LivePipelineProperties {
      */
     public void validate() {
         if (topologyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property topologyName in model LivePipelineProperties"));
@@ -183,4 +180,6 @@ public final class LivePipelineProperties {
             parameters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LivePipelineProperties.class);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IoT Hub details. */
 @Fluent
 public final class IotHub {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHub.class);
-
     /*
      * The IoT Hub resource identifier.
      */
@@ -88,15 +85,17 @@ public final class IotHub {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property id in model IotHub"));
         }
         if (identity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property identity in model IotHub"));
         } else {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IotHub.class);
 }

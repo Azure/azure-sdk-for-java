@@ -24,7 +24,8 @@ LLC_ARGUMENTS = '--data-plane --sdk-integration --generate-samples --generate-te
 
 def sdk_automation(config: dict) -> List[dict]:
     # 1. README.java.md in spec repo, and it contains 'output-folder' option.
-    # 2. Use default options, run integration task.
+    # 2. swagger/README.md in sdk repo, and it is sdk/<service>/<module>/swagger/README.md
+    # 3. Use default options, run integration task.
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
@@ -151,7 +152,7 @@ def generate(
         sdk_root,
         'sdk', service, module
     )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
+    # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
@@ -161,7 +162,7 @@ def generate(
         # use readme from spec repo
         readme_file_path = readme
 
-        require_sdk_integration = not os.path.exists(output_dir)
+        require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
@@ -260,16 +261,18 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
 
 
 def get_generate_parameters(
-    service, file_name, json_file_path, readme_file_path: str
+    service, file_name, json_file_path, readme_file_abspath: str
 ) -> Tuple[str, str, str]:
     # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
 
     input_file = json_file_path
     module = None
-    if readme_file_path:
+    if readme_file_abspath:
         # try readme.java.md, it must contain 'output-folder' and
         # match pattern $(java-sdks-folder)/sdk/<service>/<module>
-        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
+        java_readme_file_path = readme_file_abspath
+        if not java_readme_file_path.endswith('.java.md'):
+            java_readme_file_path = readme_file_abspath.replace('.md', '.java.md')
         if uri_file_exists(java_readme_file_path):
             content = uri_file_read(java_readme_file_path)
             if content:
@@ -283,6 +286,19 @@ def get_generate_parameters(
                                 and output_folder_segments[1] == 'sdk':
                             service = output_folder_segments[2]
                             module = output_folder_segments[3]
+
+        # try swagger/readme.md for service and module
+        if not module and os.path.basename(readme_file_abspath).lower() == 'readme.md':
+            dir_name = os.path.dirname(readme_file_abspath).lower()
+            if os.path.basename(dir_name) == 'swagger':
+                dir_name = os.path.dirname(dir_name)
+                module = os.path.basename(dir_name)
+                dir_name = os.path.dirname(dir_name)
+                service = os.path.basename(dir_name)
+                dir_name = os.path.dirname(dir_name)
+                if not os.path.basename(dir_name) == 'sdk':
+                    module = None
+                    service = None
 
     if not module and file_name:
         # deduce from json file path
@@ -414,8 +430,7 @@ def parse_args() -> argparse.Namespace:
         '-r',
         '--readme',
         required=False,
-        help='URL to "readme.md" as configuration file. '
-             'A "readme.java.md" configuration file is required at the same folder.',
+        help='URL to "readme.md" as configuration file.',
     )
     parser.add_argument(
         '--service',
@@ -495,9 +510,12 @@ def main():
         args['security_scopes'] = args['credential_scopes']
 
     if args['readme']:
-        input_file, service, module = get_generate_parameters(None, None, None, args['readme'])
+        readme_file_abspath = args['readme']
+        if not os.path.isabs(readme_file_abspath):
+            readme_file_abspath = os.path.abspath(readme_file_abspath)
+        input_file, service, module = get_generate_parameters(None, None, None, readme_file_abspath)
         if not module:
-            raise ValueError('readme.java.md not found or not well-formed')
+            raise ValueError('readme.md not found or not well-formed')
         args['service'] = service
         args['module'] = module
 

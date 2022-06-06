@@ -130,7 +130,7 @@ def replace_artifact_id(module, pom):
     :param module: module name
     :param pom: pom file path
     """
-    log.debug('Replacing artifact id in file: {}'.format(pom, module))
+    log.debug('Replacing artifact id in file: {}'.format(pom))
     pom_dict = config[module][pom]
     if ARTIFACT_ID_PAIRS not in pom_dict:
         log.warn('No config key {} in pom parameters.'.format(ARTIFACT_ID_PAIRS))

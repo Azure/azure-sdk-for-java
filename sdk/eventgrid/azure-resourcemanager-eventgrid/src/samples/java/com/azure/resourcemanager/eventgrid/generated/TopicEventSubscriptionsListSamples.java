@@ -17,6 +17,6 @@ public final class TopicEventSubscriptionsListSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicEventSubscriptions().list("examplerg", "exampleTopic1", Context.NONE);
+        manager.topicEventSubscriptions().list("examplerg", "exampleTopic1", null, null, Context.NONE);
     }
 }

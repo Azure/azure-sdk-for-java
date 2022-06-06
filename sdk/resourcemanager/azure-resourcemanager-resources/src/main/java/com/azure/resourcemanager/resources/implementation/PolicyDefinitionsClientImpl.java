@@ -341,14 +341,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     public Mono<PolicyDefinitionInner> createOrUpdateAsync(
         String policyDefinitionName, PolicyDefinitionInner parameters) {
         return createOrUpdateWithResponseAsync(policyDefinitionName, parameters)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -478,7 +471,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String policyDefinitionName) {
-        return deleteWithResponseAsync(policyDefinitionName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(policyDefinitionName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -604,15 +597,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyDefinitionInner> getAsync(String policyDefinitionName) {
-        return getWithResponseAsync(policyDefinitionName)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(policyDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -714,15 +699,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyDefinitionInner> getBuiltInAsync(String policyDefinitionName) {
-        return getBuiltInWithResponseAsync(policyDefinitionName)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getBuiltInWithResponseAsync(policyDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -867,14 +844,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     public Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters) {
         return createOrUpdateAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, parameters)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1006,7 +976,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupAsync(String policyDefinitionName, String managementGroupId) {
         return deleteAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1133,14 +1103,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     public Mono<PolicyDefinitionInner> getAtManagementGroupAsync(
         String policyDefinitionName, String managementGroupId) {
         return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
-            .flatMap(
-                (Response<PolicyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

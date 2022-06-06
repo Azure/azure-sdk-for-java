@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedClusters ListOutboundNetworkDependenciesEndpoints. */
 public final class ManagedClustersListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/OutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/OutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Managed Cluster.

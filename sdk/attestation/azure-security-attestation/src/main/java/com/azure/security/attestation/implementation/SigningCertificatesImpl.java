@@ -46,7 +46,7 @@ public final class SigningCertificatesImpl {
      */
     @Host("{instanceUrl}")
     @ServiceInterface(name = "AttestationClientSig")
-    private interface SigningCertificatesService {
+    public interface SigningCertificatesService {
         @Get("/certs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

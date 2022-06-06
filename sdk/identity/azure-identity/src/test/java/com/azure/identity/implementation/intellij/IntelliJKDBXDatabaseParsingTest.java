@@ -7,16 +7,11 @@ import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.crypto.*" })
 public class IntelliJKDBXDatabaseParsingTest {
 
     @Test

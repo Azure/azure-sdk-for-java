@@ -14,12 +14,14 @@
       <id>coverage</id>
       <modules>
         <module>azure-sdk-template</module>
+        <module>azure-sdk-template-two</module>
+        <module>azure-sdk-template-three</module>
       </modules>
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-sdk-template</artifactId>
-          <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+          <version>1.2.2-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -37,7 +39,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>

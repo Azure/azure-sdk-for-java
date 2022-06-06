@@ -8,6 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
+import com.azure.security.keyvault.keys.cryptography.implementation.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;

@@ -21,9 +21,11 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -319,6 +321,61 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
+     * <pre>
+     * boolean result = client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Create completed: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
+     *
+     * @return {@code true} if container is successfully created, {@code false} if container already exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean createIfNotExists() {
+        return createIfNotExistsWithResponse(null, null, null).getValue();
+    }
+
+    /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
+     *
+     * Response&lt;Boolean&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, context&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context -->
+     *
+     * @param options {@link BlobContainerCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
+     * container was successfully created. If status code is 409, a container already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(client.
+            createIfNotExistsWithResponse(options, context), timeout);
+    }
+
+    /**
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
@@ -373,6 +430,61 @@ public final class BlobContainerClient {
         Mono<Response<Void>> response = client.deleteWithResponse(requestConditions, context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Marks the specified container for deletion if it exists. The container and any blobs contained within
+     * it are later deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
+     * <pre>
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete completed: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerClient.deleteIfExists -->
+     * @return {@code true} if container is successfully deleted, {@code false} if container does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Marks the specified container for deletion if it exists. The container and any blobs contained within it
+     * are later deleted during garbage collection. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;requestConditions, timeout, context&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context -->
+     *
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the container
+     * was successfully deleted. If status code is 404, the container does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        return blockWithOptionalTimeout(client.deleteIfExistsWithResponse(requestConditions, context), timeout);
     }
 
     /**

@@ -301,7 +301,10 @@ public final class MessageUtils {
 
     private static TransactionalState getTransactionState(ByteBuffer transactionId, Outcome outcome) {
         TransactionalState transactionalState = new TransactionalState();
-        transactionalState.setTxnId(new Binary(transactionId.array()));
+
+        // Use Binary.create(ByteBuffer) as it'll handle differences between HeapByteBuffer and DirectByteBuffer, as
+        // well as handling when the ByteBuffer is read-only.
+        transactionalState.setTxnId(Binary.create(transactionId));
         transactionalState.setOutcome(outcome);
         return transactionalState;
     }

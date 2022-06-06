@@ -131,7 +131,7 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true ' +
+                        ' --modelerfour.additional-checks=false --modelerfour.lenient-model-deduplication=true ' +
                         ' --generate-samples ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
@@ -155,6 +155,7 @@ function codegen(project, cb) {
     // move generated samples to azure-resourcemanager
     generatedSamplesSource = path.join(mappings[project].dir, '/src/samples/java/', packagePath, 'generated');
     generatedSamplesTarget = path.join('azure-resourcemanager/src/samples/java/', packagePath);
+    
     copyFolderRecursiveSync(generatedSamplesSource, generatedSamplesTarget);
     deleteFolderRecursive(generatedSamplesSource);
 
@@ -193,25 +194,27 @@ function copyFileSync(source, target) {
 }
 
 function copyFolderRecursiveSync(source, target) {
-    var files = [];
+    if (fs.existsSync(source)) {
+        var files = [];
 
-    // Check if folder needs to be created or integrated
-    var targetFolder = path.join( target, path.basename( source ) );
-    if ( !fs.existsSync( targetFolder ) ) {
-        fs.mkdirSync( targetFolder, { recursive: true } );
-    }
+        // Check if folder needs to be created or integrated
+        var targetFolder = path.join( target, path.basename( source ) );
+        if ( !fs.existsSync( targetFolder ) ) {
+            fs.mkdirSync( targetFolder, { recursive: true } );
+        }
 
-    // Copy
-    if ( fs.lstatSync( source ).isDirectory() ) {
-        files = fs.readdirSync( source );
-        files.forEach( function ( file ) {
-            var curSource = path.join( source, file );
-            if ( fs.lstatSync( curSource ).isDirectory() ) {
-                copyFolderRecursiveSync( curSource, targetFolder );
-            } else {
-                copyFileSync( curSource, targetFolder );
-            }
-        } );
+        // Copy
+        if ( fs.lstatSync( source ).isDirectory() ) {
+            files = fs.readdirSync( source );
+            files.forEach( function ( file ) {
+                var curSource = path.join( source, file );
+                if ( fs.lstatSync( curSource ).isDirectory() ) {
+                    copyFolderRecursiveSync( curSource, targetFolder );
+                } else {
+                    copyFileSync( curSource, targetFolder );
+                }
+            } );
+        }
     }
 }
 

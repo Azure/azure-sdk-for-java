@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -25,7 +25,7 @@ Refer to [javadocs][encryption_api_documentation] for more details on the packag
 ### Prerequisites
 
 - [Java Development Kit (JDK) with version 8 or above][jdk]
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator HTTPS certificate is self-signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing. As emulator HTTPS certificate is self-signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) [Maven][maven]

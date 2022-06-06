@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties corresponding to a line channel registration. */
 @Fluent
 public final class LineRegistration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LineRegistration.class);
-
     /*
      * Id generated for the line channel registration
      */

@@ -59,7 +59,7 @@ public final class SparkConfigurationsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSpark")
-    private interface SparkConfigurationsService {
+    public interface SparkConfigurationsService {
         @Get("/sparkconfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

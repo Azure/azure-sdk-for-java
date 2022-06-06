@@ -4,6 +4,7 @@
 package com.azure.spring.messaging.eventhubs.support.converter;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,8 +32,8 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageConverter.class);
 
     private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        EventHubsHeaders.PARTITION_KEY,
-        EventHubsHeaders.BATCH_CONVERTED_PARTITION_KEY,
+        AzureHeaders.PARTITION_KEY,
+        AzureHeaders.BATCH_CONVERTED_PARTITION_KEY,
         EventHubsHeaders.ENQUEUED_TIME,
         EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME,
         EventHubsHeaders.OFFSET,
@@ -110,7 +111,7 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
         result.put(EventHubsHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
         result.put(EventHubsHeaders.OFFSET, azureMessage.getOffset());
         result.put(EventHubsHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());
-        result.put(EventHubsHeaders.PARTITION_KEY, azureMessage.getPartitionKey());
+        result.put(AzureHeaders.PARTITION_KEY, azureMessage.getPartitionKey());
         return result;
     }
 }

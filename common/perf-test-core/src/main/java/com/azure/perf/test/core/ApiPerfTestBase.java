@@ -3,18 +3,27 @@
 
 package com.azure.perf.test.core;
 
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import okhttp3.OkHttpClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import java.lang.reflect.Method;
+import javax.net.ssl.X509TrustManager;
 import java.net.URI;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
@@ -42,33 +51,11 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      */
     public ApiPerfTestBase(TOptions options) {
         super(options);
-        final SslContext sslContext;
-        if (options.isInsecure()) {
-            try {
-                sslContext = SslContextBuilder.forClient()
-                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                    .build();
-            } catch (SSLException e) {
-                throw new IllegalStateException(e);
-            }
 
-            reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
-                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
-
-            httpClient = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
-        } else {
-            sslContext = null;
-            httpClient = null;
-        }
+        httpClient = createHttpClient(options);
 
         if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
-            if (options.isInsecure()) {
-                recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create()
-                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
-            } else {
-                recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
-            }
-
+            recordPlaybackHttpClient = createRecordPlaybackClient(options);
             testProxy = options.getTestProxies().get(parallelIndex % options.getTestProxies().size());
             testProxyPolicy = new TestProxyPolicy(testProxy);
             policies = Arrays.asList(testProxyPolicy);
@@ -80,30 +67,81 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         }
     }
 
+    private static HttpClient createHttpClient(PerfStressOptions options) {
+        PerfStressOptions.HttpClientType httpClientType = options.getHttpClient();
+        switch (httpClientType) {
+            case NETTY:
+                if (options.isInsecure()) {
+                    try {
+                        SslContext sslContext = SslContextBuilder.forClient()
+                            .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                            .build();
+
+                        reactor.netty.http.client.HttpClient nettyHttpClient =
+                            reactor.netty.http.client.HttpClient.create()
+                            .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+
+                        return new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
+                    } catch (SSLException e) {
+                        throw new IllegalStateException(e);
+                    }
+                } else {
+                    return new NettyAsyncHttpClientProvider().createInstance();
+                }
+            case OKHTTP:
+                if (options.isInsecure()) {
+                    try {
+                        SSLContext sslContext = SSLContext.getInstance("SSL");
+                        sslContext.init(
+                            null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
+                        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                            .sslSocketFactory(sslContext.getSocketFactory(),
+                                (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
+                            .build();
+                        return new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
+                    } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                        throw new IllegalStateException(e);
+                    }
+                } else {
+                    return new OkHttpAsyncClientProvider().createInstance();
+                }
+            default:
+                throw new IllegalArgumentException("Unsupported http client " + httpClientType);
+        }
+    }
+
+    private static reactor.netty.http.client.HttpClient createRecordPlaybackClient(PerfStressOptions options) {
+        if (options.isInsecure()) {
+            try {
+                SslContext sslContext = SslContextBuilder.forClient()
+                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                    .build();
+                return reactor.netty.http.client.HttpClient.create()
+                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            } catch (SSLException e) {
+                throw new IllegalStateException(e);
+            }
+        } else {
+            return reactor.netty.http.client.HttpClient.create();
+        }
+    }
+
     /**
      * Attempts to configure a ClientBuilder using reflection.  If a ClientBuilder does not follow the standard convention,
      * it can be configured manually using the "httpClient" and "policies" fields.
      * @param clientBuilder The client builder.
      * @throws IllegalStateException If reflective access to get httpClient or addPolicy methods fail.
      */
-    protected void configureClientBuilder(Object clientBuilder) {
+    protected void configureClientBuilder(HttpTrait<?> clientBuilder) {
         if (httpClient != null || policies != null) {
-            Class<?> clientBuilderClass = clientBuilder.getClass();
+            if (httpClient != null) {
+                clientBuilder.httpClient(httpClient);
+            }
 
-            try {
-                if (httpClient != null) {
-                    Method httpClientMethod = clientBuilderClass.getMethod("httpClient", HttpClient.class);
-                    httpClientMethod.invoke(clientBuilder, httpClient);
+            if (policies != null) {
+                for (HttpPipelinePolicy policy : policies) {
+                    clientBuilder.addPolicy(policy);
                 }
-
-                if (policies != null) {
-                    Method addPolicyMethod = clientBuilderClass.getMethod("addPolicy", HttpPipelinePolicy.class);
-                    for (HttpPipelinePolicy policy : policies) {
-                        addPolicyMethod.invoke(clientBuilder, policy);
-                    }
-                }
-            } catch (ReflectiveOperationException e) {
-                throw new IllegalStateException(e);
             }
         }
     }

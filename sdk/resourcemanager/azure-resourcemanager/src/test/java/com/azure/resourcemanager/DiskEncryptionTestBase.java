@@ -12,12 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
-import com.azure.resourcemanager.compute.models.DiskEncryptionSetIdentityType;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
-import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
-import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
-import com.azure.resourcemanager.compute.models.SourceVault;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -113,25 +109,16 @@ public class DiskEncryptionTestBase extends ResourceManagerTestBase {
         return new VaultAndKey(vault, key);
     }
 
-    protected DiskEncryptionSetInner createDiskEncryptionSet(String name, DiskEncryptionSetType type, VaultAndKey vaultAndKey) {
-        // create disk encryption set
-        DiskEncryptionSetInner diskEncryptionSet = azureResourceManager.disks().manager().serviceClient()
-            .getDiskEncryptionSets().createOrUpdate(rgName, name, new DiskEncryptionSetInner()
-                .withLocation(region.name())
-                .withEncryptionType(type)
-                .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
-                .withActiveKey(new KeyForDiskEncryptionSet()
-                    .withSourceVault(new SourceVault().withId(vaultAndKey.vault.id()))
-                    .withKeyUrl(vaultAndKey.key.id())));
-
-        // RBAC for disk encryption set
-        String rbacName = generateRandomUuid();
-        azureResourceManager.accessManagement().roleAssignments().define(rbacName)
-            .forObjectId(diskEncryptionSet.identity().principalId())
-            .withBuiltInRole(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
-            .withResourceScope(vaultAndKey.vault)
+    protected DiskEncryptionSet createDiskEncryptionSet(String name, DiskEncryptionSetType type, VaultAndKey vaultAndKey) {
+        return azureResourceManager.diskEncryptionSets()
+            .define(name)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withEncryptionType(type)
+            .withExistingKeyVault(vaultAndKey.vault.id())
+            .withExistingKey(vaultAndKey.key.id())
+            .withSystemAssignedManagedServiceIdentity()
+            .withRoleBasedAccessToCurrentKeyVault(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
             .create();
-
-        return diskEncryptionSet;
     }
 }

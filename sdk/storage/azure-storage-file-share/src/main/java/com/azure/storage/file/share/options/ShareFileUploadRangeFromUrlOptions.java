@@ -6,6 +6,7 @@ package com.azure.storage.file.share.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 /**
@@ -19,6 +20,7 @@ public final class ShareFileUploadRangeFromUrlOptions {
     private long sourceOffset;
     private HttpAuthorization sourceAuthorization;
     private ShareRequestConditions destinationRequestConditions;
+    private FileLastWrittenMode lastWrittenMode;
 
     /**
      * @param length data length to upload for this operation.
@@ -110,6 +112,26 @@ public final class ShareFileUploadRangeFromUrlOptions {
     public ShareFileUploadRangeFromUrlOptions setDestinationRequestConditions(
         ShareRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the {@link FileLastWrittenMode}.
+     *
+     * @return The {@link FileLastWrittenMode}.
+     */
+    public FileLastWrittenMode getLastWrittenMode() {
+        return this.lastWrittenMode;
+    }
+
+    /**
+     * Sets the {@link FileLastWrittenMode}.
+     *
+     * @param lastWrittenMode {@link FileLastWrittenMode}
+     * @return The updated options.
+     */
+    public ShareFileUploadRangeFromUrlOptions setLastWrittenMode(FileLastWrittenMode lastWrittenMode) {
+        this.lastWrittenMode = lastWrittenMode;
         return this;
     }
 }

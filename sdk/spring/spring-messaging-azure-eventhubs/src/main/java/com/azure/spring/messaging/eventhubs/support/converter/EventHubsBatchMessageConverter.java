@@ -4,6 +4,7 @@ package com.azure.spring.messaging.eventhubs.support.converter;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
+import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -123,7 +124,7 @@ public class EventHubsBatchMessageConverter extends AbstractAzureMessageConverte
         headers.put(EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME, enqueueTimeList);
         headers.put(EventHubsHeaders.BATCH_CONVERTED_OFFSET, offSetList);
         headers.put(EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER, sequenceNumberList);
-        headers.put(EventHubsHeaders.BATCH_CONVERTED_PARTITION_KEY, partitionKeyList);
+        headers.put(AzureHeaders.BATCH_CONVERTED_PARTITION_KEY, partitionKeyList);
         headers.put(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, batchConvertedSystemProperties);
         headers.put(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, batchConvertedApplicationProperties);
 

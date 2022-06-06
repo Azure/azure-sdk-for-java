@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobContainerCreateOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.FindBlobsOptions
@@ -37,6 +38,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -131,6 +133,127 @@ class ContainerAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+    def "Create if not exists all null"() {
+        setup:
+        // Overwrite the existing cc, which has already been created
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        validateBasicHeaders(response.getHeaders())
+    }
+
+    def "Create if not exists min"() {
+        when:
+        def cc = primaryBlobServiceClient.createBlobContainerIfNotExists(generateContainerName())
+
+        then:
+        cc.exists()
+    }
+
+    def "Create if not exists min container"() {
+        when:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def result = cc.createIfNotExists()
+
+        then:
+        result
+    }
+
+    def "Create if not exists with response"() {
+        when:
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(),
+            null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists blob service that already exists"() {
+        setup:
+        def containerName = generateContainerName()
+        when:
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+        def secondResponse = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
+    }
+
+    @Unroll
+    def "Create if not exists metadata if not exists"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new BlobContainerCreateOptions().setMetadata(metadata)
+
+        when:
+        def result = cc.createIfNotExistsWithResponse(options, null, null)
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        response.getValue().getMetadata() == metadata
+        result.getValue()
+
+        where:
+        key1      | value1    | key2       | value2
+        null      | null      | null       | null
+        "foo"     | "bar"     | "fizz"     | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
+    }
+
+    @Unroll
+    def "Create if not exists publicAccess"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions().setPublicAccessType(publicAccess), null, null)
+        def access = cc.getProperties().getBlobPublicAccess()
+
+        then:
+        access == publicAccess
+        result.getValue()
+
+        where:
+        publicAccess               | _
+        PublicAccessType.BLOB      | _
+        PublicAccessType.CONTAINER | _
+        null                       | _
+    }
+
+    def "Create if not exists on container that already exists"() {
+        when:
+        boolean result = cc.createIfNotExists()
+
+        then:
+        !result
+    }
+
+    def "Create if not exists on a container that already exists 2"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null)
+
+        when:
+        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue()
+        secondResponse.getStatusCode() == 409
+        !secondResponse.getValue()
+    }
 
     def "Get properties null"() {
         when:
@@ -578,6 +701,113 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(BlobStorageException)
     }
+
+    def "Delete if exists"() {
+        when:
+        def response = cc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        response.getValue()
+        response.getStatusCode() == 202
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("Date") != null
+    }
+
+    def "Delete if exists min"() {
+        when:
+        boolean result = cc.deleteIfExists()
+
+        then:
+        result
+        !cc.exists()
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        leaseID = setupContainerLeaseCondition(cc, leaseID)
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        cc.deleteIfExistsWithResponse(cac, null, null).getStatusCode() == 202
+
+        where:
+        modified | unmodified | leaseID
+        null     | null       | null
+        oldDate  | null       | null
+        null     | newDate    | null
+        null     | null       | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        cc.deleteIfExistsWithResponse(cac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | leaseID
+        newDate  | null       | null
+        null     | oldDate    | null
+        null     | null       | garbageLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC illegal"() {
+        setup:
+        def mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+
+        when:
+        cc.deleteIfExistsWithResponse(mac, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
+    }
+
+    def "Delete if exists on a container that does not exist"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+    }
+
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
+    def "Delete if exists container that was already deleted"() {
+        when:
+        boolean result = cc.deleteIfExists()
+        boolean result2 = cc.deleteIfExists()
+
+        then:
+        result
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        result2
+        !cc.exists()
+    }
+
 
     def "List block blobs flat"() {
         setup:

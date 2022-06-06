@@ -16,7 +16,7 @@ MAVEN_URL = 'https://repo1.maven.org/maven2/{group_id}/{artifact_id}/{version}/{
 
 SDK_ROOT = '../../../'  # related to file dir
 AUTOREST_CORE_VERSION = '3.8.1'
-AUTOREST_JAVA = '@autorest/java@4.0.55'
+AUTOREST_JAVA = '@autorest/java@4.0.59'
 DEFAULT_VERSION = '1.0.0-beta.1'
 GROUP_ID = 'com.azure.resourcemanager'
 API_SPECS_FILE = 'api-specs.yaml'
@@ -27,7 +27,7 @@ README_FORMAT = 'specification/{0}/resource-manager/readme.md'
 JAR_FORMAT = 'sdk/{service}/{artifact_id}/target/{artifact_id}-{version}.jar'
 CHANGELOG_FORMAT = 'sdk/{service}/{artifact_id}/CHANGELOG.md'
 
-MODELERFOUR_ARGUMENTS = '--pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true'
+MODELERFOUR_ARGUMENTS = '--modelerfour.additional-checks=false --modelerfour.lenient-model-deduplication=true'
 FLUENTLITE_ARGUMENTS = '{0} --azure-arm --verbose --sdk-integration --generate-samples --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL'.format(
     MODELERFOUR_ARGUMENTS)
 

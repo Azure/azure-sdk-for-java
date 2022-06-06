@@ -370,14 +370,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
         String incidentIdentifier,
         ManualTriggerRequestBody requestBody) {
         return runPlaybookWithResponseAsync(resourceGroupName, workspaceName, incidentIdentifier, requestBody)
-            .flatMap(
-                (Response<Object> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -395,14 +388,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<Object> runPlaybookAsync(String resourceGroupName, String workspaceName, String incidentIdentifier) {
         final ManualTriggerRequestBody requestBody = null;
         return runPlaybookWithResponseAsync(resourceGroupName, workspaceName, incidentIdentifier, requestBody)
-            .flatMap(
-                (Response<Object> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -827,14 +813,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IncidentInner> getAsync(String resourceGroupName, String workspaceName, String incidentId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1007,14 +986,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentInner> createOrUpdateAsync(
         String resourceGroupName, String workspaceName, String incidentId, IncidentInner incident) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, incidentId, incident)
-            .flatMap(
-                (Response<IncidentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1171,8 +1143,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String incidentId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1346,14 +1317,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<TeamInformationInner> createTeamAsync(
         String resourceGroupName, String workspaceName, String incidentId, TeamProperties teamProperties) {
         return createTeamWithResponseAsync(resourceGroupName, workspaceName, incidentId, teamProperties)
-            .flatMap(
-                (Response<TeamInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1517,14 +1481,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentAlertListInner> listAlertsAsync(
         String resourceGroupName, String workspaceName, String incidentId) {
         return listAlertsWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentAlertListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1680,14 +1637,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentBookmarkListInner> listBookmarksAsync(
         String resourceGroupName, String workspaceName, String incidentId) {
         return listBookmarksWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentBookmarkListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1843,14 +1793,7 @@ public final class IncidentsClientImpl implements IncidentsClient {
     private Mono<IncidentEntitiesResponseInner> listEntitiesAsync(
         String resourceGroupName, String workspaceName, String incidentId) {
         return listEntitiesWithResponseAsync(resourceGroupName, workspaceName, incidentId)
-            .flatMap(
-                (Response<IncidentEntitiesResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

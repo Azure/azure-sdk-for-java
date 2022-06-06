@@ -288,14 +288,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     public Mono<ConfigurationServiceResourceInner> getAsync(
         String resourceGroupName, String serviceName, String configurationServiceName) {
         return getWithResponseAsync(resourceGroupName, serviceName, configurationServiceName)
-            .flatMap(
-                (Response<ConfigurationServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

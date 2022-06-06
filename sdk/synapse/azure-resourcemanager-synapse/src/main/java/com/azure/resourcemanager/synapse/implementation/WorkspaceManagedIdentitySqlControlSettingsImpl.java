@@ -12,12 +12,10 @@ import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedIdentitySqlContr
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModel;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedIdentitySqlControlSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedIdentitySqlControlSettingsImpl
     implements WorkspaceManagedIdentitySqlControlSettings {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedIdentitySqlControlSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceManagedIdentitySqlControlSettingsImpl.class);
 
     private final WorkspaceManagedIdentitySqlControlSettingsClient innerClient;
 

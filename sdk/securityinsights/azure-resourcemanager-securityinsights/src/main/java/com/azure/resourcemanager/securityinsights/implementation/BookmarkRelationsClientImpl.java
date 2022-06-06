@@ -571,14 +571,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
     private Mono<RelationInner> getAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, relationName)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -777,14 +770,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
         String relationName,
         RelationInner relation) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, relationName, relation)
-            .flatMap(
-                (Response<RelationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -967,7 +953,7 @@ public final class BookmarkRelationsClientImpl implements BookmarkRelationsClien
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String bookmarkId, String relationName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, bookmarkId, relationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

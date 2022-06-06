@@ -32,9 +32,9 @@ public abstract class MessagingMessageListenerAdapter {
      * @throws ListenerExecutionFailedException when there's exception when invoking the handler.
      */
     protected void invokeHandler(Message<?> message) {
-        InvocableHandlerMethod handlerMethod = getHandlerMethod();
+        InvocableHandlerMethod validHandlerMethod = getHandlerMethod();
         try {
-            handlerMethod.invoke(message);
+            validHandlerMethod.invoke(message);
         } catch (IllegalArgumentException ex) {
             throw new ListenerExecutionFailedException(ex.getMessage(), ex);
         } catch (MessagingException ex) {
@@ -42,16 +42,16 @@ public abstract class MessagingMessageListenerAdapter {
                 createMessagingErrorMessage("Listener method could not be invoked with incoming message"), ex);
         } catch (Exception ex) {
             throw new ListenerExecutionFailedException(
-                "Listener method '" + handlerMethod.getMethod().toGenericString() + "' threw exception", ex);
+                "Listener method '" + validHandlerMethod.getMethod().toGenericString() + "' threw exception", ex);
         }
     }
 
     protected final String createMessagingErrorMessage(String description) {
-        InvocableHandlerMethod handlerMethod = getHandlerMethod();
+        InvocableHandlerMethod validHandlerMethod = getHandlerMethod();
         return description + "\n"
             + "Endpoint handler details:\n"
-            + "Method [" + handlerMethod.getMethod().toGenericString() + "]\n"
-            + "Bean [" + handlerMethod.getBean() + "]\n";
+            + "Method [" + validHandlerMethod.getMethod().toGenericString() + "]\n"
+            + "Bean [" + validHandlerMethod.getBean() + "]\n";
     }
 
     private Class<?> resolveMessagePayloadType(InvocableHandlerMethod method) {

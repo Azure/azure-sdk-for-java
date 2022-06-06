@@ -41,6 +41,7 @@ namespace: com.azure.communication.callingserver
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
+service-interface-as-public: true
 models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true

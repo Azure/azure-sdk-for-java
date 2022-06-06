@@ -30,7 +30,11 @@ public final class StorageTypeState extends ExpandableStringEnum<StorageTypeStat
         return fromString(name, StorageTypeState.class);
     }
 
-    /** @return known StorageTypeState values. */
+    /**
+     * Gets known StorageTypeState values.
+     *
+     * @return known StorageTypeState values.
+     */
     public static Collection<StorageTypeState> values() {
         return values(StorageTypeState.class);
     }

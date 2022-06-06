@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "e4111161-3890-4661-8062-75c3ff6c6d1b",
@@ -315,7 +315,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "66270b29-375f-422d-a7b4-ff5b0775569b"
@@ -341,7 +341,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "4049bae2-ae06-4a6a-86a7-0ce54b885655",
@@ -759,7 +759,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaks0760306/providers/Microsoft.ContainerService/managedClusters/akssample57451e0305333?api-version=2022-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerservice/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "8a8f6772-1233-4340-9677-9dbc40f2b17c"

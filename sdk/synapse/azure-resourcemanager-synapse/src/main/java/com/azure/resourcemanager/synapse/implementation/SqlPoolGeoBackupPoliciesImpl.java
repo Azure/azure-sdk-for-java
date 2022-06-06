@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.GeoBackupPolicyInner;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicy;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 import com.azure.resourcemanager.synapse.models.SqlPoolGeoBackupPolicies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolGeoBackupPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolGeoBackupPoliciesImpl.class);
 
     private final SqlPoolGeoBackupPoliciesClient innerClient;
 
@@ -77,7 +76,7 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
     public GeoBackupPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,14 +84,14 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -100,7 +99,7 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
         GeoBackupPolicyName geoBackupPolicyName =
             GeoBackupPolicyName.fromString(Utils.getValueFromIdByName(id, "geoBackupPolicies"));
         if (geoBackupPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
     public Response<GeoBackupPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,14 +122,14 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -138,7 +137,7 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
         GeoBackupPolicyName geoBackupPolicyName =
             GeoBackupPolicyName.fromString(Utils.getValueFromIdByName(id, "geoBackupPolicies"));
         if (geoBackupPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

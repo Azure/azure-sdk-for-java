@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2015-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.11.0-beta.1 (11.0.11; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8e29ff7c-fcce-4d4a-989c-936053fb23c0",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.15.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "60d0c203-60a6-4310-89f1-334984f91a10",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "984",
+      "content-length" : "947",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "49ee06ad-fed5-4ec4-8d58-2369c7e0297e",
-      "Date" : "Mon, 27 Dec 2021 02:05:49 GMT",
+      "x-ms-correlation-request-id" : "a0194f82-47ed-4eb5-8192-d9799dc88f04",
+      "Date" : "Fri, 15 Apr 2022 05:42:38 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20211227T020550Z:49ee06ad-fed5-4ec4-8d58-2369c7e0297e",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220415T054238Z:a0194f82-47ed-4eb5-8192-d9799dc88f04",
       "Set-Cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
       "Expires" : "-1",
-      "x-ms-request-id" : "be2c1765-4aa9-48b4-9366-af521f2f5cd3",
-      "Body" : "{\"value\":[{\"properties\":{\"roleName\":\"Contributor\",\"type\":\"BuiltInRole\",\"description\":\"Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.\",\"assignableScopes\":[\"/\"],\"permissions\":[{\"actions\":[\"*\"],\"notActions\":[\"Microsoft.Authorization/*/Delete\",\"Microsoft.Authorization/*/Write\",\"Microsoft.Authorization/elevateAccess/Action\",\"Microsoft.Blueprint/blueprintAssignments/write\",\"Microsoft.Blueprint/blueprintAssignments/delete\",\"Microsoft.Compute/galleries/share/action\"],\"dataActions\":[],\"notDataActions\":[]}],\"createdOn\":\"2015-02-02T21:55:09.8806423Z\",\"updatedOn\":\"2021-11-11T20:13:28.6061853Z\",\"createdBy\":null,\"updatedBy\":null},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"type\":\"Microsoft.Authorization/roleDefinitions\",\"name\":\"b24988ac-6180-42a0-ab88-20f7382dd24c\"}]}",
+      "x-ms-request-id" : "44769e81-20ca-48c2-ad21-cf62a201f9e5",
+      "Body" : "{\"value\":[{\"properties\":{\"roleName\":\"Contributor\",\"type\":\"BuiltInRole\",\"description\":\"Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.\",\"assignableScopes\":[\"/\"],\"permissions\":[{\"actions\":[\"*\"],\"notActions\":[\"Microsoft.Authorization/*/Delete\",\"Microsoft.Authorization/*/Write\",\"Microsoft.Authorization/elevateAccess/Action\",\"Microsoft.Blueprint/blueprintAssignments/write\",\"Microsoft.Blueprint/blueprintAssignments/delete\",\"Microsoft.Compute/galleries/share/action\"]}],\"createdOn\":\"2015-02-02T21:55:09.8806423Z\",\"updatedOn\":\"2021-11-11T20:13:28.6061853Z\",\"createdBy\":null,\"updatedBy\":null},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"type\":\"Microsoft.Authorization/roleDefinitions\",\"name\":\"b24988ac-6180-42a0-ab88-20f7382dd24c\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

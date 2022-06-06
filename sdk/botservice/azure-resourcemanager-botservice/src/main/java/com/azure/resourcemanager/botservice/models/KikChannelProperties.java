@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Kik channel. */
 @Fluent
 public final class KikChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KikChannelProperties.class);
-
     /*
      * The Kik user name
      */
@@ -128,9 +125,11 @@ public final class KikChannelProperties {
      */
     public void validate() {
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property username in model KikChannelProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KikChannelProperties.class);
 }

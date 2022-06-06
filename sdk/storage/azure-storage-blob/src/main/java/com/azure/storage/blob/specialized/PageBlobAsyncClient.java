@@ -7,7 +7,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -19,26 +24,34 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffResponse;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsResizeHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.ClearRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageBlobItem;
+import com.azure.storage.blob.models.PageRangeItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.ListPageRangesDiffOptions;
+import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -48,7 +61,13 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -332,6 +351,88 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                     null, hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
             });
+    }
+
+    /**
+     * Creates a page blob of the specified length if it does not exist.
+     * Call PutPage to upload data to a page blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
+     * <pre>
+     * client.createIfNotExists&#40;size&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created page blob with sequence number %s%n&quot;, response.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.PageBlobAsyncClient.createIfNotExists#long -->
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     *
+     * @return A reactive response {@link Mono} signaling completion. {@link PageBlobItem} contains information of
+     * the newly created page blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PageBlobItem> createIfNotExists(long size) {
+        return createIfNotExistsWithResponse(new PageBlobCreateOptions(size)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a page blob of the specified length if it does not exist. Call PutPage to upload data to a page blob.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;.subscribe&#40;response -&gt; &#123;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
+     *
+     * @param options {@link PageBlobCreateOptions}
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link PageBlobItem} containing information about the page blob. If {@link Response}'s status code is
+     * 201, a new page blob was successfully created. If status code is 409, a page blob already existed at this location.
+     *
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
+     * {@code sequenceNumber} isn't null and is less than 0.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
+        try {
+            return createIfNotExistsWithResponse(options, null);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {
+        try {
+            options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
+                && ((BlobStorageException) t).getStatusCode() == 409,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -713,7 +814,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
             getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobsClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -745,8 +846,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param blobRange {@link BlobRange}
      *
      * @return A reactive response containing the information of the cleared pages.
+     * @deprecated Use {@link #listPageRanges(BlobRange)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<PageList> getPageRanges(BlobRange blobRange) {
         return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
     }
@@ -775,8 +878,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param blobRange {@link BlobRange}
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response emitting all the page ranges.
+     * @deprecated Use {@link #listPageRanges(ListPageRangesOptions)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobRequestConditions requestConditions) {
         try {
@@ -796,9 +901,131 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 getSnapshotId(), null, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null,
+                requestConditions.getTagsConditions(), null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue()));
+    }
+
+    /**
+     * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * client.listPageRanges&#40;blobRange&#41;.subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;,
+     *     rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#BlobRange -->
+     *
+     * @param blobRange {@link BlobRange}
+     *
+     * @return A reactive response containing the information of the cleared pages.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PageRangeItem> listPageRanges(BlobRange blobRange) {
+        return listPageRanges(new ListPageRangesOptions(blobRange));
+    }
+
+    /**
+     * Returns the list of valid page ranges for a page blob or snapshot of a page blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions -->
+     * <pre>
+     * ListPageRangesOptions options = new ListPageRangesOptions&#40;new BlobRange&#40;offset&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;.setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
+     *
+     * client.listPageRanges&#40;options&#41;
+     *     .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s%n&quot;, rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;,
+     *         rangeItem.getRange&#40;&#41;.getLength&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRanges#ListPageRangesOptions -->
+     *
+     * @param options {@link ListPageRangesOptions}
+     * @return A reactive response emitting all the page ranges.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PageRangeItem> listPageRanges(ListPageRangesOptions options) {
+        return new PagedFlux<>(
+            pageSize -> withContext(context ->
+                listPageRangesWithOptionalTimeout(options, null, context).apply(null, pageSize)),
+            (continuationToken, pageSize) -> withContext(context ->
+                listPageRangesWithOptionalTimeout(options, null, context).apply(continuationToken, pageSize)));
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * ContainerClient. Applies the given timeout to each Mono<ContainersListBlobHierarchySegmentResponse> backing the
+     * PagedFlux.
+     *
+     * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
+     * @param options {@link PageBlobGetPageRangesOptions}
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
+     * @return A reactive response emitting the listed blobs, flattened.
+     */
+    BiFunction<String, Integer, Mono<PagedResponse<PageRangeItem>>> listPageRangesWithOptionalTimeout(
+        ListPageRangesOptions options, Duration timeout, Context context) {
+        return (marker, pageSize) -> {
+            ListPageRangesOptions finalOptions;
+            /*
+             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+             Otherwise, prefer the new value.
+             */
+            if (pageSize != null) {
+                finalOptions = new ListPageRangesOptions(options.getRange()).setMaxResultsPerPage(pageSize);
+            } else {
+                finalOptions = options;
+            }
+            return getPageRangesSegment(marker, finalOptions, timeout, context)
+                .map(response -> {
+                    List<PageRangeItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : Stream.concat(
+                        response.getValue().getPageRange().stream().map(PageBlobAsyncClient::toPageBlobRange),
+                        response.getValue().getClearRange().stream().map(PageBlobAsyncClient::toPageBlobRange)
+                    ).collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        PageListHelper.getNextMarker(response.getValue()),
+                        response.getDeserializedHeaders());
+                });
+        };
+    }
+
+    private Mono<PageBlobsGetPageRangesResponse> getPageRangesSegment(String marker,
+        ListPageRangesOptions options, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
+        context = context == null ? Context.NONE : context;
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getPageBlobs().getPageRangesWithResponseAsync(containerName, blobName,
+                getSnapshotId(), null, options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)),
+            timeout);
+    }
+
+    private static PageRangeItem toPageBlobRange(PageRange range) {
+        return new PageRangeItem(new HttpRange(range.getStart(), range.getEnd() - range.getStart() + 1), false);
+    }
+
+    private static PageRangeItem toPageBlobRange(ClearRange range) {
+        return new PageRangeItem(new HttpRange(range.getStart(), range.getEnd() - range.getStart() + 1), true);
     }
 
     /**
@@ -828,8 +1055,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * long as the snapshot specified by prevsnapshot is the older of the two.
      *
      * @return A reactive response emitting all the different page ranges.
+     * @deprecated See {@link #listPageRangesDiff(BlobRange, String)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
     }
@@ -865,8 +1094,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting all the different page ranges.
      *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
+     * @deprecated See {@link #listPageRangesDiff(ListPageRangesDiffOptions)}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobRequestConditions requestConditions) {
         try {
@@ -875,6 +1106,70 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;offset&#41;;
+     * String prevSnapshot = &quot;previous snapshot&quot;;
+     *
+     * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
+     * client.listPageRangesDiff&#40;blobRange, prevSnapshot&#41;.subscribe&#40;rangeItem -&gt;
+     *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
+     *     rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String -->
+     *
+     * @param blobRange {@link BlobRange}
+     * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
+     * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
+     * long as the snapshot specified by prevsnapshot is the older of the two.
+     *
+     * @return A reactive response emitting all the different page ranges.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PageRangeItem> listPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+        return listPageRangesDiff(new ListPageRangesDiffOptions(blobRange, prevSnapshot));
+    }
+
+    /**
+     * Gets the collection of page ranges that differ between a specified snapshot and this page blob. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions -->
+     * <pre>
+     * ListPageRangesDiffOptions options = new ListPageRangesDiffOptions&#40;new BlobRange&#40;offset&#41;, &quot;previous snapshot&quot;&#41;
+     *     .setRequestConditions&#40;new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setMaxResultsPerPage&#40;1000&#41;;
+     *
+     * client.listPageRangesDiff&#40;options&#41;
+     *     .subscribe&#40;rangeItem -&gt; System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
+     *         rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions -->
+     *
+     * @param options {@link ListPageRangesDiffOptions}.
+     * @return A reactive response emitting all the different page ranges.
+     *
+     * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PageRangeItem> listPageRangesDiff(ListPageRangesDiffOptions options) {
+        return new PagedFlux<>(
+            pageSize -> withContext(context ->
+                listPageRangesDiffWithOptionalTimeout(options, null, context).apply(null, pageSize)),
+            (continuationToken, pageSize) -> withContext(context ->
+                listPageRangesDiffWithOptionalTimeout(options, null, context).apply(continuationToken, pageSize)));
     }
 
     /**
@@ -978,9 +1273,73 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 getSnapshotId(), null, prevSnapshot, prevSnapshotUrl, blobRange.toHeaderValue(),
                 requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), response.getValue()));
+    }
+
+    /*
+     * Implementation for this paged listing operation, supporting an optional timeout provided by the synchronous
+     * ContainerClient. Applies the given timeout to each Mono<ContainersListBlobHierarchySegmentResponse> backing the
+     * PagedFlux.
+     *
+     * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
+     * @param options {@link PageBlobGetPageRangesDiffOptions}
+     * @param timeout An optional timeout to be applied to the network asynchronous operations.
+     * @return A reactive response emitting the listed blobs, flattened.
+     */
+    BiFunction<String, Integer, Mono<PagedResponse<PageRangeItem>>> listPageRangesDiffWithOptionalTimeout(ListPageRangesDiffOptions options,
+        Duration timeout, Context context) {
+        return (marker, pageSize) -> {
+            ListPageRangesDiffOptions finalOptions;
+            /*
+             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+             Otherwise, prefer the new value.
+             */
+            if (pageSize != null) {
+                finalOptions =
+                    new ListPageRangesDiffOptions(options.getRange(), options.getPreviousSnapshot())
+                        .setRequestConditions(options.getRequestConditions()).setMaxResultsPerPage(pageSize);
+            } else {
+                finalOptions = options;
+            }
+
+            return getPageRangesDiffSegment(marker, finalOptions, timeout, context)
+                .map(response -> {
+                    List<PageRangeItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : Stream.concat(
+                            response.getValue().getPageRange().stream().map(PageBlobAsyncClient::toPageBlobRange),
+                            response.getValue().getClearRange().stream().map(PageBlobAsyncClient::toPageBlobRange))
+                        .collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        PageListHelper.getNextMarker(response.getValue()),
+                        response.getDeserializedHeaders());
+                });
+        };
+    }
+
+    private Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffSegment(String marker,
+        ListPageRangesDiffOptions options, Duration timeout, Context context) {
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
+        context = context == null ? Context.NONE : context;
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getPageBlobs().getPageRangesDiffWithResponseAsync(containerName, blobName,
+                getSnapshotId(), null, options.getPreviousSnapshot(), null,
+                options.getRange().toHeaderValue(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)),
+            timeout);
     }
 
     /**

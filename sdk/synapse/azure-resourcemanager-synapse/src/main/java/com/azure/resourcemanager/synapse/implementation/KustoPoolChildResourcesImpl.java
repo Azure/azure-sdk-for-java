@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.synapse.models.CheckNameResult;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.KustoPoolChildResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolChildResourcesImpl implements KustoPoolChildResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolChildResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolChildResourcesImpl.class);
 
     private final KustoPoolChildResourcesClient innerClient;
 

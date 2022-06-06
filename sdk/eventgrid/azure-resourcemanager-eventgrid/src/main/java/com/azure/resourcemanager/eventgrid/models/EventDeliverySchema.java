@@ -30,7 +30,11 @@ public final class EventDeliverySchema extends ExpandableStringEnum<EventDeliver
         return fromString(name, EventDeliverySchema.class);
     }
 
-    /** @return known EventDeliverySchema values. */
+    /**
+     * Gets known EventDeliverySchema values.
+     *
+     * @return known EventDeliverySchema values.
+     */
     public static Collection<EventDeliverySchema> values() {
         return values(EventDeliverySchema.class);
     }

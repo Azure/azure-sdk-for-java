@@ -8,8 +8,6 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 /**
@@ -23,8 +21,6 @@ import org.springframework.util.StringUtils;
  * @see AbstractMessageListenerContainer
  */
 public class ServiceBusMessageListenerContainer extends AbstractMessageListenerContainer {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageListenerContainer.class);
 
     private final ServiceBusProcessorFactory processorFactory;
     private final ServiceBusContainerProperties containerProperties;
@@ -62,7 +58,9 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
 
     @Override
     protected void doStop() {
-        this.delegate.stop();
+        if (this.delegate != null) {
+            this.delegate.stop();
+        }
     }
 
     @Override

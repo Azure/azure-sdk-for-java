@@ -175,11 +175,8 @@ public final class PollOperation {
             }).next()
             .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
                 .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
-                .switchIfEmpty(Mono.defer(() -> {
-                    return Mono.just(pollingState.update(response.getStatusCode(),
-                        response.getHeaders(),
-                        null));
-                })));
+                .switchIfEmpty(Mono.fromSupplier(() -> pollingState.update(response.getStatusCode(),
+                    response.getHeaders(), null))));
     }
 
     private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(

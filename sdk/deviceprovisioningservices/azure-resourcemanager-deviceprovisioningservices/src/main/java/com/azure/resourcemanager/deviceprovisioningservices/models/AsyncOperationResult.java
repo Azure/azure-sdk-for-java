@@ -20,7 +20,7 @@ public interface AsyncOperationResult {
      *
      * @return the error value.
      */
-    ErrorMesssage error();
+    ErrorMessage error();
 
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.AsyncOperationResultInner

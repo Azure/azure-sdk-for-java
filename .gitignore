@@ -85,6 +85,7 @@ ClientFromSourcePom.xml
 
 # Anaconda virtual env
 venv
+.venv
 
 # NetBeans
 nbproject

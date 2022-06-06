@@ -142,10 +142,10 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerAsyncClient.class);
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;
@@ -236,9 +236,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         if (Objects.isNull(partitionId)) {
-            return monoError(logger, new NullPointerException("'partitionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'partitionId' cannot be null."));
         } else if (partitionId.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'partitionId' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         return connectionProcessor.flatMap(connection -> connection.getManagementNode())
@@ -289,13 +289,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
-            return fluxError(logger, new NullPointerException("'partitionId' cannot be null."));
+            return fluxError(LOGGER, new NullPointerException("'partitionId' cannot be null."));
         } else if (partitionId.isEmpty()) {
-            return fluxError(logger, new IllegalArgumentException("'partitionId' cannot be an empty string."));
+            return fluxError(LOGGER, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
         if (Objects.isNull(startingPosition)) {
-            return fluxError(logger, new NullPointerException("'startingPosition' cannot be null."));
+            return fluxError(LOGGER, new NullPointerException("'startingPosition' cannot be null."));
         }
 
         final String linkName = StringUtil.getRandomString(partitionId);
@@ -375,7 +375,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
         if (Objects.isNull(receiveOptions)) {
-            return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
+            return fluxError(LOGGER, new NullPointerException("'receiveOptions' cannot be null."));
         }
 
         final EventPosition startingPosition = startReadingAtEarliestEvent
@@ -419,7 +419,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     private void removeLink(String linkName, String partitionId, SignalType signalType) {
-        logger.atInfo()
+        LOGGER.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(PARTITION_ID_KEY, partitionId)
             .addKeyValue(SIGNAL_TYPE_KEY, signalType)
@@ -443,7 +443,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         //
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionProcessor
             .flatMap(connection -> {
-                logger.atInfo()
+                LOGGER.atInfo()
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .addKeyValue(PARTITION_ID_KEY, partitionId)
                     .addKeyValue(CONNECTION_ID_KEY, connection.getId())

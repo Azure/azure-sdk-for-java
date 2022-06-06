@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
-import java.util.Map;
 
 /** SQL stored procedure activity type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -105,7 +104,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
      *
      * @return the storedProcedureParameters value.
      */
-    public Map<String, StoredProcedureParameter> storedProcedureParameters() {
+    public Object storedProcedureParameters() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storedProcedureParameters();
     }
 
@@ -116,8 +115,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
-    public SqlServerStoredProcedureActivity withStoredProcedureParameters(
-        Map<String, StoredProcedureParameter> storedProcedureParameters) {
+    public SqlServerStoredProcedureActivity withStoredProcedureParameters(Object storedProcedureParameters) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SqlServerStoredProcedureActivityTypeProperties();
         }

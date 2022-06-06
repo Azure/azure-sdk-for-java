@@ -6,17 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Base class for backup copies. Workload-specific backup copies are derived from this class. */
 @Fluent
 public final class RecoveryPointResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointResourceInner.class);
-
     /*
      * RecoveryPointResource properties
      */

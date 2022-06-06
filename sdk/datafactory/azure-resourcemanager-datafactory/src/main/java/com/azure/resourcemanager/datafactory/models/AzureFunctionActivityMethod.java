@@ -42,7 +42,11 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
         return fromString(name, AzureFunctionActivityMethod.class);
     }
 
-    /** @return known AzureFunctionActivityMethod values. */
+    /**
+     * Gets known AzureFunctionActivityMethod values.
+     *
+     * @return known AzureFunctionActivityMethod values.
+     */
     public static Collection<AzureFunctionActivityMethod> values() {
         return values(AzureFunctionActivityMethod.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedClusters GetAccessProfile. */
 public final class ManagedClustersGetAccessProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ManagedClustersGetAccessProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/ManagedClustersGetAccessProfile.json
      */
     /**
      * Sample code: Get Managed Cluster.

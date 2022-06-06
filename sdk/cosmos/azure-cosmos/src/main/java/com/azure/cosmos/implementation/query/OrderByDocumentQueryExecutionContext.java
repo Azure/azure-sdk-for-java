@@ -48,6 +48,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -559,7 +560,8 @@ public class OrderByDocumentQueryExecutionContext
                 initialPageSize,
                 continuationToken,
                 top,
-                this.targetRangeToOrderByContinuationTokenMap);
+                this.targetRangeToOrderByContinuationTokenMap,
+                this.getOperationContextTextProvider());
     }
 
     private static class ItemToPageTransformer

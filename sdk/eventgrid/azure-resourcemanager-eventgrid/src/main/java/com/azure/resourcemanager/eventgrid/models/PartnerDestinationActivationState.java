@@ -27,7 +27,11 @@ public final class PartnerDestinationActivationState extends ExpandableStringEnu
         return fromString(name, PartnerDestinationActivationState.class);
     }
 
-    /** @return known PartnerDestinationActivationState values. */
+    /**
+     * Gets known PartnerDestinationActivationState values.
+     *
+     * @return known PartnerDestinationActivationState values.
+     */
     public static Collection<PartnerDestinationActivationState> values() {
         return values(PartnerDestinationActivationState.class);
     }

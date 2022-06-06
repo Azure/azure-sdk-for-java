@@ -25,15 +25,21 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
+import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.StringUtils;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -42,6 +48,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
  * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
+@AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
 public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigurationBase {
 
     private final IdentityClientProperties identityClientProperties;
@@ -68,12 +75,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @ConditionalOnMissingBean
     DefaultAzureCredentialBuilderFactory azureCredentialBuilderFactory(
         ObjectProvider<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>> customizers,
-        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
+        @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor) {
         DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(identityClientProperties);
-
-        threadPoolTaskExecutors.ifAvailable(tpe -> factory.setExecutorService(tpe.getThreadPoolExecutor()));
+        factory.setExecutorService(threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-
         return factory;
     }
 
@@ -147,28 +152,22 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean
     @ConditionalOnMissingBean
     ClientSecretCredentialBuilderFactory clientSecretCredentialBuilderFactory(
-        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors,
+        @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ClientSecretCredentialBuilder>> customizers) {
-
         ClientSecretCredentialBuilderFactory factory = new ClientSecretCredentialBuilderFactory(identityClientProperties);
-
-        threadPoolTaskExecutors.ifAvailable(tpe -> factory.setExecutorService(tpe.getThreadPoolExecutor()));
+        factory.setExecutorService(threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-
         return factory;
     }
 
     @Bean
     @ConditionalOnMissingBean
     ClientCertificateCredentialBuilderFactory clientCertificateCredentialBuilderFactory(
-        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors,
+        @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ClientCertificateCredentialBuilder>> customizers) {
-
         ClientCertificateCredentialBuilderFactory factory = new ClientCertificateCredentialBuilderFactory(identityClientProperties);
-
-        threadPoolTaskExecutors.ifAvailable(tpe -> factory.setExecutorService(tpe.getThreadPoolExecutor()));
+        factory.setExecutorService(threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-
         return factory;
     }
 
@@ -201,8 +200,18 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
      * @return the BPP.
      */
     @Bean
-    public static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
+    static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
         return new AzureServiceClientBuilderFactoryPostProcessor();
+    }
+
+    @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
+    @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
+    ThreadPoolTaskExecutor credentialTaskExecutor() {
+        return new TaskExecutorBuilder()
+            .corePoolSize(8)
+            .allowCoreThreadTimeOut(true)
+            .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)
+            .build();
     }
 
     /**
@@ -213,7 +222,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         private BeanFactory beanFactory;
 
         @Override
-        @SuppressWarnings("rawtypes")
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
             if (bean instanceof AbstractAzureCredentialBuilderFactory) {
                 return bean;
@@ -221,8 +230,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
-                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(
+                AbstractAzureServiceClientBuilderFactory factory = (AbstractAzureServiceClientBuilderFactory) bean;
+                factory.setDefaultTokenCredential(
                     (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
+                factory.setTokenCredentialResolver(beanFactory.getBean(AzureTokenCredentialResolver.class));
             }
             return bean;
         }

@@ -125,7 +125,7 @@ public final class KeyVaultBackupClientImpl {
      */
     @Host("{vaultBaseUrl}")
     @ServiceInterface(name = "KeyVaultBackupClient")
-    private interface KeyVaultBackupClientService {
+    public interface KeyVaultBackupClientService {
         @Post("/backup")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)

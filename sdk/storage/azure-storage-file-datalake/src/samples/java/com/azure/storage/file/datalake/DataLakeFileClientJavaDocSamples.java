@@ -12,6 +12,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
@@ -409,6 +410,31 @@ public class DataLakeFileClientJavaDocSamples {
         client.scheduleDeletionWithResponse(options, timeout, context);
         System.out.println("File deletion has been scheduled");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.scheduleDeletionWithResponse#FileScheduleDeletionOptions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileClient#deleteIfExists()}  and
+     * {@link DataLakeFileClient#deleteIfExistsWithResponse(DataLakePathDeleteOptions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists
+        client.deleteIfExists();
+        System.out.println("Delete request completed");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(requestConditions);
+
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
     }
 
 }

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperation
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatuses;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ValidateOperationStatusesImpl implements ValidateOperationStatuses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateOperationStatusesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateOperationStatusesImpl.class);
 
     private final ValidateOperationStatusesClient innerClient;
 

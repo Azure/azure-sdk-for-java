@@ -59,6 +59,10 @@ public final class ProtectionIntentResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProtectionIntentResourceInner innerModel() {
         return this.innerObject;
     }

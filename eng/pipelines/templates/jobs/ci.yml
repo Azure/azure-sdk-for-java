@@ -52,12 +52,15 @@ parameters:
   - name: TestParallelization
     type: string
     default: '1C'
+  - name: JavaBuildVersion
+    type: string
+    default: $(JavaBuildVersion)
 
 jobs:
   - job: 'Build'
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
@@ -74,43 +77,42 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
             Paths:
-              - 'sdk/${{ parameters.ServiceDirectory }}'
               - '**/*.xml'
               - '**/*.md'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
-      - template: ../steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
           JobType: 'Build'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
 
-      - ${{ parameters.PreBuildSteps }}
-
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
         inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the github service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            Paths: $(CheckoutDirectories)
+            Paths: $(SparseCheckoutDirectories)
             SkipDefaultCheckout: true
+
+      - ${{ parameters.PreBuildSteps }}
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -120,6 +122,18 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-two"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -162,16 +176,27 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - task: Maven@3
-        displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
+        displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Verify Required Maven Artifacts'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
+          arguments: >
+            -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
+            -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+            -InformationAction Continue
 
       - task: PowerShell@2
         displayName: 'Copy artifacts to staging'
@@ -214,7 +239,7 @@ jobs:
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     variables:
-      - template: ../variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
@@ -248,29 +273,41 @@ jobs:
           filePath: eng/versioning/pom_file_version_scanner.ps1
           arguments: -Debug:$$(IsDebug)
 
-      - template: ../steps/generate-project-list.yml
+      - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
-          SDKType: ${{parameters.SDKType}}
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
+      - task: PowerShell@2
+        displayName: Generate directories variable for sparse checkout
         inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+          arguments: >
+            -SourcesDirectory $(Build.SourcesDirectory)
+            -ProjectList $(ProjectList)
 
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          Paths: $(CheckoutDirectories)
+          Paths: $(SparseCheckoutDirectories)
           SkipDefaultCheckout: true
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-two"
+          ServiceDirectory: "template"
+          TestPipeline: ${{ parameters.TestPipeline }}
+
+      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        parameters:
+          PackageName: "azure-sdk-template-three"
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
@@ -309,6 +346,8 @@ jobs:
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
       - template: ../steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
@@ -319,7 +358,7 @@ jobs:
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} ${{parameters.AdditionalBuildOptions}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -330,7 +369,7 @@ jobs:
           options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -DskipCompile=true -DskipTestCompile=true ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
@@ -340,6 +379,9 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   - job: Compliance
+    variables:
+    - template: /eng/pipelines/templates/variables/globals.yml
+
     pool:
       name: azsdk-pool-mms-win-2019-general
       vmImage: MMS2019

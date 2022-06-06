@@ -12,6 +12,8 @@ import java.net.URLEncoder;
  */
 public final class AadB2cUrl {
 
+    private static final String MSG_USER_FLOW_CANNOT_BE_EMPTY = "user flow should have text.";
+
     private AadB2cUrl() {
 
     }
@@ -45,7 +47,7 @@ public final class AadB2cUrl {
      * @return the token URL
      */
     public static String getTokenUrl(String baseUri, String userFlow) {
-        Assert.hasText(userFlow, "user flow should have text.");
+        Assert.hasText(userFlow, MSG_USER_FLOW_CANNOT_BE_EMPTY);
 
         return addSlash(baseUri) + TOKEN_URL_PATTERN + userFlow;
     }
@@ -80,7 +82,7 @@ public final class AadB2cUrl {
      * @return the JWK set URL
      */
     public static String getJwkSetUrl(String baseUri, String userFlow) {
-        Assert.hasText(userFlow, "user flow should have text.");
+        Assert.hasText(userFlow, MSG_USER_FLOW_CANNOT_BE_EMPTY);
 
         return addSlash(baseUri) + JWKSET_URL_PATTERN + userFlow;
     }
@@ -95,7 +97,7 @@ public final class AadB2cUrl {
      */
     public static String getEndSessionUrl(String baseUri, String logoutUrl, String userFlow) {
         Assert.hasText(logoutUrl, "logoutUrl should have text.");
-        Assert.hasText(userFlow, "user flow should have text.");
+        Assert.hasText(userFlow, MSG_USER_FLOW_CANNOT_BE_EMPTY);
 
         return addSlash(baseUri) + String.format(END_SESSION_URL_PATTERN, getEncodedURL(logoutUrl), userFlow);
     }

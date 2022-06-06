@@ -24,7 +24,11 @@ public final class ConditionType extends ExpandableStringEnum<ConditionType> {
         return fromString(name, ConditionType.class);
     }
 
-    /** @return known ConditionType values. */
+    /**
+     * Gets known ConditionType values.
+     *
+     * @return known ConditionType values.
+     */
     public static Collection<ConditionType> values() {
         return values(ConditionType.class);
     }

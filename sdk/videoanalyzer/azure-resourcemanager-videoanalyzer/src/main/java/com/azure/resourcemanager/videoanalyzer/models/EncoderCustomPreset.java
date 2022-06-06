@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.EncoderCustomPreset")
 @Fluent
 public final class EncoderCustomPreset extends EncoderPresetBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncoderCustomPreset.class);
-
     /*
      * Describes a custom preset for encoding audio.
      */

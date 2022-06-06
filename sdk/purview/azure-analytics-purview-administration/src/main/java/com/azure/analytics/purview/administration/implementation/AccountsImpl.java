@@ -48,7 +48,7 @@ public final class AccountsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "PurviewAccountClient")
-    private interface AccountsService {
+    public interface AccountsService {
         @Get("/")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> getAccountProperties(

@@ -121,6 +121,10 @@ public final class PartnerRegistrationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerRegistrationInner innerModel() {
         return this.innerObject;
     }

@@ -27,7 +27,11 @@ public final class VideoType extends ExpandableStringEnum<VideoType> {
         return fromString(name, VideoType.class);
     }
 
-    /** @return known VideoType values. */
+    /**
+     * Gets known VideoType values.
+     *
+     * @return known VideoType values.
+     */
     public static Collection<VideoType> values() {
         return values(VideoType.class);
     }

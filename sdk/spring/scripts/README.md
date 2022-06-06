@@ -15,4 +15,4 @@ Scripts in this folder is used to hold the scripts used in Spring Cloud Azure pr
 7. Run command `python .\eng\versioning\update_versions.py --ut external_dependency --sr`
 8. Run command `.\eng\versioning\pom_file_version_scanner.ps1 -Debug`. If there is error, fix it.
 9. Update changelog about compatible Spring Boot versions and Spring Cloud versions in `/sdk/spring/CHANGELOG.md`.
-10. Update two spring-boot versions and two spring-cloud versions in`/sdk/spring/ci.yml` for pipeline.
+10. Update two spring-boot versions and two spring-cloud versions in`/sdk/spring/ci.yml` for pipeline, then use script `get_spring_boot_managed_external_dependencies.py` generate corresponding file `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`, delete the old two files.

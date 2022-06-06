@@ -226,7 +226,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -291,7 +291,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -323,14 +323,7 @@ public final class CapacityReservationGroupsClientImpl
     public Mono<CapacityReservationGroupInner> createOrUpdateAsync(
         String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -419,7 +412,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -484,7 +477,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -516,14 +509,7 @@ public final class CapacityReservationGroupsClientImpl
     public Mono<CapacityReservationGroupInner> updateAsync(
         String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -604,7 +590,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -659,7 +645,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -688,7 +674,7 @@ public final class CapacityReservationGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName) {
         return deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -768,7 +754,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -830,7 +816,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -866,14 +852,7 @@ public final class CapacityReservationGroupsClientImpl
         String capacityReservationGroupName,
         CapacityReservationGroupInstanceViewTypes expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -892,14 +871,7 @@ public final class CapacityReservationGroupsClientImpl
         String resourceGroupName, String capacityReservationGroupName) {
         final CapacityReservationGroupInstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -979,7 +951,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1039,7 +1011,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1192,7 +1164,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1246,7 +1218,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -1800,7 +1800,7 @@ public final class TextAnalyticsClient {
      * @return A {@link SyncPoller} that polls the analyze a collection of actions operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link AnalyzeActionsResultPagedIterable}.
      *
-     * @throws NullPointerException if {@code documents} is null.
+     * @throws NullPointerException if {@code documents} or {@code actions} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */

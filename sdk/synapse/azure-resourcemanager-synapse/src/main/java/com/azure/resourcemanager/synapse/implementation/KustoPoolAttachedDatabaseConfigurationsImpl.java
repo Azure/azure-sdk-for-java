@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.KustoPoolAttachedDatabaseConfigu
 import com.azure.resourcemanager.synapse.fluent.models.AttachedDatabaseConfigurationInner;
 import com.azure.resourcemanager.synapse.models.AttachedDatabaseConfiguration;
 import com.azure.resourcemanager.synapse.models.KustoPoolAttachedDatabaseConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoPoolAttachedDatabaseConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolAttachedDatabaseConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolAttachedDatabaseConfigurationsImpl.class);
 
     private final KustoPoolAttachedDatabaseConfigurationsClient innerClient;
 
@@ -103,21 +102,21 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
     public AttachedDatabaseConfiguration getById(String id) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,21 +142,21 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
     public Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -182,21 +181,21 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
     public void deleteById(String id) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,7 +206,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -219,21 +218,21 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
     public void deleteByIdWithResponse(String id, Context context) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,7 +243,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsImpl implements KustoP
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

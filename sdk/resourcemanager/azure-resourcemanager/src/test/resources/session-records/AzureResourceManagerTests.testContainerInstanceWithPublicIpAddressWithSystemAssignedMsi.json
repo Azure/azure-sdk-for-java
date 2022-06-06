@@ -188,7 +188,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci05002/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2018-01-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci05002/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2015-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4094a306-97ab-4cf0-92ee-d1a01ea241a6",
@@ -215,7 +215,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci05002/providers/Microsoft.Authorization/roleAssignments/7a9bb3cb-442b-48c4-8719-11579d1766da?api-version=2020-08-01-preview",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci05002/providers/Microsoft.Authorization/roleAssignments/7a9bb3cb-442b-48c4-8719-11579d1766da?api-version=2020-10-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "179c8cfc-ef53-4f1a-ad1c-7cf98ec4a515",

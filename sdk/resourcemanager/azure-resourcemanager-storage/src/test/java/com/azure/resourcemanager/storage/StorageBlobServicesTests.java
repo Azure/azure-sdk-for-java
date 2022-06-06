@@ -45,10 +45,12 @@ public class StorageBlobServicesTests extends StorageManagementTest {
                 .define("blobServicesTest")
                 .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
                 .withDeleteRetentionPolicyEnabled(5)
+                .withBlobVersioningEnabled()
                 .create();
 
         Assertions.assertTrue(blobService.deleteRetentionPolicy().enabled());
         Assertions.assertEquals(5, blobService.deleteRetentionPolicy().days().intValue());
+        Assertions.assertTrue(blobService.isBlobVersioningEnabled());
     }
 
     @Test
@@ -69,10 +71,17 @@ public class StorageBlobServicesTests extends StorageManagementTest {
                 .define("blobServicesTest")
                 .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
                 .withDeleteRetentionPolicyEnabled(5)
+                .withBlobVersioningEnabled()
                 .create();
 
-        blobService.update().withDeleteRetentionPolicyDisabled().apply();
+        Assertions.assertTrue(blobService.isBlobVersioningEnabled());
+
+        blobService.update()
+            .withDeleteRetentionPolicyDisabled()
+            .withBlobVersioningDisabled()
+            .apply();
 
         Assertions.assertFalse(blobService.deleteRetentionPolicy().enabled());
+        Assertions.assertFalse(blobService.isBlobVersioningEnabled());
     }
 }

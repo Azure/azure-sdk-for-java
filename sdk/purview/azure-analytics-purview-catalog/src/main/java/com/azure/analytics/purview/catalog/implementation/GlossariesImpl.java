@@ -62,7 +62,7 @@ public final class GlossariesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface GlossariesService {
+    public interface GlossariesService {
         @Get("/atlas/v2/glossary")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

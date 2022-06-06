@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.14.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
+      <version>2.15.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.33</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.9</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -107,7 +107,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.16.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.17.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.7</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
+      <version>2.11.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -197,7 +197,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>

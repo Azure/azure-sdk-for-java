@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedClusters GetOSOptions. */
 public final class ManagedClustersGetOSOptionsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/ContainerServiceGetOSOptions.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/ContainerServiceGetOSOptions.json
      */
     /**
      * Sample code: Get Container Service OS Options.

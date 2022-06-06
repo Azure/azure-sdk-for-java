@@ -27,7 +27,11 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
         return fromString(name, SecurityEncryptionTypes.class);
     }
 
-    /** @return known SecurityEncryptionTypes values. */
+    /**
+     * Gets known SecurityEncryptionTypes values.
+     *
+     * @return known SecurityEncryptionTypes values.
+     */
     public static Collection<SecurityEncryptionTypes> values() {
         return values(SecurityEncryptionTypes.class);
     }

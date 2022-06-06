@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -38,6 +39,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -89,6 +91,7 @@ class DocumentProducer<T> {
     }
 
     protected final IDocumentQueryClient client;
+    protected final Supplier<String> operationContextTextProvider;
     protected final String collectionRid;
     protected final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     protected final Class<T> resourceType;
@@ -119,7 +122,8 @@ class DocumentProducer<T> {
             int initialPageSize, // = -1,
             String initialContinuationToken,
             int top,
-            FeedRangeEpkImpl feedRange) {
+            FeedRangeEpkImpl feedRange,
+            Supplier<String> operationContextTextProvider) {
 
         this.client = client;
         this.collectionRid = collectionResourceId;
@@ -129,7 +133,7 @@ class DocumentProducer<T> {
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
-
+        this.operationContextTextProvider = operationContextTextProvider;
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
             this.fetchSchedulingMetrics.start();
@@ -181,7 +185,11 @@ class DocumentProducer<T> {
                         executeRequestFuncWithRetries,
                         top,
                         pageSize,
-                        Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize)
+                        Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
+                        ImplementationBridgeHelpers
+                            .CosmosQueryRequestOptionsHelper
+                            .getCosmosQueryRequestOptionsAccessor()
+                            .getOperationContext(cosmosQueryRequestOptions)
                 )
                 .map(rsp -> {
                     lastResponseContinuationToken = rsp.getContinuationToken();
@@ -198,12 +206,19 @@ class DocumentProducer<T> {
         return sourceFeedResponseObservable.onErrorResume( t -> {
             CosmosException dce = Utils.as(t, CosmosException.class);
             if (dce == null || !isSplit(dce)) {
-                logger.error("Unexpected failure", t);
+                logger.error(
+                    "Unexpected failure, Context: {}",
+                    this.operationContextTextProvider.get(),
+                    t);
                 return Flux.error(t);
             }
 
             // we are dealing with Split
-            logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", feedRange, dce);
+            logger.info(
+                "DocumentProducer handling a partition split in [{}], detail:[{}], Context: {}",
+                feedRange,
+                dce,
+                this.operationContextTextProvider.get());
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange());
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
@@ -211,14 +226,15 @@ class DocumentProducer<T> {
             // so this is resilient to split on splits.
             Flux<DocumentProducer<T>> replacementProducers = replacementRangesObs.flux().flatMap(
                     partitionKeyRangesValueHolder ->  {
-                        if (logger.isDebugEnabled()) {
+                        if (logger.isInfoEnabled()) {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
-                                    + " last continuation token is [{}].",
-                                    feedRange,
-                                    partitionKeyRangesValueHolder.v.stream()
-                                                                   .map(ModelBridgeInternal::toJsonFromJsonSerializable)
-                                                                   .collect(Collectors.joining(", ")),
-                                    lastResponseContinuationToken);
+                                + " last continuation token is [{}]. - Context: {}",
+                                feedRange,
+                                partitionKeyRangesValueHolder.v.stream()
+                                                               .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                                               .collect(Collectors.joining(", ")),
+                                lastResponseContinuationToken,
+                                this.operationContextTextProvider.get());
                         }
                         return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRangesValueHolder.v));
                     });
@@ -257,7 +273,8 @@ class DocumentProducer<T> {
                 pageSize,
                 initialContinuationToken,
                 top,
-                new FeedRangeEpkImpl(targetRange.toRange()));
+                new FeedRangeEpkImpl(targetRange.toRange()),
+                this.operationContextTextProvider);
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {

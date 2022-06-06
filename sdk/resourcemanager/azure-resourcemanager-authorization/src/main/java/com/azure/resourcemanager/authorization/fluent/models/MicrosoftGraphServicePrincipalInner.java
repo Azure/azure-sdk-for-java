@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,13 +16,11 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
- * entity types.
+ * servicePrincipal Represents an Azure Active Directory object. The directoryObject type is the base type for many
+ * other directory entity types.
  */
 @Fluent
 public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphServicePrincipalInner.class);
-
     /*
      * true if the service principal account is enabled; otherwise, false.
      */
@@ -256,20 +253,20 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * this service principal. Read-only.
      */
     @JsonProperty(value = "appRoleAssignedTo")
-    private List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignedTo;
+    private List<MicrosoftGraphAppRoleAssignment> appRoleAssignedTo;
 
     /*
      * Applications that this service principal is assigned to. Read-only.
      * Nullable.
      */
     @JsonProperty(value = "appRoleAssignments")
-    private List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments;
+    private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
 
     /*
      * The claimsMappingPolicies assigned to this service principal.
      */
     @JsonProperty(value = "claimsMappingPolicies")
-    private List<MicrosoftGraphClaimsMappingPolicyInner> claimsMappingPolicies;
+    private List<MicrosoftGraphClaimsMappingPolicy> claimsMappingPolicies;
 
     /*
      * Directory objects created by this service principal. Read-only.
@@ -282,7 +279,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * The delegatedPermissionClassifications property.
      */
     @JsonProperty(value = "delegatedPermissionClassifications")
-    private List<MicrosoftGraphDelegatedPermissionClassificationInner> delegatedPermissionClassifications;
+    private List<MicrosoftGraphDelegatedPermissionClassification> delegatedPermissionClassifications;
 
     /*
      * Endpoints available for discovery. Services like Sharepoint populate
@@ -290,7 +287,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * applications can discover and use in their experiences.
      */
     @JsonProperty(value = "endpoints")
-    private List<MicrosoftGraphEndpointInner> endpoints;
+    private List<MicrosoftGraphEndpoint> endpoints;
 
     /*
      * The homeRealmDiscoveryPolicies assigned to this service principal.
@@ -310,7 +307,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * an API on behalf of a signed-in user. Read-only. Nullable.
      */
     @JsonProperty(value = "oauth2PermissionGrants")
-    private List<MicrosoftGraphOAuth2PermissionGrantInner> oauth2PermissionGrants;
+    private List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants;
 
     /*
      * Directory objects that are owned by this service principal. Read-only.
@@ -331,13 +328,13 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * The tokenIssuancePolicies assigned to this service principal.
      */
     @JsonProperty(value = "tokenIssuancePolicies")
-    private List<MicrosoftGraphTokenIssuancePolicyInner> tokenIssuancePolicies;
+    private List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies;
 
     /*
      * The tokenLifetimePolicies assigned to this service principal.
      */
     @JsonProperty(value = "tokenLifetimePolicies")
-    private List<MicrosoftGraphTokenLifetimePolicyInner> tokenLifetimePolicies;
+    private List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies;
 
     /*
      * The transitiveMemberOf property.
@@ -1026,7 +1023,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the appRoleAssignedTo value.
      */
-    public List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignedTo() {
+    public List<MicrosoftGraphAppRoleAssignment> appRoleAssignedTo() {
         return this.appRoleAssignedTo;
     }
 
@@ -1038,7 +1035,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withAppRoleAssignedTo(
-        List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignedTo) {
+        List<MicrosoftGraphAppRoleAssignment> appRoleAssignedTo) {
         this.appRoleAssignedTo = appRoleAssignedTo;
         return this;
     }
@@ -1049,7 +1046,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the appRoleAssignments value.
      */
-    public List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments() {
+    public List<MicrosoftGraphAppRoleAssignment> appRoleAssignments() {
         return this.appRoleAssignments;
     }
 
@@ -1061,7 +1058,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withAppRoleAssignments(
-        List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments) {
+        List<MicrosoftGraphAppRoleAssignment> appRoleAssignments) {
         this.appRoleAssignments = appRoleAssignments;
         return this;
     }
@@ -1071,7 +1068,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the claimsMappingPolicies value.
      */
-    public List<MicrosoftGraphClaimsMappingPolicyInner> claimsMappingPolicies() {
+    public List<MicrosoftGraphClaimsMappingPolicy> claimsMappingPolicies() {
         return this.claimsMappingPolicies;
     }
 
@@ -1082,7 +1079,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withClaimsMappingPolicies(
-        List<MicrosoftGraphClaimsMappingPolicyInner> claimsMappingPolicies) {
+        List<MicrosoftGraphClaimsMappingPolicy> claimsMappingPolicies) {
         this.claimsMappingPolicies = claimsMappingPolicies;
         return this;
     }
@@ -1113,7 +1110,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the delegatedPermissionClassifications value.
      */
-    public List<MicrosoftGraphDelegatedPermissionClassificationInner> delegatedPermissionClassifications() {
+    public List<MicrosoftGraphDelegatedPermissionClassification> delegatedPermissionClassifications() {
         return this.delegatedPermissionClassifications;
     }
 
@@ -1124,7 +1121,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withDelegatedPermissionClassifications(
-        List<MicrosoftGraphDelegatedPermissionClassificationInner> delegatedPermissionClassifications) {
+        List<MicrosoftGraphDelegatedPermissionClassification> delegatedPermissionClassifications) {
         this.delegatedPermissionClassifications = delegatedPermissionClassifications;
         return this;
     }
@@ -1135,7 +1132,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the endpoints value.
      */
-    public List<MicrosoftGraphEndpointInner> endpoints() {
+    public List<MicrosoftGraphEndpoint> endpoints() {
         return this.endpoints;
     }
 
@@ -1146,7 +1143,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @param endpoints the endpoints value to set.
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
-    public MicrosoftGraphServicePrincipalInner withEndpoints(List<MicrosoftGraphEndpointInner> endpoints) {
+    public MicrosoftGraphServicePrincipalInner withEndpoints(List<MicrosoftGraphEndpoint> endpoints) {
         this.endpoints = endpoints;
         return this;
     }
@@ -1200,7 +1197,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the oauth2PermissionGrants value.
      */
-    public List<MicrosoftGraphOAuth2PermissionGrantInner> oauth2PermissionGrants() {
+    public List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants() {
         return this.oauth2PermissionGrants;
     }
 
@@ -1212,7 +1209,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withOauth2PermissionGrants(
-        List<MicrosoftGraphOAuth2PermissionGrantInner> oauth2PermissionGrants) {
+        List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants) {
         this.oauth2PermissionGrants = oauth2PermissionGrants;
         return this;
     }
@@ -1264,7 +1261,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the tokenIssuancePolicies value.
      */
-    public List<MicrosoftGraphTokenIssuancePolicyInner> tokenIssuancePolicies() {
+    public List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies() {
         return this.tokenIssuancePolicies;
     }
 
@@ -1275,7 +1272,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withTokenIssuancePolicies(
-        List<MicrosoftGraphTokenIssuancePolicyInner> tokenIssuancePolicies) {
+        List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies) {
         this.tokenIssuancePolicies = tokenIssuancePolicies;
         return this;
     }
@@ -1285,7 +1282,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      *
      * @return the tokenLifetimePolicies value.
      */
-    public List<MicrosoftGraphTokenLifetimePolicyInner> tokenLifetimePolicies() {
+    public List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies() {
         return this.tokenLifetimePolicies;
     }
 
@@ -1296,7 +1293,7 @@ public final class MicrosoftGraphServicePrincipalInner extends MicrosoftGraphDir
      * @return the MicrosoftGraphServicePrincipalInner object itself.
      */
     public MicrosoftGraphServicePrincipalInner withTokenLifetimePolicies(
-        List<MicrosoftGraphTokenLifetimePolicyInner> tokenLifetimePolicies) {
+        List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies) {
         this.tokenLifetimePolicies = tokenLifetimePolicies;
         return this;
     }

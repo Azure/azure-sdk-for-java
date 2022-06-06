@@ -119,7 +119,7 @@ public final class ApplicationInsightsClientImpl {
      */
     @Host("{Host}/v2.1")
     @ServiceInterface(name = "ApplicationInsightsC")
-    private interface ApplicationInsightsClientService {
+    public interface ApplicationInsightsClientService {
         @Post("/track")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(

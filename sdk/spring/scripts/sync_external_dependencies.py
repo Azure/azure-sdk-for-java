@@ -21,7 +21,7 @@ from itertools import takewhile
 from log import log
 
 
-SPRING_BOOT_VERSION = '2.6.3'
+SPRING_BOOT_VERSION = '2.6.7'
 
 SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(SPRING_BOOT_VERSION)
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'

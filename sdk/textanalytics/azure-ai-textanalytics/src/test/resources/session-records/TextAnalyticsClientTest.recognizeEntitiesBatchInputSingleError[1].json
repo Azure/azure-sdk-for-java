@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/entities/recognition/general?showStats=false&loggingOptOut=false&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7eddcf42-e55e-4264-b848-9f3d3dc088ab",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "11dca78f-1252-4370-a5b2-b692dbe89723",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "2",
+      "content-length" : "264",
+      "x-envoy-upstream-service-time" : "4",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "55bb520a-0fa3-49b6-a849-5691fea4a803",
+      "apim-request-id" : "4eefb56c-ff9e-4ef8-86d1-f7c5b4632960",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[],\"errors\":[{\"id\":\"2\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2021-06-01\"}",
-      "Date" : "Tue, 19 Oct 2021 20:12:46 GMT",
+      "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[],\"errors\":[{\"id\":\"2\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2021-06-01\"}}",
+      "Date" : "Fri, 06 May 2022 17:45:34 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

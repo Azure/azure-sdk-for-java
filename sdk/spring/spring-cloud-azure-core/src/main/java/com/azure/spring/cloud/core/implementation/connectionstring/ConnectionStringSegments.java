@@ -8,6 +8,9 @@ package com.azure.spring.cloud.core.implementation.connectionstring;
  */
 final class ConnectionStringSegments {
 
+    private ConnectionStringSegments() {
+    }
+
     public static final String ENDPOINT = "Endpoint";
 
     // AMQP related

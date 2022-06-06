@@ -1,17 +1,52 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
-- Updated ProxyOptions.SYSTEM_DEFAULTS to use ProxyAuthenticationType.NONE
+
 - Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
 
 ### Other Changes
+
+## 2.5.2 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 2.5.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
+
+## 2.5.0 (2022-05-06)
+
+### Features Added
+
+- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment 
+  configuration.
+
+### Bugs Fixed
+
+- Fixed proxy authentication type not being read from configuration. ([#28073](https://github.com/Azure/azure-sdk-for-java/issues/28073))
+- Updated ProxyOptions.SYSTEM_DEFAULTS to use `ProxyAuthenticationType.NONE`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
 
 ## 2.4.2 (2022-04-01)
 

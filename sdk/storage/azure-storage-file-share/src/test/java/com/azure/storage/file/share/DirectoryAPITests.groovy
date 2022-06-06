@@ -14,6 +14,8 @@ import com.azure.storage.file.share.models.ShareFileItem
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareCreateOptions
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
 import spock.lang.Unroll
@@ -21,6 +23,7 @@ import spock.lang.Unroll
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
@@ -201,11 +204,147 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Create change time"() {
+        setup:
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryDirectoryClient.createWithResponse(new FileSmbProperties().setFileChangeTime(changeTime), null, null,
+            null, null)
+
+        then:
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+    }
+
     @Unroll
     def "Create directory permission and key error"() {
         when:
         FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
         primaryDirectoryClient.createWithResponse(properties, permission, null, null, null)
+        then:
+        thrown(IllegalArgumentException)
+        where:
+        filePermissionKey   | permission
+        "filePermissionKey" | filePermission
+        null                | new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))
+    }
+
+    def "Create if not exists directory min"() {
+        expect:
+        primaryDirectoryClient.createIfNotExists() != null
+    }
+
+    def "Create if not exists directory"() {
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient
+            .createIfNotExistsWithResponse(new ShareDirectoryCreateOptions(), null, null), 201)
+    }
+
+    def "Create if not exists directory error"() {
+        given:
+        def testShareName = namer.getRandomName(60)
+
+        when:
+        directoryBuilderHelper(testShareName, directoryPath).buildDirectoryClient().createIfNotExists()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
+    def "Create if not exists directory that already exists"() {
+        setup:
+        def options = new ShareDirectoryCreateOptions()
+        def primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+
+        when:
+        def initialResponse = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null)
+        def secondResponse = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(initialResponse, 201)
+        FileTestHelper.assertResponseStatusCode(secondResponse, 409)
+    }
+
+    def "Create if not exists directory with metadata"() {
+        setup:
+        def options = new ShareDirectoryCreateOptions().setMetadata(testMetadata)
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient
+            .createIfNotExistsWithResponse(options, null, null), 201)
+    }
+
+    def "Create if not exists directory with file permission"() {
+        setup:
+        def options = new ShareDirectoryCreateOptions().setFilePermission(filePermission)
+        when:
+        def resp = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 201)
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
+    def "Create if not exists directory with file permission key"() {
+        setup:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+        def options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
+        when:
+        def resp = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 201)
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
+    def "Create if not exists directory with ntfs attributes"() {
+        setup:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def attributes = EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY)
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+            .setNtfsFileAttributes(attributes)
+        def options = new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)
+        when:
+        def resp = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 201)
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @Unroll
+    def "Create if not exists directory permission and key error"() {
+        when:
+        FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey(filePermissionKey)
+        def options = new ShareDirectoryCreateOptions().setSmbProperties(properties).setFilePermission(permission)
+        primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null)
         then:
         thrown(IllegalArgumentException)
         where:
@@ -229,6 +368,51 @@ class DirectoryAPITests extends APISpec {
         then:
         def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Delete if exists directory"() {
+        given:
+        primaryDirectoryClient.create()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteIfExistsWithResponse(null, null), 202)
+    }
+
+    def "Delete if exists directory min"() {
+        given:
+        primaryDirectoryClient.create()
+
+        expect:
+        primaryDirectoryClient.deleteIfExists()
+    }
+
+    def "Delete if exists directory that does not exist"() {
+        setup:
+        primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+
+        when:
+        def response = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !primaryDirectoryClient.exists()
+    }
+
+    def "Delete if exists directory that was already deleted"() {
+        setup:
+        primaryDirectoryClient.create()
+
+        when:
+        def initialResponse = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
+        def secondResponse = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
+
+        then:
+        initialResponse.getStatusCode() == 202
+        secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
+
     }
 
     def "Get properties"() {
@@ -293,6 +477,22 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileChangeTime()
         resp.getValue().getSmbProperties().getParentId()
         resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Set httpHeaders change time"() {
+        setup:
+        primaryDirectoryClient.create()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def changeTime = namer.getUtcNow()
+        smbProperties.setFileChangeTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+
+        when:
+        primaryDirectoryClient.setProperties(new FileSmbProperties().setFileChangeTime(changeTime), null)
+
+        then:
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     @Unroll
@@ -743,11 +943,13 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
         def permissionKey = shareClient.createPermission(filePermission)
+        def fileChangeTime = namer.getUtcNow()
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
             .setFileCreationTime(namer.getUtcNow().minusDays(5))
             .setFileLastWriteTime(namer.getUtcNow().minusYears(2))
+            .setFileChangeTime(fileChangeTime)
 
         when:
         def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -758,6 +960,7 @@ class DirectoryAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
+        destProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == fileChangeTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -897,6 +1100,90 @@ class DirectoryAPITests extends APISpec {
             primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null, null, null), 201)
     }
 
+    def "Create if not exists sub directory"() {
+        given:
+        primaryDirectoryClient.create()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions(), null, null), 201)
+    }
+
+    def "Create if not exists subdirectory that already exists"() {
+        setup:
+        def subdirectoryName = generatePathName()
+        primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+        primaryDirectoryClient.create()
+        def initialResponse = primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
+            new ShareDirectoryCreateOptions(), null, null)
+
+        when:
+        def secondResponse = primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
+            new ShareDirectoryCreateOptions(), null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists sub directory invalid name"() {
+        given:
+        primaryDirectoryClient.create()
+
+        when:
+        primaryDirectoryClient.createSubdirectoryIfNotExists("test/subdirectory")
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND)
+    }
+
+    def "Create if not exists sub directory metadata"() {
+        given:
+        primaryDirectoryClient.create()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201)
+    }
+
+    def "Create if not exists sub directory metadata error"() {
+        given:
+        primaryDirectoryClient.create()
+
+        when:
+        primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testsubdirectory",
+            new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null)
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
+    }
+
+    def "Create if not exists sub directory file permission"() {
+        given:
+        primaryDirectoryClient.create()
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions().setFilePermission(filePermission), null, null), 201)
+    }
+
+    def "Create if not exists sub directory file permission key"() {
+        given:
+        primaryDirectoryClient.create()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
+                new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201)
+    }
+
     def "Delete sub directory"() {
         given:
         def subDirectoryName = "testSubCreateDirectory"
@@ -917,6 +1204,35 @@ class DirectoryAPITests extends APISpec {
         then:
         def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Delete if exists sub directory"() {
+        given:
+        def subDirectoryName = "testSubCreateDirectory"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createSubdirectory(subDirectoryName)
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubdirectoryIfExistsWithResponse(subDirectoryName, null, null), 202)
+    }
+
+    def "Delete if exists sub directory min"() {
+        given:
+        def subDirectoryName = "testSubCreateDirectory"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createSubdirectory(subDirectoryName)
+
+        expect:
+        primaryDirectoryClient.deleteSubdirectoryIfExists(subDirectoryName)
+    }
+
+    def "Delete if exists sub directory that does not exist"() {
+        when:
+        def response = primaryDirectoryClient.deleteSubdirectoryIfExistsWithResponse("testsubdirectory", null, null)
+
+        then:
+        response.getStatusCode() == 404
+        !response.getValue()
     }
 
 
@@ -1004,6 +1320,39 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
     }
 
+    def "Delete if exists file min"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createFile(fileName, 1024)
+
+        expect:
+        primaryDirectoryClient.deleteFileIfExists(fileName)
+    }
+
+    def "Delete if exists file"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryDirectoryClient.create()
+        primaryDirectoryClient.createFile(fileName, 1024)
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryDirectoryClient.deleteFileIfExistsWithResponse(fileName, null, null), 202)
+    }
+
+    def "Delete if exists file that does not exist"() {
+        given:
+        primaryDirectoryClient.create()
+
+        when:
+        def response = primaryDirectoryClient.deleteFileIfExistsWithResponse("testfile", null, null)
+
+        then:
+        response.getStatusCode() == 404
+        !response.getValue()
+    }
+
     def "Get snapshot id"() {
         given:
         def snapshot = OffsetDateTime.of(LocalDateTime.of(2000, 1, 1,
@@ -1060,4 +1409,5 @@ class DirectoryAPITests extends APISpec {
         _ | ""
         _ | "/"
     }
+
 }

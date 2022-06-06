@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.27.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-template</artifactId>
-      <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+      <version>1.2.2-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

@@ -1,12 +1,11 @@
-<!-- ---
+---
 page_type: sample
 languages:
   - java
 products:
   - azure
-  - azure-service-linker
-urlFragment: service-linker-resourcemanager-samples
---- -->
+urlFragment: servicelinker-resourcemanager-samples
+---
 
 # Azure Service Linker Create Connection Samples for Java
 

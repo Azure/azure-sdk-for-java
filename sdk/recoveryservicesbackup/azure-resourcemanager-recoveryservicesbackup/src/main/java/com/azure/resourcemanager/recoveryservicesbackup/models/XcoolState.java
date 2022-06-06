@@ -30,7 +30,11 @@ public final class XcoolState extends ExpandableStringEnum<XcoolState> {
         return fromString(name, XcoolState.class);
     }
 
-    /** @return known XcoolState values. */
+    /**
+     * Gets known XcoolState values.
+     *
+     * @return known XcoolState values.
+     */
     public static Collection<XcoolState> values() {
         return values(XcoolState.class);
     }

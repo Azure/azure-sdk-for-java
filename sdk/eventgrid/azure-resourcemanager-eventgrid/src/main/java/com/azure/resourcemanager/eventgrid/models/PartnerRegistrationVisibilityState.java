@@ -30,7 +30,11 @@ public final class PartnerRegistrationVisibilityState extends ExpandableStringEn
         return fromString(name, PartnerRegistrationVisibilityState.class);
     }
 
-    /** @return known PartnerRegistrationVisibilityState values. */
+    /**
+     * Gets known PartnerRegistrationVisibilityState values.
+     *
+     * @return known PartnerRegistrationVisibilityState values.
+     */
     public static Collection<PartnerRegistrationVisibilityState> values() {
         return values(PartnerRegistrationVisibilityState.class);
     }

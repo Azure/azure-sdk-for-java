@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public final class AadB2cConditions {
 
+    private static final String KEY_OF_USER_FLOWS = "user-flows";
     /**
      * OAuth2 client beans condition.
      */
@@ -36,12 +37,12 @@ public final class AadB2cConditions {
             if (CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
                 && CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
                 return ConditionOutcome.noMatch(message.didNotFind("registered clients")
-                                                       .items("user-flows", "authorization-clients"));
+                                                       .items(KEY_OF_USER_FLOWS, "authorization-clients"));
             }
 
             StringBuilder details = new StringBuilder();
             if (!CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())) {
-                details.append(getConditionResult("user-flows", aadb2CProperties.getUserFlows()));
+                details.append(getConditionResult(KEY_OF_USER_FLOWS, aadb2CProperties.getUserFlows()));
             }
             if (!CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
                 details.append(getConditionResult("authorization-clients",
@@ -71,7 +72,7 @@ public final class AadB2cConditions {
             }
 
             return ConditionOutcome.match(message.foundExactly(
-                getConditionResult("user-flows", aadb2CProperties.getUserFlows())));
+                getConditionResult(KEY_OF_USER_FLOWS, aadb2CProperties.getUserFlows())));
         }
     }
 

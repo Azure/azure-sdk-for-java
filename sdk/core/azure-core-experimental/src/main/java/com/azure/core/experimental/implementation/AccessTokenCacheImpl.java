@@ -143,7 +143,7 @@ public class AccessTokenCacheImpl {
             } else if (signal.isOnError() && error != null) { // ERROR
                 logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                return fallback.switchIfEmpty(Mono.defer(() -> Mono.error(error)));
+                return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
                 sinksOne.tryEmitEmpty();
                 return fallback;

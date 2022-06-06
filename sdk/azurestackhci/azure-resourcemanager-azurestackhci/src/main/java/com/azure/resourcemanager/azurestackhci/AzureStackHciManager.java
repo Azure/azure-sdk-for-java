@@ -215,7 +215,7 @@ public final class AzureStackHciManager {
                 .append("-")
                 .append("com.azure.resourcemanager.azurestackhci")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -272,7 +272,11 @@ public final class AzureStackHciManager {
         }
     }
 
-    /** @return Resource collection API of ArcSettings. */
+    /**
+     * Gets the resource collection API of ArcSettings. It manages ArcSetting.
+     *
+     * @return Resource collection API of ArcSettings.
+     */
     public ArcSettings arcSettings() {
         if (this.arcSettings == null) {
             this.arcSettings = new ArcSettingsImpl(clientObject.getArcSettings(), this);
@@ -280,7 +284,11 @@ public final class AzureStackHciManager {
         return arcSettings;
     }
 
-    /** @return Resource collection API of Clusters. */
+    /**
+     * Gets the resource collection API of Clusters. It manages Cluster.
+     *
+     * @return Resource collection API of Clusters.
+     */
     public Clusters clusters() {
         if (this.clusters == null) {
             this.clusters = new ClustersImpl(clientObject.getClusters(), this);
@@ -288,7 +296,11 @@ public final class AzureStackHciManager {
         return clusters;
     }
 
-    /** @return Resource collection API of Extensions. */
+    /**
+     * Gets the resource collection API of Extensions. It manages Extension.
+     *
+     * @return Resource collection API of Extensions.
+     */
     public Extensions extensions() {
         if (this.extensions == null) {
             this.extensions = new ExtensionsImpl(clientObject.getExtensions(), this);
@@ -296,7 +308,11 @@ public final class AzureStackHciManager {
         return extensions;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);

@@ -48,6 +48,8 @@ public class UserPrincipalManager {
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
 
+    private static final String MSG_MALFORMED_AD_KEY_DISCOVERY_URI = "Failed to parse active directory key discovery uri.";
+
     private final JWKSource<SecurityContext> keySource;
     private final AadAuthenticationProperties aadAuthenticationProperties;
     private final boolean explicitAudienceCheck;
@@ -93,7 +95,7 @@ public class UserPrincipalManager {
                 endpoints.getJwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
+            throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
         }
     }
 
@@ -127,8 +129,7 @@ public class UserPrincipalManager {
             String jwkSetEndpoint = endpoints.getJwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
-            LOGGER.error("Failed to parse active directory key discovery uri.", e);
-            throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
+            throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
         }
     }
 

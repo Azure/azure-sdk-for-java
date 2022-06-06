@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ValidateOp
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationsResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationOperationsImpl implements OperationOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationOperationsImpl.class);
 
     private final OperationOperationsClient innerClient;
 

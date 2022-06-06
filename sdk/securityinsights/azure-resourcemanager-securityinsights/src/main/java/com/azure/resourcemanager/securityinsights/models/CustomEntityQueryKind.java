@@ -24,7 +24,11 @@ public final class CustomEntityQueryKind extends ExpandableStringEnum<CustomEnti
         return fromString(name, CustomEntityQueryKind.class);
     }
 
-    /** @return known CustomEntityQueryKind values. */
+    /**
+     * Gets known CustomEntityQueryKind values.
+     *
+     * @return known CustomEntityQueryKind values.
+     */
     public static Collection<CustomEntityQueryKind> values() {
         return values(CustomEntityQueryKind.class);
     }

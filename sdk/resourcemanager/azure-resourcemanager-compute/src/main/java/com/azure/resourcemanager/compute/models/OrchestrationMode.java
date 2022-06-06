@@ -27,7 +27,11 @@ public final class OrchestrationMode extends ExpandableStringEnum<OrchestrationM
         return fromString(name, OrchestrationMode.class);
     }
 
-    /** @return known OrchestrationMode values. */
+    /**
+     * Gets known OrchestrationMode values.
+     *
+     * @return known OrchestrationMode values.
+     */
     public static Collection<OrchestrationMode> values() {
         return values(OrchestrationMode.class);
     }

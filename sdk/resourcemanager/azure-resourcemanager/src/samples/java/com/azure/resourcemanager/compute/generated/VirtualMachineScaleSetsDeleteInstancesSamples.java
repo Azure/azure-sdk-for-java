@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets DeleteInstances. */
 public final class VirtualMachineScaleSetsDeleteInstancesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_DeleteInstances_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_DeleteInstances_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_DeleteInstances_MaximumSet_Gen.
@@ -35,7 +35,7 @@ public final class VirtualMachineScaleSetsDeleteInstancesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSets_DeleteInstances_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_DeleteInstances_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_DeleteInstances_MinimumSet_Gen.
