@@ -341,15 +341,16 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-            options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-            .subscribeOn(Schedulers.boundedElastic())
-            : options.getDataFlux();
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+
+        Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
+            .subscribeOn(Schedulers.boundedElastic())
+            : options.getDataFlux();
 
         return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
             options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.options;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class BlockBlobSimpleUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
+    private final BinaryData binaryData;
     private final long length;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
@@ -30,6 +32,20 @@ public class BlockBlobSimpleUploadOptions {
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
+
+    /**
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the data source.
+     */
+    public BlockBlobSimpleUploadOptions(BinaryData data, long length) {
+        StorageImplUtils.assertNotNull("dataStream", data);
+        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        this.binaryData = data;
+        this.length = length;
+        this.dataFlux = null;
+        this.dataStream = null;
+    }
 
     /**
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
@@ -43,6 +59,7 @@ public class BlockBlobSimpleUploadOptions {
         this.dataFlux = data;
         this.length = length;
         this.dataStream = null;
+        this.binaryData = null;
     }
 
     /**
@@ -56,6 +73,7 @@ public class BlockBlobSimpleUploadOptions {
         this.dataStream = data;
         this.length = length;
         this.dataFlux = null;
+        this.binaryData = null;
     }
 
     /**
@@ -71,6 +89,13 @@ public class BlockBlobSimpleUploadOptions {
      */
     public InputStream getDataStream() {
         return this.dataStream;
+    }
+
+    /**
+     * @return The data to write to the blob.
+     */
+    public BinaryData getBinaryData() {
+        return this.binaryData;
     }
 
     /**
