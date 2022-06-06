@@ -56,16 +56,6 @@ public class EventProcessorClient {
     private final String consumerGroup;
     private final Duration loadBalancerUpdateInterval;
 
-    private final Consumer<ErrorContext> initializeError = errorContext -> {
-        if (!isRunning.compareAndSet(true, false)) {
-            return;
-        }
-        new ClientLogger(EventProcessorClient.class).error("Processor client running exception.", errorContext.getThrowable());
-        runner.getAndSet(null).cancel(true);
-        scheduler.getAndSet(null).shutdownNow();
-        stopProcessing();
-    };
-
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
@@ -118,7 +108,7 @@ public class EventProcessorClient {
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
                 partitionOwnershipExpirationInterval.getSeconds(), this.partitionPumpManager, processError,
-                loadBalancingStrategy, this.initializeError);
+                loadBalancingStrategy);
     }
 
     /**

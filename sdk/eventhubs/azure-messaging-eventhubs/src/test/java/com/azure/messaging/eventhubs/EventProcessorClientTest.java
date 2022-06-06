@@ -156,7 +156,6 @@ public class EventProcessorClientTest {
             1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        assertTrue(eventProcessorClient.isRunning());
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
 

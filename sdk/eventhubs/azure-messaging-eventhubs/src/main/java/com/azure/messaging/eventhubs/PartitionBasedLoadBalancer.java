@@ -63,7 +63,6 @@ final class PartitionBasedLoadBalancer {
     private final LoadBalancingStrategy loadBalancingStrategy;
     private final AtomicBoolean morePartitionsToClaim = new AtomicBoolean();
     private final AtomicReference<List<String>> partitionsCache = new AtomicReference<>(new ArrayList<>());
-    private final Consumer<Throwable> initializeError;
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
@@ -83,8 +82,7 @@ final class PartitionBasedLoadBalancer {
         final EventHubAsyncClient eventHubAsyncClient, final String fullyQualifiedNamespace,
         final String eventHubName, final String consumerGroupName, final String ownerId,
         final long inactiveTimeLimitInSeconds, final PartitionPumpManager partitionPumpManager,
-        final Consumer<ErrorContext> processError, LoadBalancingStrategy loadBalancingStrategy,
-        final Consumer<ErrorContext> clientInitializeError) {
+        final Consumer<ErrorContext> processError, LoadBalancingStrategy loadBalancingStrategy) {
         this.checkpointStore = checkpointStore;
         this.eventHubAsyncClient = eventHubAsyncClient;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
@@ -97,12 +95,6 @@ final class PartitionBasedLoadBalancer {
         this.partitionAgnosticContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
             consumerGroupName, "NONE");
         this.loadBalancingStrategy = loadBalancingStrategy;
-        this.initializeError = th -> {
-            ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, th);
-            isLoadBalancerRunning.set(false);
-            morePartitionsToClaim.set(false);
-            clientInitializeError.accept(errorContext);
-        };
     }
 
     /**
@@ -133,7 +125,6 @@ final class PartitionBasedLoadBalancer {
         final Mono<Map<String, PartitionOwnership>> partitionOwnershipMono = checkpointStore
             .listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroupName)
             .timeout(Duration.ofMinutes(1))
-            .doOnError(this.initializeError)
             .collectMap(PartitionOwnership::getPartitionId, Function.identity());
 
         /*
@@ -326,7 +317,8 @@ final class PartitionBasedLoadBalancer {
             .subscribe(partitionPumpManager::verifyPartitionConnection,
                 ex -> {
                     LOGGER.error("Error renewing partition ownership", ex);
-                    this.initializeError.accept(ex);
+                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
+                    processError.accept(errorContext);
                     isLoadBalancerRunning.set(false);
                 },
                 () -> isLoadBalancerRunning.set(false));
@@ -463,17 +455,13 @@ final class PartitionBasedLoadBalancer {
             .doOnNext(partitionOwnership -> LOGGER.atInfo()
                     .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
                     .log("Successfully claimed ownership."))
-            .doOnError(ex -> {
-                LOGGER
-                    .atWarning()
-                    .addKeyValue(PARTITION_ID_KEY, ownershipRequest.getPartitionId())
-                    .log(Messages.FAILED_TO_CLAIM_OWNERSHIP, ex);
-                this.initializeError.accept(ex);
-            })
+            .doOnError(ex -> LOGGER
+                .atWarning()
+                .addKeyValue(PARTITION_ID_KEY, ownershipRequest.getPartitionId())
+                .log(Messages.FAILED_TO_CLAIM_OWNERSHIP, ex))
             .collectList()
             .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
                 consumerGroupName)
-                .doOnError(this.initializeError)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
                 morePartitionsToClaim.set(true);

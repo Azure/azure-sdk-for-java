@@ -78,8 +78,13 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
         }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         client.start();
-        TimeUnit.SECONDS.sleep(2);
-        Assertions.assertFalse(client.isRunning());
+        boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
+        try {
+            client.stop();
+        } catch (IllegalStateException ex) {
+            // do nothing, expected as the checkpointstores are expected to throw errors
+        }
+        Assertions.assertTrue(completed);
     }
 
     @Test
@@ -139,8 +144,7 @@ public class EventProcessorClientErrorHandlingTest {
         return Stream.of(
             Arguments.of(new ListOwnershipErrorStore()),
             Arguments.of(new ClaimOwnershipErrorStore()),
-            Arguments.of(new ListCheckpointErrorStore())
-        );
+            Arguments.of(new ListCheckpointErrorStore()));
     }
 
     private PartitionEvent getEvent(EventData event) {
