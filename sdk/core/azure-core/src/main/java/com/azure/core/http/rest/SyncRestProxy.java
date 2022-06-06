@@ -4,7 +4,6 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -17,11 +16,6 @@ import com.azure.core.implementation.http.rest.ResponseConstructorsCache;
 import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.LengthValidatingInputStream;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -36,7 +30,6 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.InvocationHandler;

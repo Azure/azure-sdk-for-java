@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.ResponseConstructorsCache;
+import com.azure.core.implementation.http.rest.ResponseConstructorsCache;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
