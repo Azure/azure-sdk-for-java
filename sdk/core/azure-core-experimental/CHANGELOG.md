@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0-beta.30 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.29 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
 ## 1.0.0-beta.28 (2022-06-03)
 
 ### Other Changes

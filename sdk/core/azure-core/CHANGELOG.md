@@ -1,5 +1,20 @@
 # Release History
 
+## 1.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
 ## 1.29.0 (2022-06-03)
 
 ### Features Added
