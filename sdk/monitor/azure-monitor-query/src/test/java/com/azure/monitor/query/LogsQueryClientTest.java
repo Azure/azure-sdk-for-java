@@ -107,14 +107,14 @@ public class LogsQueryClientTest extends TestBase {
             "This test only executes in playback because the partial success condition requires pre-populated data.");
 
         // Arrange
-        final String query = "AppTraces \n" +
-            "| where Properties !has \"PartitionPumpManager\"\n" +
-            "| where Properties has \"LoggerName\" and Properties has_cs \"com.azure\"\n" +
-            "| project TimeGenerated, Message, Properties\n" +
-            "| extend m = parse_json(Message)\n" +
-            "| extend p = parse_json(Properties)\n" +
-            "| project TimeGenerated, Thread=p.ThreadName, Logger=p.LoggerName, ConnectionId=m.connectionId, Message\n" +
-            "\n";
+        final String query = "AppTraces \n"
+            + "| where Properties !has \"PartitionPumpManager\"\n"
+            + "| where Properties has \"LoggerName\" and Properties has_cs \"com.azure\"\n"
+            + "| project TimeGenerated, Message, Properties\n"
+            + "| extend m = parse_json(Message)\n"
+            + "| extend p = parse_json(Properties)\n"
+            + " | project TimeGenerated, Thread=p.ThreadName, Logger=p.LoggerName, ConnectionId=m.connectionId, Message\n"
+            + "\n";
 
         final LogsQueryOptions options = new LogsQueryOptions().setAllowPartialErrors(true);
         final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
