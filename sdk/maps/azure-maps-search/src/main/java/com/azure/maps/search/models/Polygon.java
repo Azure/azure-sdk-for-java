@@ -45,16 +45,4 @@ public final class Polygon {
         GeoJsonObject returnValue = this.geometryData;
         return com.azure.maps.search.implementation.helpers.Utility.toGeoObject(returnValue);
     }
-
-    /**
-     * Set the geometryData property: Geometry data in GeoJSON format. Please refer to [RFC
-     * 7946](https://tools.ietf.org/html/rfc7946) for details. Present only if "error" is not present.
-     *
-     * @param geometryData the geometryData value to set.
-     * @return the Polygon object itself.
-     */
-    public Polygon setGeometryData(GeoJsonObject geometryData) {
-        this.geometryData = geometryData;
-        return this;
-    }
 }

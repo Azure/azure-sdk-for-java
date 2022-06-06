@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import com.azure.core.models.GeoPosition;
@@ -18,7 +21,7 @@ public final class ReverseSearchCrossStreetAddressOptions extends BaseReverseSea
 
     /**
      * Returns the top value.
-     * @return
+     * @return the top value.
      */
     public Integer getTop() {
         return top;
@@ -26,8 +29,8 @@ public final class ReverseSearchCrossStreetAddressOptions extends BaseReverseSea
 
     /**
      * Sets the top value.
-     * @param top
-     * @return
+     * @param top the top value.
+     * @return a reference to this {@code ReverseSearchCrossStreetAddressOptions}
      */
     public ReverseSearchCrossStreetAddressOptions setTop(Integer top) {
         this.top = top;

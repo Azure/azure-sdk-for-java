@@ -8,6 +8,7 @@ import java.util.List;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -33,7 +34,6 @@ import com.azure.maps.search.models.StructuredAddress;
 
 /**
  * {@link MapsSearchClient} instances are created via the {@link MapsSearchClientBuilder}, as shown below.
- * <p/>
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.search.sync.builder.key.instantiation -->
  * <pre>
@@ -46,24 +46,6 @@ import com.azure.maps.search.models.StructuredAddress;
  * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
  *
  * &#47;&#47; Builds the client
- * MapsSearchClient client = builder.buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.maps.search.sync.builder.key.instantiation -->
- * Creating a sync client using a {@link TokenCredential}:
- * <p/>
- * <!-- src_embed com.azure.maps.search.sync.builder.ad.instantiation -->
- * <pre>
- * &#47;&#47; Authenticates using Azure AD building a default credential
- * &#47;&#47; This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
- * DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
- *
- * &#47;&#47; Creates a builder
- * MapsSearchClientBuilder builder = new MapsSearchClientBuilder&#40;&#41;;
- * builder.credential&#40;tokenCredential&#41;;
- * builder.mapsClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;;
- * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
- *
- * &#47;&#47; Builds a client
  * MapsSearchClient client = builder.buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.maps.search.sync.builder.ad.instantiation -->
@@ -84,8 +66,11 @@ public final class MapsSearchClient {
     /**
      * List Polygons
      *
-     * @param geometryIds
-     * @return
+     * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search Polygon call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<Polygon> getPolygons(List<String> geometryIds) {
@@ -93,7 +78,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Get Polygon**
+     * List Polygons
      *
      * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
      * @param context The context to associate with this operation.
@@ -108,18 +93,28 @@ public final class MapsSearchClient {
     }
 
     /**
+     * Fuzzy Search
      *
-     * @param options
-     * @return
+     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Fuzzy Search call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAddressResult fuzzySearch(FuzzySearchOptions options){
+    public SearchAddressResult fuzzySearch(FuzzySearchOptions options) {
         return this.asyncClient.fuzzySearch(options).block();
     }
 
     /**
-     * **Free Form Search**
+     * Fuzzy Search
      *
+     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Fuzzy Search call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> fuzzySearchWithResponse(FuzzySearchOptions options, Context context) {
@@ -127,9 +122,13 @@ public final class MapsSearchClient {
     }
 
     /**
+     * Search Point of Interest
      *
-     * @param options
-     * @return
+     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchPointOfInterest(SearchPointOfInterestOptions options) {
@@ -137,13 +136,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Get POI by Name**
+     * Search Point of Interest
      *
+     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options,
@@ -152,14 +152,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Nearby Search**
+     * Search Nearby Point of Interest
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
+     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchNearbyPointOfInterest(SearchNearbyPointsOfInterestOptions options) {
@@ -167,14 +166,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Nearby Search**
+     * Search Nearby Point of Interest
      *
-     * @param options a {@link SearchNearbyPointsOfInterestOptions} with the search options.
+     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchNearbyPointOfInterestWithResponse(
@@ -183,13 +182,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Get POI by Category**
+     * Search Point of Interest per Category
      *
      * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchPointOfInterestCategory(SearchPointOfInterestCategoryOptions options) {
@@ -197,12 +196,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Get POI by Category**
+     * Search Point of Interest per Category
+     *
+     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchPointOfInterestCategoryWithResponse(
@@ -211,14 +212,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Get POI Category Tree**
-     *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
-     * <p>POI Category API provides a full list of supported Points of Interest (POI) categories and subcategories
-     * together with their translations and synonyms. The returned content can be used to provide more meaningful
-     * results through other Search Service APIs, like [Get Search
-     * POI](https://docs.microsoft.com/rest/api/maps/search/getsearchpoi).
+     * Get Point of Interest Category Tree
      *
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      *     tags, except NGT and NGT-Latn. Language tag is case insensitive. When data in specified language is not
@@ -236,14 +230,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Get POI Category Tree**
-     *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
-     * <p>POI Category API provides a full list of supported Points of Interest (POI) categories and subcategories
-     * together with their translations and synonyms. The returned content can be used to provide more meaningful
-     * results through other Search Service APIs, like [Get Search
-     * POI](https://docs.microsoft.com/rest/api/maps/search/getsearchpoi).
+     * Get Point of Interest Category Tree
      *
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      *     tags, except NGT and NGT-Latn. Language tag is case insensitive. When data in specified language is not
@@ -263,12 +250,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Address Geocoding**
+     * Search Address
      *
+     * @param options a {@link SearchAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchAddress(SearchAddressOptions options) {
@@ -276,15 +264,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Address Geocoding**
+     * Search Address
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-
+     * @param options a {@link SearchAddressOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchAddressWithResponse(SearchAddressOptions options,
@@ -293,12 +280,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Reverse Geocode to an Address**
-
+     * Reverse Address Search
+     *
+     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReverseSearchAddressResult reverseSearchAddress(ReverseSearchAddressOptions options) {
@@ -306,12 +294,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Reverse Geocode to an Address**
+     * Reverse Address Search
+     *
+     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReverseSearchAddressResult> reverseSearchAddressWithResponse(
@@ -320,11 +310,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Reverse Geocode to a Cross Street**
+     * Reverse Address Search to a Cross Street
+     *
+     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddress(
@@ -333,13 +325,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Reverse Geocode to a Cross Street**
+     * Reverse Address Search to a Cross Street
      *
+     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddressWithResponse(
@@ -348,13 +341,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Structured Address Geocoding**
+     * Structured Address Search
      *
-
+     * @param address a {@link StructuredAddress} to be searched by the API.
+     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchStructuredAddress(StructuredAddress address,
@@ -363,13 +357,15 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Structured Address Geocoding**
+     * Structured Address Search
      *
+     * @param address a {@link StructuredAddress} to be searched by the API.
+     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Structured Address Search call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchStructuredAddressWithResponse(
@@ -378,11 +374,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Inside Geometry
+     *
+     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Inside Geometry call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchInsideGeometry(SearchInsideGeometryOptions options) {
@@ -390,13 +388,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
-
+     * Search Inside Geometry
+     *
+     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Inside Geometry call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options,
@@ -405,13 +404,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Along Route
      *
-
+     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Along Route call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAddressResult searchAlongRoute(SearchAlongRouteOptions options) {
@@ -419,13 +418,14 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Along Route
      *
+     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Along Route call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAddressResult> searchAlongRouteWithResponse(SearchAlongRouteOptions options,
@@ -434,13 +434,13 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Batch Fuzzy Search
      *
      * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
+     * @return this object is returned from a successful Batch Fuzzy Search service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
@@ -449,7 +449,8 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Batch Fuzzy Search
+     *
      * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +465,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Get Fuzzy Batch Search by Id
      *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,7 +480,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Get Fuzzy Batch Search by Id
      *
      * @param batchId Batch id for querying the operation.
      * @param context The context to associate with this operation.
@@ -495,7 +496,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Address Batch API**
+     * Batch Address Search
      *
      * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,7 +511,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Address Batch API**
+     * Batch Address Search
      *
      * @param optionsList a list of {@link SearchAddressOptions} to be searched.
      * @param context The context to associate with this operation.
@@ -526,7 +527,7 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Address Batch API**
+     * Get Batch Search Id
      *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,7 +542,8 @@ public final class MapsSearchClient {
     }
 
     /**
-     * **Search Address Batch API**
+     * Get Batch Search Id
+     *
      * @param batchId Batch id for querying the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,6 +561,9 @@ public final class MapsSearchClient {
      * Searches a batch of addresses given their coordinates.
      *
      * @param optionsList a list of {@link ReverseSearchAddressOptions} to be searched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -572,6 +577,9 @@ public final class MapsSearchClient {
      *
      * @param optionsList a list of {@link ReverseSearchAddressOptions} to be searched.
      * @param context a {@link Context} object for distributed tracing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -584,6 +592,9 @@ public final class MapsSearchClient {
      * Returns a batch of previously searched addressed given a batch id.
      *
      * @param batchId Batch id for querying the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -597,6 +608,9 @@ public final class MapsSearchClient {
      *
      * @param batchId Batch id for querying the operation.
      * @param context a {@link Context} object for distributed tracing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,17 +56,18 @@ public class MapsSearchClientTestBase extends TestBase {
     }
 
     MapsSearchClientBuilder getMapsSearchAsyncClientBuilder(HttpClient httpClient,
-        MapsSearchServiceVersion serviceVersion) {
-            // System.out.println("beginning httpclient " + httpClient);
-            MapsSearchClientBuilder builder = new MapsSearchClientBuilder()
-            //.httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
-            String endpoint = getEndpoint();
-            if (getEndpoint() != null) {
-                builder.endpoint(endpoint);
-            }
-            // System.out.println("after httpclient " + httpClient);
+            MapsSearchServiceVersion serviceVersion) {
+        // System.out.println("beginning httpclient " + httpClient);
+        MapsSearchClientBuilder builder = new MapsSearchClientBuilder()
+                // .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() :
+                // httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .serviceVersion(serviceVersion);
+        String endpoint = getEndpoint();
+        if (getEndpoint() != null) {
+            builder.endpoint(endpoint);
+        }
+        // System.out.println("after httpclient " + httpClient);
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
@@ -71,7 +75,7 @@ public class MapsSearchClientTestBase extends TestBase {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY)).httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.credential((new AzureKeyCredential(
-                Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY"))));
+                    Configuration.getGlobalConfiguration().get("SUBSCRIPTION_KEY"))));
         }
         return builder;
     }
@@ -85,7 +89,8 @@ public class MapsSearchClientTestBase extends TestBase {
 
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, endpoint.replaceFirst("/$", "") + "/.default"));
+            policies.add(
+                    new BearerTokenAuthenticationPolicy(credential, endpoint.replaceFirst("/$", "") + "/.default"));
         }
 
         if (getTestMode() == TestMode.RECORD) {
@@ -93,17 +98,17 @@ public class MapsSearchClientTestBase extends TestBase {
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                .build();
 
         return pipeline;
     }
 
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
-            : endpoint;
+                ? "https://localhost:8080"
+                : endpoint;
     }
 
     protected <T, U> SyncPoller<T, U> setPollInterval(SyncPoller<T, U> syncPoller) {
@@ -116,7 +121,8 @@ public class MapsSearchClientTestBase extends TestBase {
         assertTrue(ids.contains(expected.get(0).getProviderID()));
     }
 
-    static void validateGetPolygonsWithResponse(List<Polygon> expected, int expectedStatusCode, Response<List<Polygon>> response) {
+    static void validateGetPolygonsWithResponse(List<Polygon> expected, int expectedStatusCode,
+            Response<List<Polygon>> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateGetPolygons(expected, response.getValue());
@@ -135,10 +141,12 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateFuzzySearchWithResponse(SearchAddressResult expected, int expectedStatusCode,Response<SearchAddressResult> response) {
+    static void validateFuzzySearchWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateFuzzySearch(expected, response.getValue());
@@ -149,10 +157,12 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchPointOfInterestWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchPointOfInterestWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchPointOfInterest(expected, response.getValue());
@@ -163,10 +173,12 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchNearbyPointOfInterestWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchNearbyPointOfInterestWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchNearbyPointOfInterest(expected, response.getValue());
@@ -177,16 +189,19 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchPointOfInterestCategoryWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchPointOfInterestCategoryWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchPointOfInterestCategory(expected, response.getValue());
     }
 
-    static void validateSearchPointOfInterestCategoryTree(PointOfInterestCategoryTreeResult expected, PointOfInterestCategoryTreeResult actual) {
+    static void validateSearchPointOfInterestCategoryTree(PointOfInterestCategoryTreeResult expected,
+            PointOfInterestCategoryTreeResult actual) {
         assertEquals(expected.getCategories().size(), actual.getCategories().size());
         List<PointOfInterestCategory> pointOfInterestCategoryList = actual.getCategories();
         List<String> names = new ArrayList<>();
@@ -196,7 +211,8 @@ public class MapsSearchClientTestBase extends TestBase {
         assertTrue(names.contains(expected.getCategories().get(0).getName()));
     }
 
-    static void validateSearchPointOfInterestCategoryTreeWithResponse(PointOfInterestCategoryTreeResult expected, int expectedStatusCode, Response<PointOfInterestCategoryTreeResult> response) {
+    static void validateSearchPointOfInterestCategoryTreeWithResponse(PointOfInterestCategoryTreeResult expected,
+            int expectedStatusCode, Response<PointOfInterestCategoryTreeResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchPointOfInterestCategoryTree(expected, response.getValue());
@@ -207,10 +223,12 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchAddressWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchAddressWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchAddress(expected, response.getValue());
@@ -222,19 +240,22 @@ public class MapsSearchClientTestBase extends TestBase {
         assertEquals(expected.getAddresses().size(), actual.getAddresses().size());
     }
 
-    static void validateReverseSearchAddressWithResponse(ReverseSearchAddressResult expected, int expectedStatusCode, Response<ReverseSearchAddressResult> response) {
+    static void validateReverseSearchAddressWithResponse(ReverseSearchAddressResult expected, int expectedStatusCode,
+            Response<ReverseSearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateReverseSearchAddress(expected, response.getValue());
     }
 
-    static void validateReverseSearchCrossStreetAddress(ReverseSearchCrossStreetAddressResult expected, ReverseSearchCrossStreetAddressResult actual) {
+    static void validateReverseSearchCrossStreetAddress(ReverseSearchCrossStreetAddressResult expected,
+            ReverseSearchCrossStreetAddressResult actual) {
         assertNotNull(actual.getSummary());
         assertNotNull(actual.getAddresses());
         assertEquals(expected.getAddresses().size(), actual.getAddresses().size());
     }
 
-    static void validateReverseSearchCrossStreetAddressWithResponse(ReverseSearchCrossStreetAddressResult expected, int expectedStatusCode, Response<ReverseSearchCrossStreetAddressResult> response) {
+    static void validateReverseSearchCrossStreetAddressWithResponse(ReverseSearchCrossStreetAddressResult expected,
+            int expectedStatusCode, Response<ReverseSearchCrossStreetAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateReverseSearchCrossStreetAddress(expected, response.getValue());
@@ -245,10 +266,12 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchStructuredAddressWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchStructuredAddressWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchStructuredAddress(expected, response.getValue());
@@ -259,10 +282,12 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchInsideGeometryWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchInsideGeometryWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchStructuredAddress(expected, response.getValue());
@@ -274,15 +299,16 @@ public class MapsSearchClientTestBase extends TestBase {
         assertNotNull(actual.getResults());
         assertEquals(expected.getResults().size(), actual.getResults().size());
         List<String> streetNameAndNumberList = getStreetNameAndNumberList(actual.getResults());
-        assertTrue(streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
+        assertTrue(
+                streetNameAndNumberList.contains(expected.getResults().get(0).getAddress().getStreetNameAndNumber()));
     }
 
-    static void validateSearchAlongRouteWithResponse(SearchAddressResult expected, int expectedStatusCode, Response<SearchAddressResult> response) {
+    static void validateSearchAlongRouteWithResponse(SearchAddressResult expected, int expectedStatusCode,
+            Response<SearchAddressResult> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSearchStructuredAddress(expected, response.getValue());
     }
-
 
     static void validateBeginFuzzySearchBatch(BatchSearchResult expected, BatchSearchResult actual) {
         assertEquals(expected.getBatchItems().size(), actual.getBatchItems().size());
@@ -292,7 +318,8 @@ public class MapsSearchClientTestBase extends TestBase {
         assertEquals(expected.getBatchItems().size(), actual.getBatchItems().size());
     }
 
-    static void validateBeginReverseSearchAddressBatch(BatchReverseSearchResult expected, BatchReverseSearchResult actual) {
+    static void validateBeginReverseSearchAddressBatch(BatchReverseSearchResult expected,
+            BatchReverseSearchResult actual) {
         assertEquals(expected.getBatchItems().size(), actual.getBatchItems().size());
     }
 }

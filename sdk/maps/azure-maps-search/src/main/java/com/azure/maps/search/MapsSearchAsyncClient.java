@@ -64,6 +64,10 @@ public final class MapsSearchAsyncClient {
     private static final int POLLING_FREQUENCY = 1;
     private static final String POLLING_BATCH_HEADER_KEY = "BatchId";
 
+    // reference static classes
+    static class BatchSearchTypeReference extends TypeReference<BatchSearchResult> { };
+    static class ReverseBatchSearchTypeReference extends TypeReference<BatchReverseSearchResult> { };
+
     // instance fields
     private final SearchesImpl serviceClient;
     private final HttpPipeline httpPipeline;
@@ -85,7 +89,7 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get Polygons**
+     * List Polygons
      *
      * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +106,7 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get Polygons**
+     * List Polygons
      *
      * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,16 +120,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get Polygons**
+     * List Polygons
      *
-     * @param format Desired format of the response. Only `json` format is supported.
      * @param geometryIds Comma separated list of geometry UUIDs, previously retrieved from an Online Search request.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Polygon call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<List<Polygon>>> getPolygonsWithResponse(List<String> geometryIds,
             Context context) {
         Mono<Response<PolygonResult>> result = this.serviceClient.listPolygonsWithResponseAsync(JsonFormat.JSON,
@@ -139,9 +142,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
+     * Fuzzy Search
      *
-     * @param options
-     * @return
+     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Fuzzy Search call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> fuzzySearch(FuzzySearchOptions options) {
@@ -152,11 +159,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Free Form Search**
+     * Fuzzy Search
+     *
+     * @param options {@link FuzzySearchOptions} the options to be used in this search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Fuzzy Search call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> fuzzySearchWithResponse(FuzzySearchOptions options) {
@@ -164,13 +173,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Free Form Search**
+     * Fuzzy Search
+     *
+     * @param options {@link FuzzySearchOptions} the options to be used in this search.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Fuzzy Search call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> fuzzySearchWithResponse(FuzzySearchOptions options, Context context) {
         return
             this.serviceClient.fuzzySearchWithResponseAsync(
@@ -200,9 +211,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
+     * Search Point of Interest
      *
-     * @param options
-     * @return
+     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Search Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchPointOfInterest(SearchPointOfInterestOptions options) {
@@ -213,11 +228,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI by Name**
+     * Search Point of Interest
+     *
+     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options) {
@@ -225,13 +242,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI by Name**
+     * Search Point of Interest
+     *
+     * @param options {@link SearchPointOfInterestOptions} the options to be used in this search.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchPointOfInterestWithResponse(SearchPointOfInterestOptions options,
             Context context) {
         return
@@ -258,14 +277,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Nearby Search**
+     * Search Nearby Point of Interest
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     * @param options a {@link SearchAddressOptions} with the search options.
+     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchNearbyPointOfInterest(
@@ -277,12 +295,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Nearby Search**
+     * Search Nearby Point of Interest
      *
+     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchNearbyPointOfInterestWithResponse(
@@ -291,14 +310,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Nearby Search**
+     * Search Nearby Point of Interest
      *
+     * @param options {@link SearchNearbyPointsOfInterestOptions} the options to be used in this search.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Nearby Point of Interest call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchNearbyPointOfInterestWithResponse(
             SearchNearbyPointsOfInterestOptions options, Context context) {
         // this should throw an exception if the coordinates are null, as for
@@ -323,13 +343,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI by Category**
+     * Search Point of Interest per Category
      *
-     * @param options a {@link SearchPointOfInterestCategoryOptions} describing the POI search options.
+     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchPointOfInterestCategory(SearchPointOfInterestCategoryOptions options) {
@@ -340,27 +360,30 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI by Category**
+     * Search Point of Interest per Category
      *
+     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
                 SearchPointOfInterestCategoryOptions options) {
         return this.searchPointOfInterestCategoryWithResponse(options, null);
     }
+
     /**
-     * **Get POI by Category**
+     * Search Point of Interest per Category
      *
+     * @param options a {@link SearchPointOfInterestCategoryOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Point of Interest per Category calls.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchPointOfInterestCategoryWithResponse(
                 SearchPointOfInterestCategoryOptions options, Context context) {
         return
@@ -387,14 +410,7 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI Category Tree**
-     *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
-     * <p>POI Category API provides a full list of supported Points of Interest (POI) categories and subcategories
-     * together with their translations and synonyms. The returned content can be used to provide more meaningful
-     * results through other Search Service APIs, like [Get Search
-     * POI](https://docs.microsoft.com/rest/api/maps/search/getsearchpoi).
+     * Get Point of Interest Category Tree
      *
      * @param language Language in which search results should be returned. Should be one of supported IETF language
      *     tags, except NGT and NGT-Latn. Language tag is case insensitive. When data in specified language is not
@@ -412,8 +428,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI Category Tree**
+     * Get Point of Interest Category Tree
      *
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, except NGT and NGT-Latn. Language tag is case insensitive. When data in specified language is not
+     *     available for a specific field, default language is used (English).
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -426,14 +447,19 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Get POI Category Tree**
+     * Get Point of Interest Category Tree
      *
+     * @param language Language in which search results should be returned. Should be one of supported IETF language
+     *     tags, except NGT and NGT-Latn. Language tag is case insensitive. When data in specified language is not
+     *     available for a specific field, default language is used (English).
+     *     <p>Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     *     details.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful POI Category Tree call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PointOfInterestCategoryTreeResult>> getPointOfInterestCategoryTreeWithResponse(
             String language, Context context) {
         return this.serviceClient.getPointOfInterestCategoryTreeWithResponseAsync(JsonFormat.JSON, language,
@@ -441,12 +467,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Address Geocoding**
+     * Search Address
      *
+     * @param options a {@link SearchAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchAddress(SearchAddressOptions options) {
@@ -457,13 +484,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Address Geocoding**
+     * Search Address
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
+     * @param options a {@link SearchAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchAddressWithResponse(SearchAddressOptions options) {
@@ -471,15 +498,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Address Geocoding**
+     * Search Address
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
+     * @param options a {@link SearchAddressOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Address call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchAddressWithResponse(SearchAddressOptions options, Context context) {
         return
             this.serviceClient.searchAddressWithResponseAsync(
@@ -502,12 +529,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Reverse Geocode to an Address**
-
+     * Reverse Address Search
+     *
+     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReverseSearchAddressResult> reverseSearchAddress(ReverseSearchAddressOptions options) {
@@ -517,13 +545,14 @@ public final class MapsSearchAsyncClient {
         });
     }
 
-        /**
-     * **Reverse Geocode to an Address**
+    /**
+     * Reverse Address Search
      *
+     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(
@@ -532,14 +561,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Reverse Geocode to an Address**
+     * Reverse Address Search
      *
+     * @param options a {@link ReverseSearchAddressOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ReverseSearchAddressResult>> reverseSearchAddressWithResponse(
                 ReverseSearchAddressOptions options, Context context) {
         return
@@ -561,11 +591,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Reverse Geocode to a Cross Street**
+     * Reverse Address Search to a Cross Street
+     *
+     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReverseSearchCrossStreetAddressResult> reverseSearchCrossStreetAddress(
@@ -578,14 +610,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Reverse Geocode to a Cross Street**
+     * Reverse Address Search to a Cross Street
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
+     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponse(
@@ -594,16 +625,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Reverse Geocode to a Cross Street**
+     * Reverse Address Search to a Cross Street
      *
-     * <p>**Applies to**: S0 and S1 pricing tiers.
-     *
+     * @param options a {@link ReverseSearchCrossStreetAddressOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse CrossStreet call.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ReverseSearchCrossStreetAddressResult>> reverseSearchCrossStreetAddressWithResponse(
             ReverseSearchCrossStreetAddressOptions options, Context context) {
         return
@@ -619,12 +649,14 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Structured Address Geocoding**
+     * Structured Address Search
      *
+     * @param address a {@link StructuredAddress} to be searched by the API.
+     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchStructuredAddress(StructuredAddress address,
@@ -637,12 +669,14 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Structured Address Geocoding**
+     * Structured Address Search
      *
+     * @param address a {@link StructuredAddress} to be searched by the API.
+     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Reverse Search Address call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponse(
@@ -651,14 +685,16 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Structured Address Geocoding**
+     * Structured Address Search
      *
+     * @param address a {@link StructuredAddress} to be searched by the API.
+     * @param options a {@link SearchStructuredAddressOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Structured Address Search call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchStructuredAddressWithResponse(
             StructuredAddress address, SearchStructuredAddressOptions options, Context context) {
         final SearchStructuredAddressOptions param = Optional.ofNullable(options)
@@ -686,12 +722,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
-
+     * Search Inside Geometry
+     *
+     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Inside Geometry call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchInsideGeometry(SearchInsideGeometryOptions options) {
@@ -702,12 +739,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Inside Geometry
      *
+     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Inside Geometry call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponse(
@@ -716,14 +754,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Inside Geometry
      *
+     * @param options a {@link SearchInsideGeometryOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Inside Geometry call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchInsideGeometryWithResponse(SearchInsideGeometryOptions options,
             Context context) {
         GeoJsonObject geoJsonObject = Utility.toGeoJsonObject(options.getGeometry());
@@ -743,13 +782,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Along Route
      *
-
+     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Along Route call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAddressResult> searchAlongRoute(SearchAlongRouteOptions options) {
@@ -760,12 +799,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Along Route
      *
+     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Along Route call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAddressResult>> searchAlongRouteWithResponse(SearchAlongRouteOptions options) {
@@ -773,14 +813,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Applies to**: S0 and S1 pricing tiers.
+     * Search Along Route
      *
+     * @param options a {@link SearchAlongRouteOptions} representing the search parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search calls.
+     * @return this object is returned from a successful Search Along Route call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SearchAddressResult>> searchAlongRouteWithResponse(SearchAlongRouteOptions options,
             Context context) {
         GeoJsonLineString geoJsonLineString = (GeoJsonLineString) Utility.toGeoJsonObject(options.getRoute());
@@ -800,13 +841,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Batch Fuzzy Search
      *
      * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
+     * @return this object is returned from a successful Batch Fuzzy Search service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
@@ -815,17 +856,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Batch Fuzzy Search
      *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of search fuzzy queries/requests to process. The list can contain a
-     *     max of 10,000 queries and must contain at least 1 query.
+     * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BatchSearchResult, BatchSearchResult> beginFuzzySearchBatch(
             List<FuzzySearchOptions> optionsList, Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
@@ -843,8 +882,7 @@ public final class MapsSearchAsyncClient {
                         return Mono.just(Utility.createBatchSearchResponse(response));
                     }),
                 this.forwardStrategy);
-        }
-        else {
+        } else {
             return createPollerFlux(
                 () -> this.serviceClient.fuzzySearchBatchWithResponseAsync(JsonFormat.JSON,
                     batchRequest, context).flatMap(response -> {
@@ -855,28 +893,7 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
-     *
-     * @param batchId Batch id for querying the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BatchSearchResult>> getFuzzySearchBatchWithResponse(String batchId) {
-        Mono<SearchesGetFuzzySearchBatchResponse> responseMono = this.serviceClient
-            .getFuzzySearchBatchWithResponseAsync(batchId);
-
-        return responseMono.flatMap(response -> {
-            Response<BatchSearchResult> simpleResponse = Utility
-                .createBatchSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
-    }*/
-
-    /**
-     * **Search Fuzzy Batch API**
+     * Get Fuzzy Batch Search by Id
      *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -891,15 +908,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Fuzzy Batch API**
+     * Get Fuzzy Batch Search by Id
      *
      * @param batchId Batch id for querying the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BatchSearchResult, BatchSearchResult> beginGetFuzzySearchBatch(
             String batchId, Context context) {
         return createPollerFlux(
@@ -911,110 +928,9 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Address Batch API**
+     * Batch Address Search
      *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of address geocoding queries/requests to process. The list can
-     *     contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchSearchResult> searchAddressBatchSync(BatchRequest batchRequest) {
-        return this.searchAddressBatchSync(batchRequest, null);
-    }*/
-
-    /**
-     * **Search Address Batch API**
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of address geocoding queries/requests to process. The list can
-     *     contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BatchSearchResult> searchAddressBatchSync(BatchRequest batchRequest, Context context) {
-        Mono<SearchAddressBatchResult> responseMono = this.serviceClient
-            .searchAddressBatchSyncAsync(JsonFormat.JSON, batchRequest, context);
-
-        // convert to BatchSearchResult
-        return responseMono.flatMap(response -> {
-            BatchSearchResult result = Utility.toBatchSearchResult(response);
-            return Mono.just(result);
-        });
-    }*/
-
-    /**
-     * **Search Address Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of address geocoding queries/requests to process. The list can
-     *     contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BatchSearchResult>> searchAddressBatchSyncWithResponse(
-            BatchRequest batchRequest) {
-        return this.searchAddressBatchSyncWithResponse(batchRequest, null);
-    }*/
-
-    /**
-     * **Search Address Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of address geocoding queries/requests to process. The list can
-     *     contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BatchSearchResult>> searchAddressBatchSyncWithResponse(
-            BatchRequest batchRequest, Context context) {
-        Mono<Response<SearchAddressBatchResult>> responseMono = this.serviceClient
-            .searchAddressBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context);
-
-        // convert to BatchSearchResult
-        return responseMono.flatMap(response -> {
-            Response<BatchSearchResult> simpleResponse = Utility.createBatchSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
-    }*/
-
-    /**
-     * **Search Address Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of address geocoding queries/requests to process. The list can
-     *     contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BatchSearchResult>> searchAddressBatchWithResponse(
-            BatchRequest batchRequest) {
-        Mono<SearchesSearchAddressBatchResponse> responseMono =
-            this.serviceClient.searchAddressBatchWithResponseAsync(JsonFormat.JSON, batchRequest);
-
-        return responseMono.flatMap(response -> {
-            Response<BatchSearchResult> simpleResponse = Utility
-                .createBatchSearchResponse(response);
-            return Mono.just(simpleResponse);
-        });
-    }*/
-
-    /**
-     * **Search Address Batch API**
-     *
-     * @param optionsList a list of {@link SearchAddressOptions} to be searched.
+     * @param optionsList a list of {@link FuzzySearchOptions} to be searched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1027,16 +943,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Address Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of address geocoding queries/requests to process. The list can
-     *     contain a max of 10,000 queries and must contain at least 1 query.
+     * Batch Address Search
+     *
+     * @param optionsList a list of {@link SearchAddressOptions} to be searched.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BatchSearchResult, BatchSearchResult> beginSearchAddressBatch(
             List<SearchAddressOptions> optionsList, Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
@@ -1055,32 +970,21 @@ public final class MapsSearchAsyncClient {
                         return Mono.just(Utility.createBatchSearchResponse(response));
                     }),
                 this.forwardStrategy);
-        }
-        else {
+        } else {
             return createPollerFlux(
                 () -> this.serviceClient.searchAddressBatchWithResponseAsync(JsonFormat.JSON,
                     batchRequest, context).flatMap(response -> {
-                    return Mono.just(Utility.createBatchSearchResponse(response));
-                }),
+                        return Mono.just(Utility.createBatchSearchResponse(response));
+                    }),
                 this.forwardStrategy);
         }
     }
 
-    /**
-     * **Search Address Batch API**
-     * @param batchId Batch id for querying the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Batch service call.
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchesGetSearchAddressBatchResponse> getSearchAddressBatchWithResponse(String batchId) {
-        return this.serviceClient.getSearchAddressBatchWithResponseAsync(batchId);
-    }*/
 
     /**
-     * **Search Address Batch API**
+     * Get Batch Search Id
+     *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1094,14 +998,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Address Batch API**
+     * Get Batch Search Id
+     *
      * @param batchId Batch id for querying the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Search Address Batch service call.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BatchSearchResult, BatchSearchResult> beginGetSearchAddressBatch(
             String batchId, Context context) {
         return createPollerFlux(
@@ -1113,109 +1018,13 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Address Reverse Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of reverse geocoding queries/requests to process. The list
-     *     can contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchReverseSearchResult> reverseSearchAddressBatchSync(BatchRequest batchRequest) {
-        return this.reverseSearchAddressBatchSync(batchRequest, null);
-    }*/
-
-    /**
-     * **Search Address Reverse Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of reverse geocoding queries/requests to process. The list
-     *     can contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BatchReverseSearchResult> reverseSearchAddressBatchSync(BatchRequest batchRequest,
-            Context context) {
-        Mono<ReverseSearchAddressBatchResultPrivate> responseMono = this.serviceClient
-            .reverseSearchAddressBatchSyncAsync(JsonFormat.JSON, batchRequest);
-
-        // convert to BatchReverseSearchResult
-        return responseMono.flatMap(response -> {
-            BatchReverseSearchResult result = Utility.toBatchReverseSearchResult(response);
-            return Mono.just(result);
-        });
-    }*/
-
-    /**
-     * **Search Address Reverse Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of reverse geocoding queries/requests to process. The list
-     *     can contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BatchReverseSearchResult>> reverseSearchAddressBatchSyncWithResponse(
-            BatchRequest batchRequest) {
-        return this.reverseSearchAddressBatchSyncWithResponse(batchRequest, null);
-    }*/
-
-    /**
-     * **Search Address Reverse Batch API**
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of reverse geocoding queries/requests to process. The list
-     *     can contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
-     *
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BatchReverseSearchResult>> reverseSearchAddressBatchSyncWithResponse(
-            BatchRequest batchRequest, Context context) {
-        Mono<Response<ReverseSearchAddressBatchResultPrivate>> responseMono = this.serviceClient
-            .reverseSearchAddressBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context);
-
-        // convert to BatchReverseSearchResult
-        return responseMono.flatMap(response -> {
-            Response<BatchReverseSearchResult> result = Utility
-                .createBatchReverseSearchResponse(response);
-            return Mono.just(result);
-        });
-    }*/
-
-    /**
-     * **Search Address Reverse Batch API**
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param batchRequest The list of reverse geocoding queries/requests to process. The list
-     *     can contain a max of 10,000 queries and must contain at least 1 query.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchesReverseSearchAddressBatchResponse> reverseSearchAddressBatchWithResponse(
-            BatchRequest batchRequest) {
-        return this.serviceClient.reverseSearchAddressBatchWithResponseAsync(
-                JsonFormat.JSON, batchRequest);
-    }*/
-
-    /**
-     * **Search Address Reverse Batch API**
+     * Searches a batch of addresses given their coordinates.
      *
      * @param optionsList a list of {@link ReverseSearchAddressOptions} to be searched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
+     * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
@@ -1224,15 +1033,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Address Reverse Batch API**
+     * Searches a batch of addresses given their coordinates.
+     *
      * @param optionsList a list of {@link ReverseSearchAddressOptions} to be searched.
      * @param context a {@link Context} object for distributed tracing.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
+     * @return a {@code SyncPoller} wrapping the service call.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
             beginReverseSearchAddressBatch(List<ReverseSearchAddressOptions> optionsList, Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
@@ -1250,24 +1059,24 @@ public final class MapsSearchAsyncClient {
                         return Mono.just(Utility.createBatchReverseSearchResponse(response));
                     }),
                 this.reverseStrategy);
-        }
-        else {
+        } else {
             return createReversePollerFlux(
                 () -> this.serviceClient.reverseSearchAddressBatchWithResponseAsync(JsonFormat.JSON,
                     batchRequest, context).flatMap(response -> {
-                    return Mono.just(Utility.createBatchReverseSearchResponse(response));
-                }),
+                        return Mono.just(Utility.createBatchReverseSearchResponse(response));
+                    }),
                 this.reverseStrategy);
         }
     }
 
     /**
-     * **Search Address Reverse Batch API**
+     * Returns a batch of previously searched addressed given a batch id.
+     *
      * @param batchId Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
+     * @return a {@code SyncPoller} wrapping the service call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
@@ -1276,15 +1085,15 @@ public final class MapsSearchAsyncClient {
     }
 
     /**
-     * **Search Address Reverse Batch API**
+     * Returns a batch of previously searched addressed given a batch id.
+     *
      * @param batchId Batch id for querying the operation.
      * @param context a {@link Context} object for distributed tracing.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Search Address Reverse Batch service call.
+     * @return a {@code SyncPoller} wrapping the service call.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult>
             beginGetReverseSearchAddressBatch(String batchId, Context context) {
         return createReversePollerFlux(
@@ -1295,10 +1104,13 @@ public final class MapsSearchAsyncClient {
             this.reverseStrategy);
     }
 
-    // private utility methods
+    // create a poller for a forward search operation
     private PollerFlux<BatchSearchResult, BatchSearchResult> createPollerFlux(
             Supplier<Mono<? extends Response<?>>> initialOperation,
             DefaultPollingStrategy<BatchSearchResult, BatchSearchResult> strategy) {
+
+        // batch search type reference
+        BatchSearchTypeReference reference = new BatchSearchTypeReference();
 
         // Create poller instance
         return PollerFlux.create(
@@ -1310,13 +1122,13 @@ public final class MapsSearchAsyncClient {
                             "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
                     }
                     context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, new TypeReference<BatchSearchResult>() {});
+                    return strategy.onInitialResponse(response, context, reference);
                 })),
-            context -> strategy.poll(context, new TypeReference<BatchSearchResult>() {}),
+            context -> strategy.poll(context, reference),
             strategy::cancel,
             context -> {
                 return strategy
-                    .getResult(context, new TypeReference<BatchSearchResult>() {})
+                    .getResult(context, reference)
                         .flatMap(result -> {
                             final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
                             result.setBatchId(batchId);
@@ -1325,9 +1137,13 @@ public final class MapsSearchAsyncClient {
             });
     }
 
+    // create a poller for the reverse search operation
     private PollerFlux<BatchReverseSearchResult, BatchReverseSearchResult> createReversePollerFlux(
             Supplier<Mono<? extends Response<?>>> initialOperation,
             DefaultPollingStrategy<BatchReverseSearchResult, BatchReverseSearchResult> strategy) {
+
+        // batch search type reference
+        ReverseBatchSearchTypeReference reference = new ReverseBatchSearchTypeReference();
 
         // Create poller instance
         return PollerFlux.create(
@@ -1339,13 +1155,13 @@ public final class MapsSearchAsyncClient {
                             "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
                     }
                     context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, new TypeReference<BatchReverseSearchResult>() {});
+                    return strategy.onInitialResponse(response, context, reference);
                 })),
-            context -> strategy.poll(context, new TypeReference<BatchReverseSearchResult>() {}),
+            context -> strategy.poll(context, reference),
             strategy::cancel,
             context -> {
                 return strategy
-                    .getResult(context, new TypeReference<BatchReverseSearchResult>() {})
+                    .getResult(context, reference)
                         .flatMap(result -> {
                             final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
                             result.setBatchId(batchId);

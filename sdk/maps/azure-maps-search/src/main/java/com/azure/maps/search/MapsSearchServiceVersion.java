@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search;
 
 import com.azure.core.util.ServiceVersion;
@@ -16,7 +19,7 @@ public enum MapsSearchServiceVersion implements ServiceVersion {
     /**
      * Creates a new {@link MapsSearchServiceVersion} with a version string.
      *
-     * @param version
+     * @param version the version string
      */
     MapsSearchServiceVersion(String version) {
         this.version = version;

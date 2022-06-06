@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -26,7 +29,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns whether we should include the speed limit.
-     * @return
+     * @return whether we should include the speed limit.
      */
     public Boolean includeSpeedLimit() {
         return includeSpeedLimit;
@@ -34,7 +37,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns the building number.
-     * @return
+     * @return the building number.
      */
     public String getNumber() {
         return number;
@@ -42,7 +45,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns whether we should include the road use.
-     * @return
+     * @return whether we should include the road use.
      */
     public Boolean includeRoadUse() {
         return includeRoadUse;
@@ -50,7 +53,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns a list of road uses.
-     * @return
+     * @return a list of road uses.
      */
     public List<RoadUseType> getRoadUse() {
         return roadUse;
@@ -58,7 +61,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns whether to allow free form newline.
-     * @return
+     * @return whether to allow free form newline.
      */
     public Boolean allowFreeformNewline() {
         return allowFreeformNewline;
@@ -66,7 +69,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns whether to include match type.
-     * @return
+     * @return whether to include match type.
      */
     public Boolean includeMatchType() {
         return includeMatchType;
@@ -74,7 +77,7 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Returns the entity type.
-     * @return
+     * @return the entity type.
      */
     public GeographicEntityType getEntityType() {
         return entityType;
@@ -82,8 +85,8 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Sets whether to include the speed limit.
-     * @param includeSpeedLimit
-     * @return
+     * @param includeSpeedLimit whether to include the speed limit.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setIncludeSpeedLimit(Boolean includeSpeedLimit) {
         this.includeSpeedLimit = true;
@@ -91,9 +94,9 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
     }
 
     /**
-     * Sets whether to include the street number.
-     * @param number
-     * @return
+     * Sets the street number.
+     * @param number the street number.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setNumber(String number) {
         this.number = number;
@@ -102,8 +105,8 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Sets whether to include road use.
-     * @param includeRoadUse
-     * @return
+     * @param includeRoadUse whether to include road use.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setIncludeRoadUse(Boolean includeRoadUse) {
         this.includeRoadUse = includeRoadUse;
@@ -112,8 +115,8 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Sets a list of road use types.
-     * @param roadUse
-     * @return
+     * @param roadUse a list of road use types.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setRoadUse(List<RoadUseType> roadUse) {
         this.roadUse = roadUse;
@@ -122,8 +125,8 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Sets whether to allow free form newline.
-     * @param allowFreeformNewline
-     * @return
+     * @param allowFreeformNewline whether to allow free form newline.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setAllowFreeformNewline(Boolean allowFreeformNewline) {
         this.allowFreeformNewline = allowFreeformNewline;
@@ -132,8 +135,8 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Sets whether to include the match type.
-     * @param includeMatchType
-     * @return
+     * @param includeMatchType whether to include the match type.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setIncludeMatchType(Boolean includeMatchType) {
         this.includeMatchType = includeMatchType;
@@ -142,8 +145,8 @@ public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<
 
     /**
      * Sets the entity type.
-     * @param entityType
-     * @return
+     * @param entityType the entity type.
+     * @return a reference to this {@code ReverseSearchAddressOptions}.
      */
     public ReverseSearchAddressOptions setEntityType(GeographicEntityType entityType) {
         this.entityType = entityType;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
     /**
      * Builds fuzzy search options with only the query string.
      *
-     * @param query
+     * @param query the query string used in the fuzzy search.
      */
     public SearchAddressOptions(String query) {
         this.query = query;
@@ -26,7 +29,7 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Returns the coordinates.
-     * @return
+     * @return the coordinates.
      */
     public Optional<GeoPosition> getCoordinates() {
         return Optional.ofNullable(coordinates);
@@ -34,7 +37,7 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Returns the query string.
-     * @return
+     * @return the query string.
      */
     public String getQuery() {
         return query;
@@ -42,7 +45,7 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Returns whether this is a typeahead search.
-     * @return
+     * @return whether this is a typeahead search.
      */
     public Boolean isTypeAhead() {
         return isTypeAhead;
@@ -50,7 +53,7 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Returns the extended postal codes.
-     * @return
+     * @return the extended postal codes used in the search.
      */
     public List<SearchIndexes> getExtendedPostalCodesFor() {
         return extendedPostalCodesFor;
@@ -58,7 +61,7 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Returns the entity type.
-     * @return
+     * @return the entity type.
      */
     public GeographicEntityType getEntityType() {
         return entityType;
@@ -66,8 +69,8 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Sets whether this is a typeahead search.
-     * @param isTypeAhead
-     * @return
+     * @param isTypeAhead whether this is a typeahead search.
+     * @return a reference to this @{code SearchAddressOptions}
      */
     public SearchAddressOptions setIsTypeAhead(Boolean isTypeAhead) {
         this.isTypeAhead = isTypeAhead;
@@ -76,8 +79,8 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Sets the extended postal codes.
-     * @param extendedPostalCodesFor
-     * @return
+     * @param extendedPostalCodesFor the extended postal codes used in the search.
+     * @return a reference to this @{code SearchAddressOptions}
      */
     public SearchAddressOptions setExtendedPostalCodesFor(List<SearchIndexes> extendedPostalCodesFor) {
         this.extendedPostalCodesFor = extendedPostalCodesFor;
@@ -86,8 +89,8 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Sets the entity type.
-     * @param entityType
-     * @return
+     * @param entityType the entity type.
+     * @return a reference to this @{code SearchAddressOptions}
      */
     public SearchAddressOptions setEntityType(GeographicEntityType entityType) {
         this.entityType = entityType;
@@ -96,8 +99,8 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Sets the coordinates.
-     * @param coordinates
-     * @return
+     * @param coordinates the coordinates.
+     * @return a reference to this @{code SearchAddressOptions}
      */
     public SearchAddressOptions setCoordinates(GeoPosition coordinates) {
         this.coordinates = coordinates;
@@ -106,8 +109,8 @@ public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressO
 
     /**
      * Sets the query string.
-     * @param query
-     * @return
+     * @param query the query string.
+     * @return a reference to this @{code SearchAddressOptions}
      */
     public SearchAddressOptions setQuery(String query) {
         this.query = query;

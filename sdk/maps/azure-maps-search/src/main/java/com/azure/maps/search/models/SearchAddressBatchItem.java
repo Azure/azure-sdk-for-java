@@ -1,14 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for
-// license information.
+// Licensed under the MIT License.
 
 package com.azure.maps.search.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.maps.search.implementation.helpers.SearchAddressBatchItemPropertiesHelper;
 
 /** An item returned from Search Address Batch service call. */
-@Immutable
 public final class SearchAddressBatchItem {
     private Integer statusCode;
     private ErrorDetail error;
@@ -45,7 +42,6 @@ public final class SearchAddressBatchItem {
 
     /**
      * Get the error property: The error object.
-     *
      * @return the error value.
      */
     public ErrorDetail getError() {
@@ -54,7 +50,7 @@ public final class SearchAddressBatchItem {
 
     /**
      * Results of this search.
-     * @return
+     * @return the results of this search.
      */
     public SearchAddressResult getResult() {
         return result;

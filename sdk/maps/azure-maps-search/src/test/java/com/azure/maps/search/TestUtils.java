@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search;
 
 import java.io.ByteArrayOutputStream;
@@ -39,12 +42,12 @@ public class TestUtils {
 
     static Polygon getPolygon(InputStream is) throws IOException {
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<Polygon> interimType = new TypeReference<Polygon>(){};
+        TypeReference<Polygon> interimType = new TypeReference<Polygon>() { };
         byte[] data = null;
         data = toByteArray(is);
         Polygon polygon = null;
         polygon = jacksonAdapter.<Polygon>deserialize(data, interimType.getJavaType(),
-               SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return polygon;
     }
 
@@ -61,10 +64,10 @@ public class TestUtils {
 
     static SearchAddressResult getSearchAddressResult(byte[] data) throws IOException {
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<SearchAddressResult> interimType = new TypeReference<SearchAddressResult>(){};
+        TypeReference<SearchAddressResult> interimType = new TypeReference<SearchAddressResult>() { };
         SearchAddressResult searchAddressResult = null;
         searchAddressResult = jacksonAdapter.<SearchAddressResult>deserialize(data, interimType.getJavaType(),
-               SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return searchAddressResult;
     }
 
@@ -99,12 +102,12 @@ public class TestUtils {
     static PointOfInterestCategoryTreeResult getExpectedSearchPointOfInterestCategoryTreeResults() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("getpointofinterestcategorytreeresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<PointOfInterestCategoryTreeResult> interimType = new TypeReference<PointOfInterestCategoryTreeResult>(){};
+        TypeReference<PointOfInterestCategoryTreeResult> interimType = new TypeReference<PointOfInterestCategoryTreeResult>() { };
         byte[] data = null;
         data = toByteArray(is);
         PointOfInterestCategoryTreeResult pointOfInterestCategoryTreeResult = null;
         pointOfInterestCategoryTreeResult = jacksonAdapter.<PointOfInterestCategoryTreeResult>deserialize(data, interimType.getJavaType(),
-               SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return pointOfInterestCategoryTreeResult;
     }
 
@@ -118,24 +121,24 @@ public class TestUtils {
     static ReverseSearchAddressResult getExpectedReverseSearchAddressResults() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("reversesearchaddressresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<ReverseSearchAddressResult> interimType = new TypeReference<ReverseSearchAddressResult>(){};
+        TypeReference<ReverseSearchAddressResult> interimType = new TypeReference<ReverseSearchAddressResult>() { };
         byte[] data = null;
         data = toByteArray(is);
         ReverseSearchAddressResult reverseSearchAddressResult = null;
         reverseSearchAddressResult = jacksonAdapter.<ReverseSearchAddressResult>deserialize(data, interimType.getJavaType(),
-               SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return reverseSearchAddressResult;
     }
 
     static ReverseSearchCrossStreetAddressResult getExpectedReverseSearchCrossStreetAddressResults() throws IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("reversesearchcrossstreetaddressresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<ReverseSearchCrossStreetAddressResult> interimType = new TypeReference<ReverseSearchCrossStreetAddressResult>(){};
+        TypeReference<ReverseSearchCrossStreetAddressResult> interimType = new TypeReference<ReverseSearchCrossStreetAddressResult>() { };
         byte[] data = null;
         data = toByteArray(is);
         ReverseSearchCrossStreetAddressResult reverseSearchCrossStreetAddressResult = null;
         reverseSearchCrossStreetAddressResult = jacksonAdapter.<ReverseSearchCrossStreetAddressResult>deserialize(data, interimType.getJavaType(),
-               SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return reverseSearchCrossStreetAddressResult;
     }
 
@@ -148,10 +151,10 @@ public class TestUtils {
 
     static GeoObject getGeoObject(File file) throws IOException {
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<GeoObject> interimType = new TypeReference<GeoObject>(){};
+        TypeReference<GeoObject> interimType = new TypeReference<GeoObject>() { };
         byte[] data = Files.readAllBytes(file.toPath());
         GeoObject obj = jacksonAdapter.<GeoObject>deserialize(data, interimType.getJavaType(),
-           SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return obj;
     }
 
@@ -164,10 +167,10 @@ public class TestUtils {
 
     static GeoLineString getGeoLineString(File file) throws IOException {
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<GeoLineString> interimType = new TypeReference<GeoLineString>(){};
+        TypeReference<GeoLineString> interimType = new TypeReference<GeoLineString>() { };
         byte[] data = Files.readAllBytes(file.toPath());
         GeoLineString obj = jacksonAdapter.<GeoLineString>deserialize(data, interimType.getJavaType(),
-           SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return obj;
     }
 
@@ -181,30 +184,30 @@ public class TestUtils {
     static BatchSearchResult getExpectedBeginFuzzySearchBatch() throws StreamReadException, DatabindException, IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("beginfuzzysearchbatchresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<BatchSearchResult> interimType = new TypeReference<BatchSearchResult>(){};
+        TypeReference<BatchSearchResult> interimType = new TypeReference<BatchSearchResult>() { };
         byte[] data = toByteArray(is);
         BatchSearchResult expectedFuzzySearchBatch = jacksonAdapter.<BatchSearchResult>deserialize(data, interimType.getJavaType(),
-           SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return expectedFuzzySearchBatch;
     }
 
     static BatchSearchResult getExpectedBeginSearchAddressBatch() throws StreamReadException, DatabindException, IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("beginsearchaddressbatchresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<BatchSearchResult> interimType = new TypeReference<BatchSearchResult>(){};
+        TypeReference<BatchSearchResult> interimType = new TypeReference<BatchSearchResult>() { };
         byte[] data = toByteArray(is);
         BatchSearchResult expectedSearchAddressBatch = jacksonAdapter.<BatchSearchResult>deserialize(data, interimType.getJavaType(),
-           SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return expectedSearchAddressBatch;
     }
 
     static BatchReverseSearchResult getExpectedReverseSearchAddressBatch() throws StreamReadException, DatabindException, IOException {
         InputStream is = ClassLoader.getSystemResourceAsStream("beginreversesearchaddressbatchresult.json");
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<BatchReverseSearchResult> interimType = new TypeReference<BatchReverseSearchResult>(){};
+        TypeReference<BatchReverseSearchResult> interimType = new TypeReference<BatchReverseSearchResult>() { };
         byte[] data = toByteArray(is);
         BatchReverseSearchResult expectedReverseSearchAddressBatch = jacksonAdapter.<BatchReverseSearchResult>deserialize(data, interimType.getJavaType(),
-           SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         return expectedReverseSearchAddressBatch;
     }
 
@@ -235,8 +238,7 @@ public class TestUtils {
         byte[] buffer = new byte[1024];
         int len;
         // read bytes from the input stream and store them in the buffer
-        while ((len = in.read(buffer)) != -1)
-        {
+        while ((len = in.read(buffer)) != -1) {
             // write bytes from the buffer into the output stream
             os.write(buffer, 0, len);
         }

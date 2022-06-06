@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -16,11 +19,10 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
     private GeographicEntityType entityType;
     private String query;
 
-
     /**
      * Builds fuzzy search options with only the query string.
      *
-     * @param query
+     * @param query the query string used in the search.
      */
     public FuzzySearchOptions(String query) {
         this.query = query;
@@ -48,7 +50,7 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Returns whether this is a typeahead search.
-     * @return
+     * @return whether this is a typeahead search.
      */
     public Boolean isTypeAhead() {
         return isTypeAhead;
@@ -56,7 +58,7 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Returns the extended postal codes.
-     * @return
+     * @return the extended postal codes used for the search.
      */
     public List<SearchIndexes> getExtendedPostalCodesFor() {
         return extendedPostalCodesFor;
@@ -64,23 +66,23 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Returns the minimum fuzzy level.
-     * @return
+     * @return the minimum fuzzy level.
      */
     public Integer getMinFuzzyLevel() {
         return minFuzzyLevel;
     }
 
     /**
-     * Returns the minimum fuzzy level.
-     * @return
+     * Returns the maximum fuzzy level.
+     * @return the maximum fuzzy level.
      */
     public Integer getMaxFuzzyLevel() {
         return maxFuzzyLevel;
     }
 
     /**
-     * Returns the idx set.
-     * @return
+     * Returns the index filters used in the search.
+     * @return the index filters used in the search.
      */
     public List<SearchIndexes> getIndexFilter() {
         return indexFilter;
@@ -88,7 +90,7 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Returns the entity type.
-     * @return
+     * @return the entity type.
      */
     public GeographicEntityType getEntityType() {
         return entityType;
@@ -96,7 +98,7 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Returns the query string.
-     * @return
+     * @return the query string.
      */
     public String getQuery() {
         return query;
@@ -104,8 +106,8 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Sets whether this is a typeahead search.
-     * @param isTypeAhead
-     * @return
+     * @param isTypeAhead the extended postal codes.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setIsTypeAhead(Boolean isTypeAhead) {
         this.isTypeAhead = isTypeAhead;
@@ -114,8 +116,8 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Sets the extended postal codes.
-     * @param extendedPostalCodesFor
-     * @return
+     * @param extendedPostalCodesFor the extended postal codes used for the search.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setExtendedPostalCodesFor(List<SearchIndexes> extendedPostalCodesFor) {
         this.extendedPostalCodesFor = extendedPostalCodesFor;
@@ -124,8 +126,8 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Sets the minimum fuzzy level.
-     * @param minFuzzyLevel
-     * @return
+     * @param minFuzzyLevel the minimum fuzzy level.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setMinFuzzyLevel(Integer minFuzzyLevel) {
         this.minFuzzyLevel = minFuzzyLevel;
@@ -134,8 +136,8 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Sets the maximum fuzzy level.
-     * @param maxFuzzyLevel
-     * @return
+     * @param maxFuzzyLevel the maximum fuzzy level.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setMaxFuzzyLevel(Integer maxFuzzyLevel) {
         this.maxFuzzyLevel = maxFuzzyLevel;
@@ -143,9 +145,9 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
     }
 
     /**
-     * Sets the idx set.
-     * @param indexFilter
-     * @return
+     * Sets the index filters used in the search.
+     * @param indexFilter the index filters used in the search.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setIndexFilter(List<SearchIndexes> indexFilter) {
         this.indexFilter = indexFilter;
@@ -154,8 +156,8 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Sets the entity type.
-     * @param entityType
-     * @return
+     * @param entityType the entity type.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setEntityType(GeographicEntityType entityType) {
         this.entityType = entityType;
@@ -164,8 +166,8 @@ public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<F
 
     /**
      * Sets the query string.
-     * @param query
-     * @return
+     * @param query the query string.
+     * @return a reference to this {@code FuzzySearchOptions}
      */
     public FuzzySearchOptions setQuery(String query) {
         this.query = query;

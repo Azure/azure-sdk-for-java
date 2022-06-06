@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -34,7 +37,7 @@ public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointO
 
     /**
      * Returns whether this is a typeahead search.
-     * @return
+     * @return whether this is a typeahead search
      */
     public Boolean isTypeAhead() {
         return isTypeAhead;
@@ -42,7 +45,7 @@ public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointO
 
     /**
      * Returns the extended postal codes for.
-     * @return
+     * @return the extended postal codes used for the search
      */
     public List<SearchIndexes> getExtendedPostalCodesFor() {
         return extendedPostalCodesFor;
@@ -50,6 +53,7 @@ public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointO
 
     /**
      * Returns the query string.
+     * @return the query string
      */
     public String getQuery() {
         return query;
@@ -57,8 +61,8 @@ public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointO
 
     /**
      * Sets whether this is a typeahead search.
-     * @param isTypeAhead
-     * @return
+     * @param isTypeAhead whether this is a typeahead search
+     * @return a reference to this {@code SearchPointOfInterestCategoryOptions}
      */
     public SearchPointOfInterestCategoryOptions setIsTypeAhead(Boolean isTypeAhead) {
         this.isTypeAhead = isTypeAhead;
@@ -67,8 +71,8 @@ public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointO
 
     /**
      * Sets the extended postal codes for.
-     * @param extendedPostalCodesFor
-     * @return
+     * @param extendedPostalCodesFor the extended postal codes used for the search
+     * @return a reference to this {@code SearchPointOfInterestCategoryOptions}
      */
     public SearchPointOfInterestCategoryOptions setExtendedPostalCodesFor(List<SearchIndexes> extendedPostalCodesFor) {
         this.extendedPostalCodesFor = extendedPostalCodesFor;
@@ -77,6 +81,8 @@ public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointO
 
     /**
      * Sets the query string.
+     * @param query the query string
+     * @return a reference to this {@code SearchPointOfInterestCategoryOptions}
      */
     public SearchPointOfInterestCategoryOptions setQuery(String query) {
         this.query = query;

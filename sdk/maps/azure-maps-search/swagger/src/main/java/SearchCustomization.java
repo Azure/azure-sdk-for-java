@@ -172,6 +172,7 @@ public class SearchCustomization extends Customization {
         geometryCustomization.setReturnType("GeoObject",
             "com.azure.maps.search.implementation.helpers.Utility.toGeoObject(returnValue)");
 
+        classCustomization.removeMethod("setGeometryData");
         classCustomization.addImports("com.azure.core.models.GeoObject");
     }
 }

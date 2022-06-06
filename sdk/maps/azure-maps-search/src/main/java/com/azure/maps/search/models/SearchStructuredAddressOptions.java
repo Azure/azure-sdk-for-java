@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.search.models;
 
 import java.util.List;
@@ -11,7 +14,7 @@ public final class SearchStructuredAddressOptions extends BaseSearchOptions<Sear
 
     /**
      * Returns the entity type.
-     * @return
+     * @return the entity type
      */
     public GeographicEntityType getEntityType() {
         return entityType;
@@ -19,7 +22,7 @@ public final class SearchStructuredAddressOptions extends BaseSearchOptions<Sear
 
     /**
      * Returns the extended postal codes for.
-     * @return
+     * @return the extended postal codes used for the search
      */
     public List<SearchIndexes> getExtendedPostalCodesFor() {
         return extendedPostalCodesFor;
@@ -27,8 +30,8 @@ public final class SearchStructuredAddressOptions extends BaseSearchOptions<Sear
 
     /**
      * Sets the entity type.
-     * @param entityType
-     * @return
+     * @param entityType the {@code GeographicEntityType}
+     * @return a reference to this {@code SearchStructuredAddressOptions}
      */
     public SearchStructuredAddressOptions setEntityType(GeographicEntityType entityType) {
         this.entityType = entityType;
@@ -37,8 +40,8 @@ public final class SearchStructuredAddressOptions extends BaseSearchOptions<Sear
 
     /**
      * Sets the extended postal codes for.
-     * @param extendedPostalCodesFor
-     * @return
+     * @param extendedPostalCodesFor the extended postal codes used for the search.
+     * @return a reference to this {@code SearchStructuredAddressOptions}
      */
     public SearchStructuredAddressOptions setExtendedPostalCodesFor(List<SearchIndexes> extendedPostalCodesFor) {
         this.extendedPostalCodesFor = extendedPostalCodesFor;
