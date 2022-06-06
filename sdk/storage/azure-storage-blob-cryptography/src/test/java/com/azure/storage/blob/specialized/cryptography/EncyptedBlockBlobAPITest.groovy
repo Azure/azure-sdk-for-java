@@ -594,7 +594,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         where:
         version              | _
         EncryptionVersion.V1 | _
-        //EncryptionVersion.V2 | _
+        EncryptionVersion.V2 | _
     }
 
     def "Download unencrypted data"() {
@@ -967,6 +967,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download min"() {
         setup:
         ebc = getEncryptionClient(version, ebc.getBlobName())
+        ebc.upload(data.defaultBinaryData, true)
 
         when:
         def outStream = new ByteArrayOutputStream()
