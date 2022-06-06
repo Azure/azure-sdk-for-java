@@ -79,6 +79,11 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
+    public float getFloatValue() {
+        return callWithWrappedIoException(parser::getFloatValue);
+    }
+
+    @Override
     public int getIntValue() {
         return callWithWrappedIoException(parser::getIntValue);
     }
