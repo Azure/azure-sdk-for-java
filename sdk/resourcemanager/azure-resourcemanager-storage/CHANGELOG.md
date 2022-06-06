@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported toggling blob versioning in `BlobServiceProperties`.
 
 ## 2.15.0 (2022-05-25)
 
