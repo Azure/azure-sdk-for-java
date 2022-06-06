@@ -14,7 +14,7 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 //import com.azure.communication.callingserver.implementation.converters.AddParticipantResultConverter;
 //import com.azure.communication.callingserver.implementation.converters.AudioGroupResultConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
-//import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
+import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
@@ -43,7 +43,7 @@ import com.azure.communication.callingserver.implementation.models.TransferCallR
 //import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
-//import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 //import com.azure.communication.callingserver.models.CreateAudioGroupResult;
 //import com.azure.communication.callingserver.models.PlayAudioOptions;
@@ -99,13 +99,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionProperties> getCall() {
-        try {
-            return callConnectionInternal.getCallAsync(callLegId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(CallConnectionPropertiesConverter.convert(result)));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getCall(null);
     }
 
     /**
@@ -119,11 +113,9 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionProperties> getCall(Context context) {
         try {
-            if (context == null) {
-                return getCall();
-            }
-            return callConnectionInternal.getCallAsync(callLegId, context)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+            return (context == null ? callConnectionInternal.getCallAsync(callLegId)
+                : callConnectionInternal.getCallAsync(callLegId, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException))
                 .flatMap(result -> Mono.just(CallConnectionPropertiesConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -139,10 +131,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionProperties>> getCallWithResponse() {
-        return callConnectionInternal.getCallWithResponseAsync(callLegId)
-            .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-            .map(response ->
-                new SimpleResponse<>(response, CallConnectionPropertiesConverter.convert(response.getValue())));
+        return getCallWithResponse(null);
     }
 
     /**
@@ -156,10 +145,8 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CallConnectionProperties>> getCallWithResponse(Context context) {
         try {
-            if (context == null) {
-                return getCallWithResponse();
-            }
-            return callConnectionInternal.getCallWithResponseAsync(callLegId, context)
+            return (context == null ? callConnectionInternal.getCallWithResponseAsync(callLegId)
+                : callConnectionInternal.getCallWithResponseAsync(callLegId, context))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .map(response ->
                     new SimpleResponse<>(response, CallConnectionPropertiesConverter.convert(response.getValue())));
@@ -177,13 +164,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangup() {
-        try {
-            return callConnectionInternal.hangUpCallAsync(callLegId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return hangup(null);
     }
 
     /**
@@ -196,11 +177,9 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangup(Context context) {
-        if (context == null) {
-            return hangup();
-        }
         try {
-            return callConnectionInternal.hangUpCallAsync(callLegId, context)
+            return (context == null ? callConnectionInternal.hangUpCallAsync(callLegId)
+                : callConnectionInternal.hangUpCallAsync(callLegId, context))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
@@ -217,12 +196,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupWithResponse() {
-        try {
-            return callConnectionInternal.hangUpCallWithResponseAsync(callLegId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return hangupWithResponse(null);
     }
 
     /**
@@ -235,11 +209,9 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> hangupWithResponse(Context context) {
-        if (context == null) {
-            return hangupWithResponse();
-        }
         try {
-            return callConnectionInternal.hangUpCallWithResponseAsync(callLegId, context)
+            return (context == null ? callConnectionInternal.hangUpCallWithResponseAsync(callLegId)
+                : callConnectionInternal.hangUpCallWithResponseAsync(callLegId, context))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -257,16 +229,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateCall(String reason, String callbackUri) {
-        try {
-            TerminateCallRequest request = new TerminateCallRequest()
-                .setReason(reason)
-                .setCallbackUri(callbackUri);
-            return callConnectionInternal.terminateCallAsync(callLegId, request)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return terminateCall(reason, callbackUri, null);
     }
 
     /**
@@ -281,14 +244,12 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> terminateCall(String reason, String callbackUri, Context context) {
-        if (context == null) {
-            return terminateCall(reason, callbackUri);
-        }
         try {
             TerminateCallRequest request = new TerminateCallRequest()
                 .setReason(reason)
                 .setCallbackUri(callbackUri);
-            return callConnectionInternal.terminateCallAsync(callLegId, request, context)
+            return (context == null ? callConnectionInternal.terminateCallAsync(callLegId, request)
+                : callConnectionInternal.terminateCallAsync(callLegId, request, context))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
@@ -307,15 +268,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateCallWithResponse(String reason, String callbackUri) {
-        try {
-            TerminateCallRequest request = new TerminateCallRequest()
-                .setReason(reason)
-                .setCallbackUri(callbackUri);
-            return callConnectionInternal.terminateCallWithResponseAsync(callLegId, request)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return terminateCallWithResponse(reason, callbackUri, null);
     }
 
     /**
@@ -330,15 +283,13 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> terminateCallWithResponse(String reason, String callbackUri, Context context) {
-        if (context == null) {
-            return terminateCallWithResponse(reason, callbackUri);
-        }
         try {
             TerminateCallRequest request = new TerminateCallRequest()
                 .setReason(reason)
                 .setCallbackUri(callbackUri);
-            return callConnectionInternal.terminateCallWithResponseAsync(callLegId, request, context)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            return (context == null ? callConnectionInternal.terminateCallWithResponseAsync(callLegId, request)
+                : callConnectionInternal.terminateCallWithResponseAsync(callLegId, request, context))
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -358,19 +309,7 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> transferCall(CommunicationIdentifier targetParticipant, String targetCallLegId,
                                    String callbackUri, TransferCallOptions options) {
-        try {
-            TransferCallRequest request = new TransferCallRequest()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setTargetCallLegId(targetCallLegId)
-                .setCallbackUri(callbackUri)
-                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
-                .setUserToUserInformation(options.getUserToUserInformation());
-            return callConnectionInternal.transferCallAsync(callLegId, request)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return transferCall(targetParticipant, targetCallLegId, callbackUri, options, null);
     }
 
     /**
@@ -388,9 +327,6 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> transferCall(CommunicationIdentifier targetParticipant, String targetCallLegId,
                                    String callbackUri, TransferCallOptions options, Context context) {
-        if (context == null) {
-            return transferCall(targetParticipant, targetCallLegId, callbackUri, options);
-        }
         try {
             TransferCallRequest request = new TransferCallRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
@@ -398,7 +334,8 @@ public class CallConnectionAsync {
                 .setCallbackUri(callbackUri)
                 .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
                 .setUserToUserInformation(options.getUserToUserInformation());
-            return callConnectionInternal.transferCallAsync(callLegId, request, context)
+            return (context == null ? callConnectionInternal.transferCallAsync(callLegId, request)
+                : callConnectionInternal.transferCallAsync(callLegId, request, context))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
@@ -420,18 +357,7 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallLegId,
                                                          String callbackUri, TransferCallOptions options) {
-        try {
-            TransferCallRequest request = new TransferCallRequest()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setTargetCallLegId(targetCallLegId)
-                .setCallbackUri(callbackUri)
-                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
-                .setUserToUserInformation(options.getUserToUserInformation());
-            return callConnectionInternal.transferCallWithResponseAsync(callLegId, request)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return transferCallWithResponse(targetParticipant, targetCallLegId, callbackUri, options, null);
     }
 
     /**
@@ -449,9 +375,6 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallLegId,
                                                   String callbackUri, TransferCallOptions options, Context context) {
-        if (context == null) {
-            return transferCallWithResponse(targetParticipant, targetCallLegId, callbackUri, options);
-        }
         try {
             TransferCallRequest request = new TransferCallRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
@@ -459,10 +382,81 @@ public class CallConnectionAsync {
                 .setCallbackUri(callbackUri)
                 .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(options.getAlternateCallerId()))
                 .setUserToUserInformation(options.getUserToUserInformation());
-            return callConnectionInternal.transferCallWithResponseAsync(callLegId, request, context)
+            return (context == null ? callConnectionInternal.transferCallWithResponseAsync(callLegId, request)
+                : callConnectionInternal.transferCallWithResponseAsync(callLegId, request, context))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param participantId The id of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallParticipant> getParticipant(String participantId) {
+        return getParticipant(participantId, null);
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param participantId The id of the participant.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallParticipant> getParticipant(String participantId, Context context) {
+        try {
+            return (context == null ? callConnectionInternal.getParticipantAsync(callLegId, participantId)
+                : callConnectionInternal.getParticipantAsync(callLegId, participantId, context))
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(CallParticipantConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param participantId The id of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(String participantId) {
+        return getParticipantWithResponse(participantId, null);
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CallParticipant>> getParticipantWithResponse(String participantId, Context context) {
+        try {
+            return (context == null ? callConnectionInternal.getParticipantWithResponseAsync(callLegId, participantId)
+                : callConnectionInternal.getParticipantWithResponseAsync(callLegId, participantId, context))
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .map(response ->
+                    new SimpleResponse<>(response,
+                        CallParticipantConverter.convert(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
 }
