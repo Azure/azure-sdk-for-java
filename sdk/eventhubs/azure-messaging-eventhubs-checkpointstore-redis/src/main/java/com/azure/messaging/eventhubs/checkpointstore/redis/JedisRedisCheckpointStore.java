@@ -22,9 +22,11 @@ import redis.clients.jedis.Jedis;
  */
 public class JedisRedisCheckpointStore implements CheckpointStore {
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
-    private final RedisClientConfig config = new RedisClientConfig();
-    private final JedisPool jedisPool = new JedisPool(this.createPoolConfig(), RedisClientConfig.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), RedisClientConfig.getPassword(), Protocol.DEFAULT_DATABASE, RedisClientConfig.getClientName(), config.getUseSSL(), null, null, null);
-
+    private final JedisPool jedisPool;
+    JedisRedisCheckpointStore(RedisClientConfig config) {
+        JedisPoolConfig poolConfig = this.createPoolConfig(config);
+        jedisPool = new JedisPool(poolConfig, RedisClientConfig.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), RedisClientConfig.getPassword(), Protocol.DEFAULT_DATABASE, RedisClientConfig.getClientName(), config.getUseSSL(), null, null, null);
+    }
     /**
      * This method returns the list of partitions that were owned successfully.
      *
@@ -95,7 +97,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
     }
-    private JedisPoolConfig createPoolConfig() {
+    private JedisPoolConfig createPoolConfig(RedisClientConfig config) {
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(config.getPoolMaxTotal());
         poolConfig.setMaxIdle(config.getPoolMaxIdle());

@@ -15,7 +15,6 @@ public final class RedisClientConfig {
     private static final int OPERATION_TIMEOUT_MILLS = 1000;
     private static final int SSL_PORT = 6380;
     private static final int NON_SSL_PORT = 6379;
-    private static final RedisClientConfig INSTANCE = new RedisClientConfig();
     private static final int POOL_MIN_IDLE = 50;
     private static final boolean POOL_BLOCK_WHEN_EXHAUSTED = true;
     private static final boolean USE_SSL = true;
