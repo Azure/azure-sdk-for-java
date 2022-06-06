@@ -1,5 +1,15 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.5.2 (2022-06-07)
 #### Dependency Updates
 - Upgraded `azure-core` dependency to 1.29.1
