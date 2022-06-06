@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.lang.invoke.MethodHandle;
@@ -17,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * A concurrent cache of {@link HttpResponseException} {@link MethodHandle} constructors.
  */
-final class ResponseExceptionConstructorCache {
+public final class ResponseExceptionConstructorCache {
     private static final Map<Class<? extends HttpResponseException>, MethodHandle> CACHE = new ConcurrentHashMap<>();
     private static final ClientLogger LOGGER = new ClientLogger(ResponseExceptionConstructorCache.class);
 
@@ -28,11 +27,11 @@ final class ResponseExceptionConstructorCache {
      * @return The {@link MethodHandle} that is capable of constructing an instance of the class, or null if no handle
      * is found.
      */
-    MethodHandle get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
+    public MethodHandle get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
         return CACHE.computeIfAbsent(exceptionClass, key -> locateExceptionConstructor(key, exceptionBodyType));
     }
 
-    private static MethodHandle locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
+    public static MethodHandle locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
         Class<?> exceptionBodyType) {
         try {
             MethodHandles.Lookup lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(exceptionClass);
@@ -50,7 +49,7 @@ final class ResponseExceptionConstructorCache {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends HttpResponseException> T invoke(MethodHandle handle, String exceptionMessage,
+    public static <T extends HttpResponseException> T invoke(MethodHandle handle, String exceptionMessage,
         HttpResponse httpResponse, Object exceptionBody) {
         try {
             return (T) handle.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);

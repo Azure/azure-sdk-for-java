@@ -9,16 +9,12 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.implementation.http.rest.ResponseConstructorsCache;
+import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -29,10 +25,8 @@ import com.azure.core.implementation.util.LengthValidatingInputStream;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.tracing.Tracer;
@@ -45,18 +39,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.azure.core.http.rest.RestProxyUtil.*;
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 //TODO (g2vinay): Address any Pending comments from this PR: https://github.com/Azure/azure-sdk-for-java/pull/27911/
@@ -122,7 +111,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        RestProxyUtil.validateResumeOperationIsNotPresent(method, LOGGER);
+        RestProxyUtils.validateResumeOperationIsNotPresent(method, LOGGER);
 
         final SwaggerMethodParser methodParser = getMethodParser(method);
         HttpRequest request;
@@ -135,7 +124,7 @@ public final class SyncRestProxy implements InvocationHandler {
         Context context = methodParser.setContext(args);
 
         RequestOptions options = methodParser.setRequestOptions(args);
-        context = mergeRequestOptionsContext(context, options);
+        context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
         context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
             .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
@@ -391,12 +380,12 @@ public final class SyncRestProxy implements InvocationHandler {
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            e = RestProxyUtils.instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody =  decodedResponse.getDecodedBodySync(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            e = RestProxyUtils.instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
         }
 
@@ -590,7 +579,7 @@ public final class SyncRestProxy implements InvocationHandler {
      * @return a proxy implementation of the provided Swagger interface
      */
     public static <A> A create(Class<A> swaggerInterface) {
-        return create(swaggerInterface, createDefaultPipeline(), createDefaultSerializer());
+        return create(swaggerInterface, RestProxyUtils.createDefaultPipeline(), RestProxyUtils.createDefaultSerializer());
     }
 
     /**
@@ -602,7 +591,7 @@ public final class SyncRestProxy implements InvocationHandler {
      * @return a proxy implementation of the provided Swagger interface
      */
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
-        return create(swaggerInterface, httpPipeline, createDefaultSerializer());
+        return create(swaggerInterface, httpPipeline, RestProxyUtils.createDefaultSerializer());
     }
 
     /**
