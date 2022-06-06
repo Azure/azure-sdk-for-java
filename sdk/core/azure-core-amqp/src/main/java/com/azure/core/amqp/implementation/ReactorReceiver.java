@@ -189,7 +189,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
         return endpointStates
-            .distinct()
+            .distinctUntilChanged()
             .takeUntilOther(this.terminateEndpointStates.asMono());
     }
 
@@ -295,7 +295,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      *      <li>remote-close ack (broker to client)</li>
      *      <li>disposal of ReactorReceiver resources via completeClose()</li>
      * </ul>
-     * Ref:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/docs/reactor-receiver-closeflow.png
+     * @link <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/docs/reactor-receiver-closeflow.png">Reactor receiver close flow</a>
      *
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.
