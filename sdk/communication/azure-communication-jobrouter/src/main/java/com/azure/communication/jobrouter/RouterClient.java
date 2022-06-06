@@ -423,8 +423,12 @@ public final class RouterClient {
 
     /**
      * Retrieves an existing job by Id.
-     * @param id
-     * @return
+     *
+     * @param id Id of the job to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> getJob(String id) {
@@ -880,10 +884,14 @@ public final class RouterClient {
     }
 
     /**
-     * Creates or updates a worker to process jobs.
-     * @param id
-     * @param routerWorker
-     * @return
+     * Upsert a worker.
+     *
+     * @param id Id of the worker.
+     * @param routerWorker Model of worker properties to be patched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> upsertWorker(String id, RouterWorker routerWorker) {
