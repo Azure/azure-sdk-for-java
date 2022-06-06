@@ -57,10 +57,13 @@ public final class TypesImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     public interface TypesService {
         @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
         @UnexpectedResponseExceptionType(
                 value = ResourceModifiedException.class,
                 code = {409})
@@ -73,10 +76,13 @@ public final class TypesImpl {
                 Context context);
 
         @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
         @UnexpectedResponseExceptionType(
                 value = ResourceModifiedException.class,
                 code = {409})
@@ -563,6 +569,7 @@ public final class TypesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion
      *     of {@link Mono}.
@@ -672,6 +679,7 @@ public final class TypesImpl {
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion
      *     of {@link Mono}.
@@ -777,6 +785,7 @@ public final class TypesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the businessMetadata definition for the given guid along with {@link Response}.
      */
@@ -879,6 +888,7 @@ public final class TypesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful
      *     completion of {@link Mono}.
@@ -988,6 +998,7 @@ public final class TypesImpl {
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful
      *     completion of {@link Mono}.
@@ -1093,6 +1104,7 @@ public final class TypesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the businessMetadata definition by it's name (unique) along with {@link Response}.
      */

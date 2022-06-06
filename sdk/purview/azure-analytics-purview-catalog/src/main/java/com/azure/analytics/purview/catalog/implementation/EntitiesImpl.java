@@ -562,7 +562,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/businessmetadata/import/template")
-        @ExpectedResponses({200, 400})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
@@ -581,13 +581,16 @@ public final class EntitiesImpl {
 
         // @Multipart not supported by RestProxy
         @Post("/atlas/v2/entity/businessmetadata/import")
-        @ExpectedResponses({200, 400, 409})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
         @UnexpectedResponseExceptionType(
                 value = ResourceNotFoundException.class,
                 code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> importBusinessMetadata(
                 @HostParam("Endpoint") String endpoint,
@@ -7197,6 +7200,7 @@ public final class EntitiesImpl {
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return bulkImportResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7246,6 +7250,7 @@ public final class EntitiesImpl {
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return bulkImportResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7294,6 +7299,7 @@ public final class EntitiesImpl {
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return bulkImportResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
