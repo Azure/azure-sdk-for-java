@@ -91,7 +91,7 @@
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
-      <version>1.10.1</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
