@@ -484,6 +484,7 @@ public class ReactorConnection implements AmqpConnection {
                     .log("Closed CBS node.")),
             managementNodeCloseOperations.doFinally(signalType ->
                 logger.atVerbose()
+                    .addKeyValue(SIGNAL_TYPE_KEY, signalType)
                     .log("Closed management nodes.")))
             // Make sure to close request-response-channel before session is closed.
             .then(emitShutDownSignalOperation.doFinally(signalType ->
