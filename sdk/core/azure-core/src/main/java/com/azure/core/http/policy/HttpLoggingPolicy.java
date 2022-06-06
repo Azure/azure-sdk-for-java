@@ -231,7 +231,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 logBuilder
                     .addKeyValue(STATUS_CODE_LOGGING_KEY, response.getStatusCode())
                     .addKeyValue(URL_LOGGING_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                    .addKeyValue(LoggingKeys.DURATION_KEY, loggingOptions.getResponseDuration().toMillis());
+                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
             }
 
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {

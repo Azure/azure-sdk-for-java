@@ -310,10 +310,10 @@ public class HttpLoggingPolicyTests {
             .build();
 
         HttpLogMessage expectedRetry1 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
-            .setRetryCount(1)
+            .setTryCount(1)
             .setHeaders(request.getHeaders());
         HttpLogMessage expectedRetry2 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
-            .setRetryCount(2)
+            .setTryCount(2)
             .setHeaders(request.getHeaders());
         HttpLogMessage expectedResponse = HttpLogMessage.response("https://test.com", responseBody, 200)
             .setHeaders(responseHeaders);
@@ -413,8 +413,8 @@ public class HttpLoggingPolicyTests {
         @JsonProperty("body")
         private String body;
 
-        @JsonProperty("retryCount")
-        private Integer retryCount;
+        @JsonProperty("tryCount")
+        private Integer tryCount;
 
         @JsonProperty("statusCode")
         private Integer statusCode;
@@ -483,13 +483,13 @@ public class HttpLoggingPolicyTests {
             return contentLength;
         }
 
-        public HttpLogMessage setRetryCount(Integer tryCount) {
-            this.retryCount = retryCount;
+        public HttpLogMessage setTryCount(Integer tryCount) {
+            this.tryCount = tryCount;
             return this;
         }
 
-        public Integer getRetryCount() {
-            return retryCount;
+        public Integer getTryCount() {
+            return tryCount;
         }
 
         public HttpLogMessage setStatusCode(Integer statusCode) {
@@ -563,7 +563,7 @@ public class HttpLoggingPolicyTests {
             assertEquals(this.method, other.method);
             assertEquals(this.url, other.url);
             assertEquals(this.contentLength, other.contentLength);
-            assertEquals(this.retryCount, other.retryCount);
+            assertEquals(this.tryCount, other.tryCount);
             assertEquals(this.statusCode, other.statusCode);
             if (this.durationMs != null) {
                 assertNotNull(other.durationMs);

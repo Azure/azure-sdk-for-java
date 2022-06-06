@@ -130,7 +130,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                         retryAfterHeader, retryAfterTimeUnit);
                     LOGGER.atVerbose()
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                        .addKeyValue(LoggingKeys.DURATION_KEY, delayDuration.toMillis())
+                        .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
                         .log("Retrying.");
 
                     Flux<ByteBuffer> responseBody = httpResponse.getBody();
