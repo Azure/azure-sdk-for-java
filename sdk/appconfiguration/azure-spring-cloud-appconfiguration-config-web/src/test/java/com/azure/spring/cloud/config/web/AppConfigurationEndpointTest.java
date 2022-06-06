@@ -67,14 +67,14 @@ public class AppConfigurationEndpointTest {
         Map<String, String> allRequestParams = new HashMap<String, String>();
 
         AppConfigurationEndpoint endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
-        assertEquals("https://testConfig.", endpoint.getEndpoint());
+        assertEquals("https://testConfig", endpoint.getEndpoint());
         assertEquals("testConfig", endpoint.getStore());
 
         requestBody = mapper.readValue(new File(GET_TEST_REFRESH), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
         
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
-        assertEquals("https://testConfig.", endpoint.getEndpoint());
+        assertEquals("https://testConfig", endpoint.getEndpoint());
         assertEquals("testConfig", endpoint.getStore());
     }
 
