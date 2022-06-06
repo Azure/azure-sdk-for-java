@@ -91,7 +91,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.3.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
+      <version>7.6.0</version> <!-- {x-version-update;org.testng:testng;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
