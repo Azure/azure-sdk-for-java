@@ -13,12 +13,15 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import reactor.core.publisher.Mono;
 
-// TODO: Access conditions, leases, etc from the download call that need to be applied to this request. Copy them from the outgoing request headers.
 // TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
 // Current thinking is override anything that manages large downloads and do the getProps up front and then pass it through
 // the context for this policy to skip
 // What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
 // Maybe we just respond to customers when they complain and tell them to adjust a bit.
+
+/**
+ * Fetches the encryption data to inform the decryption policy how much it should expand the range.
+ */
 public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
 
     private final BlobAsyncClient blobClient;

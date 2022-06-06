@@ -263,13 +263,17 @@ public final class EncryptedBlobClientBuilder implements
             .containerName(containerName)
             .blobName(blobName)
             .snapshot(snapshot)
+            .httpLogOptions(this.logOptions)
             .customerProvidedKey(
                 customerProvidedKey == null ? null : new CustomerProvidedKey(customerProvidedKey.getEncryptionKey()))
             .encryptionScope(encryptionScope == null ? null : encryptionScope.getEncryptionScope())
             .versionId(versionId)
             .serviceVersion(version)
             .pipeline(this.httpPipeline)
-            .httpClient(httpClient);
+            .httpClient(httpClient)
+            .configuration(configuration)
+            .retryOptions(this.retryOptions)
+            .clientOptions(this.clientOptions);
         // Is this missing some things? Refactor to use the pipeline builder code below?
 
         if (storageSharedKeyCredential != null) {
@@ -280,6 +284,13 @@ public final class EncryptedBlobClientBuilder implements
             builder.credential(azureSasCredential);
         } else if (sasToken != null) {
             builder.credential(new AzureSasCredential(sasToken));
+        }
+
+        for (HttpPipelinePolicy policy : perCallPolicies) {
+            builder.addPolicy(policy);
+        }
+        for (HttpPipelinePolicy policy : perRetryPolicies) {
+            builder.addPolicy(policy);
         }
 
         return builder.buildAsyncClient();

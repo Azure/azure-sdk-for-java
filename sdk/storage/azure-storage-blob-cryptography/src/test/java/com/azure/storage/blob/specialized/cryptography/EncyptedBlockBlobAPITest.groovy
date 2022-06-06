@@ -2,6 +2,7 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
@@ -29,6 +30,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.policy.MockDownloadHttpResponse
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
@@ -56,6 +58,8 @@ import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicInteger
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -590,7 +594,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         where:
         version              | _
         EncryptionVersion.V1 | _
-        EncryptionVersion.V2 | _
+        //EncryptionVersion.V2 | _
     }
 
     def "Download unencrypted data"() {
@@ -932,10 +936,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
+        def mockPolicy = new MockRetryRangeResponsePolicy(version)
         def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            ebc.getBlobUrl(), version, new MockRetryRangeResponsePolicy())
+            ebc.getBlobUrl(), version, mockPolicy)
 
         ebc = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
+
+        ebc.upload(data.defaultBinaryData, true)
 
         when:
         def range = new BlobRange(2, 5L)
@@ -1811,4 +1818,29 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
         return result.remaining() == 0
     }
+    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
+        private String expectedRangeHeader
+
+        MockRetryRangeResponsePolicy(EncryptionVersion version) {
+            this.expectedRangeHeader = version == EncryptionVersion.V1 ?
+                "bytes=0-15" : "bytes=0-" + (GCM_ENCRYPTION_REGION_LENGTH + NONCE_LENGTH + TAG_LENGTH - 1)
+        }
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().flatMap { HttpResponse response ->
+                if (response.getRequest().getHttpMethod() == HttpMethod.GET
+                    && response.getRequest().getHeaders().getValue("x-ms-range") != expectedRangeHeader) {
+                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                } else if (response.getRequest().getHttpMethod() == HttpMethod.GET) {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
+                } else {
+                    return Mono.<HttpResponse> just(response)
+                }
+            }
+        }
+    }
 }
+
+
