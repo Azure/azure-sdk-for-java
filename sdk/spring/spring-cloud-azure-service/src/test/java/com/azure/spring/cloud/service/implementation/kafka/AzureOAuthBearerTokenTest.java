@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.service.kafka;
+package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerToken;
+import com.azure.spring.cloud.service.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class KafkaOAuth2AuthenticateCallbackHandlerTest {
+public class AzureOAuthBearerTokenTest {
 
     private static final String FAKE_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjFMVE16YWtpaGlSbGFfOHoyQkVKV"
         + "lhlV01xbyJ9.eyJ2ZXIiOiIyLjAiLCJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vOTEyMjA0MGQtNmM2Ny00YzVi"
@@ -47,7 +47,7 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
     }
     @Test
     void testConvertAzureTokenToKafka() {
-        AzureOAuthBearerToken azureOAuthBearerToken = handler.convertToken(azureToken);
+        AzureOAuthBearerToken azureOAuthBearerToken = new AzureOAuthBearerToken(azureToken);
         assertEquals(azureOAuthBearerToken.value(), FAKE_TOKEN);
         assertNull(azureOAuthBearerToken.scope());
         assertNotNull(azureOAuthBearerToken.startTimeMs());

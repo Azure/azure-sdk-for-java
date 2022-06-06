@@ -6,8 +6,10 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.kafka.properties.AzureEventHubsKafkaProperties;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigs;
+import com.azure.spring.cloud.service.kafka.AzureKafkaConfigs;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -17,10 +19,12 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SASL_MECHANISM_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SECURITY_PROTOCOL_CONFIG_SASL;
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
+import static com.azure.core.management.AzureEnvironment.AZURE_GERMANY;
+import static com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT;
+import static com.azure.spring.cloud.autoconfigure.kafka.KafkaPropertiesBeanPostProcessor.SASL_MECHANISM_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.kafka.KafkaPropertiesBeanPostProcessor.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.kafka.KafkaPropertiesBeanPostProcessor.SASL_JAAS_CONFIG_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.kafka.KafkaPropertiesBeanPostProcessor.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
@@ -32,24 +36,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-class AzureEventHubsKafkaAutoConfigurationTests {
+class AzureEventHubsKafkaOAuth2AutoConfigurationTests {
+
+    static final String CONNECTION_STRING_FORMAT =
+            "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaAutoConfiguration.class,
-                    AzureGlobalPropertiesAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
+                    AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class))
+            .withBean(KafkaProperties.class, KafkaProperties::new);
 
     @Test
     void shouldNotConfigureWhenAzureEventHubsKafkaDisabled() {
         this.contextRunner
                 .withPropertyValues("spring.cloud.azure.kafka.enabled=false")
-                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaAutoConfiguration.class));
+                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class));
     }
 
     @Test
     void shouldNotConfigureWithoutKafkaTemplate() {
         this.contextRunner
                 .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
-                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaAutoConfiguration.class));
+                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class));
     }
 
     @Test
@@ -58,10 +66,10 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                 .withPropertyValues(
                         "spring.cloud.azure.credential.client-id=test-client-id",
                         "spring.cloud.azure.profile.tenant-id=test-tenant-id",
-                        "spring.cloud.azure.profile.environment.active-directory-endpoint=test-host"
+                        "spring.cloud.azure.profile.environment.active-directory-endpoint=" + AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint()
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
@@ -69,18 +77,18 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                     AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                     assertEquals("test-client-id", azureGlobalProperties.getCredential().getClientId());
                     assertEquals("test-tenant-id", azureGlobalProperties.getProfile().getTenantId());
-                    assertEquals("test-host", azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                    assertEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
                     AzureEventHubsKafkaProperties azureEventHubsKafkaProperties = context.getBean(AzureEventHubsKafkaProperties.class);
                     assertTrue(azureEventHubsKafkaProperties.isEnabled());
                     assertEquals("test-client-id", azureEventHubsKafkaProperties.getCredential().getClientId());
                     assertEquals("test-tenant-id", azureEventHubsKafkaProperties.getProfile().getTenantId());
-                    assertNotEquals("test-host", azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                    assertNotEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertEquals("test-client-id", kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-                    assertEquals("test-tenant-id", kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-                    assertNotEquals("test-host", kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
                 });
     }
 
@@ -90,10 +98,10 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                 .withPropertyValues(
                         AzureKafkaConfigs.CLIENT_ID_CONFIG + "=test-client-id",
                         AzureKafkaConfigs.TENANT_ID_CONFIG + "=test-tenant-id",
-                        AzureKafkaConfigs.AAD_ENDPOINT_CONFIG + "=test-host"
+                        AzureKafkaConfigs.AAD_ENDPOINT_CONFIG + "=" + AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint()
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
@@ -107,12 +115,12 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                     assertTrue(azureEventHubsKafkaProperties.isEnabled());
                     assertEquals("test-client-id", azureEventHubsKafkaProperties.getCredential().getClientId());
                     assertEquals("test-tenant-id", azureEventHubsKafkaProperties.getProfile().getTenantId());
-                    assertEquals("test-host", azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                    assertEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertEquals("test-client-id", kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-                    assertEquals("test-tenant-id", kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-                    assertEquals("test-host", kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
                 });
     }
 
@@ -122,14 +130,14 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                 .withPropertyValues(
                         "spring.cloud.azure.credential.client-id=fake-client-id",
                         "spring.cloud.azure.profile.tenant-id=fake-tenant-id",
-                        "spring.cloud.azure.profile.environment.active-directory-endpoint=fake-host",
+                        "spring.cloud.azure.profile.environment.active-directory-endpoint=" + AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
                         "spring.cloud.azure.kafka.enabled=true",
                         AzureKafkaConfigs.CLIENT_ID_CONFIG + "=test-client-id",
                         AzureKafkaConfigs.TENANT_ID_CONFIG + "=test-tenant-id",
-                        AzureKafkaConfigs.AAD_ENDPOINT_CONFIG + "=test-host"
+                        AzureKafkaConfigs.AAD_ENDPOINT_CONFIG + "=" + AZURE_GERMANY.getActiveDirectoryEndpoint()
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
@@ -137,18 +145,18 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                     AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                     assertEquals("fake-client-id", azureGlobalProperties.getCredential().getClientId());
                     assertEquals("fake-tenant-id", azureGlobalProperties.getProfile().getTenantId());
-                    assertEquals("fake-host", azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                    assertEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
                     AzureEventHubsKafkaProperties azureEventHubsKafkaProperties = context.getBean(AzureEventHubsKafkaProperties.class);
                     assertTrue(azureEventHubsKafkaProperties.isEnabled());
                     assertEquals("test-client-id", azureEventHubsKafkaProperties.getCredential().getClientId());
                     assertEquals("test-tenant-id", azureEventHubsKafkaProperties.getProfile().getTenantId());
-                    assertEquals("test-host", azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                    assertEquals(AZURE_GERMANY.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertEquals("test-client-id", kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-                    assertEquals("test-tenant-id", kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-                    assertEquals("test-host", kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
                 });
     }
 
@@ -156,7 +164,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     void noAzurePropertiesShouldBind() {
         this.contextRunner
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
@@ -175,7 +183,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
                     assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
                     assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-                    assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
+                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
                 });
     }
 
@@ -183,7 +191,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     void testConfigureKafkaProperties() {
         this.contextRunner
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
@@ -205,9 +213,9 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                 .withPropertyValues(
                         "spring.kafka.admin.security.protocol=SSL",
                         "spring.kafka.producer.security.protocol=" + SECURITY_PROTOCOL_CONFIG_SASL
-                        )
+                )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
@@ -232,7 +240,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                         "spring.kafka.producer.properties.sasl.mechanism=PLAIN"
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
@@ -262,7 +270,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                         "spring.kafka.producer.properties.login.callback.handler.class=fake-producer-custom"
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);

@@ -2,15 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.kafka;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigs;
+import com.azure.spring.cloud.core.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerToken;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.JWTParser;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
@@ -19,14 +15,12 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.AppConfigurationEntry;
 import java.net.URI;
-import java.text.ParseException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
 /**
  * {@link AuthenticateCallbackHandler} implementation for OAuth2 authentication with Azure Event Hubs.
@@ -39,9 +33,11 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private String authorityHost;
     private String tokenAudience;
 
+    public static TokenCredentialProvider tokenCredentialProvider;
+
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
-        String bootstrapServer = Arrays.asList(configs.get(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG)).get(0).toString();
+        String bootstrapServer = Arrays.asList(configs.get(BOOTSTRAP_SERVERS_CONFIG)).get(0).toString();
         bootstrapServer = bootstrapServer.replaceAll("\\[|\\]", "");
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = uri.getScheme() + "://" + uri.getHost();
@@ -55,6 +51,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         for (Callback callback : callbacks) {
             if (callback instanceof OAuthBearerTokenCallback) {
                 OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
+                credential = getTokenCredential();
                 OAuthBearerToken token = getOAuthBearerToken();
                 oauthCallback.token(token);
             } else {
@@ -65,52 +62,34 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
 
     private TokenCredential getTokenCredential() {
         if (credential == null) {
-            DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
-            if (clientId != null && !clientId.isEmpty()) {
-                credentialBuilder.managedIdentityClientId(clientId);
+            if (tokenCredentialProvider == null) {
+                DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
+                if (clientId != null && !clientId.isEmpty()) {
+                    credentialBuilder.managedIdentityClientId(clientId);
+                }
+                if (tenantId != null && !tenantId.isEmpty()) {
+                    credentialBuilder.tenantId(tenantId);
+                }
+                if (authorityHost != null && !authorityHost.isEmpty()) {
+                    credentialBuilder.authorityHost(authorityHost);
+                }
+                credential = credentialBuilder.build();
+            } else {
+                credential = tokenCredentialProvider.getTokenCredential();
             }
-            if (tenantId != null && !tenantId.isEmpty()) {
-                credentialBuilder.tenantId(tenantId);
-            }
-            if (authorityHost != null && !authorityHost.isEmpty()) {
-                credentialBuilder.authorityHost(authorityHost);
-            }
-            credential = credentialBuilder.build();
         }
         return credential;
     }
 
     private OAuthBearerToken getOAuthBearerToken() {
         if (accessToken == null || accessToken.isExpired()) {
-            TokenCredential credential = getTokenCredential();
             TokenRequestContext request = new TokenRequestContext();
             request.addScopes(tokenAudience);
             request.setTenantId(tenantId);
-            accessToken = Optional.ofNullable(credential.getToken(request).block(Duration.ofSeconds(30)))
-                    .map(token -> convertToken(token))
-                    .orElse(null);
+            accessToken = new AzureOAuthBearerToken(credential.getToken(request).block(Duration.ofSeconds(30)));
         }
 
         return accessToken;
-    }
-
-    AzureOAuthBearerToken convertToken(AccessToken sourceToken) {
-        String token = sourceToken.getToken();
-        JWTClaimsSet claims;
-        try {
-            claims = JWTParser.parse(token).getJWTClaimsSet();
-        } catch (ParseException exception) {
-            throw new RuntimeException("Unable to parse access token", exception);
-        }
-        long startTimeMs = claims.getIssueTime().getTime();
-        long lifetimeMs = claims.getExpirationTime().getTime();
-        // Referring to https://docs.microsoft.com/azure/active-directory/develop/access-tokens#payload-claims, the scp
-        // claim is a String which is presented as a space separated list.
-        Set<String> scope = Optional.ofNullable(claims.getClaim("scp"))
-                .map(s -> Arrays.stream(((String) s).split(" ")).collect(Collectors.toSet()))
-                .orElse(null);
-        String principalName = (String) claims.getClaim("upn");
-        return new AzureOAuthBearerToken(token, startTimeMs, lifetimeMs, scope, principalName);
     }
 
     @Override

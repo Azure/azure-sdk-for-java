@@ -60,20 +60,20 @@ public final class AzurePropertiesUtils {
      * @param <T> The type of the target that extends AzureProperties.
      */
     public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
-        copyPropertiesIgnoreSourceNull(source.getClient(), target.getClient());
+        copyPropertiesIgnoreNull(source.getClient(), target.getClient());
         copyHttpLoggingProperties(source, target, true);
 
-        copyPropertiesIgnoreSourceNull(source.getProxy(), target.getProxy());
-        copyPropertiesIgnoreSourceNull(source.getProfile(), target.getProfile());
+        copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
+        copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
-        copyPropertiesIgnoreSourceNull(source.getCredential(), target.getCredential());
+        copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
         if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
             RetryOptionsProvider.RetryOptions sourceRetry = ((RetryOptionsProvider) source).getRetry();
             RetryOptionsProvider.RetryOptions targetRetry = ((RetryOptionsProvider) target).getRetry();
-            copyPropertiesIgnoreSourceNull(sourceRetry, targetRetry);
-            copyPropertiesIgnoreSourceNull(sourceRetry.getExponential(), targetRetry.getExponential());
-            copyPropertiesIgnoreSourceNull(sourceRetry.getFixed(), targetRetry.getFixed());
+            copyPropertiesIgnoreNull(sourceRetry, targetRetry);
+            copyPropertiesIgnoreNull(sourceRetry.getExponential(), targetRetry.getExponential());
+            copyPropertiesIgnoreNull(sourceRetry.getFixed(), targetRetry.getFixed());
         }
     }
 
@@ -99,18 +99,8 @@ public final class AzurePropertiesUtils {
      * @param source The source object.
      * @param target The target object.
      */
-    public static void copyPropertiesIgnoreSourceNull(Object source, Object target) {
+    public static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
-    }
-
-    /**
-     * Copy properties from source object to target object. Ignore the source value if the related target is non-null.
-     *
-     * @param source The source object.
-     * @param target The target object.
-     */
-    public static void copyPropertiesIgnoreTargetNonNull(Object source, Object target) {
-        BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
     }
 
     private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source,
@@ -122,7 +112,7 @@ public final class AzurePropertiesUtils {
             ClientOptionsProvider.HttpClientOptions sourceClient = (ClientOptionsProvider.HttpClientOptions) source.getClient();
             ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
             if (ignoreNull) {
-                copyPropertiesIgnoreSourceNull(sourceClient.getLogging(), targetClient.getLogging());
+                copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
             } else {
                 BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
             }

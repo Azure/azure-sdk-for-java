@@ -3,8 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.kafka.properties.AzureEventHubsKafkaProperties;
-import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigs;
+import com.azure.spring.cloud.service.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -13,10 +12,6 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SECURITY_PROTOCOL_CONFIG_SASL;
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SASL_MECHANISM_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureEventHubsKafkaPropertiesUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -30,20 +25,15 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
     private static final String LOG_PROPERTIES_CONFIGURE = "Property %s will be configured as %s.";
-    private final AzureEventHubsKafkaProperties azureEventHubsKafkaProperties;
-
-    KafkaPropertiesBeanPostProcessor(AzureEventHubsKafkaProperties azureEventHubsKafkaProperties) {
-        this.azureEventHubsKafkaProperties = azureEventHubsKafkaProperties;
-    }
+    static final String SECURITY_PROTOCOL_CONFIG_SASL = "SASL_SSL";
+    static final String SASL_MECHANISM_OAUTH = "OAUTHBEARER";
+    static final String SASL_JAAS_CONFIG_OAUTH = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;";
+    static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH = KafkaOAuth2AuthenticateCallbackHandler.class.getName();
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof KafkaProperties) {
             KafkaProperties kafkaProperties = (KafkaProperties) bean;
-            //only map to common properties instead of upper admin/consumer/producer properties given these are Spring Cloud Azure
-            //self-defined properties
-            mapAzurePropertiesToKafkaCommonProperties(kafkaProperties);
-            
             configureOAuthPropertiesIfNeed(kafkaProperties.buildAdminProperties(), kafkaProperties.getAdmin().getProperties());
             configureOAuthPropertiesIfNeed(kafkaProperties.buildConsumerProperties(), kafkaProperties.getConsumer().getProperties());
             configureOAuthPropertiesIfNeed(kafkaProperties.buildProducerProperties(), kafkaProperties.getProducer().getProperties());
@@ -79,13 +69,4 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
                 && (saslMechanism == null || SASL_MECHANISM_OAUTH.equalsIgnoreCase(saslMechanism)));
     }
 
-    private void mapAzurePropertiesToKafkaCommonProperties(KafkaProperties kafkaProperties) {
-        PropertyMapper map = new PropertyMapper();
-        map.from(azureEventHubsKafkaProperties.getCredential().getClientId())
-                .to(id -> kafkaProperties.getProperties().put(AzureKafkaConfigs.CLIENT_ID_CONFIG, id));
-        map.from(azureEventHubsKafkaProperties.getProfile().getTenantId())
-                .to(id -> kafkaProperties.getProperties().put(AzureKafkaConfigs.TENANT_ID_CONFIG, id));
-        map.from(azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint())
-                .to(host -> kafkaProperties.getProperties().put(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG, host));
-    }
 }

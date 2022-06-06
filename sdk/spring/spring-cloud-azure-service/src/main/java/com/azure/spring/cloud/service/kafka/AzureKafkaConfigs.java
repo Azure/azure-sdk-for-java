@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.service.implementation.kafka;
+package com.azure.spring.cloud.service.kafka;
 
 public final class AzureKafkaConfigs {
     private AzureKafkaConfigs() {

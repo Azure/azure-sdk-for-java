@@ -7,6 +7,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileOptionsAdapter;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
+import java.util.Objects;
+
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
@@ -356,6 +358,44 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return new AzureEnvironmentConfigurationProperties(environment);
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            AzureEnvironmentConfigurationProperties that = (AzureEnvironmentConfigurationProperties) o;
+            return Objects.equals(portal, that.portal)
+                    && Objects.equals(publishingProfile, that.publishingProfile)
+                    && Objects.equals(managementEndpoint, that.managementEndpoint)
+                    && Objects.equals(resourceManagerEndpoint, that.resourceManagerEndpoint)
+                    && Objects.equals(sqlManagementEndpoint, that.sqlManagementEndpoint)
+                    && Objects.equals(sqlServerHostnameSuffix, that.sqlServerHostnameSuffix)
+                    && Objects.equals(galleryEndpoint, that.galleryEndpoint)
+                    && Objects.equals(activeDirectoryEndpoint, that.activeDirectoryEndpoint)
+                    && Objects.equals(activeDirectoryResourceId, that.activeDirectoryResourceId)
+                    && Objects.equals(activeDirectoryGraphEndpoint, that.activeDirectoryGraphEndpoint)
+                    && Objects.equals(activeDirectoryGraphApiVersion, that.activeDirectoryGraphApiVersion)
+                    && Objects.equals(microsoftGraphEndpoint, that.microsoftGraphEndpoint)
+                    && Objects.equals(dataLakeEndpointResourceId, that.dataLakeEndpointResourceId)
+                    && Objects.equals(storageEndpointSuffix, that.storageEndpointSuffix)
+                    && Objects.equals(keyVaultDnsSuffix, that.keyVaultDnsSuffix)
+                    && Objects.equals(azureDataLakeStoreFileSystemEndpointSuffix,
+                    that.azureDataLakeStoreFileSystemEndpointSuffix)
+                    && Objects.equals(azureDataLakeAnalyticsCatalogAndJobEndpointSuffix,
+                    that.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix)
+                    && Objects.equals(azureLogAnalyticsEndpoint, that.azureLogAnalyticsEndpoint)
+                    && Objects.equals(azureApplicationInsightsEndpoint, that.azureApplicationInsightsEndpoint);
+        }
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AzureProfileConfigurationProperties)) return false;
+        AzureProfileConfigurationProperties that = (AzureProfileConfigurationProperties) o;
+        return Objects.equals(tenantId, that.tenantId)
+                && Objects.equals(subscriptionId, that.subscriptionId)
+                && cloudType == that.cloudType && Objects.equals(environment, that.environment);
     }
 
 }
