@@ -15,6 +15,13 @@
 - Add missing query parameter `includeTermHierarchy` for update term API
 - Add missing query parameter `excludeRelationshipTypes` for get term API
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
+
 ## 1.0.0-beta.3 (2022-03-15)
 
 ### Breaking Changes
