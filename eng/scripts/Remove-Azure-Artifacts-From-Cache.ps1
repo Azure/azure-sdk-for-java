@@ -1,13 +1,3 @@
-#- task: PowerShell@2
-#displayName: Fetch package list from JavaDoc jar
-#inputs:
-#  pwsh: true
-#  filePath: ${{ parameters.WorkingDirectory }}/eng/scripts/Fetch-PackageList-Javadoc.ps1
-#  arguments: >
-#    -JavaDocJarLocation ${{ parameters.JavaDocJarLocation }}
-#    -ArtifactName ${{ parameters.ArtifactName }}
-#    -DocRepoLocation ${{ parameters.DocRepoLocation }}
-#continueOnError: true
 # Use case:
 # Given the root of the maven .m2 cache folder, clean any Azure artifacts (aka. things built
 # as part of this repository) out of it.
