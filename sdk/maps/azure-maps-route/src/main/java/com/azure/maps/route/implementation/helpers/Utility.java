@@ -302,9 +302,9 @@ public class Utility {
         BatchRequestItem item = new BatchRequestItem();
         UrlBuilder urlBuilder = new UrlBuilder();
 
-        for (String key : params.keySet()) {
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
             try {
-                urlBuilder.addQueryParameter(key, URLEncoder.encode(params.get(key).toString(), "UTF-8"));
+                urlBuilder.addQueryParameter(entry.getKey(), URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
