@@ -13,7 +13,6 @@ import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,8 +126,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
         sslHandler.setHandshakeTimeout(config.connectTimeoutInMillis(), TimeUnit.MILLISECONDS);
 
-        pipeline.addFirst(sslHandler);
-
+        pipeline.addFirst(SslHandler.class.toString(), sslHandler);
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
 }

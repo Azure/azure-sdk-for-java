@@ -381,29 +381,34 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             if (event instanceof RntbdContextException) {
                 this.contextFuture.completeExceptionally((RntbdContextException) event);
-                context.pipeline().flush().close();
+                this.exceptionCaught(context, (RntbdContextException)event);
                 return;
             }
 
             if (event instanceof SslHandshakeCompletionEvent) {
                 SslHandshakeCompletionEvent sslHandshakeCompletionEvent = (SslHandshakeCompletionEvent) event;
 
-                // Even if we do not capture here, the channel will still be closed properly
-                // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.
-                if (!sslHandshakeCompletionEvent.isSuccess()) {
+                if (sslHandshakeCompletionEvent.isSuccess()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SslHandshake completed, adding idleStateHandler");
+                    }
+
+                    context.pipeline().addAfter(
+                            SslHandler.class.toString(),
+                            IdleStateHandler.class.toString(),
+                            new IdleStateHandler(
+                                this.idleConnectionTimerResolutionInNanos,
+                                this.idleConnectionTimerResolutionInNanos,
+                                0,
+                                TimeUnit.NANOSECONDS));
+                } else {
+                    // Even if we do not capture here, the channel will still be closed properly,
+                    // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.
                     if (logger.isDebugEnabled()) {
                         logger.debug("SslHandshake failed", sslHandshakeCompletionEvent.cause());
                     }
                     this.exceptionCaught(context, sslHandshakeCompletionEvent.cause());
                     return;
-                } else {
-                    logger.info("adding idleStateHandler");
-                    context.pipeline().addFirst(
-                        new IdleStateHandler(
-                            this.idleConnectionTimerResolutionInNanos,
-                            this.idleConnectionTimerResolutionInNanos,
-                            0,
-                            TimeUnit.NANOSECONDS));
                 }
             }
 
