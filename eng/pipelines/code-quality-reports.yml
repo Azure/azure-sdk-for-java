@@ -20,8 +20,6 @@ jobs:
                 - '!sdk/**/test-recordings'
                 - '!sdk/**/session-records'
 
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
@@ -72,6 +70,8 @@ jobs:
             -LintingPipelineVariable "LintingGoals"
           pwsh: true
         displayName: 'Generate Linting Commands'
+
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - task: Maven@3
         displayName: 'Build Projects'
