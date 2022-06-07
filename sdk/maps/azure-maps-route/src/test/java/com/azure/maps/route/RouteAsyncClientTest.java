@@ -91,11 +91,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
         PollerFlux<RouteMatrixResult, RouteMatrixResult> pollerFlux = client.beginRequestRouteMatrix(options);
         SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller = setPollInterval(pollerFlux.getSyncPoller());
-        RouteMatrixResult routeMatrixResult = syncPoller.getFinalResult();
-        String routeMatrixId = routeMatrixResult.getMatrixId();
-        PollerFlux<RouteMatrixResult, RouteMatrixResult> pollerFlux2 = client.beginGetRouteMatrix(routeMatrixId);
-        SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller2 = setPollInterval(pollerFlux2.getSyncPoller());
-        RouteMatrixResult actualResult = syncPoller2.getFinalResult();
+        RouteMatrixResult actualResult = syncPoller.getFinalResult();
         RouteMatrixResult expectedResult = TestUtils.getExpectedGetRequestRouteMatrix();
         validateBeginRequestRouteMatrix(expectedResult, actualResult);
     }
@@ -115,11 +111,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
         PollerFlux<RouteMatrixResult, RouteMatrixResult> pollerFlux = client.beginRequestRouteMatrix(options, null);
         SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller = setPollInterval(pollerFlux.getSyncPoller());
-        RouteMatrixResult routeMatrixResult = syncPoller.getFinalResult();
-        String routeMatrixId = routeMatrixResult.getMatrixId();
-        PollerFlux<RouteMatrixResult, RouteMatrixResult> pollerFlux2 = client.beginGetRouteMatrix(routeMatrixId, null);
-        SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller2 = setPollInterval(pollerFlux2.getSyncPoller());
-        RouteMatrixResult actualResult = syncPoller2.getFinalResult();
+        RouteMatrixResult actualResult = syncPoller.getFinalResult();
         RouteMatrixResult expectedResult = TestUtils.getExpectedGetRequestRouteMatrix();
         validateBeginRequestRouteMatrix(expectedResult, actualResult);
     }
