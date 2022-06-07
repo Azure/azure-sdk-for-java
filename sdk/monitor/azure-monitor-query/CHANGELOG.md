@@ -2,10 +2,6 @@
 
 ## 1.0.7 (2022-06-07)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
