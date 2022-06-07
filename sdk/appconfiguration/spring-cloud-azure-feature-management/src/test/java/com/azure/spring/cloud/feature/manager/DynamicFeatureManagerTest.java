@@ -109,6 +109,8 @@ public class DynamicFeatureManagerTest {
 
     @Test
     public void getVariantAsyncDefaultBasic() {
+    	when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+    	
         DynamicFeature dynamicFeature = new DynamicFeature();
         dynamicFeature.setAssigner("Test.Assigner");
 
@@ -117,6 +119,9 @@ public class DynamicFeatureManagerTest {
         variants.put("0", createFeatureVariant("DiscountBanner.Big", EMPTY_MAP, EMPTY_MAP, 100));
         variants.get("0").setDefault(true);
         dynamicFeature.setVariants(variants);
+        
+
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variants.get("0")));
 
         Map<String, DynamicFeature> params = new LinkedHashMap<>();
         params.put("DiscountBanner", dynamicFeature);

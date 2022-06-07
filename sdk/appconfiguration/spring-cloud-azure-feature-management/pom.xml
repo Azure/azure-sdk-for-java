@@ -78,7 +78,6 @@
                 <include>io.projectreactor.netty:reactor-netty:[1.0.18]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework:spring-context:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

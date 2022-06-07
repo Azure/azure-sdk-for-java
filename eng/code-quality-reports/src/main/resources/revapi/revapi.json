@@ -296,7 +296,37 @@
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "interface com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",
           "justification": "This is used by both Feature Management libraries and is Public."
-          }
+        },
+        {
+          "regex": true,
+          "code": "java\\.field\\.removedWithConstant",
+          "old": "field com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY",
+          "justification": "This isn't a public library."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.DynamicFeatureManager",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManager",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FilterNotFoundException",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        }
       ]
     }
   }

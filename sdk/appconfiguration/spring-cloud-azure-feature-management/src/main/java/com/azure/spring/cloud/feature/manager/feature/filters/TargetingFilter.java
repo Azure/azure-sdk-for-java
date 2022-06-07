@@ -50,6 +50,9 @@ public class TargetingFilter implements IFeatureFilter {
      */
     protected static final String AUDIENCE = "Audience";
 
+    /**
+     * Error message for when the total Audience value is greater than 100 percent.
+     */
     protected static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";

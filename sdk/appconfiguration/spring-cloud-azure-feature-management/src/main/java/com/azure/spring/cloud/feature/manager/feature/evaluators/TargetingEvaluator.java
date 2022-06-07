@@ -72,6 +72,8 @@ public final class TargetingEvaluator extends TargetingFilter implements IFeatur
 		Map<FeatureVariant, Audience> assignments = new HashMap<>();
 
 		List<FeatureVariant> variants = featureDefinition.getVariants();
+		
+		FeatureVariant defaultVariant = null;
 
 		validateVariantSettings(variants);
 
@@ -91,6 +93,10 @@ public final class TargetingEvaluator extends TargetingFilter implements IFeatur
 				this.<String>updateValueFromMapToList(parameters, USERS);
 				
 				assignments.put(variant, OBJECT_MAPPER.convertValue(parameters, Audience.class));
+			}
+			
+			if (variant.getDefault()) {
+				defaultVariant = variant;
 			}
 			
 		}
@@ -140,8 +146,8 @@ public final class TargetingEvaluator extends TargetingFilter implements IFeatur
 			totalDefaultPercentage += audience.getDefaultRolloutPercentage();
 		}
 
-		// Null is returned when the user needs to be assigned the default variant
-		return Mono.justOrEmpty(null);
+		// Defautl is returned when the user needs to be assigned the default variant
+		return Mono.just(defaultVariant);
 	}
 
 	/**

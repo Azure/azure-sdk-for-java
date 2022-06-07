@@ -17,7 +17,6 @@ import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeatu
 import com.azure.spring.cloud.feature.manager.models.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.models.FeatureVariant;
 import com.azure.spring.cloud.feature.manager.models.IFeatureVariantAssigner;
-import com.azure.spring.cloud.feature.manager.models.IFeatureVariantAssignerMetadata;
 
 import reactor.core.publisher.Mono;
 
@@ -40,9 +39,11 @@ public class DynamicFeatureManager {
 	/**
 	 * Creates Dynamic Feature Manager
 	 * 
-	 * @param context ApplicationContext
-	 * @param propertiesProvider Object Provider for accessing client IDynamicFeatureProperties
-	 * @param featureManagementConfigurations Configuration Properties for Feature Flags
+	 * @param context                         ApplicationContext
+	 * @param propertiesProvider              Object Provider for accessing client
+	 *                                        IDynamicFeatureProperties
+	 * @param featureManagementConfigurations Configuration Properties for Feature
+	 *                                        Flags
 	 */
 	public DynamicFeatureManager(ApplicationContext context,
 			ObjectProvider<IDynamicFeatureProperties> propertiesProvider,
@@ -62,11 +63,11 @@ public class DynamicFeatureManager {
 	 * @throws FilterNotFoundException if a Filter with the given name isn't found
 	 */
 	public <T> Mono<T> getVariantAsync(String variantName, Class<T> returnClass) throws FilterNotFoundException {
-		return Mono.just(generateVariant(variantName, returnClass));
+		return generateVariant(variantName, returnClass);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T generateVariant(String featureName, Class<T> type) {
+	private <T> Mono<T> generateVariant(String featureName, Class<T> type) {
 
 		if (!StringUtils.hasText(featureName)) {
 			throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
@@ -76,31 +77,23 @@ public class DynamicFeatureManager {
 			throw new FeatureManagementException("The Dynamic Feature " + featureName + " can not be found.");
 		}
 
-		FeatureVariant variant = null;
-
 		DynamicFeature dynamicFeature = featureManagementConfigurations.getDynamicFeatures().get(featureName);
 
 		FeatureDefinition featureDefinition = new FeatureDefinition(featureName, dynamicFeature);
 
-		FeatureVariant defaultVariant = validateDynamicFeature(featureDefinition, featureName);
-
-		IFeatureVariantAssignerMetadata assigner = null;
+		validateDynamicFeature(featureDefinition, featureName);
 
 		try {
-			assigner = (IFeatureVariantAssignerMetadata) context.getBean(featureDefinition.getAssigner());
+			IFeatureVariantAssigner assigner = (IFeatureVariantAssigner) context.getBean(featureDefinition.getAssigner());
+			return (Mono<T>) assigner.assignVariantAsync(featureDefinition).map(this::assignVariant);
 		} catch (NoSuchBeanDefinitionException e) {
 			throw new FeatureManagementException("The feature variant assigner " + featureDefinition.getAssigner()
 					+ " specified for feature " + featureName + " was not found.");
 		}
+	}
 
-		if (assigner instanceof IFeatureVariantAssigner) {
-			variant = ((IFeatureVariantAssigner) assigner).assignVariantAsync(featureDefinition).block();
-		}
-
-		if (variant == null) {
-			variant = defaultVariant;
-		}
-
+	@SuppressWarnings("unchecked")
+	private <T> T assignVariant(FeatureVariant variant) {
 		String reference = variant.getConfigurationReference();
 
 		String[] parts = reference.split("\\.");
@@ -145,7 +138,7 @@ public class DynamicFeatureManager {
 		return variantMap.get(parts[1]);
 	}
 
-	private FeatureVariant validateDynamicFeature(FeatureDefinition featureDefinition, String featureName) {
+	private void validateDynamicFeature(FeatureDefinition featureDefinition, String featureName) {
 		if (!StringUtils.hasText(featureDefinition.getAssigner())) {
 			throw new FeatureManagementException(
 					"Missing Feature Variant assigner name for the feature " + featureName);
@@ -175,6 +168,5 @@ public class DynamicFeatureManager {
 		if (defaultVariant == null) {
 			throw new FeatureManagementException("A default variant cannot be found for the feature " + featureName);
 		}
-		return defaultVariant;
 	}
 }
