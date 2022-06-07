@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.render;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,13 +51,13 @@ public class RenderClientTestBase extends TestBase {
     }
 
     RenderClientBuilder getRenderAsyncClientBuilder(HttpClient httpClient, RenderServiceVersion serviceVersion) {
-            RenderClientBuilder builder = new RenderClientBuilder()
+        RenderClientBuilder builder = new RenderClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
-            String endpoint = getEndpoint();
-            if (getEndpoint() != null) {
-                builder.endpoint(endpoint);
-            }
+        String endpoint = getEndpoint();
+        if (getEndpoint() != null) {
+            builder.endpoint(endpoint);
+        }
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }

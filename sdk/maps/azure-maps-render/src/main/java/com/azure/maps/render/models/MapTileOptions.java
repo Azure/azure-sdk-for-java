@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.render.models;
 
 import java.time.OffsetDateTime;
@@ -15,6 +18,7 @@ public final class MapTileOptions {
 
     /**
      * get tileset id
+     * @return tileset id
      */
     public TilesetId getTilesetID() {
         return tilesetId;
@@ -22,8 +26,8 @@ public final class MapTileOptions {
 
     /**
      * set tileset id
-     * @param tilesetID
-     * @return
+     * @param tilesetID the tileset id
+     * @return the tileset id
      */
     public MapTileOptions setTilesetId(TilesetId tilesetID) {
         this.tilesetId = tilesetID;
@@ -32,7 +36,7 @@ public final class MapTileOptions {
 
     /**
      * get tile index
-     * @return
+     * @return the tile index
      */
     public TileIndex getTileIndex() {
         return tileIndex;
@@ -40,8 +44,8 @@ public final class MapTileOptions {
 
     /**
      * set tile index
-     * @param tileIndex
-     * @return
+     * @param tileIndex the tile index
+     * @return a reference to this {@code MapTileOptions}
      */
     public MapTileOptions setTileIndex(TileIndex tileIndex) {
         this.tileIndex = tileIndex;
@@ -50,7 +54,7 @@ public final class MapTileOptions {
 
     /**
      * get time stamp
-     * @return
+     * @return the time stamp
      */
     public OffsetDateTime getTimeStamp() {
         return timeStamp;
@@ -58,17 +62,17 @@ public final class MapTileOptions {
 
     /**
      * set time stamp
-     * @param offsetDateTime
-     * @return
+     * @param offsetDateTime the offset date time
+     * @return a reference to this {@code MapTileOptions}
      */
     public MapTileOptions setOffsetDateTime(OffsetDateTime offsetDateTime) {
         this.timeStamp = offsetDateTime;
         return this;
     }
-    
+
     /**
      * get map tile size
-     * @return
+     * @return the map time size
      */
     public MapTileSize getMapTileSize() {
         return tileSize;
@@ -76,8 +80,8 @@ public final class MapTileOptions {
 
     /**
      * set map tile size
-     * @param mapTileSize
-     * @return
+     * @param mapTileSize the map tile size
+     * @return a reference to this {@code MapTileOptions}
      */
     public MapTileOptions setMapTileSize(MapTileSize mapTileSize) {
         this.tileSize = mapTileSize;
@@ -86,7 +90,7 @@ public final class MapTileOptions {
 
     /**
      * get language
-     * @return
+     * @return the language
      */
     public String getLanguage() {
         return language;
@@ -94,8 +98,8 @@ public final class MapTileOptions {
 
     /**
      * set language
-     * @param language
-     * @return
+     * @param language the language
+     * @return a reference to this {@code MapTileOptions}
      */
     public MapTileOptions setLanguage(String language) {
         this.language = language;
@@ -104,7 +108,7 @@ public final class MapTileOptions {
 
     /**
      * get localized map view
-     * @return
+     * @return the localized map view
      */
     public LocalizedMapView getLocalizedMapView() {
         return localizedMapView;
@@ -112,8 +116,8 @@ public final class MapTileOptions {
 
     /**
      * set localized map view
-     * @param localizedMapView
-     * @return
+     * @param localizedMapView the localized map view
+     * @return a reference to this {@code MapTileOptions}
      */
     public MapTileOptions setLocalizedMapView(LocalizedMapView localizedMapView) {
         this.localizedMapView = localizedMapView;

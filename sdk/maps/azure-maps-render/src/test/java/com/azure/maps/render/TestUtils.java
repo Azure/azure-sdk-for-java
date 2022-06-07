@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.render;
 
 import java.io.ByteArrayOutputStream;
@@ -29,7 +32,7 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("maptileset.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<MapTileset> interimType = new TypeReference<MapTileset>(){};
+        TypeReference<MapTileset> interimType = new TypeReference<MapTileset>() { };
         is.close();
         return jacksonAdapter.<MapTileset>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
@@ -39,7 +42,7 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("mapattribution.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<MapAttribution> interimType = new TypeReference<MapAttribution>(){};
+        TypeReference<MapAttribution> interimType = new TypeReference<MapAttribution>() { };
         is.close();
         return jacksonAdapter.<MapAttribution>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
@@ -49,7 +52,7 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("copyrightcaption.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<CopyrightCaption> interimType = new TypeReference<CopyrightCaption>(){};
+        TypeReference<CopyrightCaption> interimType = new TypeReference<CopyrightCaption>() { };
         is.close();
         return jacksonAdapter.<CopyrightCaption>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
@@ -59,7 +62,7 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getcopyrightfromboundingbox.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<Copyright> interimType = new TypeReference<Copyright>(){};
+        TypeReference<Copyright> interimType = new TypeReference<Copyright>() { };
         is.close();
         return jacksonAdapter.<Copyright>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
@@ -69,7 +72,7 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getcopyrightfortile.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<Copyright> interimType = new TypeReference<Copyright>(){};
+        TypeReference<Copyright> interimType = new TypeReference<Copyright>() { };
         is.close();
         return jacksonAdapter.<Copyright>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
@@ -79,7 +82,7 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getcopyrightforworld.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<Copyright> interimType = new TypeReference<Copyright>(){};
+        TypeReference<Copyright> interimType = new TypeReference<Copyright>() { };
         is.close();
         return jacksonAdapter.<Copyright>deserialize(data, interimType.getJavaType(),
         SerializerEncoding.JSON);
@@ -104,7 +107,7 @@ public class TestUtils {
     }
 
     /**
-     * Code referenced from 
+     * Code referenced from
      * https://www.techiedelight.com/convert-inputstream-byte-array-java/#:~:text=Convert%20InputStream%20to%20byte%20array%20in%20Java%201,Commons%20IO%20...%204%204.%20Using%20sun.misc.IOUtils%20
      * @param InputStream in
      * @return byte[]
@@ -112,10 +115,10 @@ public class TestUtils {
      */
     public static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
- 
+
         byte[] buffer = new byte[1024];
         int len;
- 
+
         // read bytes from the input stream and store them in the buffer
         while ((len = in.read(buffer)) != -1) {
             // write bytes from the buffer into the output stream

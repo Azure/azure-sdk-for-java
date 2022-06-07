@@ -1,6 +1,7 @@
-package com.azure.maps.render.implementation.helpers;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import java.util.Locale;
+package com.azure.maps.render.implementation.helpers;
 
 import com.azure.maps.render.implementation.models.IncludeText;
 

@@ -37,6 +37,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.render.implementation.RenderClientImpl;
 import com.azure.maps.render.implementation.RenderClientImplBuilder;
 
@@ -45,11 +46,12 @@ import com.azure.maps.render.implementation.RenderClientImplBuilder;
 public final class RenderClientBuilder implements AzureKeyCredentialTrait<RenderClientBuilder>,
     TokenCredentialTrait<RenderClientBuilder>, HttpTrait<RenderClientBuilder>,
     ConfigurationTrait<RenderClientBuilder>, EndpointTrait<RenderClientBuilder>  {
-        
+
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
     //constants
+    private final ClientLogger logger = new ClientLogger(RenderClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String RENDER_SUBSCRIPTION_KEY = "subscription-key";
@@ -114,7 +116,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * @return the RenderhClientBuilder.
      */
     public RenderClientBuilder mapsClientId(String mapsClientId) {
-        this.mapsClientId = Objects.requireNonNull(mapsClientId, "'mapsClientId' cannot be null.");;
+        this.mapsClientId = Objects.requireNonNull(mapsClientId, "'mapsClientId' cannot be null.");
         return this;
     }
 
@@ -132,8 +134,8 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
 
     /**
      * Render service version
-     * @param version
-     * @return
+     * @param version the service version
+     * @return a reference to this {@code RenderClientBuilder}
      */
     public RenderClientBuilder serviceVersion(RenderServiceVersion version) {
         this.serviceVersion = version;
@@ -144,7 +146,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the RenderClientBuilder.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     @Override
     public RenderClientBuilder pipeline(HttpPipeline pipeline) {
@@ -156,7 +158,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the RenderClientBuilder.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     @Override
     public RenderClientBuilder httpClient(HttpClient httpClient) {
@@ -168,19 +170,19 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the RenderClientBuilder.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     @Override
     public RenderClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");;
+        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
 
     /**
-     * Sets The configuration store that is used during construction of the service client.
+     * Sets The http log options.
      *
-     * @param configuration the configuration value.
-     * @return the RenderClientBuilder.
+     * @param httpLogOptions the http log options.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     @Override
     public RenderClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -192,7 +194,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the RenderClientBuilder.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     public RenderClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
@@ -203,7 +205,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets The client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions the clientOptions value.
-     * @return the RenderClientBuilder.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     @Override
     public RenderClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -215,7 +217,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the RenderClientBuilder.
+     * @return a reference to this {@code RenderClientBuilder}.
      */
     @Override
     public RenderClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -304,7 +306,8 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
         // Authentications
         if (tokenCredential != null) {
             if (this.mapsClientId == null) {
-                throw new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -317,7 +320,8 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
             policies.add(new AzureKeyCredentialPolicy(RENDER_SUBSCRIPTION_KEY, keyCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            throw new IllegalArgumentException("Missing credential information while building a client.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
 
         // Add final policies
@@ -359,8 +363,8 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
 
     /**
      * Sets retry options
-     * @param retryOptions
-     * @return
+     * @param retryOptions the retry options for the client
+     * @return a reference to this {@code RenderClientBuilder}
      */
     @Override
     public RenderClientBuilder retryOptions(RetryOptions retryOptions) {
