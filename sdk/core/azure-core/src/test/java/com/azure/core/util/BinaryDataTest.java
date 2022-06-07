@@ -33,6 +33,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
@@ -527,6 +529,53 @@ public class BinaryDataTest {
         }
         BinaryData data = BinaryData.fromFile(file);
         assertEquals("The quick brown fox jumps over the lazy dog", data.toString());
+    }
+
+    @Test
+    public void testFromLargeFileFlux() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        int chunkSize = 100 * 1024 * 1024; // 100 MB
+        int numberOfChunks = 22; // 2200 MB total
+        byte[] bytes = new byte[chunkSize];
+        RANDOM.nextBytes(bytes);
+        for (int i = 0 ; i < numberOfChunks; i++) {
+            Files.write(file, bytes, StandardOpenOption.APPEND);
+        }
+        assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
+
+        AtomicInteger index = new AtomicInteger();
+        BinaryData.fromFile(file).toFluxByteBuffer()
+            .map(buffer -> {
+                while (buffer.hasRemaining()){
+                    int idx = index.getAndUpdate(operand -> (operand + 1) % chunkSize);
+                    assertEquals(bytes[idx], buffer.get());
+                }
+                return buffer;
+            }).blockLast();
+    }
+
+    @Test
+    public void testFromLargeFileStream() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        int chunkSize = 100 * 1024 * 1024; // 100 MB
+        int numberOfChunks = 22; // 2200 MB total
+        byte[] bytes = new byte[chunkSize];
+        RANDOM.nextBytes(bytes);
+        for (int i = 0 ; i < numberOfChunks; i++) {
+            Files.write(file, bytes, StandardOpenOption.APPEND);
+        }
+        assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
+
+        try(InputStream is = BinaryData.fromFile(file).toStream()) {
+            int read;
+            int idx = 0;
+            while ((read = is.read()) >= 0) {
+                assertEquals(bytes[idx], (byte) read);
+                idx = (idx + 1) % chunkSize;
+            }
+        }
     }
 
     @Test
