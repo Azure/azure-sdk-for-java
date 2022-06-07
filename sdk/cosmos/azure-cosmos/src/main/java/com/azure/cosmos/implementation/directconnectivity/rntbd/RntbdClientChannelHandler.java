@@ -110,7 +110,6 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             this.connectionStateListener,
             this.config.idleConnectionTimerResolutionInNanos());
 
-        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
