@@ -14,7 +14,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -75,7 +74,6 @@ public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
     private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
 
-    private String originalLogLevel;
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
 
@@ -96,7 +94,7 @@ public class HttpLoggingPolicyTests {
     @AfterEach
     public void cleanupAfterTest() {
         // Reset or clear the log level after the test completes.
-        setPropertyToOriginalOrClear(originalLogLevel);
+        clearTestLogLevel();
 
         // Reset System.err to the original PrintStream.
         System.setOut(originalSystemOut);
@@ -374,16 +372,11 @@ public class HttpLoggingPolicyTests {
     }
 
     private void setupLogLevel(int logLevelToSet) {
-        originalLogLevel = EnvironmentConfiguration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
         EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
-    private void setPropertyToOriginalOrClear(String originalValue) {
-        if (CoreUtils.isNullOrEmpty(originalValue)) {
-            EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
-        } else {
-            EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalValue);
-        }
+    private void clearTestLogLevel() {
+        EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
     }
 
     private static String convertOutputStreamToString(ByteArrayOutputStream stream) {

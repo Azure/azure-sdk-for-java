@@ -31,6 +31,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     private static final Set<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS =
         new HashSet<>(Arrays.asList(HttpMethod.GET, HttpMethod.HEAD));
+    private static final String REDIRECT_URLS_KEY = "redirectUrls";
 
     private final int maxAttempts;
     private final String locationHeader;
@@ -97,7 +98,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
                 LOGGER.atVerbose()
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+                    .addKeyValue(REDIRECT_URLS_KEY, () -> attemptedRedirectUrls.toString())
                     .log("Redirecting.");
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
@@ -167,7 +168,6 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= getMaxAttempts()) {
             LOGGER.atError()
-                .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                 .addKeyValue("maxAttempts", getMaxAttempts())
                 .log("Redirect attempts have been exhausted.");
 
@@ -219,7 +219,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (CoreUtils.isNullOrEmpty(headerValue)) {
             LOGGER.atError()
                 .addKeyValue("headerName", headerName)
-                .log("Redirect url was null, request redirect was terminated.");
+                .log("Redirect url header was null, request redirect was terminated.");
 
             return null;
         } else {
