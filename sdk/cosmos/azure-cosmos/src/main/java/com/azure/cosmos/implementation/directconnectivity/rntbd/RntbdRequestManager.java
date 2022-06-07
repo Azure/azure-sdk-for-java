@@ -429,10 +429,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void close(final ChannelHandlerContext context, final ChannelPromise promise) {
 
         this.traceOperation(context, "close");
-        logger.info("channel closed");
 
         if (!this.closingExceptionally) {
-            this.completeAllPendingRequestsExceptionally(context, promise.cause());
+            this.completeAllPendingRequestsExceptionally(context, ON_CLOSE);
         } else {
             logger.debug("{} closed exceptionally", context);
         }
