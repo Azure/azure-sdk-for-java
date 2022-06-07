@@ -1,0 +1,51 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
+      "x-ms-client-request-id" : "0f5b3b93-70fc-445f-937b-3b53e24c4e65",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "0",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "57ms",
+      "MS-CV" : "YnCHRw74306w+fXAcgs8Aw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0VHxeYgAAAACRg9woSoLFSa0QikNKICGoUFJHMDFFREdFMDcwOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "StatusCode" : "500",
+      "x-ms-client-request-id" : "0f5b3b93-70fc-445f-937b-3b53e24c4e65",
+      "Date" : "Tue, 19 Apr 2022 09:09:41 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
+      "x-ms-client-request-id" : "0f5b3b93-70fc-445f-937b-3b53e24c4e65",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-10-31-preview, 2022-06-01",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Date" : "Tue, 19 Apr 2022 09:09:42 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "55ms",
+      "MS-CV" : "83pK233D+kKMcW4v5GB4aQ.0",
+      "X-Azure-Ref" : "0VnxeYgAAAABh2/QRNMF2TJGzHpXfq+b7UFJHMDFFREdFMDkxNQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"Provided AppId has invalid format.\",\"target\":\"appId\"}}",
+      "x-ms-client-request-id" : "0f5b3b93-70fc-445f-937b-3b53e24c4e65",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

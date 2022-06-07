@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.6.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity;current} -->
 
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
@@ -74,7 +74,12 @@
       <version>2.8.9</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest</artifactId>
@@ -116,6 +121,27 @@
         <configuration>
           <includeTests>true</includeTests>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>compile-samples-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/samples/java</source>
+                <source>src/samples/Azure Cache For Redis/Jedis/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
