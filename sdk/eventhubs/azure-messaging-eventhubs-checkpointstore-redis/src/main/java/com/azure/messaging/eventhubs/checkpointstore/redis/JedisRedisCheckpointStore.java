@@ -9,13 +9,13 @@ import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
 import redis.clients.jedis.Jedis;
+import org.json.JSONObject;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -47,6 +47,12 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      */
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        Set<String> members = null;
+        try(Jedis jedis = jedisPool.getResource()){
+            members = jedis.smembers(prefix);
+            jedisPool.returnResource(jedis);
+        }
         return null;
     }
 
@@ -58,6 +64,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      */
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         return null;
     }
 
@@ -74,22 +81,26 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 .propagate(new IllegalStateException(
                     "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
-
+        String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
-        Map<String, String> checkpointStorageMap = new HashMap<>();
+        JSONObject checkpointInformation = new JSONObject();
         try (Jedis jedis = jedisPool.getResource()) {
-            //Here is where you add everything to the checkpointStorageMap
+            checkpointInformation.put("CHECKPOINT_NAME", key);
             String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
                 : String.valueOf(checkpoint.getSequenceNumber());
-            checkpointStorageMap.put("SEQUENCE_NUMBER", sequenceNumber);
-
+            checkpointInformation.put("SEQUENCE_NUMBER", sequenceNumber);
             String offset = checkpoint.getOffset() == null ? null
                 : String.valueOf(checkpoint.getOffset());
-            checkpointStorageMap.put("OFFSET", offset);
-            jedis.hmset(key, checkpointStorageMap); // key -> { field: value, field:value}
+            checkpointInformation.put("OFFSET", offset);
+            //Before adding this checkpoint to the list of Checkpoints, check if it is the most updated version of the checkpoint.
+            jedis.sadd(prefix, checkpointInformation.toString());
             jedisPool.returnResource(jedis);
         }
         return null;
+    }
+
+    private String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
     }
     private String keyBuilder(String fullyQualifiedNamespace, String eventHubName,  String consumerGroup, String partitionId) {
         return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId;
