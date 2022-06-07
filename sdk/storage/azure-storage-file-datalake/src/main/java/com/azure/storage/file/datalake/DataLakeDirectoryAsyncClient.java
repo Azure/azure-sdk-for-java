@@ -398,8 +398,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
         try {
             return createFileWithResponse(fileName, options);
         } catch (RuntimeException ex) {
@@ -428,10 +433,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
-     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
      *
      * DataLakeFileAsyncClient newFileClient = client.createFileWithResponse&#40;fileName, options&#41;.block&#40;&#41;.getValue&#40;&#41;;
      * </pre>
@@ -491,8 +503,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
      *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
@@ -775,8 +790,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
         try {
             return createSubdirectoryWithResponse(subdirectoryName, options);
         } catch (RuntimeException ex) {
@@ -804,10 +824,17 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
-     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
      *
      * DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse&#40;directoryName, options&#41;
      *     .block&#40;&#41;.getValue&#40;&#41;;
@@ -821,7 +848,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
-                                                                                       DataLakePathCreateOptions options) {
+        DataLakePathCreateOptions options) {
         DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
         try {
             dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
@@ -867,8 +894,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * client.createSubdirectoryIfNotExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
      *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;

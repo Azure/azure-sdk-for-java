@@ -40,13 +40,15 @@ import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
-import com.azure.storage.file.datalake.models.PathExpiryOptions
+
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
+import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
@@ -404,37 +406,30 @@ class FileAPITest extends APISpec {
 
     def "Create options with time expires on"() {
         when:
-        def options = new DataLakePathCreateOptions().setExpiryOptions(expiryOptions).setExpiresOn(expiryTime)
+        def deletionOptions = new DataLakePathScheduleDeletionOptions(expiryTime)
+        def options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
         def response = fc.createWithResponse(options, null, null)
 
         then:
         response.getStatusCode() == 201
 
         where:
-        expiryOptions                           | expiryTime
-        PathExpiryOptions.ABSOLUTE              | OffsetDateTime.now().plusDays(1)
-        PathExpiryOptions.NEVER_EXPIRE | null
+        expiryTime                        || _
+        OffsetDateTime.now().plusDays(1)  || _
+        null                              || _
 
     }
 
     def "Create options with time to expire relative to now"() {
         when:
-        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW)
-            .setTimeToExpire(Duration.ofDays(6))
+        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+
         def response = fc.createWithResponse(options, null, null)
 
         then:
         response.getStatusCode() == 201
-    }
-
-    def "Create options with time expires on error"() {
-        when:
-        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW)
-            .setTimeToExpire(Duration.ofDays(6)).setExpiresOn(OffsetDateTime.now().plusDays(1))
-        fc.createWithResponse(options, null, null)
-
-        then:
-        thrown(IllegalArgumentException)
     }
 
     def "Create if not exists min"() {
@@ -541,7 +536,12 @@ class FileAPITest extends APISpec {
 
         expect:
         def client = fsc.getFileClient(generatePathName())
-        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setUmask(umask), null, Context.NONE).getStatusCode() == 201
+        client.createIfNotExistsWithResponse(
+            new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask),
+            null,
+            Context.NONE).getStatusCode() == 201
     }
 
 
@@ -692,39 +692,31 @@ class FileAPITest extends APISpec {
     def "Create if not exists options with time expires on"() {
         when:
         fc = fsc.getFileClient(generatePathName())
-        def options = new DataLakePathCreateOptions().setExpiryOptions(expiryOptions).setExpiresOn(expiryTime)
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
         def response = fc.createIfNotExistsWithResponse(options, null, null)
 
         then:
         response.getStatusCode() == 201
 
         where:
-        expiryOptions                           | expiryTime
-        PathExpiryOptions.ABSOLUTE              | OffsetDateTime.now().plusDays(1)
-        PathExpiryOptions.NEVER_EXPIRE          | null
+        deletionOptions                                                             || _
+        new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))   || _
+        null                                                                        || _
 
     }
 
     def "Create if not exists options with time to expire relative to now"() {
         when:
         fc = fsc.getFileClient(generatePathName())
-        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW)
-            .setTimeToExpire(Duration.ofDays(6))
+        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+
         def response = fc.createIfNotExistsWithResponse(options, null, null)
 
         then:
         response.getStatusCode() == 201
-    }
-
-    def "Create if not exists options with time expires on error"() {
-        when:
-        fc = fsc.getFileClient(generatePathName())
-        def options = new DataLakePathCreateOptions().setExpiryOptions(PathExpiryOptions.RELATIVE_TO_NOW)
-            .setTimeToExpire(Duration.ofDays(6)).setExpiresOn(OffsetDateTime.now().plusDays(1))
-        fc.createIfNotExistsWithResponse(options, null, null)
-
-        then:
-        thrown(IllegalArgumentException)
     }
 
     def "Delete min"() {

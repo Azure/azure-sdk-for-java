@@ -113,10 +113,17 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        Long duration = 15L;
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
-            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
 
         Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, options, timeout,
             new Context(key1, value1));
@@ -188,10 +195,17 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        Long duration = 15L;
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
-            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
 
         Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubdirectoryWithResponse(directoryName,
             options, timeout, new Context(key1, value1));
@@ -296,8 +310,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
         PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeFileClient> response = client.createFileIfNotExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
@@ -350,8 +367,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeDirectoryClient> response = client.createSubdirectoryIfNotExistsWithResponse(directoryName,
             options, timeout, new Context(key1, value1));

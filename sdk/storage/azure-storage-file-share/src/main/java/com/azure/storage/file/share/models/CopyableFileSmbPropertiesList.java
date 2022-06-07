@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This type allows users to specify optional smb properties to be copied from the source file.
@@ -19,7 +20,7 @@ public final class CopyableFileSmbPropertiesList {
     /***
      * @return a flag indicating if no smb properties should be copied from source file.
      */
-    public boolean getNone() {
+    public Boolean isNone() {
         return isSetNone;
     }
 
@@ -35,7 +36,7 @@ public final class CopyableFileSmbPropertiesList {
     /***
      * @return a flag indicating whether file attributes should be copied from source file.
      */
-    public boolean getFileAttributes() {
+    public Boolean isFileAttributes() {
         return isSetFileAttributes;
 
     }
@@ -52,7 +53,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether created on timestamp should be copied from source file.
      */
-    public boolean getCreatedOn() {
+    public Boolean isCreatedOn() {
         return isSetCreatedOn;
     }
 
@@ -68,7 +69,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether last written on timestamp should be copied from source file.
      */
-    public boolean getLastWrittenOn() {
+    public Boolean isLastWrittenOn() {
         return isSetLastWrittenOn;
     }
 
@@ -84,7 +85,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether changed on timestamp should be copied from source file.
      */
-    public boolean getChangedOn() {
+    public Boolean isChangedOn() {
         return isSetChangedOn;
     }
 
@@ -100,7 +101,7 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a flag indicating whether all attributes should be copied from source file.
      */
-    public boolean getAll() {
+    public Boolean isAll() {
         return isSetAll;
     }
 
@@ -116,8 +117,8 @@ public final class CopyableFileSmbPropertiesList {
     /**
      * @return a list of the flag set to true
      */
-    public ArrayList<CopyableFileSmbProperties> toList() {
-        ArrayList<CopyableFileSmbProperties> details = new ArrayList<>();
+    public List<CopyableFileSmbProperties> toList() {
+        List<CopyableFileSmbProperties> details = new ArrayList<>();
         if (this.isSetNone) {
             details.add(CopyableFileSmbProperties.NONE);
         }

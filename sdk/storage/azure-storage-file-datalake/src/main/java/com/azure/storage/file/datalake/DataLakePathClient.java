@@ -244,8 +244,13 @@ public class DataLakePathClient {
     public Response<PathInfo> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
-            .setPathHttpHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createWithResponse(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -268,10 +273,17 @@ public class DataLakePathClient {
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;httpHeaders&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;.setMetadata&#40;metadata&#41;.setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;
-     *     .setOwner&#40;owner&#41;.setGroup&#40;group&#41;.setProposedLeaseId&#40;leaseId&#41;.setLeaseDuration&#40;duration&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
      *
      * Response&lt;PathInfo&gt; response = client.createWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
@@ -330,8 +342,11 @@ public class DataLakePathClient {
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;metadata&#41;;
      *
      * Response&lt;PathInfo&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;

@@ -253,11 +253,11 @@ public class ShareFileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileClient#beginCopy(String, ShareFileCopyOptions)}
+     * Generates a code sample for using {@link ShareFileClient#beginCopy(String, Duration, ShareFileCopyOptions)}
      */
     public void beginCopy3() {
         ShareFileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.beginCopy#String-ShareFileCopyOptions
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions
         FileSmbProperties smbProperties = new FileSmbProperties()
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
             .setFileCreationTime(OffsetDateTime.now())
@@ -279,16 +279,15 @@ public class ShareFileJavaDocCodeSamples {
             .setDestinationRequestConditions(requestConditions)
             .setSmbPropertiesToCopy(list)
             .setPermissionCopyModeType(PermissionCopyModeType.SOURCE)
-            .setMetadata(Collections.singletonMap("file", "metadata"))
-            .setPollInterval(Duration.ofSeconds(2));
+            .setMetadata(Collections.singletonMap("file", "metadata"));
 
         SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(
-            "https://{accountName}.file.core.windows.net?{SASToken}", options);
+            "https://{accountName}.file.core.windows.net?{SASToken}", Duration.ofSeconds(2), options);
 
         final PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         final ShareFileCopyInfo value = pollResponse.getValue();
         System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
-        // END: com.azure.storage.file.share.ShareFileClient.beginCopy#String-ShareFileCopyOptions
+        // END: com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions
     }
 
     /**

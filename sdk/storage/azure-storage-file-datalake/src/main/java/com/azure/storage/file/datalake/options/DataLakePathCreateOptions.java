@@ -4,13 +4,10 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.file.datalake.models.PathExpiryOptions;
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 
-import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,18 +19,16 @@ public class DataLakePathCreateOptions {
 
     private String permissions;
     private String umask;
-    private PathHttpHeaders headers;
-    private Map<String, String> metadata;
-    private DataLakeRequestConditions requestConditions;
     private List<PathAccessControlEntry> accessControlEntryList;
     private String owner;
     private String group;
+    private DataLakePathScheduleDeletionOptions deletionOptions;
+    private PathHttpHeaders headers;
+    private Map<String, String> metadata;
+    private DataLakeRequestConditions requestConditions;
     private String sourceLeaseId;
     private String proposedLeaseId;
-    private Long leaseDuration;
-    private PathExpiryOptions expiryOptions;
-    private OffsetDateTime expiresOn;
-    private Duration timeToExpire;
+    private Integer leaseDuration;
 
     /**
      * Optional parameters for creating a file or directory.
@@ -87,6 +82,75 @@ public class DataLakePathCreateOptions {
      */
     public DataLakePathCreateOptions setUmask(String umask) {
         this.umask = umask;
+        return this;
+    }
+
+    /**
+     * @return the POSIX access control list for the file/directory.
+     */
+    public List<PathAccessControlEntry> getAccessControlList() {
+        return accessControlEntryList;
+    }
+
+    /**
+     * Optional. The POSIX access control list for the file or directory.
+     *
+     * @param accessControl The access control list.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setAccessControlList(List<PathAccessControlEntry> accessControl) {
+        this.accessControlEntryList = accessControl;
+        return this;
+    }
+
+    /**
+     * @return the name of owner of the file/directory.
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
+     * Optional. Sets the owner of the file/directory.
+     * @param owner the new owner.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setOwner(String owner) {
+        this.owner = owner;
+        return this;
+    }
+
+    /**
+     * @return the name of owning group of the file/directory.
+     */
+    public String getGroup() {
+        return group;
+    }
+
+    /**
+     * Optional. Sets the owning group of the file/directory.
+     * @param group the new owning group.
+     * @return The updated options.
+     */
+    public DataLakePathCreateOptions setGroup(String group) {
+        this.group = group;
+        return this;
+    }
+
+    /**
+     * @return the {@link DataLakePathScheduleDeletionOptions} set on the path.
+     */
+    public DataLakePathScheduleDeletionOptions getScheduleDeletionOptions() {
+        return deletionOptions;
+    }
+
+    /**
+     * Scheduled deletion options to set on the path.
+     * @param deletionOptions the {@link DataLakePathScheduleDeletionOptions} to set.
+     * @return the updated options.
+     */
+    public DataLakePathCreateOptions setScheduleDeletionOptions(DataLakePathScheduleDeletionOptions deletionOptions) {
+        this.deletionOptions = deletionOptions;
         return this;
     }
 
@@ -151,58 +215,6 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * @return the POSIX access control list for the file/directory.
-     */
-    public List<PathAccessControlEntry> getAccessControlList() {
-        return accessControlEntryList;
-    }
-
-    /**
-     * Optional. The POSIX access control list for the file or directory.
-     *
-     * @param accessControl The access control list.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setAccessControlList(List<PathAccessControlEntry> accessControl) {
-        this.accessControlEntryList = accessControl;
-        return this;
-    }
-
-    /**
-     * @return the name of owner of the file/directory.
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-    /**
-     * Optional. Sets the owner of the file/directory.
-     * @param owner the new owner.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setOwner(String owner) {
-        this.owner = owner;
-        return this;
-    }
-
-    /**
-     * @return the name of owning group of the file/directory.
-     */
-    public String getGroup() {
-        return group;
-    }
-
-    /**
-     * Optional. Sets the owning group of the file/directory.
-     * @param group the new owning group.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setGroup(String group) {
-        this.group = group;
-        return this;
-    }
-
-    /**
      * @return the source lease ID
      */
     public String getSourceLeaseId() {
@@ -241,7 +253,7 @@ public class DataLakePathCreateOptions {
     /**
      * @return the lease duration in seconds.
      */
-    public Long getLeaseDuration() {
+    public Integer getLeaseDuration() {
         return leaseDuration;
     }
 
@@ -254,59 +266,8 @@ public class DataLakePathCreateOptions {
      * @param duration the new duration.
      * @return The updated options.
      */
-    public DataLakePathCreateOptions setLeaseDuration(Long duration) {
+    public DataLakePathCreateOptions setLeaseDuration(Integer duration) {
         leaseDuration = duration;
-        return this;
-    }
-
-    /**
-     * @return the expiry options.
-     */
-    public PathExpiryOptions getExpiryOptions() {
-        return expiryOptions;
-    }
-
-    /**
-     * Sets the expiry options.
-     * @param options the new expiry options.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setExpiryOptions(PathExpiryOptions options) {
-        expiryOptions = options;
-        return this;
-    }
-
-    /**
-     * @return the expiry date.
-     */
-    public OffsetDateTime getExpiresOn() {
-        return expiresOn;
-    }
-
-    /**
-     * Sets the expiry date.
-     * @param expiresOn sets the expiry date.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
-        return this;
-    }
-
-    /**
-     * @return the time to expire.
-     */
-    public Duration getTimeToExpire() {
-        return timeToExpire;
-    }
-
-    /**
-     * Sets the expiry date.
-     * @param expiryTime sets the expiry date.
-     * @return The updated options.
-     */
-    public DataLakePathCreateOptions setTimeToExpire(Duration expiryTime) {
-        timeToExpire = expiryTime;
         return this;
     }
 

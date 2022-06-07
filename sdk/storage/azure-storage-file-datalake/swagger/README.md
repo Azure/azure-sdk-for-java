@@ -30,7 +30,7 @@ context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStorageException
 models-subpackage: implementation.models
-custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType,PathExpiryOptions
+custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType
 custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
 custom-strongly-typed-header-deserialization: true

@@ -165,7 +165,7 @@ public final class PathsReadHeaders {
         this.xMsProperties = rawHeaders.getValue("x-ms-properties");
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
         if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
-            this.xMsRequestServerEncrypted = Boolean.valueOf(rawHeaders.getValue("x-ms-request-server-encrypted"));
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
         }
         if (rawHeaders.getValue("Date") != null) {
             this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
@@ -179,7 +179,7 @@ public final class PathsReadHeaders {
         this.contentEncoding = rawHeaders.getValue("Content-Encoding");
         this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
         if (rawHeaders.getValue("Content-Length") != null) {
-            this.contentLength = Long.valueOf(rawHeaders.getValue("Content-Length"));
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.contentLanguage = rawHeaders.getValue("Content-Language");

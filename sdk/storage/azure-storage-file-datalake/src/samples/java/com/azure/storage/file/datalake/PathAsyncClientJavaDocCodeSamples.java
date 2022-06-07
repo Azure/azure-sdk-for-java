@@ -87,10 +87,17 @@ public class PathAsyncClientJavaDocCodeSamples {
         String owner = "rwx";
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
-        Long duration = 15L;
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(httpHeaders)
-            .setRequestConditions(requestConditions).setMetadata(metadata).setPermissions(permissions).setUmask(umask)
-            .setOwner(owner).setGroup(group).setProposedLeaseId(leaseId).setLeaseDuration(duration);
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
 
         client.createWithResponse(options).subscribe(response ->
             System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
@@ -500,8 +507,11 @@ public class PathAsyncClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata);
 
         client.createIfNotExistsWithResponse(options).subscribe(response -> {
             if (response.getStatusCode() == 409) {
