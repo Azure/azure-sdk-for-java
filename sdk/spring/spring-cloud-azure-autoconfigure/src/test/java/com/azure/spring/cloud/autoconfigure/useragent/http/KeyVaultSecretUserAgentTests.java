@@ -20,7 +20,6 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @Isolated("Run this by itself as it captures System.out")
 @ExtendWith(OutputCaptureExtension.class)
