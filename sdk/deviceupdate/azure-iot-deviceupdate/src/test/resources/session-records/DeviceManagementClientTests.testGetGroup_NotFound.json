@@ -1,0 +1,21 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/groups/foo?api-version=2022-07-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (1.8.0_332; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43a084fd-9e50-4ce4-8f31-433eea21be94"
+    },
+    "Response" : {
+      "content-length" : "183",
+      "traceparent" : "00-f43635456d730a43852ecd773f22d954-f74d7b9200a7d648-00",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\r\n  \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\r\n  \"title\": \"Not Found\",\r\n  \"status\": 404,\r\n  \"traceId\": \"00-f43635456d730a43852ecd773f22d954-ef9db0c80994684d-00\"\r\n}",
+      "Date" : "Tue, 07 Jun 2022 21:22:33 GMT",
+      "Content-Type" : "application/problem+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

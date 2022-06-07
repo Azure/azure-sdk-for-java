@@ -24,7 +24,7 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-iot-deviceupdate</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -53,17 +53,6 @@ You can familiarize yourself with different APIs using [Samples](https://github.
 All Device Update for IoT Hub service operations will throw a ErrorResponseException on failure with helpful ErrorCodes.
 
 For example, if you use the `getUpdateWithResponse` operation and the model you are looking for doesn't exist, you can catch that specific HttpStatusCode to decide the operation that follows in that case.
-
-``` java com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
-try {
-    client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
-} catch (HttpResponseException e) {
-    if (e.getResponse().getStatusCode() == 404) {
-        // update does not exist
-        System.out.println("update does not exist");
-    }
-}
-```
 
 ## Next steps
 
