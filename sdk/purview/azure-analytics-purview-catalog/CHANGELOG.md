@@ -6,6 +6,10 @@
 
 - Support Atlas 2.2 APIs
 
+### Breaking Changes
+
+- Expose required query and header parameters to method signature.
+
 ### Bugs Fixed
 
 - Add missing query parameter `includeTermHierarchy` for update term API
