@@ -106,7 +106,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.cloud.starter.keyvault.secrets</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.keyvault</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>

@@ -20,6 +20,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Used to test if Key Vault services work together.
+ */
 class AzureKeyVaultAutoConfigurationTests {
 
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
