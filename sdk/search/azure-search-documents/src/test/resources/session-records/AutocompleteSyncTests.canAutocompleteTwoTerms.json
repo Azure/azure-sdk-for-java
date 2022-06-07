@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "92a12159-d95c-4638-aec3-b1c65168a542",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "278",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "request-id" : "92a12159-d95c-4638-aec3-b1c65168a542",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:14:36 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
-      "elapsed-time" : "6",
+      "client-request-id" : "92a12159-d95c-4638-aec3-b1c65168a542",
+      "elapsed-time" : "7",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"text\":\"point motel\",\"queryPlusText\":\"point motel\"},{\"text\":\"police station\",\"queryPlusText\":\"police station\"},{\"text\":\"polite staff\",\"queryPlusText\":\"polite staff\"},{\"text\":\"pool a\",\"queryPlusText\":\"pool a\"},{\"text\":\"popular hotel\",\"queryPlusText\":\"popular hotel\"}]}",
-      "x-ms-client-request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "x-ms-client-request-id" : "92a12159-d95c-4638-aec3-b1c65168a542",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

@@ -36,20 +36,21 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import reactor.core.Exceptions;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
-import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceSyncTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 
@@ -88,16 +89,24 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
+        Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(jsonFile)));
         try {
-            ObjectNode jsonData = (ObjectNode) MAPPER.readTree(TestHelpers.loadResource(jsonFile));
-            jsonData.set("name", new TextNode(testResourceNamer.randomName(jsonData.get("name").asText(), 64)));
-            return setupIndex(MAPPER.treeToValue(jsonData, SearchIndex.class));
+            return setupIndex(TestHelpers.MAPPER.readValue(indexData, SearchIndex.class));
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
     }
 
     protected String setupIndex(SearchIndex index) {
+        try {
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            searchIndexName.setAccessible(true);
+
+            searchIndexName.set(index, testResourceNamer.randomName(index.getName(), 64));
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
+        }
         getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
 
         return index.getName();
@@ -356,23 +365,14 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject() {
-        return createTestSqlDataSourceObject(null, null, null);
+        return createTestSqlDataSourceObject(null, null);
     }
 
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return createTestSqlDataSourceObject(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
-            dataDeletionDetectionPolicy, dataChangeDetectionPolicy);
-    }
-
-    protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(String name,
-        DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        if (name == null) {
-            name = testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32);
-        }
-
-        return SearchIndexerDataSources.createFromAzureSql(name, FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI",
-            FAKE_DESCRIPTION, dataChangeDetectionPolicy, dataDeletionDetectionPolicy);
+        return SearchIndexerDataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
+            FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
+            dataDeletionDetectionPolicy);
     }
 
     protected SearchIndexerDataSourceConnection createBlobDataSource() {

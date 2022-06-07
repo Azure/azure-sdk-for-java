@@ -5,11 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -123,6 +120,11 @@ public class SearchClientBuilderTests {
     }
 
     @Test
+    public void nullCredentialThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new SearchClientBuilder().credential(null));
+    }
+
+    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder()
             .credential(new AzureKeyCredential("")));
@@ -136,7 +138,7 @@ public class SearchClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName("test_builder")
-            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(1))))
             .httpClient(new SearchIndexClientBuilderTests.FreshDateTestClient())
             .buildAsyncClient();
 
@@ -199,17 +201,5 @@ public class SearchClientBuilderTests {
             .buildClient();
 
         assertThrows(HttpResponseException.class, searchClient::getDocumentCount);
-    }
-
-    @Test
-    public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new SearchClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .indexName(indexName)
-            .serviceVersion(apiVersion)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
     }
 }

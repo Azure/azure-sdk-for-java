@@ -36,8 +36,6 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryAnswerType;
-import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -767,8 +765,8 @@ public final class SearchAsyncClient {
      *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;
      * &#41;;
      * searchPagedFlux.byPage&#40;&#41;
-     *     .subscribe&#40;resultResponse -&gt; &#123;
-     *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
+     *     .subscribe&#40;resultRespones -&gt; &#123;
+     *         for &#40;SearchResult result: resultRespones.getValue&#40;&#41;&#41; &#123;
      *             SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
      *             for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
      *                 System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
@@ -805,16 +803,20 @@ public final class SearchAsyncClient {
      * SearchPagedFlux pagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;,
      *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;;
      *
-     * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
+     * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; &#123;
+     *     System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;;
+     * &#125;&#41;;
      *
      * pagedFlux.byPage&#40;&#41;
-     *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
-     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
-     *             : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
-     *                 keyValuePair.getValue&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;&#41;;
+     *     .subscribe&#40;searchResultResponse -&gt; &#123;
+     *         searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
+     *             for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
+     *                 : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                     keyValuePair.getValue&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
      *
@@ -863,7 +865,7 @@ public final class SearchAsyncClient {
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
-                    result.getCoverage(), result.getAnswers());
+                    result.getCoverage());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -991,7 +993,9 @@ public final class SearchAsyncClient {
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
      * <pre>
      * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;&#41;;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
      *
@@ -1075,55 +1079,13 @@ public final class SearchAsyncClient {
             .setQueryType(options.getQueryType())
             .setScoringParameters(scoringParameters)
             .setScoringProfile(options.getScoringProfile())
-            .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
-            .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
-    }
-
-    static String createSearchRequestAnswers(SearchOptions searchOptions) {
-        QueryAnswerType answer = searchOptions.getAnswers();
-        Integer answersCount = searchOptions.getAnswersCount();
-
-        // No answer has been defined.
-        if (answer == null) {
-            return null;
-        }
-
-        // No count, just send the QueryAnswer.
-        if (answersCount == null) {
-            return answer.toString();
-        }
-
-        // Answer and count, format it as the service expects.
-        return answer + "|count-" + answersCount;
-    }
-
-    static String createSearchRequestCaptions(SearchOptions searchOptions) {
-        QueryCaptionType queryCaption = searchOptions.getQueryCaption();
-        Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlightEnabled();
-
-        // No caption has been defined.
-        if (queryCaption == null) {
-            return null;
-        }
-
-        // No highlight, just send the Caption.
-        if (queryCaptionHighlight == null) {
-            return queryCaption.toString();
-        }
-
-        // Caption and highlight, format it as the service expects.
-        return queryCaption + "|highlight-" + queryCaptionHighlight;
+            .setTop(options.getTop());
     }
 
     /**

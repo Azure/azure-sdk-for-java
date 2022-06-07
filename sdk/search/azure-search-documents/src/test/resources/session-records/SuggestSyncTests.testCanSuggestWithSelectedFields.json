@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')/docs/search.post.suggest?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "de5ec722-a050-40a8-80c1-f77b7c8d5100",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "179",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
+      "request-id" : "de5ec722-a050-40a8-80c1-f77b7c8d5100",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:21:56 GMT",
+      "Date" : "Thu, 27 May 2021 21:13:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
-      "elapsed-time" : "6",
+      "client-request-id" : "de5ec722-a050-40a8-80c1-f77b7c8d5100",
+      "elapsed-time" : "7",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"@search.text\":\"Secret Point Motel\",\"HotelName\":\"Secret Point Motel\",\"Rating\":4,\"Address\":{\"City\":\"New York\"},\"Rooms\":[{\"Type\":\"Budget Room\"},{\"Type\":\"Budget Room\"}]}]}",
-      "x-ms-client-request-id" : "b01a0b2a-3544-4d8e-885c-c3b904601c2f",
+      "x-ms-client-request-id" : "de5ec722-a050-40a8-80c1-f77b7c8d5100",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
