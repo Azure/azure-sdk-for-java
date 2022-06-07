@@ -20,8 +20,6 @@ jobs:
                 - '!sdk/**/test-recordings'
                 - '!sdk/**/session-records'
 
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
@@ -73,6 +71,8 @@ jobs:
           pwsh: true
         displayName: 'Generate Linting Commands'
 
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+
       - task: Maven@3
         displayName: 'Build Projects'
         inputs:
@@ -123,3 +123,5 @@ jobs:
           }
         displayName: 'Fail Pipeline if Linting Reports Exist'
         condition: and(succeeded(), ne(variables['LintingGoals'], ''))
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
