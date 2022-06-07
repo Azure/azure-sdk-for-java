@@ -58,12 +58,12 @@ public final class AzureFileSystem extends FileSystem {
 
     // Configuration constants for blob clients.
     /**
-     * Expected type: String
+     * Expected type: com.azure.storage.common.StorageSharedKeyCredential
      */
     public static final String AZURE_STORAGE_SHARED_KEY_CREDENTIAL = "AzureStorageSharedKeyCredential";
 
     /**
-     * Expected type: String
+     * Expected type: com.azure.core.credential.AzureSasCredential
      */
     public static final String AZURE_STORAGE_SAS_TOKEN_CREDENTIAL = "AzureStorageSasTokenCredential";
 
