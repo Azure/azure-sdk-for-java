@@ -66,7 +66,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/(kotlin|okhttp3|okio)(\\..+)?/"
+            "match": "/(kotlin|okhttp3|okio|io\\.vertx)(\\..+)?/"
           },
           {
             "matcher": "java-package",
@@ -92,7 +92,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
-            "match": "/org\\.apache\\.avro(\\..*)?/"
+            "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
           },
           {
             "matcher": "java-package",
@@ -100,19 +100,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/org\\.junit(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.apache.commons(..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.slf4j(..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.springframework(..*)?/"
+            "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
           }
         ]
       }
@@ -250,11 +238,32 @@
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
         },
         {
+          "code": "java.method.visibilityReduced",
+          "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
+          "justification": "Shouldn't have been a public API and was recently released."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "new": "method com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsPropertiesBeanPostProcessor com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration::azureServiceBusJmsPropertiesBeanPostProcessor(org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.ServiceBus>>)",
+          "justification": "Shouldn't have been a public API and was recently released."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration",
+          "justification": "Fixes a bug."
+        },
+        {
           "code": "java.missing.newSuperType",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
           "superClass": "com.azure.core.models.MessageContent",
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
+          "justification": "SDK classes are allowed to be exposed by dependencies using them."
         }
       ]
     }

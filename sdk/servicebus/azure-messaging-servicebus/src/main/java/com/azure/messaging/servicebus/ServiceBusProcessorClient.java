@@ -376,10 +376,19 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             };
         }
 
-        receiverClient.receiveMessagesWithContext()
-            .parallel(processorOptions.getMaxConcurrentCalls(), 1)
-            .runOn(Schedulers.boundedElastic(), 1)
-            .subscribe(subscribers);
+        if (processorOptions.getMaxConcurrentCalls() > 1) {
+            receiverClient.receiveMessagesWithContext()
+                .parallel(processorOptions.getMaxConcurrentCalls(), 1)
+                .runOn(Schedulers.boundedElastic(), 1)
+                .subscribe(subscribers);
+        } else {
+            // For the default case, i.e., when max-concurrent-call is one, the Processor handler can be invoked on
+            // the same Bounded-Elastic thread that the Low-Level Receiver obtained. This way, we can avoid
+            // the unnecessary thread hopping and allocation that otherwise would have been introduced by the parallel
+            // and runOn operators for this code path.
+            receiverClient.receiveMessagesWithContext()
+                .subscribe(subscribers[0]);
+        }
     }
 
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {

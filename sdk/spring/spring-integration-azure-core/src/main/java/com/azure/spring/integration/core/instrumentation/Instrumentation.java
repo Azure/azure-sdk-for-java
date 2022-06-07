@@ -12,11 +12,15 @@ public interface Instrumentation {
      * Specifies the type of queue and topic currently in use.
      */
     enum Type {
-
+        /**
+         * Consumer
+         */
         CONSUMER,
 
+        /**
+         * Producer
+         */
         PRODUCER
-
     }
 
     /**
@@ -79,7 +83,14 @@ public interface Instrumentation {
      * The status of the instrumented component.
      */
     enum Status {
+        /**
+         * Up
+         */
         UP,
+
+        /**
+         * Down
+         */
         DOWN
     }
 }
