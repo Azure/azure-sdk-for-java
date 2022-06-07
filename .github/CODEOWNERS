@@ -99,7 +99,7 @@
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
+/sdk/eventgrid/                                     @mssfang @srnagar @lmolkova
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
@@ -167,6 +167,9 @@
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang
+
+# PRLabel: %Azure SDK Tools
+/sdk/tools/                                         @srnagar @jonathangiles
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
