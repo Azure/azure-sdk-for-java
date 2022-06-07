@@ -124,4 +124,11 @@ jobs:
         displayName: 'Fail Pipeline if Linting Reports Exist'
         condition: and(succeeded(), ne(variables['LintingGoals'], ''))
 
-      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+      - task: PowerShell@2
+        displayName: Clean up maven local cache
+        inputs:
+          pwsh: true
+          filePath: ${{ parameters.WorkingDirectory }}/eng/scripts/Remove-Azure-Artifacts-From-Cache.ps1
+          arguments: >
+            -MavenCacheFolder $(MAVEN_CACHE_FOLDER)
+        continueOnError: true
