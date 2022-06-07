@@ -32,11 +32,5 @@ public class DataLakeStorageCustomization extends Customization {
             .getProperty("failedEntries")
             .removeAnnotation("@JsonProperty")
             .addAnnotation("@JsonProperty(\"failedEntries\")");
-
-        PackageCustomization models = customization.getPackage("com.azure.storage.file.datalake.models");
-
-        models.getClass("PathExpiryOptions")
-            .rename("PathExpiryMode");
-
     }
 }

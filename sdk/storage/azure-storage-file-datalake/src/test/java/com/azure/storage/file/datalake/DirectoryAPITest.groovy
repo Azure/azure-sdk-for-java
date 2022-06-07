@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
-import com.azure.storage.file.datalake.options.DataLakeAccessOptions
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
@@ -31,7 +30,6 @@ import spock.lang.Unroll
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Consumer
-import java.util.logging.FileHandler
 import java.util.stream.Collectors
 
 class DirectoryAPITest extends APISpec {
@@ -371,9 +369,6 @@ class DirectoryAPITest extends APISpec {
     def "Create options with error"() {
         setup:
         dc = fsc.getDirectoryClient(generatePathName())
-        def deletionOptions = new DataLakePathScheduleDeletionOptions()
-            .setExpiresOn(expiresOn)
-            .setTimeToExpire(timeToExpire)
         def options = new DataLakePathCreateOptions()
             .setScheduleDeletionOptions(deletionOptions)
             .setProposedLeaseId(leaseId)
@@ -388,11 +383,11 @@ class DirectoryAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        leaseId                         | leaseDuration | expiresOn            | timeToExpire
-        UUID.randomUUID().toString()    | null          | null                 | null
-        UUID.randomUUID().toString()    | 15            | null                 | null
-        UUID.randomUUID().toString()    | null          | OffsetDateTime.now() | null
-        UUID.randomUUID().toString()    | null          | null                 | Duration.ofDays(6)
+        leaseId                         | leaseDuration | deletionOptions
+        UUID.randomUUID().toString()    | null          | null
+        UUID.randomUUID().toString()    | 15            | null
+        UUID.randomUUID().toString()    | null          | new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())
+        UUID.randomUUID().toString()    | null          | new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
     }
 
     def "Create if not exists min"() {
@@ -505,7 +500,6 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def accessOptions = new DataLakeAccessOptions()
         def options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
             .setUmask(umask)

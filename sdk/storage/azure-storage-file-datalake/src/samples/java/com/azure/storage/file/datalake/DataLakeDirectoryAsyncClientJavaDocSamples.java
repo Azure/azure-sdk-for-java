@@ -5,7 +5,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.options.DataLakeAccessOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 
@@ -111,12 +110,11 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
         Long duration = 15L;
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
             .setUmask(umask)
             .setOwner(owner)
-            .setGroup(group);
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setGroup(group)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions)
             .setMetadata(metadata)
@@ -194,12 +192,11 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         String group = "r--";
         String leaseId = UUID.randomUUID().toString();
         Long duration = 15L;
-        DataLakeAccessOptions accessOptions = new DataLakeAccessOptions()
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
             .setUmask(umask)
             .setOwner(owner)
-            .setGroup(group);
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setGroup(group)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions)
             .setMetadata(metadata)

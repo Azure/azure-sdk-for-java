@@ -19,7 +19,6 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
-import com.azure.storage.file.datalake.options.DataLakeAccessOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import reactor.core.publisher.Mono;
@@ -361,13 +360,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Long duration = 15L;
-     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
      *     .setUmask&#40;umask&#41;
      *     .setOwner&#40;owner&#41;
-     *     .setGroup&#40;group&#41;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
-     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setGroup&#40;group&#41;
      *     .setPathHttpHeaders&#40;httpHeaders&#41;
      *     .setRequestConditions&#40;requestConditions&#41;
      *     .setMetadata&#40;metadata&#41;
@@ -427,11 +424,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;.setContentLanguage&#40;&quot;en-US&quot;&#41;.setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
-     *     .setPermissions&#40;permissions&#41;
-     *     .setUmask&#40;umask&#41;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
-     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
      *     .setPathHttpHeaders&#40;headers&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
@@ -720,13 +715,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Long duration = 15L;
-     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
      *     .setUmask&#40;umask&#41;
      *     .setOwner&#40;owner&#41;
-     *     .setGroup&#40;group&#41;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
-     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setGroup&#40;group&#41;
      *     .setPathHttpHeaders&#40;httpHeaders&#41;
      *     .setRequestConditions&#40;requestConditions&#41;
      *     .setMetadata&#40;metadata&#41;
@@ -788,11 +781,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
-     *     .setPermissions&#40;permissions&#41;
-     *     .setUmask&#40;umask&#41;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
-     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
      *     .setPathHttpHeaders&#40;headers&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *

@@ -30,6 +30,7 @@ import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAP
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
@@ -52,7 +53,6 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
-import com.azure.storage.file.datalake.models.PathExpiryMode;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -60,10 +60,8 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.DataLakeAccessOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -429,13 +427,11 @@ public class DataLakePathAsyncClient {
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Long duration = 15L;
-     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
      *     .setUmask&#40;umask&#41;
      *     .setOwner&#40;owner&#41;
-     *     .setGroup&#40;group&#41;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
-     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setGroup&#40;group&#41;
      *     .setPathHttpHeaders&#40;httpHeaders&#41;
      *     .setRequestConditions&#40;requestConditions&#41;
      *     .setMetadata&#40;metadata&#41;
@@ -477,7 +473,7 @@ public class DataLakePathAsyncClient {
 
         String acl = options.getAccessControlList() != null ? PathAccessControlEntry
             .serializeList(options.getAccessControlList()) : null;
-        PathExpiryMode expiryMode = setFieldsIfNull(options);
+        PathExpiryOptions expiryOptions = setFieldsIfNull(options);
 
         String expiresOnString = null; // maybe return string instead and do check for expiryOptions in here
         if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
@@ -490,7 +486,7 @@ public class DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
                 options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
                 options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
-                options.getLeaseDuration(), expiryMode, expiresOnString, options.getPathHttpHeaders(),
+                options.getLeaseDuration(), expiryOptions, expiresOnString, options.getPathHttpHeaders(),
                 lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
@@ -498,9 +494,7 @@ public class DataLakePathAsyncClient {
                 response.getDeserializedHeaders().getXMsEncryptionKeySha256())));
     }
 
-    PathExpiryMode setFieldsIfNull(DataLakePathCreateOptions options) {
-        DataLakePathScheduleDeletionOptions deletionOptions =
-            options.getScheduleDeletionOptions() == null ? new DataLakePathScheduleDeletionOptions() : options.getScheduleDeletionOptions();
+    PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options) {
         if (pathResourceType == PathResourceType.DIRECTORY) {
             if (options.getProposedLeaseId() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
@@ -508,23 +502,25 @@ public class DataLakePathAsyncClient {
             if (options.getLeaseDuration() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
             }
-            if (deletionOptions.getTimeToExpire() != null) {
+            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
             }
-            if (deletionOptions.getExpiresOn() != null) {
+            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
             }
         }
-        if (deletionOptions.getTimeToExpire() != null && deletionOptions.getExpiresOn() != null) {
+        if (options.getScheduleDeletionOptions() == null) {
+            return null;
+        }
+        if (options.getScheduleDeletionOptions().getTimeToExpire() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
         }
-        PathExpiryMode expiryMode = null;
-        if (deletionOptions.getTimeToExpire() != null) {
-            expiryMode = PathExpiryMode.RELATIVE_TO_NOW;
-        } else if (deletionOptions.getExpiresOn() != null) {
-            expiryMode = PathExpiryMode.ABSOLUTE;
+        if (options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+            return PathExpiryOptions.RELATIVE_TO_NOW;
+        } else if (options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            return PathExpiryOptions.ABSOLUTE;
         }
-        return expiryMode;
+        return null;
     }
 
     /**
@@ -563,11 +559,9 @@ public class DataLakePathAsyncClient {
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * DataLakeAccessOptions accessOptions = new DataLakeAccessOptions&#40;&#41;
-     *     .setPermissions&#40;permissions&#41;
-     *     .setUmask&#40;umask&#41;;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
-     *     .setAccessOptions&#40;accessOptions&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
      *     .setPathHttpHeaders&#40;headers&#41;
      *     .setMetadata&#40;metadata&#41;;
      *

@@ -30,6 +30,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
@@ -51,7 +52,6 @@ import com.azure.storage.file.datalake.implementation.models.SetAccessControlRec
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
-import com.azure.storage.file.datalake.models.PathExpiryMode;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -123,7 +123,7 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-acl") String acl,
                 @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
                 @HeaderParam("x-ms-lease-duration") Long leaseDuration,
-                @HeaderParam("x-ms-expiry-option") PathExpiryMode expiryOptions,
+                @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
                 @HeaderParam("x-ms-expiry-time") String expiresOn,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -361,7 +361,7 @@ public final class PathsImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("x-ms-expiry-option") PathExpiryMode expiryOptions,
+                @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
                 @HeaderParam("x-ms-expiry-time") String expiresOn,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -463,7 +463,7 @@ public final class PathsImpl {
             String acl,
             String proposedLeaseId,
             Long leaseDuration,
-            PathExpiryMode expiryOptions,
+            PathExpiryOptions expiryOptions,
             String expiresOn,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
@@ -1579,7 +1579,7 @@ public final class PathsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<PathsSetExpiryHeaders, Void>> setExpiryWithResponseAsync(
-            PathExpiryMode expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
+            PathExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
         final String accept = "application/json";
         return service.setExpiry(

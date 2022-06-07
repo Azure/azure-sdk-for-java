@@ -5,7 +5,6 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
-import com.azure.storage.file.datalake.models.PathExpiryMode;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 
@@ -30,7 +29,6 @@ public class DataLakePathCreateOptions {
     private String sourceLeaseId;
     private String proposedLeaseId;
     private Long leaseDuration;
-    private PathExpiryMode expiryOptions;
 
     /**
      * Optional parameters for creating a file or directory.
