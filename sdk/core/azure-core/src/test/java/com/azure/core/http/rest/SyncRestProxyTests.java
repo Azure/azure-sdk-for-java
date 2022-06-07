@@ -18,6 +18,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.implementation.http.rest.RestProxyUtils;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -85,7 +86,7 @@ public class SyncRestProxyTests {
         @Post("my/url/path")
         @ExpectedResponses({200})
         Response<Void> testMethod(
-            @BodyParam("application/octet-stream") InputStream request,
+            @BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
@@ -100,7 +101,7 @@ public class SyncRestProxyTests {
 
         TestInterface testInterface = SyncRestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface.testMethod(new ByteArrayInputStream(bytes),
+        Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes)),
             "application/json", (long) bytes.length);
 
         assertEquals(200, response.getStatusCode());
