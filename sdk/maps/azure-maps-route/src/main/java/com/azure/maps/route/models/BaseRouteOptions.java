@@ -36,114 +36,226 @@ public class BaseRouteOptions<T extends BaseRouteOptions<T>>  {
     private Double maxChargeInKwH;
     private Double auxiliaryPowerInKw;
 
+    /**
+     *
+     * @return
+     */
     public String getConstantSpeedConsumptionInLitersPerHundredKm() {
         return constantSpeedConsumptionInLitersPerHundredKm;
     }
 
+    /**
+     *
+     * @return
+     */
     public OffsetDateTime getDepartAt() {
         return this.departAt;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getVehicleAxleWeight() {
         return this.vehicleAxleWeight;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getVehicleWidth() {
         return this.vehicleWidth;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getVehicleHeight() {
         return this.vehicleHeight;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getVehicleLength() {
         return this.vehicleLength;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getVehicleMaxSpeed() {
         return this.vehicleMaxSpeed;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getVehicleWeight() {
         return this.vehicleWeight;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean isCommercialVehicle() {
         return this.isCommercialVehicle;
     }
 
+    /**
+     *
+     * @return
+     */
     public WindingnessLevel getWindingness() {
         return this.windingness;
     }
 
+    /**
+     *
+     * @return
+     */
     public InclineLevel getInclineLevel() {
         return this.inclineLevel;
     }
 
+    /**
+     *
+     * @return
+     */
     public TravelMode getTravelMode() {
         return this.travelMode;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<RouteAvoidType> getAvoid() {
         return this.avoid;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean getUseTrafficData() {
         return this.useTrafficData;
     }
 
+    /**
+     *
+     * @return
+     */
     public RouteType getRouteType() {
         return this.routeType;
     }
 
+    /**
+     *
+     * @return
+     */
     public VehicleLoadType getVehicleLoadType() {
         return this.vehicleLoadType;
     }
 
+    /**
+     *
+     * @return
+     */
     public VehicleEngineType getVehicleEngineType() {
         return this.vehicleEngineType;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getCurrentFuelInLiters() {
         return this.currentFuelInLiters;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getAuxiliaryPowerInLitersPerHour() {
         return this.auxiliaryPowerInLitersPerHour;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getFuelEnergyDensityInMegajoulesPerLiter() {
         return this.fuelEnergyDensityInMegajoulesPerLiter;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getAccelerationEfficiency() {
         return this.accelerationEfficiency;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getDecelerationEfficiency() {
         return this.decelerationEfficiency;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getUphillEfficiency() {
         return this.uphillEfficiency;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getDownhillEfficiency() {
         return this.downhillEfficiency;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getConstantSpeedConsumptionInKwHPerHundredKm() {
         return this.constantSpeedConsumptionInKwHPerHundredKm;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getCurrentChargeInKwH() {
         return this.currentChargeInKwH;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getMaxChargeInKwH() {
         return this.maxChargeInKwH;
     }
 
+    /**
+     *
+     * @return
+     */
     public Double getAuxiliaryPowerInKw() {
         return this.auxiliaryPowerInKw;
     }
