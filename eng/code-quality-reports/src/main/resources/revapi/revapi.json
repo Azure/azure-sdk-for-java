@@ -240,25 +240,27 @@
         {
           "regex": true,
           "code": "java.class.noLongerInheritsFromClass",
-          "new": "(class|method void|parameter void) com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "old": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "superClass": "com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase",
           "justification": "To support for storage services to share values of common properties."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.added",
-          "new": "(class|method void|parameter void) com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
           "justification": "To support for storage services to share values of common properties."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.attributeRemoved",
-          "new": "(class|method void|parameter void) com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
           "justification": "To support for storage services to share values of common properties."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.attributeAdded",
-          "new": "(class|method void|parameter void) com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
           "justification": "To support for storage services to share values of common properties."
         },
         {
