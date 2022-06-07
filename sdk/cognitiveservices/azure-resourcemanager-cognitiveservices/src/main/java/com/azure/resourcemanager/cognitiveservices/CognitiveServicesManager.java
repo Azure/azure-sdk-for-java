@@ -239,7 +239,7 @@ public final class CognitiveServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -296,7 +296,11 @@ public final class CognitiveServicesManager {
         }
     }
 
-    /** @return Resource collection API of Accounts. */
+    /**
+     * Gets the resource collection API of Accounts. It manages Account.
+     *
+     * @return Resource collection API of Accounts.
+     */
     public Accounts accounts() {
         if (this.accounts == null) {
             this.accounts = new AccountsImpl(clientObject.getAccounts(), this);
@@ -304,7 +308,11 @@ public final class CognitiveServicesManager {
         return accounts;
     }
 
-    /** @return Resource collection API of DeletedAccounts. */
+    /**
+     * Gets the resource collection API of DeletedAccounts.
+     *
+     * @return Resource collection API of DeletedAccounts.
+     */
     public DeletedAccounts deletedAccounts() {
         if (this.deletedAccounts == null) {
             this.deletedAccounts = new DeletedAccountsImpl(clientObject.getDeletedAccounts(), this);
@@ -312,7 +320,11 @@ public final class CognitiveServicesManager {
         return deletedAccounts;
     }
 
-    /** @return Resource collection API of ResourceSkus. */
+    /**
+     * Gets the resource collection API of ResourceSkus.
+     *
+     * @return Resource collection API of ResourceSkus.
+     */
     public ResourceSkus resourceSkus() {
         if (this.resourceSkus == null) {
             this.resourceSkus = new ResourceSkusImpl(clientObject.getResourceSkus(), this);
@@ -320,7 +332,11 @@ public final class CognitiveServicesManager {
         return resourceSkus;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -328,7 +344,11 @@ public final class CognitiveServicesManager {
         return operations;
     }
 
-    /** @return Resource collection API of ResourceProviders. */
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
     public ResourceProviders resourceProviders() {
         if (this.resourceProviders == null) {
             this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
@@ -336,7 +356,11 @@ public final class CognitiveServicesManager {
         return resourceProviders;
     }
 
-    /** @return Resource collection API of CommitmentTiers. */
+    /**
+     * Gets the resource collection API of CommitmentTiers.
+     *
+     * @return Resource collection API of CommitmentTiers.
+     */
     public CommitmentTiers commitmentTiers() {
         if (this.commitmentTiers == null) {
             this.commitmentTiers = new CommitmentTiersImpl(clientObject.getCommitmentTiers(), this);
@@ -344,7 +368,11 @@ public final class CognitiveServicesManager {
         return commitmentTiers;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -353,7 +381,11 @@ public final class CognitiveServicesManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -361,7 +393,11 @@ public final class CognitiveServicesManager {
         return privateLinkResources;
     }
 
-    /** @return Resource collection API of Deployments. */
+    /**
+     * Gets the resource collection API of Deployments. It manages Deployment.
+     *
+     * @return Resource collection API of Deployments.
+     */
     public Deployments deployments() {
         if (this.deployments == null) {
             this.deployments = new DeploymentsImpl(clientObject.getDeployments(), this);
@@ -369,7 +405,11 @@ public final class CognitiveServicesManager {
         return deployments;
     }
 
-    /** @return Resource collection API of CommitmentPlans. */
+    /**
+     * Gets the resource collection API of CommitmentPlans. It manages CommitmentPlan.
+     *
+     * @return Resource collection API of CommitmentPlans.
+     */
     public CommitmentPlans commitmentPlans() {
         if (this.commitmentPlans == null) {
             this.commitmentPlans = new CommitmentPlansImpl(clientObject.getCommitmentPlans(), this);
