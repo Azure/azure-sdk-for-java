@@ -1,5 +1,5 @@
 # Azure Form Recognizer client library for Java
-Azure Cognitive Services Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
 It includes the following main features:
 
 * Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
@@ -37,7 +37,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-Then, include the direct dependency in the dependencies section without the version tag.
+Then, include the direct dependency in the dependencies' section without the version tag.
 
 ```xml
 <dependencies>
@@ -78,7 +78,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
-|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-06-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -191,6 +191,7 @@ The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysi
 provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
 Use the `modelId` parameter to select the type of model for analysis.
+The following table includes some models supported by the service (for a full list of supported models, see [here](fr_models)):
 
 | Model                   | Features                                                                                                  |
 |-------------------------|-----------------------------------------------------------------------------------------------------------|

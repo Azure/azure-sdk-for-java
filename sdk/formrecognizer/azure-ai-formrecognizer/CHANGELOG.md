@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.5 (Unreleased)
+## 4.0.0-beta.5 (2022-06-07)
 
 ### Features Added
 - Added support for address type field value.
@@ -9,6 +9,7 @@
 - Added a new `DocumentParagraph` model to represent document paragraphs.
 - Added `caption` and `footnotes` properties on `DocumentTable`.
 - Added `DocumentCaption` and `DocumentFootnote` models to represent captions and footnotes found in the document.
+- Added `kind` property on `DocumentPage` to represent the document page kind.
 
 ### Breaking Changes
 - Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
@@ -21,6 +22,10 @@ to `boundingPolygon`.
 ### Bugs Fixed
 
 ### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
 
 ## 3.1.11 (2022-05-10)
 

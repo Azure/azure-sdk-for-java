@@ -39,6 +39,7 @@ import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentPage;
+import com.azure.ai.formrecognizer.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentSignatureType;
@@ -114,6 +115,8 @@ public class Transforms {
                 DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
                     ? null : LengthUnit.fromString(innerDocumentPage.getUnit().toString()));
                 DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
+                DocumentPageHelper.setKind(documentPage, innerDocumentPage.getKind() != null
+                    ? DocumentPageKind.fromString(innerDocumentPage.getKind().toString()) : null);
                 DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
                     ? null
                     : innerDocumentPage.getSelectionMarks()
