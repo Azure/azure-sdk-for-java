@@ -399,7 +399,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 } else {
                     logger.info("adding idleStateHandler");
                     context.pipeline().addFirst(
-                            new IdleStateHandler(
+                        new IdleStateHandler(
                             this.idleConnectionTimerResolutionInNanos,
                             this.idleConnectionTimerResolutionInNanos,
                             0,
