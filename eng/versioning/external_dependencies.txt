@@ -264,7 +264,7 @@ org.apache.maven.plugins:maven-antrun-plugin;1.8
 org.apache.maven.plugins:maven-assembly-plugin;3.2.0
 org.apache.maven.plugins:maven-checkstyle-plugin;3.1.2
 org.apache.maven.plugins:maven-clean-plugin;3.0.0
-org.apache.maven.plugins:maven-compiler-plugin;3.8.1
+org.apache.maven.plugins:maven-compiler-plugin;3.10.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
@@ -279,7 +279,7 @@ org.apache.maven.plugins:maven-resources-plugin;2.4.3
 org.apache.maven.plugins:maven-shade-plugin;3.2.4
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
-org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
+org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M6
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;1.2.1
