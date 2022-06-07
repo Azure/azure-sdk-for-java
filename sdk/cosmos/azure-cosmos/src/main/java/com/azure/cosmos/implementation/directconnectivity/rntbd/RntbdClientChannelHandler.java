@@ -107,7 +107,8 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
             this.config.maxRequestsPerChannel(),
-            this.connectionStateListener);
+            this.connectionStateListener,
+            this.config.idleConnectionTimerResolutionInNanos());
 
         final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
@@ -127,13 +128,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
         sslHandler.setHandshakeTimeout(config.connectTimeoutInMillis(), TimeUnit.MILLISECONDS);
 
-        pipeline.addFirst(
-            new IdleStateHandler(
-                idleConnectionTimerResolutionInNanos,
-                idleConnectionTimerResolutionInNanos,
-                0,
-                TimeUnit.NANOSECONDS),
-            sslHandler);
+        pipeline.addFirst(sslHandler);
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
