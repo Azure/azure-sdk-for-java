@@ -129,10 +129,6 @@
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
 
-    <!-- Reserved for general JVM arguments to export, open, or read modules in testing that affect all SDKs. -->
-    <defaultJavaModulesSurefireArgLine>
-    </defaultJavaModulesSurefireArgLine>
-
     <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
     <javaModulesSurefireArgLine>
     </javaModulesSurefireArgLine>
@@ -976,11 +972,28 @@
               </compilerArgs>
             </configuration>
             <executions>
-              <!-- compile first with module-info for Java 9+ -->
+              <!-- compile first with VM's default Java version -->
+              <!-- this will generate module-info with major class version 61 or higher (i.e Java 17 or higher) -->
               <execution>
                 <id>default-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
                 <configuration>
                   <release>${java.vm.specification.version}</release>
+                </configuration>
+              </execution>
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -996,13 +1009,29 @@
                   </excludes>
                 </configuration>
               </execution>
-              <!-- compile tests fir with Java 9+ -->
+
+              <!-- test compile with the current VM's default Java version -->
               <execution>
                 <id>default-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
                 <configuration>
                   <testRelease>${java.vm.specification.version}</testRelease>
                 </configuration>
               </execution>
+
+              <!-- compile tests with Java 11 -->
+              <execution>
+                <id>base-modules-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <testRelease>11</testRelease>
+                </configuration>
+              </execution>
+
               <!-- then compile with Java 8 -->
               <execution>
                 <id>base-testCompile</id>
@@ -1027,10 +1056,12 @@
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
-                ${defaultJavaModulesSurefireArgLine}
                 <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
+                <!-- Surefire doesn't load dependency jars properly, i.e. it disregards module-info manifests. This is a stop gap solution. -->
+                <!-- See https://github.com/Azure/azure-sdk-for-java/issues/29245 for proper solution -->
+                --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 ${additionalSurefireArgLine}
               </argLine>
             </configuration>
@@ -1413,22 +1444,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>from-source-test-run</id>
-      <activation>
-        <property>
-          <name>env.TESTFROMSOURCE</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <properties>
-        <defaultJavaModulesSurefireArgLine>
-          <!-- Maven loads NettyAsyncHttpClient from unnamed module in "from source" core runs -->
-          --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-        </defaultJavaModulesSurefireArgLine>
-      </properties>
     </profile>
   </profiles>
 </project>
