@@ -101,12 +101,7 @@ public class RouteClientTest extends RouteTestBase {
         SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller = client.beginRequestRouteMatrix(options);
         syncPoller = setPollInterval(syncPoller);
         syncPoller.waitForCompletion();
-        RouteMatrixResult routeMatrixResult = syncPoller.getFinalResult();
-        String routeMatrixId = routeMatrixResult.getMatrixId();
-        SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller2 = client.beginGetRouteMatrix(routeMatrixId);
-        syncPoller2 = setPollInterval(syncPoller2);
-        syncPoller2.waitForCompletion();
-        RouteMatrixResult actualResult = syncPoller2.getFinalResult();
+        RouteMatrixResult actualResult = syncPoller.getFinalResult();
         RouteMatrixResult expectedResult = TestUtils.getExpectedGetRequestRouteMatrix();
         validateBeginRequestRouteMatrix(expectedResult, actualResult);
     }
@@ -127,12 +122,7 @@ public class RouteClientTest extends RouteTestBase {
         SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller = client.beginRequestRouteMatrix(options, null);
         syncPoller = setPollInterval(syncPoller);
         syncPoller.waitForCompletion();
-        RouteMatrixResult routeMatrixResult = syncPoller.getFinalResult();
-        String routeMatrixId = routeMatrixResult.getMatrixId();
-        SyncPoller<RouteMatrixResult, RouteMatrixResult> syncPoller2 = client.beginGetRouteMatrix(routeMatrixId);
-        syncPoller2 = setPollInterval(syncPoller2);
-        syncPoller2.waitForCompletion();
-        RouteMatrixResult actualResult = syncPoller2.getFinalResult();
+        RouteMatrixResult actualResult = syncPoller.getFinalResult();
         RouteMatrixResult expectedResult = TestUtils.getExpectedGetRequestRouteMatrix();
         validateBeginRequestRouteMatrix(expectedResult, actualResult);
     }
