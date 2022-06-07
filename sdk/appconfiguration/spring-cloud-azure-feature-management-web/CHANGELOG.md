@@ -1,14 +1,8 @@
 # Release History
 
 ## 3.0.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Adds Support for Dynamic Features.
+- Updated to use both the old and new Feature Management schema.
 
 ## 2.6.0 (2022-05-24)
 - This release is compatible with Spring Boot 2.5.0-2.5.13, 2.6.0-2.6.7. (Note: 2.5.x (x>13) and 2.6.y (y>7) should be supported, but they aren't tested with this release.)
