@@ -97,6 +97,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             this.directCosmosAsyncContainer.delete().block();
         }
 
+        System.clearProperty("azure.cosmos.directTcp.defaultOptions");
         safeCloseAsync(directCosmosAsyncClient);
         safeCloseAsync(gatewayCosmosAsyncClient);
         safeCloseSyncClient(directCosmosClient);
