@@ -38,7 +38,7 @@ Use the Azure Cognitive Search client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.4.10</version>
+    <version>11.4.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
