@@ -3,8 +3,6 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributeBuilder;
-
 /**
  * Meter is generally associated with Azure Service Client instance and allows creating
  * instruments that represent individual metrics such as number of active connections or
@@ -20,13 +18,14 @@ import com.azure.core.util.AttributeBuilder;
  *
  * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
  * &#47;&#47; lifetime for optimal performance
- * AzureMeter meter = AzureMeterProvider
- *     .getDefaultProvider&#40;&#41;
+ * AzureMeter meter = meterProvider
  *     .createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, new MetricsOptions&#40;&#41;&#41;;
  *
  * AzureLongHistogram amqpLinkDuration = meter
- *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;,
- *         Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
+ *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
+ *
+ * AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder&#40;&#41;
+ *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
  *
  * &#47;&#47; when measured operation starts, record the measurement
  * Instant start = Instant.now&#40;&#41;;
@@ -35,12 +34,12 @@ import com.azure.core.util.AttributeBuilder;
  *
  * &#47;&#47; optionally check if meter is operational for the best performance
  * if &#40;meter.isEnabled&#40;&#41;&#41; &#123;
- *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, currentContext&#41;;
+ *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
  * &#125;
  * </pre>
  *  <!-- end com.azure.core.util.metrics.AzureMeter.longHistogram -->
  */
-public abstract class AzureMeter {
+public interface AzureMeter {
     /**
      * Creates histogram instrument allowing to record long values. Histograms should be used for latency or other measurements where
      * distribution of values is important and values are statistically bounded.
@@ -52,13 +51,14 @@ public abstract class AzureMeter {
      *
      * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
      * &#47;&#47; lifetime for optimal performance
-     * AzureMeter meter = AzureMeterProvider
-     *     .getDefaultProvider&#40;&#41;
+     * AzureMeter meter = meterProvider
      *     .createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, new MetricsOptions&#40;&#41;&#41;;
      *
      * AzureLongHistogram amqpLinkDuration = meter
-     *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;,
-     *         Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
+     *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
+     *
+     * AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder&#40;&#41;
+     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
      *
      * &#47;&#47; when measured operation starts, record the measurement
      * Instant start = Instant.now&#40;&#41;;
@@ -67,7 +67,7 @@ public abstract class AzureMeter {
      *
      * &#47;&#47; optionally check if meter is operational for the best performance
      * if &#40;meter.isEnabled&#40;&#41;&#41; &#123;
-     *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, currentContext&#41;;
+     *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.core.util.metrics.AzureMeter.longHistogram -->
@@ -78,7 +78,7 @@ public abstract class AzureMeter {
      * @return new instance of {@link AzureLongCounter}
      * @throws NullPointerException if name or description is null.
      */
-    public abstract AzureLongHistogram createLongHistogram(String name, String description, String unit);
+    AzureLongHistogram createLongHistogram(String name, String description, String unit);
 
     /**
      * Creates counter instrument allowing to record long values. Counters should only be used for incrementing values
@@ -87,13 +87,14 @@ public abstract class AzureMeter {
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#counter for more details.
      * <!-- src_embed com.azure.core.util.metrics.AzureMeter.longCounter -->
      * <pre>
-     * Map&lt;String, Object&gt; attributes = new HashMap&lt;&gt;&#40;&#41;;
-     * attributes.put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     * AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder&#40;&#41;
+     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
+     *     .add&#40;&quot;error&quot;, true&#41;;
      *
      * AzureLongCounter createdHttpConnections = defaultMeter.createLongCounter&#40;&quot;az.core.http.connections&quot;,
-     *     &quot;Number of created HTTP connections&quot;, null, attributes&#41;;
+     *     &quot;Number of created HTTP connections&quot;, null&#41;;
      *
-     * createdHttpConnections.add&#40;1, currentContext&#41;;
+     * createdHttpConnections.add&#40;1, attributes, currentContext&#41;;
      * </pre>
      * <!-- end com.azure.core.util.metrics.AzureMeter.longCounter -->
      *
@@ -103,20 +104,7 @@ public abstract class AzureMeter {
      * @return new instance of {@link AzureLongCounter}
      * @throws NullPointerException if name or description is null.
      */
-    public abstract AzureLongCounter createLongCounter(String name, String description, String unit);
-
-    /**
-     * Creates and returns attribute collection implementation specific to the meter implementation.
-     * Attribute collections differ in how they support different types of attributes and internal datastructures they use.
-     *
-     * For the best performance, client libraries should create and cache attribute collections
-     * for the client lifetime and pass cached instance when recoding new measurements.
-     *
-     * <!-- src_embed com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag -->
-     * <!-- end com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag -->
-     * @return
-     */
-    public abstract AttributeBuilder createAttributesBuilder();
+    AzureLongCounter createLongCounter(String name, String description, String unit);
 
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,
@@ -124,7 +112,7 @@ public abstract class AzureMeter {
      *
      * @return {@code true} if enabled, {@code false} otherwise
      */
-    public boolean isEnabled() {
+    default boolean isEnabled() {
         return false;
     }
 }

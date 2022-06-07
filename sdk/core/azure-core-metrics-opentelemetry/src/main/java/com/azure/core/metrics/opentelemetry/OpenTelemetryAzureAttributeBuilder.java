@@ -1,16 +1,18 @@
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributeBuilder;
+import com.azure.core.util.AzureAttributeBuilder;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 
+import java.util.Objects;
+
 /**
- * OpenTelemetry-specific implementation of {@link AttributeBuilder}
+ * OpenTelemetry-specific implementation of {@link AzureAttributeBuilder}
  */
-class OpenTelemetryAttributeBuilder implements AttributeBuilder<Attributes> {
+class OpenTelemetryAzureAttributeBuilder implements AzureAttributeBuilder {
     private final AttributesBuilder builder;
     private Attributes attributes;
-    public OpenTelemetryAttributeBuilder() {
+    public OpenTelemetryAzureAttributeBuilder() {
         builder = Attributes.builder();
         attributes = null;
     }
@@ -19,7 +21,9 @@ class OpenTelemetryAttributeBuilder implements AttributeBuilder<Attributes> {
      * {@inheritDoc}
      */
     @Override
-    public AttributeBuilder addAttribute(String key, String value) {
+    public AzureAttributeBuilder add(String key, String value) {
+        Objects.requireNonNull(key, "'key' cannot be null");
+        Objects.requireNonNull(value, "'value' cannot be null");
         builder.put(key, value);
         attributes = null;
         return this;
@@ -29,7 +33,8 @@ class OpenTelemetryAttributeBuilder implements AttributeBuilder<Attributes> {
      * {@inheritDoc}
      */
     @Override
-    public AttributeBuilder addAttribute(String key, long value) {
+    public AzureAttributeBuilder add(String key, long value) {
+        Objects.requireNonNull(key, "'key' cannot be null");
         builder.put(key, value);
         attributes = null;
         return this;
@@ -39,7 +44,8 @@ class OpenTelemetryAttributeBuilder implements AttributeBuilder<Attributes> {
      * {@inheritDoc}
      */
     @Override
-    public AttributeBuilder addAttribute(String key, double value) {
+    public AzureAttributeBuilder add(String key, double value) {
+        Objects.requireNonNull(key, "'key' cannot be null");
         builder.put(key, value);
         attributes = null;
         return this;
@@ -49,17 +55,14 @@ class OpenTelemetryAttributeBuilder implements AttributeBuilder<Attributes> {
      * {@inheritDoc}
      */
     @Override
-    public AttributeBuilder addAttribute(String key, boolean value) {
+    public AzureAttributeBuilder add(String key, boolean value) {
+        Objects.requireNonNull(key, "'key' cannot be null");
         builder.put(key, value);
         attributes = null;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Attributes getAttributes() {
+    Attributes build() {
         if (attributes == null) {
             attributes = builder.build();
         }

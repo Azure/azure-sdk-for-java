@@ -3,6 +3,8 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -22,6 +24,30 @@ public class NoopMeterTests {
         AzureMeter noopMeter = AzureMeterProvider.getDefaultProvider().createMeter("foo", null, null);
         assertNotNull(noopMeter.createLongHistogram("name", "description", null));
         assertNotNull(noopMeter.createLongCounter("name", "description", null));
+    }
+
+    @Test
+    public void noopHistogramMeasurement() {
+        AzureMeter noopMeter = AzureMeterProvider.getDefaultProvider().createMeter("foo", null, null);
+        assertFalse(noopMeter.isEnabled());
+
+        AzureLongHistogram histogram = noopMeter.createLongHistogram("name", "description", null);
+        AzureAttributeBuilder attributes = AzureMeterProvider.getDefaultProvider().createAttributeBuilder();
+        assertNotNull(attributes);
+
+        attributes.add("foo", "bar")
+                .add("bar", true);
+        histogram.record(42L, attributes, Context.NONE);
+    }
+
+    @Test
+    public void noopCounterMeasurement() {
+        AzureMeter noopMeter = AzureMeterProvider.getDefaultProvider().createMeter("foo", null, null);
+        AzureLongCounter counter = noopMeter.createLongCounter("name", "description", null);
+        AzureAttributeBuilder attributes = AzureMeterProvider.getDefaultProvider().createAttributeBuilder()
+            .add("foo", 42L)
+            .add("bar", 0.42d);
+        counter.add(42L, attributes, Context.NONE);
     }
 
     @Test

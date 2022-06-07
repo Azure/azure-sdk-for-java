@@ -3,7 +3,6 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributeBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,7 +20,7 @@ import java.util.Objects;
 /**
  * {@inheritDoc}
  */
-class OpenTelemetryMeter extends AzureMeter {
+class OpenTelemetryMeter implements AzureMeter {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryMeter.class);
     private final Meter meter;
     private final boolean isEnabled;
@@ -34,7 +33,7 @@ class OpenTelemetryMeter extends AzureMeter {
                 if (providerObj instanceof MeterProvider) {
                     otelProvider = (MeterProvider) options.getProvider();
                 } else if (providerObj != null) {
-                    LOGGER.warning("Expected instance of `io.opentelemetry.api.metrics.MeterProvider` instance under `MetricsOptions.getProvider()`, but got {}, ignoring it.", providerObj.getClass());
+                    LOGGER.warning("Expected instance of `io.opentelemetry.api.metrics.MeterProvider` under `MetricsOptions.getProvider()`, but got {}, ignoring it.", providerObj.getClass());
                 }
             }  else {
                 otelProvider = MeterProvider.noop();
@@ -81,14 +80,6 @@ class OpenTelemetryMeter extends AzureMeter {
         }
 
         return new OpenTelemetryLongCounter(otelMetricBuilder.build());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributeBuilder createAttributesBuilder() {
-        return new OpenTelemetryAttributeBuilder();
     }
 
     /**

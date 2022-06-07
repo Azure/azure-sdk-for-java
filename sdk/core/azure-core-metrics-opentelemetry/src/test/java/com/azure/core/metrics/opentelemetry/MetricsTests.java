@@ -3,7 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributeBuilder;
+import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.AzureLongCounter;
@@ -36,7 +36,7 @@ public class MetricsTests {
     private static final long SECOND_NANOS = 1_000_000_000;
     private static final Resource RESOURCE =
         Resource.create(Attributes.of(stringKey("resource_key"), "resource_value"));
-    private static final AttributeBuilder METRIC_ATTRIBUTES = new OpenTelemetryAttributeBuilder().addAttribute("key", "value");
+    private static final AzureAttributeBuilder METRIC_ATTRIBUTES = new OpenTelemetryAzureAttributeBuilder().add("key", "value");
     private static final Attributes EXPECTED_ATTRIBUTES = Attributes.builder().put("key", "value").build();
 
     private InMemoryMetricReader sdkMeterReader;
@@ -66,7 +66,7 @@ public class MetricsTests {
         assertTrue(meter.isEnabled());
         AzureLongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributeBuilder(), Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAzureAttributeBuilder(), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -102,7 +102,7 @@ public class MetricsTests {
         AzureLongHistogram longHistogram = meter
             .createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributeBuilder(), Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAzureAttributeBuilder(), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
         assertFalse(meter.isEnabled());
@@ -116,7 +116,7 @@ public class MetricsTests {
             .createMeter("az.sdk-name", null, new MetricsOptions().setProvider(MeterProvider.noop()))
             .createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributeBuilder(), Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAzureAttributeBuilder(), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
         assertFalse(meter.isEnabled());
@@ -165,8 +165,8 @@ public class MetricsTests {
             .createMeter("az.sdk-name", "1.0.0-beta.1", new MetricsOptions().setProvider(sdkMeterProvider))
             .createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
 
-        AttributeBuilder attributes1 = new OpenTelemetryAttributeBuilder().addAttribute("key1", "value1");
-        AttributeBuilder attributes2 = new OpenTelemetryAttributeBuilder().addAttribute("key2", "value2");
+        AzureAttributeBuilder attributes1 = new OpenTelemetryAzureAttributeBuilder().add("key1", "value1");
+        AzureAttributeBuilder attributes2 = new OpenTelemetryAzureAttributeBuilder().add("key2", "value2");
         longHistogram.record(42, attributes1, Context.NONE);
         longHistogram.record(1, attributes1, Context.NONE);
         longHistogram.record(420, attributes2, Context.NONE);
@@ -236,15 +236,15 @@ public class MetricsTests {
 
     @Test
     public void attributeTypes() {
-        AttributeBuilder attributes = new OpenTelemetryAttributeBuilder()
-            .addAttribute("string", "foo")
-//            .addAttribute("boolean", true)
-            .addAttribute("double", 0.42d)
-             .addAttribute("long", 42L);
+        AzureAttributeBuilder attributes = new OpenTelemetryAzureAttributeBuilder()
+            .add("string", "foo")
+            .add("boolean", true)
+            .add("double", 0.42d)
+            .add("long", 42L);
 
         Attributes expected = Attributes.builder()
             .put(AttributeKey.stringKey("string"), "foo")
-            //.put(AttributeKey.booleanKey("boolean"), true)
+            .put(AttributeKey.booleanKey("boolean"), true)
             .put(AttributeKey.doubleKey("double"), 0.42d)
             .put(AttributeKey.longKey("long"), 42L)
             .build();

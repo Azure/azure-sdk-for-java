@@ -3,7 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributeBuilder;
+import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.AzureLongHistogram;
@@ -45,14 +45,14 @@ public class OpenTelemetryMetricsBenchmark {
         .registerMetricReader(SDK_METER_READER)
         .build();
 
-    private static final AttributeBuilder COMMON_ATTRIBUTES = new OpenTelemetryAttributeBuilder()
-        .addAttribute("az.messaging.destination", "fqdn")
-        .addAttribute("az.messaging.entity", "entityName");
+    private static final AzureAttributeBuilder COMMON_ATTRIBUTES = new OpenTelemetryAzureAttributeBuilder()
+        .add("az.messaging.destination", "fqdn")
+        .add("az.messaging.entity", "entityName");
 
     private static final AzureMeter METER = CLIENT_METER_PROVIDER
         .createMeter("bench", null, new MetricsOptions().setProvider(SDK_METER_PROVIDER));
 
-    private static final DynamicAttributeCache DYNAMIC_ATTRIBUTE_CACHE = new DynamicAttributeCache(METER, "fqdn", "entityName");
+    private static final DynamicAttributeCache DYNAMIC_ATTRIBUTE_CACHE = new DynamicAttributeCache(CLIENT_METER_PROVIDER, "fqdn", "entityName");
 
     private static final AzureLongHistogram HISTOGRAM = METER
         .createLongHistogram("test", "description", "unit");
@@ -145,20 +145,20 @@ public class OpenTelemetryMetricsBenchmark {
     static class DynamicAttributeCache {
         private static final int ERROR_DIMENSIONS_LENGTH = ErrorCode.values().length + 2;
 
-        private final AzureMeter meter;
+        private final AzureMeterProvider meterProvider;
         private final String fullyQualifiedNamespace;
         private final String eventHubName;
 
-        DynamicAttributeCache(AzureMeter meter, String fullyQualifiedNamespace, String eventHubName) {
-            this.meter = meter;
+        DynamicAttributeCache(AzureMeterProvider meterProvider, String fullyQualifiedNamespace, String eventHubName) {
+            this.meterProvider = meterProvider;
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.eventHubName = eventHubName;
         }
 
-        private final ConcurrentMap<String, AttributeBuilder[]> allAttributes = new ConcurrentHashMap<>();
+        private final ConcurrentMap<String, AzureAttributeBuilder[]> allAttributes = new ConcurrentHashMap<>();
 
-        AttributeBuilder getOrCreate(String partitionId, boolean error, ErrorCode errorCode) {
-            AttributeBuilder[] attributes = allAttributes.computeIfAbsent(partitionId, this::createAttributes);
+        AzureAttributeBuilder getOrCreate(String partitionId, boolean error, ErrorCode errorCode) {
+            AzureAttributeBuilder[] attributes = allAttributes.computeIfAbsent(partitionId, this::createAttributes);
 
             int index = ERROR_DIMENSIONS_LENGTH - 1; // ok
             if (error) {
@@ -168,8 +168,8 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes[index];
         }
 
-        private AttributeBuilder[]  createAttributes(String partitionId) {
-            AttributeBuilder[] attributes = new AttributeBuilder[ERROR_DIMENSIONS_LENGTH];
+        private AzureAttributeBuilder[]  createAttributes(String partitionId) {
+            AzureAttributeBuilder[] attributes = new AzureAttributeBuilder[ERROR_DIMENSIONS_LENGTH];
             for (int i = 0; i < ERROR_DIMENSIONS_LENGTH - 2; i++) {
                 attributes[i] =  getAttributes(partitionId, ErrorCode.values()[i].name());
             }
@@ -179,12 +179,12 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes;
         }
 
-        private AttributeBuilder getAttributes(String partitionId, String errorCode) {
-            return meter.createAttributesBuilder()
-                .addAttribute("az.messaging.destination", fullyQualifiedNamespace)
-                .addAttribute("az.messaging.entity", eventHubName)
-                .addAttribute("az.messaging.partition_id", partitionId)
-                .addAttribute("az.messaging.status_code", errorCode);
+        private AzureAttributeBuilder getAttributes(String partitionId, String errorCode) {
+            return meterProvider.createAttributeBuilder()
+                .add("az.messaging.destination", fullyQualifiedNamespace)
+                .add("az.messaging.entity", eventHubName)
+                .add("az.messaging.partition_id", partitionId)
+                .add("az.messaging.status_code", errorCode);
         }
     }
 }

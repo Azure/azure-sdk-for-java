@@ -3,7 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributeBuilder;
+import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
@@ -34,9 +34,9 @@ public class MetricsJavaDocCodeSnippets {
     public void createCounter() {
         Context currentContext = Context.NONE;
         // BEGIN: com.azure.core.util.metrics.AzureMeter.longCounter
-        AttributeBuilder attributes = defaultMeter.createAttributesBuilder()
-            .addAttribute("endpoint", "http://service-endpoint.azure.com")
-            .addAttribute("error", true);
+        AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder()
+            .add("endpoint", "http://service-endpoint.azure.com")
+            .add("error", true);
 
         AzureLongCounter createdHttpConnections = defaultMeter.createLongCounter("az.core.http.connections",
             "Number of created HTTP connections", null);
@@ -54,14 +54,14 @@ public class MetricsJavaDocCodeSnippets {
 
         // Meter and instruments should be created along with service client instance and retained for the client
         // lifetime for optimal performance
-        AzureMeter meter = AzureMeterProvider
-            .getDefaultProvider()
+        AzureMeter meter = meterProvider
             .createMeter("azure-core", "1.0.0", new MetricsOptions());
 
         AzureLongHistogram amqpLinkDuration = meter
             .createLongHistogram("az.core.amqp.link.duration", "AMQP link response time.", "ms");
 
-        AttributeBuilder attributes = meter.createAttributesBuilder().addAttribute("endpoint", "http://service-endpoint.azure.com");
+        AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder()
+            .add("endpoint", "http://service-endpoint.azure.com");
 
         // when measured operation starts, record the measurement
         Instant start = Instant.now();
@@ -84,13 +84,13 @@ public class MetricsJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag
 
         // Create attributes for possible error codes. Can be done lazily once specific error code is received.
-        AttributeBuilder successAttributes = defaultMeter.createAttributesBuilder()
-            .addAttribute("endpoint", "http://service-endpoint.azure.com")
-            .addAttribute("error", true);
+        AzureAttributeBuilder successAttributes = meterProvider.createAttributeBuilder()
+            .add("endpoint", "http://service-endpoint.azure.com")
+            .add("error", true);
 
-        AttributeBuilder errorAttributes =  defaultMeter.createAttributesBuilder()
-            .addAttribute("endpoint", "http://service-endpoint.azure.com")
-            .addAttribute("error", false);
+        AzureAttributeBuilder errorAttributes =  meterProvider.createAttributeBuilder()
+            .add("endpoint", "http://service-endpoint.azure.com")
+            .add("error", false);
 
         AzureLongCounter httpConnections = defaultMeter.createLongCounter("az.core.http.connections",
             "Number of created HTTP connections", null);
@@ -103,12 +103,6 @@ public class MetricsJavaDocCodeSnippets {
         }
 
         // END: com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag
-    }
-
-    private static AttributeBuilder getAttributes(AzureMeter meter, String endpoint, boolean error) {
-        return meter.createAttributesBuilder()
-            .addAttribute("endpoint", endpoint)
-            .addAttribute("error", error);
     }
 
     private boolean doThings() {

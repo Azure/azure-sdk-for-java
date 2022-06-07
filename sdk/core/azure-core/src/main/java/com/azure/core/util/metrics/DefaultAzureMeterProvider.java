@@ -3,6 +3,7 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.MetricsOptions;
 
 import java.util.Iterator;
@@ -11,6 +12,29 @@ import java.util.ServiceLoader;
 
 final class DefaultAzureMeterProvider implements AzureMeterProvider {
     public static final AzureMeterProvider INSTANCE = new DefaultAzureMeterProvider();
+
+    private static final AzureAttributeBuilder NOOP_ATTRIBUTES = new AzureAttributeBuilder() {
+        @Override
+        public AzureAttributeBuilder add(String key, String value) {
+            return this;
+        }
+
+        @Override
+        public AzureAttributeBuilder add(String key, long value) {
+            return this;
+        }
+
+        @Override
+        public AzureAttributeBuilder add(String key, double value) {
+            return this;
+        }
+
+        @Override
+        public AzureAttributeBuilder add(String key, boolean value) {
+            return this;
+        }
+    };
+
     private static AzureMeterProvider meterProvider;
 
     private DefaultAzureMeterProvider() {
@@ -37,5 +61,14 @@ final class DefaultAzureMeterProvider implements AzureMeterProvider {
         }
 
         return NoopMeter.INSTANCE;
+    }
+
+    @Override
+    public AzureAttributeBuilder createAttributeBuilder() {
+        if (meterProvider != null) {
+            return meterProvider.createAttributeBuilder();
+        }
+
+        return NOOP_ATTRIBUTES;
     }
 }
