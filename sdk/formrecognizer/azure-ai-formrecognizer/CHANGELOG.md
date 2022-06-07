@@ -19,8 +19,6 @@ to `boundingPolygon`.
 - Removed `entities` property on model `AnalyzeResult`
 - Renamed `code` property on `DocumentLanguage` model to `locale`
 
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 
