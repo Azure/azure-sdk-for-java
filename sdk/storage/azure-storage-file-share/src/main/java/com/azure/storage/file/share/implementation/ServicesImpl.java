@@ -122,7 +122,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
@@ -153,7 +153,7 @@ public final class ServicesImpl {
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's File service, including properties for Storage Analytics metrics
-     *     and CORS (Cross-Origin Resource Sharing) rules.
+     *     and CORS (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(Integer timeout, Context context) {
@@ -182,7 +182,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of shares.
+     * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ShareItemInternal>> listSharesSegmentSinglePageAsync(
@@ -226,7 +226,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of shares.
+     * @return an enumeration of shares along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ShareItemInternal>> listSharesSegmentNextSinglePageAsync(

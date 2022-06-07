@@ -36,7 +36,11 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
         return fromString(name, DefaultSharePermission.class);
     }
 
-    /** @return known DefaultSharePermission values. */
+    /**
+     * Gets known DefaultSharePermission values.
+     *
+     * @return known DefaultSharePermission values.
+     */
     public static Collection<DefaultSharePermission> values() {
         return values(DefaultSharePermission.class);
     }

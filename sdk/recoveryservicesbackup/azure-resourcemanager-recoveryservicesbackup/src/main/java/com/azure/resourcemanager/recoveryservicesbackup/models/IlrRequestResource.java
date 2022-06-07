@@ -6,16 +6,12 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to Provision ILR API. */
 @Fluent
 public final class IlrRequestResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IlrRequestResource.class);
-
     /*
      * ILRRequestResource properties
      */

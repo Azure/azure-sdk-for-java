@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Additional information of DPM Protected item. */
 @Fluent
 public final class DpmProtectedItemExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpmProtectedItemExtendedInfo.class);
-
     /*
      * Attribute to provide information on various DBs.
      */

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.AzureResourceSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available SKUs for a Kusto Pool. */
 @Fluent
 public final class ListResourceSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListResourceSkusResult.class);
-
     /*
      * The collection of available SKUs for an existing resource.
      */

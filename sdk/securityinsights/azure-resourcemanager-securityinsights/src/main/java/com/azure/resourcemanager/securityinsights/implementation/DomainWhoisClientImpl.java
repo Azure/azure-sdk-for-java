@@ -174,15 +174,7 @@ public final class DomainWhoisClientImpl implements DomainWhoisClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnrichmentDomainWhoisInner> getAsync(String resourceGroupName, String domain) {
-        return getWithResponseAsync(resourceGroupName, domain)
-            .flatMap(
-                (Response<EnrichmentDomainWhoisInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, domain).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

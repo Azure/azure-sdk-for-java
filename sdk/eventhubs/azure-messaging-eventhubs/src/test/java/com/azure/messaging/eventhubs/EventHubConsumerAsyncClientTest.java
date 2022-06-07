@@ -86,7 +86,7 @@ class EventHubConsumerAsyncClientTest {
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
 
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerAsyncClientTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
@@ -251,7 +251,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Act
         eventsFlux.publishOn(Schedulers.boundedElastic()).subscribe(event -> {
-            logger.info("Current count: {}", countDownLatch.getCount());
+            LOGGER.info("Current count: {}", countDownLatch.getCount());
             saveAction(event.getData()).block(Duration.ofSeconds(2));
             countDownLatch.countDown();
         });
@@ -265,7 +265,7 @@ class EventHubConsumerAsyncClientTest {
 
     private Mono<Instant> saveAction(EventData event) {
         return Mono.delay(Duration.ofMillis(500)).then(Mono.fromCallable(() -> {
-            logger.info("Saved the event: {}", event.getBodyAsString());
+            LOGGER.info("Saved the event: {}", event.getBodyAsString());
             return Instant.now();
         }));
     }
@@ -391,7 +391,7 @@ class EventHubConsumerAsyncClientTest {
                     count.set(0);
                 }
 
-                logger.verbose("Event Received. {}", countDownLatch.getCount());
+                LOGGER.verbose("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -433,7 +433,7 @@ class EventHubConsumerAsyncClientTest {
                     count.set(0);
                 }
 
-                logger.info("Event Received. {}", countDownLatch.getCount());
+                LOGGER.info("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -462,7 +462,7 @@ class EventHubConsumerAsyncClientTest {
 
         final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
             e -> {
-                logger.info("Event received");
+                LOGGER.info("Event received");
                 final int count = counter.incrementAndGet();
                 if (count > backPressure) {
                     Assertions.fail("Shouldn't have more than " + backPressure + " events. Count: " + count);
@@ -472,9 +472,9 @@ class EventHubConsumerAsyncClientTest {
             },
             error -> Assertions.fail(error.toString()),
             () -> {
-                logger.info("Complete");
+                LOGGER.info("Complete");
             }, sub -> {
-                logger.info("requesting backpressure: {}", backPressure);
+                LOGGER.info("requesting backpressure: {}", backPressure);
                 sub.request(backPressure);
             });
 

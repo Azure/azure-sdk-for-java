@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ProtectionContainer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DPMContainer", value = DpmContainer.class),
-    @JsonSubTypes.Type(name = "IaaSVMContainer", value = IaaSvmContainer.class),
+    @JsonSubTypes.Type(name = "IaasVMContainer", value = IaaSvmContainer.class),
     @JsonSubTypes.Type(name = "AzureWorkloadContainer", value = AzureWorkloadContainer.class),
     @JsonSubTypes.Type(name = "AzureSqlContainer", value = AzureSqlContainer.class),
     @JsonSubTypes.Type(name = "StorageContainer", value = AzureStorageContainer.class),
@@ -30,8 +28,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionContainer.class);
-
     /*
      * Friendly name of the container.
      */

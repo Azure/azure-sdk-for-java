@@ -30,7 +30,9 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
@@ -74,8 +76,8 @@ public final class BridgeInternal {
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
-        return new CosmosDiagnostics(diagnosticsClientContext, globalEndpointManager);
+    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        return new CosmosDiagnostics(diagnosticsClientContext);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -95,7 +97,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static boolean isClientTelemetryEnabled(CosmosAsyncClient cosmosAsyncClient) {
-        return cosmosAsyncClient.isClientTelemetryEnabled();
+        return cosmosAsyncClient.getClientTelemetryConfig().isClientTelemetryEnabled();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -562,15 +564,12 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                              RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordResponse(CosmosDiagnostics cosmosDiagnostics,
-                                      RxDocumentServiceRequest request, StoreResult storeResult) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
+                                      RxDocumentServiceRequest request,
+                                      StoreResult storeResult,
+                                      GlobalEndpointManager globalEndpointManager) {
+        StoreResultDiagnostics storeResultDiagnostics = StoreResultDiagnostics.createStoreResultDiagnostics(storeResult);
+        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResultDiagnostics, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -600,8 +599,19 @@ public final class BridgeInternal {
     public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              StoreResponse storeResponse,
-                                             CosmosException exception) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception);
+                                             GlobalEndpointManager globalEndpointManager) {
+        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(storeResponse);
+        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
+                                             RxDocumentServiceRequest rxDocumentServiceRequest,
+                                             CosmosException cosmosException,
+                                             GlobalEndpointManager globalEndpointManager) {
+        StoreResponseDiagnostics storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(cosmosException);
+        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponseDiagnostics, globalEndpointManager);
+        cosmosException.setDiagnostics(cosmosDiagnostics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -735,5 +745,17 @@ public final class BridgeInternal {
         } else {
             return null;
         }
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void  initializeAllAccessors() {
+        CosmosClient.initialize();
+        CosmosAsyncClientEncryptionKey.initialize();
+        CosmosAsyncContainer.initialize();
+        CosmosAsyncDatabase.initialize();
+        CosmosClientBuilder.initialize();
+        CosmosDiagnostics.initialize();
+        CosmosException.initialize();
+        DirectConnectionConfig.initialize();
     }
 }

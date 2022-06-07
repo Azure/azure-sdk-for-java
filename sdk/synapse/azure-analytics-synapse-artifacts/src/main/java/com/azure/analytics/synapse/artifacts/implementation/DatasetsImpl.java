@@ -57,7 +57,7 @@ public final class DatasetsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientDatas")
-    private interface DatasetsService {
+    public interface DatasetsService {
         @Get("/datasets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

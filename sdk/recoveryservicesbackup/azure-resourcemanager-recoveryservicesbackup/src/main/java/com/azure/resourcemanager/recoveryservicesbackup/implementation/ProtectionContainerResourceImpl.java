@@ -60,6 +60,10 @@ public final class ProtectionContainerResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProtectionContainerResourceInner innerModel() {
         return this.innerObject;
     }

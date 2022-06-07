@@ -60,16 +60,15 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
         Assert.notNull(request, MSG_REQUEST_CANNOT_BE_NULL);
         Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
-        if (!authorizedClients.isEmpty()) {
-            if (authorizedClients.remove(clientRegistrationId) != null) {
-                if (!authorizedClients.isEmpty()) {
-                    request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-                        serializeOAuth2AuthorizedClientMap(authorizedClients));
-                } else {
-                    request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
-                }
+        if (authorizedClients.remove(clientRegistrationId) != null) {
+            if (authorizedClients.isEmpty()) {
+                request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
+            } else {
+                request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
+                    serializeOAuth2AuthorizedClientMap(authorizedClients));
             }
         }
+
     }
 
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {

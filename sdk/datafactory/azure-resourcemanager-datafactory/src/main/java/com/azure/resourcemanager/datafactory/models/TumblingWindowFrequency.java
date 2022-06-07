@@ -30,7 +30,11 @@ public final class TumblingWindowFrequency extends ExpandableStringEnum<Tumbling
         return fromString(name, TumblingWindowFrequency.class);
     }
 
-    /** @return known TumblingWindowFrequency values. */
+    /**
+     * Gets known TumblingWindowFrequency values.
+     *
+     * @return known TumblingWindowFrequency values.
+     */
     public static Collection<TumblingWindowFrequency> values() {
         return values(TumblingWindowFrequency.class);
     }

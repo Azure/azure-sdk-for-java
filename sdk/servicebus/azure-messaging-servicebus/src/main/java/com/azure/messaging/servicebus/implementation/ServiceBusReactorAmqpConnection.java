@@ -42,7 +42,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private static final String MANAGEMENT_ADDRESS = "$management";
     private static final String CROSS_ENTITY_TRANSACTIONS_LINK_NAME = "crossentity-coordinator";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
@@ -89,7 +89,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
                 connectionId, entityPath))));
         }
@@ -109,7 +109,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
                 return tokenManager.authorize().thenReturn(managementNodes.compute(entityTypePath, (key, current) -> {
                     if (current != null) {
-                        logger.info("A management node exists already, returning it.");
+                        LOGGER.info("A management node exists already, returning it.");
 
                         // Close the token manager we had created during this because it is unneeded now.
                         tokenManager.close();
@@ -120,7 +120,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
                     final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
 
-                    logger.atInfo()
+                    LOGGER.atInfo()
                         .addKeyValue(LINK_NAME_KEY, linkName)
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .addKeyValue("address", address)
@@ -149,7 +149,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
          String transferEntityPath) {
 
         return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
-            logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Get or create sender link.");
+            LOGGER.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Get or create sender link.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
@@ -175,7 +175,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
-                logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
+                LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
@@ -207,7 +207,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
-                logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
+                LOGGER.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),

@@ -10,7 +10,10 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.constants;
  * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/access-tokens">Access tokens</a>
  * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/id-tokens">ID tokens</a>
  */
-public class AadJwtClaimNames {
+public final class AadJwtClaimNames {
+
+    private AadJwtClaimNames() {
+    }
 
     public static final String AUD = "aud";
     public static final String ISS = "iss";

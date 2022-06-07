@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SupportStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response for feature support requests for Azure IaasVm. */
 @Fluent
 public final class AzureVMResourceFeatureSupportResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVMResourceFeatureSupportResponseInner.class);
-
     /*
      * Support status of feature
      */

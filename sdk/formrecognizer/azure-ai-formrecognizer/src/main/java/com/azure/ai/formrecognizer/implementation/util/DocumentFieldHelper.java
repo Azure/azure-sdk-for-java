@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
+import com.azure.ai.formrecognizer.models.AddressValue;
 import com.azure.ai.formrecognizer.models.BoundingRegion;
 import com.azure.ai.formrecognizer.models.CurrencyValue;
 import com.azure.ai.formrecognizer.models.DocumentField;
@@ -54,6 +55,8 @@ public final class DocumentFieldHelper {
         void setValueObject(DocumentField documentField, Map<String, DocumentField> valueObject);
 
         void setValueCurrency(DocumentField documentField, CurrencyValue valueCurrency);
+
+        void setValueAddress(DocumentField documentField, AddressValue valueAddress);
 
         void setContent(DocumentField documentField, String content);
 
@@ -123,6 +126,10 @@ public final class DocumentFieldHelper {
 
     static void setValueCurrency(DocumentField documentField, CurrencyValue valueCurrency) {
         accessor.setValueCurrency(documentField, valueCurrency);
+    }
+
+    static void setValueAddress(DocumentField documentField, AddressValue valueAddress) {
+        accessor.setValueAddress(documentField, valueAddress);
     }
 
     static void setContent(DocumentField documentField, String content) {

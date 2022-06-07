@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DatabaseStatistics;
 import com.azure.resourcemanager.synapse.models.PrincipalsModificationKind;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Class representing the Kusto database properties. */
 @Fluent
 public final class ReadOnlyFollowingDatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadOnlyFollowingDatabaseProperties.class);
-
     /*
      * The provisioned state of the resource.
      */

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.15.0-beta.1 (Unreleased)
+## 2.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `checkNameAvailability` method for `WebApps`.
+
+### Breaking Changes
+
+- Behavior changed on `WebApps.list()` and `WebApps.listByResourceGroup()` method, that results include sites with `kind` be empty or `linux`.
 
 ## 2.14.0 (2022-04-11)
 

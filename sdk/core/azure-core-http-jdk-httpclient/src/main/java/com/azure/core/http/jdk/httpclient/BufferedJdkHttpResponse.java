@@ -24,12 +24,12 @@ final class BufferedJdkHttpResponse extends JdkHttpResponseBase {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(body)));
+        return Mono.fromSupplier(() -> ByteBuffer.wrap(body)).flux();
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.defer(() -> Mono.just(body));
+        return Mono.just(body);
     }
 
     @Override

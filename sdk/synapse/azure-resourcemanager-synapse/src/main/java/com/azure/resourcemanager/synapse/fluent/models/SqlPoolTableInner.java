@@ -6,14 +6,10 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** A Sql pool table resource. */
 @Immutable
 public final class SqlPoolTableInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolTableInner.class);
-
     /**
      * Validates the instance.
      *

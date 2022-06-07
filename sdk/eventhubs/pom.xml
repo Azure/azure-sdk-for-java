@@ -14,18 +14,24 @@
       <modules>
         <module>azure-messaging-eventhubs</module>
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
+        <module>azure-messaging-eventhubs-checkpointstore-redis</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs</artifactId>
-          <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+          <version>5.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
           <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-messaging-eventhubs-checkpointstore-redis</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-redis;current} -->
         </dependency>
       </dependencies>
 
@@ -34,7 +40,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>
@@ -53,6 +59,7 @@
         <module>microsoft-azure-eventhubs-extensions</module>
         <module>azure-messaging-eventhubs</module>
         <module>azure-messaging-eventhubs-checkpointstore-blob</module>
+        <module>azure-messaging-eventhubs-checkpointstore-redis</module>
         <module>azure-messaging-eventhubs-track1-perf</module>
         <module>azure-messaging-eventhubs-track2-perf</module>
       </modules>

@@ -51,7 +51,11 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
         return fromString(name, IntegrationRuntimeState.class);
     }
 
-    /** @return known IntegrationRuntimeState values. */
+    /**
+     * Gets known IntegrationRuntimeState values.
+     *
+     * @return known IntegrationRuntimeState values.
+     */
     public static Collection<IntegrationRuntimeState> values() {
         return values(IntegrationRuntimeState.class);
     }

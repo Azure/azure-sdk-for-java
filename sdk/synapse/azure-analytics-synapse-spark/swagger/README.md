@@ -31,6 +31,7 @@ generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.spark
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true

@@ -17,13 +17,13 @@ public final class ManagedIdentityProperties {
     private ManagedIdentityType type;
 
     /*
-     * Principal Id
+     * Principal Id of system-assigned managed identity.
      */
     @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
-     * Tenant Id
+     * Tenant Id of system-assigned managed identity.
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
@@ -49,7 +49,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Get the principalId property: Principal Id.
+     * Get the principalId property: Principal Id of system-assigned managed identity.
      *
      * @return the principalId value.
      */
@@ -58,7 +58,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the principalId property: Principal Id.
+     * Set the principalId property: Principal Id of system-assigned managed identity.
      *
      * @param principalId the principalId value to set.
      * @return the ManagedIdentityProperties object itself.
@@ -69,7 +69,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Get the tenantId property: Tenant Id.
+     * Get the tenantId property: Tenant Id of system-assigned managed identity.
      *
      * @return the tenantId value.
      */
@@ -78,7 +78,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the tenantId property: Tenant Id.
+     * Set the tenantId property: Tenant Id of system-assigned managed identity.
      *
      * @param tenantId the tenantId value to set.
      * @return the ManagedIdentityProperties object itself.

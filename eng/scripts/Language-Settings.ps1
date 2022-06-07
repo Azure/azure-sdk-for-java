@@ -355,59 +355,99 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 }
 
 function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
+  return ValidatePackages(@{ Group = $groupId; Name = $artifactId; Version = $version; }, $DocValidationImageId)
+}
+
+function ValidatePackages([array]$packageInfos, $DocValidationImageId) {
   $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
   if (!(Test-Path $workingDirectory)) {
     New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
   }
-
-  $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
-
-  $packageDirectory = Join-Path `
-    $workingDirectory `
-    "${groupId}__${artifactId}__${version}"
-  New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
   # Add more validation by replicating as much of the docs CI process as
   # possible
   # https://github.com/Azure/azure-sdk-for-python/issues/20109
   if (!$DocValidationImageId) 
   {
-    Write-Host "Validating using mvn command directly on $artifactId."
-    return FallbackValidation -artifactNamePrefix $artifactNamePrefix -workingDirectory $packageDirectory
+    return FallbackValidation -packageInfos $packageInfos -workingDirectory $workingDirectory
   } 
   else 
   {
-    Write-Host "Validating using $DocValidationImageId on $artifactId."
-    return DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groupId" -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
+    return DockerValidation -packageInfos $packageInfos -DocValidationImageId $DocValidationImageId -workingDirectory $workingDirectory
   }
 }
 
-function FallbackValidation ($artifactNamePrefix, $workingDirectory) 
-{
-  return (SourcePackageHasComFolder $artifactNamePrefix $workingDirectory) `
-    -and (PackageDependenciesResolve $artifactNamePrefix $workingDirectory)
+function FallbackValidation ($packageInfos, $workingDirectory) {
+  $results = @()
+
+  foreach ($packageInfo in $packageInfos) {
+    $groupId = $packageInfo.Group
+    $artifactId = $packageInfo.Name
+    $version = $packageInfo.Version
+
+    Write-Host "Validating using mvn command directly on $artifactId."
+
+    $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
+
+    $packageDirectory = Join-Path $workingDirectory "${groupId}__${artifactId}__${version}"
+    New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
+
+    $isValid = (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
+      -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
+      
+    if (!$isValid) {
+      LogWarning "Package $artifactNamePrefix ref docs validation failed."
+    }
+
+    $results += $isValid
+  }
+
+  $allValid = $results.Where({ $_ -eq $false }).Count -eq 0
+
+  return $allValid
 }
 
-function DockerValidation($packageName, $packageVersion, $groupId, $DocValidationImageId, $workingdirectory) 
-{
-  $output = docker run -v "${workingDirectory}:/workdir/out" `
-    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 
-  # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
-  # If the docker failed because of docker itself instead of the application, 
-  # we should skip the validation and keep the packages. 
-  $artifactNamePrefix = "${groupId}:${packageName}:${packageVersion}"
-  if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
-  { 
-    LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $artifactNamePrefix directly."
-    $output | Write-Host
-    FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
+function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirectory) {
+  Write-Host "Validating $($packageInfos.Length) package(s) using $DocValidationImageId."
+
+  $containerWorkingDirectory = '/workdir/out'
+  $configurationFileName = 'configuration.json'
+
+  $hostConfigurationPath = Join-Path $workingDirectory $configurationFileName
+
+  # Cannot use Join-Path because the container and host path separators may differ
+  $containerConfigurationPath = "$containerWorkingDirectory/$configurationFileName"
+  
+  $configuration = [ordered]@{
+    "output_path" = "docs-ref-autogen";
+    "packages" = @($packageInfos | ForEach-Object { [ordered]@{ 
+        packageGroupId = $_.Group;
+        packageArtifactId = $_.Name;
+        packageVersion = $_.Version;
+        packageDownloadUrl = $packageDownloadUrl;
+      } });
   }
-  elseif ($LASTEXITCODE -ne 0) 
-  { 
-    LogWarning "Package $artifactNamePrefix ref docs validation failed."
-    $output | Write-Host
+
+  Set-Content -Path $hostConfigurationPath -Value ($configuration | ConvertTo-Json) | Out-Null
+
+  docker run -v "${workingDirectory}:${containerWorkingDirectory}" `
+    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath -t $DocValidationImageId 2>&1 `
+    | Where-Object { -not ($_ -match '^Progress .*B\s*$') } ` # Remove progress messages 
+    | Out-Host
+  
+  if ($LASTEXITCODE -ne 0) { 
+    LogWarning "The `docker` command failed with exit code $LASTEXITCODE."
+     
+    # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
+    # If the docker validation failed because of docker itself instead of the application, or if we don't know which
+    # package failed, fall back to mvn validation
+    if ($LASTEXITCODE -in 125..127 -Or $packageInfos.Length -gt 1) { 
+      return FallbackValidation -packageInfos $packageInfos -workingDirectory $workingDirectory
+    }
+  
     return $false
   }
+
   return $true
 }
 
@@ -681,13 +721,11 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
   # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
   if (!$PackageInfos) {
-    $PackageInfos =  @($PackageInfo)
+    $PackageInfos = @($PackageInfo)
   }
 
-  foreach ($package in $PackageInfos) {
-    if (!(ValidatePackage $package.Group $package.Name $package.Version $DocValidationImageId)) {
-      Write-Error "Package $($package.Name) failed on validation" -ErrorAction Continue
-    }
+  if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
+    Write-Error "Package validation failed" -ErrorAction Continue
   }
 
   return

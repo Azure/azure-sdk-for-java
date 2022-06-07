@@ -21,6 +21,8 @@ public class AzureSpringBootVersionVerifier {
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind.Bindable.BindRestriction";
 
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6 = "org.springframework.boot.autoconfigure.data.redis.ClientResourcesBuilderCustomizer";
+
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_7 = "org.springframework.boot.autoconfigure.amqp.RabbitStreamTemplateConfigurer";
     /**
      * Versions supported by Spring Cloud Azure, for present is [2.5, 2.6]. Update this value if needed.
      */
@@ -46,6 +48,7 @@ public class AzureSpringBootVersionVerifier {
     private void initDefaultSupportedBootVersionCheckMeta() {
         supportedVersions.put("2.5", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5);
         supportedVersions.put("2.6", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6);
+        supportedVersions.put("2.7", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_7);
     }
 
     /**
@@ -99,7 +102,7 @@ public class AzureSpringBootVersionVerifier {
                 String fullyQualifiedClassName = this.supportedVersions.get(versionString);
 
                 if (classNameResolver.resolve(fullyQualifiedClassName)) {
-                    LOGGER.debug("Predicate for Spring Boot Version of [" + versionString + "] was matched");
+                    LOGGER.debug("Predicate for Spring Boot Version of [{}] was matched", versionString);
                     return true;
                 }
             }

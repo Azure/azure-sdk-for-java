@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerPropertiesUpdate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** The update operation for a Video Analyzer account. */
 @Fluent
 public final class VideoAnalyzerUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoAnalyzerUpdate.class);
-
     /*
      * Resource tags.
      */

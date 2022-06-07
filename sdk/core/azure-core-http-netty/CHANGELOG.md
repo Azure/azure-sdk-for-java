@@ -1,17 +1,48 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
-- The `NettyAsyncHttpClientProvider.createInstance()` now has the option to share a single shared `HttpClient`.
-  Set the environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` to `true` before starting the process to use
-  the shared `HttpClient`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.12.2 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.12.1 (2022-06-03)
+
+### Other Changes
+
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+## 1.12.0 (2022-05-06)
+
+### Features Added
+
+- The `NettyAsyncHttpClientProvider.createInstance()` now has the option to share a single shared `HttpClient`.
+  Set the environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` to `true` before starting the process to use
+  the shared `HttpClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+- Upgraded Netty from `4.1.73.Final` to `4.1.76.Final`.
+- Upgraded Reactor Netty from `1.0.15` to `1.0.18`.
 
 ## 1.11.9 (2022-04-01)
 

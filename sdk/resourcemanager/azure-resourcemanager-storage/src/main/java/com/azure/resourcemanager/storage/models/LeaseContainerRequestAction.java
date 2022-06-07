@@ -36,7 +36,11 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
         return fromString(name, LeaseContainerRequestAction.class);
     }
 
-    /** @return known LeaseContainerRequestAction values. */
+    /**
+     * Gets known LeaseContainerRequestAction values.
+     *
+     * @return known LeaseContainerRequestAction values.
+     */
     public static Collection<LeaseContainerRequestAction> values() {
         return values(LeaseContainerRequestAction.class);
     }

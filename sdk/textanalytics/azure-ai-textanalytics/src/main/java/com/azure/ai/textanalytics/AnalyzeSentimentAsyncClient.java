@@ -3,9 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextSentimentAnalysisInput;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -21,7 +25,6 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -32,15 +35,16 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class AnalyzeSentimentAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeSentimentAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
 
-    /**
-     * Create an {@link AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
-     * analysis endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl service) {
+    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService) {
+        this.legacyService = legacyService;
+        this.service = null;
+    }
+
+    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceImpl service) {
+        this.legacyService = null;
         this.service = service;
     }
 
@@ -102,7 +106,33 @@ class AnalyzeSentimentAsyncClient {
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         options = options == null ? new AnalyzeSentimentOptions() : options;
-        return service.sentimentWithResponseAsync(
+
+        if (service != null) {
+            return service
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextSentimentAnalysisInput()
+                               .setParameters(
+                                   (SentimentAnalysisTaskParameters)
+                                       new SentimentAnalysisTaskParameters()
+                                           .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                           .setOpinionMining(options.isIncludeOpinionMining())
+                                           .setModelVersion(options.getModelVersion())
+                                           .setLoggingOptOut(options.isServiceLogsDisabled()))
+                               .setAnalysisInput(
+                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                           options.isIncludeStatistics(),
+                           getNotNullContext(context)
+                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}",
+                           response))
+                       .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
+                       .map(Utility::toAnalyzeSentimentResultCollectionResponse2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
+        return legacyService.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),
@@ -114,12 +144,7 @@ class AnalyzeSentimentAsyncClient {
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-            .map(this::toAnalyzeSentimentResultCollectionResponse)
+            .map(Utility::toAnalyzeSentimentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-    }
-
-    private Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse(
-        Response<SentimentResponse> response) {
-        return new SimpleResponse<>(response, toAnalyzeSentimentResultCollection(response.getValue()));
     }
 }

@@ -33,7 +33,11 @@ public final class EncoderSystemPresetType extends ExpandableStringEnum<EncoderS
         return fromString(name, EncoderSystemPresetType.class);
     }
 
-    /** @return known EncoderSystemPresetType values. */
+    /**
+     * Gets known EncoderSystemPresetType values.
+     *
+     * @return known EncoderSystemPresetType values.
+     */
     public static Collection<EncoderSystemPresetType> values() {
         return values(EncoderSystemPresetType.class);
     }

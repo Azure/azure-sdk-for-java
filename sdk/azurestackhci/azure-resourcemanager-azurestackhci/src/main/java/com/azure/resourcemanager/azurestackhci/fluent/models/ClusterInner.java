@@ -159,6 +159,52 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @return the aadApplicationObjectId value.
+     */
+    public String aadApplicationObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadApplicationObjectId();
+    }
+
+    /**
+     * Set the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @param aadApplicationObjectId the aadApplicationObjectId value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAadApplicationObjectId(String aadApplicationObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAadApplicationObjectId(aadApplicationObjectId);
+        return this;
+    }
+
+    /**
+     * Get the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @return the aadServicePrincipalObjectId value.
+     */
+    public String aadServicePrincipalObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadServicePrincipalObjectId();
+    }
+
+    /**
+     * Set the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @param aadServicePrincipalObjectId the aadServicePrincipalObjectId value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAadServicePrincipalObjectId(String aadServicePrincipalObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAadServicePrincipalObjectId(aadServicePrincipalObjectId);
+        return this;
+    }
+
+    /**
      * Get the desiredProperties property: Desired properties of the cluster.
      *
      * @return the desiredProperties value.
@@ -233,6 +279,15 @@ public final class ClusterInner extends Resource {
      */
     public OffsetDateTime lastBillingTimestamp() {
         return this.innerProperties() == null ? null : this.innerProperties().lastBillingTimestamp();
+    }
+
+    /**
+     * Get the serviceEndpoint property: Region specific DataPath Endpoint of the cluster.
+     *
+     * @return the serviceEndpoint value.
+     */
+    public String serviceEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceEndpoint();
     }
 
     /**

@@ -72,7 +72,7 @@ public final class ChatThreadsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCh")
-    private interface ChatThreadsService {
+    public interface ChatThreadsService {
         @Get("/chat/threads/{chatThreadId}/readReceipts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -674,7 +674,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -711,7 +711,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
@@ -747,7 +747,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -785,7 +785,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
@@ -806,7 +806,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -840,7 +840,7 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page. The limit can be found at https://docs.microsoft.com/en-us/azure/communication-services/concepts/service-limits#size-limits.
+     * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.

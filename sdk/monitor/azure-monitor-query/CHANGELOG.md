@@ -1,14 +1,24 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.7 (2022-06-07)
 
 ### Bugs Fixed
 
+- Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+
 ### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` to version `1.12.2`.
+
+## 1.0.6 (2022-05-12)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.0`.
 
 ## 1.0.5 (2022-04-08)
 

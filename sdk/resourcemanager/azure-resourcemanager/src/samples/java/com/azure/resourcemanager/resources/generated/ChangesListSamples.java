@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Changes List. */
 public final class ChangesListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/preview/2022-03-01-preview/examples/ListChanges.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-05-01/examples/ListChanges.json
      */
     /**
      * Sample code: ListChanges.

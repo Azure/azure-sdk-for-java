@@ -96,6 +96,9 @@ public interface SpringService
     /** @return default Configuration Service for Enterprise Tier */
     SpringConfigurationService getDefaultConfigurationService();
 
+    /** @return default Service Registry for Enterprise Tier */
+    SpringServiceRegistry getDefaultServiceRegistry();
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,

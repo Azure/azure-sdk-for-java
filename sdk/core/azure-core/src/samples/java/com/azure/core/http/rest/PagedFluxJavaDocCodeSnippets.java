@@ -215,7 +215,7 @@ public final class PagedFluxJavaDocCodeSnippets {
                 Flux<PagedResponse<Integer>> flux = (continuationToken == null)
                     ? pagedFlux.byPage()
                     : pagedFlux.byPage(continuationToken);
-                return flux.onErrorMap(PaginationException::new);
+                return flux.onErrorMap(Exception.class, PaginationException::new);
             };
         final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(eprovider);
         // END: com.azure.core.http.rest.pagedflux.create.decoration

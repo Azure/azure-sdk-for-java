@@ -37,7 +37,7 @@ public class AnalyzeIdentityDocumentsFromUrlAsync {
 
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
-                + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.jpg";
+                + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.png";
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", licenseDocumentUrl);
 

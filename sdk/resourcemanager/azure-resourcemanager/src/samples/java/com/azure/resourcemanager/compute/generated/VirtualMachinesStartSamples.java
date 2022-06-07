@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachines Start. */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Start_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Start_MaximumSet_Gen.
@@ -26,7 +26,7 @@ public final class VirtualMachinesStartSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Start_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Start_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Start_MinimumSet_Gen.

@@ -57,7 +57,7 @@ public final class CollectionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "PurviewAccountClient")
-    private interface CollectionsService {
+    public interface CollectionsService {
         @Get("/collections/{collectionName}")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> getCollection(

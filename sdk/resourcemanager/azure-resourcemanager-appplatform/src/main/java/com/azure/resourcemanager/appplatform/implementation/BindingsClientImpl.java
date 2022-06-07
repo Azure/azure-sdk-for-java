@@ -294,14 +294,7 @@ public final class BindingsClientImpl implements BindingsClient {
     public Mono<BindingResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String bindingName) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, bindingName)
-            .flatMap(
-                (Response<BindingResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

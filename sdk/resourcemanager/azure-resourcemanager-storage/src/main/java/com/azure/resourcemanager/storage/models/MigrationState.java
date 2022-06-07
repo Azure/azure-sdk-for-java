@@ -27,7 +27,11 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
         return fromString(name, MigrationState.class);
     }
 
-    /** @return known MigrationState values. */
+    /**
+     * Gets known MigrationState values.
+     *
+     * @return known MigrationState values.
+     */
     public static Collection<MigrationState> values() {
         return values(MigrationState.class);
     }

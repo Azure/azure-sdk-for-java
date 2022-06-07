@@ -7,15 +7,12 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EntityResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Library response details. */
 @Fluent
 public final class LibraryResourceInner extends EntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibraryResourceInner.class);
-
     /*
      * Information about a library/package created at the workspace level.
      * Library/package properties.
@@ -175,7 +172,7 @@ public final class LibraryResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model LibraryResourceInner"));
@@ -183,4 +180,6 @@ public final class LibraryResourceInner extends EntityResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LibraryResourceInner.class);
 }

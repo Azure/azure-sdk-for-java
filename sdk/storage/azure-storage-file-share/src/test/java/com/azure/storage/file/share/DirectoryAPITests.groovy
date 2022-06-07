@@ -23,6 +23,7 @@ import spock.lang.Unroll
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
@@ -203,6 +204,19 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileId()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Create change time"() {
+        setup:
+        def changeTime = namer.getUtcNow()
+
+        when:
+        primaryDirectoryClient.createWithResponse(new FileSmbProperties().setFileChangeTime(changeTime), null, null,
+            null, null)
+
+        then:
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+    }
+
     @Unroll
     def "Create directory permission and key error"() {
         when:
@@ -380,6 +394,7 @@ class DirectoryAPITests extends APISpec {
         def response = primaryDirectoryClient.deleteIfExistsWithResponse(null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !primaryDirectoryClient.exists()
     }
@@ -395,6 +410,8 @@ class DirectoryAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 202
         secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
 
     }
 
@@ -460,6 +477,22 @@ class DirectoryAPITests extends APISpec {
         resp.getValue().getSmbProperties().getFileChangeTime()
         resp.getValue().getSmbProperties().getParentId()
         resp.getValue().getSmbProperties().getFileId()
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
+    def "Set httpHeaders change time"() {
+        setup:
+        primaryDirectoryClient.create()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def changeTime = namer.getUtcNow()
+        smbProperties.setFileChangeTime(namer.getUtcNow())
+            .setFilePermissionKey(filePermissionKey)
+
+        when:
+        primaryDirectoryClient.setProperties(new FileSmbProperties().setFileChangeTime(changeTime), null)
+
+        then:
+        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     @Unroll
@@ -910,11 +943,13 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
         def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"
         def permissionKey = shareClient.createPermission(filePermission)
+        def fileChangeTime = namer.getUtcNow()
         def smbProperties = new FileSmbProperties()
             .setFilePermissionKey(permissionKey)
             .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.DIRECTORY))
             .setFileCreationTime(namer.getUtcNow().minusDays(5))
             .setFileLastWriteTime(namer.getUtcNow().minusYears(2))
+            .setFileChangeTime(fileChangeTime)
 
         when:
         def destClient = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName())
@@ -925,6 +960,7 @@ class DirectoryAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
+        destProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == fileChangeTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
@@ -1196,6 +1232,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         response.getStatusCode() == 404
+        !response.getValue()
     }
 
 
@@ -1313,6 +1350,7 @@ class DirectoryAPITests extends APISpec {
 
         then:
         response.getStatusCode() == 404
+        !response.getValue()
     }
 
     def "Get snapshot id"() {

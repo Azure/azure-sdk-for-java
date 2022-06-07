@@ -27,7 +27,11 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
         return fromString(name, ScriptType.class);
     }
 
-    /** @return known ScriptType values. */
+    /**
+     * Gets known ScriptType values.
+     *
+     * @return known ScriptType values.
+     */
     public static Collection<ScriptType> values() {
         return values(ScriptType.class);
     }

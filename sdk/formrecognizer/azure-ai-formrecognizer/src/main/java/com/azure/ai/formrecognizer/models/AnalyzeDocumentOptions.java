@@ -42,7 +42,8 @@ public final class AnalyzeDocumentOptions {
     }
 
     /**
-     * Get the locale value.
+     * Get the locale hint for text recognition and document analysis.
+     * Value may contain only the language code (ex. \"en\", \"fr\") or BCP 47 language tag (ex. \"en-US\").
      *
      * @return the locale value.
      */

@@ -410,14 +410,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OfficeConsentInner> getAsync(String resourceGroupName, String workspaceName, String consentId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, consentId)
-            .flatMap(
-                (Response<OfficeConsentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -571,8 +564,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String consentId) {
-        return deleteWithResponseAsync(resourceGroupName, workspaceName, consentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, consentId).flatMap(ignored -> Mono.empty());
     }
 
     /**

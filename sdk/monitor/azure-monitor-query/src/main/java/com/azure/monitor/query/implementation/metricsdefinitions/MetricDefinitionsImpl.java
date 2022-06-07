@@ -56,7 +56,7 @@ public final class MetricDefinitionsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MetricsDefinitionsCl")
-    private interface MetricDefinitionsService {
+    public interface MetricDefinitionsService {
         @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

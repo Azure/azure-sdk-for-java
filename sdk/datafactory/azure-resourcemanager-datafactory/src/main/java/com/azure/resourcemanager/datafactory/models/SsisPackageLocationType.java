@@ -33,7 +33,11 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
         return fromString(name, SsisPackageLocationType.class);
     }
 
-    /** @return known SsisPackageLocationType values. */
+    /**
+     * Gets known SsisPackageLocationType values.
+     *
+     * @return known SsisPackageLocationType values.
+     */
     public static Collection<SsisPackageLocationType> values() {
         return values(SsisPackageLocationType.class);
     }

@@ -65,7 +65,7 @@ public final class DataFlowDebugSessionsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientDataF")
-    private interface DataFlowDebugSessionsService {
+    public interface DataFlowDebugSessionsService {
         @Post("/createDataFlowDebugSession")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

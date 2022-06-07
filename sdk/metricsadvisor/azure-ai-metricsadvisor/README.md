@@ -1,6 +1,6 @@
 # Azure Metrics Advisor client library for Java
 Azure Metrics Advisor is a new Cognitive  Service that uses time series based decision AI to identify and assist
-trouble shooting the incidents of online services, and monitor the business health by automating the slice and dice
+troubleshooting the incidents of online services, and monitor the business health by automating the slice and dice
 of business dataFeedMetrics.
 
 [Source code][source_code] | [Package (Maven)][mvn_package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples]
@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +112,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.6</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

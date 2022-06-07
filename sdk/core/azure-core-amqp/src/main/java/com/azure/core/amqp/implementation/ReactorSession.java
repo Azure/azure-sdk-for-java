@@ -402,9 +402,9 @@ public class ReactorSession implements AmqpSession {
                     sink.error(e);
                 }
             }))
-            .onErrorResume(t -> Mono.defer(() -> {
+            .onErrorResume(t -> Mono.error(() -> {
                 tokenManager.close();
-                return Mono.error(t);
+                return t;
             }));
     }
 

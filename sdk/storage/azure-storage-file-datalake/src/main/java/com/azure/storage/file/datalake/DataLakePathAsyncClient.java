@@ -43,6 +43,8 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -97,6 +99,7 @@ public class DataLakePathAsyncClient {
     private final String fileSystemName;
     final String pathName;
     private final DataLakeServiceVersion serviceVersion;
+    private final CpkInfo customerProvidedKey;
 
     final PathResourceType pathResourceType;
 
@@ -117,7 +120,8 @@ public class DataLakePathAsyncClient {
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
-        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken) {
+        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken,
+        CpkInfo customerProvidedKey) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
@@ -148,6 +152,8 @@ public class DataLakePathAsyncClient {
             .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
+
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -265,6 +271,39 @@ public class DataLakePathAsyncClient {
     }
 
     /**
+     * Gets the {@link CpkInfo} used to encrypt this path's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CustomerProvidedKey getCustomerProvidedKey() {
+        return new CustomerProvidedKey(customerProvidedKey.getEncryptionKey());
+    }
+
+    CpkInfo getCpkInfo() {
+        return this.customerProvidedKey;
+    }
+
+    /**
+     * Creates a new {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the path,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakePathAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), getObjectPath(), this.pathResourceType, this.blockBlobAsyncClient, getSasToken(),
+            finalCustomerProvidedKey);
+    }
+
+    /**
      * Creates a resource. By default, this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
@@ -376,10 +415,12 @@ public class DataLakePathAsyncClient {
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null,
+            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
-                response.getDeserializedHeaders().getLastModified())));
+                response.getDeserializedHeaders().getLastModified(),
+                response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
+                response.getDeserializedHeaders().getXMsEncryptionKeySha256())));
     }
 
     /**
@@ -515,8 +556,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response ->
-            response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -533,12 +573,12 @@ public class DataLakePathAsyncClient {
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
@@ -552,7 +592,7 @@ public class DataLakePathAsyncClient {
      * successfully deleted. If status code is 404, the resource does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             return withContext(context -> deleteIfExistsWithResponse(options, context));
         } catch (RuntimeException ex) {
@@ -560,16 +600,17 @@ public class DataLakePathAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Context context) {
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Context context) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions(), context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                         && ((DataLakeStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((DataLakeStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1498,7 +1539,7 @@ public class DataLakePathAsyncClient {
             null /* request id */, null /* timeout */, null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
             null /* metadata */, null /* permissions */, null /* umask */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
+            null /* pathHttpHeaders */, destLac, destMac, sourceConditions, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
@@ -1519,7 +1560,8 @@ public class DataLakePathAsyncClient {
 
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken);
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken,
+            customerProvidedKey);
     }
 
     /**

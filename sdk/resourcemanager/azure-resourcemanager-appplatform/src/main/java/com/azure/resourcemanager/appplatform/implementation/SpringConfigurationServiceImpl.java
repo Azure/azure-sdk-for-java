@@ -26,13 +26,13 @@ public class SpringConfigurationServiceImpl
     }
 
     @Override
-    public String cpu() {
-        return innerModel().properties().resourceRequests().cpu();
+    public Double cpu() {
+        return Utils.fromCpuString(innerModel().properties().resourceRequests().cpu());
     }
 
     @Override
-    public String memory() {
-        return innerModel().properties().resourceRequests().memory();
+    public Double memory() {
+        return Utils.fromMemoryString(innerModel().properties().resourceRequests().memory());
     }
 
     @Override

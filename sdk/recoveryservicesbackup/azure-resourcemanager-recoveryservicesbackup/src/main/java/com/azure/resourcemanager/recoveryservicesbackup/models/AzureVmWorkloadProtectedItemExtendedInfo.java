@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Additional information on Azure Workload for SQL specific backup item. */
 @Fluent
 public final class AzureVmWorkloadProtectedItemExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadProtectedItemExtendedInfo.class);
-
     /*
      * The oldest backup copy available for this backup item.
      */

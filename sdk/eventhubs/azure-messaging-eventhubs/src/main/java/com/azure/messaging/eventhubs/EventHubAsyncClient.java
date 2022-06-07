@@ -25,7 +25,7 @@ import java.util.Objects;
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 class EventHubAsyncClient implements Closeable {
-    private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
     private final EventHubConnectionProcessor connectionProcessor;
     private final Scheduler scheduler;
@@ -115,7 +115,7 @@ class EventHubAsyncClient implements Closeable {
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      * context of this group. The name of the consumer group that is created by default is
      * {@link EventHubClientBuilder#DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
-     * @param prefetchCount The set of options to apply when creating the consumer.
+     * @param prefetchCount The number of events to queue locally.
      * @return An new {@link EventHubConsumerAsyncClient} that receives events from the Event Hub.
      * @throws NullPointerException If {@code consumerGroup} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.
@@ -124,7 +124,7 @@ class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 

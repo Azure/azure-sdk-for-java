@@ -22,6 +22,8 @@ public class CosmosProperties {
 
     private boolean queryMetricsEnabled;
 
+    private int maxDegreeOfParallelism;
+
     public String getUri() {
         return uri;
     }
@@ -60,5 +62,13 @@ public class CosmosProperties {
 
     public void setQueryMetricsEnabled(boolean enableQueryMetrics) {
         this.queryMetricsEnabled = enableQueryMetrics;
+    }
+
+    public int getMaxDegreeOfParallelism() {
+        return maxDegreeOfParallelism;
+    }
+
+    public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
     }
 }

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.clienttelemetry;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
@@ -20,6 +21,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -49,6 +51,8 @@ import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ClientTelemetry {
     public final static int ONE_KB_TO_BYTES = 1024;
@@ -83,13 +87,14 @@ public class ClientTelemetry {
     private final static AtomicReference<AzureVMMetadata> azureVmMetaDataSingleton =
         new AtomicReference<>(null);
     private ClientTelemetryInfo clientTelemetryInfo;
+    private final Configs configs;
+    private final ClientTelemetryConfig clientTelemetryConfig;
     private final HttpClient httpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
         new CosmosDaemonThreadFactory("ClientTelemetry-" + instanceCount.incrementAndGet()));
     private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
-    private volatile boolean isClientTelemetryEnabled;
     private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
 
     private static final double PERCENTILE_50 = 50.0;
@@ -111,13 +116,13 @@ public class ClientTelemetry {
                            String globalDatabaseAccountName,
                            String applicationRegion,
                            String hostEnvInfo,
-                           HttpClient httpClient,
-                           boolean isClientTelemetryEnabled,
+                           Configs configs,
+                           ClientTelemetryConfig clientTelemetryConfig,
                            IAuthorizationTokenProvider tokenProvider,
                            List<String> preferredRegions
     ) {
         clientTelemetryInfo = new ClientTelemetryInfo(
-            getMachineId(diagnosticsClientContext),
+            getMachineId(diagnosticsClientContext.getConfig()),
             clientId,
             processId,
             userAgent,
@@ -127,9 +132,13 @@ public class ClientTelemetry {
             hostEnvInfo,
             acceleratedNetworking,
             preferredRegions);
+
+        checkNotNull(clientTelemetryConfig, "Argument 'clientTelemetryConfig' cannot be null");
+
         this.isClosed = false;
-        this.httpClient = httpClient;
-        this.isClientTelemetryEnabled = isClientTelemetryEnabled;
+        this.configs = configs;
+        this.clientTelemetryConfig = clientTelemetryConfig;
+        this.httpClient = httpClient();
         this.clientTelemetrySchedulingSec = Configs.getClientTelemetrySchedulingInSec();
         this.tokenProvider = tokenProvider;
         this.globalDatabaseAccountName = globalDatabaseAccountName;
@@ -139,22 +148,22 @@ public class ClientTelemetry {
         return clientTelemetryInfo;
     }
 
-    public static String getMachineId(DiagnosticsClientContext diagnosticsClientContext) {
+    public static String getMachineId(DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null && metadataSnapshot.getVmId() != null) {
             String machineId = "vmId:" + metadataSnapshot.getVmId();
-            if (diagnosticsClientContext != null) {
-                diagnosticsClientContext.getConfig().withMachineId(machineId);
+            if (diagnosticsClientConfig != null) {
+                diagnosticsClientConfig.withMachineId(machineId);
             }
             return machineId;
         }
 
-        if (diagnosticsClientContext == null) {
+        if (diagnosticsClientConfig == null) {
             return "";
         }
 
-        return diagnosticsClientContext.getConfig().getMachineId();
+        return diagnosticsClientConfig.getMachineId();
     }
 
     public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, long value) {
@@ -174,7 +183,7 @@ public class ClientTelemetry {
     }
 
     public boolean isClientTelemetryEnabled() {
-        return isClientTelemetryEnabled;
+        return this.clientTelemetryConfig.isClientTelemetryEnabled();
     }
 
     public void init() {
@@ -188,6 +197,16 @@ public class ClientTelemetry {
         logger.debug("GlobalEndpointManager closed.");
     }
 
+    private HttpClient httpClient() {
+        HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
+                .withMaxIdleConnectionTimeout(this.clientTelemetryConfig.getIdleHttpConnectionTimeout())
+                .withPoolSize(this.clientTelemetryConfig.getMaxConnectionPoolSize())
+                .withProxy(this.clientTelemetryConfig.getProxy())
+                .withNetworkRequestTimeout(this.clientTelemetryConfig.getHttpNetworkRequestTimeout());
+
+        return HttpClient.createFixed(httpClientConfig);
+    }
+
     private Mono<Void> sendClientTelemetry() {
         return Mono.delay(Duration.ofSeconds(clientTelemetrySchedulingSec), CosmosSchedulers.COSMOS_PARALLEL)
             .flatMap(t -> {
@@ -196,7 +215,7 @@ public class ClientTelemetry {
                     return Mono.empty();
                 }
 
-                if (!Configs.isClientTelemetryEnabled(this.isClientTelemetryEnabled)) {
+                if (!this.isClientTelemetryEnabled()) {
                     logger.trace("client telemetry not enabled");
                     return Mono.empty();
                 }

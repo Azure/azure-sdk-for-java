@@ -40,6 +40,13 @@ public interface EdgeModuleEntity {
     UUID edgeModuleId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleEntityInner object.
      *
      * @return the inner object.
@@ -158,7 +165,7 @@ public interface EdgeModuleEntity {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties along with {@link Response}.
      */
     Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
         ListProvisioningTokenInput parameters, Context context);

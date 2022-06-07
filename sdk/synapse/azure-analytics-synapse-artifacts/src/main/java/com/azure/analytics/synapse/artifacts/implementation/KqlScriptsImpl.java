@@ -53,7 +53,7 @@ public final class KqlScriptsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientKqlSc")
-    private interface KqlScriptsService {
+    public interface KqlScriptsService {
         @Get("/kqlScripts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

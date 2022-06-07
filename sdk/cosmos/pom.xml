@@ -23,7 +23,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-spring-data-cosmos</artifactId>
-          <version>3.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+          <version>3.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
         </dependency>
 
         <dependency>
@@ -35,13 +35,13 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos-encryption</artifactId>
-          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+          <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos</artifactId>
-          <version>4.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+          <version>4.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
         </dependency>
       </dependencies>
 
@@ -50,7 +50,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
               <excludes>

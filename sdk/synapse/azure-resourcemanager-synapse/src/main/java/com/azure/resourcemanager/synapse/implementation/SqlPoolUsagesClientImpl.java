@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolUsagesClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolUsageInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolUsageListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolUsagesClient. */
 public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolUsagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolUsagesService service;
 
@@ -219,7 +216,7 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool usages.
+     * @return sQL pool usages as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolUsageInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -238,7 +235,7 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool usages.
+     * @return sQL pool usages as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolUsageInner> listAsync(
@@ -257,7 +254,7 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool usages.
+     * @return sQL pool usages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlPoolUsageInner> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -274,7 +271,7 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool usages.
+     * @return sQL pool usages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlPoolUsageInner> list(

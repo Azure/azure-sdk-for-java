@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionIntentsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PreValidateEnableBackupResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionIntentResourceInner;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectionIntentsClient. */
 public final class ProtectionIntentsClientImpl implements ProtectionIntentsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionIntentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionIntentsService service;
 
@@ -241,15 +238,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreValidateEnableBackupResponseInner> validateAsync(
         String azureRegion, PreValidateEnableBackupRequest parameters) {
-        return validateWithResponseAsync(azureRegion, parameters)
-            .flatMap(
-                (Response<PreValidateEnableBackupResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -424,14 +413,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
     private Mono<ProtectionIntentResourceInner> getAsync(
         String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName)
-            .flatMap(
-                (Response<ProtectionIntentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -635,14 +617,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         String intentObjectName,
         ProtectionIntentResourceInner parameters) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName, parameters)
-            .flatMap(
-                (Response<ProtectionIntentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -823,7 +798,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
     private Mono<Void> deleteAsync(
         String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

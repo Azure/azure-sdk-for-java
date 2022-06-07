@@ -10,11 +10,13 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
+import com.azure.core.util.UrlBuilder
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
+import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -2666,6 +2668,42 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Sync copy source tags"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceTags = ["foo": "bar"]
+        def destTags = ["fizz": "buzz"]
+        bc.setTags(sourceTags)
+
+        def sas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)))
+
+        def bc2 = cc.getBlobClient(generateBlobName())
+
+        def options = new BlobCopyFromUrlOptions(bc.getBlobUrl() + "?" + sas).setCopySourceTagsMode(mode)
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            options.setTags(destTags)
+        }
+
+        when:
+        bc2.copyFromUrlWithResponse(options, null, null)
+        def receivedTags = bc2.getTags()
+
+        then:
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            assert receivedTags == destTags
+        } else {
+            assert receivedTags == sourceTags
+        }
+
+        where:
+        mode                           | _
+        BlobCopySourceTagsMode.COPY    | _
+        BlobCopySourceTagsMode.REPLACE | _
+    }
+
     def "Sync copy error"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -2796,6 +2834,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getHeaders()
 
         then:
+        response.getValue()
         response.getStatusCode() == 202
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
@@ -2815,6 +2854,7 @@ class BlobAPITest extends APISpec {
         def response = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -2824,7 +2864,9 @@ class BlobAPITest extends APISpec {
         def secondResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
+        initialResponse.getValue()
         initialResponse.getStatusCode() == 202
+        !secondResponse.getValue()
         secondResponse.getStatusCode() == 404
 
     }

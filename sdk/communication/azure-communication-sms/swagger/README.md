@@ -37,7 +37,8 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL	
 namespace: com.azure.communication.sms	
-generate-client-as-impl: true	
+generate-client-as-impl: true
+service-interface-as-public: true
 custom-types: SmsSendOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models

@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -15,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -201,6 +203,47 @@ public class ConnectionConfigTest extends TestSuiteBase {
         Duration networkRequestTimeout = Duration.ofSeconds(61);
         gatewayConnectionConfig.setNetworkRequestTimeout(networkRequestTimeout);
         assertThat(gatewayConnectionConfig.getNetworkRequestTimeout().equals(networkRequestTimeout));
+    }
+
+    @Test(groups = { "unit" })
+    public void buildClientTelemetryConfig() {
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+
+        String proxyHost = "127.0.0.0";
+        int proxyPort = 8080;
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+        String username = UUID.randomUUID().toString();
+        String password = UUID.randomUUID().toString();
+        proxyOptions.setCredentials(username, password);
+        System.setProperty(
+                "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG",
+                String.format(
+                    "{\"type\":\"%s\", \"host\": \"%s\", \"port\": %d, \"username\": \"%s\", \"password\":\"%s\"}",
+                    proxyOptions.getType().toString(),
+                    proxyHost,
+                    proxyPort,
+                    username,
+                    password));
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .directMode(directConnectionConfig, gatewayConnectionConfig)
+                .clientTelemetryEnabled(true);
+
+        ReflectionUtils.buildConnectionPolicy(cosmosClientBuilder);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(cosmosClientBuilder);
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
+        validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
+
+        ClientTelemetryConfig clientTelemetryConfig = ReflectionUtils.getClientTelemetryConfig(cosmosClientBuilder);
+        assertThat(clientTelemetryConfig.isClientTelemetryEnabled()).isTrue();
+        assertThat(clientTelemetryConfig.getProxy().getType()).isEqualTo(proxyOptions.getType());
+        assertThat(clientTelemetryConfig.getProxy().getAddress()).isEqualTo(proxyOptions.getAddress());
+        assertThat(clientTelemetryConfig.getProxy().getUsername()).isEqualTo(proxyOptions.getUsername());
+        assertThat(clientTelemetryConfig.getProxy().getPassword()).isEqualTo(proxyOptions.getPassword());
     }
 
     private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,

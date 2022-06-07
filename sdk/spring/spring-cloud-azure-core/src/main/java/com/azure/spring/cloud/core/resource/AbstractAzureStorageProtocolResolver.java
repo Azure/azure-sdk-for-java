@@ -47,6 +47,9 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      */
     protected abstract Resource getStorageResource(String location, Boolean autoCreate);
 
+    /**
+     * The bean factory used by the application context.
+     */
     protected ConfigurableListableBeanFactory beanFactory;
 
     /**
@@ -54,7 +57,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      * <p>
      * The underlying storage system may support 'prefix' filter, for example, Azure Storage Blob supports this
      * <p>
-     * https://docs.microsoft.com/rest/api/storageservices/list-blobs
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">https://docs.microsoft.com/rest/api/storageservices/list-blobs</a>
      * <p>
      * In this case, we can avoid load all containers to do client side filtering.
      *
@@ -146,56 +149,106 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         return ClassUtils.getDefaultClassLoader();
     }
 
-
+    /**
+     * Storage container item.
+     */
     protected static class StorageContainerItem {
 
         private final String name;
 
+        /**
+         * Creates a new instance of {@link StorageContainerItem}.
+         *
+         * @param name Name of the container item.
+         */
         public StorageContainerItem(String name) {
             this.name = name;
         }
 
+        /**
+         * Gets the name of the container item.
+         *
+         * @return The name of the container item.
+         */
         public String getName() {
             return name;
         }
     }
 
+    /**
+     * Storage item.
+     */
     protected static class StorageItem {
 
         private final String container;
         private final String name;
         private final StorageType storageType;
 
+        /**
+         * Creates a new instance of {@link StorageItem}.
+         *
+         * @param container The container name.
+         * @param fileName The file name.
+         * @param storageType The storage type.
+         */
         public StorageItem(String container, String fileName, StorageType storageType) {
             this.container = container;
             this.name = fileName;
             this.storageType = storageType;
         }
 
+        /**
+         * Gets the container name.
+         *
+         * @return The container name.
+         */
         public String getContainer() {
             return container;
         }
 
+        /**
+         * Gets the item name.
+         *
+         * @return The item name.
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Gets the storage type.
+         *
+         * @return The storage type.
+         */
         public StorageType getStorageType() {
             return storageType;
         }
 
+        /**
+         * Gets the resource location equivalent for this item.
+         *
+         * @return The resource location equivalent for this item.
+         */
         public String toResourceLocation() {
             return AzureStorageUtils.getStorageProtocolPrefix(getStorageType()) + container + "/" + name;
         }
     }
 
+    /**
+     * Storage container client.
+     */
     protected interface StorageContainerClient {
 
+        /**
+         * Gets the container name.
+         *
+         * @return The container name.
+         */
         String getName();
 
         /**
-         * <p>
          * Normally, a cloud storage system doesn't support wildcard pattern matching, but support prefix match
+         *
          * @param  itemPrefix the prefix of item’s path
          * @return All items with the given prefix, or all items if the underlying system doesn't
          * support prefix matching.

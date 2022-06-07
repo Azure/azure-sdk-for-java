@@ -263,14 +263,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     public Mono<ServiceRegistryResourceInner> getAsync(
         String resourceGroupName, String serviceName, String serviceRegistryName) {
         return getWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName)
-            .flatMap(
-                (Response<ServiceRegistryResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

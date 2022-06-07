@@ -966,14 +966,7 @@ public final class DiskAccessesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskAccessInner> getByResourceGroupAsync(String resourceGroupName, String diskAccessName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, diskAccessName)
-            .flatMap(
-                (Response<DiskAccessInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1682,14 +1675,7 @@ public final class DiskAccessesClientImpl
     public Mono<PrivateLinkResourceListResultInner> getPrivateLinkResourcesAsync(
         String resourceGroupName, String diskAccessName) {
         return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, diskAccessName)
-            .flatMap(
-                (Response<PrivateLinkResourceListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2261,14 +2247,7 @@ public final class DiskAccessesClientImpl
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
         return getAPrivateEndpointConnectionWithResponseAsync(
                 resourceGroupName, diskAccessName, privateEndpointConnectionName)
-            .flatMap(
-                (Response<PrivateEndpointConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

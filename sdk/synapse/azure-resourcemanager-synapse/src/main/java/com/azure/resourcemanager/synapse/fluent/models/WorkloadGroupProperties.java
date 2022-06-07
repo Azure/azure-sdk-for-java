@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workload group definition. For more information look at sys.workload_management_workload_groups (DMV). */
 @Fluent
 public final class WorkloadGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadGroupProperties.class);
-
     /*
      * The workload group minimum percentage resource.
      */

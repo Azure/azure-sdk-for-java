@@ -38,6 +38,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -197,11 +198,12 @@ class ContainerAPITest extends APISpec {
         def options = new BlobContainerCreateOptions().setMetadata(metadata)
 
         when:
-        cc.createIfNotExistsWithResponse(options, null, null)
+        def result = cc.createIfNotExistsWithResponse(options, null, null)
         def response = cc.getPropertiesWithResponse(null, null, null)
 
         then:
         response.getValue().getMetadata() == metadata
+        result.getValue()
 
         where:
         key1      | value1    | key2       | value2
@@ -216,11 +218,12 @@ class ContainerAPITest extends APISpec {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
-        cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions().setPublicAccessType(publicAccess), null, null)
+        def result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions().setPublicAccessType(publicAccess), null, null)
         def access = cc.getProperties().getBlobPublicAccess()
 
         then:
         access == publicAccess
+        result.getValue()
 
         where:
         publicAccess               | _
@@ -247,7 +250,9 @@ class ContainerAPITest extends APISpec {
 
         then:
         initialResponse.getStatusCode() == 201
+        initialResponse.getValue()
         secondResponse.getStatusCode() == 409
+        !secondResponse.getValue()
     }
 
     def "Get properties null"() {
@@ -702,6 +707,7 @@ class ContainerAPITest extends APISpec {
         def response = cc.deleteIfExistsWithResponse(null, null, null)
 
         then:
+        response.getValue()
         response.getStatusCode() == 202
         response.getHeaders().getValue("x-ms-request-id") != null
         response.getHeaders().getValue("x-ms-version") != null
@@ -783,30 +789,12 @@ class ContainerAPITest extends APISpec {
         def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
-    def "Delete if exists service container min"() {
-        setup:
-        def containerName = generateContainerName()
-        primaryBlobServiceClient.createBlobContainer(containerName)
-
-        when:
-        def result = premiumBlobServiceClient.deleteBlobContainerIfExists(containerName)
-
-        then:
-        !premiumBlobServiceClient.getBlobContainerClient(containerName).exists()
-        result
-    }
-
-    def "Delete if exists service container that does not exist"() {
-        when:
-        def response = premiumBlobServiceClient.deleteBlobContainerIfExistsWithResponse(generateContainerName(), null)
-
-        then:
-        response.getStatusCode() == 404
-    }
-
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
     def "Delete if exists container that was already deleted"() {
         when:
         boolean result = cc.deleteIfExists()

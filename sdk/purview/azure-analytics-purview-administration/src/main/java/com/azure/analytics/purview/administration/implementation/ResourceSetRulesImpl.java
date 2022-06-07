@@ -58,7 +58,7 @@ public final class ResourceSetRulesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "PurviewAccountClient")
-    private interface ResourceSetRulesService {
+    public interface ResourceSetRulesService {
         @Get("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> getResourceSetRule(

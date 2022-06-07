@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("#Microsoft.VideoAnalyzer.JwtAuthentication")
 @Fluent
 public final class JwtAuthentication extends AuthenticationBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JwtAuthentication.class);
-
     /*
      * List of expected token issuers. Token issuer is valid if it matches at
      * least one of the given values.

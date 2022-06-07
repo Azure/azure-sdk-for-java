@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,8 +16,6 @@ import java.util.Map;
 @JsonTypeName("AzureVmWorkloadSAPAseDatabase")
 @Fluent
 public final class AzureVmWorkloadSapAseDatabaseProtectedItem extends AzureVmWorkloadProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSapAseDatabaseProtectedItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withFriendlyName(String friendlyName) {
