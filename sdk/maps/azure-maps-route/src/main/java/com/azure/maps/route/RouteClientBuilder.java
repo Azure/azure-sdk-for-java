@@ -29,6 +29,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.route.implementation.RouteClientImpl;
 import com.azure.maps.route.implementation.RouteClientImplBuilder;
 
@@ -48,6 +49,7 @@ public final class RouteClientBuilder {
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
     // constants
+    private final ClientLogger logger = new ClientLogger(RouteClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
@@ -148,7 +150,7 @@ public final class RouteClientBuilder {
      * @return the SearchClientBuilder.
      */
     public RouteClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");;
+        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
 
@@ -275,7 +277,8 @@ public final class RouteClientBuilder {
         // Authentications
         if (tokenCredential != null) {
             if (this.mapsClientId == null) {
-                throw new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Missing 'mapsClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -288,7 +291,8 @@ public final class RouteClientBuilder {
             policies.add(new AzureKeyCredentialPolicy(MAPS_SUBSCRIPTION_KEY, keyCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            throw new IllegalArgumentException("Missing credential information while building a client.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
 
         // Add final policies

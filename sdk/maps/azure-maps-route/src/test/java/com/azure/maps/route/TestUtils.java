@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route;
 
 import java.io.ByteArrayOutputStream;
@@ -47,9 +50,9 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("beginrequestroutematrix.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteMatrixResult> interimType = new TypeReference<RouteMatrixResult>(){};
+        TypeReference<RouteMatrixResult> interimType = new TypeReference<RouteMatrixResult>() { };
         RouteMatrixResult result = jacksonAdapter.<RouteMatrixResult>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
@@ -58,9 +61,9 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getrequestroutematrix.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteMatrixResult> interimType = new TypeReference<RouteMatrixResult>(){};
+        TypeReference<RouteMatrixResult> interimType = new TypeReference<RouteMatrixResult>() { };
         RouteMatrixResult result = jacksonAdapter.<RouteMatrixResult>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
@@ -69,9 +72,9 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getroutedirections.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteDirections> interimType = new TypeReference<RouteDirections>(){};
+        TypeReference<RouteDirections> interimType = new TypeReference<RouteDirections>() { };
         RouteDirections result = jacksonAdapter.<RouteDirections>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
@@ -80,9 +83,9 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getroutedirectionsadditionalparams.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteDirections> interimType = new TypeReference<RouteDirections>(){};
+        TypeReference<RouteDirections> interimType = new TypeReference<RouteDirections>() { };
         RouteDirections result = jacksonAdapter.<RouteDirections>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
@@ -91,9 +94,9 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("getrouterange.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteRangeResult> interimType = new TypeReference<RouteRangeResult>(){};
+        TypeReference<RouteRangeResult> interimType = new TypeReference<RouteRangeResult>() { };
         RouteRangeResult result = jacksonAdapter.<RouteRangeResult>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
@@ -102,9 +105,9 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("beginrequestroutedirectionsbatch.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteDirectionsBatchResult> interimType = new TypeReference<RouteDirectionsBatchResult>(){};
+        TypeReference<RouteDirectionsBatchResult> interimType = new TypeReference<RouteDirectionsBatchResult>() { };
         RouteDirectionsBatchResult result = jacksonAdapter.<RouteDirectionsBatchResult>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
@@ -113,22 +116,21 @@ public class TestUtils {
         InputStream is = ClassLoader.getSystemResourceAsStream("beginrequestroutedirectionsbatchbatchid.json");
         byte[] data = toByteArray(is);
         SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        TypeReference<RouteDirectionsBatchResult> interimType = new TypeReference<RouteDirectionsBatchResult>(){};
+        TypeReference<RouteDirectionsBatchResult> interimType = new TypeReference<RouteDirectionsBatchResult>() { };
         RouteDirectionsBatchResult result = jacksonAdapter.<RouteDirectionsBatchResult>deserialize(data, interimType.getJavaType(),
-        SerializerEncoding.JSON);
+            SerializerEncoding.JSON);
         is.close();
         return result;
     }
 
-    // Code referenced from 
+    // Code referenced from
     // https://www.techiedelight.com/convert-inputstream-byte-array-java/#:~:text=Convert%20InputStream%20to%20byte%20array%20in%20Java%201,Commons%20IO%20...%204%204.%20Using%20sun.misc.IOUtils%20
     public static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int len;
         // read bytes from the input stream and store them in the buffer
-        while ((len = in.read(buffer)) != -1)
-        {
+        while ((len = in.read(buffer)) != -1) {
             // write bytes from the buffer into the output stream
             os.write(buffer, 0, len);
         }

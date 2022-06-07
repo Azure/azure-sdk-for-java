@@ -30,4 +30,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Polygon", value = GeoJsonPolygon.class)
 })
 @Immutable
-public class GeoJsonGeometry extends GeoJsonObject {}
+public class GeoJsonGeometry extends GeoJsonObject { }

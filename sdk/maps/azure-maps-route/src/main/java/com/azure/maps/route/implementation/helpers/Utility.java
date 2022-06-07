@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route.implementation.helpers;
 
 import java.io.ByteArrayOutputStream;
@@ -36,8 +39,8 @@ import com.azure.maps.route.models.RouteMatrixQuery;
 import com.azure.maps.route.models.RouteMatrixResult;
 
 public class Utility {
-    private static final Pattern uuidPattern = Pattern.compile("[0-9A-Fa-f\\-]{36}");
-    private static final JacksonJsonSerializer serializer = new JacksonJsonSerializerProvider()
+    private static final Pattern UUID_PATTERN = Pattern.compile("[0-9A-Fa-f\\-]{36}");
+    private static final JacksonJsonSerializer SERIALIZER = new JacksonJsonSerializerProvider()
         .createInstance();
 
     /**
@@ -46,13 +49,15 @@ public class Utility {
     public static String getBatchId(HttpHeaders headers) {
         // this can happen when deserialization is happening
         // to convert the private model to public model (see BatchResponseSerializer)
-        if (headers == null) return null;
+        if (headers == null) {
+            return null;
+        }
 
         // if not, let's go
         final String location = headers.getValue("Location");
 
         if (location != null) {
-            Matcher matcher = uuidPattern.matcher(location);
+            Matcher matcher = UUID_PATTERN.matcher(location);
             matcher.find();
             return matcher.group();
         }
@@ -69,8 +74,8 @@ public class Utility {
      */
     public static SimpleResponse<RouteMatrixResult> createRouteMatrixResponse(
             Response<RouteMatrixResultPrivate> response) {
-        RouteMatrixResult result = response.getValue() != null ?
-            Utility.toRouteMatrixResult(response.getValue()): null;
+        RouteMatrixResult result = response.getValue() != null
+            ? Utility.toRouteMatrixResult(response.getValue()) : null;
         SimpleResponse<RouteMatrixResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
@@ -174,11 +179,11 @@ public class Utility {
     public static GeoJsonGeometryCollection toGeoJsonGeometryCollection(GeoCollection collection) {
         // serialize to GeoJson
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        serializer.serialize(baos, collection);
+        SERIALIZER.serialize(baos, collection);
 
         // deserialize into GeoJsonObject
-        final TypeReference<GeoJsonGeometryCollection> typeReference = new TypeReference<GeoJsonGeometryCollection>(){};
-        return serializer.deserializeFromBytes(baos.toByteArray(), typeReference);
+        final TypeReference<GeoJsonGeometryCollection> typeReference = new TypeReference<GeoJsonGeometryCollection>() { };
+        return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 
     /**
@@ -190,11 +195,11 @@ public class Utility {
     public static GeoJsonMultiPolygon toGeoJsonMultiPolygon(GeoPolygonCollection collection) {
         // serialize to GeoJson
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        serializer.serialize(baos, collection);
+        SERIALIZER.serialize(baos, collection);
 
         // deserialize into GeoJsonObject
-        final TypeReference<GeoJsonMultiPolygon> typeReference = new TypeReference<GeoJsonMultiPolygon>(){};
-        return serializer.deserializeFromBytes(baos.toByteArray(), typeReference);
+        final TypeReference<GeoJsonMultiPolygon> typeReference = new TypeReference<GeoJsonMultiPolygon>() { };
+        return SERIALIZER.deserializeFromBytes(baos.toByteArray(), typeReference);
     }
 
     /**
@@ -300,8 +305,7 @@ public class Utility {
         for (String key : params.keySet()) {
             try {
                 urlBuilder.addQueryParameter(key, URLEncoder.encode(params.get(key).toString(), "UTF-8"));
-            }
-            catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
         }

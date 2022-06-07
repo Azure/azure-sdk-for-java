@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route.models;
 
 import java.util.List;
@@ -5,6 +8,7 @@ import java.util.List;
 import com.azure.maps.route.implementation.helpers.RouteMatrixResultPropertiesHelper;
 import com.azure.maps.route.implementation.models.RouteMatrixResultPrivate;
 
+/** Route Matrix result. */
 public class RouteMatrixResult {
     private String formatVersion;
     private List<List<RouteMatrix>> matrix;
@@ -19,7 +23,7 @@ public class RouteMatrixResult {
                         RouteMatrixResultPrivate privateResult) {
                     result.setFromRouteMatrixResultPrivate(privateResult);
                 }
-        });
+            });
     }
 
     /**
@@ -51,6 +55,8 @@ public class RouteMatrixResult {
 
     /**
      * Get the matrix id of this request.
+     *
+     * @return the matrix id
      */
     public String getMatrixId() {
         return matrixId;
@@ -58,7 +64,7 @@ public class RouteMatrixResult {
 
     /**
      * Sets the matrix id for this request.
-     * @param matrixId
+     * @param matrixId the matrix id
      */
     public void setMatrixId(String matrixId) {
         this.matrixId = matrixId;

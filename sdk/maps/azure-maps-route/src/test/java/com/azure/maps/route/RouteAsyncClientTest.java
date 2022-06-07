@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,14 +55,14 @@ public class RouteAsyncClientTest extends RouteTestBase {
     private RouteAsyncClient getRouteAsyncClient(HttpClient httpClient, RouteServiceVersion serviceVersion) {
         return getRouteAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
-    
+
     // Test async begin request route matrix
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncBeginRequestRouteMatrix(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         RouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
             new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
             new GeoPoint(13.42937, 52.50931)));
@@ -79,7 +82,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
     public void testAsyncBeginGetRouteMatrix(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         RouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
             new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
             new GeoPoint(13.42937, 52.50931)));
@@ -103,7 +106,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
     public void testAsyncBeginGetRouteMatrixWithContext(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         RouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
-        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006), 
+        GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
             new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
             new GeoPoint(13.42937, 52.50931)));
@@ -151,8 +154,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
             new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirectionsWithResponse(routeOptions))
-                .assertNext(response ->
-                {
+                .assertNext(response -> {
                     try {
                         validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirections(), 200, response);
                     } catch (IOException e) {
@@ -214,7 +216,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
             .setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
-        StepVerifier.create(client.getRouteDirectionsWithAdditionalParameters(routeOptions,parameters))
+        StepVerifier.create(client.getRouteDirectionsWithAdditionalParameters(routeOptions, parameters))
         .assertNext(actualResults -> {
             try {
                 validateGetRouteDirections(TestUtils.getExpectedRouteDirectionsWithAdditionalParameters(), actualResults);
@@ -261,7 +263,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
             .setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
-        StepVerifier.create(client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions,parameters))
+        StepVerifier.create(client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions, parameters))
         .assertNext(actualResults -> {
             try {
                 validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirectionsWithAdditionalParameters(), 200, actualResults);
@@ -307,7 +309,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
             .setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
-        StepVerifier.create(client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions,parameters))
+        StepVerifier.create(client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions, parameters))
                 .verifyErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -319,15 +321,15 @@ public class RouteAsyncClientTest extends RouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncGetRouteRange(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         RouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452,5.86605), 6000.0);
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), 6000.0);
         StepVerifier.create(client.getRouteRange(rangeOptions))
-        .assertNext(actualResults -> {
-            try {
-                validateGetRouteRange(TestUtils.getExpectedRouteRange(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get route range");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetRouteRange(TestUtils.getExpectedRouteRange(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get route range");
+                }
+            }).verifyComplete();
     }
 
     // Test async get route range with response
@@ -336,10 +338,9 @@ public class RouteAsyncClientTest extends RouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncGetRouteRangeWithResponse(HttpClient httpClient, RouteServiceVersion serviceVersion) {
         RouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452,5.86605), 6000.0);
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), 6000.0);
         StepVerifier.create(client.getRouteRangeWithResponse(rangeOptions))
-                .assertNext(response ->
-                {
+                .assertNext(response -> {
                     try {
                         validateGetRouteRangeWithResponse(TestUtils.getExpectedRouteRange(), 200, response);
                     } catch (IOException e) {
@@ -354,14 +355,14 @@ public class RouteAsyncClientTest extends RouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testAsyncInvalidGetRouteRangeWithResponse(HttpClient httpClient, RouteServiceVersion serviceVersion) {
         RouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(-1000000,5.86605), 6000.0);
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(-1000000, 5.86605), 6000.0);
         StepVerifier.create(client.getRouteRangeWithResponse(rangeOptions))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+            .verifyErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            });
     }
-    
+
     // Test async begin request route directions batch
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
@@ -370,7 +371,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
         RouteDirectionsOptions options1 = new RouteDirectionsOptions(
             Arrays.asList(new GeoPosition(47.639987, -122.128384),
                 new GeoPosition(47.621252, -122.184408),
-                new GeoPosition(47.596437,-122.332000)))
+                new GeoPosition(47.596437, -122.332000)))
             .setRouteType(RouteType.FASTEST)
             .setTravelMode(TravelMode.CAR)
             .setMaxAlternatives(5);
@@ -402,7 +403,7 @@ public class RouteAsyncClientTest extends RouteTestBase {
         RouteDirectionsOptions options1 = new RouteDirectionsOptions(
             Arrays.asList(new GeoPosition(47.639987, -122.128384),
                 new GeoPosition(47.621252, -122.184408),
-                new GeoPosition(47.596437,-122.332000)))
+                new GeoPosition(47.596437, -122.332000)))
             .setRouteType(RouteType.FASTEST)
             .setTravelMode(TravelMode.CAR)
             .setMaxAlternatives(5);
