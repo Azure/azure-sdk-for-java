@@ -165,7 +165,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
               <excludes>
@@ -893,7 +893,9 @@
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/dnsresolver</module>
+        <module>sdk/dynatrace</module>
         <module>sdk/edgeorder</module>
+        <module>sdk/education</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -920,6 +922,7 @@
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/logz</module>
+        <module>sdk/machinelearning</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
@@ -985,6 +988,7 @@
         <module>sdk/videoanalyzer</module>
         <module>sdk/vmwarecloudsimple</module>
         <module>sdk/webpubsub</module>
+        <module>sdk/workloads</module>
       </modules>
     </profile>
   </profiles>

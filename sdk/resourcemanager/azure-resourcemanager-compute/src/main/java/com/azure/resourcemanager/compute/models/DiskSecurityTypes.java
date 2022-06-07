@@ -36,7 +36,11 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         return fromString(name, DiskSecurityTypes.class);
     }
 
-    /** @return known DiskSecurityTypes values. */
+    /**
+     * Gets known DiskSecurityTypes values.
+     *
+     * @return known DiskSecurityTypes values.
+     */
     public static Collection<DiskSecurityTypes> values() {
         return values(DiskSecurityTypes.class);
     }

@@ -227,7 +227,7 @@ public final class RestorePointCollectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -292,7 +292,7 @@ public final class RestorePointCollectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -323,14 +323,7 @@ public final class RestorePointCollectionsClientImpl
     public Mono<RestorePointCollectionInner> createOrUpdateAsync(
         String resourceGroupName, String restorePointCollectionName, RestorePointCollectionInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, restorePointCollectionName, parameters)
-            .flatMap(
-                (Response<RestorePointCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -416,7 +409,7 @@ public final class RestorePointCollectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -480,7 +473,7 @@ public final class RestorePointCollectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -510,14 +503,7 @@ public final class RestorePointCollectionsClientImpl
     public Mono<RestorePointCollectionInner> updateAsync(
         String resourceGroupName, String restorePointCollectionName, RestorePointCollectionUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, restorePointCollectionName, parameters)
-            .flatMap(
-                (Response<RestorePointCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -594,7 +580,7 @@ public final class RestorePointCollectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter restorePointCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -648,7 +634,7 @@ public final class RestorePointCollectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter restorePointCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -846,7 +832,7 @@ public final class RestorePointCollectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter restorePointCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -906,7 +892,7 @@ public final class RestorePointCollectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter restorePointCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -937,14 +923,7 @@ public final class RestorePointCollectionsClientImpl
     public Mono<RestorePointCollectionInner> getByResourceGroupAsync(
         String resourceGroupName, String restorePointCollectionName, RestorePointCollectionExpandOptions expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand)
-            .flatMap(
-                (Response<RestorePointCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -962,14 +941,7 @@ public final class RestorePointCollectionsClientImpl
         String resourceGroupName, String restorePointCollectionName) {
         final RestorePointCollectionExpandOptions expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, restorePointCollectionName, expand)
-            .flatMap(
-                (Response<RestorePointCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1040,7 +1012,7 @@ public final class RestorePointCollectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1095,7 +1067,7 @@ public final class RestorePointCollectionsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1204,7 +1176,7 @@ public final class RestorePointCollectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1249,7 +1221,7 @@ public final class RestorePointCollectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

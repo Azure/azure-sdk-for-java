@@ -543,7 +543,11 @@ public final class ContainerServiceVMSizeTypes extends ExpandableStringEnum<Cont
         return fromString(name, ContainerServiceVMSizeTypes.class);
     }
 
-    /** @return known ContainerServiceVMSizeTypes values. */
+    /**
+     * Gets known ContainerServiceVMSizeTypes values.
+     *
+     * @return known ContainerServiceVMSizeTypes values.
+     */
     public static Collection<ContainerServiceVMSizeTypes> values() {
         return values(ContainerServiceVMSizeTypes.class);
     }

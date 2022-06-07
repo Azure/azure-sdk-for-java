@@ -7,95 +7,21 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomEntitiesTaskParameters model. */
+/** Supported parameters for a Custom Entities task. */
 @Fluent
-public final class CustomEntitiesTaskParameters {
+public final class CustomEntitiesTaskParameters extends CustomTaskParameters {
     /*
-     * The project-name property.
-     */
-    @JsonProperty(value = "project-name", required = true)
-    private String projectName;
-
-    /*
-     * The deployment-name property.
-     */
-    @JsonProperty(value = "deployment-name", required = true)
-    private String deploymentName;
-
-    /*
-     * The loggingOptOut property.
-     */
-    @JsonProperty(value = "loggingOptOut")
-    private Boolean loggingOptOut;
-
-    /*
-     * The stringIndexType property.
+     * Specifies the method used to interpret string offsets.  Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional
+     * information see https://aka.ms/text-analytics-offsets.
      */
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
     /**
-     * Get the projectName property: The project-name property.
-     *
-     * @return the projectName value.
-     */
-    public String getProjectName() {
-        return this.projectName;
-    }
-
-    /**
-     * Set the projectName property: The project-name property.
-     *
-     * @param projectName the projectName value to set.
-     * @return the CustomEntitiesTaskParameters object itself.
-     */
-    public CustomEntitiesTaskParameters setProjectName(String projectName) {
-        this.projectName = projectName;
-        return this;
-    }
-
-    /**
-     * Get the deploymentName property: The deployment-name property.
-     *
-     * @return the deploymentName value.
-     */
-    public String getDeploymentName() {
-        return this.deploymentName;
-    }
-
-    /**
-     * Set the deploymentName property: The deployment-name property.
-     *
-     * @param deploymentName the deploymentName value to set.
-     * @return the CustomEntitiesTaskParameters object itself.
-     */
-    public CustomEntitiesTaskParameters setDeploymentName(String deploymentName) {
-        this.deploymentName = deploymentName;
-        return this;
-    }
-
-    /**
-     * Get the loggingOptOut property: The loggingOptOut property.
-     *
-     * @return the loggingOptOut value.
-     */
-    public Boolean isLoggingOptOut() {
-        return this.loggingOptOut;
-    }
-
-    /**
-     * Set the loggingOptOut property: The loggingOptOut property.
-     *
-     * @param loggingOptOut the loggingOptOut value to set.
-     * @return the CustomEntitiesTaskParameters object itself.
-     */
-    public CustomEntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
-        this.loggingOptOut = loggingOptOut;
-        return this;
-    }
-
-    /**
-     * Get the stringIndexType property: The stringIndexType property.
+     * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @return the stringIndexType value.
      */
@@ -104,7 +30,9 @@ public final class CustomEntitiesTaskParameters {
     }
 
     /**
-     * Set the stringIndexType property: The stringIndexType property.
+     * Set the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
+     * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
+     * https://aka.ms/text-analytics-offsets.
      *
      * @param stringIndexType the stringIndexType value to set.
      * @return the CustomEntitiesTaskParameters object itself.

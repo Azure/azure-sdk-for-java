@@ -315,14 +315,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, domainName)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1654,14 +1647,7 @@ public final class DomainsClientImpl implements DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DomainSharedAccessKeysInner> listSharedAccessKeysAsync(String resourceGroupName, String domainName) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, domainName)
-            .flatMap(
-                (Response<DomainSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1821,14 +1807,7 @@ public final class DomainsClientImpl implements DomainsClient {
     private Mono<DomainSharedAccessKeysInner> regenerateKeyAsync(
         String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest) {
         return regenerateKeyWithResponseAsync(resourceGroupName, domainName, regenerateKeyRequest)
-            .flatMap(
-                (Response<DomainSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

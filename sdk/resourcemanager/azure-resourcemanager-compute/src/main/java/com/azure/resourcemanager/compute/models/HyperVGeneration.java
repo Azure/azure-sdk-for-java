@@ -27,7 +27,11 @@ public final class HyperVGeneration extends ExpandableStringEnum<HyperVGeneratio
         return fromString(name, HyperVGeneration.class);
     }
 
-    /** @return known HyperVGeneration values. */
+    /**
+     * Gets known HyperVGeneration values.
+     *
+     * @return known HyperVGeneration values.
+     */
     public static Collection<HyperVGeneration> values() {
         return values(HyperVGeneration.class);
     }

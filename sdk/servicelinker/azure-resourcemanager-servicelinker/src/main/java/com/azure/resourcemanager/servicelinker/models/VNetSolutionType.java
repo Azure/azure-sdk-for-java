@@ -27,7 +27,11 @@ public final class VNetSolutionType extends ExpandableStringEnum<VNetSolutionTyp
         return fromString(name, VNetSolutionType.class);
     }
 
-    /** @return known VNetSolutionType values. */
+    /**
+     * Gets known VNetSolutionType values.
+     *
+     * @return known VNetSolutionType values.
+     */
     public static Collection<VNetSolutionType> values() {
         return values(VNetSolutionType.class);
     }

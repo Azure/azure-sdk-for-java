@@ -225,14 +225,7 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
     private Mono<ProtectionContainerResourceInner> getAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, operationId)
-            .flatMap(
-                (Response<ProtectionContainerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

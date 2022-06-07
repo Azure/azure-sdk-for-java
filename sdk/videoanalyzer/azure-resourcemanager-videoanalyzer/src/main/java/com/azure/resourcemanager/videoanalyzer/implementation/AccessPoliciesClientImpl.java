@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.AccessPoliciesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.AccessPolicyEntityInner;
 import com.azure.resourcemanager.videoanalyzer.models.AccessPolicyEntityCollection;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AccessPoliciesClient. */
 public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(AccessPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AccessPoliciesService service;
 
@@ -166,7 +163,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessPolicyEntityInner>> listSinglePageAsync(
@@ -227,7 +225,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessPolicyEntityInner>> listSinglePageAsync(
@@ -284,7 +283,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessPolicyEntityInner> listAsync(String resourceGroupName, String accountName, Integer top) {
@@ -301,7 +300,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessPolicyEntityInner> listAsync(String resourceGroupName, String accountName) {
@@ -322,7 +321,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessPolicyEntityInner> listAsync(
@@ -340,7 +339,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPolicyEntityInner> list(String resourceGroupName, String accountName) {
@@ -359,7 +358,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPolicyEntityInner> list(
@@ -376,7 +375,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyEntityInner>> getWithResponseAsync(
@@ -431,7 +431,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyEntityInner>> getWithResponseAsync(
@@ -482,20 +483,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyEntityInner> getAsync(
         String resourceGroupName, String accountName, String accessPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, accessPolicyName)
-            .flatMap(
-                (Response<AccessPolicyEntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -524,7 +519,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPolicyEntityInner> getWithResponse(
@@ -542,7 +538,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyEntityInner>> createOrUpdateWithResponseAsync(
@@ -604,7 +601,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyEntityInner>> createOrUpdateWithResponseAsync(
@@ -666,20 +664,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyEntityInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String accessPolicyName, AccessPolicyEntityInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, accessPolicyName, parameters)
-            .flatMap(
-                (Response<AccessPolicyEntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -711,7 +703,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPolicyEntityInner> createOrUpdateWithResponse(
@@ -733,7 +726,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -788,7 +781,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -839,12 +832,12 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String accessPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, accessPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -872,7 +865,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -890,7 +883,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyEntityInner>> updateWithResponseAsync(
@@ -952,7 +946,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyEntityInner>> updateWithResponseAsync(
@@ -1014,20 +1009,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyEntityInner> updateAsync(
         String resourceGroupName, String accountName, String accessPolicyName, AccessPolicyEntityInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, accessPolicyName, parameters)
-            .flatMap(
-                (Response<AccessPolicyEntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1059,7 +1048,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access policies help define the authentication rules, and control access to specific video resources.
+     * @return access policies help define the authentication rules, and control access to specific video resources
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPolicyEntityInner> updateWithResponse(
@@ -1078,7 +1068,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessPolicyEntityInner>> listNextSinglePageAsync(String nextLink) {
@@ -1114,7 +1105,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccessPolicyEntity items.
+     * @return a collection of AccessPolicyEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessPolicyEntityInner>> listNextSinglePageAsync(String nextLink, Context context) {

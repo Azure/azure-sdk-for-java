@@ -45,7 +45,11 @@ public final class RegistryValueKind extends ExpandableStringEnum<RegistryValueK
         return fromString(name, RegistryValueKind.class);
     }
 
-    /** @return known RegistryValueKind values. */
+    /**
+     * Gets known RegistryValueKind values.
+     *
+     * @return known RegistryValueKind values.
+     */
     public static Collection<RegistryValueKind> values() {
         return values(RegistryValueKind.class);
     }

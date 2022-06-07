@@ -1,6 +1,6 @@
 # Release History
 
-## 12.17.0-beta.2 (Unreleased)
+## 12.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,8 +9,26 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.17.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+### Other Changes
 - Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output
   stream. Use BlobClientBase.downloadStream and BlobClientBase.downloadStreamWithResponse instead.
+
+## 12.16.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-common` from `12.15.1` to version `12.15.2`.
+- Upgraded `azure-storage-internal-avro` from `12.2.1` to version `12.2.2`.
 
 ## 12.17.0-beta.1 (2022-05-06)
 

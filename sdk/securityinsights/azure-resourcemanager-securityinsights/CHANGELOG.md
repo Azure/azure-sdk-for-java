@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,56 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2022-05-16)
+
+- Azure Resource Manager SecurityInsights client library for Java. This package contains Microsoft Azure SDK for SecurityInsights Management SDK. API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider. Package tag package-preview-2022-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.Watchlist` was modified
+
+* `resourceGroupName()` was added
+
+#### `SecurityInsightsManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.MetadataModel` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Bookmark` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Relation` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Incident` was modified
+
+* `resourceGroupName()` was added
+
+#### `SecurityInsightsManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.WatchlistItem` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.AutomationRule` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.IncidentComment` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ActionResponse` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.2 (2022-03-23)
 

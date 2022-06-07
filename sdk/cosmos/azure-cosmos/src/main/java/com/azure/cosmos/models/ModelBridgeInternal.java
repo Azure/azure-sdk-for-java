@@ -4,7 +4,14 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
@@ -950,5 +957,24 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
         return cosmosPatchOperations.getPatchOperations();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void  initializeAllAccessors() {
+        CosmosBatch.initialize();
+        CosmosBatchOperationResult.initialize();
+        CosmosBatchRequestOptions.initialize();
+        CosmosBatchResponse.initialize();
+        CosmosBulkExecutionOptions.initialize();
+        CosmosBulkExecutionThresholdsState.initialize();
+        CosmosBulkItemResponse.initialize();
+        CosmosChangeFeedRequestOptions.initialize();
+        CosmosContainerProperties.initialize();
+        CosmosItemRequestOptions.initialize();
+        CosmosItemResponse.initialize();
+        CosmosPatchOperations.initialize();
+        CosmosQueryRequestOptions.initialize();
+        FeedResponse.initialize();
+        PartitionKey.initialize();
     }
 }

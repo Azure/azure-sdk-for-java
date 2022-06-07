@@ -339,14 +339,7 @@ public final class AppsClientImpl implements AppsClient {
     public Mono<AppResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String syncStatus) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -365,14 +358,7 @@ public final class AppsClientImpl implements AppsClient {
     public Mono<AppResourceInner> getAsync(String resourceGroupName, String serviceName, String appName) {
         final String syncStatus = null;
         return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus)
-            .flatMap(
-                (Response<AppResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1577,14 +1563,7 @@ public final class AppsClientImpl implements AppsClient {
     public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(
         String resourceGroupName, String serviceName, String appName) {
         return getResourceUploadUrlWithResponseAsync(resourceGroupName, serviceName, appName)
-            .flatMap(
-                (Response<ResourceUploadDefinition> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2108,14 +2087,7 @@ public final class AppsClientImpl implements AppsClient {
     public Mono<CustomDomainValidateResult> validateDomainAsync(
         String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload) {
         return validateDomainWithResponseAsync(resourceGroupName, serviceName, appName, validatePayload)
-            .flatMap(
-                (Response<CustomDomainValidateResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

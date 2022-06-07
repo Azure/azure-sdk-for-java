@@ -32,7 +32,7 @@ public final class CosmosEncryptionClient implements Closeable {
 
     CosmosEncryptionClient(CosmosClient cosmosClient, KeyEncryptionKeyResolver keyEncryptionKeyResolver,
                            String keyEncryptionKeyResolverName) {
-        this.cosmosClientAccessor = CosmosClientHelper.geCosmosClientAccessor();
+        this.cosmosClientAccessor = CosmosClientHelper.getCosmosClientAccessor();
         this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
         this.cosmosClient = cosmosClient;
         this.cosmosAsyncClient = this.cosmosClientAccessor.getCosmosAsyncClient(cosmosClient);

@@ -44,3 +44,9 @@ extends:
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
+    AdditionalModules:
+      - name: azure-monitor-query-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

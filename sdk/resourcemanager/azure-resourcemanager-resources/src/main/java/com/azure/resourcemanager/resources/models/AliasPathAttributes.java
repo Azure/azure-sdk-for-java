@@ -27,7 +27,11 @@ public final class AliasPathAttributes extends ExpandableStringEnum<AliasPathAtt
         return fromString(name, AliasPathAttributes.class);
     }
 
-    /** @return known AliasPathAttributes values. */
+    /**
+     * Gets known AliasPathAttributes values.
+     *
+     * @return known AliasPathAttributes values.
+     */
     public static Collection<AliasPathAttributes> values() {
         return values(AliasPathAttributes.class);
     }

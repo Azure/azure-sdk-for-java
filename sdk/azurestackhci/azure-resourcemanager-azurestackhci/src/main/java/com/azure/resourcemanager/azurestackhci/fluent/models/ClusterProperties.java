@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
@@ -43,14 +42,26 @@ public final class ClusterProperties {
     /*
      * App id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadClientId", required = true)
+    @JsonProperty(value = "aadClientId")
     private String aadClientId;
 
     /*
      * Tenant id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadTenantId", required = true)
+    @JsonProperty(value = "aadTenantId")
     private String aadTenantId;
+
+    /*
+     * Object id of cluster AAD identity.
+     */
+    @JsonProperty(value = "aadApplicationObjectId")
+    private String aadApplicationObjectId;
+
+    /*
+     * Id of cluster identity service principal.
+     */
+    @JsonProperty(value = "aadServicePrincipalObjectId")
+    private String aadServicePrincipalObjectId;
 
     /*
      * Desired properties of the cluster.
@@ -93,6 +104,12 @@ public final class ClusterProperties {
      */
     @JsonProperty(value = "lastBillingTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastBillingTimestamp;
+
+    /*
+     * Region specific DataPath Endpoint of the cluster.
+     */
+    @JsonProperty(value = "serviceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String serviceEndpoint;
 
     /**
      * Get the provisioningState property: Provisioning state.
@@ -182,6 +199,46 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @return the aadApplicationObjectId value.
+     */
+    public String aadApplicationObjectId() {
+        return this.aadApplicationObjectId;
+    }
+
+    /**
+     * Set the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @param aadApplicationObjectId the aadApplicationObjectId value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withAadApplicationObjectId(String aadApplicationObjectId) {
+        this.aadApplicationObjectId = aadApplicationObjectId;
+        return this;
+    }
+
+    /**
+     * Get the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @return the aadServicePrincipalObjectId value.
+     */
+    public String aadServicePrincipalObjectId() {
+        return this.aadServicePrincipalObjectId;
+    }
+
+    /**
+     * Set the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @param aadServicePrincipalObjectId the aadServicePrincipalObjectId value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withAadServicePrincipalObjectId(String aadServicePrincipalObjectId) {
+        this.aadServicePrincipalObjectId = aadServicePrincipalObjectId;
+        return this;
+    }
+
+    /**
      * Get the desiredProperties property: Desired properties of the cluster.
      *
      * @return the desiredProperties value.
@@ -256,21 +313,20 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the serviceEndpoint property: Region specific DataPath Endpoint of the cluster.
+     *
+     * @return the serviceEndpoint value.
+     */
+    public String serviceEndpoint() {
+        return this.serviceEndpoint;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (aadClientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aadClientId in model ClusterProperties"));
-        }
-        if (aadTenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aadTenantId in model ClusterProperties"));
-        }
         if (desiredProperties() != null) {
             desiredProperties().validate();
         }
@@ -278,6 +334,4 @@ public final class ClusterProperties {
             reportedProperties().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ClusterProperties.class);
 }

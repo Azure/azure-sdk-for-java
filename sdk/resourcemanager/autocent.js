@@ -1,24 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const request = require('request-promise');
+const yaml = require('yaml')
 
 // mapping for services with different spec folder names
-const specs = {
-  'avs': 'vmware',
-  'cosmos': 'cosmos-db',
-  'costmanagement': 'cost-management',
-  'customerinsights': 'customer-insights',
-  'datalakeanalytics': 'datalake-analytics',
-  'datalakestore': 'datalake-store',
-  'delegatednetwork': 'dnc',
-  'eventhubs': 'eventhub',
-  'loganalytics': 'operationalinsights',
-  'kusto': 'azure-kusto',
-  'servicemap': 'service-map',
-  'managedapplications': 'resources',
-  'mysqlflexibleserver': 'mysql',
-  'postgresqlflexibleserver': 'postgresql'
-};
+const specs = getSpecsMapping()
 const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
 const artiRegEx = /<a href="(azure-resourcemanager-[-\w]+)\/"/g;
 const verRegEx = /<version>(.+)<\/version>/g;
@@ -31,7 +17,7 @@ async function autocent() {
   console.log('[INFO] Automation task to update the mapping of services and API version tags.');
 
   await getArtifacts();
-  
+
   writeMarkdown();
 }
 
@@ -49,7 +35,7 @@ async function getArtifacts() {
     promises.push(readMetadata(artifacts[i]))
   }
   artiRegEx.lastIndex = 0;
-  
+
   await Promise.all(promises)
 }
 
@@ -67,7 +53,7 @@ async function readMetadata(artifact) {
     promises.push(readPom(artifact, versions[i]))
   }
   verRegEx.lastIndex = 0;
-  
+
   await Promise.all(promises)
 }
 
@@ -191,6 +177,16 @@ async function sendRequest(url) {
       'user-agent': 'AutoCent'
     }
   })
+}
+
+function getSpecsMapping() {
+    const api_specs_file = path.join(__dirname, "../../eng/mgmt/automation/api-specs.yaml")
+    const data = fs.readFileSync(api_specs_file, 'utf-8')
+    let specs = {"managedapplications": "resources"}
+    Object.entries(yaml.parse(data))
+        .filter(([, service]) => service.hasOwnProperty("service"))
+        .forEach(([rp, service]) => specs[service["service"]] = rp)
+    return specs
 }
 
 autocent();

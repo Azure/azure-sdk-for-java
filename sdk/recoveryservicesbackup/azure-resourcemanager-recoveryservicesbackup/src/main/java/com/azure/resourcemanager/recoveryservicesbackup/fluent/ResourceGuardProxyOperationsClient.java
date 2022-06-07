@@ -50,13 +50,18 @@ public interface ResourceGuardProxyOperationsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceGuardProxyBaseResourceInner put(String vaultName, String resourceGroupName, String resourceGuardProxyName);
+    ResourceGuardProxyBaseResourceInner put(
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters);
 
     /**
      * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
@@ -64,6 +69,7 @@ public interface ResourceGuardProxyOperationsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,7 +78,11 @@ public interface ResourceGuardProxyOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceGuardProxyBaseResourceInner> putWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters,
+        Context context);
 
     /**
      * Delete ResourceGuardProxy under vault.

@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.azurestackhci.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ArcSettingInner;
 import java.util.List;
+import java.util.Map;
 
 /** An immutable client-side representation of ArcSetting. */
 public interface ArcSetting {
@@ -55,6 +57,34 @@ public interface ArcSetting {
     String arcInstanceResourceGroup();
 
     /**
+     * Gets the arcApplicationClientId property: App id of arc AAD identity.
+     *
+     * @return the arcApplicationClientId value.
+     */
+    String arcApplicationClientId();
+
+    /**
+     * Gets the arcApplicationTenantId property: Tenant id of arc AAD identity.
+     *
+     * @return the arcApplicationTenantId value.
+     */
+    String arcApplicationTenantId();
+
+    /**
+     * Gets the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
+     *
+     * @return the arcServicePrincipalObjectId value.
+     */
+    String arcServicePrincipalObjectId();
+
+    /**
+     * Gets the arcApplicationObjectId property: Object id of arc AAD identity.
+     *
+     * @return the arcApplicationObjectId value.
+     */
+    String arcApplicationObjectId();
+
+    /**
      * Gets the aggregateState property: Aggregate state of Arc agent across the nodes in this HCI cluster.
      *
      * @return the aggregateState value.
@@ -67,6 +97,20 @@ public interface ArcSetting {
      * @return the perNodeDetails value.
      */
     List<PerNodeState> perNodeDetails();
+
+    /**
+     * Gets the connectivityProperties property: contains connectivity related configuration for ARC resources.
+     *
+     * @return the connectivityProperties value.
+     */
+    Object connectivityProperties();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestackhci.fluent.models.ArcSettingInner object.
@@ -99,7 +143,13 @@ public interface ArcSetting {
          * The stage of the ArcSetting definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithArcInstanceResourceGroup {
+        interface WithCreate
+            extends DefinitionStages.WithArcInstanceResourceGroup,
+                DefinitionStages.WithArcApplicationClientId,
+                DefinitionStages.WithArcApplicationTenantId,
+                DefinitionStages.WithArcServicePrincipalObjectId,
+                DefinitionStages.WithArcApplicationObjectId,
+                DefinitionStages.WithConnectivityProperties {
             /**
              * Executes the create request.
              *
@@ -127,6 +177,105 @@ public interface ArcSetting {
              */
             WithCreate withArcInstanceResourceGroup(String arcInstanceResourceGroup);
         }
+        /** The stage of the ArcSetting definition allowing to specify arcApplicationClientId. */
+        interface WithArcApplicationClientId {
+            /**
+             * Specifies the arcApplicationClientId property: App id of arc AAD identity..
+             *
+             * @param arcApplicationClientId App id of arc AAD identity.
+             * @return the next definition stage.
+             */
+            WithCreate withArcApplicationClientId(String arcApplicationClientId);
+        }
+        /** The stage of the ArcSetting definition allowing to specify arcApplicationTenantId. */
+        interface WithArcApplicationTenantId {
+            /**
+             * Specifies the arcApplicationTenantId property: Tenant id of arc AAD identity..
+             *
+             * @param arcApplicationTenantId Tenant id of arc AAD identity.
+             * @return the next definition stage.
+             */
+            WithCreate withArcApplicationTenantId(String arcApplicationTenantId);
+        }
+        /** The stage of the ArcSetting definition allowing to specify arcServicePrincipalObjectId. */
+        interface WithArcServicePrincipalObjectId {
+            /**
+             * Specifies the arcServicePrincipalObjectId property: Object id of arc AAD service principal..
+             *
+             * @param arcServicePrincipalObjectId Object id of arc AAD service principal.
+             * @return the next definition stage.
+             */
+            WithCreate withArcServicePrincipalObjectId(String arcServicePrincipalObjectId);
+        }
+        /** The stage of the ArcSetting definition allowing to specify arcApplicationObjectId. */
+        interface WithArcApplicationObjectId {
+            /**
+             * Specifies the arcApplicationObjectId property: Object id of arc AAD identity..
+             *
+             * @param arcApplicationObjectId Object id of arc AAD identity.
+             * @return the next definition stage.
+             */
+            WithCreate withArcApplicationObjectId(String arcApplicationObjectId);
+        }
+        /** The stage of the ArcSetting definition allowing to specify connectivityProperties. */
+        interface WithConnectivityProperties {
+            /**
+             * Specifies the connectivityProperties property: contains connectivity related configuration for ARC
+             * resources.
+             *
+             * @param connectivityProperties contains connectivity related configuration for ARC resources.
+             * @return the next definition stage.
+             */
+            WithCreate withConnectivityProperties(Object connectivityProperties);
+        }
+    }
+    /**
+     * Begins update for the ArcSetting resource.
+     *
+     * @return the stage of resource update.
+     */
+    ArcSetting.Update update();
+
+    /** The template for ArcSetting update. */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithConnectivityProperties {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        ArcSetting apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        ArcSetting apply(Context context);
+    }
+    /** The ArcSetting update stages. */
+    interface UpdateStages {
+        /** The stage of the ArcSetting update allowing to specify tags. */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             *
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the ArcSetting update allowing to specify connectivityProperties. */
+        interface WithConnectivityProperties {
+            /**
+             * Specifies the connectivityProperties property: contains connectivity related configuration for ARC
+             * resources.
+             *
+             * @param connectivityProperties contains connectivity related configuration for ARC resources.
+             * @return the next definition stage.
+             */
+            Update withConnectivityProperties(Object connectivityProperties);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -142,4 +291,44 @@ public interface ArcSetting {
      * @return the refreshed resource.
      */
     ArcSetting refresh(Context context);
+
+    /**
+     * Generate password for arc settings.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    PasswordCredential generatePassword();
+
+    /**
+     * Generate password for arc settings.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<PasswordCredential> generatePasswordWithResponse(Context context);
+
+    /**
+     * Create Aad identity for arc settings.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcIdentity details.
+     */
+    ArcIdentityResponse createIdentity();
+
+    /**
+     * Create Aad identity for arc settings.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcIdentity details.
+     */
+    ArcIdentityResponse createIdentity(Context context);
 }

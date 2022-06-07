@@ -22,7 +22,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoEntity items.
+     * @return a collection of VideoEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VideoEntityInner> list(String resourceGroupName, String accountName);
@@ -38,7 +38,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoEntity items.
+     * @return a collection of VideoEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VideoEntityInner> list(String resourceGroupName, String accountName, Integer top, Context context);
@@ -67,7 +67,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a video resource within Azure Video Analyzer.
+     * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoEntityInner> getWithResponse(
@@ -100,7 +100,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a video resource within Azure Video Analyzer.
+     * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoEntityInner> createOrUpdateWithResponse(
@@ -129,7 +129,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String videoName, Context context);
@@ -161,7 +161,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a video resource within Azure Video Analyzer.
+     * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoEntityInner> updateWithResponse(
@@ -193,7 +193,7 @@ public interface VideosClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return "Video content token grants access to the video content URLs.".
+     * @return "Video content token grants access to the video content URLs." along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VideoContentTokenInner> listContentTokenWithResponse(

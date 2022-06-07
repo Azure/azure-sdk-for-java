@@ -103,3 +103,9 @@ extends:
         groupId: com.azure
         safeName: azuresecuritykeyvaultsecrets
         releaseInBatch: ${{ parameters.release_azuresecuritykeyvaultsecrets }}
+    AdditionalModules:
+      - name: azure-security-keyvault-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

@@ -72,6 +72,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
         Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
+        loggingContext.put(ENTITY_PATH_KEY, entityPath);
+
         this.logger = new ClientLogger(ReactorReceiver.class, loggingContext);
 
         // Delivered messages are not published on another scheduler because we want the settlement method that happens
@@ -122,7 +124,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         this.endpointStates = this.handler.getEndpointStates()
             .map(state -> {
                 logger.atVerbose()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log("State {}", state);
                 return AmqpEndpointStateUtil.getConnectionState(state);
             })
@@ -132,7 +133,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     : "Freeing resources due to error.";
 
                 logger.atInfo()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log(message);
 
                 completeClose();
@@ -143,7 +143,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     : "Freeing resources.";
 
                 logger.atVerbose()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log(message);
 
                 completeClose();
@@ -169,7 +168,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                     error -> { },
                     () -> {
                         logger.atVerbose()
-                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .log("Authorization completed.");
 
                         closeAsync("Authorization completed. Disposing.", null).subscribe();
@@ -291,7 +289,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         }
 
         addErrorCondition(logger.atVerbose(), errorCondition)
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("Setting error condition and disposing. {}", message);
 
         final Runnable closeReceiver = () -> {

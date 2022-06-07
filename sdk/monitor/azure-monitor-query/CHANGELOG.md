@@ -8,7 +8,17 @@
 
 ### Bugs Fixed
 
+- Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+
 ### Other Changes
+
+## 1.0.6 (2022-05-12)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.0`.
 
 ## 1.0.5 (2022-04-08)
 

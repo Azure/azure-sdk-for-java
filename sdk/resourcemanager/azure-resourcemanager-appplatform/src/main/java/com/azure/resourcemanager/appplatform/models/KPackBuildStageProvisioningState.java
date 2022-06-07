@@ -33,7 +33,11 @@ public final class KPackBuildStageProvisioningState extends ExpandableStringEnum
         return fromString(name, KPackBuildStageProvisioningState.class);
     }
 
-    /** @return known KPackBuildStageProvisioningState values. */
+    /**
+     * Gets known KPackBuildStageProvisioningState values.
+     *
+     * @return known KPackBuildStageProvisioningState values.
+     */
     public static Collection<KPackBuildStageProvisioningState> values() {
         return values(KPackBuildStageProvisioningState.class);
     }
