@@ -76,6 +76,7 @@ package-lock.json
 
 # VS Code
 .vscode/
+.vs/
 .factorypath
 jacoco.exec
 
