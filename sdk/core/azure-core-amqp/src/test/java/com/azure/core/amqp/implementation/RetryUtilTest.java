@@ -94,7 +94,7 @@ public class RetryUtilTest {
     void withRetryFluxEmitsItemsLaterThanTimeout() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
-        final Duration timeout = Duration.ofMillis(500);
+        final Duration timeout = Duration.ofSeconds(5);
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
