@@ -539,7 +539,7 @@ public class BinaryDataTest {
         int numberOfChunks = 22; // 2200 MB total
         byte[] bytes = new byte[chunkSize];
         RANDOM.nextBytes(bytes);
-        for (int i = 0 ; i < numberOfChunks; i++) {
+        for (int i = 0; i < numberOfChunks; i++) {
             Files.write(file, bytes, StandardOpenOption.APPEND);
         }
         assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
@@ -547,7 +547,7 @@ public class BinaryDataTest {
         AtomicInteger index = new AtomicInteger();
         BinaryData.fromFile(file).toFluxByteBuffer()
             .map(buffer -> {
-                while (buffer.hasRemaining()){
+                while (buffer.hasRemaining()) {
                     int idx = index.getAndUpdate(operand -> (operand + 1) % chunkSize);
                     assertEquals(bytes[idx], buffer.get());
                 }
@@ -563,12 +563,12 @@ public class BinaryDataTest {
         int numberOfChunks = 22; // 2200 MB total
         byte[] bytes = new byte[chunkSize];
         RANDOM.nextBytes(bytes);
-        for (int i = 0 ; i < numberOfChunks; i++) {
+        for (int i = 0; i < numberOfChunks; i++) {
             Files.write(file, bytes, StandardOpenOption.APPEND);
         }
         assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
 
-        try(InputStream is = BinaryData.fromFile(file).toStream()) {
+        try (InputStream is = BinaryData.fromFile(file).toStream()) {
             int read;
             int idx = 0;
             while ((read = is.read()) >= 0) {
