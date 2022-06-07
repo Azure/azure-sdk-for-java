@@ -32,7 +32,11 @@ public final class RouteMatrix {
         return this.statusCode;
     }
 
-    /** * Returns a {@link RouteLegSummary} summarizing this route section.** return RouteLegSummary */
+    /**
+     * Returns a {@link RouteLegSummary} summarizing this route section.
+     *
+     * @return a {@code RouteLegSummary} with the summary of this route leg.
+     */
     public RouteLegSummary getSummary() {
         return this.response.getSummary();
     }

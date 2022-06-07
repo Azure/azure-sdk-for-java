@@ -38,7 +38,11 @@ public final class RouteLeg {
         return this.summary;
     }
 
-    /** * Returns a list of {@link GeoPosition} coordinates.** return the coordinates */
+    /**
+     * Returns a list of {@link GeoPosition} coordinates.
+     *
+     * @return a list of {@code GeoPosition} coordinates.
+     */
     public List<GeoPosition> getPoints() {
         return this.points.stream()
                 .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))

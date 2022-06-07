@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +34,7 @@ import com.azure.maps.route.models.RouteDirectionsBatchResult;
 import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeResult;
 
-public class RouteTestBase extends TestBase{
+public class RouteTestBase extends TestBase {
     static final String FAKE_API_KEY = "1234567890";
 
     private final String endpoint = Configuration.getGlobalConfiguration().get("API-LEARN_ENDPOINT");
@@ -47,11 +50,11 @@ public class RouteTestBase extends TestBase{
         }
         interceptorManagerTestBase = interceptorManager;
     }
-    
+
     RouteClientBuilder getRouteAsyncClientBuilder(HttpClient httpClient, RouteServiceVersion serviceVersion) {
         RouteClientBuilder builder = new RouteClientBuilder()
-        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-        .serviceVersion(serviceVersion);
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion);
         String endpoint = getEndpoint();
         if (getEndpoint() != null) {
             builder.endpoint(endpoint);

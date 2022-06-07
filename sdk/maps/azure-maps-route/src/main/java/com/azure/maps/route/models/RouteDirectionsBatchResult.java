@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route.models;
 
 import java.util.List;
@@ -5,6 +8,10 @@ import java.util.List;
 import com.azure.maps.route.implementation.helpers.RouteDirectionsBatchResultPropertiesHelper;
 import com.azure.maps.route.implementation.models.RouteDirectionsBatchResultPrivate;
 
+/**
+ * Route Directions Batch Result
+ *
+ */
 public class RouteDirectionsBatchResult {
     private List<RouteDirectionsBatchItem> batchItems;
     private String batchId;
@@ -17,7 +24,7 @@ public class RouteDirectionsBatchResult {
                         RouteDirectionsBatchResultPrivate privateResult) {
                     result.setFromRouteDirectionsBatchResultPrivate(privateResult);
                 }
-        });
+            });
     }
 
     /**
@@ -29,9 +36,10 @@ public class RouteDirectionsBatchResult {
         return this.batchItems;
     }
 
-
     /**
      * Get the batch id of this request.
+     *
+     * @return the batch id
      */
     public String getBatchId() {
         return batchId;
@@ -39,7 +47,7 @@ public class RouteDirectionsBatchResult {
 
     /**
      * Sets the matrix id for this request.
-     * @param batch
+     * @param batchId the bach id for this request.
      */
     public void setBatchId(String batchId) {
         this.batchId = batchId;

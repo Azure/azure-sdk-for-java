@@ -36,7 +36,11 @@ public final class RouteRange {
         return new GeoPosition(returnValue.getLongitude(), returnValue.getLatitude());
     }
 
-    /** * Returns a list of {@link GeoPosition} coordinates.* * return the coordinates */
+    /**
+     * Returns a list of {@link GeoPosition} coordinates.
+     *
+     * @return a list of {@code GeoPosition} representing the boundary.
+     */
     public List<GeoPosition> getBoundary() {
         return this.boundary.stream()
                 .map(item -> new GeoPosition(item.getLongitude(), item.getLatitude()))

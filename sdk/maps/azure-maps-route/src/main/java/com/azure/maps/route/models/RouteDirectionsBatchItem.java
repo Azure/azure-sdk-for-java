@@ -5,7 +5,6 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.maps.route.implementation.models.BatchResultItem;
 import com.azure.maps.route.implementation.models.RouteDirectionsBatchItemResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,12 +18,20 @@ public final class RouteDirectionsBatchItem extends BatchResultItem {
     @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private RouteDirectionsBatchItemResponse response;
 
-    /** * Returns the {@link ErrorDetail} in case of an error response.* * return {@code ErrorDetail} */
+    /**
+     * Returns the {@link ErrorDetail} in case of an error response.
+     *
+     * @return the error detail as a {@code ErrorDetail}
+     */
     public ErrorDetail getError() {
         return this.response.getError();
     }
 
-    /** * Returns the {@link RouteDirections} associated with the response.* * return {@code RouteDirections} */
+    /**
+     * Returns the {@link RouteDirections} associated with the response.
+     *
+     * @return the route directions as a {@code RouteDirections}
+     */
     public RouteDirections getRouteDirections() {
         return (RouteDirections) this.response;
     }

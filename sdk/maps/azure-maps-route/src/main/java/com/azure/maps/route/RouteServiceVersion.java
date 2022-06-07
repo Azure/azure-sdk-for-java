@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route;
 
 import com.azure.core.util.ServiceVersion;
@@ -16,7 +19,7 @@ public enum RouteServiceVersion implements ServiceVersion {
     /**
      * Creates a new {@link RouteServiceVersion} with a version string.
      *
-     * @param version
+     * @param version the version of the service
      */
     RouteServiceVersion(String version) {
         this.version = version;

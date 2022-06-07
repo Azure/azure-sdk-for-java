@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.route;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,9 +50,9 @@ public class RouteClientTest extends RouteTestBase {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
         GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
-        new GeoPoint(4.85056, 52.36187)));
+            new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
-        new GeoPoint(13.42937, 52.50931)));
+            new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
@@ -68,9 +71,9 @@ public class RouteClientTest extends RouteTestBase {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
         GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
-        new GeoPoint(4.85056, 52.36187)));
+            new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
-        new GeoPoint(13.42937, 52.50931)));
+            new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
@@ -89,9 +92,9 @@ public class RouteClientTest extends RouteTestBase {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
         GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
-        new GeoPoint(4.85056, 52.36187)));
+            new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
-        new GeoPoint(13.42937, 52.50931)));
+            new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
@@ -115,9 +118,9 @@ public class RouteClientTest extends RouteTestBase {
         client = getRouteClient(httpClient, serviceVersion);
         RouteMatrixQuery matrixQuery = new RouteMatrixQuery();
         GeoPointCollection origins = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85106, 52.36006),
-        new GeoPoint(4.85056, 52.36187)));
+            new GeoPoint(4.85056, 52.36187)));
         GeoPointCollection destinations = new GeoPointCollection(Arrays.asList(new GeoPoint(4.85003, 52.36241),
-        new GeoPoint(13.42937, 52.50931)));
+            new GeoPoint(13.42937, 52.50931)));
         matrixQuery.setDestinations(destinations);
         matrixQuery.setOrigins(origins);
         RouteMatrixOptions options = new RouteMatrixOptions(matrixQuery);
@@ -172,7 +175,7 @@ public class RouteClientTest extends RouteTestBase {
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.getRouteDirectionsWithResponse(routeOptions, null));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+        assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get route directions with additional parameters
@@ -211,7 +214,7 @@ public class RouteClientTest extends RouteTestBase {
             .setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
-        RouteDirections actualResult = client.getRouteDirectionsWithAdditionalParameters(routeOptions,parameters);
+        RouteDirections actualResult = client.getRouteDirectionsWithAdditionalParameters(routeOptions, parameters);
         RouteDirections expectedResult = TestUtils.getExpectedRouteDirectionsWithAdditionalParameters();
         validateGetRouteDirections(expectedResult, actualResult);
     }
@@ -253,7 +256,7 @@ public class RouteClientTest extends RouteTestBase {
             .setSupportingPoints(supportingPoints)
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
-        validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirections(), 200, client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions,parameters, null));
+        validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirections(), 200, client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions, parameters, null));
     }
 
     // Case 2: Respone 400, incorrect input
@@ -293,8 +296,8 @@ public class RouteClientTest extends RouteTestBase {
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions,parameters, null));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                () -> client.getRouteDirectionsWithAdditionalParametersWithResponse(routeOptions, parameters, null));
+        assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test get route range
@@ -302,7 +305,7 @@ public class RouteClientTest extends RouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testGetRouteRange(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452,5.86605), 6000.0);
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), 6000.0);
         RouteRangeResult actualResult = client.getRouteRange(rangeOptions);
         RouteRangeResult expectedResult = TestUtils.getExpectedRouteRange();
         validateGetRouteRange(expectedResult, actualResult);
@@ -314,7 +317,7 @@ public class RouteClientTest extends RouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testGetRouteRangeWithResponse(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452,5.86605), 6000.0);
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), 6000.0);
         validateGetRouteRangeWithResponse(TestUtils.getExpectedRouteRange(), 200, client.getRouteRangeWithResponse(rangeOptions, null));
     }
 
@@ -323,10 +326,10 @@ public class RouteClientTest extends RouteTestBase {
     @MethodSource("com.azure.maps.route.TestUtils#getTestParameters")
     public void testInvalidGetRouteRangeWithResponse(HttpClient httpClient, RouteServiceVersion serviceVersion) throws IOException {
         client = getRouteClient(httpClient, serviceVersion);
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452,-10000000), 6000.0);
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, -10000000), 6000.0);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.getRouteRangeWithResponse(rangeOptions, null));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+        assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
 
     // Test begin request route directions batch
@@ -337,7 +340,7 @@ public class RouteClientTest extends RouteTestBase {
         RouteDirectionsOptions options1 = new RouteDirectionsOptions(
             Arrays.asList(new GeoPosition(47.639987, -122.128384),
                 new GeoPosition(47.621252, -122.184408),
-                new GeoPosition(47.596437,-122.332000)))
+                new GeoPosition(47.596437, -122.332000)))
             .setRouteType(RouteType.FASTEST)
             .setTravelMode(TravelMode.CAR)
             .setMaxAlternatives(5);
@@ -370,7 +373,7 @@ public class RouteClientTest extends RouteTestBase {
         RouteDirectionsOptions options1 = new RouteDirectionsOptions(
             Arrays.asList(new GeoPosition(47.639987, -122.128384),
                 new GeoPosition(47.621252, -122.184408),
-                new GeoPosition(47.596437,-122.332000)))
+                new GeoPosition(47.596437, -122.332000)))
             .setRouteType(RouteType.FASTEST)
             .setTravelMode(TravelMode.CAR)
             .setMaxAlternatives(5);
