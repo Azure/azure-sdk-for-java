@@ -31,6 +31,8 @@ custom-types: CommunicationTokenScope,TeamsUserExchangeTokenRequest
 custom-types-subpackage: models
 models-subpackage: implementation.models
 customization-class: src/main/java/TeamsUserExchangeTokenRequestCustomization.java
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
 
 ### Rename CommunicationIdentityTokenScope to CommunicationTokenScope

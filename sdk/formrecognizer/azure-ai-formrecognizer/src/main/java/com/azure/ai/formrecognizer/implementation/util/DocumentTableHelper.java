@@ -4,6 +4,8 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.BoundingRegion;
+import com.azure.ai.formrecognizer.models.DocumentCaption;
+import com.azure.ai.formrecognizer.models.DocumentFootnote;
 import com.azure.ai.formrecognizer.models.DocumentTableCell;
 import com.azure.ai.formrecognizer.models.DocumentSpan;
 import com.azure.ai.formrecognizer.models.DocumentTable;
@@ -32,6 +34,10 @@ public final class DocumentTableHelper {
         void setBoundingRegions(DocumentTable documentTable, List<BoundingRegion> boundingRegions);
 
         void setSpans(DocumentTable documentTable, List<DocumentSpan> spans);
+
+        void setTableCaption(DocumentTable documentTable, DocumentCaption tableCaption);
+
+        void setTableFootnotes(DocumentTable documentTable, List<DocumentFootnote> tableFootnotes);
     }
 
     /**
@@ -61,5 +67,13 @@ public final class DocumentTableHelper {
 
     static void setSpans(DocumentTable documentTable, List<DocumentSpan> spans) {
         accessor.setSpans(documentTable, spans);
+    }
+
+    static void setTableCaption(DocumentTable documentTable, DocumentCaption tableCaption) {
+        accessor.setTableCaption(documentTable, tableCaption);
+    }
+
+    static void setTableFootnotes(DocumentTable documentTable, List<DocumentFootnote> tableFootnotes) {
+        accessor.setTableFootnotes(documentTable, tableFootnotes);
     }
 }

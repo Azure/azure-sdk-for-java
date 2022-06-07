@@ -200,6 +200,20 @@ public final class FormRecognizerClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/documentModels/{modelId}:analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ResponseBase<AnalyzeDocumentHeaders, Void>> analyzeDocument(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("text/html") String analyzeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -705,6 +719,168 @@ public final class FormRecognizerClientImpl {
             Context context) {
         return analyzeDocumentWithResponseAsync(
                         modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context)
+                .block();
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
+            String modelId, String pages, String locale, StringIndexType stringIndexType, String analyzeRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.getApiVersion(),
+                                analyzeRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<AnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            String analyzeRequest,
+            Context context) {
+        final String accept = "application/json";
+        return service.analyzeDocument(
+                this.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.getApiVersion(),
+                analyzeRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> analyzeDocumentAsync(
+            String modelId, String pages, String locale, StringIndexType stringIndexType, String analyzeRequest) {
+        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest)
+                .flatMap((ResponseBase<AnalyzeDocumentHeaders, Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> analyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            String analyzeRequest,
+            Context context) {
+        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
+                .flatMap((ResponseBase<AnalyzeDocumentHeaders, Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void analyzeDocument(
+            String modelId, String pages, String locale, StringIndexType stringIndexType, String analyzeRequest) {
+        analyzeDocumentAsync(modelId, pages, locale, stringIndexType, analyzeRequest).block();
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            String analyzeRequest,
+            Context context) {
+        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
                 .block();
     }
 

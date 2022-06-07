@@ -36,6 +36,16 @@ public final class DocumentTable {
      */
     private List<DocumentSpan> spans;
 
+    /*
+     * Caption associated with the table.
+     */
+    private DocumentCaption caption;
+
+    /*
+     * Footnotes associated with the table.
+     */
+    private List<DocumentFootnote> footnotes;
+
     /**
      * Get the rowCount property: Number of rows in the table.
      *
@@ -131,6 +141,42 @@ public final class DocumentTable {
         this.spans = spans;
     }
 
+    /**
+     * Get the caption associated with the table.
+     *
+     * @return the caption value.
+     */
+    public DocumentCaption getCaption() {
+        return this.caption;
+    }
+
+    /**
+     * Set the caption associated with the table.
+     *
+     * @param caption the caption value to set.
+     */
+    void setCaption(DocumentCaption caption) {
+        this.caption = caption;
+    }
+
+    /**
+     * Get the footnotes associated with the table.
+     *
+     * @return the footnotes value.
+     */
+    public List<DocumentFootnote> getFootnotes() {
+        return this.footnotes;
+    }
+
+    /**
+     * Set the footnotes associated with the table.
+     *
+     * @param footnotes the footnotes value to set.
+     */
+    void setFootnotes(List<DocumentFootnote> footnotes) {
+        this.footnotes = footnotes;
+    }
+
     static {
         DocumentTableHelper.setAccessor(new DocumentTableHelper.DocumentTableAccessor() {
             @Override
@@ -156,6 +202,16 @@ public final class DocumentTable {
             @Override
             public void setSpans(DocumentTable documentTable, List<DocumentSpan> spans) {
                 documentTable.setSpans(spans);
+            }
+
+            @Override
+            public void setTableCaption(DocumentTable documentTable, DocumentCaption tableCaption) {
+                documentTable.setCaption(tableCaption);
+            }
+
+            @Override
+            public void setTableFootnotes(DocumentTable documentTable, List<DocumentFootnote> tableFootnotes) {
+                documentTable.setFootnotes(tableFootnotes);
             }
         });
     }
