@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List of possible provisioning service SKUs. */
 @Fluent
 public final class IotDpsSkuInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotDpsSkuInfo.class);
-
     /*
      * Sku name.
      */

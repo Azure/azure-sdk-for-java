@@ -36,3 +36,9 @@ extends:
       - name: azure-ai-textanalytics
         groupId: com.azure
         safeName: azureaitextanalytics
+    AdditionalModules:
+      - name: azure-ai-textanalytics-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

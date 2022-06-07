@@ -19,7 +19,6 @@ steps:
     parameters:
       Paths:
         - '**/*.xml'
-        - 'sdk/${{ parameters.ServiceDirectory }}'
         - ${{ if not(parameters.CheckoutRecordings) }}:
           - '!sdk/**/test-recordings'
           - '!sdk/**/session-records'
@@ -53,14 +52,30 @@ steps:
       AdditionalModules: ${{ parameters.AdditionalModules }}
       JobType: 'test'
 
+  # This call is used generate the sparse checkout variables for non-FromSource runs.
+  - task: PowerShell@2
+    displayName: Generate directories variable for sparse checkout
+    inputs:
+      pwsh: true
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+      arguments: >
+        -SourcesDirectory $(Build.SourcesDirectory)
+        -ProjectList $(ProjectList)
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+
+  # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
+  # is for FromSource runs or, in the case of code quality reports, a run that needs to build
+  # everything using the latest source. It'll greedily set any service directories as it figures
+  # out what libraries, their dependents and so on, that need to be in ClientFromSourcePom.xml
   - task: PythonScript@0
-    displayName: 'Generate directories variable for sparse checkout'
+    displayName: 'Generate FromSource POM and directories for sparse checkout'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
-      arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+      arguments: '--project-list $(ProjectList)'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
     parameters:
       SkipDefaultCheckout: true
-      Paths: $(CheckoutDirectories)
+      Paths: $(SparseCheckoutDirectories)

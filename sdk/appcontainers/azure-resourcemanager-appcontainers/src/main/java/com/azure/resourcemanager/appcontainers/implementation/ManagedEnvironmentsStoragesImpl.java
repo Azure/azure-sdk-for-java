@@ -29,8 +29,8 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
         this.serviceManager = serviceManager;
     }
 
-    public ManagedEnvironmentStoragesCollection list(String resourceGroupName, String envName) {
-        ManagedEnvironmentStoragesCollectionInner inner = this.serviceClient().list(resourceGroupName, envName);
+    public ManagedEnvironmentStoragesCollection list(String resourceGroupName, String environmentName) {
+        ManagedEnvironmentStoragesCollectionInner inner = this.serviceClient().list(resourceGroupName, environmentName);
         if (inner != null) {
             return new ManagedEnvironmentStoragesCollectionImpl(inner, this.manager());
         } else {
@@ -39,9 +39,9 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
     }
 
     public Response<ManagedEnvironmentStoragesCollection> listWithResponse(
-        String resourceGroupName, String envName, Context context) {
+        String resourceGroupName, String environmentName, Context context) {
         Response<ManagedEnvironmentStoragesCollectionInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, envName, context);
+            this.serviceClient().listWithResponse(resourceGroupName, environmentName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -53,8 +53,9 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
         }
     }
 
-    public ManagedEnvironmentStorage get(String resourceGroupName, String envName, String name) {
-        ManagedEnvironmentStorageInner inner = this.serviceClient().get(resourceGroupName, envName, name);
+    public ManagedEnvironmentStorage get(String resourceGroupName, String environmentName, String storageName) {
+        ManagedEnvironmentStorageInner inner =
+            this.serviceClient().get(resourceGroupName, environmentName, storageName);
         if (inner != null) {
             return new ManagedEnvironmentStorageImpl(inner, this.manager());
         } else {
@@ -63,9 +64,9 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
     }
 
     public Response<ManagedEnvironmentStorage> getWithResponse(
-        String resourceGroupName, String envName, String name, Context context) {
+        String resourceGroupName, String environmentName, String storageName, Context context) {
         Response<ManagedEnvironmentStorageInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, envName, name, context);
+            this.serviceClient().getWithResponse(resourceGroupName, environmentName, storageName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -77,12 +78,13 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
         }
     }
 
-    public void delete(String resourceGroupName, String envName, String name) {
-        this.serviceClient().delete(resourceGroupName, envName, name);
+    public void delete(String resourceGroupName, String environmentName, String storageName) {
+        this.serviceClient().delete(resourceGroupName, environmentName, storageName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String envName, String name, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, envName, name, context);
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String storageName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, storageName, context);
     }
 
     public ManagedEnvironmentStorage getById(String id) {
@@ -94,8 +96,8 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String envName = Utils.getValueFromIdByName(id, "managedEnvironments");
-        if (envName == null) {
+        String environmentName = Utils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -103,14 +105,14 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storages");
-        if (name == null) {
+        String storageName = Utils.getValueFromIdByName(id, "storages");
+        if (storageName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, envName, name, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, environmentName, storageName, Context.NONE).getValue();
     }
 
     public Response<ManagedEnvironmentStorage> getByIdWithResponse(String id, Context context) {
@@ -122,8 +124,8 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String envName = Utils.getValueFromIdByName(id, "managedEnvironments");
-        if (envName == null) {
+        String environmentName = Utils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -131,14 +133,14 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storages");
-        if (name == null) {
+        String storageName = Utils.getValueFromIdByName(id, "storages");
+        if (storageName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, envName, name, context);
+        return this.getWithResponse(resourceGroupName, environmentName, storageName, context);
     }
 
     public void deleteById(String id) {
@@ -150,8 +152,8 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String envName = Utils.getValueFromIdByName(id, "managedEnvironments");
-        if (envName == null) {
+        String environmentName = Utils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -159,14 +161,14 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storages");
-        if (name == null) {
+        String storageName = Utils.getValueFromIdByName(id, "storages");
+        if (storageName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, envName, name, Context.NONE);
+        this.deleteWithResponse(resourceGroupName, environmentName, storageName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -178,8 +180,8 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String envName = Utils.getValueFromIdByName(id, "managedEnvironments");
-        if (envName == null) {
+        String environmentName = Utils.getValueFromIdByName(id, "managedEnvironments");
+        if (environmentName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -187,14 +189,14 @@ public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironment
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'managedEnvironments'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "storages");
-        if (name == null) {
+        String storageName = Utils.getValueFromIdByName(id, "storages");
+        if (storageName == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, envName, name, context);
+        return this.deleteWithResponse(resourceGroupName, environmentName, storageName, context);
     }
 
     private ManagedEnvironmentsStoragesClient serviceClient() {

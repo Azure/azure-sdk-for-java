@@ -36,7 +36,11 @@ public final class BuilderProvisioningState extends ExpandableStringEnum<Builder
         return fromString(name, BuilderProvisioningState.class);
     }
 
-    /** @return known BuilderProvisioningState values. */
+    /**
+     * Gets known BuilderProvisioningState values.
+     *
+     * @return known BuilderProvisioningState values.
+     */
     public static Collection<BuilderProvisioningState> values() {
         return values(BuilderProvisioningState.class);
     }

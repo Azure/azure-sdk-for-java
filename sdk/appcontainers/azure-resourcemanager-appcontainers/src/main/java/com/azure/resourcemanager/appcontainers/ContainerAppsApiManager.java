@@ -243,7 +243,7 @@ public final class ContainerAppsApiManager {
                 .append("-")
                 .append("com.azure.resourcemanager.appcontainers")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -301,7 +301,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ContainerAppsAuthConfigs.
+     * Gets the resource collection API of ContainerAppsAuthConfigs. It manages AuthConfig.
      *
      * @return Resource collection API of ContainerAppsAuthConfigs.
      */
@@ -314,7 +314,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ContainerApps.
+     * Gets the resource collection API of ContainerApps. It manages ContainerApp.
      *
      * @return Resource collection API of ContainerApps.
      */
@@ -352,7 +352,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of DaprComponents.
+     * Gets the resource collection API of DaprComponents. It manages DaprComponent.
      *
      * @return Resource collection API of DaprComponents.
      */
@@ -376,7 +376,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedEnvironments.
+     * Gets the resource collection API of ManagedEnvironments. It manages ManagedEnvironment.
      *
      * @return Resource collection API of ManagedEnvironments.
      */
@@ -388,7 +388,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of Certificates.
+     * Gets the resource collection API of Certificates. It manages Certificate.
      *
      * @return Resource collection API of Certificates.
      */
@@ -412,7 +412,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ManagedEnvironmentsStorages.
+     * Gets the resource collection API of ManagedEnvironmentsStorages. It manages ManagedEnvironmentStorage.
      *
      * @return Resource collection API of ManagedEnvironmentsStorages.
      */
@@ -425,7 +425,7 @@ public final class ContainerAppsApiManager {
     }
 
     /**
-     * Gets the resource collection API of ContainerAppsSourceControls.
+     * Gets the resource collection API of ContainerAppsSourceControls. It manages SourceControl.
      *
      * @return Resource collection API of ContainerAppsSourceControls.
      */

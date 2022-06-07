@@ -237,7 +237,7 @@ public final class RequestOptions {
      */
     public RequestOptions setBody(BinaryData requestBody) {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody.toBytes()));
+        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
         return this;
     }
 

@@ -63,12 +63,6 @@ public final class AppResourceProperties {
     private PersistentDisk persistentDisk;
 
     /*
-     * List of custom persistent disks
-     */
-    @JsonProperty(value = "customPersistentDisks")
-    private List<CustomPersistentDiskResource> customPersistentDisks;
-
-    /*
      * Indicate if end to end TLS is enabled.
      */
     @JsonProperty(value = "enableEndToEndTLS")
@@ -219,26 +213,6 @@ public final class AppResourceProperties {
     }
 
     /**
-     * Get the customPersistentDisks property: List of custom persistent disks.
-     *
-     * @return the customPersistentDisks value.
-     */
-    public List<CustomPersistentDiskResource> customPersistentDisks() {
-        return this.customPersistentDisks;
-    }
-
-    /**
-     * Set the customPersistentDisks property: List of custom persistent disks.
-     *
-     * @param customPersistentDisks the customPersistentDisks value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withCustomPersistentDisks(List<CustomPersistentDiskResource> customPersistentDisks) {
-        this.customPersistentDisks = customPersistentDisks;
-        return this;
-    }
-
-    /**
      * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
      *
      * @return the enableEndToEndTls value.
@@ -289,9 +263,6 @@ public final class AppResourceProperties {
         }
         if (persistentDisk() != null) {
             persistentDisk().validate();
-        }
-        if (customPersistentDisks() != null) {
-            customPersistentDisks().forEach(e -> e.validate());
         }
         if (loadedCertificates() != null) {
             loadedCertificates().forEach(e -> e.validate());
