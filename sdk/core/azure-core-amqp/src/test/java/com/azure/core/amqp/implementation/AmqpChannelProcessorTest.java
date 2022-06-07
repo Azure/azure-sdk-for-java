@@ -11,6 +11,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -177,6 +178,7 @@ class AmqpChannelProcessorTest {
      */
     @MethodSource
     @ParameterizedTest
+    @Disabled("Disable test until fixed. https://github.com/Azure/azure-sdk-for-java/issues/29239")
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();

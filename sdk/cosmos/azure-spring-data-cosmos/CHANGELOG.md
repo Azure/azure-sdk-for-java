@@ -1,7 +1,6 @@
 ## Release History
 
 ### 3.22.0-beta.1 (Unreleased)
-
 #### Features Added
 * Exposed `maxDegreeOfParallelism` feature from CosmosQueryRequestOptions through application.properties flag - See [PR 28756](https://github.com/Azure/azure-sdk-for-java/pull/28756)
 

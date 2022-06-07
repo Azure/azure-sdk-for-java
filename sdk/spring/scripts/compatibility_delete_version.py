@@ -34,9 +34,9 @@ def find_all_poms_do_version_control(directory):
             if file_name.startswith('pom') and file_name.endswith('.xml'):
                 file_path = join(root, file_name)
                 delete_dependency_version(file_path)
-                replace_banned_dependencies(file_path)
 
 
+# Delete explicit versions, and use versions from Spring Boot or Spring Cloud BOMs
 def delete_dependency_version(file_path):
     log.info("delete dependency version in " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
@@ -45,21 +45,6 @@ def delete_dependency_version(file_path):
         for line in lines:
             if '<!-- {x-version-update;org.springframework' not in line:
                 new_pom_file.write(line)
-
-
-def replace_banned_dependencies(file_path):
-    with open(file_path, 'r', encoding = 'utf-8') as pom_file:
-        pom_file_content = pom_file.read()
-        if pom_file_content.find('<!-- {x-include-update;org.springframework') != -1:
-            log.info("replace bannedDependencies in " + file_path)
-            insert_position = pom_file_content.find('''<bannedDependencies>
-              <includes>''') + len('''<bannedDependencies>
-              <includes>''')
-            new_content = pom_file_content[:insert_position] \
-                          + '\n                <include>org.springframework.*</include>\n                <include>org.springframework:*</include>' \
-                          + pom_file_content[insert_position:]
-            with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
-                updated_pom_file.writelines(new_content)
 
 
 if __name__ == '__main__':

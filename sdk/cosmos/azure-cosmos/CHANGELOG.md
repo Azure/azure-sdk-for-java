@@ -9,7 +9,13 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Making CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
+
+### 4.30.1 (2022-06-01)
+
+#### Other Changes
+* Made CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
+* Added system property to allow overriding proxy setting for client telemetry endpoint. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
+* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
 
 ### 4.30.0 (2022-05-20)
 #### Bugs Fixed

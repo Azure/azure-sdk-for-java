@@ -1,0 +1,64 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read:analyze?stringIndexType=utf16CodeUnit&api-version=2022-06-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "874863ba-291b-40b2-9d84-8605b86ddcdd",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "64",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "83378b58-1add-4fa0-b74d-4826e4e25d61",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/83378b58-1add-4fa0-b74d-4826e4e25d61?api-version=2022-06-30-preview",
+      "Date" : "Wed, 01 Jun 2022 19:35:10 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/83378b58-1add-4fa0-b74d-4826e4e25d61?api-version=2022-06-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "daf68bea-2d4e-484a-97ef-0a1a4e9343ad"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "43",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a5853996-2798-4e38-9ede-923e9bbd09c5",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-06-01T19:35:11Z\",\"lastUpdatedDateTime\":\"2022-06-01T19:35:12Z\",\"analyzeResult\":{\n  \"apiVersion\": \"2022-06-30-preview\",\n  \"modelId\": \"prebuilt-read\",\n  \"stringIndexType\": \"utf16CodeUnit\",\n  \"content\": \"This is a docx example.\",\n  \"pages\": [\n    {\n      \"pageNumber\": 1,\n      \"words\": [\n        {\n          \"content\": \"This\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 0,\n            \"length\": 4\n          }\n        },\n        {\n          \"content\": \"is\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 5,\n            \"length\": 2\n          }\n        },\n        {\n          \"content\": \"a\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 8,\n            \"length\": 1\n          }\n        },\n        {\n          \"content\": \"docx\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 10,\n            \"length\": 4\n          }\n        },\n        {\n          \"content\": \"example.\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 15,\n            \"length\": 8\n          }\n        }\n      ],\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 23\n        }\n      ],\n      \"kind\": \"document\"\n    }\n  ],\n  \"paragraphs\": [\n    {\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 23\n        }\n      ],\n      \"content\": \"This is a docx example.\"\n    }\n  ],\n  \"styles\": [],\n  \"languages\": [\n    {\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 23\n        }\n      ],\n      \"locale\": \"en\",\n      \"confidence\": 1\n    }\n  ]\n}}",
+      "Date" : "Wed, 01 Jun 2022 19:35:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-read/analyzeResults/83378b58-1add-4fa0-b74d-4826e4e25d61?api-version=2022-06-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e5847ce7-3623-47e9-94d4-4ebd53747cd9"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "68",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dac72493-e88e-43b9-a5e2-d13b6466707c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-06-01T19:35:11Z\",\"lastUpdatedDateTime\":\"2022-06-01T19:35:12Z\",\"analyzeResult\":{\n  \"apiVersion\": \"2022-06-30-preview\",\n  \"modelId\": \"prebuilt-read\",\n  \"stringIndexType\": \"utf16CodeUnit\",\n  \"content\": \"This is a docx example.\",\n  \"pages\": [\n    {\n      \"pageNumber\": 1,\n      \"words\": [\n        {\n          \"content\": \"This\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 0,\n            \"length\": 4\n          }\n        },\n        {\n          \"content\": \"is\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 5,\n            \"length\": 2\n          }\n        },\n        {\n          \"content\": \"a\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 8,\n            \"length\": 1\n          }\n        },\n        {\n          \"content\": \"docx\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 10,\n            \"length\": 4\n          }\n        },\n        {\n          \"content\": \"example.\",\n          \"confidence\": 1,\n          \"span\": {\n            \"offset\": 15,\n            \"length\": 8\n          }\n        }\n      ],\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 23\n        }\n      ],\n      \"kind\": \"document\"\n    }\n  ],\n  \"paragraphs\": [\n    {\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 23\n        }\n      ],\n      \"content\": \"This is a docx example.\"\n    }\n  ],\n  \"styles\": [],\n  \"languages\": [\n    {\n      \"spans\": [\n        {\n          \"offset\": 0,\n          \"length\": 23\n        }\n      ],\n      \"locale\": \"en\",\n      \"confidence\": 1\n    }\n  ]\n}}",
+      "Date" : "Wed, 01 Jun 2022 19:35:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

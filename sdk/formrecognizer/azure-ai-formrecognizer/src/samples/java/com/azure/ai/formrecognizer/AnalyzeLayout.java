@@ -55,7 +55,7 @@ public class AnalyzeLayout {
             documentPage.getLines().forEach(documentLine ->
                 System.out.printf("Line '%s; is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString()));
+                    documentLine.getBoundingPolygon().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
@@ -67,7 +67,7 @@ public class AnalyzeLayout {
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
                 System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
                     documentSelectionMark.getState().toString(),
-                    documentSelectionMark.getBoundingBox().toString(),
+                    documentSelectionMark.getBoundingPolygon().toString(),
                     documentSelectionMark.getConfidence()));
         });
 
