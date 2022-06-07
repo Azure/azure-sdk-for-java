@@ -108,7 +108,7 @@ public class RetryUtilTest {
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(flux, options, timeoutMessage))
+        StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage))
             .expectSubscription()
             .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
             .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
