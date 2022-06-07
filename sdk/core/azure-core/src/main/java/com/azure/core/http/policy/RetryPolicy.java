@@ -145,7 +145,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     }
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        LOGGER.atVerbose()
+                        LOGGER.atInfo()
                             .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                             .log("Retry attempts have been exhausted.");
                     }
@@ -160,9 +160,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    LOGGER.atVerbose()
+                    LOGGER.atError()
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                        .log("Retry attempts have been exhausted.");
+                        .log("Retry attempts have been exhausted.", err);
                     return Mono.error(err);
                 }
             });

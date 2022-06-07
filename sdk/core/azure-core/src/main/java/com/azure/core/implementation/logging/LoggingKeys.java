@@ -10,7 +10,11 @@ package com.azure.core.implementation.logging;
  * When logging in client libraries, please do the best effort to stay consistent
  * with these keys, but copy the value.
  */
-public class LoggingKeys {
+public final class LoggingKeys {
+    private LoggingKeys() {
+
+    }
+
     /**
      * Key representing HTTP method.
      */

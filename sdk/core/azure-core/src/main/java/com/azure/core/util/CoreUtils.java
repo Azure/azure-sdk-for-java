@@ -343,7 +343,7 @@ public final class CoreUtils {
             if (timeoutMillis < 0) {
                 logger.atVerbose()
                     .addKeyValue(timeoutPropertyName, timeoutMillis)
-                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO'.");
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout..");
                 return Duration.ZERO;
             }
 
