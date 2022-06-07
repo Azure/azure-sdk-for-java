@@ -1067,7 +1067,7 @@
                 --add-opens java.base/java.lang.invoke=com.azure.core
                 <!-- Surefire doesn't load dependency jars properly, i.e. it disregards module-info manifests. This is a stop gap solution. -->
                 <!-- See https://github.com/Azure/azure-sdk-for-java/issues/29245 for proper solution -->
-                --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+<!--                &#45;&#45;add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED-->
                 ${additionalSurefireArgLine}
               </argLine>
             </configuration>
