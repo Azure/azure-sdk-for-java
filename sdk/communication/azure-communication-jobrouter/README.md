@@ -255,7 +255,7 @@ Running into issues? This section should contain details as to what to do there.
 - [Read more about Router in Azure Communication Services][router_concepts]
 
 ### More sample code
-Please take a look at the [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-jobrouter/samples) directory for detailed examples of how to use this library.
+Please take a look at the [samples](https://github.com/cparisineti/azure-sdk-for-java/tree/feature/jobrouter-initial-commit/sdk/communication/azure-communication-jobrouter/src/samples/) directory for detailed examples of how to use this library.
 
 
 ## Contributing
