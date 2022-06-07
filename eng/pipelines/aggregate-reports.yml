@@ -83,6 +83,8 @@ stages:
           displayName: 'Generate pom for aggregate code coverage report'
           inputs:
             scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
+            # Management and Spring track 2 groups will be added after
+            # https://github.com/Azure/azure-sdk-for-java/issues/29273 is resolved
             arguments: '--groups com.azure'
             workingDirectory: '$(System.DefaultWorkingDirectory)'
 
@@ -96,7 +98,7 @@ stages:
             jdkVersionOption: $(JavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
-            goals: 'jacoco:report-aggregate'
+            goals: 'verify jacoco:report-aggregate'
 
         - task: PublishTestResults@2
           condition: succeededOrFailed()
