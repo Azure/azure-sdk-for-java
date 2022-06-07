@@ -42,6 +42,7 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
@@ -378,6 +379,21 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 context.pipeline().flush().close();
                 return;
             }
+
+            if (event instanceof SslHandshakeCompletionEvent) {
+                SslHandshakeCompletionEvent sslHandshakeCompletionEvent = (SslHandshakeCompletionEvent) event;
+
+                // Even if we do not capture here, the channel will still be closed properly
+                // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.
+                if (!sslHandshakeCompletionEvent.isSuccess()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SslHandshake failed", sslHandshakeCompletionEvent.cause());
+                    }
+                    this.exceptionCaught(context, sslHandshakeCompletionEvent.cause());
+                    return;
+                }
+            }
+
             context.fireUserEventTriggered(event);
 
         } catch (Throwable error) {
@@ -413,9 +429,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public void close(final ChannelHandlerContext context, final ChannelPromise promise) {
 
         this.traceOperation(context, "close");
+        logger.info("channel closed");
 
         if (!this.closingExceptionally) {
-            this.completeAllPendingRequestsExceptionally(context, ON_CLOSE);
+            this.completeAllPendingRequestsExceptionally(context, promise.cause());
         } else {
             logger.debug("{} closed exceptionally", context);
         }

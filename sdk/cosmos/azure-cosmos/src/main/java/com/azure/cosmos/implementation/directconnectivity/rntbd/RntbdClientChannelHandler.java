@@ -123,15 +123,17 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
+        // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
+        SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
+        sslHandler.setHandshakeTimeout(10, TimeUnit.MILLISECONDS);
+
         pipeline.addFirst(
-            // TODO (DANOBLE) Log an issue with netty
-            // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
-            new SslHandler(this.config.sslContext().newEngine(channel.alloc())),
             new IdleStateHandler(
                 idleConnectionTimerResolutionInNanos,
                 idleConnectionTimerResolutionInNanos,
                 0,
-                TimeUnit.NANOSECONDS));
+                TimeUnit.NANOSECONDS),
+            sslHandler);
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
