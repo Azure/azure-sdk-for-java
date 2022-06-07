@@ -34,14 +34,11 @@ import com.azure.maps.route.implementation.RouteClientImpl;
 import com.azure.maps.route.implementation.RouteClientImplBuilder;
 
 /**
- * Builder class used to instantiate both synchronous and asynchronous {@link MapsSearchClient} clients.<br/>
- * <p><b>Example usage</b></p>
- * <p/>
+ * Builder class used to instantiate both synchronous and asynchronous {@link RouteClient} clients.
  * Creating a sync client using a {@link AzureKeyCredential}:
- * <!-- src_embed com.azure.maps.search.sync.builder.key.instantiation -->
+ * <!-- src_embed com.azure.maps.route.sync.builder.key.instantiation -->
  * Creating a sync client using a {@link TokenCredential}:
- * <p/>
- * <!-- src_embed com.azure.maps.search.sync.builder.ad.instantiation -->
+ * <!-- src_embed com.azure.maps.route.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {RouteClient.class, RouteAsyncClient.class})
 public final class RouteClientBuilder {

@@ -585,7 +585,7 @@ public class BaseRouteOptions<T extends BaseRouteOptions<T>>  {
      */
     @SuppressWarnings("unchecked")
     public T setConstantSpeedConsumptionInKwHPerHundredKm(String constantSpeedConsumptionInKwHPerHundredKm) {
-        this.constantSpeedConsumptionInLitersPerHundredKm = constantSpeedConsumptionInKwHPerHundredKm;
+        this.constantSpeedConsumptionInKwHPerHundredKm = constantSpeedConsumptionInKwHPerHundredKm;
         return (T) this;
     }
 

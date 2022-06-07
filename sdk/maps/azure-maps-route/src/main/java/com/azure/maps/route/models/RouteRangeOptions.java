@@ -76,7 +76,7 @@ public class RouteRangeOptions extends BaseRouteOptions<RouteRangeOptions> {
      * Sets the starting point.
      *
      * @param startingPoint a {@code GeoPosition} representing the starting point of this route.
-     * @return a reference to this {@RouteRangeOptions}
+     * @return a reference to this {@code RouteRangeOptions}
      */
     public RouteRangeOptions setStartingPoint(GeoPosition startingPoint) {
         this.startingPoint = startingPoint;
@@ -87,7 +87,7 @@ public class RouteRangeOptions extends BaseRouteOptions<RouteRangeOptions> {
      * Sets the fuel budget in liters.
      *
      * @param fuelBudgetInLiters the fuel budget.
-     * @return a reference to this {@RouteRangeOptions}
+     * @return a reference to this {@code RouteRangeOptions}
      */
     public RouteRangeOptions setFuelBudgetInLiters(Double fuelBudgetInLiters) {
         this.fuelBudgetInLiters = fuelBudgetInLiters;
@@ -98,7 +98,7 @@ public class RouteRangeOptions extends BaseRouteOptions<RouteRangeOptions> {
      * Sets the energy budget in KwH
      *
      * @param energyBudgetInKwH the energy budget
-     * @return a reference to this {@RouteRangeOptions}
+     * @return a reference to this {@code RouteRangeOptions}
      */
     public RouteRangeOptions setEnergyBudgetInKwH(Double energyBudgetInKwH) {
         this.energyBudgetInKwH = energyBudgetInKwH;
@@ -109,7 +109,7 @@ public class RouteRangeOptions extends BaseRouteOptions<RouteRangeOptions> {
      * Sets the time budget in seconds.
      *
      * @param timeBudgetInSec the time budget
-     * @return a reference to this {@RouteRangeOptions}
+     * @return a reference to this {@code RouteRangeOptions}
      */
     public RouteRangeOptions setTimeBudgetInSec(Double timeBudgetInSec) {
         this.timeBudgetInSec = timeBudgetInSec;
@@ -120,7 +120,7 @@ public class RouteRangeOptions extends BaseRouteOptions<RouteRangeOptions> {
      * Sets the distance budget in meters.
      *
      * @param distanceBudgetInMeters the distance budget.
-     * @return a reference to this {@RouteRangeOptions}
+     * @return a reference to this {@code RouteRangeOptions}
      */
     public RouteRangeOptions setDistanceBudgetInMeters(Double distanceBudgetInMeters) {
         this.distanceBudgetInMeters = distanceBudgetInMeters;
