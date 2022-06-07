@@ -128,7 +128,7 @@ jobs:
         displayName: Clean up maven local cache
         inputs:
           pwsh: true
-          filePath: ${{ parameters.WorkingDirectory }}/eng/scripts/Remove-Azure-Artifacts-From-Cache.ps1
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Remove-Azure-Artifacts-From-Cache.ps1
           arguments: >
             -MavenCacheFolder $(MAVEN_CACHE_FOLDER)
         continueOnError: true
