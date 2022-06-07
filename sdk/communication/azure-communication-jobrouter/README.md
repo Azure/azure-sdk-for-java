@@ -145,42 +145,107 @@ RouterClient routerClient = new RouterClientBuilder()
 Upsert an exception policy using `RouterClient` created from builder.
 
 ```java 
+String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
+RouterClient routerClient = new RouterClientBuilder()
+    .connectionString(connectionString)
+    .buildClient();
 
+/**
+ * Define an exception trigger.
+ * This sets off exception when there are at least 10 jobs in a queue.
+ */
+QueueLengthExceptionTrigger exceptionTrigger = new QueueLengthExceptionTrigger();
+exceptionTrigger.setThreshold(10);
+
+/**
+ * Define an exception action.
+ * This sets up what action to take when an exception trigger condition is fulfilled.
+ */
+ExceptionAction exceptionAction = new CancelExceptionAction();
+
+/**
+ * Defining exception rule combining the trigger and action.
+ */
+ExceptionRule exceptionRule = new ExceptionRule();
+exceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction));
+exceptionRule.setTrigger(exceptionTrigger);
+
+/**
+ * Create the exception policy.
+ */
+ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
+exceptionPolicy.setExceptionRules(Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
+routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+
+System.out.printf("Successfully created exception policy with id: %s %n", exceptionPolicyId);
+
+/**
+ * Add additional exception rule to policy.
+ */
+WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger();
+waitTimeExceptionTrigger.setThreshold("PT1H");
+
+ExceptionRule waitTimeExceptionRule = new ExceptionRule();
+waitTimeExceptionRule.setTrigger(waitTimeExceptionTrigger);
+waitTimeExceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
+
+exceptionPolicy.setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));
+
+/**
+ * Upsert policy using routerClient.
+ */
+routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+
+System.out.println("Exception policy has been successfully updated.");
 ```
-
-- `identifier`: Id of the exception policy.
-- `exception_rules`: (Optional) A dictionary collection of exception rules on the exception policy. Key is the Id of each exception rule.
-- `name`: (Optional) An user-friendly name of the policy.
-- `exception_policy`: (Optional) An instance of exception policy. If this is provided, then upsert request will be made using this. Generally it is expected to be used when updating an existing policy.
 
 ### Get an exception policy
 
 Using `RouterClient` retrieve an existing exception policy.
 
-```java
+```java 
+String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
+RouterClient routerClient = new RouterClientBuilder()
+    .connectionString(connectionString)
+    .buildClient();
 
+Response<ExceptionPolicy> exceptionPolicyResponse = routerClient.getExceptionPolicy(exceptionPolicyId);
+System.out.printf("Response headers are %s. Url %s  and status code %d %n", exceptionPolicyResponse.getHeaders(),
+    exceptionPolicyResponse.getRequest().getUrl(), exceptionPolicyResponse.getStatusCode());
+System.out.printf("Successfully fetched exception policy with id: %s %n", exceptionPolicyResponse.getValue().getId());
 ```
-
-- `identifier`: Id of the exception policy.
 
 ### List exception policies
 
 Using `RouterClient` to retrieve a list of exception policies that have been already created.
 
-```java
+```java 
+String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
+RouterClient routerClient = new RouterClientBuilder()
+    .connectionString(connectionString)
+    .buildClient();
 
+PagedIterable<PagedExceptionPolicy> exceptionPolicyPagedIterable = routerClient.listExceptionPolicies();
+exceptionPolicyPagedIterable.iterableByPage().forEach(resp -> {
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getElements().forEach(exceptionPolicy -> {
+        System.out.printf("Retrieved exception policy with id %s %n.", exceptionPolicy.getId());
+    });
+});
 ```
-- `results_per_page`: (Optional) The maximum number of policies to be returned per page.
 
 ### Delete an exception policy
 
 Using `RouterClient` delete an exception policy.
 
-```java
-
+```java 
+String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
+RouterClient routerClient = new RouterClientBuilder()
+    .connectionString(connectionString)
+    .buildClient();
+routerClient.deleteExceptionPolicy(exceptionPolicyId);
 ```
-
-- `identifier`: Id of the exception policy.
 
 ## Troubleshooting
 
