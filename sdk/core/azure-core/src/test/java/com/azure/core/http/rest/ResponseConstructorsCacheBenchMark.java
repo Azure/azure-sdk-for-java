@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.rest.ResponseConstructorsCache;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

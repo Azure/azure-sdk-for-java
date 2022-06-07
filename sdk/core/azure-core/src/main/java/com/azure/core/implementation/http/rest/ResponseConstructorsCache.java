@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * A concurrent cache of {@link Response} {@link MethodHandle} constructors.
  */
-final class ResponseConstructorsCache {
+public final class ResponseConstructorsCache {
     private static final String THREE_PARAM_ERROR = "Failed to deserialize 3-parameter response.";
     private static final String FOUR_PARAM_ERROR = "Failed to deserialize 4-parameter response.";
     private static final String FIVE_PARAM_ERROR = "Failed to deserialize 5-parameter response.";
@@ -38,7 +39,7 @@ final class ResponseConstructorsCache {
      * @return The {@link MethodHandle} that is capable of constructing an instance of the class or null if no handle is
      * found.
      */
-    MethodHandle get(Class<? extends Response<?>> responseClass) {
+    public MethodHandle get(Class<? extends Response<?>> responseClass) {
         return CACHE.computeIfAbsent(responseClass, ResponseConstructorsCache::locateResponseConstructor);
     }
 
@@ -60,7 +61,7 @@ final class ResponseConstructorsCache {
      * @return The {@link MethodHandle} that is capable of constructing an instance of the class or null if no handle is
      * found.
      */
-    private static MethodHandle locateResponseConstructor(Class<?> responseClass) {
+    public static MethodHandle locateResponseConstructor(Class<?> responseClass) {
         MethodHandles.Lookup lookupToUse;
         try {
             lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);
@@ -115,7 +116,7 @@ final class ResponseConstructorsCache {
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    Response<?> invoke(final MethodHandle handle,
+    public Response<?> invoke(final MethodHandle handle,
         final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
@@ -139,7 +140,7 @@ final class ResponseConstructorsCache {
     }
 
     //TODO: add javadoc g2vinay
-    Response<?> invokeSync(final MethodHandle handle,
+    public Response<?> invokeSync(final MethodHandle handle,
                              final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
