@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.render.models;
 
 import java.util.List;
@@ -24,7 +27,7 @@ public final class MapStaticImageOptions {
 
     /**
      * Gets raster tile format
-     * @return
+     * @return the {@code RasterTileFormat}
      */
     public RasterTileFormat getRasterTileFormat() {
         return format;
@@ -32,8 +35,8 @@ public final class MapStaticImageOptions {
 
     /**
      * Sets reaster tile format
-     * @param rasterTileFormat
-     * @return
+     * @param rasterTileFormat the {@code RasterTileFormat}
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setRasterTileFormat(RasterTileFormat rasterTileFormat) {
         this.format = rasterTileFormat;
@@ -42,7 +45,7 @@ public final class MapStaticImageOptions {
 
     /**
      * Gets static map layer
-     * @return
+     * @return the {@code StaticMapLayer}
      */
     public StaticMapLayer getStaticMapLayer() {
         return layer;
@@ -50,8 +53,8 @@ public final class MapStaticImageOptions {
 
     /**
      * Sets static map layer
-     * @param staticMapLayer
-     * @return
+     * @param staticMapLayer the static map layer {@code StaticMapLayer}
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setStaticMapLayer(StaticMapLayer staticMapLayer) {
         this.layer = staticMapLayer;
@@ -60,7 +63,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets map image style
-     * @return
+     * @return the desired map style
      */
     public MapImageStyle getMapImageStyle() {
         return style;
@@ -68,8 +71,8 @@ public final class MapStaticImageOptions {
 
     /**
      * Sets map image style
-     * @param mapImageStyle
-     * @return
+     * @param mapImageStyle the desired map style
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setMapImageStyle(MapImageStyle mapImageStyle) {
         this.style = mapImageStyle;
@@ -78,7 +81,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets zoom
-     * @return
+     * @return the zoom level
      */
     public Integer getZoom() {
         return zoom;
@@ -86,18 +89,17 @@ public final class MapStaticImageOptions {
 
     /**
      * sets zoom
-     * @param zoom
-     * @return
+     * @param zoom the zoom level
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setZoom(Integer zoom) {
-
         this.zoom = zoom;
         return this;
     }
 
     /**
      * gets center
-     * @return
+     * @return the center of the image
      */
     public GeoPosition getCenter() {
         return center;
@@ -105,8 +107,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets center
-     * @param center
-     * @return
+     * @param center center of the image
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setCenter(GeoPosition center) {
         this.center = center;
@@ -115,7 +117,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets bounding box
-     * @return
+     * @return the bounding box of the image
      */
     public GeoBoundingBox getBoundingBox() {
         return boundingBox;
@@ -123,8 +125,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets bounding box
-     * @param boundingBox
-     * @return
+     * @param boundingBox the bounding box of the image
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setBoundingBox(GeoBoundingBox boundingBox) {
         this.boundingBox = boundingBox;
@@ -133,7 +135,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets height
-     * @return
+     * @return the height of the image
      */
     public Integer getHeight() {
         return height;
@@ -141,8 +143,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets height
-     * @param height
-     * @return
+     * @param height the height of the image
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setHeight(Integer height) {
         this.height = height;
@@ -151,7 +153,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets width
-     * @return
+     * @return the width of the image
      */
     public Integer getWidth() {
         return width;
@@ -159,8 +161,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets width
-     * @param width
-     * @return
+     * @param width the width of the image
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setWidth(Integer width) {
         this.width = width;
@@ -169,7 +171,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets language
-     * @return
+     * @return the language
      */
     public String getLanguage() {
         return language;
@@ -177,26 +179,17 @@ public final class MapStaticImageOptions {
 
     /**
      * sets language
-     * @param language
-     * @return
+     * @param language the language
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setLanguage(String language) {
         this.language = language;
         return this;
     }
 
-
-    /**
-     * sets height
-     */
-    public MapStaticImageOptions setHeight(String language) {
-        this.language = language;
-        return this;
-    }
-
     /**
      * gets localized map view
-     * @return
+     * @return the localized map view
      */
     public LocalizedMapView getLocalizedMapView() {
         return localizedMapView;
@@ -204,8 +197,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets localized map view
-     * @param localizedMapView
-     * @return
+     * @param localizedMapView the localized map view
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setLocalizedMapView(LocalizedMapView localizedMapView) {
         this.localizedMapView = localizedMapView;
@@ -214,7 +207,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets pins
-     * @return
+     * @return a list of pins
      */
     public List<String> getPins() {
         return pins;
@@ -222,6 +215,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets pins
+     * @param pins list of pins
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setPins(List<String> pins) {
         this.pins = pins;
@@ -230,7 +225,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets path
-     * @return
+     * @return a list representing the path
      */
     public List<String> getPath() {
         return path;
@@ -238,8 +233,8 @@ public final class MapStaticImageOptions {
 
     /**
      * sets path
-     * @param path
-     * @return
+     * @param path the path
+     * @return a reference to this {@code MapStaticImageOptions}
      */
     public MapStaticImageOptions setPath(List<String> path) {
         this.path = path;

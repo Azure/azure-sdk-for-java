@@ -45,7 +45,7 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/sp
 namespace: com.azure.maps.render
 java: true
 output-folder: ../
-license-header: MICROSOFT_MIT_NO_CODEGEN
+license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
 add-context-parameter: true
 context-client-method-parameter: true

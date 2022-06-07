@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.render;
 
 import com.azure.core.util.ServiceVersion;
@@ -5,7 +8,7 @@ import com.azure.core.util.ServiceVersion;
 /**
  * Contains the versions of the Render Service available for the clients.
  */
-public enum RenderServiceVersion implements ServiceVersion{
+public enum RenderServiceVersion implements ServiceVersion {
     /**
     * Service version {@code 2.1}.
     */
@@ -16,7 +19,7 @@ public enum RenderServiceVersion implements ServiceVersion{
     /**
      * Creates a new {@link RenderServiceVersion} with a version string.
      *
-     * @param version
+     * @param version the service version
      */
     RenderServiceVersion(String version) {
         this.version = version;
@@ -37,5 +40,5 @@ public enum RenderServiceVersion implements ServiceVersion{
     @Override
     public String getVersion() {
         return this.version;
-    }  
+    }
 }
