@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.azure.tools</groupId>
     <artifactId>azure-sdk-archetype</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.tools:azure-sdk-archetype;current} -->
     <name>Azure SDK Maven archetype</name>
     <description>Azure SDK archetype to generate a new Maven project with
         recommended Azure SDK tools and configuration.</description>
