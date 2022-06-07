@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -347,26 +348,45 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-            .subscribeOn(Schedulers.boundedElastic())
-            : options.getDataFlux();
+        // TODO (kasobol-msft) Hacky for now. we should pack input stream into binary data.
+        if (options.getBinaryData() == null) {
 
-        return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
-            options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
-            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> {
-                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
-                return new SimpleResponse<>(rb, item);
-            });
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
+                .subscribeOn(Schedulers.boundedElastic())
+                : options.getDataFlux();
+            return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
+                    options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
+                    requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                    requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                    tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                    options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+                    encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> {
+                    BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
+                    BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsVersionId());
+                    return new SimpleResponse<>(rb, item);
+                });
+        } else {
+            return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
+                    options.getLength(), options.getBinaryData(), null, options.getContentMd5(), options.getMetadata(),
+                    requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                    requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                    tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                    options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+                    encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> {
+                    BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
+                    BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsVersionId());
+                    return new SimpleResponse<>(rb, item);
+                });
+        }
     }
 
     /**
@@ -596,12 +616,63 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String -->
+     * <pre>
+     * client.stageBlockWithResponse&#40;base64BlockID, data, length, md5, leaseId&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String -->
+     *
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * ids for a given blob must be the same length.
+     * @param data The data to write to the block. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
+     * @param leaseId The lease ID the active lease on the blob must match.
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, long length,
+                                                       byte[] contentMd5, String leaseId) {
+        try {
+            return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
+                contentMd5, leaseId, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
-        byte[] contentMd5, String leaseId, Context context) {
+                                                byte[] contentMd5, String leaseId, Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
-            base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
+                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, long length,
+                                                byte[] contentMd5, String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
+                base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
+                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 

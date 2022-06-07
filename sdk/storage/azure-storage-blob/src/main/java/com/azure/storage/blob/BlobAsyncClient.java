@@ -44,6 +44,8 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -950,45 +952,107 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         try {
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
-                channel -> {
-                    try {
-                        BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
-                        long fileSize = channel.size();
+            // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+            // But, this is configurable by the user passing options with max single upload size configured.
+            if (UploadUtils.shouldUploadInChunks(options.getFilePath(),
+                finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
+                if (finalParallelTransferOptions.getProgressReceiver() != null) {
+                    return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
+                        channel -> {
+                            try {
+                                BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
+                                long fileSize = channel.size();
+                                // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+                                // But, this is configurable by the user passing options with max single
+                                // upload size configured.
+                                return uploadFileChunksWithProgress(fileSize,
+                                    finalParallelTransferOptions, originalBlockSize,
+                                    options.getHeaders(), options.getMetadata(), options.getTags(),
+                                    options.getTier(), options.getRequestConditions(), channel,
+                                    blockBlobAsyncClient);
+                            } catch (IOException ex) {
+                                return Mono.error(ex);
+                            }
+                        },
+                        channel ->
+                            UploadUtils.uploadFileCleanup(channel, LOGGER));
+                } else {
+                    BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
+                    // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+                    // But, this is configurable by the user passing options with max single
+                    // upload size configured.
+                    return uploadFileChunks(
+                        finalParallelTransferOptions, originalBlockSize,
+                        options.getHeaders(), options.getMetadata(), options.getTags(),
+                        options.getTier(), options.getRequestConditions(), Paths.get(options.getFilePath()),
+                        blockBlobAsyncClient);
+                }
+            } else {
+                if (finalParallelTransferOptions.getProgressReceiver() != null) {
+                    return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
+                        channel -> {
+                            try {
+                                BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
+                                long fileSize = channel.size();
 
-                        // By default, if the file is larger than 256MB chunk it and stage it as blocks.
-                        // But, this is configurable by the user passing options with max single upload size configured.
-                        if (UploadUtils.shouldUploadInChunks(options.getFilePath(),
-                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
-                            return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
-                                options.getHeaders(), options.getMetadata(), options.getTags(),
-                                options.getTier(), options.getRequestConditions(), channel,
-                                blockBlobAsyncClient);
-                        } else {
-                            // Otherwise, we know it can be sent in a single request reducing network overhead.
-                            Flux<ByteBuffer> data = FluxUtil.readFile(channel);
-                            if (finalParallelTransferOptions.getProgressReceiver() != null) {
+                                // Otherwise, we know it can be sent in a single request reducing network overhead.
+                                Flux<ByteBuffer> data = FluxUtil.readFile(channel);
                                 data = ProgressReporter.addProgressReporting(data,
                                     finalParallelTransferOptions.getProgressReceiver());
+                                return blockBlobAsyncClient.uploadWithResponse(
+                                    new BlockBlobSimpleUploadOptions(data, fileSize).setHeaders(options.getHeaders())
+                                        .setMetadata(options.getMetadata()).setTags(options.getTags())
+                                        .setTier(options.getTier())
+                                        .setRequestConditions(options.getRequestConditions()));
+                            } catch (IOException ex) {
+                                return Mono.error(ex);
                             }
-                            return blockBlobAsyncClient.uploadWithResponse(
-                                new BlockBlobSimpleUploadOptions(data, fileSize).setHeaders(options.getHeaders())
-                                    .setMetadata(options.getMetadata()).setTags(options.getTags())
-                                    .setTier(options.getTier())
-                                    .setRequestConditions(options.getRequestConditions()));
-                        }
-                    } catch (IOException ex) {
-                        return Mono.error(ex);
-                    }
-                },
-                channel ->
-                UploadUtils.uploadFileCleanup(channel, LOGGER));
+                        },
+                        channel ->
+                            UploadUtils.uploadFileCleanup(channel, LOGGER));
+                } else {
+                    BinaryData data = BinaryData.fromFile(Paths.get(options.getFilePath()));
+                    BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
+                    return blockBlobAsyncClient.uploadWithResponse(
+                        new BlockBlobSimpleUploadOptions(data, data.getLength()).setHeaders(options.getHeaders())
+                            .setMetadata(options.getMetadata()).setTags(options.getTags())
+                            .setTier(options.getTier())
+                            .setRequestConditions(options.getRequestConditions()));
+                }
+            }
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    private Mono<Response<BlockBlobItem>> uploadFileChunks(
+    private Mono<Response<BlockBlobItem>> uploadFileChunks(ParallelTransferOptions parallelTransferOptions,
+        Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
+        AccessTier tier, BlobRequestConditions requestConditions, Path filePath,
+        BlockBlobAsyncClient client) {
+        final BlobRequestConditions finalRequestConditions = (requestConditions == null)
+            ? new BlobRequestConditions() : requestConditions;
+        // parallelTransferOptions are finalized in the calling method.
+        if (parallelTransferOptions.getProgressReceiver() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("ProgressReceiver must be null"));
+        }
+        final SortedMap<Long, String> blockIds = new TreeMap<>();
+        long fileSize = filePath.toFile().length();
+        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
+            .flatMap(chunk -> {
+                String blockId = getBlockID();
+                blockIds.put(chunk.getOffset(), blockId);
+
+                BinaryData data = BinaryData.fromFile(filePath, chunk.getOffset(), chunk.getCount());
+                return client.stageBlockWithResponse(blockId, data, chunk.getCount(), null,
+                    finalRequestConditions.getLeaseId());
+            }, parallelTransferOptions.getMaxConcurrency())
+            .then(Mono.defer(() -> client.commitBlockListWithResponse(
+                new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values()))
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
+                    .setRequestConditions(finalRequestConditions))));
+    }
+
+    private Mono<Response<BlockBlobItem>> uploadFileChunksWithProgress(
         long fileSize, ParallelTransferOptions parallelTransferOptions,
         Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, BlobRequestConditions requestConditions, AsynchronousFileChannel channel,
@@ -996,6 +1060,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
             ? new BlobRequestConditions() : requestConditions;
         // parallelTransferOptions are finalized in the calling method.
+
+        if (parallelTransferOptions.getProgressReceiver() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("ProgressReceiver must be not null"));
+        }
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
