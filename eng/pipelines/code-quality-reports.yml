@@ -123,3 +123,5 @@ jobs:
           }
         displayName: 'Fail Pipeline if Linting Reports Exist'
         condition: and(succeeded(), ne(variables['LintingGoals'], ''))
+
+      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
