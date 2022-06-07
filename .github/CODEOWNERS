@@ -163,7 +163,7 @@
 /sdk/tables/                                        @vcolin7 @conniey
 
 # PRLabel: %EngSys
-/sdk/template/                                      @hallipr @weshaggard
+/sdk/template/                                      @hallipr @weshaggard @JimSuplizio
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang
@@ -740,18 +740,18 @@
 ###########
 # Eng Sys
 ###########
-/eng/                                               @hallipr @weshaggard @benbp
+/eng/                                               @hallipr @weshaggard @benbp @JimSuplizio
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
-/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
+/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
+/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 /eng/bomgenerator                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 
-/**/tests.yml                                       @hallipr
-/**/ci.yml                                          @hallipr
+/**/tests.yml                                       @hallipr @JimSuplizio
+/**/ci.yml                                          @hallipr @JimSuplizio
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                @joshfree @jonathangiles

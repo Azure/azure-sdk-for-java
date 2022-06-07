@@ -220,8 +220,7 @@ final class PartitionBasedLoadBalancer {
                  * running or all Event Processors are down for this Event Hub, consumer group combination. All
                  * partitions in this Event Hub are available to claim. Choose a random partition to claim ownership.
                  */
-                claimOwnership(partitionOwnershipMap, ownerPartitionMap,
-                    partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
+                claimOwnership(partitionOwnershipMap, partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
                 return;
             }
 
@@ -286,7 +285,7 @@ final class PartitionBasedLoadBalancer {
                     return findPartitionToSteal(ownerPartitionMap);
                 });
 
-            claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
+            claimOwnership(partitionOwnershipMap, partitionToClaim);
         });
     }
 
@@ -318,6 +317,8 @@ final class PartitionBasedLoadBalancer {
             .subscribe(partitionPumpManager::verifyPartitionConnection,
                 ex -> {
                     LOGGER.error("Error renewing partition ownership", ex);
+                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
+                    processError.accept(errorContext);
                     isLoadBalancerRunning.set(false);
                 },
                 () -> isLoadBalancerRunning.set(false));
@@ -430,8 +431,7 @@ final class PartitionBasedLoadBalancer {
             }).collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
-    private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap, Map<String,
-        List<PartitionOwnership>> ownerPartitionsMap, final String partitionIdToClaim) {
+    private void claimOwnership(final Map<String, PartitionOwnership> partitionOwnershipMap, final String partitionIdToClaim) {
         LOGGER.atInfo()
             .addKeyValue(PARTITION_ID_KEY, partitionIdToClaim)
             .log("Attempting to claim ownership of partition.");

@@ -43,6 +43,12 @@ public final class AnalyzeResult {
     private List<DocumentPage> pages;
 
     /*
+     * Extracted paragraphs.
+     */
+    @JsonProperty(value = "paragraphs")
+    private List<DocumentParagraph> paragraphs;
+
+    /*
      * Extracted tables.
      */
     @JsonProperty(value = "tables")
@@ -53,12 +59,6 @@ public final class AnalyzeResult {
      */
     @JsonProperty(value = "keyValuePairs")
     private List<DocumentKeyValuePair> keyValuePairs;
-
-    /*
-     * Extracted entities.
-     */
-    @JsonProperty(value = "entities")
-    private List<DocumentEntity> entities;
 
     /*
      * Extracted font styles.
@@ -179,6 +179,26 @@ public final class AnalyzeResult {
     }
 
     /**
+     * Get the paragraphs property: Extracted paragraphs.
+     *
+     * @return the paragraphs value.
+     */
+    public List<DocumentParagraph> getParagraphs() {
+        return this.paragraphs;
+    }
+
+    /**
+     * Set the paragraphs property: Extracted paragraphs.
+     *
+     * @param paragraphs the paragraphs value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setParagraphs(List<DocumentParagraph> paragraphs) {
+        this.paragraphs = paragraphs;
+        return this;
+    }
+
+    /**
      * Get the tables property: Extracted tables.
      *
      * @return the tables value.
@@ -215,26 +235,6 @@ public final class AnalyzeResult {
      */
     public AnalyzeResult setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
-        return this;
-    }
-
-    /**
-     * Get the entities property: Extracted entities.
-     *
-     * @return the entities value.
-     */
-    public List<DocumentEntity> getEntities() {
-        return this.entities;
-    }
-
-    /**
-     * Set the entities property: Extracted entities.
-     *
-     * @param entities the entities value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setEntities(List<DocumentEntity> entities) {
-        this.entities = entities;
         return this;
     }
 
