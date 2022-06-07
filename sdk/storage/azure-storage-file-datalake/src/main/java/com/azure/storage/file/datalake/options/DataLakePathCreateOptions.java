@@ -28,7 +28,7 @@ public class DataLakePathCreateOptions {
     private DataLakeRequestConditions requestConditions;
     private String sourceLeaseId;
     private String proposedLeaseId;
-    private Long leaseDuration;
+    private Integer leaseDuration;
 
     /**
      * Optional parameters for creating a file or directory.
@@ -253,7 +253,7 @@ public class DataLakePathCreateOptions {
     /**
      * @return the lease duration in seconds.
      */
-    public Long getLeaseDuration() {
+    public Integer getLeaseDuration() {
         return leaseDuration;
     }
 
@@ -266,7 +266,7 @@ public class DataLakePathCreateOptions {
      * @param duration the new duration.
      * @return The updated options.
      */
-    public DataLakePathCreateOptions setLeaseDuration(Long duration) {
+    public DataLakePathCreateOptions setLeaseDuration(Integer duration) {
         leaseDuration = duration;
         return this;
     }

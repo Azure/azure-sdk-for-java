@@ -937,7 +937,7 @@ public class DataLakeFileSystemAsyncClient {
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
+     * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
      *     .setUmask&#40;umask&#41;
@@ -1297,7 +1297,7 @@ public class DataLakeFileSystemAsyncClient {
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
+     * Integer duration = 15;
      *
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;

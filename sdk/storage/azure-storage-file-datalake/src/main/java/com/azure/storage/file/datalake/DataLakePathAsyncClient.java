@@ -426,7 +426,7 @@ public class DataLakePathAsyncClient {
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
      * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
-     * Long duration = 15L;
+     * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
      *     .setUmask&#40;umask&#41;
@@ -482,11 +482,13 @@ public class DataLakePathAsyncClient {
             expiresOnString = Long.toString(options.getScheduleDeletionOptions().getTimeToExpire().toMillis());
         }
 
+        Long leaseDuration = options.getLeaseDuration() != null ? Long.valueOf(options.getLeaseDuration()) : null;
+
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
                 options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
                 options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
-                options.getLeaseDuration(), expiryOptions, expiresOnString, options.getPathHttpHeaders(),
+                leaseDuration, expiryOptions, expiresOnString, options.getPathHttpHeaders(),
                 lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
