@@ -32,14 +32,14 @@ There are two swaggers for Azure Search, `searchindex` and `searchservice`. They
 
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java
+autorest
 ```
 
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --tag=package-2020-06-searchindex
-autorest --use=C:/work/autorest.java --tag=package-2020-06-searchservice
+autorest --tag=package-2021-04-30-Preview-searchindex
+autorest --tag=package-2021-04-30-Preview-searchservice
 ```
 ## Configuration
 
@@ -107,6 +107,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
+use: '@autorest/java@4.0.60'
 sync-methods: none
 generate-client-interfaces: false
 context-client-method-parameter: true

@@ -41,9 +41,13 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SuggestOptions;
-import java.util.List;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {
@@ -90,7 +94,7 @@ public final class DocumentsImpl {
                 @HostParam("indexName") String indexName,
                 @QueryParam("search") String searchText,
                 @QueryParam("$count") Boolean includeTotalCount,
-                @QueryParam("facet") String facets,
+                @QueryParam(value = "facet", multipleQueryParams = true) List<String> facets,
                 @QueryParam("$filter") String filter,
                 @QueryParam("highlight") String highlightFields,
                 @QueryParam("highlightPostTag") String highlightPostTag,
@@ -98,7 +102,7 @@ public final class DocumentsImpl {
                 @QueryParam("minimumCoverage") Double minimumCoverage,
                 @QueryParam("$orderby") String orderBy,
                 @QueryParam("queryType") QueryType queryType,
-                @QueryParam("scoringParameter") String scoringParameters,
+                @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("searchMode") SearchMode searchMode,
@@ -355,14 +359,20 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String facetsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(facets, CollectionFormat.CSV);
+        List<String> facetsConverted =
+                (facets == null)
+                        ? new ArrayList<>()
+                        : facets.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         String highlightFieldsConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
         String orderByConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
-        String scoringParametersConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(scoringParameters, CollectionFormat.CSV);
+        List<String> scoringParametersConverted =
+                (scoringParameters == null)
+                        ? new ArrayList<>()
+                        : scoringParameters.stream()
+                                .map(item -> Objects.toString(item, ""))
+                                .collect(Collectors.toList());
         String searchFieldsConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         String selectConverted =

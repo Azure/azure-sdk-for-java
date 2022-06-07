@@ -2,6 +2,10 @@
 
 ## 11.4.11 (2022-06-07)
 
+### Bugs Fixed
+
+- Fixed a bug where a custom `ObjectSerializer`'s output wasn't being respected in regard to null field values. ([#29238](https://github.com/Azure/azure-sdk-for-java/pull/29238))
+
 ### Other Changes
 
 #### Dependency Updates
