@@ -17,9 +17,9 @@ public final class DocumentSelectionMark {
     private SelectionMarkState state;
 
     /*
-     * Bounding box of the selection mark.
+     * Bounding polygon of the selection mark.
      */
-    private List<Float> boundingBox;
+    private List<Point> boundingPolygon;
 
     /*
      * Location of the selection mark in the reading order concatenated
@@ -52,22 +52,26 @@ public final class DocumentSelectionMark {
     }
 
     /**
-     * Get the boundingBox property: Bounding box of the selection mark.
+     * Get the list of coordinates of the bounding polygon for the selection mark.
+     * The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees inclusive)
+     * relative to the element orientation.
      *
-     * @return the boundingBox value.
+     * @return the boundingPolygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Point> getBoundingPolygon() {
+        return this.boundingPolygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box of the selection mark.
+     * Set the list of coordinates of the bounding polygon for the selection mark.
+     * The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees inclusive)
+     * relative to the element orientation.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param boundingPolygon the boundingPolygon value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    void setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    void setBoundingPolygon(List<Point> boundingPolygon) {
+        this.boundingPolygon = boundingPolygon;
     }
 
     /**
@@ -116,8 +120,8 @@ public final class DocumentSelectionMark {
             }
 
             @Override
-            public void setBoundingBox(DocumentSelectionMark documentSelectionMark, List<Float> boundingBox) {
-                documentSelectionMark.setBoundingBox(boundingBox);
+            public void setBoundingPolygon(DocumentSelectionMark documentSelectionMark, List<Point> boundingPolygon) {
+                documentSelectionMark.setBoundingPolygon(boundingPolygon);
             }
 
             @Override
@@ -127,7 +131,7 @@ public final class DocumentSelectionMark {
 
             @Override
             public void setConfidence(DocumentSelectionMark documentSelectionMark, float confidence) {
-
+                documentSelectionMark.setConfidence(confidence);
             }
         });
     }
