@@ -7,7 +7,7 @@
 #     Refs: https://spring.io/projects/spring-cloud
 #  2. Run command ,sample: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 2.7.0 -c 2021.0.3`.
 #     Or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3`.
-#  3. Then a file named `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt` will be created.
+#  3. Then a file named `spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt` will be created.
 #
 # Please refer to ./README.md to get more information about this script.
 ############################################################################################################################################
