@@ -90,7 +90,9 @@ public final class TestEnvironment {
         return httpClientType;
     }
 
-    public String getConnectionString() { return connectionString; }
+    public String getConnectionString() {
+        return connectionString;
+    }
 
     public enum TestHttpClientType {
         NETTY,
