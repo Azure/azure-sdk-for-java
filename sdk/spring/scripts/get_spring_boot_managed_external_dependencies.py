@@ -2,10 +2,11 @@
 # This script is used to get all 3rd party dependencies managed by spring-boot-dependencies and spring-cloud-dependencies.
 #
 # How to use this script.
-#  1. Get `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION`.
+#  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
+#     Get `SPRING_CLOUD_VERSION` from https://github.com/spring-cloud/spring-cloud-release/tags.
 #     Note that spring-cloud version should compatible with spring-boot version.
-#     Refs: https://spring.io/projects/spring-cloud
-#  2. Run command ,sample: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 2.7.0 -c 2021.0.3`.
+#     Refs: https://spring.io/projects/spring-cloud.
+#  2. Run command: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 2.7.0 -c 2021.0.3`.
 #     Or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3`.
 #  3. Then a file named `spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt` will be created.
 #
