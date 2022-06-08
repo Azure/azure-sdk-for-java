@@ -3,67 +3,33 @@
 
 package com.azure.communication.callingserver;
 
-//import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.FluxUtil.monoError;
-//import java.net.URI;
-//import java.util.List;
-//import java.util.stream.Collectors;
 
+import com.azure.communication.callingserver.implementation.converters.PagedConverter;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
-//import com.azure.communication.callingserver.implementation.converters.AddParticipantResultConverter;
-//import com.azure.communication.callingserver.implementation.converters.AudioGroupResultConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
-//import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
-//import com.azure.communication.callingserver.implementation.converters.RemoveParticipantRequestConverter;
-//import com.azure.communication.callingserver.implementation.converters.TransferToCallRequestConverter;
-//import com.azure.communication.callingserver.implementation.converters.TransferToParticipantRequestConverter;
-//import com.azure.communication.callingserver.implementation.converters.TransferCallResultConverter;
-//import com.azure.communication.callingserver.implementation.models.AudioGroupRequest;
-//import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
-//import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-//import com.azure.communication.callingserver.implementation.models.GetParticipantRequest;
-//import com.azure.communication.callingserver.implementation.models.RemoveFromDefaultAudioGroupRequest;
-//import com.azure.communication.callingserver.implementation.models.MuteParticipantRequest;
-//import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-//import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
-//import com.azure.communication.callingserver.implementation.models.AddToDefaultAudioGroupRequest;
-//import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-//import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequest;
-//import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
-//import com.azure.communication.callingserver.implementation.models.UpdateAudioGroupRequest;
-//import com.azure.communication.callingserver.models.AddParticipantResult;
-//import com.azure.communication.callingserver.models.AudioGroupResult;
-//import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+import com.azure.communication.callingserver.implementation.models.TerminateCallRequest;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-//import com.azure.communication.callingserver.models.CreateAudioGroupResult;
-//import com.azure.communication.callingserver.models.PlayAudioOptions;
-//import com.azure.communication.callingserver.models.PlayAudioResult;
-//import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
-//import com.azure.communication.common.PhoneNumberIdentifier;
-//import com.azure.core.annotation.ReturnType;
-//import com.azure.core.annotation.ServiceMethod;
-//import com.azure.core.http.rest.Response;
-//import com.azure.core.http.rest.SimpleResponse;
-//import com.azure.core.util.Context;
 import com.azure.communication.callingserver.models.TransferCallOptions;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
+
 import reactor.core.publisher.Mono;
 
 /**
@@ -460,81 +426,33 @@ public class CallConnectionAsync {
         }
     }
 
-//    /**
-//     * Get all participants.
-//     *
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
-//     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-//     * @return Response payload for a successful get call connection request.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<CallParticipant> getParticipants() {
-//        return getParticipants(null);
-//    }
-//
-//    /**
-//     * Get all participants.
-//     *
-//     * @param context A {@link Context} representing the request context.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
-//     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-//     * @return Response payload for a successful get call connection request.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<CallParticipant> getParticipants(Context context) {
-//        try {
-//            return (context == null ? callConnectionInternal.getParticipantAsync(callLegId, participantId)
-//                : callConnectionInternal.getParticipantAsync(callLegId, participantId, context))
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-//                .flatMap(result -> Mono.just(CallParticipantConverter.convert(result)));
-//        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
-//        }
-//    }
-//
-//    /**
-//     * Get all participants.
-//     *
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
-//     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-//     * @return Response payload for a successful get call connection request.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<Response<CallParticipant>> getParticipantsWithResponse() {
-//        return getParticipantsWithResponse(null);
-//    }
-//
-//    /**
-//     * Get all participants.
-//     *
-//     * @param context A {@link Context} representing the request context.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
-//     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-//     * @return Response payload for a successful get call connection request.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Mono<Response<CallParticipant>> getParticipantsWithResponse(Context context) {
-//        try {
-//            return (context == null ? callConnectionInternal.getParticipantWithResponseAsync(callLegId, participantId)
-//                : callConnectionInternal.getParticipantWithResponseAsync(callLegId, participantId, context))
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-//                .map(response ->
-//                    new SimpleResponse<>(response,
-//                        CallParticipantConverter.convert(response.getValue())));
-//        } catch (RuntimeException ex) {
-//            return monoError(logger, ex);
-//        }
-//    }
-//
-//    private PagedFlux<Response<CallParticipant>> getParticipantsFirstPageFunc(int maxPageSize, String continuationToken, Context context) {
-//        try {
-//            PagedFlux<CallParticipantInternal> ret = callConnectionInternal.listParticipantAsync(callLegId, maxPageSize, continuationToken, context);
-//            return ret
-//                .subscribe(item -> System.out.println("Processing item with value: " + item));
-//        } catch (RuntimeException ex) {
-//            return fluxError(logger, ex);
-//        }
-//    }
+    /**
+     * Get all participants.
+     * @param maxPageSize The max element of each page.
+     * @param continuationToken The continuation token.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CallParticipant> getParticipants(int maxPageSize, String continuationToken) {
+        return getParticipants(maxPageSize, continuationToken, null);
+    }
+
+    /**
+     * Get all participants.
+     * @param maxPageSize The max element of each page.
+     * @param continuationToken The continuation token.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CallParticipant> getParticipants(int maxPageSize, String continuationToken, Context context) {
+        return context == null ? PagedConverter.mapPage(callConnectionInternal.listParticipantAsync(callLegId, maxPageSize, continuationToken), item -> CallParticipantConverter.convert(item))
+            : PagedConverter.mapPage(callConnectionInternal.listParticipantAsync(callLegId, maxPageSize, continuationToken, context), item -> CallParticipantConverter.convert(item));
+    }
 
     /**
      * Add a participant to the call.
