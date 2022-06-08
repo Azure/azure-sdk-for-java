@@ -221,14 +221,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
     public Mono<CommunityGalleryImageVersionInner> getAsync(
         String location, String publicGalleryName, String galleryImageName, String galleryImageVersionName) {
         return getWithResponseAsync(location, publicGalleryName, galleryImageName, galleryImageVersionName)
-            .flatMap(
-                (Response<CommunityGalleryImageVersionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

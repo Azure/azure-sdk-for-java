@@ -55,8 +55,15 @@ public final class TestUtils {
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
     static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
-    static final String LICENSE_CARD_JPG = "license.jpg";
+    static final String LICENSE_PNG = "license.png";
     static final String INVOICE_NO_SUB_LINE_PDF = "ErrorImage.tiff";
+    static final String W2_JPG = "w2-single.png";
+    static final String EXAMPLE_DOCX = "example.docx";
+    static final String EXAMPLE_PPT = "example.pptx";
+    static final String EXAMPLE_HTML = "example.html";
+
+    static final String EXAMPLE_XLSX = "example.xlsx";
+    static final String GERMAN_PNG = "read-german.png";
     static final String INVALID_URL = "htttttttps://localhost:8080";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
@@ -234,7 +241,7 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         List<DocumentAnalysisServiceVersion> serviceVersions = new ArrayList<>();
-        serviceVersions.add(DocumentAnalysisServiceVersion.V2022_01_30_PREVIEW);
+        serviceVersions.add(DocumentAnalysisServiceVersion.V2022_06_30_PREVIEW);
         getHttpClients()
             .forEach(httpClient -> serviceVersions.stream().filter(
                     TestUtils::shouldServiceVersionBeTested)

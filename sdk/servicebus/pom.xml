@@ -18,7 +18,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-servicebus</artifactId>
-          <version>7.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+          <version>7.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
         </dependency>
       </dependencies>
 
@@ -27,7 +27,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>

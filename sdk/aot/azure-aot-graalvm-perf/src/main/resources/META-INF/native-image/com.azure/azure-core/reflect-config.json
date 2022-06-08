@@ -6,6 +6,18 @@
     "allDeclaredFields": true
   },
   {
+    "name": "com.azure.perf.test.core.MockEventProcessorTest$MockEventProcessorPerfOptions",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.perf.test.core.MockBatchReceiverTest$MockReceiverOptions",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
     "name": "com.azure.perf.test.core.HttpPipelineOptions",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true,
@@ -13,6 +25,18 @@
   },
   {
     "name": "com.azure.perf.test.core.ExceptionTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.perf.test.core.MockBatchReceiverTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.perf.test.core.MockEventProcessorTest",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true,
     "allDeclaredFields": true

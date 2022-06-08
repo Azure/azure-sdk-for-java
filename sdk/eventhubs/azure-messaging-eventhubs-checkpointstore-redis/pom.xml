@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <groupId>com.azure</groupId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-messaging-eventhubs-checkpointstore-redis</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-redis;current} -->
+
+
+  <name>Microsoft Azure client library for storing checkpoints in Azure Redis</name>
+  <description>Library for using storing checkpoints in Azure Redis</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <version>5.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+    </dependency>
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+    </dependency>
+  </dependencies>
+
+  <build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-enforcer-plugin</artifactId>
+      <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+      <configuration>
+        <rules>
+          <bannedDependencies>
+            <includes>
+              <include>redis.clients:jedis:[4.2.3]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
+            </includes>
+          </bannedDependencies>
+        </rules>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+
+
+</project>

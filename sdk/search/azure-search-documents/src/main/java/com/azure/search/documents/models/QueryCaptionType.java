@@ -30,7 +30,11 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
         return fromString(name, QueryCaptionType.class);
     }
 
-    /** @return known QueryCaptionType values. */
+    /**
+     * Gets known QueryCaptionType values.
+     *
+     * @return known QueryCaptionType values.
+     */
     public static Collection<QueryCaptionType> values() {
         return values(QueryCaptionType.class);
     }

@@ -491,8 +491,7 @@ public final class CosmosChangeFeedRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.setCosmosChangeFeedRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor() {
 
@@ -508,19 +507,19 @@ public final class CosmosChangeFeedRequestOptions {
 
                 @Override
                 public void setOperationContext
-                (
-                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
-                    OperationContextAndListenerTuple operationContextAndListenerTuple
-                ) {
+                    (
+                        CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                        OperationContextAndListenerTuple operationContextAndListenerTuple
+                    ) {
 
                     changeFeedRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
                 }
 
                 @Override
                 public OperationContextAndListenerTuple getOperationContext
-                (
-                    CosmosChangeFeedRequestOptions changeFeedRequestOptions
-                ) {
+                    (
+                        CosmosChangeFeedRequestOptions changeFeedRequestOptions
+                    ) {
 
                     return changeFeedRequestOptions.getOperationContextAndListenerTuple();
                 }
@@ -542,4 +541,6 @@ public final class CosmosChangeFeedRequestOptions {
                 }
             });
     }
+
+    static { initialize(); }
 }

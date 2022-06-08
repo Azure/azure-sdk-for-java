@@ -76,7 +76,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelReleased(final Channel channel) {
-        logger.debug("{} CHANNEL RELEASED", channel);
+        if (logger.isDebugEnabled()) {
+            logger.debug("{} CHANNEL RELEASED", channel);
+        }
     }
 
     /**

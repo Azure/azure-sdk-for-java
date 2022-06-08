@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailabilitySets ListAvailableSizes. */
 public final class AvailabilitySetsListAvailableSizesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_ListAvailableSizes_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/availabilitySetExamples/AvailabilitySets_ListAvailableSizes_MinimumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySets_ListAvailableSizes_MinimumSet_Gen.
@@ -27,7 +27,7 @@ public final class AvailabilitySetsListAvailableSizesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/availabilitySetExamples/AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvailabilitySets_ListAvailableSizes_MaximumSet_Gen.

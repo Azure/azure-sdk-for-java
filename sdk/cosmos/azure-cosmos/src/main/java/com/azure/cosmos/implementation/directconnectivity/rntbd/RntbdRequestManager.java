@@ -55,6 +55,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
+import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
@@ -303,7 +304,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, cause);
-            logger.debug("{} closing due to:", context, cause);
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} closing due to:", context, cause);
+            }
             context.flush().close();
         }
     }
@@ -325,21 +328,43 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             if (event instanceof IdleStateEvent) {
                 // NOTE: if the connection is killed this may not receive any event
-                this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
+                if (this.healthChecker instanceof RntbdClientChannelHealthChecker) {
+                    ((RntbdClientChannelHealthChecker) this.healthChecker)
+                        .isHealthyWithFailureReason(context.channel()).addListener((Future<String> future) -> {
 
-                    final Throwable cause;
+                        final Throwable cause;
 
-                    if (future.isSuccess()) {
-                        if (future.get()) {
-                            return;
+                        if (future.isSuccess()) {
+                            if (RntbdConstants.RntbdHealthCheckResults.SuccessValue.equals(future.get())) {
+                                return;
+                            }
+                            cause = new UnhealthyChannelException(future.get());
+                        } else {
+                            cause = future.cause();
                         }
-                        cause = UnhealthyChannelException.INSTANCE;
-                    } else {
-                        cause = future.cause();
-                    }
 
-                    this.exceptionCaught(context, cause);
-                });
+                        this.exceptionCaught(context, cause);
+                    });
+                } else {
+                    this.healthChecker.isHealthy(context.channel()).addListener((Future<Boolean> future) -> {
+
+                        final Throwable cause;
+
+                        if (future.isSuccess()) {
+                            if (future.get()) {
+                                return;
+                            }
+                            cause = new UnhealthyChannelException(
+                                MessageFormat.format(
+                                    "Custom ChannelHealthChecker {0} failed.",
+                                    this.healthChecker.getClass().getSimpleName()));
+                        } else {
+                            cause = future.cause();
+                        }
+
+                        this.exceptionCaught(context, cause);
+                    });
+                }
 
                 return;
             }
@@ -912,12 +937,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Types
 
-    private static final class UnhealthyChannelException extends ChannelException {
+    final static class UnhealthyChannelException extends ChannelException {
 
-        static final UnhealthyChannelException INSTANCE = new UnhealthyChannelException();
-
-        private UnhealthyChannelException() {
-            super("health check failed");
+        UnhealthyChannelException(String reason) {
+            super("health check failed, reason: " + reason);
         }
 
         @Override

@@ -135,6 +135,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
               .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
 
+        if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
+          builder.endpointDiscoveryEnabled(false)
+        }
+
         if (cosmosClientConfiguration.useEventualConsistency){
           builder = builder.consistencyLevel(ConsistencyLevel.EVENTUAL)
         }

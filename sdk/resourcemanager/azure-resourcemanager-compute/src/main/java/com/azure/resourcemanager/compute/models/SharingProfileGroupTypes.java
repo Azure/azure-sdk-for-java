@@ -30,7 +30,11 @@ public final class SharingProfileGroupTypes extends ExpandableStringEnum<Sharing
         return fromString(name, SharingProfileGroupTypes.class);
     }
 
-    /** @return known SharingProfileGroupTypes values. */
+    /**
+     * Gets known SharingProfileGroupTypes values.
+     *
+     * @return known SharingProfileGroupTypes values.
+     */
     public static Collection<SharingProfileGroupTypes> values() {
         return values(SharingProfileGroupTypes.class);
     }

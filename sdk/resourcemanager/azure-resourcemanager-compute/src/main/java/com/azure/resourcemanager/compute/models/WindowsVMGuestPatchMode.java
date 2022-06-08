@@ -30,7 +30,11 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
         return fromString(name, WindowsVMGuestPatchMode.class);
     }
 
-    /** @return known WindowsVMGuestPatchMode values. */
+    /**
+     * Gets known WindowsVMGuestPatchMode values.
+     *
+     * @return known WindowsVMGuestPatchMode values.
+     */
     public static Collection<WindowsVMGuestPatchMode> values() {
         return values(WindowsVMGuestPatchMode.class);
     }

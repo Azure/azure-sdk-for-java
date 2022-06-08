@@ -27,7 +27,11 @@ public final class WindowsServerSubscription extends ExpandableStringEnum<Window
         return fromString(name, WindowsServerSubscription.class);
     }
 
-    /** @return known WindowsServerSubscription values. */
+    /**
+     * Gets known WindowsServerSubscription values.
+     *
+     * @return known WindowsServerSubscription values.
+     */
     public static Collection<WindowsServerSubscription> values() {
         return values(WindowsServerSubscription.class);
     }

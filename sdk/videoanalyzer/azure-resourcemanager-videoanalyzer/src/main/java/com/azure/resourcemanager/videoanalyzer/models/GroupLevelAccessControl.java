@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Group level network access control. */
 @Fluent
 public final class GroupLevelAccessControl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupLevelAccessControl.class);
-
     /*
      * Whether or not public network access is allowed for specified resources
      * under the Video Analyzer account.

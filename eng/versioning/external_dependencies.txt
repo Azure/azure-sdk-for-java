@@ -7,6 +7,7 @@
 
 # Format;
 # groupId:artifactId;dependency-version
+ch.qos.logback:logback-classic;1.2.11
 com.fasterxml.jackson.core:jackson-annotations;2.13.2
 com.fasterxml.jackson.core:jackson-core;2.13.2
 com.fasterxml.jackson.core:jackson-databind;2.13.2.2
@@ -65,6 +66,8 @@ io.projectreactor.netty:reactor-netty;1.0.18
 io.projectreactor.netty:reactor-netty-http;1.0.18
 io.projectreactor:reactor-core;3.4.17
 io.reactivex:rxjava;1.3.8
+io.vertx:vertx-codegen;4.2.7
+io.vertx:vertx-core;4.2.7
 jakarta.validation:jakarta.validation-api;2.0.2
 jakarta.xml.bind:jakarta.xml.bind-api;2.3.3
 javax.annotation:javax.annotation-api;1.3.2
@@ -92,6 +95,8 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;1.13.0
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
+org.codehaus.groovy:groovy-jsr223;3.0.10
+org.codehaus.janino:janino;3.1.6
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-container-grizzly;1.2.1
 org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
@@ -109,6 +114,7 @@ org.postgresql:postgresql;42.3.4
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
+redis.clients:jedis;4.2.3
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.6.7
@@ -143,18 +149,18 @@ org.springframework.security:spring-security-oauth2-resource-server;5.6.3
 org.springframework.security:spring-security-oauth2-core;5.6.3
 org.springframework.security:spring-security-oauth2-jose;5.6.3
 org.springframework.security:spring-security-web;5.6.3
-org.springframework:spring-beans;5.3.19
-org.springframework:spring-context-support;5.3.19
-org.springframework:spring-context;5.3.19
-org.springframework:spring-core;5.3.19
-org.springframework:spring-expression;5.3.19
-org.springframework:spring-jdbc;5.3.19
-org.springframework:spring-jms;5.3.19
-org.springframework:spring-messaging;5.3.19
-org.springframework:spring-tx;5.3.19
-org.springframework:spring-web;5.3.19
-org.springframework:spring-webmvc;5.3.19
-org.springframework:spring-test;5.3.19
+org.springframework:spring-beans;5.3.20
+org.springframework:spring-context-support;5.3.20
+org.springframework:spring-context;5.3.20
+org.springframework:spring-core;5.3.20
+org.springframework:spring-expression;5.3.20
+org.springframework:spring-jdbc;5.3.20
+org.springframework:spring-jms;5.3.20
+org.springframework:spring-messaging;5.3.20
+org.springframework:spring-tx;5.3.20
+org.springframework:spring-web;5.3.20
+org.springframework:spring-webmvc;5.3.20
+org.springframework:spring-test;5.3.20
 org.springframework.retry:spring-retry;1.3.3
 org.springframework.boot:spring-boot-starter-parent;2.6.7
 
@@ -178,6 +184,7 @@ com.alibaba:fastjson;1.2.61
 com.github.cverges.expect4j:expect4j;1.6
 com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
+com.github.tomakehurst:wiremock-jre8;2.33.2
 com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
@@ -195,6 +202,7 @@ io.opentelemetry:opentelemetry-api;1.11.0
 io.opentelemetry:opentelemetry-sdk;1.11.0
 io.opentelemetry:opentelemetry-exporter-logging;1.11.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.11.0
+io.opentelemetry:opentelemetry-sdk-testing;1.11.0
 io.projectreactor:reactor-test;3.4.17
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
@@ -284,8 +292,8 @@ org.codehaus.mojo:xml-maven-plugin;1.0.2
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
-org.jacoco:jacoco-maven-plugin;0.8.7
-org.jacoco:org.jacoco.agent;0.8.7
+org.jacoco:jacoco-maven-plugin;0.8.8
+org.jacoco:org.jacoco.agent;0.8.8
 org.mockito:mockito-core;4.0.0
 org.mockito:mockito-inline;4.0.0
 org.revapi:revapi;0.14.4

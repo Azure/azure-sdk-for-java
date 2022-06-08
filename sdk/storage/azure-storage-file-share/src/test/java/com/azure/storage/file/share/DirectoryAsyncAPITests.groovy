@@ -11,7 +11,6 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.models.NtfsFileAttributes
-import com.azure.storage.file.share.options.ShareDeleteOptions
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -247,6 +246,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def response = client.deleteIfExistsWithResponse(null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists().block()
     }
@@ -262,6 +262,8 @@ class DirectoryAsyncAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 202
         secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
     def "Get properties"() {
@@ -713,7 +715,7 @@ class DirectoryAsyncAPITests extends APISpec {
         primaryDirectoryAsyncClient.create().block()
         primaryDirectoryAsyncClient.createSubdirectory(subDirectoryName).block()
         expect:
-        primaryDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse(subDirectoryName)
+        primaryDirectoryAsyncClient.deleteSubdirectoryIfExists(subDirectoryName).block()
     }
 
     def "Delete if exists subdirectory that does not exist"() {
@@ -726,6 +728,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def response = client.deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.getSubdirectoryClient(subdirectoryName).exists().block()
     }
@@ -883,8 +886,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName,
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))))
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareRequestConditions().setLeaseId(leaseId)))
             .expectNextCount(1).verifyComplete()
     }
 
@@ -896,9 +898,8 @@ class DirectoryAsyncAPITests extends APISpec {
         createLeaseClient(primaryDirectoryAsyncClient.getFileClient(fileName)).acquireLease().block()
 
         expect:
-        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName,
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions()
-                .setLeaseId(namer.getRandomUuid())))).verifyError(ShareStorageException)
+        StepVerifier.create(primaryDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, new ShareRequestConditions()
+                .setLeaseId(namer.getRandomUuid()))).verifyError(ShareStorageException)
     }
 
     def "Delete if exists file that does not exist"() {
@@ -911,6 +912,7 @@ class DirectoryAsyncAPITests extends APISpec {
         def response = client.deleteFileIfExistsWithResponse(subdirectoryName, null).block()
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.getSubdirectoryClient(subdirectoryName).exists().block()
     }

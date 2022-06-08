@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.StorageProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -66,6 +67,12 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
+
+    /*
+     * The identity of the virtual machine, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private VirtualMachineIdentity identity;
 
     /**
      * Get the instanceId property: The virtual machine instance ID.
@@ -138,6 +145,26 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public List<String> zones() {
         return this.zones;
+    }
+
+    /**
+     * Get the identity property: The identity of the virtual machine, if configured.
+     *
+     * @return the identity value.
+     */
+    public VirtualMachineIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the virtual machine, if configured.
+     *
+     * @param identity the identity value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner withIdentity(VirtualMachineIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -533,6 +560,9 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         }
         if (resources() != null) {
             resources().forEach(e -> e.validate());
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

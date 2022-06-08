@@ -13,8 +13,8 @@ public final class ValidationResultStatus extends ExpandableStringEnum<Validatio
     /** Static value success for ValidationResultStatus. */
     public static final ValidationResultStatus SUCCESS = fromString("success");
 
-    /** Static value failed for ValidationResultStatus. */
-    public static final ValidationResultStatus FAILED = fromString("failed");
+    /** Static value failure for ValidationResultStatus. */
+    public static final ValidationResultStatus FAILURE = fromString("failure");
 
     /** Static value warning for ValidationResultStatus. */
     public static final ValidationResultStatus WARNING = fromString("warning");
@@ -30,7 +30,11 @@ public final class ValidationResultStatus extends ExpandableStringEnum<Validatio
         return fromString(name, ValidationResultStatus.class);
     }
 
-    /** @return known ValidationResultStatus values. */
+    /**
+     * Gets known ValidationResultStatus values.
+     *
+     * @return known ValidationResultStatus values.
+     */
     public static Collection<ValidationResultStatus> values() {
         return values(ValidationResultStatus.class);
     }

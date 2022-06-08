@@ -27,7 +27,11 @@ public final class RepoType extends ExpandableStringEnum<RepoType> {
         return fromString(name, RepoType.class);
     }
 
-    /** @return known RepoType values. */
+    /**
+     * Gets known RepoType values.
+     *
+     * @return known RepoType values.
+     */
     public static Collection<RepoType> values() {
         return values(RepoType.class);
     }

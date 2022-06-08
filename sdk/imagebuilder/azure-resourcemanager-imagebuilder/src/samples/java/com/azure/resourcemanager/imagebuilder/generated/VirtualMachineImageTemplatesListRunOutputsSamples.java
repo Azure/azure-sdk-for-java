@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineImageTemplates ListRunOutputs. */
 public final class VirtualMachineImageTemplatesListRunOutputsSamples {
     /*
-     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2021-10-01/examples/ListRunOutputs.json
+     * x-ms-original-file: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2022-02-14/examples/ListRunOutputs.json
      */
     /**
      * Sample code: Retrieve a list of all outputs created by the last run of an Image Template.

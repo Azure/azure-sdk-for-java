@@ -337,7 +337,7 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         expect:
-        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(null, null), 202)
+        FileTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(null, null, null), 202)
     }
 
     def "Delete if exists share min"() {
@@ -402,9 +402,10 @@ class ShareAPITests extends APISpec {
         def client = premiumFileServiceClient.getShareClient(generateShareName())
 
         when:
-        def response = client.deleteIfExistsWithResponse(null, null)
+        def response = client.deleteIfExistsWithResponse(null, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
         !client.exists()
     }
@@ -423,6 +424,8 @@ class ShareAPITests extends APISpec {
         then:
         initialResponse.getStatusCode() == 202
         secondResponse.getStatusCode() == 404
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
 
@@ -1124,6 +1127,7 @@ class ShareAPITests extends APISpec {
         def response = primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -1158,7 +1162,7 @@ class ShareAPITests extends APISpec {
 
         expect:
         FileTestHelper.assertResponseStatusCode(
-            primaryShareClient.deleteFileIfExistsWithResponse(fileName, null, null), 202)
+            primaryShareClient.deleteFileIfExistsWithResponse(fileName, null, null, null), 202)
     }
 
     def "Delete if exists file min"() {
@@ -1176,9 +1180,10 @@ class ShareAPITests extends APISpec {
         primaryShareClient.create()
 
         when:
-        def response = primaryShareClient.deleteFileIfExistsWithResponse("testCreateFile", null, null)
+        def response = primaryShareClient.deleteFileIfExistsWithResponse("testCreateFile", null, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 

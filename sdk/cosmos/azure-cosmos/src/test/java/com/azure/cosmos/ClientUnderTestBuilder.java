@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.Strings;
@@ -56,7 +55,8 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.configs(),
                 this.getCredential(),
                 this.isContentResponseOnWriteEnabled(),
-                this.apiType());
+                this.apiType(),
+                this.getClientTelemetryConfig());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

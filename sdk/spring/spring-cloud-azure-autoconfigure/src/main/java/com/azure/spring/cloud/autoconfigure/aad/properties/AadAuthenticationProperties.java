@@ -38,6 +38,9 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizati
  */
 public class AadAuthenticationProperties implements InitializingBean {
 
+    /**
+     * Properties prefix.
+     */
     public static final String PREFIX = "spring.cloud.azure.active-directory";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
@@ -127,7 +130,7 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * Type of the AAD application.
+     * Type of the Azure AD application.
      */
     private AadApplicationType applicationType;
 
@@ -190,7 +193,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         private List<String> allowedGroupNames = new ArrayList<>();
 
         /**
-         * The group ids can be used to construct GrantedAuthority.
+         * The group IDs can be used to construct GrantedAuthority.
          */
         private Set<String> allowedGroupIds = new HashSet<>();
 
@@ -209,9 +212,9 @@ public class AadAuthenticationProperties implements InitializingBean {
         }
 
         /**
-         * Set the allowed group ids.
+         * Set the allowed group IDs.
          *
-         * @param allowedGroupIds Allowed group ids.
+         * @param allowedGroupIds Allowed group IDs.
          */
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
             this.allowedGroupIds = allowedGroupIds;
@@ -235,10 +238,20 @@ public class AadAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        /**
+         * Whether transitive members are used.
+         *
+         * @return Whether transitive members are used.
+         */
         public boolean isUseTransitiveMembers() {
             return useTransitiveMembers;
         }
 
+        /**
+         * Sets whether transitive members are used.
+         *
+         * @param useTransitiveMembers Whether transitive members are used.
+         */
         public void setUseTransitiveMembers(boolean useTransitiveMembers) {
             this.useTransitiveMembers = useTransitiveMembers;
         }

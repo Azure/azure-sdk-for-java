@@ -33,7 +33,11 @@ public final class Services extends ExpandableStringEnum<Services> {
         return fromString(name, Services.class);
     }
 
-    /** @return known Services values. */
+    /**
+     * Gets known Services values.
+     *
+     * @return known Services values.
+     */
     public static Collection<Services> values() {
         return values(Services.class);
     }

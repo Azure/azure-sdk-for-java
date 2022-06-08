@@ -466,14 +466,7 @@ public final class LocalUsersOperationsClientImpl implements LocalUsersOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalUserInner> getAsync(String resourceGroupName, String accountName, String username) {
         return getWithResponseAsync(resourceGroupName, accountName, username)
-            .flatMap(
-                (Response<LocalUserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -661,14 +654,7 @@ public final class LocalUsersOperationsClientImpl implements LocalUsersOperation
     public Mono<LocalUserInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String username, LocalUserInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, username, properties)
-            .flatMap(
-                (Response<LocalUserInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -839,8 +825,7 @@ public final class LocalUsersOperationsClientImpl implements LocalUsersOperation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String username) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, username)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, username).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1009,14 +994,7 @@ public final class LocalUsersOperationsClientImpl implements LocalUsersOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalUserKeysInner> listKeysAsync(String resourceGroupName, String accountName, String username) {
         return listKeysWithResponseAsync(resourceGroupName, accountName, username)
-            .flatMap(
-                (Response<LocalUserKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1189,14 +1167,7 @@ public final class LocalUsersOperationsClientImpl implements LocalUsersOperation
     public Mono<LocalUserRegeneratePasswordResultInner> regeneratePasswordAsync(
         String resourceGroupName, String accountName, String username) {
         return regeneratePasswordWithResponseAsync(resourceGroupName, accountName, username)
-            .flatMap(
-                (Response<LocalUserRegeneratePasswordResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
