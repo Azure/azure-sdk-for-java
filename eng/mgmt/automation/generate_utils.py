@@ -48,6 +48,9 @@ def generate(
         'sdk/{0}'.format(service),
         module,
     )
+
+    require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
+
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
         # samples contains hand-written code
@@ -80,8 +83,9 @@ def generate(
         return False
 
     group = GROUP_ID
-    update_service_ci_and_pom(sdk_root, service, group, module)
-    update_root_pom(sdk_root, service)
+    if require_sdk_integration:
+        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
     return True

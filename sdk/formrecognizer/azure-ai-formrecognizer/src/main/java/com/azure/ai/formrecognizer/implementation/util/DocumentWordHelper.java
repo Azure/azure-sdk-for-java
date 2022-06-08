@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.ai.formrecognizer.models.DocumentSpan;
+import com.azure.ai.formrecognizer.models.Point;
 
 import java.util.List;
 
@@ -30,15 +31,15 @@ public final class DocumentWordHelper {
      * Type defining the methods to set the non-public properties of an {@link DocumentWord} instance.
      */
     public interface DocumentWordAccessor {
-        void setBoundingBox(DocumentWord documentWord, List<Float> boundingBox);
+        void setBoundingPolygon(DocumentWord documentWord, List<Point> boundingPolygon);
         void setContent(DocumentWord documentWord, String content);
         void setSpan(DocumentWord documentWord, DocumentSpan span);
         void setConfidence(DocumentWord documentWord, float confidence);
 
     }
 
-    static void setBoundingBox(DocumentWord documentWord, List<Float> boundingBox) {
-        accessor.setBoundingBox(documentWord, boundingBox);
+    static void setBoundingPolygon(DocumentWord documentWord, List<Point> boundingPolygon) {
+        accessor.setBoundingPolygon(documentWord, boundingPolygon);
     }
 
     static void setContent(DocumentWord documentWord, String content) {

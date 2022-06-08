@@ -114,7 +114,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         } else {
             sharingUpdate.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -172,7 +172,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         } else {
             sharingUpdate.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

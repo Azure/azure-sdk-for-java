@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
@@ -152,7 +152,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
-        this.responseHeaders = new ConcurrentHashMap<>();
+        this.responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
         //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {

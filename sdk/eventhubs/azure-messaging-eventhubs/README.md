@@ -342,7 +342,6 @@ EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .processEvent(eventContext -> {
         System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
             + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
-        eventContext.updateCheckpoint(); // Update checkpoint for this partition.
     })
     .processError(errorContext -> {
         System.out

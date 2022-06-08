@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MonitorProperties {
     /*
-     * State of provisioning of the monitor.
+     * State of provisioning of the SAP monitor.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadMonitorProvisioningState provisioningState;
@@ -27,14 +27,14 @@ public final class MonitorProperties {
     private MonitorPropertiesErrors errors;
 
     /*
-     * The monitor resources will be deployed in the monitoring region. The
-     * subnet region should be same as the monitoring region.
+     * The SAP monitor resources will be deployed in the SAP monitoring region.
+     * The subnet region should be same as the SAP monitoring region.
      */
     @JsonProperty(value = "appLocation")
     private String appLocation;
 
     /*
-     * Sets the routing preference of the monitor. By default only RFC1918
+     * Sets the routing preference of the SAP monitor. By default only RFC1918
      * traffic is routed to the customer VNET.
      */
     @JsonProperty(value = "routingPreference")
@@ -47,7 +47,8 @@ public final class MonitorProperties {
     private ManagedRGConfiguration managedResourceGroupConfiguration;
 
     /*
-     * The ARM ID of the Log Analytics Workspace that is used for monitoring.
+     * The ARM ID of the Log Analytics Workspace that is used for SAP
+     * monitoring.
      */
     @JsonProperty(value = "logAnalyticsWorkspaceArmId")
     private String logAnalyticsWorkspaceArmId;
@@ -59,13 +60,13 @@ public final class MonitorProperties {
     private String monitorSubnet;
 
     /*
-     * The ARM ID of the MSI used for monitoring.
+     * The ARM ID of the MSI used for SAP monitoring.
      */
     @JsonProperty(value = "msiArmId", access = JsonProperty.Access.WRITE_ONLY)
     private String msiArmId;
 
     /**
-     * Get the provisioningState property: State of provisioning of the monitor.
+     * Get the provisioningState property: State of provisioning of the SAP monitor.
      *
      * @return the provisioningState value.
      */
@@ -83,8 +84,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the appLocation property: The monitor resources will be deployed in the monitoring region. The subnet region
-     * should be same as the monitoring region.
+     * Get the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+     * region should be same as the SAP monitoring region.
      *
      * @return the appLocation value.
      */
@@ -93,8 +94,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the appLocation property: The monitor resources will be deployed in the monitoring region. The subnet region
-     * should be same as the monitoring region.
+     * Set the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+     * region should be same as the SAP monitoring region.
      *
      * @param appLocation the appLocation value to set.
      * @return the MonitorProperties object itself.
@@ -105,8 +106,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the routingPreference property: Sets the routing preference of the monitor. By default only RFC1918 traffic
-     * is routed to the customer VNET.
+     * Get the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
+     * traffic is routed to the customer VNET.
      *
      * @return the routingPreference value.
      */
@@ -115,8 +116,8 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the routingPreference property: Sets the routing preference of the monitor. By default only RFC1918 traffic
-     * is routed to the customer VNET.
+     * Set the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
+     * traffic is routed to the customer VNET.
      *
      * @param routingPreference the routingPreference value to set.
      * @return the MonitorProperties object itself.
@@ -148,7 +149,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for
+     * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
      *
      * @return the logAnalyticsWorkspaceArmId value.
@@ -158,7 +159,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for
+     * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
      *
      * @param logAnalyticsWorkspaceArmId the logAnalyticsWorkspaceArmId value to set.
@@ -190,7 +191,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Get the msiArmId property: The ARM ID of the MSI used for monitoring.
+     * Get the msiArmId property: The ARM ID of the MSI used for SAP monitoring.
      *
      * @return the msiArmId value.
      */

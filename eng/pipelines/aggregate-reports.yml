@@ -66,7 +66,6 @@ stages:
             publishJUnitResults: false
             goals: 'clean package'
 
-
         - task: Maven@3
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
@@ -79,11 +78,21 @@ stages:
             publishJUnitResults: false
             goals: 'javadoc:aggregate'
 
+         # Generate the pom file with all the modules required for creating an aggregate code coverage report
+        - task: PythonScript@0
+          displayName: 'Generate pom for aggregate code coverage report'
+          inputs:
+            scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
+            # Management and Spring track 2 groups will be added after
+            # https://github.com/Azure/azure-sdk-for-java/issues/29273 is resolved
+            arguments: '--groups com.azure'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+
         - task: Maven@3
           displayName: 'Generate Aggregate JaCoCo coverage report'
           inputs:
-            mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Pjacoco -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
+            mavenPomFile: aggregate-coverage-pom.xml
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -120,7 +129,7 @@ stages:
 
         - pwsh: |
             Copy-Item -Path target/site/apidocs -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
-            Copy-Item -Path eng/jacoco-test-coverage/target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
+            Copy-Item -Path target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
             Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
             Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
             Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
