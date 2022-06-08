@@ -59,3 +59,6 @@ extends:
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

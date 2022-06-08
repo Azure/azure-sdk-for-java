@@ -30,19 +30,19 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     private final ClientConfigurationProperties client = new ClientConfigurationProperties();
 
     /**
-     * Endpoint of the cosmos db.
+     * Endpoint of the Cosmos DB.
      */
     private String endpoint;
     /**
-     * Key to authenticate for accessing the cosmos db.
+     * Key to authenticate for accessing the Cosmos DB.
      */
     private String key;
     /**
-     * Database name of the cosmos db.
+     * Database name of the Cosmos DB.
      */
     private String database;
     /**
-     * Resource token to authenticate for accessing the cosmos db.
+     * Resource token to authenticate for accessing the Cosmos DB.
      */
     private String resourceToken;
     /**

@@ -13,7 +13,7 @@ public final class DocumentLanguage {
      * Detected language.  Value may an ISO 639-1 language code (ex. "en",
      * "fr") or BCP 47 language tag (ex. "zh-Hans").
      */
-    private String code;
+    private String locale;
 
     /*
      * Location of the text elements in the concatenated content the language
@@ -32,18 +32,18 @@ public final class DocumentLanguage {
      *
      * @return the code value.
      */
-    public String getCode() {
-        return this.code;
+    public String getLocale() {
+        return this.locale;
     }
 
     /**
      * Set the Detected language code. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
      * language tag (ex. "zh-Hans").
      *
-     * @param code the code value to set.
+     * @param locale the code value to set.
      */
-    void setCode(String code) {
-        this.code = code;
+    void setLocale(String locale) {
+        this.locale = locale;
     }
 
     /**
@@ -85,8 +85,8 @@ public final class DocumentLanguage {
     static {
         DocumentLanguageHelper.setAccessor(new DocumentLanguageHelper.DocumentLanguageAccessor() {
             @Override
-            public void setCode(DocumentLanguage documentLanguage, String content) {
-                documentLanguage.setCode(content);
+            public void setLocale(DocumentLanguage documentLanguage, String locale) {
+                documentLanguage.setLocale(locale);
             }
 
             @Override
