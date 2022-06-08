@@ -2,13 +2,11 @@
 
 ## 2.16.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-02`.
 
 ## 2.15.0 (2022-05-25)
 
