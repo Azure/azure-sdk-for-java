@@ -918,6 +918,8 @@ class FileSystemAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
+        System.out.println(response.getProperties())
+        System.out.println(fsc.getProperties().getProperties())
     }
 
     def "Create if not exists file min"() {

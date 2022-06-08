@@ -37,8 +37,6 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Optional and only valid if Hierarchical Namespace is enabled for the account.
-     *
      * @return the permissions
      */
     public String getPermissions() {
@@ -46,9 +44,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access
-     * permissions for the file owner, the file owning group, and others. Each class may be granted read,
-     * write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit
+     * Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted
+     * read, write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit
      * octal notation (e.g. 0766) are supported.
      *
      * @param permissions The permissions.
@@ -60,8 +57,6 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Optional and only valid if Hierarchical Namespace is enabled for the account.
-     *
      * @return the umask.
      */
     public String getUmask() {
@@ -69,7 +64,6 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * Optional and only valid if Hierarchical Namespace is enabled for the account.
      * When creating a file or directory and the parent folder does not have a default ACL,
      * the umask restricts the permissions of the file or directory to be created. The resulting
      * permission is given by p bitwise-and ^u, where p is the permission and u is the umask. For example,

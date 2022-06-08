@@ -95,8 +95,20 @@ class DirectoryAPITest extends APISpec {
         then:
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
+        compareACL(dc.getAccessControl().getAccessControlList(), pathAccessControlEntries)
     }
 
+    def "Create defaults with null options"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        def createResponse = dc.createWithResponse(null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
 
     def "Create error"() {
         setup:
