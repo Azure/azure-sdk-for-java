@@ -37,7 +37,11 @@ public final class ConfigurationServiceProvisioningState
         return fromString(name, ConfigurationServiceProvisioningState.class);
     }
 
-    /** @return known ConfigurationServiceProvisioningState values. */
+    /**
+     * Gets known ConfigurationServiceProvisioningState values.
+     *
+     * @return known ConfigurationServiceProvisioningState values.
+     */
     public static Collection<ConfigurationServiceProvisioningState> values() {
         return values(ConfigurationServiceProvisioningState.class);
     }

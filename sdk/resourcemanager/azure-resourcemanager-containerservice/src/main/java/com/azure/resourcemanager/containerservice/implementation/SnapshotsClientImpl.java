@@ -198,7 +198,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +241,7 @@ public final class SnapshotsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +338,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -393,7 +393,7 @@ public final class SnapshotsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -509,7 +509,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +559,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -586,14 +586,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<SnapshotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -666,7 +659,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -723,7 +716,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -753,14 +746,7 @@ public final class SnapshotsClientImpl
     public Mono<SnapshotInner> createOrUpdateAsync(
         String resourceGroupName, String resourceName, SnapshotInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<SnapshotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -835,7 +821,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -892,7 +878,7 @@ public final class SnapshotsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -921,14 +907,7 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> updateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<SnapshotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -996,7 +975,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1046,7 +1025,7 @@ public final class SnapshotsClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1072,7 +1051,7 @@ public final class SnapshotsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
     /**

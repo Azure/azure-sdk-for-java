@@ -220,7 +220,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -284,7 +284,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -314,14 +314,7 @@ public final class ProximityPlacementGroupsClientImpl
     public Mono<ProximityPlacementGroupInner> createOrUpdateAsync(
         String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -405,7 +398,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -469,7 +462,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -499,14 +492,7 @@ public final class ProximityPlacementGroupsClientImpl
     public Mono<ProximityPlacementGroupInner> updateAsync(
         String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -581,7 +567,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -634,7 +620,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -660,8 +646,7 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String proximityPlacementGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -733,7 +718,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -790,7 +775,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -822,14 +807,7 @@ public final class ProximityPlacementGroupsClientImpl
         String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -848,14 +826,7 @@ public final class ProximityPlacementGroupsClientImpl
         final String includeColocationStatus = null;
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -918,7 +889,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -961,7 +932,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1060,7 +1031,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1115,7 +1086,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

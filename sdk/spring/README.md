@@ -30,7 +30,6 @@ mvn clean install \
   -Pdev \
   -T 4 \
   -ntp \
-  -o \
   -f sdk/spring/pom.xml
 ```
 
@@ -48,7 +47,6 @@ mvn clean install `
  -Pdev `
  -T 4 `
  -ntp `
- -o `
  -f sdk/spring/pom.xml
 ```
 

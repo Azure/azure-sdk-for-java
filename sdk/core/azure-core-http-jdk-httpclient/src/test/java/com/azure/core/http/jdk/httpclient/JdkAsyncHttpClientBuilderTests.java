@@ -339,10 +339,10 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromSystemProperties() {
-        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+        Properties properties = new Properties();
+        properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
-        Properties properties = new Properties();
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
@@ -354,10 +354,10 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testCaseInsensitivity() {
-        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
+        Properties properties = new Properties();
+        properties.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
-        Properties properties = new Properties();
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> restrictedHeaders = jdkAsyncHttpClientBuilder.getRestrictedHeaders();

@@ -30,7 +30,11 @@ public final class MatchingMethod extends ExpandableStringEnum<MatchingMethod> {
         return fromString(name, MatchingMethod.class);
     }
 
-    /** @return known MatchingMethod values. */
+    /**
+     * Gets known MatchingMethod values.
+     *
+     * @return known MatchingMethod values.
+     */
     public static Collection<MatchingMethod> values() {
         return values(MatchingMethod.class);
     }

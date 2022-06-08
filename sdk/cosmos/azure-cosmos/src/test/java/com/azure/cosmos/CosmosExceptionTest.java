@@ -32,6 +32,9 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.BADREQUEST;
@@ -123,6 +126,26 @@ public class CosmosExceptionTest {
             String message = lenientFormat("could not create instance of %s due to %s", type, error);
             throw new AssertionError(message, error);
         }
+    }
+
+    @Test(groups = { "unit" })
+    public void throttlingBackOffDurationShouldBeCappedAt5Seconds() throws URISyntaxException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-ms-retry-after-ms", "1234");
+        RequestRateTooLargeException exception = new RequestRateTooLargeException(
+            "Test throttlingException",
+            headers,
+            new URI("http://localhost"));
+
+        assertThat(exception.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(1234));
+
+        headers.set("x-ms-retry-after-ms", "12345");
+        exception = new RequestRateTooLargeException(
+            "Test throttlingException",
+            headers,
+            new URI("http://localhost"));
+
+        assertThat(exception.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(5000));
     }
 
     @DataProvider(name = "subTypes")

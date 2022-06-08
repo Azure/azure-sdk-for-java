@@ -30,7 +30,11 @@ public final class FactoryIdentityType extends ExpandableStringEnum<FactoryIdent
         return fromString(name, FactoryIdentityType.class);
     }
 
-    /** @return known FactoryIdentityType values. */
+    /**
+     * Gets known FactoryIdentityType values.
+     *
+     * @return known FactoryIdentityType values.
+     */
     public static Collection<FactoryIdentityType> values() {
         return values(FactoryIdentityType.class);
     }

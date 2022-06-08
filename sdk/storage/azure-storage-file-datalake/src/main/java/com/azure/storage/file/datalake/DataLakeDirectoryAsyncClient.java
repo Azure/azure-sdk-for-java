@@ -27,6 +27,8 @@ import com.azure.storage.file.datalake.implementation.models.FileSystemsListPath
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -81,9 +83,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     DataLakeDirectoryAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String directoryName, BlockBlobAsyncClient blockBlobAsyncClient,
-        AzureSasCredential sasToken) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, directoryName, PathResourceType.DIRECTORY,
-            blockBlobAsyncClient, sasToken);
+            blockBlobAsyncClient, sasToken, customerProvidedKey);
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
@@ -91,7 +93,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
             dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getSasToken());
+            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -119,6 +121,26 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     public String getDirectoryName() {
         return getObjectName();
+    }
+
+    /**
+     * Creates a new {@link DataLakeDirectoryAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the directory,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakeDirectoryAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakeDirectoryAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(),
+            finalCustomerProvidedKey);
     }
 
     /**
@@ -205,8 +227,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -223,12 +244,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
@@ -242,16 +263,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions()).onErrorResume(t -> t
+            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t
                 instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -283,7 +306,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
             getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
-            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken());
+            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken(), getCpkInfo());
     }
 
     /**
@@ -533,8 +556,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -552,12 +574,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteFileIfExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
@@ -567,7 +589,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * successfully deleted. If status code is 404, the specified file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
         try {
             return withContext(context -> this.deleteFileIfExistsWithResponse(fileName, options, context));
         } catch (RuntimeException ex) {
@@ -575,7 +597,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
         Context context) {
         try {
             return getFileAsyncClient(fileName).deleteIfExistsWithResponse(options, context);
@@ -612,7 +634,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(),
             Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
-            this.getSasToken());
+            this.getSasToken(), getCpkInfo());
     }
 
     /**
@@ -877,7 +899,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
         return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -896,12 +918,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteSubdirectoryIfExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
@@ -912,17 +934,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
+    public Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
         DataLakePathDeleteOptions options) {
         try {
             return deleteSubdirectoryWithResponse(directoryName, options.getIsRecursive(),
                 options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                     && ((DataLakeStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((DataLakeStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

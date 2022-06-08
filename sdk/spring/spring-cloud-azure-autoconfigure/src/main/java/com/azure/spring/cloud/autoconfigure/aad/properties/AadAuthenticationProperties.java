@@ -19,8 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.RESOURCE_SERVER;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.RESOURCE_SERVER_WITH_OBO;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.WEB_APPLICATION;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.inferApplicationTypeByDependencies;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AUTHORIZATION_CODE;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AZURE_DELEGATED;
@@ -33,9 +38,16 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizati
  */
 public class AadAuthenticationProperties implements InitializingBean {
 
+    /**
+     * Properties prefix.
+     */
     public static final String PREFIX = "spring.cloud.azure.active-directory";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
+
+    private static final String UNMATCHING_OAUTH_GRANT_TYPE_FROMAT = "When 'spring.cloud.azure.active-directory"
+        + ".application-type=%s', 'spring.cloud.azure.active-directory.authorization-clients.%s"
+        + ".authorization-grant-type' can not be '%s'.";
 
     /**
      * Profile of Azure cloud environment.
@@ -107,8 +119,8 @@ public class AadAuthenticationProperties implements InitializingBean {
     private String postLogoutRedirectUri;
 
     /**
-     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The
-     * default is false which activates AADAuthenticationFilter.
+     * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The default is false which
+     * activates AADAuthenticationFilter.
      */
     private Boolean sessionStateless = false;
 
@@ -118,12 +130,26 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
-     * Type of the AAD application.
+     * Type of the Azure AD application.
      */
     private AadApplicationType applicationType;
 
+    private static final Map<AadApplicationType, Set<AadAuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = initCompatibleApplicationTypeAndGrantTypes();
+
+    private static Map<AadApplicationType, Set<AadAuthorizationGrantType>> initCompatibleApplicationTypeAndGrantTypes() {
+        Map<AadApplicationType, Set<AadAuthorizationGrantType>> nonCompatibleApplicationTypeAndGrantTypes =
+            new HashMap<>();
+        nonCompatibleApplicationTypeAndGrantTypes.put(WEB_APPLICATION,
+            Stream.of(ON_BEHALF_OF).collect(Collectors.toSet()));
+        nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER,
+            Stream.of(AUTHORIZATION_CODE, ON_BEHALF_OF).collect(Collectors.toSet()));
+        nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER_WITH_OBO,
+            Stream.of(AUTHORIZATION_CODE).collect(Collectors.toSet()));
+
+        return nonCompatibleApplicationTypeAndGrantTypes;
+    }
+
     /**
-     *
      * @return The AADProfileProperties.
      */
     public AadProfileProperties getProfile() {
@@ -131,7 +157,6 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     *
      * @return The AADCredentialProperties.
      */
     public AadCredentialProperties getCredential() {
@@ -168,7 +193,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         private List<String> allowedGroupNames = new ArrayList<>();
 
         /**
-         * The group ids can be used to construct GrantedAuthority.
+         * The group IDs can be used to construct GrantedAuthority.
          */
         private Set<String> allowedGroupIds = new HashSet<>();
 
@@ -187,9 +212,9 @@ public class AadAuthenticationProperties implements InitializingBean {
         }
 
         /**
-         * Set the allowed group ids.
+         * Set the allowed group IDs.
          *
-         * @param allowedGroupIds Allowed group ids.
+         * @param allowedGroupIds Allowed group IDs.
          */
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
             this.allowedGroupIds = allowedGroupIds;
@@ -213,10 +238,20 @@ public class AadAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        /**
+         * Whether transitive members are used.
+         *
+         * @return Whether transitive members are used.
+         */
         public boolean isUseTransitiveMembers() {
             return useTransitiveMembers;
         }
 
+        /**
+         * Sets whether transitive members are used.
+         *
+         * @param useTransitiveMembers Whether transitive members are used.
+         */
         public void setUseTransitiveMembers(boolean useTransitiveMembers) {
             this.useTransitiveMembers = useTransitiveMembers;
         }
@@ -446,14 +481,13 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     *
      * @return Graph membership uri.
      */
     public String getGraphMembershipUri() {
         return getProfile().getEnvironment().getMicrosoftGraphEndpoint()
             + (getUserGroup().isUseTransitiveMembers()
-                ? "v1.0/me/transitiveMemberOf"
-                : "v1.0/me/memberOf");
+            ? "v1.0/me/transitiveMemberOf"
+            : "v1.0/me/memberOf");
     }
 
     /**
@@ -551,103 +585,110 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     private boolean isValidApplicationType(AadApplicationType configured, AadApplicationType inferred) {
-        return inferred == configured || inferred == AadApplicationType.RESOURCE_SERVER_WITH_OBO;
+        return inferred == configured || inferred == RESOURCE_SERVER_WITH_OBO;
     }
 
     private void validateAuthorizationClientProperties(String registrationId,
                                                        AuthorizationClientProperties properties) {
-        String grantType = Optional.of(properties)
+        AadAuthorizationGrantType grantType = Optional.of(properties)
                                    .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                                   .map(AadAuthorizationGrantType::getValue)
                                    .orElse(null);
-        if (null == grantType) {
-            // Set default value for authorization grant grantType
-            switch (applicationType) {
-                case WEB_APPLICATION:
-                    if (registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)) {
-                        properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
-                    } else {
-                        properties.setAuthorizationGrantType(AZURE_DELEGATED);
-                    }
-                    LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                        + "'authorization_code'.", registrationId);
-                    break;
-                case RESOURCE_SERVER:
-                case RESOURCE_SERVER_WITH_OBO:
-                    properties.setAuthorizationGrantType(AadAuthorizationGrantType.ON_BEHALF_OF);
-                    LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
-                        + "'on_behalf_of'.", registrationId);
-                    break;
-                case WEB_APPLICATION_AND_RESOURCE_SERVER:
-                    throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                        + ".authorization-grant-grantType must be configured. ");
-                default:
-                    throw new IllegalStateException("Unsupported authorization grantType " + applicationType.getValue());
-            }
+        if (grantType != null) {
+            validateAuthorizationGrantType(registrationId, grantType);
         } else {
-            // Validate authorization grant grantType
-            switch (applicationType) {
-                case WEB_APPLICATION:
-                    if (ON_BEHALF_OF.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=web_application',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'on_behalf_of'.");
-                    }
-                    break;
-                case RESOURCE_SERVER:
-                    if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'authorization_code'.");
-                    }
-                    if (ON_BEHALF_OF.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'on_behalf_of'.");
-                    }
-                    break;
-                case RESOURCE_SERVER_WITH_OBO:
-                    if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory"
-                            + ".application-type=resource_server_with_obo',"
-                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                            + ".authorization-grant-type' can not be 'authorization_code'.");
-                    }
-                    break;
-                case WEB_APPLICATION_AND_RESOURCE_SERVER:
-                default:
-                    LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                        + ".authorization-grant-type' is valid.");
-            }
+            grantType = decideDefaultGrantTypeFromApplicationType(registrationId, applicationType);
+            properties.setAuthorizationGrantType(grantType);
 
-            if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
-                && AUTHORIZATION_CODE != properties.getAuthorizationGrantType()) {
-                throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
-                    + AZURE_CLIENT_REGISTRATION_ID
-                    + ".authorization-grant-type must be configured to 'authorization_code'.");
-            }
+            LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to '{}'.", grantType,
+                registrationId);
         }
 
-        // Validate scopes.
+        // Extract validated scopes from properties
+        List<String> scopes = extractValidatedScopes(registrationId, properties);
+        addNecessaryScopesForAuhtorizationCodeClients(properties, scopes);
+    }
+
+    /**
+     * Add necessary scopes for authorization_code clients.
+     *
+     * https://docs.microsoft.com/graph/permissions-reference#remarks-17
+     * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
+     *
+     * "openid" : allows to request an ID token.
+     * "profile" : allows returning additional claims in the ID token.
+     * "offline_access" : allows to request a refresh token.
+     * @param properties AuthorizationClientProperties
+     * @param scopes scopes for authorization_code clients.
+     */
+    private void addNecessaryScopesForAuhtorizationCodeClients(AuthorizationClientProperties properties,
+                                                               List<String> scopes) {
+        if (properties.getAuthorizationGrantType().equals(AUTHORIZATION_CODE)) {
+            String[] scopesNeeded = new String[] { "openid", "profile", "offline_access" };
+            for (String scope : scopesNeeded) {
+                if (!scopes.contains(scope)) {
+                    scopes.add(scope);
+                }
+            }
+        }
+    }
+
+    private List<String> extractValidatedScopes(String registrationId, AuthorizationClientProperties properties) {
         List<String> scopes = properties.getScopes();
         if (scopes == null || scopes.isEmpty()) {
             throw new IllegalStateException(
-                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be configured");
+                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be "
+                    + "configured");
         }
-        // Add necessary scopes for authorization_code clients.
-        // https://docs.microsoft.com/graph/permissions-reference#remarks-17
-        // https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
-        if (properties.getAuthorizationGrantType().getValue().equals(AUTHORIZATION_CODE.getValue())) {
-            if (!scopes.contains("openid")) {
-                scopes.add("openid"); // "openid" allows to request an ID token.
+        return scopes;
+    }
+
+    private void validateAuthorizationGrantType(String registrationId, AadAuthorizationGrantType grantType) {
+        if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.containsKey(applicationType)) {
+            if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.get(applicationType).contains(grantType)) {
+                throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
+                    applicationType.getValue(), registrationId, grantType));
             }
-            if (!scopes.contains("profile")) {
-                scopes.add("profile"); // "profile" allows returning additional claims in the ID token.
-            }
-            if (!scopes.contains("offline_access")) {
-                scopes.add("offline_access"); // "offline_access" allows to request a refresh token.
-            }
+            LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients.{}.authorization-grant-type'"
+                + " is valid.", registrationId);
         }
+
+        if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
+            && AUTHORIZATION_CODE != grantType) {
+            throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
+                + AZURE_CLIENT_REGISTRATION_ID
+                + ".authorization-grant-type must be configured to 'authorization_code'.");
+        }
+    }
+
+    /**
+     * Decide the default grant type from application type.
+     * @param registrationId client ID
+     * @param appType AadApplicationType
+     * @return default grant type
+     */
+    private AadAuthorizationGrantType decideDefaultGrantTypeFromApplicationType(String registrationId,
+                                                                                AadApplicationType appType) {
+        AadAuthorizationGrantType grantType;
+        switch (appType) {
+            case WEB_APPLICATION:
+                if (registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)) {
+                    grantType = AUTHORIZATION_CODE;
+                } else {
+                    grantType = AZURE_DELEGATED;
+                }
+                break;
+            case RESOURCE_SERVER:
+            case RESOURCE_SERVER_WITH_OBO:
+                grantType = AadAuthorizationGrantType.ON_BEHALF_OF;
+                break;
+            case WEB_APPLICATION_AND_RESOURCE_SERVER:
+                throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients." + registrationId
+                    + ".authorization-grant-grantType must be configured. ");
+            default:
+                throw new IllegalStateException("Unsupported authorization grantType " + appType.getValue());
+        }
+
+        return grantType;
     }
 
     private boolean isMultiTenantsApplication(String tenantId) {

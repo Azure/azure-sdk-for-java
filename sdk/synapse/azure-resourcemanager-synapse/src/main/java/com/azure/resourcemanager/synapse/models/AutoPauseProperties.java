@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Spark pool auto-pausing properties Auto-pausing properties of a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class AutoPauseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPauseProperties.class);
-
     /*
      * Number of minutes of idle time before the Big Data pool is automatically
      * paused.

@@ -6,11 +6,9 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** SQL pool A SQL Analytics pool. */
 @Fluent
 public final class SqlPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolInner.class);
-
     /*
      * Sku SQL pool SKU
      */

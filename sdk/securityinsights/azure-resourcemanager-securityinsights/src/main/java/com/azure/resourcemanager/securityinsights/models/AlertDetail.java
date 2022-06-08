@@ -27,7 +27,11 @@ public final class AlertDetail extends ExpandableStringEnum<AlertDetail> {
         return fromString(name, AlertDetail.class);
     }
 
-    /** @return known AlertDetail values. */
+    /**
+     * Gets known AlertDetail values.
+     *
+     * @return known AlertDetail values.
+     */
     public static Collection<AlertDetail> values() {
         return values(AlertDetail.class);
     }

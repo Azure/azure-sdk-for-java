@@ -14,12 +14,11 @@ import com.azure.resourcemanager.synapse.fluent.models.EncryptionProtectorInner;
 import com.azure.resourcemanager.synapse.models.EncryptionProtector;
 import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerEncryptionProtectors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     implements WorkspaceManagedSqlServerEncryptionProtectors {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsImpl.class);
 
     private final WorkspaceManagedSqlServerEncryptionProtectorsClient innerClient;
 
@@ -88,7 +87,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     public EncryptionProtector getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,7 +95,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -104,7 +103,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         EncryptionProtectorName encryptionProtectorName =
             EncryptionProtectorName.fromString(Utils.getValueFromIdByName(id, "encryptionProtector"));
         if (encryptionProtectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     public Response<EncryptionProtector> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -133,7 +132,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         EncryptionProtectorName encryptionProtectorName =
             EncryptionProtectorName.fromString(Utils.getValueFromIdByName(id, "encryptionProtector"));
         if (encryptionProtectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

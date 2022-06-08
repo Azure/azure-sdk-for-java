@@ -478,14 +478,7 @@ public final class ManagementLocksClientImpl
     public Mono<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(
         String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -637,7 +630,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String lockName) {
-        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -781,14 +774,7 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getByResourceGroupAsync(String resourceGroupName, String lockName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -936,14 +922,7 @@ public final class ManagementLocksClientImpl
     public Mono<ManagementLockObjectInner> createOrUpdateByScopeAsync(
         String scope, String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateByScopeWithResponseAsync(scope, lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1066,7 +1045,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByScopeAsync(String scope, String lockName) {
-        return deleteByScopeWithResponseAsync(scope, lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteByScopeWithResponseAsync(scope, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1177,15 +1156,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getByScopeAsync(String scope, String lockName) {
-        return getByScopeWithResponseAsync(scope, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByScopeWithResponseAsync(scope, lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1429,14 +1400,7 @@ public final class ManagementLocksClientImpl
                 resourceName,
                 lockName,
                 parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1698,7 +1662,7 @@ public final class ManagementLocksClientImpl
         String lockName) {
         return deleteAtResourceLevelWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1943,14 +1907,7 @@ public final class ManagementLocksClientImpl
         String lockName) {
         return getAtResourceLevelWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2134,14 +2091,7 @@ public final class ManagementLocksClientImpl
     public Mono<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(
         String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtSubscriptionLevelWithResponseAsync(lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2277,7 +2227,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionLevelAsync(String lockName) {
-        return deleteAtSubscriptionLevelWithResponseAsync(lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtSubscriptionLevelWithResponseAsync(lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2404,15 +2354,7 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getAtSubscriptionLevelAsync(String lockName) {
-        return getAtSubscriptionLevelWithResponseAsync(lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtSubscriptionLevelWithResponseAsync(lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

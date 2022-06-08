@@ -120,12 +120,12 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         }
 
         ConnectionMode connectionMode = this.cosmosClientProperties.getConnectionMode();
-        if (ConnectionMode.DIRECT.equals(connectionMode)) {
+        if (ConnectionMode.DIRECT == connectionMode) {
             DirectConnectionConfig directConnectionConfig = DIRECT_CONNECTION_CONFIG_CONVERTER.convert(
                 this.cosmosClientProperties.getDirectConnection());
 
             builder.directMode(directConnectionConfig, gatewayConnectionConfig);
-        } else if (ConnectionMode.GATEWAY.equals(connectionMode)) {
+        } else if (ConnectionMode.GATEWAY == connectionMode) {
             builder.gatewayMode(gatewayConnectionConfig);
         }
     }

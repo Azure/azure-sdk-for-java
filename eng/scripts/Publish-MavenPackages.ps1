@@ -240,6 +240,8 @@ foreach ($packageDetail in $packageDetails) {
     }
 
     $attempt = 0
+    $success = $false;
+
     while ($attempt++ -lt 3) {
       Write-Information "Releasing staging repostiory $stagedRepositoryId, attempt $attempt"
       Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:1.6.8:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
@@ -247,7 +249,8 @@ foreach ($packageDetail in $packageDetails) {
 
       if ($LASTEXITCODE -eq 0) {
         Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"
-        exit 0
+        $success = $true
+        break
       }
 
       Write-Information "Release attempt $attempt exited with code $LASTEXITCODE"
@@ -255,9 +258,16 @@ foreach ($packageDetail in $packageDetails) {
 
       if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
         Write-Information "Package $($packageDetail.FullyQualifiedName) deployed despite non-zero exit code."
-        exit 0
+        $success = $true
+        break
       }
     }
-    exit 1
+
+    if (!$success) {
+      Write-Information '##vso[task.logissue type=error]Release to Maven Central failed. For troubleshooting, see https://aka.ms/azsdk/maven-central-tsg'
+      exit 1
+    }
   }
 }
+
+exit 0

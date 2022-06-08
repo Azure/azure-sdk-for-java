@@ -77,6 +77,7 @@ public class SendLinkHandler extends LinkHandler {
         deliveryProcessor.emitComplete((signalType, emitResult) -> {
             addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
                 .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Unable to emit complete on deliverySink.");
             return false;
         });

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** identity. */
 @Fluent
 public class MicrosoftGraphIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphIdentity.class);
-
     /*
      * The identity's display name. Note that this may not always be available
      * or up to date. For example, if a user changes their display name, the

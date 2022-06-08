@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for RestorePointCollections CreateOrUpdate. */
 public final class RestorePointCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateARestorePointCollectionForCrossRegionCopy.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
      */
     /**
      * Sample code: Create or update a restore point collection for cross region copy.
@@ -41,7 +41,7 @@ public final class RestorePointCollectionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateARestorePointCollection.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a restore point collection.

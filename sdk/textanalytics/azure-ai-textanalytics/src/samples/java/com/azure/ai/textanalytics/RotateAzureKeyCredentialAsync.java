@@ -20,16 +20,20 @@ public class RotateAzureKeyCredentialAsync {
     public static void main(String[] args) {
         AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(credential)
-            .endpoint("{endpoint}")
-            .buildAsyncClient();
+                                              .credential(credential)
+                                              .endpoint("{endpoint}")
+                                              .buildAsyncClient();
 
         // The document that needs be analyzed.
         String document = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
         client.extractKeyPhrases(document).subscribe(
-            keyPhrase -> System.out.printf("%s.%n", keyPhrase),
+            keyPhrasesCollection -> {
+                for (String keyPhrase : keyPhrasesCollection) {
+                    System.out.printf("%s.%n", keyPhrase);
+                }
+            },
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 
@@ -38,7 +42,11 @@ public class RotateAzureKeyCredentialAsync {
 
         System.out.println("Extracted phrases:");
         client.extractKeyPhrases(document).subscribe(
-            keyPhrase -> System.out.printf("%s.%n", keyPhrase),
+            keyPhrasesCollection -> {
+                for (String keyPhrase : keyPhrasesCollection) {
+                    System.out.printf("%s.%n", keyPhrase);
+                }
+            },
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 

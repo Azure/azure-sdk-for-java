@@ -39,6 +39,24 @@ public final class DirectoriesRenameHeaders {
     private OffsetDateTime xMsFileCreationTime;
 
     /*
+     * The Last-Modified property.
+     */
+    @JsonProperty(value = "Last-Modified")
+    private DateTimeRfc1123 lastModified;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean xMsRequestServerEncrypted;
+
+    /*
+     * The Date property.
+     */
+    @JsonProperty(value = "Date")
+    private DateTimeRfc1123 dateProperty;
+
+    /*
      * The ETag property.
      */
     @JsonProperty(value = "ETag")
@@ -57,28 +75,16 @@ public final class DirectoriesRenameHeaders {
     private OffsetDateTime xMsFileChangeTime;
 
     /*
-     * The Last-Modified property.
+     * The x-ms-file-parent-id property.
      */
-    @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
+    @JsonProperty(value = "x-ms-file-parent-id")
+    private String xMsFileParentId;
 
     /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
-
-    /*
-     * The x-ms-request-server-encrypted property.
-     */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
-    private Boolean xMsRequestServerEncrypted;
-
-    /*
-     * The Date property.
-     */
-    @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
 
     /*
      * The x-ms-file-last-write-time property.
@@ -167,6 +173,80 @@ public final class DirectoriesRenameHeaders {
     }
 
     /**
+     * Get the lastModified property: The Last-Modified property.
+     *
+     * @return the lastModified value.
+     */
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
+    }
+
+    /**
+     * Set the lastModified property: The Last-Modified property.
+     *
+     * @param lastModified the lastModified value to set.
+     * @return the DirectoriesRenameHeaders object itself.
+     */
+    public DirectoriesRenameHeaders setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @return the xMsRequestServerEncrypted value.
+     */
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the DirectoriesRenameHeaders object itself.
+     */
+    public DirectoriesRenameHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the dateProperty property: The Date property.
+     *
+     * @return the dateProperty value.
+     */
+    public OffsetDateTime getDateProperty() {
+        if (this.dateProperty == null) {
+            return null;
+        }
+        return this.dateProperty.getDateTime();
+    }
+
+    /**
+     * Set the dateProperty property: The Date property.
+     *
+     * @param dateProperty the dateProperty value to set.
+     * @return the DirectoriesRenameHeaders object itself.
+     */
+    public DirectoriesRenameHeaders setDateProperty(OffsetDateTime dateProperty) {
+        if (dateProperty == null) {
+            this.dateProperty = null;
+        } else {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
+        }
+        return this;
+    }
+
+    /**
      * Get the eTag property: The ETag property.
      *
      * @return the eTag value.
@@ -227,29 +307,22 @@ public final class DirectoriesRenameHeaders {
     }
 
     /**
-     * Get the lastModified property: The Last-Modified property.
+     * Get the xMsFileParentId property: The x-ms-file-parent-id property.
      *
-     * @return the lastModified value.
+     * @return the xMsFileParentId value.
      */
-    public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
+    public String getXMsFileParentId() {
+        return this.xMsFileParentId;
     }
 
     /**
-     * Set the lastModified property: The Last-Modified property.
+     * Set the xMsFileParentId property: The x-ms-file-parent-id property.
      *
-     * @param lastModified the lastModified value to set.
+     * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the DirectoriesRenameHeaders object itself.
      */
-    public DirectoriesRenameHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
+    public DirectoriesRenameHeaders setXMsFileParentId(String xMsFileParentId) {
+        this.xMsFileParentId = xMsFileParentId;
         return this;
     }
 
@@ -270,53 +343,6 @@ public final class DirectoriesRenameHeaders {
      */
     public DirectoriesRenameHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
-     * @return the xMsRequestServerEncrypted value.
-     */
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
-    }
-
-    /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
-     * @return the DirectoriesRenameHeaders object itself.
-     */
-    public DirectoriesRenameHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the dateProperty property: The Date property.
-     *
-     * @return the dateProperty value.
-     */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
-            return null;
-        }
-        return this.dateProperty.getDateTime();
-    }
-
-    /**
-     * Set the dateProperty property: The Date property.
-     *
-     * @param dateProperty the dateProperty value to set.
-     * @return the DirectoriesRenameHeaders object itself.
-     */
-    public DirectoriesRenameHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
         return this;
     }
 

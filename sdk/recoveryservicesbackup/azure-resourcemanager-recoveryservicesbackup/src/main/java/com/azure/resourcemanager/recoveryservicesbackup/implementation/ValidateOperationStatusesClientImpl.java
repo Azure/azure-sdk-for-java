@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ValidateOperationStatusesClient. */
 public final class ValidateOperationStatusesClientImpl implements ValidateOperationStatusesClient {
-    private final ClientLogger logger = new ClientLogger(ValidateOperationStatusesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ValidateOperationStatusesService service;
 
@@ -197,14 +194,7 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusInner> getAsync(String vaultName, String resourceGroupName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

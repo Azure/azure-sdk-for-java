@@ -30,7 +30,11 @@ public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
         return fromString(name, SkuScaleType.class);
     }
 
-    /** @return known SkuScaleType values. */
+    /**
+     * Gets known SkuScaleType values.
+     *
+     * @return known SkuScaleType values.
+     */
     public static Collection<SkuScaleType> values() {
         return values(SkuScaleType.class);
     }

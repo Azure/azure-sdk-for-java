@@ -24,7 +24,11 @@ public final class ExpandTypesForGetVMScaleSets extends ExpandableStringEnum<Exp
         return fromString(name, ExpandTypesForGetVMScaleSets.class);
     }
 
-    /** @return known ExpandTypesForGetVMScaleSets values. */
+    /**
+     * Gets known ExpandTypesForGetVMScaleSets values.
+     *
+     * @return known ExpandTypesForGetVMScaleSets values.
+     */
     public static Collection<ExpandTypesForGetVMScaleSets> values() {
         return values(ExpandTypesForGetVMScaleSets.class);
     }

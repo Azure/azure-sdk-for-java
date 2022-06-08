@@ -30,7 +30,11 @@ public final class OrchestrationServiceState extends ExpandableStringEnum<Orches
         return fromString(name, OrchestrationServiceState.class);
     }
 
-    /** @return known OrchestrationServiceState values. */
+    /**
+     * Gets known OrchestrationServiceState values.
+     *
+     * @return known OrchestrationServiceState values.
+     */
     public static Collection<OrchestrationServiceState> values() {
         return values(OrchestrationServiceState.class);
     }

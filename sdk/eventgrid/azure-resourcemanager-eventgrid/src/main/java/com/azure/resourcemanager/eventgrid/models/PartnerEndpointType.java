@@ -24,7 +24,11 @@ public final class PartnerEndpointType extends ExpandableStringEnum<PartnerEndpo
         return fromString(name, PartnerEndpointType.class);
     }
 
-    /** @return known PartnerEndpointType values. */
+    /**
+     * Gets known PartnerEndpointType values.
+     *
+     * @return known PartnerEndpointType values.
+     */
     public static Collection<PartnerEndpointType> values() {
         return values(PartnerEndpointType.class);
     }

@@ -27,7 +27,11 @@ public final class LinuxVMGuestPatchMode extends ExpandableStringEnum<LinuxVMGue
         return fromString(name, LinuxVMGuestPatchMode.class);
     }
 
-    /** @return known LinuxVMGuestPatchMode values. */
+    /**
+     * Gets known LinuxVMGuestPatchMode values.
+     *
+     * @return known LinuxVMGuestPatchMode values.
+     */
     public static Collection<LinuxVMGuestPatchMode> values() {
         return values(LinuxVMGuestPatchMode.class);
     }

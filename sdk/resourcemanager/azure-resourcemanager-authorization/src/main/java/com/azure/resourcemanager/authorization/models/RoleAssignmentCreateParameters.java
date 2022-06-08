@@ -6,239 +6,34 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
 /** Role assignment create parameters. */
 @Fluent
 public final class RoleAssignmentCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentCreateParameters.class);
-
     /*
      * Role assignment properties.
      */
     @JsonProperty(value = "properties", required = true)
-    private RoleAssignmentProperties innerProperties = new RoleAssignmentProperties();
+    private RoleAssignmentProperties properties;
 
     /**
-     * Get the innerProperties property: Role assignment properties.
+     * Get the properties property: Role assignment properties.
      *
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private RoleAssignmentProperties innerProperties() {
-        return this.innerProperties;
+    public RoleAssignmentProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the scope property: The role assignment scope.
+     * Set the properties property: Role assignment properties.
      *
-     * @return the scope value.
-     */
-    public String scope() {
-        return this.innerProperties() == null ? null : this.innerProperties().scope();
-    }
-
-    /**
-     * Get the roleDefinitionId property: The role definition ID.
-     *
-     * @return the roleDefinitionId value.
-     */
-    public String roleDefinitionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
-    }
-
-    /**
-     * Set the roleDefinitionId property: The role definition ID.
-     *
-     * @param roleDefinitionId the roleDefinitionId value to set.
+     * @param properties the properties value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
-    public RoleAssignmentCreateParameters withRoleDefinitionId(String roleDefinitionId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
-        return this;
-    }
-
-    /**
-     * Get the principalId property: The principal ID.
-     *
-     * @return the principalId value.
-     */
-    public String principalId() {
-        return this.innerProperties() == null ? null : this.innerProperties().principalId();
-    }
-
-    /**
-     * Set the principalId property: The principal ID.
-     *
-     * @param principalId the principalId value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withPrincipalId(String principalId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withPrincipalId(principalId);
-        return this;
-    }
-
-    /**
-     * Get the principalType property: The principal type of the assigned principal ID.
-     *
-     * @return the principalType value.
-     */
-    public PrincipalType principalType() {
-        return this.innerProperties() == null ? null : this.innerProperties().principalType();
-    }
-
-    /**
-     * Set the principalType property: The principal type of the assigned principal ID.
-     *
-     * @param principalType the principalType value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withPrincipalType(PrincipalType principalType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withPrincipalType(principalType);
-        return this;
-    }
-
-    /**
-     * Get the description property: Description of role assignment.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: Description of role assignment.
-     *
-     * @param description the description value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
-     * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
-     * @return the condition value.
-     */
-    public String condition() {
-        return this.innerProperties() == null ? null : this.innerProperties().condition();
-    }
-
-    /**
-     * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
-     * @param condition the condition value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withCondition(String condition) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withCondition(condition);
-        return this;
-    }
-
-    /**
-     * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
-     * @return the conditionVersion value.
-     */
-    public String conditionVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().conditionVersion();
-    }
-
-    /**
-     * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
-     * @param conditionVersion the conditionVersion value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withConditionVersion(String conditionVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withConditionVersion(conditionVersion);
-        return this;
-    }
-
-    /**
-     * Get the createdOn property: Time it was created.
-     *
-     * @return the createdOn value.
-     */
-    public OffsetDateTime createdOn() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
-    }
-
-    /**
-     * Get the updatedOn property: Time it was updated.
-     *
-     * @return the updatedOn value.
-     */
-    public OffsetDateTime updatedOn() {
-        return this.innerProperties() == null ? null : this.innerProperties().updatedOn();
-    }
-
-    /**
-     * Get the createdBy property: Id of the user who created the assignment.
-     *
-     * @return the createdBy value.
-     */
-    public String createdBy() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
-    }
-
-    /**
-     * Get the updatedBy property: Id of the user who updated the assignment.
-     *
-     * @return the updatedBy value.
-     */
-    public String updatedBy() {
-        return this.innerProperties() == null ? null : this.innerProperties().updatedBy();
-    }
-
-    /**
-     * Get the delegatedManagedIdentityResourceId property: Id of the delegated managed identity resource.
-     *
-     * @return the delegatedManagedIdentityResourceId value.
-     */
-    public String delegatedManagedIdentityResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().delegatedManagedIdentityResourceId();
-    }
-
-    /**
-     * Set the delegatedManagedIdentityResourceId property: Id of the delegated managed identity resource.
-     *
-     * @param delegatedManagedIdentityResourceId the delegatedManagedIdentityResourceId value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withDelegatedManagedIdentityResourceId(
-        String delegatedManagedIdentityResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withDelegatedManagedIdentityResourceId(delegatedManagedIdentityResourceId);
+    public RoleAssignmentCreateParameters withProperties(RoleAssignmentProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -248,13 +43,15 @@ public final class RoleAssignmentCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw logger
+        if (properties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property innerProperties in model RoleAssignmentCreateParameters"));
+                        "Missing required property properties in model RoleAssignmentCreateParameters"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentCreateParameters.class);
 }

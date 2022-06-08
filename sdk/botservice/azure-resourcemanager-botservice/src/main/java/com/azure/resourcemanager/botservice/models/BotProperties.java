@@ -7,7 +7,6 @@ package com.azure.resourcemanager.botservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The parameters to provide for the Bot. */
 @Fluent
 public final class BotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BotProperties.class);
-
     /*
      * The Name of the bot
      */
@@ -828,17 +825,17 @@ public final class BotProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property displayName in model BotProperties"));
         }
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property endpoint in model BotProperties"));
         }
         if (msaAppId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property msaAppId in model BotProperties"));
         }
@@ -846,4 +843,6 @@ public final class BotProperties {
             privateEndpointConnections().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BotProperties.class);
 }

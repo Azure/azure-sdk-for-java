@@ -6,24 +6,28 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                                       @AlexGhiondea @jsquire   
+/.github/                                           @jsquire
 
 ###########
 # SDK
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @anuchandy @conniey @pallavit @lmolkova @jonathangiles
+/sdk/                                               @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
 # PRLabel: %bom
-/sdk/boms/azure-sdk-bom/                            @pallavit @alzimmermsft @jonathangiles @srnagar @anuchandy
+/sdk/boms/azure-sdk-bom/                            @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/                    @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/boms/spring-cloud-azure-dependencies/          @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 ####
 # Service teams
 ####
+
+# PRLabel: %AOT
+/sdk/aot/                                           @srnagar @jonathangiles
+
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
@@ -32,15 +36,15 @@
 
 
 # PRLabel: %Attestation
-/sdk/attestation/                                   @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @larryosterman
-/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @larryosterman
+/sdk/attestation/                                   @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-security-attestation         @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+/sdk/attestation/azure-resourcemanager-attestation  @azure-sdk-write-attestation @anilba06 @gkostal
 
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
 # PRLabel: %Communication - Calling Server
-/sdk/communication/sdk/communication/azure-communication-callingserver/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
 # PRLabel: %Communication - Chat
 /sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
@@ -67,10 +71,10 @@
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Container Registry
-/sdk/containerregistry/                             @pallavit @alzimmermsft
+/sdk/containerregistry/                             @lmolkova @alzimmermsft
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
+/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
@@ -92,13 +96,13 @@
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms @brycewang-microsoft
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
+/sdk/eventgrid/                                     @mssfang @srnagar @lmolkova
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
@@ -132,7 +136,7 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @kryalama @ramthi @heyams
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query                    @srnagar @pallavit
+/sdk/monitor/azure-monitor-query                    @srnagar @lmolkova
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
@@ -144,7 +148,7 @@
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
+/sdk/search/                                        @alzimmermsft @mssfang @samvaity
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
@@ -153,19 +157,24 @@
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft
+/sdk/storage/                                       @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft @ibrahimrabab
 
 # PRLabel: %Tables
 /sdk/tables/                                        @vcolin7 @conniey
 
 # PRLabel: %EngSys
-/sdk/template/                                      @hallipr @weshaggard
+/sdk/template/                                      @hallipr @weshaggard @JimSuplizio
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang
 
+# PRLabel: %Azure SDK Tools
+/sdk/tools/                                         @srnagar @jonathangiles
+
 # PRLabel: %azure-spring
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+# PRLabel: %azure-spring
+/sdk/spring-experimental/                           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -731,18 +740,18 @@
 ###########
 # Eng Sys
 ###########
-/eng/                                               @hallipr @weshaggard @benbp
+/eng/                                               @hallipr @weshaggard @benbp @JimSuplizio
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
-/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
+/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
+/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
-/eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar @jonathangiles
+/eng/bomgenerator                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 
-/**/tests.yml                                       @hallipr
-/**/ci.yml                                          @hallipr
+/**/tests.yml                                       @hallipr @JimSuplizio
+/**/ci.yml                                          @hallipr @JimSuplizio
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                @joshfree @jonathangiles

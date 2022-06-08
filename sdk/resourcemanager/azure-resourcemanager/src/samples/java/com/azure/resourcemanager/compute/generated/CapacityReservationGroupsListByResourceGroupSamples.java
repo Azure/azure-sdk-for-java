@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.ExpandTypesForGetCapacityReserva
 /** Samples for CapacityReservationGroups ListByResourceGroup. */
 public final class CapacityReservationGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListCapacityReservationGroupsInResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
      */
     /**
      * Sample code: List capacity reservation groups in resource group.

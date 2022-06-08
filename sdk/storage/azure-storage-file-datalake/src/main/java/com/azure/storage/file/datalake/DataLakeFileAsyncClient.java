@@ -33,6 +33,9 @@ import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
+
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -115,16 +118,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
-        AzureSasCredential sasToken) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE,
-            blockBlobAsyncClient, sasToken);
+            blockBlobAsyncClient, sasToken, customerProvidedKey);
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
             Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
-            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken());
+            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken(),
+            pathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -152,6 +156,25 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public String getFileName() {
         return getObjectName();
+    }
+
+    /**
+     * Creates a new {@link DataLakeFileAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the file,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakeFileAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakeFileAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(), finalCustomerProvidedKey);
     }
 
     /**
@@ -236,7 +259,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -252,12 +275,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
@@ -271,16 +294,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getRequestConditions()).onErrorResume(t -> t
-                instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+            return deleteWithResponse(options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -860,7 +884,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
 
         return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(data, fileOffset, null, length, null, null,
-            headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
+            headers, leaseAccessConditions, getCpkInfo(), context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -985,10 +1010,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, retainUncommittedData, close,
-            (long) 0, null, httpHeaders, lac, mac,
+            (long) 0, null, httpHeaders, lac, mac, getCpkInfo(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
-                response.getDeserializedHeaders().getLastModified())));
+                response.getDeserializedHeaders().getLastModified(),
+                response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
+                response.getDeserializedHeaders().getXMsEncryptionKeySha256())));
     }
 
     /**

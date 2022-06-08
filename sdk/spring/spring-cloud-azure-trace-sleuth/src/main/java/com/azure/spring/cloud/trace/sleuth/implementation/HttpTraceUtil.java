@@ -7,6 +7,9 @@ import org.springframework.cloud.sleuth.Span;
 
 public final class HttpTraceUtil {
 
+    private HttpTraceUtil() {
+    }
+
     /**
      * Parse Spring Cloud Sleuth Status from HTTP response status code.
      *

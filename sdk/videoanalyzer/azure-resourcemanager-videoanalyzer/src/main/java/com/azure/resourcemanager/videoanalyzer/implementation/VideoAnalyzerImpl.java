@@ -123,6 +123,10 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VideoAnalyzerInner innerModel() {
         return this.innerObject;
     }

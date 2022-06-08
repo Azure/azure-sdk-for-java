@@ -274,4 +274,4 @@ Options are available to customize how targeting evaluation is performed across 
 ## Contributing
 
 <!-- Links -->
-[example_project]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/feature-management-web-sample
+[example_project]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.2.0/appconfiguration/feature-management-web-sample

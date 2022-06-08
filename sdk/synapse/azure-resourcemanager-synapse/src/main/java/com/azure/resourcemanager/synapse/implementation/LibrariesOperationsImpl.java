@@ -11,10 +11,9 @@ import com.azure.resourcemanager.synapse.fluent.LibrariesOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import com.azure.resourcemanager.synapse.models.LibrariesOperations;
 import com.azure.resourcemanager.synapse.models.LibraryResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LibrariesOperationsImpl implements LibrariesOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibrariesOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LibrariesOperationsImpl.class);
 
     private final LibrariesOperationsClient innerClient;
 

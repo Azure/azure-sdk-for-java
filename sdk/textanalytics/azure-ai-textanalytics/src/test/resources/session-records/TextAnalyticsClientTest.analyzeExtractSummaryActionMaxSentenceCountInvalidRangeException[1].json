@@ -1,43 +1,43 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f495a189-8a1b-45ca-800c-4066bb8f3be6",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1b10977b-bb66-4085-ab41-90f82e618fdd",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "7",
+      "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2e7e5fc3-555c-4e10-9a15-23fac11088d8",
+      "apim-request-id" : "e4e2aacb-8756-4dc4-b2b5-df84f89eb944",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid parameter in request\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task parameter value 0 is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}}}",
-      "Date" : "Tue, 19 Oct 2021 20:10:37 GMT",
+      "Date" : "Fri, 06 May 2022 17:42:24 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.2/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4c3f0446-2d79-4f8d-be84-322238bba9b0",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d4624721-b8ef-4650-9e9c-9a4541f31fae",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "8",
+      "x-envoy-upstream-service-time" : "1013",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2d54247c-671d-463d-8fcc-f1d8fd8f9df9",
+      "apim-request-id" : "e48dbc12-94f3-455f-a8fc-ca84363325ea",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid parameter in request\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task parameter value 21 is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}}}",
-      "Date" : "Tue, 19 Oct 2021 20:10:37 GMT",
+      "Date" : "Fri, 06 May 2022 17:42:25 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

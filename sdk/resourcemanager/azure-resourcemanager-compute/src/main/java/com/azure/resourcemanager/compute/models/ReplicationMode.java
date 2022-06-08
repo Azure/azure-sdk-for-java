@@ -27,7 +27,11 @@ public final class ReplicationMode extends ExpandableStringEnum<ReplicationMode>
         return fromString(name, ReplicationMode.class);
     }
 
-    /** @return known ReplicationMode values. */
+    /**
+     * Gets known ReplicationMode values.
+     *
+     * @return known ReplicationMode values.
+     */
     public static Collection<ReplicationMode> values() {
         return values(ReplicationMode.class);
     }

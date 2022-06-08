@@ -160,6 +160,13 @@ public interface Bookmark {
     List<String> techniques();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.BookmarkInner object.
      *
      * @return the inner object.

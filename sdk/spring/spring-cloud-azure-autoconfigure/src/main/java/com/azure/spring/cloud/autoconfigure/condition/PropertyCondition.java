@@ -19,6 +19,8 @@ import java.util.Map;
 
 abstract class PropertyCondition extends SpringBootCondition {
 
+    public static final String PROPERTY_SUFFIX = ".";
+
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         List<AnnotationAttributes> allAnnotationAttributes = annotationAttributesFromMultiValueMap(

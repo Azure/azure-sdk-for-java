@@ -47,7 +47,7 @@ import java.util.Map;
  *         checkpointer.success()
  *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
  *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
- *                 .subscribe();
+ *                 .block();
  *     }
  *
  *    {@literal @}Bean
@@ -236,8 +236,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
             final EventData event = eventContext.getEventData();
 
-            Checkpointer checkpointer = new AzureCheckpointer(eventContext::updateCheckpointAsync);
             if (CheckpointMode.MANUAL == checkpointConfig.getMode()) {
+                Checkpointer checkpointer = new AzureCheckpointer(eventContext::updateCheckpointAsync);
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
@@ -260,8 +260,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
             headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
             headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES, eventBatchContext.getLastEnqueuedEventProperties());
 
-            Checkpointer checkpointer = new AzureCheckpointer(eventBatchContext::updateCheckpointAsync);
             if (CheckpointMode.MANUAL == checkpointConfig.getMode()) {
+                Checkpointer checkpointer = new AzureCheckpointer(eventBatchContext::updateCheckpointAsync);
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 

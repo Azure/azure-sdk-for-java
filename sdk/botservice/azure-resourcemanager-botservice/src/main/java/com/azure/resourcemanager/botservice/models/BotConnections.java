@@ -121,7 +121,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectionSetting> listByBotService(String resourceGroupName, String resourceName);
 
@@ -134,7 +134,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectionSetting> listByBotService(String resourceGroupName, String resourceName, Context context);
 

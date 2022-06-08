@@ -50,7 +50,7 @@ public final class LineagesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface LineagesService {
+    public interface LineagesService {
         @Get("/atlas/v2/lineage/{guid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

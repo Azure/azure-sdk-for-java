@@ -25,15 +25,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectionContainersClient. */
 public final class ProtectionContainersClientImpl implements ProtectionContainersClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionContainersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionContainersService service;
 
@@ -280,14 +277,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<ProtectionContainerResourceInner> getAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName)
-            .flatMap(
-                (Response<ProtectionContainerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -490,14 +480,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
         String containerName,
         ProtectionContainerResourceInner parameters) {
         return registerWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, parameters)
-            .flatMap(
-                (Response<ProtectionContainerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -687,7 +670,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<Void> unregisterAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName) {
         return unregisterWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -869,7 +852,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<Void> inquireAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String filter) {
         return inquireWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -889,7 +872,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
         String vaultName, String resourceGroupName, String fabricName, String containerName) {
         final String filter = null;
         return inquireWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1061,7 +1044,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshAsync(String vaultName, String resourceGroupName, String fabricName, String filter) {
         return refreshWithResponseAsync(vaultName, resourceGroupName, fabricName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1080,7 +1063,7 @@ public final class ProtectionContainersClientImpl implements ProtectionContainer
     private Mono<Void> refreshAsync(String vaultName, String resourceGroupName, String fabricName) {
         final String filter = null;
         return refreshWithResponseAsync(vaultName, resourceGroupName, fabricName, filter)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

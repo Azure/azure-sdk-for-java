@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** calendar. */
 @Fluent
 public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCalendar.class);
-
     /*
      * Represent the online meeting service providers that can be used to
      * create online meetings in this calendar. Possible values are: unknown,
@@ -59,13 +56,13 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     private String changeKey;
 
     /*
-     * The color property.
+     * calendarColor
      */
     @JsonProperty(value = "color")
     private MicrosoftGraphCalendarColor color;
 
     /*
-     * The defaultOnlineMeetingProvider property.
+     * onlineMeetingProviderType
      */
     @JsonProperty(value = "defaultOnlineMeetingProvider")
     private MicrosoftGraphOnlineMeetingProviderType defaultOnlineMeetingProvider;
@@ -262,7 +259,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the color property: The color property.
+     * Get the color property: calendarColor.
      *
      * @return the color value.
      */
@@ -271,7 +268,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the color property: The color property.
+     * Set the color property: calendarColor.
      *
      * @param color the color value to set.
      * @return the MicrosoftGraphCalendar object itself.
@@ -282,7 +279,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the defaultOnlineMeetingProvider property: The defaultOnlineMeetingProvider property.
+     * Get the defaultOnlineMeetingProvider property: onlineMeetingProviderType.
      *
      * @return the defaultOnlineMeetingProvider value.
      */
@@ -291,7 +288,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the defaultOnlineMeetingProvider property: The defaultOnlineMeetingProvider property.
+     * Set the defaultOnlineMeetingProvider property: onlineMeetingProviderType.
      *
      * @param defaultOnlineMeetingProvider the defaultOnlineMeetingProvider value to set.
      * @return the MicrosoftGraphCalendar object itself.

@@ -17,10 +17,9 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeOutboundNetwor
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusResponse;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimesImpl.class);
 
     private final IntegrationRuntimesClient innerClient;
 
@@ -180,7 +179,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public IntegrationRuntimeResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,14 +187,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -211,7 +210,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -219,14 +218,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -239,7 +238,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -247,14 +246,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -267,7 +266,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -275,14 +274,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String integrationRuntimeName = Utils.getValueFromIdByName(id, "integrationRuntimes");
         if (integrationRuntimeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

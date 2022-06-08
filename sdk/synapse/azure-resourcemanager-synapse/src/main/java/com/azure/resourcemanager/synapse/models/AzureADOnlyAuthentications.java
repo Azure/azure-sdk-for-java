@@ -50,7 +50,8 @@ public interface AzureADOnlyAuthentications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<AzureADOnlyAuthentication> list(String resourceGroupName, String workspaceName);
 
@@ -63,7 +64,8 @@ public interface AzureADOnlyAuthentications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<AzureADOnlyAuthentication> list(String resourceGroupName, String workspaceName, Context context);
 

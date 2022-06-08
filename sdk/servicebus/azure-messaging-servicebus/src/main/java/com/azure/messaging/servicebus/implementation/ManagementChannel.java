@@ -378,7 +378,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             TransactionalState transactionalState = null;
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 transactionalState = new TransactionalState();
-                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                transactionalState.setTxnId(Binary.create(transactionContext.getTransactionId()));
             }
 
             return sendWithVerify(channel, requestMessage, transactionalState);
@@ -454,7 +454,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             TransactionalState transactionalState = null;
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 transactionalState = new TransactionalState();
-                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                transactionalState.setTxnId(Binary.create(transactionContext.getTransactionId()));
             }
 
             return sendWithVerify(channel, message, transactionalState);

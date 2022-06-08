@@ -14,6 +14,8 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 public class AzureStorageProperties extends AbstractAzureServiceConfigurationProperties implements StorageProperties {
 
+    public static final String PREFIX = "spring.cloud.azure.storage";
+
     /**
      * Endpoint for Azure Storage service.
      */

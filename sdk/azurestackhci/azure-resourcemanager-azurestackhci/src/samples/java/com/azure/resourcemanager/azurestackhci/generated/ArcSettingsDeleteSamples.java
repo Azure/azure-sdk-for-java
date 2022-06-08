@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ArcSettings Delete. */
 public final class ArcSettingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-01-01/examples/DeleteArcSetting.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/DeleteArcSetting.json
      */
     /**
      * Sample code: Delete ArcSetting.

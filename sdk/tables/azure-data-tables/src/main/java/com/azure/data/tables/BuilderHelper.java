@@ -14,7 +14,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -32,6 +31,7 @@ import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageConstants;
+import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ final class BuilderHelper {
                                       HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
                                       List<HttpPipelinePolicy> perCallAdditionalPolicies,
                                       List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration,
-                                      ClientLogger logger) {
+                                      ClientLogger logger, boolean enableTenantDiscovery) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
@@ -108,7 +108,8 @@ final class BuilderHelper {
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, StorageConstants.STORAGE_SCOPE);
+            credentialPolicy =  new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential,
+                enableTenantDiscovery, StorageConstants.STORAGE_SCOPE);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "

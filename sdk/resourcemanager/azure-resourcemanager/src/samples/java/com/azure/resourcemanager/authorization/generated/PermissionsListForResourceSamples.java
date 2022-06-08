@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Permissions ListForResource. */
 public final class PermissionsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/examples/GetResourcePermissions.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetResourcePermissions.json
      */
     /**
      * Sample code: List permissions for resource.

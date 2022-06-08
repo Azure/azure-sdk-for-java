@@ -36,7 +36,7 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-createSchemaRegistryAvroSerializer
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+            .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildSerializer();
         // END: readme-sample-createSchemaRegistryAvroSerializer
@@ -56,7 +56,7 @@ public class ReadmeSamples {
         playingCard.setIsFaceCard(false);
         playingCard.setCardValue(5);
 
-        MessageContent message = serializer.serializeMessageData(playingCard,
+        MessageContent message = serializer.serialize(playingCard,
             TypeReference.createInstance(MessageContent.class));
         // END: readme-sample-serializeSample
     }
@@ -68,7 +68,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-deserializeSample
         SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
         MessageContent message = getSchemaRegistryAvroMessage();
-        PlayingCard playingCard = serializer.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+        PlayingCard playingCard = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
         // END: readme-sample-deserializeSample
     }
 

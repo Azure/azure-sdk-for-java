@@ -54,7 +54,7 @@ public final class RoleAssignmentsImpl {
      */
     @Host("{vaultBaseUrl}")
     @ServiceInterface(name = "KeyVaultAccessContro")
-    private interface RoleAssignmentsService {
+    public interface RoleAssignmentsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)

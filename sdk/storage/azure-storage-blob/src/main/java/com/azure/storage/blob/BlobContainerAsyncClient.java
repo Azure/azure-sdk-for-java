@@ -452,7 +452,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
-        return createIfNotExistsWithResponse(null).map(response -> response.getStatusCode() != 409);
+        return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -482,7 +482,7 @@ public final class BlobContainerAsyncClient {
      * successfully created. If status code is 409, a container already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createIfNotExistsWithResponse(BlobContainerCreateOptions options) {
+    public Mono<Response<Boolean>> createIfNotExistsWithResponse(BlobContainerCreateOptions options) {
         try {
             return createIfNotExistsWithResponse(options, null);
         } catch (RuntimeException ex) {
@@ -490,16 +490,17 @@ public final class BlobContainerAsyncClient {
         }
     }
 
-    Mono<Response<Void>> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Context context) {
+    Mono<Response<Boolean>> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Context context) {
         try {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
                     .getStatusCode() == 409,
                     t -> {
                         HttpResponse response = ((BlobStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -602,7 +603,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -619,12 +620,12 @@ public final class BlobContainerAsyncClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;requestConditions&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions -->
      *
@@ -635,7 +636,7 @@ public final class BlobContainerAsyncClient {
      * {@link BlobRequestConditions#getIfNoneMatch()} is set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions) {
         try {
             return deleteIfExistsWithResponse(requestConditions, null);
         } catch (RuntimeException ex) {
@@ -643,15 +644,16 @@ public final class BlobContainerAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Context context) {
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         try {
             return deleteWithResponse(requestConditions, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((BlobStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

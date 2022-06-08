@@ -18,6 +18,7 @@ public final class ShareFileUploadRangeOptions {
     private final long length;
     private Long offset;
     private ShareRequestConditions requestConditions;
+    private FileLastWrittenMode lastWrittenMode;
 
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
@@ -118,6 +119,26 @@ public final class ShareFileUploadRangeOptions {
      */
     public ShareFileUploadRangeOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the {@link FileLastWrittenMode}.
+     *
+     * @return The {@link FileLastWrittenMode}.
+     */
+    public FileLastWrittenMode getLastWrittenMode() {
+        return this.lastWrittenMode;
+    }
+
+    /**
+     * Sets the {@link FileLastWrittenMode}.
+     *
+     * @param lastWrittenMode {@link FileLastWrittenMode}
+     * @return The updated options.
+     */
+    public ShareFileUploadRangeOptions setLastWrittenMode(FileLastWrittenMode lastWrittenMode) {
+        this.lastWrittenMode = lastWrittenMode;
         return this;
     }
 }

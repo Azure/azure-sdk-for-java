@@ -100,7 +100,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -150,7 +150,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-02-01";
+        final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -176,15 +176,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourcesListResultInner> listAsync(String resourceGroupName, String resourceName) {
-        return listWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<PrivateLinkResourcesListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

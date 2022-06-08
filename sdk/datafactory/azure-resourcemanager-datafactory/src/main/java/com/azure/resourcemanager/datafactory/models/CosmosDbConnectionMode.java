@@ -27,7 +27,11 @@ public final class CosmosDbConnectionMode extends ExpandableStringEnum<CosmosDbC
         return fromString(name, CosmosDbConnectionMode.class);
     }
 
-    /** @return known CosmosDbConnectionMode values. */
+    /**
+     * Gets known CosmosDbConnectionMode values.
+     *
+     * @return known CosmosDbConnectionMode values.
+     */
     public static Collection<CosmosDbConnectionMode> values() {
         return values(CosmosDbConnectionMode.class);
     }

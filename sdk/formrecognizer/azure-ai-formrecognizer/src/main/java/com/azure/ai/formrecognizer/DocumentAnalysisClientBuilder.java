@@ -163,7 +163,9 @@ public final class DocumentAnalysisClientBuilder implements
     public DocumentAnalysisAsyncClient buildAsyncClient() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
-
+        if (audience == null) {
+            audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+        }
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;

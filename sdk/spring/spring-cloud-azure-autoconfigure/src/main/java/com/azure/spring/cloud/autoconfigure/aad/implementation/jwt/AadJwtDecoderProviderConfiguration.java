@@ -20,7 +20,10 @@ import java.util.Map;
  * <a href="https://tools.ietf.org/html/rfc8414#section-3.1">Authorization Server Metadata Request</a> based on
  * provided issuer and method invoked.
  */
-public class AadJwtDecoderProviderConfiguration {
+public final class AadJwtDecoderProviderConfiguration {
+
+    private AadJwtDecoderProviderConfiguration() {
+    }
 
     private static final String OIDC_METADATA_PATH = "/.well-known/openid-configuration";
     private static final RestTemplate REST = new RestTemplate();

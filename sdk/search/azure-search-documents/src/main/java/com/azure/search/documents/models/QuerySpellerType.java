@@ -30,7 +30,11 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
         return fromString(name, QuerySpellerType.class);
     }
 
-    /** @return known QuerySpellerType values. */
+    /**
+     * Gets known QuerySpellerType values.
+     *
+     * @return known QuerySpellerType values.
+     */
     public static Collection<QuerySpellerType> values() {
         return values(QuerySpellerType.class);
     }

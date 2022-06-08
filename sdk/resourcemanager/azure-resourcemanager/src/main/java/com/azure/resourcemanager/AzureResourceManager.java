@@ -28,6 +28,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSets;
 import com.azure.resourcemanager.compute.models.Disks;
 import com.azure.resourcemanager.compute.models.Galleries;
 import com.azure.resourcemanager.compute.models.GalleryImageVersions;
@@ -827,5 +828,10 @@ public final class AzureResourceManager {
     /** @return entry point to network profiles management */
     public NetworkProfiles networkProfiles() {
         return this.networkManager.networkProfiles();
+    }
+
+    /** @return entry point to disk encryption sets management */
+    public DiskEncryptionSets diskEncryptionSets() {
+        return this.computeManager.diskEncryptionSets();
     }
 }
