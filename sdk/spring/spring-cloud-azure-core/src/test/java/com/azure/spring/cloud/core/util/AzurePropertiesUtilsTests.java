@@ -419,7 +419,7 @@ class AzurePropertiesUtilsTests {
     void httpClientPropertiesShouldBeCopied() {
         HeaderProperties headerProperties = new HeaderProperties();
         headerProperties.setName("header-1");
-        headerProperties.setValues(Arrays.asList("value-1","value-2"));
+        headerProperties.setValues(Arrays.asList("value-1", "value-2"));
         AzureHttpClientProperties source = new AzureHttpClientProperties();
         source.getClient().setWriteTimeout(Duration.ofSeconds(3));
         source.getClient().setResponseTimeout(Duration.ofSeconds(4));
