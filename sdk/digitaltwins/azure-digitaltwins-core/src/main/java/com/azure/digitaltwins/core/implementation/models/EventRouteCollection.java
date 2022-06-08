@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public final class EventRouteCollection {
     /*
      * The EventRoute objects.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private List<EventRoute> value;
 
     /*
@@ -24,23 +25,22 @@ public final class EventRouteCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of EventRouteCollection class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public EventRouteCollection(@JsonProperty(value = "value", required = true) List<EventRoute> value) {
+        this.value = value;
+    }
+
+    /**
      * Get the value property: The EventRoute objects.
      *
      * @return the value value.
      */
     public List<EventRoute> getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The EventRoute objects.
-     *
-     * @param value the value value to set.
-     * @return the EventRouteCollection object itself.
-     */
-    public EventRouteCollection setValue(List<EventRoute> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -69,7 +69,9 @@ public final class EventRouteCollection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getValue() != null) {
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model EventRouteCollection");
+        } else {
             getValue().forEach(e -> e.validate());
         }
     }

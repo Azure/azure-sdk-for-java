@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,8 @@ public final class BasicDigitalTwinComponent {
      * Information about the model a component conforms to. This field is present on every digital twin.
      */
     @JsonProperty(value = "$metadata", required = true)
-    private Map<String, DigitalTwinPropertyMetadata> metadata = new HashMap<>();
+    @JsonDeserialize(as = BasicDigitalTwinComponentMetadata.class)
+    private Map<String, DigitalTwinPropertyMetadata> metadata = new BasicDigitalTwinComponentMetadata();
 
     /**
      * The additional contents of the model. This field will contain any contents of the digital twin that are not already defined by the other strong types of this class.
@@ -34,16 +36,26 @@ public final class BasicDigitalTwinComponent {
 
     /**
      * Gets the metadata about the model.
-     * @return The model metadata.
+     * @return The component metadata.
      */
     public Map<String, DigitalTwinPropertyMetadata> getMetadata() {
         return metadata;
     }
-
+    
     /**
      * Sets the model metadata.
-     * @param key The key that maps to the metadata
-     * @param metadata Model metadata.
+     * @param metadata Component metadata.
+     * @return The BasicDigitalTwinComponent object itself.
+     */
+    public BasicDigitalTwinComponent setMetadata(BasicDigitalTwinComponentMetadata metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Adds property metadata.
+     * @param key The key that maps to the property metadata
+     * @param metadata Property metadata.
      * @return The BasicDigitalTwinComponent object itself.
      */
     public BasicDigitalTwinComponent addMetadata(String key, DigitalTwinPropertyMetadata metadata) {

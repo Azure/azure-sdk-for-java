@@ -3,6 +3,7 @@
 
 module com.azure.digitaltwins.core {
     requires transitive com.azure.core;
+	requires com.fasterxml.jackson.databind;
 
     exports com.azure.digitaltwins.core;
     exports com.azure.digitaltwins.core.models;

@@ -12,21 +12,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * An optional, helper class for deserializing a digital twin.
- * The $metadata class on a {@link BasicDigitalTwin}.
+ * The $metadata class on a {@link BasicDigitalTwinComponent}.
  * Only properties with non-null values are included.
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class BasicDigitalTwinMetadata {
+public final class BasicDigitalTwinComponentMetadata implements Map<String, DigitalTwinPropertyMetadata> {
 
-    @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
-    private String modelId;
-    
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)
     private OffsetDateTime lastUpdatedOn;
 
@@ -36,28 +36,10 @@ public final class BasicDigitalTwinMetadata {
     /**
      * Creates an instance of digital twin metadata.
      */
-    public BasicDigitalTwinMetadata() {
+    public BasicDigitalTwinComponentMetadata() {
     }
 
-    /**
-     * Gets the Id of the model that the digital twin or component is modeled by.
-     * @return The Id of the model that the digital twin or component is modeled by.
-     */
-    public String getModelId() {
-        return modelId;
-    }
-
-    /**
-     * Sets the Id of the model that the digital twin or component is modeled by.
-     * @param modelId The Id of the model that the digital twin or component is modeled by.
-     * @return The BasicDigitalTwinMetadata object itself.
-     */
-    public BasicDigitalTwinMetadata setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
-    }
-    
-    /**
+	/**
      * Gets the date and time when the twin was last updated.
      * @return The date and time the twin was last updated.
      */
@@ -69,7 +51,7 @@ public final class BasicDigitalTwinMetadata {
      * Sets the date and time when the twin was last updated.
      * @return The BasicDigitalTwinMetadata object itself.
      */
-    public BasicDigitalTwinMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
+    public BasicDigitalTwinComponentMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
     	this.lastUpdatedOn = lastUpdatedOn;
         return this;
     }
@@ -91,8 +73,68 @@ public final class BasicDigitalTwinMetadata {
      * @return The BasicDigitalTwin object itself.
      */
     @JsonAnySetter
-    public BasicDigitalTwinMetadata addPropertyMetadata(String key, DigitalTwinPropertyMetadata value) {
+    public BasicDigitalTwinComponentMetadata addPropertyMetadata(String key, DigitalTwinPropertyMetadata value) {
         this.propertyMetadata.put(key, value);
         return this;
     }
+
+    @Override
+	public int size() {
+		return propertyMetadata.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return propertyMetadata.isEmpty();
+	}
+
+	@Override
+	public boolean containsKey(Object key) {
+		return propertyMetadata.containsKey(key);
+	}
+
+	@Override
+	public boolean containsValue(Object value) {
+		return propertyMetadata.containsValue(value);
+	}
+
+	@Override
+	public DigitalTwinPropertyMetadata get(Object key) {
+		return propertyMetadata.get(key);
+	}
+
+	@Override
+	public DigitalTwinPropertyMetadata put(String key, DigitalTwinPropertyMetadata value) {
+		return propertyMetadata.put(key, value);
+	}
+
+	@Override
+	public DigitalTwinPropertyMetadata remove(Object key) {
+		return propertyMetadata.remove(key);
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends DigitalTwinPropertyMetadata> m) {
+		propertyMetadata.putAll(m);
+	}
+
+	@Override
+	public void clear() {
+		propertyMetadata.clear();
+	}
+
+	@Override
+	public Set<String> keySet() {
+		return propertyMetadata.keySet();
+	}
+
+	@Override
+	public Collection<DigitalTwinPropertyMetadata> values() {
+		return propertyMetadata.values();
+	}
+
+	@Override
+	public Set<Entry<String, DigitalTwinPropertyMetadata>> entrySet() {
+		return propertyMetadata.entrySet();
+	}
 }

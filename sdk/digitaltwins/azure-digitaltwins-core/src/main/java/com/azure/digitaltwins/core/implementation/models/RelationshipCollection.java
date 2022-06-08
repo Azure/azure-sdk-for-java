@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public final class RelationshipCollection {
     /*
      * The relationship objects.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private List<Object> value;
 
     /*
@@ -24,23 +25,22 @@ public final class RelationshipCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of RelationshipCollection class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public RelationshipCollection(@JsonProperty(value = "value", required = true) List<Object> value) {
+        this.value = value;
+    }
+
+    /**
      * Get the value property: The relationship objects.
      *
      * @return the value value.
      */
     public List<Object> getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The relationship objects.
-     *
-     * @param value the value value to set.
-     * @return the RelationshipCollection object itself.
-     */
-    public RelationshipCollection setValue(List<Object> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -68,5 +68,9 @@ public final class RelationshipCollection {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() {
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model RelationshipCollection");
+        }
+    }
 }

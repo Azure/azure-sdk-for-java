@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public final class PagedDigitalTwinsModelDataCollection {
     /*
      * The DigitalTwinsModelData objects.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private List<DigitalTwinsModelData> value;
 
     /*
@@ -24,23 +25,23 @@ public final class PagedDigitalTwinsModelDataCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of PagedDigitalTwinsModelDataCollection class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public PagedDigitalTwinsModelDataCollection(
+            @JsonProperty(value = "value", required = true) List<DigitalTwinsModelData> value) {
+        this.value = value;
+    }
+
+    /**
      * Get the value property: The DigitalTwinsModelData objects.
      *
      * @return the value value.
      */
     public List<DigitalTwinsModelData> getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The DigitalTwinsModelData objects.
-     *
-     * @param value the value value to set.
-     * @return the PagedDigitalTwinsModelDataCollection object itself.
-     */
-    public PagedDigitalTwinsModelDataCollection setValue(List<DigitalTwinsModelData> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -69,7 +70,10 @@ public final class PagedDigitalTwinsModelDataCollection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getValue() != null) {
+        if (getValue() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property value in model PagedDigitalTwinsModelDataCollection");
+        } else {
             getValue().forEach(e -> e.validate());
         }
     }

@@ -158,6 +158,9 @@ public final class DigitalTwinModelsImpl {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
+        if (models == null) {
+            return Mono.error(new IllegalArgumentException("Parameter models is required and cannot be null."));
+        }
         if (digitalTwinModelsAddOptions != null) {
             digitalTwinModelsAddOptions.validate();
         }
