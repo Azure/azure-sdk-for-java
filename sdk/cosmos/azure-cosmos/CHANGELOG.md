@@ -10,6 +10,7 @@
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
 #### Other Changes
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. 
 
 ### 4.30.1 (2022-06-01)
 
