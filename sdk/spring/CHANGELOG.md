@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+### spring-cloud-azure-starter-servicebus-jms
+
+#### Features Added
+- Add `enabled` option in `AzureServiceBusJmsProperties` [#29232](https://github.com/Azure/azure-sdk-for-java/issues/29232).
+
+#### Bugs Fixed
+- Fix the Service Bus autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
+
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
 
