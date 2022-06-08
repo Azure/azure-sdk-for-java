@@ -28,10 +28,8 @@ import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.BoundingRegion;
 import com.azure.ai.formrecognizer.models.CurrencyValue;
-import com.azure.ai.formrecognizer.models.DocumentCaption;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentFootnote;
 import com.azure.ai.formrecognizer.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.models.DocumentLanguage;
@@ -39,6 +37,7 @@ import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentPage;
+import com.azure.ai.formrecognizer.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentSignatureType;
@@ -114,6 +113,8 @@ public class Transforms {
                 DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
                     ? null : LengthUnit.fromString(innerDocumentPage.getUnit().toString()));
                 DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
+                DocumentPageHelper.setKind(documentPage, innerDocumentPage.getKind() != null
+                    ? DocumentPageKind.fromString(innerDocumentPage.getKind().toString()) : null);
                 DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
                     ? null
                     : innerDocumentPage.getSelectionMarks()
@@ -239,39 +240,12 @@ public class Transforms {
                     DocumentTableHelper.setSpans(documentTable, toDocumentSpans(innerDocumentTable.getSpans()));
                     DocumentTableHelper.setColumnCount(documentTable, innerDocumentTable.getColumnCount());
                     DocumentTableHelper.setRowCount(documentTable, innerDocumentTable.getRowCount());
-                    DocumentTableHelper.setTableCaption(documentTable, innerDocumentTable.getCaption() == null
-                        ? null : toDocumentCaption(innerDocumentTable.getCaption()));
-                    DocumentTableHelper.setTableFootnotes(documentTable, innerDocumentTable.getFootnotes() == null
-                        ? null : innerDocumentTable.getFootnotes()
-                        .stream()
-                        .map(innerDocumentFootnote -> toDocumentFootnote(innerDocumentFootnote))
-                        .collect(Collectors.toList()));
                     return documentTable;
                 })
                 .collect(Collectors.toList()));
         }
 
         return analyzeResult;
-    }
-
-    private static DocumentCaption toDocumentCaption(com.azure.ai.formrecognizer.implementation.models.DocumentCaption innerDocumentCaption) {
-        DocumentCaption documentCaption = new DocumentCaption();
-        DocumentCaptionHelper.setContent(documentCaption, innerDocumentCaption.getContent());
-        DocumentCaptionHelper.setSpans(documentCaption, toDocumentSpans(innerDocumentCaption.getSpans()));
-        DocumentCaptionHelper.setBoundingRegions(documentCaption,
-            toBoundingRegions(innerDocumentCaption.getBoundingRegions()));
-
-        return documentCaption;
-    }
-
-    private static DocumentFootnote toDocumentFootnote(com.azure.ai.formrecognizer.implementation.models.DocumentFootnote innerDocumentFootnote) {
-        DocumentFootnote documentFootnote = new DocumentFootnote();
-        DocumentFootnoteHelper.setContent(documentFootnote, innerDocumentFootnote.getContent());
-        DocumentFootnoteHelper.setSpans(documentFootnote, toDocumentSpans(innerDocumentFootnote.getSpans()));
-        DocumentFootnoteHelper.setBoundingRegions(documentFootnote,
-            toBoundingRegions(innerDocumentFootnote.getBoundingRegions()));
-
-        return documentFootnote;
     }
 
     /**
@@ -404,7 +378,6 @@ public class Transforms {
             documentFieldMap.put(key, toDocumentField(innerDocumentField)));
         return documentFieldMap;
     }
-
 
     private static DocumentField toDocumentField(
         com.azure.ai.formrecognizer.implementation.models.DocumentField innerDocumentField) {
