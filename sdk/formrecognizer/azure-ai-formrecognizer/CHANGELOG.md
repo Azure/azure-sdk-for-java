@@ -7,8 +7,6 @@
 - Added support for vertex coordinates with model `Point` to represent polygon vertices in `boundingPolygon` property.
 - Added `paragraphs` property on `AnalyzeResult`.
 - Added a new `DocumentParagraph` model to represent document paragraphs.
-- Added `caption` and `footnotes` properties on `DocumentTable`.
-- Added `DocumentCaption` and `DocumentFootnote` models to represent captions and footnotes found in the document.
 - Added `kind` property on `DocumentPage` to represent the document page kind.
 
 ### Breaking Changes

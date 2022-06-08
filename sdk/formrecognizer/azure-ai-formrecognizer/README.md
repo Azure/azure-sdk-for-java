@@ -190,24 +190,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
 provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
-Use the `modelId` parameter to select the type of model for analysis.
-The following table includes some models supported by the service (for a full list of supported models, see [here](fr_models)):
-
-| Model                   | Features                                                                                                  |
-|-------------------------|-----------------------------------------------------------------------------------------------------------|
-| "prebuilt-layout"       | Text extraction, selection marks, tables                                                                  |
-| "prebuilt-document"     | Text extraction, selection marks, tables, key-value pairs, and entities                                   |
-| "prebuilt-read"         | Text extraction, text languages and styles                                                                |  
-| "prebuilt-invoice"      | Text extraction, selection marks, tables, and prebuilt fields and values related to English invoices      |
-| "prebuilt-businessCard" | Text extraction and prebuilt fields, and values related to English business cards                         |
-| "prebuilt-idDocument"   | Text extraction and prebuilt fields and values related to US driver licenses and international passports  |
-| "prebuilt-receipt"      | Text extraction and prebuilt fields and values related to English sales receipts                          |
-| "prebuilt-tax.us.w2"    | Text extraction and pre-trained fields and values pertaining to US W2 tax forms                           |
-| "{custom-model-id}"     | Text extraction, selection marks, tables, labeled fields, and values from your custom documents           |
+See a full list of supported models [here][fr_models].
 
 Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
 More information about analyzing documents, including supported features, locales, and document types can be found
-[here][fr-models].
+[here][fr_models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -613,6 +600,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
+[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
 
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
