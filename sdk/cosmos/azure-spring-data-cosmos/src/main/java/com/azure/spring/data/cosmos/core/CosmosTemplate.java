@@ -37,7 +37,9 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -49,8 +51,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
+import org.springframework.expression.spel.ast.Literal;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,6 +74,7 @@ import java.util.stream.Collectors;
 public class CosmosTemplate implements CosmosOperations, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
@@ -855,6 +860,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
+                .doOnNext(jsonNode -> {
+                    try {
+                        LOGGER.info(objectMapper.writeValueAsString(jsonNode));
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                })
                    .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
                    .collectList()
                    .block();
