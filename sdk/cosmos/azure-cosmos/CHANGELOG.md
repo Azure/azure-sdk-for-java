@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.31.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.31.0 (2022-06-08)
 
 #### Bugs Fixed
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
