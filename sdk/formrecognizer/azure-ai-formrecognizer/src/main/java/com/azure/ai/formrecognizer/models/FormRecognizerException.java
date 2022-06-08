@@ -15,7 +15,14 @@ import java.util.List;
  * @see FormRecognizerErrorInformation
  */
 public class FormRecognizerException extends AzureException {
+    /**
+     * Error information list.
+     */
     private final List<FormRecognizerErrorInformation> errorInformationList;
+
+    /**
+     * Error information message.
+     */
     private final String errorInformationMessage;
 
     /**
