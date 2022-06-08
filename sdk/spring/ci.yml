@@ -135,6 +135,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-servicebus-jms'
   type: boolean
   default: true
+- name: release_springcloudazurestarterstorage
+  displayName: 'spring-cloud-azure-starter-storage'
+  type: boolean
+  default: true
 - name: release_springcloudazurestarterstorageblob
   displayName: 'spring-cloud-azure-starter-storage-blob'
   type: boolean
@@ -377,6 +381,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterservicebusjms }}
+      - name: spring-cloud-azure-starter-storage
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstorage
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterstorage }}
       - name: spring-cloud-azure-starter-storage-blob
         groupId: com.azure.spring
         safeName: springcloudazurestarterstorageblob
