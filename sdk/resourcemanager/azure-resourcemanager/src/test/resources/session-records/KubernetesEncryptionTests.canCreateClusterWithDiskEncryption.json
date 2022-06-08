@@ -217,7 +217,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg01544/providers/Microsoft.Compute/diskEncryptionSets/des1?api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg01544/providers/Microsoft.Compute/diskEncryptionSets/des1?api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1f63622c-4dd5-45eb-885c-ec86a436f0cb",
@@ -239,17 +239,17 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/HighCostDiskEncryptionSet3Min;99,Microsoft.Compute/HighCostDiskEncryptionSet30Min;299",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T025819Z:4e364ad9-6c43-4df5-91a1-1c9989ddaf47",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/8256288e-b9ba-40ae-9ce2-a20f445dd533?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2021-12-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/8256288e-b9ba-40ae-9ce2-a20f445dd533?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2022-03-02",
       "x-ms-request-id" : "8256288e-b9ba-40ae-9ce2-a20f445dd533",
       "Body" : "{\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"identity\": {\r\n    \"type\": \"SystemAssigned\"\r\n  },\r\n  \"properties\": {\r\n    \"activeKey\": {\r\n      \"sourceVault\": {\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg01544/providers/Microsoft.KeyVault/vaults/kv46662\"\r\n      },\r\n      \"keyUrl\": \"http://localhost:1234/keys/key1/5519af731f454426992be0762444634d\"\r\n    },\r\n    \"encryptionType\": \"EncryptionAtRestWithPlatformAndCustomerKeys\",\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "1f63622c-4dd5-45eb-885c-ec86a436f0cb",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/8256288e-b9ba-40ae-9ce2-a20f445dd533?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&monitor=true&api-version=2021-12-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/8256288e-b9ba-40ae-9ce2-a20f445dd533?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&monitor=true&api-version=2022-03-02"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/8256288e-b9ba-40ae-9ce2-a20f445dd533?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/8256288e-b9ba-40ae-9ce2-a20f445dd533?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "33d5e6d6-65d1-46e1-83a8-68e76175dad5"
@@ -278,7 +278,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg01544/providers/Microsoft.Compute/diskEncryptionSets/des1?api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg01544/providers/Microsoft.Compute/diskEncryptionSets/des1?api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4a999ede-a23c-469d-b742-7d52b8ef0ee5"

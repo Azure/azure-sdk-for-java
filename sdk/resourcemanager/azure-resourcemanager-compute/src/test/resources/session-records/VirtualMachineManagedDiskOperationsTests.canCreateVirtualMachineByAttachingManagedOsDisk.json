@@ -485,7 +485,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83252/providers/Microsoft.Compute/disks/dsk-89578e39?api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83252/providers/Microsoft.Compute/disks/dsk-89578e39?api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4d4dfd4e-73f4-4883-bd09-4fcd9cd0a7fe",
@@ -507,17 +507,17 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateDisks3Min;990,Microsoft.Compute/CreateUpdateDisks30Min;7990",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220524T073347Z:cb3600a9-3a11-4ff0-bd56-68f870d3faf8",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/cf29b441-7884-423e-9dd6-78b6c7da96bd?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2021-12-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/cf29b441-7884-423e-9dd6-78b6c7da96bd?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2022-03-02",
       "x-ms-request-id" : "cf29b441-7884-423e-9dd6-78b6c7da96bd",
       "Body" : "{\r\n  \"name\": \"dsk-89578e39\",\r\n  \"location\": \"eastus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"osType\": \"Linux\",\r\n    \"creationData\": {\r\n      \"createOption\": \"Import\",\r\n      \"storageAccountId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg83252/providers/Microsoft.Storage/storageAccounts/stg76862a049\",\r\n      \"sourceUri\": \"https://stg76862a049.blob.core.windows.net/vhds/myvm6-os-disk-b6758aee-a159-4d49-a624-1fbaa2ea257a.vhd\"\r\n    },\r\n    \"provisioningState\": \"Updating\",\r\n    \"diskSizeBytes\": 32212254720,\r\n    \"isArmResource\": true\r\n  }\r\n}",
       "x-ms-client-request-id" : "4d4dfd4e-73f4-4883-bd09-4fcd9cd0a7fe",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/cf29b441-7884-423e-9dd6-78b6c7da96bd?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&monitor=true&api-version=2021-12-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/cf29b441-7884-423e-9dd6-78b6c7da96bd?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&monitor=true&api-version=2022-03-02"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/cf29b441-7884-423e-9dd6-78b6c7da96bd?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/DiskOperations/cf29b441-7884-423e-9dd6-78b6c7da96bd?p=cf00aa19-e046-40ac-861d-45a82e8cd03f&api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d00c915b-1323-403f-b209-f26f6f8a8f6c"
@@ -546,7 +546,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83252/providers/Microsoft.Compute/disks/dsk-89578e39?api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg83252/providers/Microsoft.Compute/disks/dsk-89578e39?api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "91e48cc6-d19b-4159-b225-6a455e098b5c"

@@ -554,7 +554,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg50441/providers/Microsoft.Compute/disks/javavm_OsDisk_1_f1543d03021d48e4816abde8dc3769cb?api-version=2021-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg50441/providers/Microsoft.Compute/disks/javavm_OsDisk_1_f1543d03021d48e4816abde8dc3769cb?api-version=2022-03-02",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1a1e91c3-439d-414c-b75f-0dd760b7eaa4",

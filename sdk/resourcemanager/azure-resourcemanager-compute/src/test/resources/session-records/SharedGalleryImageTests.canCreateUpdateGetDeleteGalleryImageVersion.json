@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "8a957489-0bdd-4e0f-8445-21c9ab07639f",
@@ -49,7 +49,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGallery3Min;49,Microsoft.Compute/CreateUpdateGallery30Min;298",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220331T021438Z:2b3aca5d-c2ec-4c85-b3e0-487f421eeac6",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/8e10a4b3-2f78-40a7-8ad8-495c50e1af4b?api-version=2021-10-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/8e10a4b3-2f78-40a7-8ad8-495c50e1af4b?api-version=2022-01-03",
       "x-ms-request-id" : "8e10a4b3-2f78-40a7-8ad8-495c50e1af4b",
       "Body" : "{\r\n  \"name\": \"jsim98792802\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802\",\r\n  \"type\": \"Microsoft.Compute/galleries\",\r\n  \"location\": \"westcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"description\": \"java's image gallery\",\r\n    \"identifier\": {\r\n      \"uniqueName\": \"00000000-0000-0000-0000-000000000000-JSIM98792802\"\r\n    },\r\n    \"provisioningState\": \"Creating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "8a957489-0bdd-4e0f-8445-21c9ab07639f",
@@ -58,7 +58,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/8e10a4b3-2f78-40a7-8ad8-495c50e1af4b?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/8e10a4b3-2f78-40a7-8ad8-495c50e1af4b?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "57574080-4260-4b9d-b831-ec53783232bd"
@@ -87,7 +87,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "1a59941b-45d0-4382-bfd9-1afb7e57e1d8"
@@ -116,7 +116,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "a5660ce6-4375-4c15-aead-0114ee5c0ace",
@@ -138,7 +138,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGalleryImage3Min;149,Microsoft.Compute/CreateUpdateGalleryImage30Min;748",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220331T021513Z:4c4bf4c9-f2ae-47ad-8952-7bdbd26e116d",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e7e552d5-1f33-4589-b3b4-0044beb5e504?api-version=2021-10-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e7e552d5-1f33-4589-b3b4-0044beb5e504?api-version=2022-01-03",
       "x-ms-request-id" : "e7e552d5-1f33-4589-b3b4-0044beb5e504",
       "Body" : "{\r\n  \"name\": \"SampleImages\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages\",\r\n  \"type\": \"Microsoft.Compute/galleries/images\",\r\n  \"location\": \"westcentralus\",\r\n  \"properties\": {\r\n    \"hyperVGeneration\": \"V1\",\r\n    \"architecture\": \"x64\",\r\n    \"osType\": \"Linux\",\r\n    \"osState\": \"Generalized\",\r\n    \"identifier\": {\r\n      \"publisher\": \"JavaSDKTeam\",\r\n      \"offer\": \"JDK\",\r\n      \"sku\": \"Jdk-9\"\r\n    },\r\n    \"provisioningState\": \"Creating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "a5660ce6-4375-4c15-aead-0114ee5c0ace",
@@ -147,7 +147,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e7e552d5-1f33-4589-b3b4-0044beb5e504?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e7e552d5-1f33-4589-b3b4-0044beb5e504?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "abab46ff-ead5-4eaa-ac17-9da7112afe67"
@@ -176,7 +176,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "62728b57-0e9c-4e3f-b29a-fbe7b14cd5d1"
@@ -945,7 +945,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "eed7c996-b03d-437b-8adc-e7dfda26d52a",
@@ -967,7 +967,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGalleryImageVersion3Min;374,Microsoft.Compute/CreateUpdateGalleryImageVersion30Min;1199",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220331T021952Z:64f23fb1-7346-4b0e-8f0a-ae7515b5f734",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
       "x-ms-request-id" : "e4dbd3e8-c3f0-46d1-978d-3dc468425af0",
       "Body" : "{\r\n  \"name\": \"0.0.4\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4\",\r\n  \"type\": \"Microsoft.Compute/galleries/images/versions\",\r\n  \"location\": \"westcentralus\",\r\n  \"properties\": {\r\n    \"publishingProfile\": {\r\n      \"targetRegions\": [\r\n        {\r\n          \"name\": \"West US 2\",\r\n          \"regionalReplicaCount\": 1,\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        },\r\n        {\r\n          \"name\": \"West Central US\",\r\n          \"regionalReplicaCount\": 1,\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        }\r\n      ],\r\n      \"replicaCount\": 1,\r\n      \"excludeFromLatest\": false,\r\n      \"publishedDate\": \"2022-03-31T02:19:50.7132214+00:00\",\r\n      \"storageAccountType\": \"Standard_LRS\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"source\": {\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/images/img311479bae7e\"\r\n      }\r\n    },\r\n    \"provisioningState\": \"Creating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "eed7c996-b03d-437b-8adc-e7dfda26d52a",
@@ -976,7 +976,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "07638b2f-af00-453a-91ce-f01ca0a4c338"
@@ -1005,7 +1005,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "07b7c446-3489-4f72-aa5d-c33dea51945f"
@@ -1034,7 +1034,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "1370e90c-da7b-4eda-a99a-4d5f33795bfd"
@@ -1063,7 +1063,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "fb7dcbb6-0435-4194-b40a-9fa8ac970e47"
@@ -1092,7 +1092,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "dd32ed16-324e-4ad7-a0e1-23cdcf43bde3"
@@ -1104,7 +1104,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "dd32ed16-324e-4ad7-a0e1-23cdcf43bde3"
@@ -1133,7 +1133,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "2714e016-1870-4f3f-9f5c-b6cc9c061e00"
@@ -1162,7 +1162,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "144611df-9ea9-4cb0-86d1-dcceb50ee2c1"
@@ -1191,7 +1191,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/e4dbd3e8-c3f0-46d1-978d-3dc468425af0?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "39fe572b-4e57-4837-89d1-c1e9b3b7eac9"
@@ -1220,7 +1220,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "7ecc3932-e5ae-4a5a-9617-b63506870572"
@@ -1249,7 +1249,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "8d53c99d-555e-455d-8cae-a9477fe4f4a0",
@@ -1271,7 +1271,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateUpdateGalleryImageVersion3Min;374,Microsoft.Compute/CreateUpdateGalleryImageVersion30Min;1198",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220331T022800Z:385606cc-afa5-4abf-9c62-9e35e6e6eb79",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2021-10-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2022-01-03",
       "x-ms-request-id" : "09b2548a-562b-4510-8cea-e398010c32fc",
       "Body" : "{\r\n  \"name\": \"0.0.4\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4\",\r\n  \"type\": \"Microsoft.Compute/galleries/images/versions\",\r\n  \"location\": \"westcentralus\",\r\n  \"properties\": {\r\n    \"publishingProfile\": {\r\n      \"targetRegions\": [\r\n        {\r\n          \"name\": \"West Central US\",\r\n          \"regionalReplicaCount\": 1,\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        }\r\n      ],\r\n      \"replicaCount\": 1,\r\n      \"excludeFromLatest\": false,\r\n      \"publishedDate\": \"2022-03-31T02:19:50.7132214+00:00\",\r\n      \"storageAccountType\": \"Standard_LRS\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"source\": {\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/images/img311479bae7e\"\r\n      },\r\n      \"osDiskImage\": {\r\n        \"sizeInGB\": 30,\r\n        \"hostCaching\": \"ReadWrite\",\r\n        \"source\": {}\r\n      },\r\n      \"dataDiskImages\": [\r\n        {\r\n          \"lun\": 0,\r\n          \"sizeInGB\": 40,\r\n          \"hostCaching\": \"ReadWrite\"\r\n        },\r\n        {\r\n          \"lun\": 1,\r\n          \"sizeInGB\": 70,\r\n          \"hostCaching\": \"ReadOnly\"\r\n        }\r\n      ]\r\n    },\r\n    \"provisioningState\": \"Updating\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "8d53c99d-555e-455d-8cae-a9477fe4f4a0",
@@ -1280,7 +1280,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "1cd9b827-9d2a-4238-a39e-c7111a029e00"
@@ -1309,7 +1309,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "6def44e8-b96f-4a10-8563-34741984a7ed"
@@ -1338,7 +1338,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "2e108c06-34d7-4e7e-a0dd-ce424666a3e7"
@@ -1367,7 +1367,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/09b2548a-562b-4510-8cea-e398010c32fc?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "28242318-8c71-4da7-a6ef-9bd9aa9fc460"
@@ -1396,7 +1396,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "7c86abea-ed25-4d07-a7ea-7b5a21a13461"
@@ -1425,7 +1425,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "3d4df795-9592-4051-a379-e601afc02551",
@@ -1452,7 +1452,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76760/providers/Microsoft.Compute/galleries/jsim98792802/images/SampleImages/versions/0.0.4?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "24092898-8547-471d-80e4-9c1bf9fc95e8",
@@ -1474,15 +1474,15 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/DeleteGalleryImageVersion3Min;149,Microsoft.Compute/DeleteGalleryImageVersion30Min;999",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220331T023205Z:2094fbce-8723-4052-a816-ace21148d651",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?api-version=2021-10-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?api-version=2022-01-03",
       "x-ms-request-id" : "a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e",
       "x-ms-client-request-id" : "24092898-8547-471d-80e4-9c1bf9fc95e8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?monitor=true&api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?monitor=true&api-version=2022-01-03"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "0994cc9c-4503-438a-978a-804ebc9d780f"
@@ -1511,7 +1511,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "3687985f-0209-4275-89fb-c6c1b751e795"
@@ -1540,7 +1540,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?monitor=true&api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/capsOperations/a906e2ef-e8b0-457c-bf1b-3da7f0fbe14e?monitor=true&api-version=2022-01-03",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.14.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "5838c3b5-5a11-4965-92db-981c79970951"
