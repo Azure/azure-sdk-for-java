@@ -8,7 +8,7 @@ Scripts in this folder is used to hold the scripts used in Spring Cloud Azure pr
 
 1. Get `SPRING_BOOT_VERSION` from [spring-boot-dependencies tags](https://github.com/spring-projects/spring-boot/tags). Get `SPRING_CLOUD_VERSION` from [spring-cloud-dependencies tags](https://github.com/spring-cloud/spring-cloud-release/tags). Note that spring-cloud version should compatible with spring-boot version. Refs: [Spring Cloud Release train Spring Boot compatibility](https://spring.io/projects/spring-cloud).
 2. Update `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION` in `get_spring_boot_managed_external_dependencies.py`.
-3. Run command `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py`. Then a file named `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt` will be created in `.\sdk\spring\scripts`.
+3. Run command `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b <SPRING_BOOT_VERSION> -c <SPRING_CLOUD_VERSION>`. Then a file named `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt` will be created in `.\sdk\spring\scripts`.
 4. Update `SPRING_BOOT_VERSION` in `sync_external_dependencies.py`.
 5. Run command `python .\sdk\spring\scripts\sync_external_dependencies.py`. Then versions in `\eng\versioning\external_dependencies.txt` will be synchronized with `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`.
 6. Update the comment at the beginning of `\eng\versioning\external_dependencies.txt`: Update the file name of `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`.
