@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Updated processor client process error when load balance occurs errors.
+
 ### Breaking Changes
 
 ### Bugs Fixed

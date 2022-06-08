@@ -16,6 +16,9 @@ public final class GallerySharingPermissionTypes extends ExpandableStringEnum<Ga
     /** Static value Groups for GallerySharingPermissionTypes. */
     public static final GallerySharingPermissionTypes GROUPS = fromString("Groups");
 
+    /** Static value Community for GallerySharingPermissionTypes. */
+    public static final GallerySharingPermissionTypes COMMUNITY = fromString("Community");
+
     /**
      * Creates or finds a GallerySharingPermissionTypes from its string representation.
      *

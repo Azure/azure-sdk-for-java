@@ -14,7 +14,6 @@ public final class SharingProfileGroup {
     /*
      * This property allows you to specify the type of sharing group. <br><br>
      * Possible values are: <br><br> **Subscriptions** <br><br> **AADTenants**
-     * <br><br> **Community**
      */
     @JsonProperty(value = "type")
     private SharingProfileGroupTypes type;
@@ -27,8 +26,7 @@ public final class SharingProfileGroup {
 
     /**
      * Get the type property: This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt;
-     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**
-     * &lt;br&gt;&lt;br&gt; **Community**.
+     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**.
      *
      * @return the type value.
      */
@@ -38,8 +36,7 @@ public final class SharingProfileGroup {
 
     /**
      * Set the type property: This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt;
-     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**
-     * &lt;br&gt;&lt;br&gt; **Community**.
+     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**.
      *
      * @param type the type value to set.
      * @return the SharingProfileGroup object itself.
