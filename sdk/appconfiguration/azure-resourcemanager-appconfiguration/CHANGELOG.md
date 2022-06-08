@@ -1,14 +1,30 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2022-06-08)
+
+- Azure Resource Manager AppConfiguration client library for Java. This package contains Microsoft Azure SDK for AppConfiguration Management SDK.  Package tag package-2022-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `AppConfigurationManager$Configurable` was modified
 
-### Bugs Fixed
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
-### Other Changes
+#### `models.ConfigurationStore` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `resourceGroupName()` was added
+
+#### `AppConfigurationManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.KeyValue` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.5 (2022-02-28)
 
