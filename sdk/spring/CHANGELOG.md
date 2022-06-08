@@ -15,10 +15,10 @@
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-#### Breaking Changes
+#### Features Added
 + Add `AzureStorageConfiguration` to make Azure storage service share common property configuration [#29094](https://github.com/Azure/azure-sdk-for-java/pull/29094).
     +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
-+ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29163](https://github.com/Azure/azure-sdk-for-java/pull/29163).
++ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29306](https://github.com/Azure/azure-sdk-for-java/pull/29306).
     + Add properties `spring.cloud.azure.keyvault`.
 
 #### Dependency Updates

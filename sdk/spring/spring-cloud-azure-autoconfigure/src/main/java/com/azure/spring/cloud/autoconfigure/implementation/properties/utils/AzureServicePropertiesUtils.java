@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import org.springframework.beans.BeanUtils;
 
 /**
  * Util class for processing Azure Service properties.
@@ -28,6 +30,17 @@ public final class AzureServicePropertiesUtils {
     public static <T extends AzureProperties> T loadServiceCommonProperties(AzureProperties source, T target) {
         AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(source, target);
         AzurePropertiesUtils.copyPropertiesIgnoreNull(source, target);
+
+        if (source.getClient() instanceof ClientOptionsProvider.HttpClientOptions && target.getClient() instanceof ClientOptionsProvider.HttpClientOptions) {
+            BeanUtils.copyProperties(source.getClient(), target.getClient());
+            ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
+            ClientOptionsProvider.HttpClientOptions sourceClient = (ClientOptionsProvider.HttpClientOptions) source.getClient();
+            targetClient.getHeaders().addAll(sourceClient.getHeaders());
+            BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
+            targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
+            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
+        }
+
         return target;
     }
 

@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure's configuration for Key Vault.
  */
-package com.azure.spring.cloud.autoconfigure.keyvault.common;
+package com.azure.spring.cloud.autoconfigure.keyvault;
