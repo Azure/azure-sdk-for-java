@@ -303,6 +303,31 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     }
 
     /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object sourceStagingConcurrency() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sourceStagingConcurrency();
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteWranglingDataflowActivity object itself.
+     */
+    public ExecuteWranglingDataflowActivity withSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecutePowerQueryActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSourceStagingConcurrency(sourceStagingConcurrency);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

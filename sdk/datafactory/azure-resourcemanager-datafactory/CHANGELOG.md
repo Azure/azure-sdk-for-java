@@ -1,14 +1,98 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.16 (2022-06-08)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.PurviewConfiguration` was added
 
-### Bugs Fixed
+* `models.GlobalParameterResource` was added
 
-### Other Changes
+* `models.GlobalParameters` was added
+
+* `models.GlobalParameterResource$Update` was added
+
+* `models.GlobalParameterResource$UpdateStages` was added
+
+* `models.GlobalParameterListResponse` was added
+
+* `models.GlobalParameterResource$Definition` was added
+
+* `models.GlobalParameterResource$DefinitionStages` was added
+
+#### `models.DataFlowResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `DataFactoryManager` was modified
+
+* `globalParameters()` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `sourceStagingConcurrency()` was added
+* `withSourceStagingConcurrency(java.lang.Object)` was added
+
+#### `models.PrivateEndpointConnectionResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ManagedPrivateEndpointResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.TriggerResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DatasetResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Factory$Definition` was modified
+
+* `withPurviewConfiguration(models.PurviewConfiguration)` was added
+
+#### `models.ManagedVirtualNetworkResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Factory` was modified
+
+* `resourceGroupName()` was added
+* `purviewConfiguration()` was added
+
+#### `models.RestServiceLinkedService` was modified
+
+* `tokenEndpoint()` was added
+* `withClientId(java.lang.Object)` was added
+* `withClientSecret(models.SecretBase)` was added
+* `withResource(java.lang.Object)` was added
+* `withTokenEndpoint(java.lang.Object)` was added
+* `withScope(java.lang.Object)` was added
+* `clientId()` was added
+* `clientSecret()` was added
+* `resource()` was added
+* `scope()` was added
+
+#### `models.IntegrationRuntimeResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `withSourceStagingConcurrency(java.lang.Object)` was added
+* `sourceStagingConcurrency()` was added
+
+#### `models.LinkedServiceResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PipelineResource` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.15 (2022-05-10)
 
