@@ -65,6 +65,10 @@ public final class KeyValueImpl implements KeyValue, KeyValue.Definition, KeyVal
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public KeyValueInner innerModel() {
         return this.innerObject;
     }

@@ -23,7 +23,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 /** Samples for Disks CreateOrUpdate. */
 public final class DisksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskByImportingAnUnmanagedBlobFromADifferentSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_ByImportingBlobFromADifferentSubscription.json
      */
     /**
      * Sample code: Create a managed disk by importing an unmanaged blob from a different subscription.
@@ -52,7 +52,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskFromImportSecure.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromImportSecure.json
      */
     /**
      * Sample code: Create a managed disk from ImportSecure create option.
@@ -87,7 +87,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskWithDiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithDiskAccess.json
      */
     /**
      * Sample code: Create a managed disk and associate with disk access resource.
@@ -115,7 +115,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskWithDiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithDiskEncryptionSet.json
      */
     /**
      * Sample code: Create a managed disk and associate with disk encryption set.
@@ -144,7 +144,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskFromAnExistingManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromAnExistingManagedDisk.json
      */
     /**
      * Sample code: Create a managed disk from an existing managed disk in the same or different subscription.
@@ -172,7 +172,35 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskWithSecurityProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithPremiumV2_LRSAccountType.json
+     */
+    /**
+     * Sample code: Create a managed disk with premium v2 account type.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAManagedDiskWithPremiumV2AccountType(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myPremiumV2Disk",
+                new DiskInner()
+                    .withLocation("West US")
+                    .withSku(new DiskSku().withName(DiskStorageAccountTypes.PREMIUM_V2_LRS))
+                    .withCreationData(new CreationData().withCreateOption(DiskCreateOption.EMPTY))
+                    .withDiskSizeGB(200)
+                    .withDiskIopsReadWrite(125L)
+                    .withDiskMBpsReadWrite(3000L),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithSecurityProfile.json
      */
     /**
      * Sample code: Create a managed disk with security profile.
@@ -203,7 +231,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskWithLogicalSectorSize.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithLogicalSectorSize.json
      */
     /**
      * Sample code: Create an ultra managed disk with logicalSectorSize 512E.
@@ -230,7 +258,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskFromAPlatformImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromAPlatformImage.json
      */
     /**
      * Sample code: Create a managed disk from a platform image.
@@ -260,7 +288,38 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAnEmptyManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromAnAzureComputeGalleryDirectSharedImage.json
+     */
+    /**
+     * Sample code: Create a managed disk from an Azure Compute Gallery direct shared image.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAManagedDiskFromAnAzureComputeGalleryDirectSharedImage(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myDisk",
+                new DiskInner()
+                    .withLocation("West US")
+                    .withOsType(OperatingSystemTypes.WINDOWS)
+                    .withCreationData(
+                        new CreationData()
+                            .withCreateOption(DiskCreateOption.FROM_IMAGE)
+                            .withGalleryImageReference(
+                                new ImageDiskReference()
+                                    .withSharedGalleryImageId(
+                                        "/SharedGalleries/{sharedGalleryUniqueName}/Images/{imageName}/Versions/1.0.0"))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_Empty.json
      */
     /**
      * Sample code: Create an empty managed disk.
@@ -284,7 +343,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskByImportingAnUnmanagedBlobFromTheSameSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_ByImportingBlobFromTheSameSubscription.json
      */
     /**
      * Sample code: Create a managed disk by importing an unmanaged blob from the same subscription.
@@ -311,7 +370,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskFromUploadPreparedSecure.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromUploadPreparedSecure.json
      */
     /**
      * Sample code: Create a managed disk from UploadPreparedSecure create option.
@@ -340,7 +399,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskByCopyingASnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_ByCopyingASnapshot.json
      */
     /**
      * Sample code: Create a managed disk by copying a snapshot.
@@ -367,7 +426,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAConfidentialVMDiskEncryptedWithCMK.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_ConfidentialVMSupportedDiskEncryptedWithCMK.json
      */
     /**
      * Sample code: Create a confidential VM supported disk encrypted with customer managed key.
@@ -403,7 +462,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskWithSSDZRSAccountType.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithSSDZRSAccountType.json
      */
     /**
      * Sample code: Create a managed disk with ssd zrs account type.
@@ -428,7 +487,7 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAnEmptyManagedDiskInExtendedLocation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_InExtendedLocation.json
      */
     /**
      * Sample code: Create an empty managed disk in extended location.
@@ -455,7 +514,38 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedUploadDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromAnAzureComputeGalleryCommunityImage.json
+     */
+    /**
+     * Sample code: Create a managed disk from an Azure Compute Gallery community image.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAManagedDiskFromAnAzureComputeGalleryCommunityImage(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myDisk",
+                new DiskInner()
+                    .withLocation("West US")
+                    .withOsType(OperatingSystemTypes.WINDOWS)
+                    .withCreationData(
+                        new CreationData()
+                            .withCreateOption(DiskCreateOption.FROM_IMAGE)
+                            .withGalleryImageReference(
+                                new ImageDiskReference()
+                                    .withCommunityGalleryImageId(
+                                        "/CommunityGalleries/{communityGalleryPublicGalleryName}/Images/{imageName}/Versions/1.0.0"))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_UploadDisk.json
      */
     /**
      * Sample code: Create a managed upload disk.
@@ -479,7 +569,38 @@ public final class DisksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateAManagedDiskWithDataAccessAuthMode.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_FromAnAzureComputeGalleryImage.json
+     */
+    /**
+     * Sample code: Create a managed disk from an Azure Compute Gallery image.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAManagedDiskFromAnAzureComputeGalleryImage(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDisks()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myDisk",
+                new DiskInner()
+                    .withLocation("West US")
+                    .withOsType(OperatingSystemTypes.WINDOWS)
+                    .withCreationData(
+                        new CreationData()
+                            .withCreateOption(DiskCreateOption.FROM_IMAGE)
+                            .withGalleryImageReference(
+                                new ImageDiskReference()
+                                    .withId(
+                                        "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Providers/Microsoft.Compute/Galleries/{galleryName}/Images/{imageName}/Versions/1.0.0"))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskExamples/Disk_Create_WithDataAccessAuthMode.json
      */
     /**
      * Sample code: Create a managed disk with dataAccessAuthMode.
