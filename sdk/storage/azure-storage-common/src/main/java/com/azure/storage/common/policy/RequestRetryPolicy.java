@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestHelper;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -93,11 +94,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
          duplicates the ByteBuffer object, not the underlying data.
          */
-        context.setHttpRequest(originalRequest.copy());
-        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
-            ? null
-            : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
-        context.getHttpRequest().setBody(bufferedBody);
+        context.setHttpRequest(HttpRequestHelper.prepareForRetransmission(originalRequest));
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.getSecondaryHost());
