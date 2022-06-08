@@ -44,7 +44,6 @@ import java.nio.file.NoSuchFileException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.temporal.ChronoUnit
 
 import static com.azure.storage.file.share.FileTestHelper.assertExceptionStatusCodeAndMessage
 import static com.azure.storage.file.share.FileTestHelper.assertResponseStatusCode
@@ -211,7 +210,7 @@ class FileAPITests extends APISpec {
             null, null, null, null, null)
 
         then:
-        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
     }
 
     def "Create file with args error"() {
@@ -1204,7 +1203,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null)
 
         then:
-        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
     }
 
     def "Set httpHeaders error"() {
@@ -1675,7 +1674,7 @@ class FileAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
-        destProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == fileChangeTime.truncatedTo(ChronoUnit.MICROS)
+        destProperties.getSmbProperties().getFileChangeTime() == fileChangeTime
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
