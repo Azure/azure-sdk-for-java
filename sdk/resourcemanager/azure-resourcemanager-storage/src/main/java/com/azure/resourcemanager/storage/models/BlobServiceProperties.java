@@ -165,6 +165,11 @@ public interface BlobServiceProperties
 
             /**
              * Specifies that the delete retention policy is enabled for container soft delete.
+             * <p>For optimal protection for your blob data, Microsoft recommends enabling all of the following
+             *    data protection features:</p>
+             *    <p>- containerDeleteRetentionPolicy (Container soft delete)</p>
+             *    <p>- Blob versioning</p>
+             *    <p>- deleteRetentionPolicy (Blob soft delete)</p>
              *
              * @param numDaysEnabled number of days after container soft delete that the blob service properties will
              *     actually be deleted
