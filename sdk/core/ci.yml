@@ -27,50 +27,118 @@ pr:
       - sdk/parents/azure-client-sdk-parent/
       - eng/pipelines/
 
+parameters:
+- name: release_azurecore
+  displayName: 'azure-core'
+  type: boolean
+  default: true
+- name: release_azurecoreamqp
+  displayName: 'azure-core-amqp'
+  type: boolean
+  default: true
+- name: release_azurecoreamqpexperimental
+  displayName: 'azure-core-amqp-experimental'
+  type: boolean
+  default: true
+- name: release_azurecoreexperimental
+  displayName: 'azure-core-experimental'
+  type: boolean
+  default: true
+- name: release_azurecorehttpjdkhttpclient
+  displayName: 'azure-core-http-jdk-httpclient'
+  type: boolean
+  default: true
+- name: release_azurecorehttpnetty
+  displayName: 'azure-core-http-netty'
+  type: boolean
+  default: true
+- name: release_azurecorehttpokhttp
+  displayName: 'azure-core-http-okhttp'
+  type: boolean
+  default: true
+- name: release_azurecoremanagement
+  displayName: 'azure-core-management'
+  type: boolean
+  default: true
+- name: release_azurecoreserializeravroapache
+  displayName: 'azure-core-serializer-avro-apache'
+  type: boolean
+  default: true
+- name: release_azurecoreserializerjsongson
+  displayName: 'azure-core-serializer-json-gson'
+  type: boolean
+  default: true
+- name: release_azurecoreserializerjsonjackson
+  displayName: 'azure-core-serializer-json-jackson'
+  type: boolean
+  default: true
+- name: release_azurecoretest
+  displayName: 'azure-core-test'
+  type: boolean
+  default: true
+- name: release_azurecoretracingopentelemetry
+  displayName: 'azure-core-tracing-opentelemetry'
+  type: boolean
+  default: true
+
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: core
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-core
         groupId: com.azure
         safeName: azurecore
+        releaseInBatch: ${{ parameters.release_azurecore }}
       - name: azure-core-amqp
         groupId: com.azure
         safeName: azurecoreamqp
+        releaseInBatch: ${{ parameters.release_azurecoreamqp }}
       - name: azure-core-amqp-experimental
         groupId: com.azure
         safeName: azurecoreamqpexperimental
+        releaseInBatch: ${{ parameters.release_azurecoreamqpexperimental }}
       - name: azure-core-experimental
         groupId: com.azure
         safeName: azurecoreexperimental
+        releaseInBatch: ${{ parameters.release_azurecoreexperimental }}
       - name: azure-core-http-jdk-httpclient
         groupId: com.azure
         safeName: azurecorehttpjdkhttpclient
+        releaseInBatch: ${{ parameters.release_azurecorehttpjdkhttpclient }}
       - name: azure-core-http-netty
         groupId: com.azure
         safeName: azurecorehttpnetty
+        releaseInBatch: ${{ parameters.release_azurecorehttpnetty }}
       - name: azure-core-http-okhttp
         groupId: com.azure
         safeName: azurecorehttpokhttp
+        releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
       - name: azure-core-management
         groupId: com.azure
         safeName: azurecoremanagement
+        releaseInBatch: ${{ parameters.release_azurecoremanagement }}
       - name: azure-core-serializer-avro-apache
         groupId: com.azure
         safeName: azurecoreserializeravroapache
+        releaseInBatch: ${{ parameters.release_azurecoreserializeravroapache }}
       - name: azure-core-serializer-json-gson
         groupId: com.azure
         safeName: azurecoreserializerjsongson
+        releaseInBatch: ${{ parameters.release_azurecoreserializerjsongson }}
       - name: azure-core-serializer-json-jackson
         groupId: com.azure
         safeName: azurecoreserializerjsonjackson
+        releaseInBatch: ${{ parameters.release_azurecoreserializerjsonjackson }}
       - name: azure-core-test
         groupId: com.azure
         safeName: azurecoretest
+        releaseInBatch: ${{ parameters.release_azurecoretest }}
       - name: azure-core-tracing-opentelemetry
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
+        releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

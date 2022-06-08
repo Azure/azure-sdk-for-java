@@ -16,9 +16,6 @@ public final class SharingProfileGroupTypes extends ExpandableStringEnum<Sharing
     /** Static value AADTenants for SharingProfileGroupTypes. */
     public static final SharingProfileGroupTypes AADTENANTS = fromString("AADTenants");
 
-    /** Static value Community for SharingProfileGroupTypes. */
-    public static final SharingProfileGroupTypes COMMUNITY = fromString("Community");
-
     /**
      * Creates or finds a SharingProfileGroupTypes from its string representation.
      *

@@ -51,10 +51,10 @@ import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VaultCertificate;
 import com.azure.resourcemanager.compute.models.VaultSecretGroup;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtensionProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
-import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetManagedDiskParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
@@ -131,7 +131,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                         new VirtualMachineScaleSetIdentity()
                             .withType(ResourceIdentityType.SYSTEM_ASSIGNED)
                             .withUserAssignedIdentities(
-                                mapOf("key3951", new VirtualMachineScaleSetIdentityUserAssignedIdentities())))
+                                mapOf("key3951", new VirtualMachineIdentityUserAssignedIdentities())))
                     .withUpgradePolicy(
                         new UpgradePolicy()
                             .withMode(UpgradeMode.MANUAL)

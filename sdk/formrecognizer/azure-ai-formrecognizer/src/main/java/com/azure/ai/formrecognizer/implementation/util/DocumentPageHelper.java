@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentPage;
+import com.azure.ai.formrecognizer.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
@@ -34,6 +35,7 @@ public final class DocumentPageHelper {
         void setWords(DocumentPage documentPage, List<DocumentWord> words);
         void setSelectionMarks(DocumentPage documentPage, List<DocumentSelectionMark> selectionMarks);
         void setLines(DocumentPage documentPage, List<DocumentLine> lines);
+        void setKind(DocumentPage documentPage, DocumentPageKind kind);
     }
 
     /**
@@ -79,5 +81,9 @@ public final class DocumentPageHelper {
 
     static void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
         accessor.setLines(documentPage, lines);
+    }
+
+    static void setKind(DocumentPage documentPage, DocumentPageKind kind) {
+        accessor.setKind(documentPage, kind);
     }
 }

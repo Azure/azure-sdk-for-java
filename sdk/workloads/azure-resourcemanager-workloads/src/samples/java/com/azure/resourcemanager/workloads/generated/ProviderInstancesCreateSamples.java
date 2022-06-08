@@ -15,62 +15,6 @@ import java.util.Arrays;
 /** Samples for ProviderInstances Create. */
 public final class ProviderInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/ProviderInstances_Create.json
-     */
-    /**
-     * Sample code: Create a SAP Monitor Hana provider.
-     *
-     * @param manager Entry point to WorkloadsManager.
-     */
-    public static void createASAPMonitorHanaProvider(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager
-            .providerInstances()
-            .define("myProviderInstance")
-            .withExistingMonitor("myResourceGroup", "mySapMonitor")
-            .withProviderSettings(
-                new HanaDbProviderInstanceProperties()
-                    .withHostname("name")
-                    .withDbName("db")
-                    .withSqlPort("0000")
-                    .withInstanceNumber("00")
-                    .withDbUsername("user")
-                    .withDbPassword("****")
-                    .withDbPasswordUri("")
-                    .withDbSslCertificateUri("https://storageaccount.blob.core.windows.net/containername/filename")
-                    .withSslHostnameInCertificate("xyz.domain.com"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Create.json
-     */
-    /**
-     * Sample code: Create a SAP Monitor NetWeaver provider.
-     *
-     * @param manager Entry point to WorkloadsManager.
-     */
-    public static void createASAPMonitorNetWeaverProvider(
-        com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager
-            .providerInstances()
-            .define("myProviderInstance")
-            .withExistingMonitor("myResourceGroup", "mySapMonitor")
-            .withProviderSettings(
-                new SapNetWeaverProviderInstanceProperties()
-                    .withSapSid("SID")
-                    .withSapHostname("name")
-                    .withSapInstanceNr("00")
-                    .withSapHostFileEntries(Arrays.asList("127.0.0.1 name fqdn"))
-                    .withSapUsername("username")
-                    .withSapPassword("****")
-                    .withSapPasswordUri("")
-                    .withSapClientId("111")
-                    .withSapPortNumber("1234")
-                    .withSapSslCertificateUri("https://storageaccount.blob.core.windows.net/containername/filename"))
-            .create();
-    }
-
-    /*
      * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/MsSqlServerProviderInstance_Create.json
      */
     /**
@@ -91,6 +35,33 @@ public final class ProviderInstancesCreateSamples {
                     .withDbPassword("****")
                     .withDbPasswordUri("")
                     .withSapSid("sid"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/ProviderInstances_Create.json
+     */
+    /**
+     * Sample code: Create a SAP monitor Hana provider.
+     *
+     * @param manager Entry point to WorkloadsManager.
+     */
+    public static void createASAPMonitorHanaProvider(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
+        manager
+            .providerInstances()
+            .define("myProviderInstance")
+            .withExistingMonitor("myResourceGroup", "mySapMonitor")
+            .withProviderSettings(
+                new HanaDbProviderInstanceProperties()
+                    .withHostname("name")
+                    .withDbName("db")
+                    .withSqlPort("0000")
+                    .withInstanceNumber("00")
+                    .withDbUsername("user")
+                    .withDbPassword("****")
+                    .withDbPasswordUri("")
+                    .withDbSslCertificateUri("https://storageaccount.blob.core.windows.net/containername/filename")
+                    .withSslHostnameInCertificate("xyz.domain.com"))
             .create();
     }
 
@@ -157,6 +128,35 @@ public final class ProviderInstancesCreateSamples {
             .withExistingMonitor("myResourceGroup", "mySapMonitor")
             .withProviderSettings(
                 new PrometheusOSProviderInstanceProperties().withPrometheusUrl("http://192.168.0.0:9090/metrics"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Create.json
+     */
+    /**
+     * Sample code: Create a SAP monitor NetWeaver provider.
+     *
+     * @param manager Entry point to WorkloadsManager.
+     */
+    public static void createASAPMonitorNetWeaverProvider(
+        com.azure.resourcemanager.workloads.WorkloadsManager manager) {
+        manager
+            .providerInstances()
+            .define("myProviderInstance")
+            .withExistingMonitor("myResourceGroup", "mySapMonitor")
+            .withProviderSettings(
+                new SapNetWeaverProviderInstanceProperties()
+                    .withSapSid("SID")
+                    .withSapHostname("name")
+                    .withSapInstanceNr("00")
+                    .withSapHostFileEntries(Arrays.asList("127.0.0.1 name fqdn"))
+                    .withSapUsername("username")
+                    .withSapPassword("****")
+                    .withSapPasswordUri("")
+                    .withSapClientId("111")
+                    .withSapPortNumber("1234")
+                    .withSapSslCertificateUri("https://storageaccount.blob.core.windows.net/containername/filename"))
             .create();
     }
 }
