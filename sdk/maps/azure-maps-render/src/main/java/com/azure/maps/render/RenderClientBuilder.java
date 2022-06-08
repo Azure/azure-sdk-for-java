@@ -229,7 +229,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated {@link MapsRenderClientBuilder} object.
+     * @return The updated {@link RenderClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     @Override
@@ -242,7 +242,7 @@ public final class RenderClientBuilder implements AzureKeyCredentialTrait<Render
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
-     * @return The updated {@link MapsRenderClientBuilder} object.
+     * @return The updated {@link RenderClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override

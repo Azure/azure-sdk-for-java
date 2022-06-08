@@ -52,15 +52,26 @@
         "type": "Microsoft.Maps/accounts",
         "apiVersion": "2021-12-01-preview",
         "name": "[variables('mapsAccountName')]",
-        "location": "global",
+        "location": "eastus",
         "sku": {
-            "name": "S1",
+            "name": "G2",
             "tier": "Standard"
         },
-        "kind": "Gen1",
+        "kind": "Gen2",
+        "identity": {
+            "type": "None"
+        },
         "properties": {
             "disableLocalAuth": false,
-            "cors": {}
+            "cors": {
+                "corsRules": [
+                    {
+                        "allowedOrigins": [
+                            "*"
+                        ]
+                    }
+                ]
+            }
         }
       }
     ],
