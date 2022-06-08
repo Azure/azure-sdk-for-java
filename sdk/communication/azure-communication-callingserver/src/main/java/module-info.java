@@ -8,7 +8,6 @@ module com.azure.communication.callingserver {
     // public API surface area
     exports com.azure.communication.callingserver;
     exports com.azure.communication.callingserver.models;
-    exports com.azure.communication.callingserver.implementation.converters;
     //exports com.azure.communication.callingserver.models.events;
 
     // exporting some packages specifically for Jackson
