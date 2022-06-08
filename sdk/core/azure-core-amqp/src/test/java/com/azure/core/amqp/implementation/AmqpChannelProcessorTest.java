@@ -364,9 +364,9 @@ class AmqpChannelProcessorTest {
 
         // Act & Assert
         StepVerifier.withVirtualTime(() -> {
-                return publisher.next(connection1).flux()
-                    .subscribeWith(channelProcessor).flatMap(e -> Mono.just(contents));
-            }, () -> virtualTimeScheduler, 1)
+            return publisher.next(connection1).flux()
+                .subscribeWith(channelProcessor).flatMap(e -> Mono.just(contents));
+        }, () -> virtualTimeScheduler, 1)
             .expectSubscription()
             .thenAwait(Duration.ofMinutes(10))
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))

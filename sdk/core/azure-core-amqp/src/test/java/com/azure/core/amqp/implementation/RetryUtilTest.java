@@ -217,15 +217,22 @@ public class RetryUtilTest {
             .setTryTimeout(timeout);
 
         final Flux<Integer> stream = Flux.concat(
-            Flux.just(0, 1, 2),
-            Flux.error(nonTransientError),
-            Flux.just(3, 4));
+            Flux.defer(() -> Flux.just(0, 1, 2)),
+            Flux.defer(() -> Flux.error(nonTransientError)),
+            Flux.defer(() -> Flux.just(3, 4)));
+
+        final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create(true);
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
-            .expectNext(0, 1, 2)
-            .expectErrorMatches(error -> error.equals(nonTransientError))
-            .verify();
+        try {
+            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage),
+                    () -> virtualTimeScheduler, 1)
+                .expectNext(0, 1, 2)
+                .expectErrorMatches(error -> error.equals(nonTransientError))
+                .verify();
+        } finally {
+            virtualTimeScheduler.dispose();
+        }
     }
 
     static Stream<AmqpRetryOptions> createRetry() {
