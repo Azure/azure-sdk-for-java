@@ -151,13 +151,6 @@ public interface BlobServiceProperties
              * @return the next definition stage
              */
             WithCreate withContainerDeleteRetentionPolicyEnabled(int numDaysEnabled);
-
-            /**
-             * Specifies that the container delete retention policy is disabled.
-             *
-             * @return the next definition stage
-             */
-            WithCreate withContainerDeleteRetentionPolicyDisabled();
         }
 
         /** The stage of the blobserviceproperties definition allowing to enable/disable blob versioning. */
