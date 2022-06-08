@@ -32,6 +32,9 @@ public interface BlobServiceProperties
     /** @return the deleteRetentionPolicy value. */
     DeleteRetentionPolicy deleteRetentionPolicy();
 
+    /** @return the containerDeleteRetentionPolicy value. */
+    DeleteRetentionPolicy containerDeleteRetentionPolicy();
+
     /** @return the id value. */
     String id();
 
@@ -130,6 +133,33 @@ public interface BlobServiceProperties
             WithCreate withDeleteRetentionPolicyDisabled();
         }
 
+        /** The stage of the blobserviceproperties definition allowing to specify containerDeleteRetentionPolicy. */
+        interface WithContainerDeleteRetentionPolicy {
+            /**
+             * Specifies containerDeleteRetentionPolicy.
+             *
+             * @param deleteRetentionPolicy The blob service properties for container soft delete
+             * @return the next definition stage
+             */
+            WithCreate withContainerDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
+
+            /**
+             * Specifies that the delete retention policy is enabled for container soft delete.
+             *
+             * @param numDaysEnabled number of days after container soft delete that the blob service properties will
+             *     actually be deleted
+             * @return the next definition stage
+             */
+            WithCreate withContainerDeleteRetentionPolicyEnabled(int numDaysEnabled);
+
+            /**
+             * Specifies that the container delete retention policy is disabled.
+             *
+             * @return the next definition stage
+             */
+            WithCreate withContainerDeleteRetentionPolicyDisabled();
+        }
+
         /** The stage of the blobserviceproperties definition allowing to enable/disable blob versioning. */
         interface WithBlobVersioning {
             /**
@@ -150,7 +180,8 @@ public interface BlobServiceProperties
                 DefinitionStages.WithCors,
                 DefinitionStages.WithDefaultServiceVersion,
                 DefinitionStages.WithDeleteRetentionPolicy,
-                DefinitionStages.WithBlobVersioning {
+                DefinitionStages.WithBlobVersioning,
+                DefinitionStages.WithContainerDeleteRetentionPolicy {
         }
     }
     /** The template for a BlobServiceProperties update operation, containing all the settings that can be modified. */
@@ -159,7 +190,8 @@ public interface BlobServiceProperties
             UpdateStages.WithCors,
             UpdateStages.WithDefaultServiceVersion,
             UpdateStages.WithDeleteRetentionPolicy,
-            UpdateStages.WithBlobVersioning {
+            UpdateStages.WithBlobVersioning,
+            UpdateStages.WithContainerDeleteRetentionPolicy {
     }
 
     /** Grouping of BlobServiceProperties update stages. */
@@ -223,6 +255,33 @@ public interface BlobServiceProperties
              * @return the next update stage
              */
             Update withDeleteRetentionPolicyDisabled();
+        }
+
+        /** The stage of the blobserviceproperties update allowing to specify containerDeleteRetentionPolicy. */
+        interface WithContainerDeleteRetentionPolicy {
+            /**
+             * Specifies containerDeleteRetentionPolicy.
+             *
+             * @param deleteRetentionPolicy The blob service properties for container soft delete
+             * @return the next update stage
+             */
+            Update withContainerDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
+
+            /**
+             * Specifies that the delete retention policy is enabled for container soft delete.
+             *
+             * @param numDaysEnabled number of days after container soft delete that the blob service properties will
+             *     actually be deleted
+             * @return the next update stage
+             */
+            Update withContainerDeleteRetentionPolicyEnabled(int numDaysEnabled);
+
+            /**
+             * Specifies that the container delete retention policy is disabled.
+             *
+             * @return the next update stage
+             */
+            Update withContainerDeleteRetentionPolicyDisabled();
         }
 
         /** The stage of the blobserviceproperties update allowing to enable/disable blob versioning. */
