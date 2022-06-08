@@ -2,6 +2,11 @@
 
 ## 2.16.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Provisioning state in gallery changed to `GalleryProvisioningState`.
+- User assigned identity in virtual machine scale set changed to `VirtualMachineIdentityUserAssignedIdentities`.
+
 ### Other Changes
 
 #### Dependency Updates
