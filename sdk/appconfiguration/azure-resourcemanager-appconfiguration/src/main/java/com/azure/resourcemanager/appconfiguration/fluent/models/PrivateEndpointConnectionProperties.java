@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpoint;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionProperties.class);
-
     /*
      * The provisioning status of the private endpoint connection.
      */
@@ -98,7 +95,7 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property privateLinkServiceConnectionState in model"
@@ -107,4 +104,6 @@ public final class PrivateEndpointConnectionProperties {
             privateLinkServiceConnectionState().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionProperties.class);
 }

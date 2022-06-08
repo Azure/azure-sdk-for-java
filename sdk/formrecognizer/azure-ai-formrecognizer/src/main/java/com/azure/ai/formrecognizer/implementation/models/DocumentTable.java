@@ -30,6 +30,18 @@ public final class DocumentTable {
     private List<DocumentTableCell> cells;
 
     /*
+     * Caption associated with the table.
+     */
+    @JsonProperty(value = "caption")
+    private DocumentCaption caption;
+
+    /*
+     * Footnotes associated with the table.
+     */
+    @JsonProperty(value = "footnotes")
+    private List<DocumentFootnote> footnotes;
+
+    /*
      * Bounding regions covering the table.
      */
     @JsonProperty(value = "boundingRegions")
@@ -98,6 +110,46 @@ public final class DocumentTable {
      */
     public DocumentTable setCells(List<DocumentTableCell> cells) {
         this.cells = cells;
+        return this;
+    }
+
+    /**
+     * Get the caption property: Caption associated with the table.
+     *
+     * @return the caption value.
+     */
+    public DocumentCaption getCaption() {
+        return this.caption;
+    }
+
+    /**
+     * Set the caption property: Caption associated with the table.
+     *
+     * @param caption the caption value to set.
+     * @return the DocumentTable object itself.
+     */
+    public DocumentTable setCaption(DocumentCaption caption) {
+        this.caption = caption;
+        return this;
+    }
+
+    /**
+     * Get the footnotes property: Footnotes associated with the table.
+     *
+     * @return the footnotes value.
+     */
+    public List<DocumentFootnote> getFootnotes() {
+        return this.footnotes;
+    }
+
+    /**
+     * Set the footnotes property: Footnotes associated with the table.
+     *
+     * @param footnotes the footnotes value to set.
+     * @return the DocumentTable object itself.
+     */
+    public DocumentTable setFootnotes(List<DocumentFootnote> footnotes) {
+        this.footnotes = footnotes;
         return this;
     }
 
