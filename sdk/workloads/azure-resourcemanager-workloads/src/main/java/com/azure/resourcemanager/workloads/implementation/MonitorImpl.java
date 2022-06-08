@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.workloads.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.fluent.models.MonitorInner;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.Monitor;
 import com.azure.resourcemanager.workloads.models.MonitorPropertiesErrors;
 import com.azure.resourcemanager.workloads.models.RoutingPreference;
-import com.azure.resourcemanager.workloads.models.Tags;
+import com.azure.resourcemanager.workloads.models.UpdateMonitorRequest;
+import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
 import java.util.Collections;
 import java.util.Map;
@@ -44,6 +46,14 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public UserAssignedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -102,7 +112,7 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
 
     private String monitorName;
 
-    private Tags updateTagsParameter;
+    private UpdateMonitorRequest updateBody;
 
     public MonitorImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -134,7 +144,7 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
     }
 
     public MonitorImpl update() {
-        this.updateTagsParameter = new Tags();
+        this.updateBody = new UpdateMonitorRequest();
         return this;
     }
 
@@ -143,7 +153,7 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
             serviceManager
                 .serviceClient()
                 .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateTagsParameter, Context.NONE)
+                .updateWithResponse(resourceGroupName, monitorName, updateBody, Context.NONE)
                 .getValue();
         return this;
     }
@@ -153,7 +163,7 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
             serviceManager
                 .serviceClient()
                 .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateTagsParameter, context)
+                .updateWithResponse(resourceGroupName, monitorName, updateBody, context)
                 .getValue();
         return this;
     }
@@ -200,7 +210,17 @@ public final class MonitorImpl implements Monitor, Monitor.Definition, Monitor.U
             this.innerModel().withTags(tags);
             return this;
         } else {
-            this.updateTagsParameter.withTags(tags);
+            this.updateBody.withTags(tags);
+            return this;
+        }
+    }
+
+    public MonitorImpl withIdentity(UserAssignedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateBody.withIdentity(identity);
             return this;
         }
     }

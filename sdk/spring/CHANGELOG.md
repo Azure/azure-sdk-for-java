@@ -21,13 +21,28 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 + Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29163](https://github.com/Azure/azure-sdk-for-java/pull/29163).
     + Add properties `spring.cloud.azure.keyvault`.
 
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
 
 #### Bugs Fixed
 - Fix the `ServiceBusContainerProperties` constructor with overriding the default field values [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
 - Restrict the concurrency value to be int format in `ServiceBusListener` [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
- 
+
+### Spring Cloud Azure Starter Active Directory
+This section includes changes in `spring-cloud-azure-starter-active-directory` module.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+### Spring Cloud Azure Starter Active Directory B2C
+This section includes changes in `spring-cloud-azure-starter-active-directory-b2c` module.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
 ## 4.2.0 (2022-05-26)
 
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.8, 2.7.0. (Note: 2.5.x (x>14), 2.6.y (y>8) and 2.7.z (z>0) should be supported, but they aren't tested with this release.)

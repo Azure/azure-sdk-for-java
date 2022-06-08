@@ -2,13 +2,16 @@
 
 ## 2.16.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Provisioning state in gallery changed to `GalleryProvisioningState`.
+- User assigned identity in virtual machine scale set changed to `VirtualMachineIdentityUserAssignedIdentities`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-02`.
 
 ## 2.15.0 (2022-05-25)
 
