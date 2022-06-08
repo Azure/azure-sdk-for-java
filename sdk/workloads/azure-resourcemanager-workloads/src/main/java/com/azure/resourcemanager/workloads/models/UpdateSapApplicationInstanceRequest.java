@@ -9,18 +9,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Tags field of the resource. */
+/** Defines the request body for updating SAP Application Instance. */
 @Fluent
-public final class Tags {
+public final class UpdateSapApplicationInstanceRequest {
     /*
-     * Tags field of the resource.
+     * Gets or sets the Resource tags.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
-     * Get the tags property: Tags field of the resource.
+     * Get the tags property: Gets or sets the Resource tags.
      *
      * @return the tags value.
      */
@@ -29,12 +29,12 @@ public final class Tags {
     }
 
     /**
-     * Set the tags property: Tags field of the resource.
+     * Set the tags property: Gets or sets the Resource tags.
      *
      * @param tags the tags value to set.
-     * @return the Tags object itself.
+     * @return the UpdateSapApplicationInstanceRequest object itself.
      */
-    public Tags withTags(Map<String, String> tags) {
+    public UpdateSapApplicationInstanceRequest withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
