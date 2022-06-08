@@ -3,17 +3,19 @@
 package com.azure.messaging.eventhubs.checkpointstore.redis;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Protocol;
 import redis.clients.jedis.Jedis;
 import org.json.JSONObject;
 
@@ -23,9 +25,9 @@ import org.json.JSONObject;
 public class JedisRedisCheckpointStore implements CheckpointStore {
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     private final JedisPool jedisPool;
-    JedisRedisCheckpointStore(RedisClientConfig config) {
-        JedisPoolConfig poolConfig = this.createPoolConfig(config);
-        jedisPool = new JedisPool(poolConfig, RedisClientConfig.getHostName(), config.getPort(), config.getConnectTimeoutMills(), config.getOperationTimeoutMills(), RedisClientConfig.getPassword(), Protocol.DEFAULT_DATABASE, RedisClientConfig.getClientName(), config.getUseSSL(), null, null, null);
+    private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
+    JedisRedisCheckpointStore(JedisPool jedisPool){
+        this.jedisPool = jedisPool;
     }
     /**
      * This method returns the list of partitions that were owned successfully.
@@ -48,9 +50,19 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
-        Set<String> members = null;
+
         try(Jedis jedis = jedisPool.getResource()){
-            members = jedis.smembers(prefix);
+            Set<String>members = jedis.smembers(prefix);
+            for(String member:members) {
+                try {
+                    Checkpoint checkpoint = jacksonAdapter.deserialize(member, Checkpoint.class, SerializerEncoding.JSON);
+                }
+                catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(Exceptions
+                        .propagate(new IOException(
+                        "String could not be converted to Checkpoint object.")));
+                }
+            }
             jedisPool.returnResource(jedis);
         }
         return null;
