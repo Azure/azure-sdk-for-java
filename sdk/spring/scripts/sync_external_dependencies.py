@@ -5,7 +5,7 @@
 # How to use this script.
 #  1. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
-#  2. Update `SPRING_BOOT_VERSION` in this script manually.
+#  2. Get `SPRING_BOOT_VERSION`.
 #  3. Run command, sample: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.0`.
 #     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.0`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
