@@ -13,7 +13,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Jedis;
@@ -50,24 +53,28 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
-
-        try(Jedis jedis = jedisPool.getResource()){
-            Set<String>members = jedis.smembers(prefix);
-            for(String member:members) {
-                try {
-                    Checkpoint checkpoint = jacksonAdapter.deserialize(member, Checkpoint.class, SerializerEncoding.JSON);
-                }
-                catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(Exceptions
-                        .propagate(new IOException(
-                        "String could not be converted to Checkpoint object.")));
-                }
-            }
-            jedisPool.returnResource(jedis);
-        }
-        return null;
+        return listMembers(prefix, this::convertToCheckpoint);
     }
-
+    private <T> Flux<T> listMembers(String prefix, Function<String, Mono<T>> converter) {
+        try(Jedis jedis = jedisPool.getResource()){
+            Set<String> members = jedis.smembers(prefix);
+            jedisPool.returnResource(jedis);
+            return members.stream()
+                .flatMap(converter)
+                .filter(Objects::nonNull);
+            }
+    }
+    private Mono<Checkpoint> convertToCheckpoint(String member){
+        try {
+            Checkpoint checkpoint = jacksonAdapter.deserialize(member, Checkpoint.class, SerializerEncoding.JSON);
+            return Mono.just(checkpoint);
+        }
+        catch (IOException e) {
+            throw LOGGER.logExceptionAsError(Exceptions
+                .propagate(new IOException(
+                    "String could not be converted to Checkpoint object.")));
+        }
+    }
     /**
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
