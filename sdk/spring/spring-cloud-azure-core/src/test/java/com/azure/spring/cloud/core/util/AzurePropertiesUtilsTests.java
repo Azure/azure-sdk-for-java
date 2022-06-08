@@ -3,11 +3,14 @@
 
 package com.azure.spring.cloud.core.util;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
+import com.azure.spring.cloud.core.properties.client.HeaderProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
@@ -15,6 +18,9 @@ import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
@@ -409,6 +415,41 @@ class AzurePropertiesUtilsTests {
             source.profile.getEnvironment().getActiveDirectoryEndpoint());
     }
 
+    @Test
+    void httpClientPropertiesShouldBeCopied() {
+        HeaderProperties headerProperties = new HeaderProperties();
+        headerProperties.setName("header-1");
+        headerProperties.setValues(Arrays.asList("value-1","value-2"));
+        AzureHttpClientProperties source = new AzureHttpClientProperties();
+        source.getClient().setWriteTimeout(Duration.ofSeconds(3));
+        source.getClient().setResponseTimeout(Duration.ofSeconds(4));
+        source.getClient().setReadTimeout(Duration.ofSeconds(4));
+        source.getClient().setConnectTimeout(Duration.ofSeconds(2));
+        source.getClient().setMaximumConnectionPoolSize(5);
+        source.getClient().setConnectionIdleTimeout(Duration.ofSeconds(5));
+        source.getClient().setApplicationId("global-application-id");
+        source.getClient().getLogging().setLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+        source.getClient().getLogging().getAllowedHeaderNames().add("abc");
+        source.getClient().getHeaders().add(headerProperties);
+        AzureHttpClientProperties target = new AzureHttpClientProperties();
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
+        assertEquals(Duration.ofSeconds(3), target.getClient().getWriteTimeout());
+        assertEquals(Duration.ofSeconds(4), target.getClient().getResponseTimeout());
+        assertEquals(Duration.ofSeconds(4), target.getClient().getReadTimeout());
+        assertEquals(Duration.ofSeconds(2), target.getClient().getConnectTimeout());
+        assertEquals(Duration.ofSeconds(5), target.getClient().getConnectionIdleTimeout());
+        assertEquals(5, target.getClient().getMaximumConnectionPoolSize());
+        assertEquals("global-application-id", target.getClient().getApplicationId());
+        assertEquals(HttpLogDetailLevel.BODY_AND_HEADERS, target.getClient().getLogging().getLevel());
+        Set<String> allowedHeaderNames = new HashSet<>();
+        allowedHeaderNames.add("abc");
+        assertEquals(allowedHeaderNames, target.getClient().getLogging().getAllowedHeaderNames());
+        assertEquals(1, target.getClient().getHeaders().size());
+    }
+
+    static class AzureHttpClientProperties extends AzureHttpSdkProperties {
+
+    }
 
     static class AzurePropertiesA implements AzureProperties, RetryOptionsProvider {
 
