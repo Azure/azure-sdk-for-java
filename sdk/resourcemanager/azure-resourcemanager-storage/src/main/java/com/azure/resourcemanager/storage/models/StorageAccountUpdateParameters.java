@@ -249,8 +249,9 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -259,8 +260,9 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountUpdateParameters object itself.
@@ -643,6 +645,33 @@ public final class StorageAccountUpdateParameters {
             this.innerProperties = new StorageAccountPropertiesUpdateParameters();
         }
         this.innerProperties().withAllowedCopyScope(allowedCopyScope);
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsEndpointType();
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDnsEndpointType(dnsEndpointType);
         return this;
     }
 

@@ -1134,4 +1134,27 @@ public class ShareFileJavaDocCodeSamples {
         shareFileClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues-Context
     }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#deleteIfExists()} and
+     * {@link ShareFileClient#deleteIfExistsWithResponse(ShareRequestConditions, Duration, Context)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        ShareFileClient fileClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.deleteIfExists
+        boolean result = fileClient.deleteIfExists();
+        System.out.println("File deleted: " + result);
+        // END: com.azure.storage.file.share.ShareFileClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Boolean> response = fileClient.deleteIfExistsWithResponse(requestConditions, Duration.ofSeconds(1),
+            new Context(key1, value1));
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context
+    }
 }

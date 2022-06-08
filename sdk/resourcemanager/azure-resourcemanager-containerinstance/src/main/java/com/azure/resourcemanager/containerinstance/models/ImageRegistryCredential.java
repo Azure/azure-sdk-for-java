@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Image registry credential. */
 @Fluent
 public final class ImageRegistryCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageRegistryCredential.class);
-
     /*
      * The Docker image registry server without a protocol such as "http" and
      * "https".
@@ -152,15 +149,17 @@ public final class ImageRegistryCredential {
      */
     public void validate() {
         if (server() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property server in model ImageRegistryCredential"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model ImageRegistryCredential"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageRegistryCredential.class);
 }

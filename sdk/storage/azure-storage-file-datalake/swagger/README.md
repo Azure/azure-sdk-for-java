@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-06-12/DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2021-06-08/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -30,9 +30,11 @@ context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStorageException
 models-subpackage: implementation.models
-custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders
+custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType
 custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
 
 ### Make the body of append octet-stream /{filesystem}/{path}?action=append

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/PrivateEndpointConnectionsGet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/PrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Get Private Endpoint Connection.

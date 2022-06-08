@@ -175,7 +175,7 @@ public final class MixedRealityStsClientBuilder implements
         try {
             accountId = UUID.fromString(this.accountId);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'accountId' must be a UUID formatted value."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'accountId' must be a UUID formatted value.", ex));
         }
 
         String endpoint;
@@ -184,7 +184,7 @@ public final class MixedRealityStsClientBuilder implements
                 new URL(this.endpoint);
                 endpoint = this.endpoint;
             } catch (MalformedURLException ex) {
-                throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'endpoint' must be a valid URL."));
+                throw logger.logExceptionAsWarning(new IllegalArgumentException("The 'endpoint' must be a valid URL.", ex));
             }
         } else {
             endpoint = AuthenticationEndpoint.constructFromDomain(this.accountDomain);

@@ -54,7 +54,7 @@ public final class TypesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface TypesService {
+    public interface TypesService {
         @Get("/atlas/v2/types/classificationdef/guid/{guid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

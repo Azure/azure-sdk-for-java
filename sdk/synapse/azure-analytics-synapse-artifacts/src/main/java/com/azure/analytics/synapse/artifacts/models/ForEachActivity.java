@@ -123,4 +123,32 @@ public class ForEachActivity extends ControlActivity {
         this.activities = activities;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ForEachActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
+        return this;
+    }
 }

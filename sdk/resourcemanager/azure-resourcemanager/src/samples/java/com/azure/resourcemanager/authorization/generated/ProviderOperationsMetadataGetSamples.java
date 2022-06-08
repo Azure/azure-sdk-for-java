@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for ProviderOperationsMetadata Get. */
 public final class ProviderOperationsMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/examples/GetProviderOperationsRP.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetProviderOperationsRP.json
      */
     /**
-     * Sample code: List provider operations metadata for resource provider.
+     * Sample code: Get provider operations metadata for resource provider.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listProviderOperationsMetadataForResourceProvider(
+    public static void getProviderOperationsMetadataForResourceProvider(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .accessManagement()

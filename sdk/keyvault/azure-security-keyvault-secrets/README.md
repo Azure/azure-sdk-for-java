@@ -48,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.3.8</version>
+    <version>4.4.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -276,6 +276,8 @@ secretAsyncClient.listPropertiesOfSecrets()
 ```
 
 ## Troubleshooting
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+
 ### General
 Azure Key Vault Secret clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a `404` error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 

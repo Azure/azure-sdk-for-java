@@ -30,7 +30,11 @@ public final class EntityTimelineKind extends ExpandableStringEnum<EntityTimelin
         return fromString(name, EntityTimelineKind.class);
     }
 
-    /** @return known EntityTimelineKind values. */
+    /**
+     * Gets known EntityTimelineKind values.
+     *
+     * @return known EntityTimelineKind values.
+     */
     public static Collection<EntityTimelineKind> values() {
         return values(EntityTimelineKind.class);
     }

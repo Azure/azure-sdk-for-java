@@ -10,10 +10,12 @@ import com.azure.resourcemanager.cosmos.implementation.CosmosDBManagementClientB
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBAccountsImpl;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+
+import java.util.Objects;
 
 /** Entry point to Azure compute resource management. */
 public final class CosmosManager extends Manager<CosmosDBManagementClient> {
@@ -35,17 +37,21 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
      * @return the ComputeManager
      */
     public static CosmosManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile
      * @return the ComputeManager
      */
-    private static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new CosmosManager(httpPipeline, profile);
     }
 

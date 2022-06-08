@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/7e947e7707e947e77b2c4920984a6e93f5c1342949cc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "221e9e61-373b-4388-baf6-173f948f3f9d"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F29809C2BE4",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:47:13 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "52b23789-701e-007e-1b12-51dde7000000",
+      "x-ms-client-request-id" : "221e9e61-373b-4388-baf6-173f948f3f9d",
+      "Date" : "Fri, 15 Apr 2022 21:47:13 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.blob.core.windows.net/7e947e7707e947e77b2c4920984a6e93f5c1342949cc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "36211380-4842-4143-a0c1-3d63b75f715a"
+    },
+    "Response" : {
+      "content-length" : "252",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "ecba10d4-a01e-0089-6312-51f775000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:ecba10d4-a01e-0089-6312-51f775000000\nTime:2022-04-15T21:47:13.9548060Z</Message></Error>",
+      "x-ms-client-request-id" : "36211380-4842-4143-a0c1-3d63b75f715a",
+      "Date" : "Fri, 15 Apr 2022 21:47:12 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "7e947e7707e947e77b2c4920984a6e93f5c1342949cc" ]
+}

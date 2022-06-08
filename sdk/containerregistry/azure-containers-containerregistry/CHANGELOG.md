@@ -1,15 +1,20 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2022-04-08)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
+- Added support for `ContainerRegistryBlobAsyncClient`.
 
 ## 1.0.2 (2022-03-08)
 

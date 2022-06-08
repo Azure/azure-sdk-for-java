@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the geo backup policy. */
 @Fluent
 public final class GeoBackupPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoBackupPolicyProperties.class);
-
     /*
      * The state of the geo backup policy.
      */
@@ -63,9 +60,11 @@ public final class GeoBackupPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property state in model GeoBackupPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GeoBackupPolicyProperties.class);
 }

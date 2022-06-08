@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.UsersUsersClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsersUsersClient. */
 public final class UsersUsersClientImpl implements UsersUsersClient {
-    private final ClientLogger logger = new ClientLogger(UsersUsersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UsersUsersService service;
 
@@ -157,7 +154,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphUserInner>> listUserSinglePageAsync(
@@ -209,7 +206,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -228,7 +225,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphUserInner>> listUserSinglePageAsync(
@@ -296,7 +293,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphUserInner> listUserAsync(
@@ -319,7 +316,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      *
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphUserInner> listUserAsync() {
@@ -353,7 +350,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MicrosoftGraphUserInner> listUserAsync(
@@ -379,7 +376,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      *
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphUserInner> listUser() {
@@ -412,7 +409,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphUserInner> listUser(
@@ -437,7 +434,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphUserInner>> createUserWithResponseAsync(MicrosoftGraphUserInner body) {
@@ -455,7 +452,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createUser(this.client.getEndpoint(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -466,7 +463,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphUserInner>> createUserWithResponseAsync(
@@ -494,7 +491,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphUserInner> createUserAsync(MicrosoftGraphUserInner body) {
@@ -516,7 +513,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftGraphUserInner createUser(MicrosoftGraphUserInner body) {
@@ -531,7 +528,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphUserInner> createUserWithResponse(MicrosoftGraphUserInner body, Context context) {
@@ -548,7 +545,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphUserInner>> getUserWithResponseAsync(
@@ -579,7 +576,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
                             expandConverted,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -593,7 +590,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphUserInner>> getUserWithResponseAsync(
@@ -632,7 +629,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphUserInner> getUserAsync(
@@ -655,7 +652,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphUserInner> getUserAsync(String userId) {
@@ -701,7 +698,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphUserInner> getUserWithResponse(
@@ -721,7 +718,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateUserWithResponseAsync(String userId, MicrosoftGraphUserInner body) {
@@ -742,7 +739,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateUser(this.client.getEndpoint(), userId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -754,7 +751,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateUserWithResponseAsync(
@@ -786,7 +783,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateUserAsync(String userId, MicrosoftGraphUserInner body) {
@@ -816,7 +813,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateUserWithResponse(String userId, MicrosoftGraphUserInner body, Context context) {
@@ -831,7 +828,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUserWithResponseAsync(String userId, String ifMatch) {
@@ -847,7 +844,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteUser(this.client.getEndpoint(), userId, ifMatch, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -859,7 +856,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteUserWithResponseAsync(String userId, String ifMatch, Context context) {
@@ -885,7 +882,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteUserAsync(String userId, String ifMatch) {
@@ -899,7 +896,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteUserAsync(String userId) {
@@ -930,7 +927,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(String userId, String ifMatch, Context context) {
@@ -944,7 +941,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of user.
+     * @return collection of user along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphUserInner>> listMoreSinglePageAsync(String nextLink) {
@@ -962,7 +959,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -973,7 +970,7 @@ public final class UsersUsersClientImpl implements UsersUsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of user.
+     * @return collection of user along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphUserInner>> listMoreSinglePageAsync(String nextLink, Context context) {

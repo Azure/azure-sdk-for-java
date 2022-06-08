@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.NameAvailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response of the CheckNameAvailability operation. */
 @Fluent
 public final class ApiManagementServiceNameAvailabilityResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApiManagementServiceNameAvailabilityResultInner.class);
-
     /*
      * True if the name is available and can be used to create a new API
      * Management service; otherwise false.

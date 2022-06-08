@@ -101,11 +101,16 @@ extends:
       - name: azure-storage-internal-avro
         groupId: com.azure
         safeName: azurestorageinternalavro
+        skipPublishDocMs: true
+        skipPublishDocGithubIo: true
       - name: azure-storage-queue
         groupId: com.azure
         safeName: azurestoragequeue
     AdditionalModules:
       - name: azure-storage-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
         groupId: com.azure
     MatrixConfigs:
       - Name: Storage_ci

@@ -33,6 +33,8 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -90,6 +92,7 @@ public final class DataLakePathClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
+    private CpkInfo customerProvidedKey;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeFileClient FileClients}, {@link
@@ -148,9 +151,6 @@ public final class DataLakePathClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileAsyncClient buildFileAsyncClient() {
-        Objects.requireNonNull(pathName, "'pathName' cannot be null.");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
-
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -167,7 +167,8 @@ public final class DataLakePathClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
-            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential);
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
+            customerProvidedKey);
     }
 
     /**
@@ -214,8 +215,7 @@ public final class DataLakePathClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryAsyncClient buildDirectoryAsyncClient() {
-        Objects.requireNonNull(pathName, "'pathName' cannot be null.");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
+        validateConstruction();
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
@@ -233,7 +233,18 @@ public final class DataLakePathClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
-            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential);
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
+            customerProvidedKey);
+    }
+
+    /*
+     * Validate that the builder is able to construct a client.
+     */
+    private void validateConstruction() {
+        Objects.requireNonNull(pathName, "'pathName' cannot be null.");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
+
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
     }
 
     /**
@@ -366,7 +377,7 @@ public final class DataLakePathClientBuilder implements
             }
         } catch (MalformedURLException ex) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage DataLake endpoint url is malformed."));
+                new IllegalArgumentException("The Azure Storage DataLake endpoint url is malformed.", ex));
         }
         return this;
     }
@@ -601,4 +612,24 @@ public final class DataLakePathClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt blob contents on the server.
+     *
+     * @param customerProvidedKey Customer provided key containing the encryption key information.
+     * @return the updated DataLakePathClientBuilder object
+     */
+    public DataLakePathClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
+        if (customerProvidedKey == null) {
+            blobClientBuilder.customerProvidedKey(null);
+            this.customerProvidedKey = null;
+        } else {
+            blobClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
+            this.customerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+
+        return this;
+    }
 }

@@ -42,7 +42,11 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
         return fromString(name, StoredProcedureParameterType.class);
     }
 
-    /** @return known StoredProcedureParameterType values. */
+    /**
+     * Gets known StoredProcedureParameterType values.
+     *
+     * @return known StoredProcedureParameterType values.
+     */
     public static Collection<StoredProcedureParameterType> values() {
         return values(StoredProcedureParameterType.class);
     }

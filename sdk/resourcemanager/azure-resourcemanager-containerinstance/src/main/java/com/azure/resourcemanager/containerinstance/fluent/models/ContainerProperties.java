@@ -12,15 +12,12 @@ import com.azure.resourcemanager.containerinstance.models.ContainerPropertiesIns
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The container instance properties. */
 @Fluent
 public final class ContainerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerProperties.class);
-
     /*
      * The name of the image used to create the container instance.
      */
@@ -251,7 +248,7 @@ public final class ContainerProperties {
      */
     public void validate() {
         if (image() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property image in model ContainerProperties"));
         }
@@ -265,7 +262,7 @@ public final class ContainerProperties {
             instanceView().validate();
         }
         if (resources() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resources in model ContainerProperties"));
         } else {
@@ -281,4 +278,6 @@ public final class ContainerProperties {
             readinessProbe().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerProperties.class);
 }

@@ -3,6 +3,7 @@
 
 package com.azure.perf.test.core;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
@@ -83,6 +84,16 @@ public class RepeatingInputStream extends InputStream {
     @Override
     public synchronized void reset() {
         this.pos = this.mark;
+    }
+
+    @Override
+    public int available() throws IOException {
+        long remaining = this.size - this.pos;
+        if (remaining > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        } else {
+            return (int) remaining;
+        }
     }
 }
 

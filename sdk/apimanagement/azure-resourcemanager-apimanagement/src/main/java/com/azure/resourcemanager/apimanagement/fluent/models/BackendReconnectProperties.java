@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Properties to control reconnect requests. */
 @Fluent
 public final class BackendReconnectProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendReconnectProperties.class);
-
     /*
      * Duration in ISO8601 format after which reconnect will be initiated.
      * Minimum duration of the Reconnect is PT2M.

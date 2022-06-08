@@ -42,4 +42,39 @@ public final class HiveSource extends TabularSource {
         this.query = query;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public HiveSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HiveSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HiveSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HiveSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HiveSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

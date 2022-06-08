@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.PermissionsClient;
 import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
 import com.azure.resourcemanager.authorization.models.PermissionGetResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PermissionsClient. */
 public final class PermissionsClientImpl implements PermissionsClient {
-    private final ClientLogger logger = new ClientLogger(PermissionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PermissionsService service;
 
@@ -82,7 +79,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
         Mono<Response<PermissionGetResult>> listForResource(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam(value = "resourceProviderNamespace", encoded = true) String resourceProviderNamespace,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
             @PathParam("resourceName") String resourceName,
@@ -119,7 +116,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource group.
+     * @return all permissions the caller has for a resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -139,7 +137,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String apiVersion = "2015-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -172,7 +170,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource group.
+     * @return all permissions the caller has for a resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listByResourceGroupSinglePageAsync(
@@ -193,7 +192,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String apiVersion = "2015-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -222,7 +221,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource group.
+     * @return all permissions the caller has for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PermissionInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -239,7 +238,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource group.
+     * @return all permissions the caller has for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PermissionInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -255,7 +254,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource group.
+     * @return all permissions the caller has for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionInner> listByResourceGroup(String resourceGroupName) {
@@ -270,7 +269,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource group.
+     * @return all permissions the caller has for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -288,7 +287,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource.
+     * @return all permissions the caller has for a resource along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listForResourceSinglePageAsync(
@@ -329,7 +329,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String apiVersion = "2015-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -370,7 +370,8 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource.
+     * @return all permissions the caller has for a resource along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listForResourceSinglePageAsync(
@@ -412,7 +413,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String apiVersion = "2015-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,7 +450,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource.
+     * @return all permissions the caller has for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PermissionInner> listForResourceAsync(
@@ -477,7 +478,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource.
+     * @return all permissions the caller has for a resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PermissionInner> listForResourceAsync(
@@ -510,7 +511,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource.
+     * @return all permissions the caller has for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionInner> listForResource(
@@ -536,7 +537,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all permissions the caller has for a resource.
+     * @return all permissions the caller has for a resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionInner> listForResource(
@@ -558,7 +559,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissions information.
+     * @return permissions information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listForResourceGroupNextSinglePageAsync(String nextLink) {
@@ -595,7 +596,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissions information.
+     * @return permissions information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listForResourceGroupNextSinglePageAsync(
@@ -631,7 +632,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissions information.
+     * @return permissions information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listForResourceNextSinglePageAsync(String nextLink) {
@@ -667,7 +668,7 @@ public final class PermissionsClientImpl implements PermissionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissions information.
+     * @return permissions information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PermissionInner>> listForResourceNextSinglePageAsync(String nextLink, Context context) {

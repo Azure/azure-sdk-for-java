@@ -18,6 +18,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkP
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
 import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
+import com.azure.resourcemanager.containerinstance.models.DnsNameLabelReusePolicy;
 import com.azure.resourcemanager.containerinstance.models.GpuResource;
 import com.azure.resourcemanager.containerinstance.models.GpuSku;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
@@ -38,7 +39,7 @@ import java.util.Map;
 /** Samples for ContainerGroups CreateOrUpdate. */
 public final class ContainerGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsCreateOrUpdate.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsCreateOrUpdate.json
      */
     /**
      * Sample code: ContainerGroupsCreateOrUpdate.
@@ -101,7 +102,8 @@ public final class ContainerGroupsCreateOrUpdateSamples {
                             .withPorts(
                                 Arrays.asList(new Port().withProtocol(ContainerGroupNetworkProtocol.TCP).withPort(80)))
                             .withType(ContainerGroupIpAddressType.PUBLIC)
-                            .withDnsNameLabel("dnsnamelabel1"))
+                            .withDnsNameLabel("dnsnamelabel1")
+                            .withDnsNameLabelReusePolicy(DnsNameLabelReusePolicy.UNSECURE))
                     .withOsType(OperatingSystemTypes.LINUX)
                     .withVolumes(
                         Arrays

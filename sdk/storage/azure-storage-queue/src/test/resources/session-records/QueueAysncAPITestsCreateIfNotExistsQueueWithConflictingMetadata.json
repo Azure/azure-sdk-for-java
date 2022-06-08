@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/1084739310847393c16647809a4389f9a16846bba9",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "94267a83-ae6b-4ba7-b443-b685d199acb2"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e18a348a-d003-0014-3d4e-4e5a97000000",
+      "x-ms-client-request-id" : "94267a83-ae6b-4ba7-b443-b685d199acb2",
+      "Date" : "Tue, 12 Apr 2022 09:23:02 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/1084739310847393c16647809a4389f9a16846bba9",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "66e7d6db-8b36-47bf-bf55-a121a8dde6fe"
+    },
+    "Response" : {
+      "content-length" : "222",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueAlreadyExists",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "e18a34a1-d003-0014-514e-4e5a97000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueAlreadyExists</Code><Message>The specified queue already exists.\nRequestId:e18a34a1-d003-0014-514e-4e5a97000000\nTime:2022-04-12T09:23:02.1932700Z</Message></Error>",
+      "x-ms-client-request-id" : "66e7d6db-8b36-47bf-bf55-a121a8dde6fe",
+      "Date" : "Tue, 12 Apr 2022 09:23:02 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "1084739310847393c16647809a4389f9a16846bba9" ]
+}

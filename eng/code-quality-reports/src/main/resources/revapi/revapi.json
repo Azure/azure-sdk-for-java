@@ -66,7 +66,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/(kotlin|okhttp3|okio)(\\..+)?/"
+            "match": "/(kotlin|okhttp3|okio|io\\.vertx)(\\..+)?/"
           },
           {
             "matcher": "java-package",
@@ -92,7 +92,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
           {
             "matcher": "java-package",
-            "match": "/org\\.apache\\.avro(\\..*)?/"
+            "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
           },
           {
             "matcher": "java-package",
@@ -100,7 +100,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/org\\.junit(\\..*)?/"
+            "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
           }
         ]
       }
@@ -113,33 +113,15 @@
       "differences": [
         {
           "regex": true,
-          "code": "java.class.defaultSerializationChanged",
-          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
-          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
-        },
-        {
-          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure.spring.messaging."
         },
         {
           "regex": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
-          "justification": "springframework are allowed to add methods.."
-        },
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "(class|interface) org.springframework..*",
-          "justification": "We allow this in springframework"
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation)",
-          "new": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation, org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
-          "justification": "In order to support configuration of error handler for message listener container"
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
+          "justification": "azure.spring classes are allowed to be exposed."
         },
         {
           "regex": true,
@@ -204,7 +186,7 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.added",
+          "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."
@@ -247,6 +229,65 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        },
+        {
+          "code": "java.class.nonFinalClassInheritsFromNewClass",
+          "old": "class com.azure.messaging.eventhubs.EventData",
+          "new": "class com.azure.messaging.eventhubs.EventData",
+          "superClass": "com.azure.core.models.MessageContent",
+          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        },
+        {
+          "regex": true,
+          "code": "java.class.noLongerInheritsFromClass",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeRemoved",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeAdded",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
+          "justification": "Shouldn't have been a public API and was recently released."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "new": "method com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsPropertiesBeanPostProcessor com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration::azureServiceBusJmsPropertiesBeanPostProcessor(org.springframework.beans.factory.ObjectProvider<com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.ServiceBus>>)",
+          "justification": "Shouldn't have been a public API and was recently released."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration",
+          "justification": "Fixes a bug."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.messaging.eventhubs.EventData",
+          "new": "class com.azure.messaging.eventhubs.EventData",
+          "superClass": "com.azure.core.models.MessageContent",
+          "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
+          "justification": "SDK classes are allowed to be exposed by dependencies using them."
         }
       ]
     }

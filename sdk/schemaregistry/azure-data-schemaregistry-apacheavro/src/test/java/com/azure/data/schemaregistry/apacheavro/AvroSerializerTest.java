@@ -26,7 +26,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,8 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link AvroSerializer}.
  */
 public class AvroSerializerTest {
-
-    private final Schema.Parser parser = new Schema.Parser();
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private final DecoderFactory decoderFactory = DecoderFactory.get();
 
@@ -133,6 +130,7 @@ public class AvroSerializerTest {
             .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
             .setIsFaceCard(true).setCardValue(13)
             .build();
+        final String schemaId = "schema-id-1";
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
         // a header.
@@ -141,15 +139,15 @@ public class AvroSerializerTest {
         final byte[] expectedData = rawMessageEncoder.encode(card).array();
 
         // Act
-        final byte[] encoded = registryUtils.encode(card);
+        final byte[] encoded = registryUtils.serialize(card, schemaId);
 
         // Assert
         assertArrayEquals(expectedData, encoded);
     }
 
     /**
-     * Tests that we can encode and decode an object using {@link AvroSerializer#encode(Object)} and
-     * {@link AvroSerializer#decode(ByteBuffer, byte[], TypeReference)}.
+     * Tests that we can encode and decode an object using {@link AvroSerializer#serialize(Object, String)} and
+     * {@link AvroSerializer#deserialize(ByteBuffer, Schema, TypeReference)}.
      */
     @Test
     public void encodesAndDecodesObject() {
@@ -161,14 +159,14 @@ public class AvroSerializerTest {
                 .setIsFaceCard(true)
                 .setCardValue(13)
                 .build();
+        final String schemaId = "schema-id-1";
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
         // a header.
-        final byte[] encoded = registryUtils.encode(expected);
-        final byte[] schemaBytes = expected.getSchema().toString().getBytes(StandardCharsets.UTF_8);
+        final byte[] encoded = registryUtils.serialize(expected, schemaId);
 
         // Act
-        final PlayingCard actual = registryUtils.decode(ByteBuffer.wrap(encoded), schemaBytes,
+        final PlayingCard actual = registryUtils.deserialize(ByteBuffer.wrap(encoded), expected.getSchema(),
                 TypeReference.createInstance(PlayingCard.class));
 
         // Assert
@@ -199,11 +197,8 @@ public class AvroSerializerTest {
 
         final ByteBuffer expectedData = expected.toByteBuffer();
 
-        final String schemaString = expected.getSchema().toString();
-        final byte[] schemaBytes = schemaString.getBytes(StandardCharsets.UTF_8);
-
         // Act
-        final HandOfCards actual = registryUtils.decode(expectedData, schemaBytes,
+        final HandOfCards actual = registryUtils.deserialize(expectedData, expected.getSchema(),
             TypeReference.createInstance(HandOfCards.class));
 
         // Assert

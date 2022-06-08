@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalRevisionContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged list of portal revisions. */
 @Immutable
 public final class PortalRevisionCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalRevisionCollection.class);
-
     /*
      * Collection of portal revisions.
      */

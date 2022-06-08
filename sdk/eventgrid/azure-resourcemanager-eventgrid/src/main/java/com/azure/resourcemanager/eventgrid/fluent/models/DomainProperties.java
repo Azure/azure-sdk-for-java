@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the Event Grid Domain Resource. */
 @Fluent
 public final class DomainProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainProperties.class);
-
     /*
      * List of private endpoint connections.
      */
@@ -33,14 +30,15 @@ public final class DomainProperties {
     private DomainProvisioningState provisioningState;
 
     /*
-     * Endpoint for the domain.
+     * Endpoint for the Event Grid Domain Resource which is used for publishing
+     * the events.
      */
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
     /*
      * This determines the format that Event Grid should expect for incoming
-     * events published to the domain.
+     * events published to the Event Grid Domain Resource.
      */
     @JsonProperty(value = "inputSchema")
     private InputSchema inputSchema;
@@ -53,7 +51,7 @@ public final class DomainProperties {
     private InputSchemaMapping inputSchemaMapping;
 
     /*
-     * Metric resource id for the domain.
+     * Metric resource id for the Event Grid Domain Resource.
      */
     @JsonProperty(value = "metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
@@ -131,6 +129,12 @@ public final class DomainProperties {
     @JsonProperty(value = "autoDeleteTopicWithLastSubscription")
     private Boolean autoDeleteTopicWithLastSubscription;
 
+    /*
+     * Data Residency Boundary of the resource.
+     */
+    @JsonProperty(value = "dataResidencyBoundary")
+    private DataResidencyBoundary dataResidencyBoundary;
+
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
      *
@@ -150,7 +154,7 @@ public final class DomainProperties {
     }
 
     /**
-     * Get the endpoint property: Endpoint for the domain.
+     * Get the endpoint property: Endpoint for the Event Grid Domain Resource which is used for publishing the events.
      *
      * @return the endpoint value.
      */
@@ -160,7 +164,7 @@ public final class DomainProperties {
 
     /**
      * Get the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
+     * published to the Event Grid Domain Resource.
      *
      * @return the inputSchema value.
      */
@@ -170,7 +174,7 @@ public final class DomainProperties {
 
     /**
      * Set the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
+     * published to the Event Grid Domain Resource.
      *
      * @param inputSchema the inputSchema value to set.
      * @return the DomainProperties object itself.
@@ -203,7 +207,7 @@ public final class DomainProperties {
     }
 
     /**
-     * Get the metricResourceId property: Metric resource id for the domain.
+     * Get the metricResourceId property: Metric resource id for the Event Grid Domain Resource.
      *
      * @return the metricResourceId value.
      */
@@ -350,6 +354,26 @@ public final class DomainProperties {
      */
     public DomainProperties withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription) {
         this.autoDeleteTopicWithLastSubscription = autoDeleteTopicWithLastSubscription;
+        return this;
+    }
+
+    /**
+     * Get the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.dataResidencyBoundary;
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the DomainProperties object itself.
+     */
+    public DomainProperties withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        this.dataResidencyBoundary = dataResidencyBoundary;
         return this;
     }
 

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OAuth acquire token request body parameter (www-url-form-encoded). */
 @Fluent
 public final class TokenBodyParameterContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TokenBodyParameterContract.class);
-
     /*
      * body parameter name.
      */
@@ -73,15 +70,17 @@ public final class TokenBodyParameterContract {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model TokenBodyParameterContract"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model TokenBodyParameterContract"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TokenBodyParameterContract.class);
 }

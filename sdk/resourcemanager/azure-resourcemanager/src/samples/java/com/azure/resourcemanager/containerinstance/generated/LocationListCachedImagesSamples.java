@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Location ListCachedImages. */
 public final class LocationListCachedImagesSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/CachedImagesList.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/CachedImagesList.json
      */
     /**
      * Sample code: CachedImages.

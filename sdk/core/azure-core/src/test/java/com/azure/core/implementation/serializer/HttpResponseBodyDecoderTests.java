@@ -42,6 +42,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -65,6 +66,8 @@ import static org.mockito.Mockito.when;
  * Tests {@link HttpResponseBodyDecoder}.
  */
 public class HttpResponseBodyDecoderTests {
+    private static final JacksonAdapter ADAPTER = new JacksonAdapter();
+
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
 
@@ -84,7 +87,8 @@ public class HttpResponseBodyDecoderTests {
     @ParameterizedTest
     @MethodSource("invalidHttpResponseSupplier")
     public void invalidHttpResponse(HttpResponse response) {
-        assertThrows(NullPointerException.class, () -> HttpResponseBodyDecoder.decode(null, response, null, null));
+        assertThrows(NullPointerException.class,
+            () -> HttpResponseBodyDecoder.decodeByteArray(null, response, null, null));
 
     }
 
@@ -103,10 +107,10 @@ public class HttpResponseBodyDecoderTests {
 
     @ParameterizedTest
     @MethodSource("errorResponseSupplier")
-    public void errorResponse(String body, HttpResponse httpResponse, HttpResponseDecodeData decodeData,
+    public void errorResponse(HttpResponse httpResponse, HttpResponseDecodeData decodeData,
         boolean isEmpty, Object expected) {
-        StepVerifier.FirstStep<Object> firstStep =
-            StepVerifier.create(HttpResponseBodyDecoder.decode(body, httpResponse, new JacksonAdapter(), decodeData));
+        StepVerifier.FirstStep<Object> firstStep = StepVerifier.create(httpResponse.getBodyAsByteArray()
+            .mapNotNull(body -> HttpResponseBodyDecoder.decodeByteArray(body, httpResponse, ADAPTER, decodeData)));
 
         if (isEmpty) {
             firstStep.verifyComplete();
@@ -131,19 +135,14 @@ public class HttpResponseBodyDecoderTests {
         HttpResponse wrongGoodResponse = new MockHttpResponse(GET_REQUEST, 200, "good response");
 
         return Stream.of(
-            Arguments.of(null, emptyResponse, noExpectedStatusCodes, true, null),
-            Arguments.of(null, emptyResponse, expectedStatusCodes, true, null),
-            Arguments.of(null, response, noExpectedStatusCodes, false, "expected"),
-            Arguments.of(null, response, expectedStatusCodes, false, "expected"),
-            Arguments.of("\"expected\"", emptyResponse, noExpectedStatusCodes, false, "expected"),
-            Arguments.of("\"expected\"", emptyResponse, expectedStatusCodes, false, "expected"),
-            Arguments.of("\"not expected\"", response, noExpectedStatusCodes, false, "not expected"),
-            Arguments.of("\"not expected\"", response, expectedStatusCodes, false, "not expected"),
-            Arguments.of(null, wrongGoodResponse, expectedStatusCodes, false, "good response"),
-            Arguments.of("\"bad response\"", wrongGoodResponse, expectedStatusCodes, false, "bad response"),
+            Arguments.of(emptyResponse, noExpectedStatusCodes, true, null),
+            Arguments.of(emptyResponse, expectedStatusCodes, true, null),
+            Arguments.of(response, noExpectedStatusCodes, false, "expected"),
+            Arguments.of(response, expectedStatusCodes, false, "expected"),
+            Arguments.of(wrongGoodResponse, expectedStatusCodes, false, "good response"),
 
             // Improperly formatted JSON string causes MalformedValueException.
-            Arguments.of("expected", emptyResponse, noExpectedStatusCodes, true, null)
+            Arguments.of(emptyResponse, noExpectedStatusCodes, true, null)
         );
     }
 
@@ -157,8 +156,7 @@ public class HttpResponseBodyDecoderTests {
             .thenReturn(new UnexpectedExceptionInformation(HttpResponseException.class));
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, ioExceptionThrower, noExpectedStatusCodes))
-            .verifyComplete();
+        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
     }
 
     @Test
@@ -167,8 +165,7 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
         HttpResponse response = new MockHttpResponse(HEAD_REQUEST, 200);
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
-            .verifyComplete();
+        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ADAPTER, decodeData));
     }
 
     @ParameterizedTest
@@ -176,8 +173,7 @@ public class HttpResponseBodyDecoderTests {
     public void nonDecodableResponse(HttpResponseDecodeData decodeData) {
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 200);
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
-            .verifyComplete();
+        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ADAPTER, decodeData));
     }
 
     private static Stream<Arguments> nonDecodableResponseSupplier() {
@@ -222,14 +218,14 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.getReturnType()).thenReturn(String.class);
         when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
-            .verifyComplete();
+        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ADAPTER, decodeData));
     }
 
     @ParameterizedTest
     @MethodSource("decodableResponseSupplier")
     public void decodableResponse(HttpResponse response, HttpResponseDecodeData decodeData, Object expected) {
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
+        StepVerifier.create(response.getBodyAsByteArray()
+                .mapNotNull(bytes -> HttpResponseBodyDecoder.decodeByteArray(bytes, response, ADAPTER, decodeData)))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -303,7 +299,8 @@ public class HttpResponseBodyDecoderTests {
         List<Base64Url> base64Urls = Arrays.asList(new Base64Url("base"), new Base64Url("64"));
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
+        StepVerifier.create(response.getBodyAsByteArray()
+                .mapNotNull(body -> HttpResponseBodyDecoder.decodeByteArray(body, response, ADAPTER, decodeData)))
             .assertNext(actual -> {
                 assertTrue(actual instanceof List);
                 @SuppressWarnings("unchecked") List<byte[]> decoded = (List<byte[]>) actual;
@@ -313,6 +310,7 @@ public class HttpResponseBodyDecoderTests {
             }).verifyComplete();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void decodePageResponse() {
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, new Page<String>() {
@@ -337,18 +335,21 @@ public class HttpResponseBodyDecoderTests {
         when(itemPageDecodeData.getReturnValueWireType()).thenReturn(ItemPage.class);
         when(itemPageDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), pageDecodeData))
+        StepVerifier.create(response.getBodyAsByteArray()
+                .mapNotNull(body -> HttpResponseBodyDecoder.decodeByteArray(body, response, ADAPTER, pageDecodeData)))
             .assertNext(actual -> {
                 assertTrue(actual instanceof Page);
-                @SuppressWarnings("unchecked") Page<String> page = (Page<String>) actual;
+                Page<String> page = (Page<String>) actual;
                 assertFalse(page.getElements().iterator().hasNext());
                 assertNull(page.getContinuationToken());
             }).verifyComplete();
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), itemPageDecodeData))
+        StepVerifier.create(response.getBodyAsByteArray()
+                .mapNotNull(body -> HttpResponseBodyDecoder.decodeByteArray(body, response, ADAPTER,
+                    itemPageDecodeData)))
             .assertNext(actual -> {
                 assertTrue(actual instanceof Page);
-                @SuppressWarnings("unchecked") Page<String> page = (Page<String>) actual;
+                Page<String> page = (Page<String>) actual;
                 assertFalse(page.getElements().iterator().hasNext());
                 assertNull(page.getContinuationToken());
             }).verifyComplete();
@@ -363,9 +364,8 @@ public class HttpResponseBodyDecoderTests {
         when(decodeData.getReturnValueWireType()).thenReturn(String.class);
         when(decodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
 
-        StepVerifier.create(HttpResponseBodyDecoder
-            .decode("malformed JSON string", response, new JacksonAdapter(), decodeData))
-            .verifyError(HttpResponseException.class);
+        assertThrows(HttpResponseException.class, () -> HttpResponseBodyDecoder.decodeByteArray(
+            "malformed JSON string".getBytes(StandardCharsets.UTF_8), response, ADAPTER, decodeData));
     }
 
     @Test
@@ -380,8 +380,8 @@ public class HttpResponseBodyDecoderTests {
         SerializerAdapter serializer = mock(SerializerAdapter.class);
         when(serializer.deserialize(any(byte[].class), any(), any())).thenThrow(IOException.class);
 
-        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, serializer, decodeData))
-            .verifyError(HttpResponseException.class);
+        assertThrows(HttpResponseException.class, () ->
+            HttpResponseBodyDecoder.decodeByteArray(new byte[0], response, serializer, decodeData));
     }
 
     @ParameterizedTest

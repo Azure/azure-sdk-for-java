@@ -13,7 +13,9 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class ServerStoreModel implements RxStoreModel {
@@ -51,5 +53,10 @@ public class ServerStoreModel implements RxStoreModel {
     @Override
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
         this.storeClient.enableThroughputControl(throughputControlStore);
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return this.storeClient.openConnectionsAndInitCaches(containerLink);
     }
 }

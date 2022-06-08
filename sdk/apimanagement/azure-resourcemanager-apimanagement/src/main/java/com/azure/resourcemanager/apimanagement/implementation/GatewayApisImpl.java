@@ -15,10 +15,9 @@ import com.azure.resourcemanager.apimanagement.models.ApiContract;
 import com.azure.resourcemanager.apimanagement.models.AssociationContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayApis;
 import com.azure.resourcemanager.apimanagement.models.GatewayApisGetEntityTagResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GatewayApisImpl implements GatewayApis {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayApisImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GatewayApisImpl.class);
 
     private final GatewayApisClient innerClient;
 

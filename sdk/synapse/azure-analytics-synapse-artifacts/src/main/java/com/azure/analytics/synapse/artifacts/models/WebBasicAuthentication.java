@@ -68,4 +68,11 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
         this.password = password;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebBasicAuthentication setUrl(Object url) {
+        super.setUrl(url);
+        return this;
+    }
 }

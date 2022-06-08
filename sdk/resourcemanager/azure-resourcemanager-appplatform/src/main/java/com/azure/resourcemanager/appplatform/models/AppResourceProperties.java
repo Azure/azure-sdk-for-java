@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 /** App resource properties payload. */
 @Fluent
 public final class AppResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppResourceProperties.class);
-
     /*
      * Indicates whether the App exposes public endpoint
      */
@@ -28,16 +26,17 @@ public final class AppResourceProperties {
     private String url;
 
     /*
+     * Collection of addons
+     */
+    @JsonProperty(value = "addonConfigs")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Map<String, Object>> addonConfigs;
+
+    /*
      * Provisioning state of the App
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AppResourceProvisioningState provisioningState;
-
-    /*
-     * Name of the active deployment of the App
-     */
-    @JsonProperty(value = "activeDeploymentName")
-    private String activeDeploymentName;
 
     /*
      * Fully qualified dns Name.
@@ -52,18 +51,6 @@ public final class AppResourceProperties {
     private Boolean httpsOnly;
 
     /*
-     * Indicate if end to end TLS is enabled.
-     */
-    @JsonProperty(value = "enableEndToEndTLS")
-    private Boolean enableEndToEndTls;
-
-    /*
-     * Date time when the resource is created
-     */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
      * Temporary disk settings
      */
     @JsonProperty(value = "temporaryDisk")
@@ -74,6 +61,18 @@ public final class AppResourceProperties {
      */
     @JsonProperty(value = "persistentDisk")
     private PersistentDisk persistentDisk;
+
+    /*
+     * Indicate if end to end TLS is enabled.
+     */
+    @JsonProperty(value = "enableEndToEndTLS")
+    private Boolean enableEndToEndTls;
+
+    /*
+     * Collection of loaded certificates
+     */
+    @JsonProperty(value = "loadedCertificates")
+    private List<LoadedCertificate> loadedCertificates;
 
     /**
      * Get the publicProperty property: Indicates whether the App exposes public endpoint.
@@ -105,32 +104,32 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the addonConfigs property: Collection of addons.
+     *
+     * @return the addonConfigs value.
+     */
+    public Map<String, Map<String, Object>> addonConfigs() {
+        return this.addonConfigs;
+    }
+
+    /**
+     * Set the addonConfigs property: Collection of addons.
+     *
+     * @param addonConfigs the addonConfigs value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withAddonConfigs(Map<String, Map<String, Object>> addonConfigs) {
+        this.addonConfigs = addonConfigs;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the App.
      *
      * @return the provisioningState value.
      */
     public AppResourceProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the activeDeploymentName property: Name of the active deployment of the App.
-     *
-     * @return the activeDeploymentName value.
-     */
-    public String activeDeploymentName() {
-        return this.activeDeploymentName;
-    }
-
-    /**
-     * Set the activeDeploymentName property: Name of the active deployment of the App.
-     *
-     * @param activeDeploymentName the activeDeploymentName value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withActiveDeploymentName(String activeDeploymentName) {
-        this.activeDeploymentName = activeDeploymentName;
-        return this;
     }
 
     /**
@@ -174,35 +173,6 @@ public final class AppResourceProperties {
     }
 
     /**
-     * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
-     *
-     * @return the enableEndToEndTls value.
-     */
-    public Boolean enableEndToEndTls() {
-        return this.enableEndToEndTls;
-    }
-
-    /**
-     * Set the enableEndToEndTls property: Indicate if end to end TLS is enabled.
-     *
-     * @param enableEndToEndTls the enableEndToEndTls value to set.
-     * @return the AppResourceProperties object itself.
-     */
-    public AppResourceProperties withEnableEndToEndTls(Boolean enableEndToEndTls) {
-        this.enableEndToEndTls = enableEndToEndTls;
-        return this;
-    }
-
-    /**
-     * Get the createdTime property: Date time when the resource is created.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
      * Get the temporaryDisk property: Temporary disk settings.
      *
      * @return the temporaryDisk value.
@@ -243,6 +213,46 @@ public final class AppResourceProperties {
     }
 
     /**
+     * Get the enableEndToEndTls property: Indicate if end to end TLS is enabled.
+     *
+     * @return the enableEndToEndTls value.
+     */
+    public Boolean enableEndToEndTls() {
+        return this.enableEndToEndTls;
+    }
+
+    /**
+     * Set the enableEndToEndTls property: Indicate if end to end TLS is enabled.
+     *
+     * @param enableEndToEndTls the enableEndToEndTls value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withEnableEndToEndTls(Boolean enableEndToEndTls) {
+        this.enableEndToEndTls = enableEndToEndTls;
+        return this;
+    }
+
+    /**
+     * Get the loadedCertificates property: Collection of loaded certificates.
+     *
+     * @return the loadedCertificates value.
+     */
+    public List<LoadedCertificate> loadedCertificates() {
+        return this.loadedCertificates;
+    }
+
+    /**
+     * Set the loadedCertificates property: Collection of loaded certificates.
+     *
+     * @param loadedCertificates the loadedCertificates value to set.
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withLoadedCertificates(List<LoadedCertificate> loadedCertificates) {
+        this.loadedCertificates = loadedCertificates;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -253,6 +263,9 @@ public final class AppResourceProperties {
         }
         if (persistentDisk() != null) {
             persistentDisk().validate();
+        }
+        if (loadedCertificates() != null) {
+            loadedCertificates().forEach(e -> e.validate());
         }
     }
 }

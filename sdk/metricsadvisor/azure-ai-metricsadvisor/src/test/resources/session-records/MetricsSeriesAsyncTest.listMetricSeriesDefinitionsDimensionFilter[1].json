@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/series/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d4ba5942-723f-4396-b3f6-fc4e738c9616",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a90aa7e8-a259-48fd-923d-15c81e32f66f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "a4b84fd1-cf64-4917-9774-52843aaf52ff",
-      "content-length" : "926",
-      "x-envoy-upstream-service-time" : "57",
+      "x-request-id" : "3fc54b3f-5a76-4e01-9a0d-44a4dbb9a62e",
+      "content-length" : "198",
+      "x-envoy-upstream-service-time" : "108",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a4b84fd1-cf64-4917-9774-52843aaf52ff",
+      "apim-request-id" : "3fc54b3f-5a76-4e01-9a0d-44a4dbb9a62e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Grocery & Gourmet Food\",\"region\":\"Miami\"}}]}",
-      "Date" : "Thu, 28 Oct 2021 22:36:43 GMT",
+      "Body" : "{\"value\":[{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"__SUM__\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:16 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

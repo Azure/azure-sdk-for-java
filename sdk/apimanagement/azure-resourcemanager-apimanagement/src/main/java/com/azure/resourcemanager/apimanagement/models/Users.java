@@ -18,7 +18,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserContract> listByService(String resourceGroupName, String serviceName);
 
@@ -42,7 +42,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Users list representation.
+     * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserContract> listByService(
         String resourceGroupName,
@@ -138,7 +138,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -175,7 +175,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return generate SSO Url operations response details.
+     * @return generate SSO Url operations response details along with {@link Response}.
      */
     Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context);
@@ -206,7 +206,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Shared Access Authorization Token for the User.
+     * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
     Response<UserTokenResult> getSharedAccessTokenWithResponse(
         String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters, Context context);
@@ -258,7 +258,7 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(
         String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);

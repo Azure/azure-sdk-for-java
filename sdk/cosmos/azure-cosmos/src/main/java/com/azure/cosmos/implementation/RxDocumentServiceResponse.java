@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 /**
@@ -30,20 +30,14 @@ public class RxDocumentServiceResponse {
     private final Map<String, String> headersMap;
     private final StoreResponse storeResponse;
     private RequestTimeline gatewayHttpRequestTimeline;
+    private CosmosDiagnostics cosmosDiagnostics;
 
     public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
-        String[] headerNames = response.getResponseHeaderNames();
-        String[] headerValues = response.getResponseHeaderValues();
-
-        this.headersMap = new HashMap<>(headerNames.length);
+        this.headersMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        this.headersMap.putAll(response.getResponseHeaders());
 
         // Gets status code.
         this.statusCode = response.getStatus();
-
-        // Extracts headers.
-        for (int i = 0; i < headerNames.length; i++) {
-            this.headersMap.put(headerNames[i], headerValues[i]);
-        }
 
         this.storeResponse = response;
         this.diagnosticsClientContext = diagnosticsClientContext;
@@ -209,10 +203,11 @@ public class RxDocumentServiceResponse {
     }
 
     public CosmosDiagnostics getCosmosDiagnostics() {
-        if (this.storeResponse == null) {
-            return null;
-        }
-        return this.storeResponse.getCosmosDiagnostics();
+        return this.cosmosDiagnostics;
+    }
+
+    public void setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        this.cosmosDiagnostics = cosmosDiagnostics;
     }
 
     public DiagnosticsClientContext getDiagnosticsClientContext() {

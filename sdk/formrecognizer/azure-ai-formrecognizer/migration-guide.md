@@ -302,13 +302,13 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
-            documentSelectionMark.getBoundingBox().toString(),
+            documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
 
@@ -382,7 +382,7 @@ analyzeResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
@@ -433,7 +433,7 @@ analyzeResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
@@ -455,14 +455,6 @@ for (int i = 0; i < tables.size(); i++) {
     });
     System.out.println();
 }
-
-// Entities
-analyzeResult.getEntities().forEach(documentEntity -> {
-    System.out.printf("Entity category : %s, sub-category %s%n: ",
-        documentEntity.getCategory(), documentEntity.getSubCategory());
-    System.out.printf("Entity content: %s%n: ", documentEntity.getContent());
-    System.out.printf("Entity confidence: %.2f%n", documentEntity.getConfidence());
-});
 
 // Key-value
 analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
@@ -532,8 +524,8 @@ String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-        DocumentBuildMode.TEMPLATE, "my-build-model",
-        new BuildModelOptions().setDescription("model desc"), Context.NONE);
+        DocumentBuildMode.TEMPLATE,
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
 DocumentModel documentModel = buildOperationPoller.getFinalResult();
 

@@ -183,14 +183,22 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
     private final ClientTelemetry clientTelemetry;
+
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
      *
      * @param bootstrap the {@link Bootstrap} that is used for connections.
      * @param config the {@link Config} that is used for the channel pool instance created.
+     * @param clientTelemetry the {@link ClientTelemetry} that is used to track client telemetry related metrics.
+     * @param connectionStateListener the {@link RntbdConnectionStateListener}.
      */
-    RntbdClientChannelPool(final RntbdServiceEndpoint endpoint, final Bootstrap bootstrap, final Config config, final ClientTelemetry clientTelemetry) {
-        this(endpoint, bootstrap, config, new RntbdClientChannelHealthChecker(config), clientTelemetry);
+    RntbdClientChannelPool(
+        final RntbdServiceEndpoint endpoint,
+        final Bootstrap bootstrap,
+        final Config config,
+        final ClientTelemetry clientTelemetry,
+        final RntbdConnectionStateListener connectionStateListener) {
+        this(endpoint, bootstrap, config, new RntbdClientChannelHealthChecker(config), clientTelemetry, connectionStateListener);
     }
 
     private RntbdClientChannelPool(
@@ -198,7 +206,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Bootstrap bootstrap,
         final Config config,
         final RntbdClientChannelHealthChecker healthChecker,
-        final ClientTelemetry clientTelemetry) {
+        final ClientTelemetry clientTelemetry,
+        final RntbdConnectionStateListener connectionStateListener) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
@@ -206,7 +215,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(healthChecker, "expected non-null healthChecker");
 
         this.endpoint = endpoint;
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker);
+        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
 
@@ -423,16 +432,54 @@ public final class RntbdClientChannelPool implements ChannelPool {
      */
     @Override
     public Future<Channel> acquire() {
-        return this.acquire(new ChannelPromiseWithExpiryTime(
-            this.bootstrap.config().group().next().newPromise(),
-            System.nanoTime() + this.acquisitionTimeoutInNanos));
+        return this.acquire(
+                new ChannelPromiseWithExpiryTime(this.getNewChannelPromise(), this.getNewPromiseExpiryTime()));
     }
 
-    public Future<Channel> acquire(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
-        return this.acquire(new ChannelPromiseWithExpiryTime(
-            this.bootstrap.config().group().next().newPromise(),
-            System.nanoTime() + this.acquisitionTimeoutInNanos,
-            channelAcquisitionTimeline));
+    public Future<Channel> acquire(RntbdRequestRecord requestRecord) {
+        checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
+
+        return this.acquire(
+                new ChannelPromiseWithExpiryTime(
+                        this.getNewChannelPromise(),
+                        this.getNewPromiseExpiryTime(),
+                        requestRecord.getChannelAcquisitionTimeline()));
+    }
+
+    /***
+     * A dedicate method to handle open connections from up stream.
+     *
+     * @param requestRecord the {@link OpenConnectionRntbdRequestRecord}.
+     *
+     * @return the future.
+     */
+    public Future<Channel> acquire(OpenConnectionRntbdRequestRecord requestRecord) {
+        checkNotNull(requestRecord, "Argument 'requestRecord' should not be null");
+
+        OpenChannelPromise openChannelPromise =
+                new OpenChannelPromise(this.getNewChannelPromise(), this.getNewPromiseExpiryTime());
+
+        try {
+            // Compared to the normal request flow
+            // Open connection flow does not need to write any real request, hence we are passing the pending queue checking
+            if (this.executor.inEventLoop()) {
+                this.acquireChannel(openChannelPromise);
+            } else {
+                this.executor.execute(() -> this.acquireChannel(openChannelPromise));
+            }
+        } catch (Throwable cause) {
+            openChannelPromise.setFailure(cause);
+        }
+
+        return openChannelPromise;
+    }
+
+    private long getNewPromiseExpiryTime() {
+        return System.nanoTime() + this.acquisitionTimeoutInNanos;
+    }
+
+    private Promise<Channel> getNewChannelPromise() {
+        return this.bootstrap.config().group().next().newPromise();
     }
 
     /**
@@ -629,12 +676,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 return;
             }
 
-            // make sure to retrieve the actual channel count to avoid establishing more
-            // TCP connections than allowed.
-            final int channelCount = this.channels(false);
+            // ONLY allow maximum 1 channel to be opened by open channel request
+            int allowedMaxChannels = this.maxChannels;
+            if (promise instanceof OpenChannelPromise) {
+                allowedMaxChannels = 1;
+            }
 
-            if (channelCount < this.maxChannels) {
-
+            if (this.allowedToOpenNewChannel(allowedMaxChannels)) {
                 if (this.connecting.compareAndSet(false, true)) {
 
                     // Fulfill this request with a new channel, assuming we can connect one
@@ -669,7 +717,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
                     if (manager == null) {
-                        logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
+                        }
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
 
@@ -714,6 +764,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } catch (Throwable cause) {
             promise.tryFailure(cause);
         }
+    }
+
+    private boolean allowedToOpenNewChannel(int channelLimit) {
+        final int channelCount = this.channels(false);
+        return channelCount < channelLimit;
     }
 
     /**
@@ -1329,7 +1384,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private void releaseAndOfferChannelIfHealthy(
         final Channel channel,
         final Promise<Void> promise,
-        final Future<Boolean> future) {
+        final Future<Boolean> future) throws Exception {
 
         final boolean isHealthy = future.getNow();
 
@@ -1342,18 +1397,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
         } else {
             // Channel is unhealthy so just close and release it
-            try {
-                this.poolHandler.channelReleased(channel);
-            } catch (Throwable error) {
-                logger.debug("[{}] pool handler failed due to ", this, error);
-            } finally {
-                if (this.executor.inEventLoop()) {
-                    this.closeChannel(channel);
-                } else {
-                    this.executor.submit(() -> this.closeChannel(channel));
-                }
-                promise.setSuccess(null);
+            this.poolHandler.channelReleased(channel);
+            if (this.executor.inEventLoop()) {
+                this.closeChannel(channel);
+            } else {
+                this.executor.submit(() -> this.closeChannel(channel));
             }
+            promise.setSuccess(null);
         }
     }
 

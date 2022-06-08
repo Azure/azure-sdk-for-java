@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -12,8 +11,9 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
+import com.azure.cosmos.implementation.Utils;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Used internally to represents a response from the store.
@@ -21,13 +21,12 @@ import java.util.Map.Entry;
 public class StoreResponse {
     final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
     final private int status;
-    final private String[] responseHeaderNames;
-    final private String[] responseHeaderValues;
+    final private Map<String, String> responseHeaders;
     final private byte[] content;
 
-    private CosmosDiagnostics cosmosDiagnostics;
     private int pendingRequestQueueSize;
     private int requestPayloadLength;
+    private int responsePayloadLength;
     private RequestTimeline requestTimeline;
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
     private int rntbdChannelTaskQueueSize;
@@ -37,35 +36,26 @@ public class StoreResponse {
 
     public StoreResponse(
             int status,
-            List<Entry<String, String>> headerEntries,
+            Map<String, String> headerMap,
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaderNames = new String[headerEntries.size()];
-        responseHeaderValues = new String[headerEntries.size()];
-
-        int i = 0;
-
-        for(Entry<String, String> headerEntry: headerEntries) {
-            responseHeaderNames[i] = headerEntry.getKey();
-            responseHeaderValues[i] = headerEntry.getValue();
-            i++;
-        }
+        responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+        responseHeaders.putAll(headerMap);
 
         this.status = status;
         this.content = content;
+        if (this.content != null) {
+            this.responsePayloadLength = this.content.length;
+        }
     }
 
     public int getStatus() {
         return status;
     }
 
-    public String[] getResponseHeaderNames() {
-        return responseHeaderNames;
-    }
-
-    public String[] getResponseHeaderValues() {
-        return responseHeaderValues;
+    public Map<String, String> getResponseHeaders() {
+        return responseHeaders;
     }
 
     public int getRntbdChannelTaskQueueSize() {
@@ -113,7 +103,7 @@ public class StoreResponse {
     }
 
     public int getResponseBodyLength() {
-        return (this.content != null) ? this.content.length : 0;
+        return this.responsePayloadLength;
     }
 
     public long getLSN() {
@@ -129,26 +119,16 @@ public class StoreResponse {
         return this.getHeaderValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
     }
 
-    public String getContinuation() {
-        return this.getHeaderValue(HttpConstants.HttpHeaders.CONTINUATION);
+    public String getActivityId() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
+    }
+
+    public String getCorrelatedActivityId() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
     }
 
     public String getHeaderValue(String attribute) {
-        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
-            return null;
-        }
-
-        for (int i = 0; i < responseHeaderNames.length; i++) {
-            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
-                return responseHeaderValues[i];
-            }
-        }
-
-        return null;
-    }
-
-    public CosmosDiagnostics getCosmosDiagnostics() {
-        return cosmosDiagnostics;
+        return responseHeaders.get(attribute);
     }
 
     public double getRequestCharge() {
@@ -159,12 +139,11 @@ public class StoreResponse {
         return Double.parseDouble(value);
     }
 
-    StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-        this.cosmosDiagnostics = cosmosDiagnostics;
-        return this;
+    public String getSessionTokenString() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
     }
 
-    void setRequestTimeline(RequestTimeline requestTimeline) {
+    public void setRequestTimeline(RequestTimeline requestTimeline) {
         this.requestTimeline = requestTimeline;
     }
 
@@ -172,7 +151,7 @@ public class StoreResponse {
         return this.requestTimeline;
     }
 
-    void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+    public void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
         this.channelAcquisitionTimeline = channelAcquisitionTimeline;
     }
 
@@ -180,11 +159,11 @@ public class StoreResponse {
         return this.channelAcquisitionTimeline;
     }
 
-    void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+    public void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
         this.rntbdEndpointStatistics = rntbdEndpointStatistics;
     }
 
-    RntbdEndpointStatistics getEndpointStsts() {
+    RntbdEndpointStatistics getEndpointStatistics() {
         return this.rntbdEndpointStatistics;
     }
 

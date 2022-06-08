@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolMetadataSyncConfigsClient
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 import com.azure.resourcemanager.synapse.models.MetadataSyncConfig;
 import com.azure.resourcemanager.synapse.models.SqlPoolMetadataSyncConfigs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolMetadataSyncConfigsImpl implements SqlPoolMetadataSyncConfigs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolMetadataSyncConfigsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolMetadataSyncConfigsImpl.class);
 
     private final SqlPoolMetadataSyncConfigsClient innerClient;
 

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class EndpointBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointBase.class);
-
     /*
      * Credentials to be presented to the endpoint.
      */
@@ -116,14 +113,14 @@ public class EndpointBase {
      */
     public void validate() {
         if (credentials() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property credentials in model EndpointBase"));
         } else {
             credentials().validate();
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property url in model EndpointBase"));
         }
@@ -131,4 +128,6 @@ public class EndpointBase {
             tunnel().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EndpointBase.class);
 }

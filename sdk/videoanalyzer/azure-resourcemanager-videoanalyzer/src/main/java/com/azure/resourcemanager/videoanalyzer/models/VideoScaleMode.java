@@ -30,7 +30,11 @@ public final class VideoScaleMode extends ExpandableStringEnum<VideoScaleMode> {
         return fromString(name, VideoScaleMode.class);
     }
 
-    /** @return known VideoScaleMode values. */
+    /**
+     * Gets known VideoScaleMode values.
+     *
+     * @return known VideoScaleMode values.
+     */
     public static Collection<VideoScaleMode> values() {
         return values(VideoScaleMode.class);
     }

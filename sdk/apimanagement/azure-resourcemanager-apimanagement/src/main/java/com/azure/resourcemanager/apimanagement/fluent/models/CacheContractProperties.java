@@ -6,14 +6,11 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the Cache contract. */
 @Fluent
 public final class CacheContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheContractProperties.class);
-
     /*
      * Cache description
      */
@@ -128,16 +125,18 @@ public final class CacheContractProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model CacheContractProperties"));
         }
         if (useFromLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property useFromLocation in model CacheContractProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CacheContractProperties.class);
 }

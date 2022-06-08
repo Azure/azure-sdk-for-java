@@ -48,12 +48,16 @@ def generate(
         'sdk/{0}'.format(service),
         module,
     )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
+
+    require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
+
+    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
         # samples contains hand-written code
-        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'), ignore_errors = True)
+        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
+                      ignore_errors=True)
     else:
-        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
+        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors=True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -63,22 +67,25 @@ def generate(
     tag_option = '--tag={0}'.format(tag) if tag else ''
     version_option = '--package-version={0}'.format(version) if version else ''
 
-    command = 'autorest --version={0} --use={1} --java --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
-        autorest,
-        use,
-        os.path.abspath(sdk_root),
-        os.path.abspath(output_dir),
-        namespace,
-        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
-    )
+    command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} ' \
+              '--java.namespace={4} {5}'\
+        .format(
+            autorest,
+            use,
+            os.path.abspath(sdk_root),
+            os.path.abspath(output_dir),
+            namespace,
+            ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
+        )
     logging.info(command)
     if os.system(command) != 0:
         logging.error('[GENERATE] Autorest fail')
         return False
 
     group = GROUP_ID
-    update_service_ci_and_pom(sdk_root, service, group, module)
-    update_root_pom(sdk_root, service)
+    if require_sdk_integration:
+        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
     return True
@@ -150,13 +157,25 @@ def update_changelog(changelog_file, changelog):
     logging.info('[Changelog][Success] Write to changelog')
 
 
-def compare_with_maven_package(sdk_root, service, stable_version,
-                               current_version, module):
-    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
-
+def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
+                               current_version: str, module: str):
     if stable_version == current_version:
         logging.info('[Changelog][Skip] no previous version')
         return
+
+    if '-beta.' in current_version and '-beta.' not in stable_version:
+        # if current version is preview, try compare it with a previous preview release
+
+        version_pattern = r'\d+\.\d+\.\d+-beta\.(\d+)?'
+        beta_version_int = int(re.match(version_pattern, current_version).group(1))
+        if beta_version_int > 1:
+            previous_beta_version_int = beta_version_int - 1
+            previous_beta_version = current_version.replace(
+                '-beta.' + str(beta_version_int),
+                '-beta.' + str(previous_beta_version_int))
+            stable_version = previous_beta_version
+
+    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
 
     r = requests.get(
         MAVEN_URL.format(group_id = GROUP_ID.replace('.', '/'),
@@ -233,7 +252,7 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
     with open(api_specs_file, 'w') as fout:
         fout.write(comment)
-        fout.write(yaml.dump(api_specs, Dumper = ListIndentDumper))
+        fout.write(yaml.dump(api_specs, Dumper=ListIndentDumper))
 
 
 def get_and_update_service_from_api_specs(

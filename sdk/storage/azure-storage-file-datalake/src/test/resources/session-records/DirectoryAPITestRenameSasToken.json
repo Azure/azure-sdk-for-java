@@ -44,7 +44,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://REDACTED.dfs.core.windows.net/89bd6ed3089bd6ed3e92138284d337df37bc94d1e9d5/89bd6ed3289bd6ed3e9279532fe077e86f6fe405b823?mode=legacy&sv=2021-04-10&se=2022-03-12T07%3A25%3A07Z&sr=c&sp=racwdm&sig=REDACTED",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/89bd6ed3089bd6ed3e92138284d337df37bc94d1e9d5/89bd6ed3289bd6ed3e9279532fe077e86f6fe405b823?mode=legacy&sv=2021-06-08&se=2022-03-12T07%3A25%3A07Z&sr=c&sp=racwdm&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.13; Windows 10; 10.0)",
@@ -65,7 +65,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "http://REDACTED.blob.core.windows.net/89bd6ed3089bd6ed3e92138284d337df37bc94d1e9d5/89bd6ed3289bd6ed3e9279532fe077e86f6fe405b823?sv=2021-04-10&se=2022-03-12T07%3A25%3A07Z&sr=c&sp=racwdm&sig=REDACTED",
+    "Uri" : "http://REDACTED.blob.core.windows.net/89bd6ed3089bd6ed3e92138284d337df37bc94d1e9d5/89bd6ed3289bd6ed3e9279532fe077e86f6fe405b823?sv=2021-06-08&se=2022-03-12T07%3A25%3A07Z&sr=c&sp=racwdm&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2021-04-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.13; Windows 10; 10.0)",

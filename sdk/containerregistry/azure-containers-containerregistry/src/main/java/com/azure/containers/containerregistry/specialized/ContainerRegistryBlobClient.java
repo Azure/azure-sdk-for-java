@@ -4,6 +4,7 @@
 package com.azure.containers.containerregistry.specialized;
 
 import com.azure.containers.containerregistry.models.DownloadBlobResult;
+import com.azure.containers.containerregistry.models.DownloadManifestOptions;
 import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
@@ -155,14 +156,14 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param tagOrDigest The tag or digest of the manifest.
+     * @param options Options for the operation.
      * @return The manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DownloadManifestResult downloadManifest(String tagOrDigest) {
-        return this.asyncClient.downloadManifest(tagOrDigest).block();
+    public DownloadManifestResult downloadManifest(DownloadManifestOptions options) {
+        return this.asyncClient.downloadManifest(options).block();
     }
 
     /**
@@ -171,15 +172,15 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param tagOrDigest The tag or digest of the manifest.
+     * @param options Options for the operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The response for the manifest associated with the given tag or digest.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DownloadManifestResult> downloadManifestWithResponse(String tagOrDigest, Context context) {
-        return this.asyncClient.downloadManifestWithResponse(tagOrDigest, context).block();
+    public Response<DownloadManifestResult> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
+        return this.asyncClient.downloadManifestWithResponse(options, context).block();
     }
 
     /**

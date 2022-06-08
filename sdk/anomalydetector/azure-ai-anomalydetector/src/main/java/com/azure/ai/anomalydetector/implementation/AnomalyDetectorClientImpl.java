@@ -172,7 +172,7 @@ public final class AnomalyDetectorClientImpl {
      */
     @Host("{Endpoint}/anomalydetector/{ApiVersion}")
     @ServiceInterface(name = "AnomalyDetectorClien")
-    private interface AnomalyDetectorClientService {
+    public interface AnomalyDetectorClientService {
         @Post("/timeseries/entire/detect")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AnomalyDetectorErrorException.class)

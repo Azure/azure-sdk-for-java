@@ -62,11 +62,11 @@ public final class UtilsImpl {
     private static final int HTTP_STATUS_CODE_ACCEPTED;
     private static final String CONTINUATION_LINK_HEADER_NAME;
     private static final Pattern CONTINUATION_LINK_PATTERN;
-
-    public static final String OCI_MANIFEST_MEDIA_TYPE;
-    public static final String DOCKER_DIGEST_HEADER_NAME;
-    public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
     private static final ClientLogger LOGGER;
+
+    public static final String DOCKER_DIGEST_HEADER_NAME;
+    public static final String OCI_MANIFEST_MEDIA_TYPE;
+    public static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 
     static {
         LOGGER = new ClientLogger(UtilsImpl.class);
@@ -76,7 +76,7 @@ public final class UtilsImpl {
         HTTP_STATUS_CODE_NOT_FOUND = 404;
         HTTP_STATUS_CODE_ACCEPTED = 202;
         OCI_MANIFEST_MEDIA_TYPE = "application/vnd.oci.image.manifest.v1+json";
-        DOCKER_DIGEST_HEADER_NAME = "Docker-Content-Digest";
+        DOCKER_DIGEST_HEADER_NAME = "docker-content-digest";
         CONTINUATION_LINK_HEADER_NAME = "Link";
         CONTINUATION_LINK_PATTERN = Pattern.compile("<(.+)>;.*");
         CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
@@ -126,6 +126,7 @@ public final class UtilsImpl {
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
+        policies.add(new ContainerRegistryRedirectPolicy());
 
         policies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -222,7 +223,7 @@ public final class UtilsImpl {
             return getAcceptedDeleteResponse(responseT, responseT.getStatusCode());
         }
 
-        // In case of 400, we still convert it to success i.e. no-op.
+        // In case of 404, we still convert it to success i.e. no-op.
         return getAcceptedDeleteResponse(responseT, HTTP_STATUS_CODE_ACCEPTED);
     }
 
@@ -334,5 +335,14 @@ public final class UtilsImpl {
             continuationLink,
             null
         );
+    }
+
+    /**
+     * Get the digest from the response header if available.
+     * @param headers The headers to parse.
+     * @return The digest value.
+     */
+    public static <T> String getDigestFromHeader(HttpHeaders headers) {
+        return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
     }
 }

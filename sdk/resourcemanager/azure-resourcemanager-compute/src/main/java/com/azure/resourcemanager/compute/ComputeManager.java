@@ -5,11 +5,14 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
+import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;
+import com.azure.resourcemanager.compute.implementation.DiskEncryptionSetsImpl;
 import com.azure.resourcemanager.compute.implementation.DisksImpl;
 import com.azure.resourcemanager.compute.implementation.GalleriesImpl;
 import com.azure.resourcemanager.compute.implementation.GalleryImageVersionsImpl;
@@ -24,6 +27,7 @@ import com.azure.resourcemanager.compute.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSets;
 import com.azure.resourcemanager.compute.models.Disks;
 import com.azure.resourcemanager.compute.models.Galleries;
 import com.azure.resourcemanager.compute.models.GalleryImageVersions;
@@ -34,14 +38,14 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
+
+import java.util.Objects;
 
 /** Entry point to Azure compute resource management. */
 public final class ComputeManager extends Manager<ComputeManagementClient> {
@@ -64,6 +68,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     private Galleries galleries;
     private GalleryImages galleryImages;
     private GalleryImageVersions galleryImageVersions;
+    private DiskEncryptionSets diskEncryptionSets;
 
     /** @return the storage manager */
     public StorageManager storageManager() {
@@ -97,17 +102,21 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      * @return the ComputeManager
      */
     public static ComputeManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the ComputeManager
      */
-    private static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ComputeManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new ComputeManager(httpPipeline, profile);
     }
 
@@ -140,13 +149,9 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
-            .authenticate(null, profile);
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the availability set resource management API entry point */
@@ -261,5 +266,13 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
             galleryImageVersions = new GalleryImageVersionsImpl(this);
         }
         return galleryImageVersions;
+    }
+
+    /** @return the disk encryption set management entry point */
+    public DiskEncryptionSets diskEncryptionSets() {
+        if (diskEncryptionSets == null) {
+            diskEncryptionSets = new DiskEncryptionSetsImpl(this);
+        }
+        return diskEncryptionSets;
     }
 }

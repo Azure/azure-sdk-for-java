@@ -21,7 +21,7 @@ public interface ApiTagDescriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged TagDescription list representation.
+     * @return paged TagDescription list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagDescriptionContract> listByService(String resourceGroupName, String serviceName, String apiId);
 
@@ -43,7 +43,7 @@ public interface ApiTagDescriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged TagDescription list representation.
+     * @return paged TagDescription list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagDescriptionContract> listByService(
         String resourceGroupName,
@@ -153,7 +153,7 @@ public interface ApiTagDescriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -206,7 +206,7 @@ public interface ApiTagDescriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context);
 

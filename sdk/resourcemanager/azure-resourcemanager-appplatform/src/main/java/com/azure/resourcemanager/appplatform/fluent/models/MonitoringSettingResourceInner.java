@@ -6,21 +6,24 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Monitoring Setting resource. */
 @Fluent
 public final class MonitoringSettingResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringSettingResourceInner.class);
-
     /*
      * Properties of the Monitoring Setting resource
      */
     @JsonProperty(value = "properties")
     private MonitoringSettingProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the properties property: Properties of the Monitoring Setting resource.
@@ -40,6 +43,15 @@ public final class MonitoringSettingResourceInner extends ProxyResource {
     public MonitoringSettingResourceInner withProperties(MonitoringSettingProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

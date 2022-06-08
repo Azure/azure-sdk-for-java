@@ -27,7 +27,11 @@ public final class ZendeskAuthenticationType extends ExpandableStringEnum<Zendes
         return fromString(name, ZendeskAuthenticationType.class);
     }
 
-    /** @return known ZendeskAuthenticationType values. */
+    /**
+     * Gets known ZendeskAuthenticationType values.
+     *
+     * @return known ZendeskAuthenticationType values.
+     */
     public static Collection<ZendeskAuthenticationType> values() {
         return values(ZendeskAuthenticationType.class);
     }

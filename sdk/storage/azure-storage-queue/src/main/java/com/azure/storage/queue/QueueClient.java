@@ -154,6 +154,65 @@ public final class QueueClient {
     }
 
     /**
+     * Creates a new queue if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a queue</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueClient.createIfNotExists -->
+     * <pre>
+     * boolean result = client.createIfNotExists&#40;&#41;;
+     * System.out.println&#40;&quot;Queue created: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.createIfNotExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     *
+     * @return {@code true} if queue is successfully created, {@code false} if queue already exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean createIfNotExists() {
+        return createIfNotExistsWithResponse(null, null, null).getValue();
+    }
+
+    /**
+     * Creates a new queue if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a queue with metadata "queue:metadataMap"</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context -->
+     * <pre>
+     * Response&lt;Boolean&gt; response = client.createIfNotExistsWithResponse&#40;Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadataMap&quot;&#41;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.createIfNotExistsWithResponse#map-duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     *
+     * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
+     * queue was successfully created. If status code is 204 or 409, a queue already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> createIfNotExistsWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(client.createIfNotExistsWithResponse(metadata, context), timeout);
+    }
+
+    /**
      * Permanently deletes the queue.
      *
      * <p><strong>Code Samples</strong></p>
@@ -204,6 +263,63 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Permanently deletes the queue if exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete a queue</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueClient.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Complete deleting the queue.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     *
+     * @return {@code true} if queue is successfully deleted, {@code false} if queue does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Permanently deletes the queue if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete a queue</p>
+     *
+     * <!-- src_embed com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context -->
+     * <pre>
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueClient.deleteIfExistsWithResponse#duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 204, the queue
+     * was successfully deleted. If status code is 404, the queue does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = client.deleteIfExistsWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

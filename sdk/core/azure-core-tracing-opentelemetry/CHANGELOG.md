@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.22 (Unreleased)
+## 1.0.0-beta.26 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,41 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.25 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.0.0-beta.24 (2022-06-03)
+
+### Breaking Changes
+- Started suppressing spans for nested Azure client libraries public API calls with `INTERNAL` or `CLIENT` kind. ([#28998](https://github.com/Azure/azure-sdk-for-java/pull/28998))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+## 1.0.0-beta.23 (2022-05-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+
+## 1.0.0-beta.22 (2022-04-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
 
 ## 1.0.0-beta.21 (2022-03-04)
 

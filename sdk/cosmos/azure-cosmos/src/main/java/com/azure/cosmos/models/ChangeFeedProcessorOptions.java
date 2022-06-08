@@ -190,6 +190,11 @@ public final class ChangeFeedProcessorOptions {
 
     /**
      * Sets the maximum number of items to be returned in the enumeration operation.
+     * <p>
+     * NOTE: There are some cases where the number of items returned from the Change Feed can be higher than the specified value.
+     * If items in the container are being written through stored procedures, transactional batch, or bulk, they share the same
+     * <a href="https://docs.microsoft.com/azure/cosmos-db/sql/stored-procedures-triggers-udfs#transactions">transaction</a>
+     * and the same bookkeeping, so they will be returned together when read through the Change Feed.
      *
      * @param maxItemCount the maximum number of items to be returned in the enumeration operation.
      * @return the current ChangeFeedProcessorOptions instance.

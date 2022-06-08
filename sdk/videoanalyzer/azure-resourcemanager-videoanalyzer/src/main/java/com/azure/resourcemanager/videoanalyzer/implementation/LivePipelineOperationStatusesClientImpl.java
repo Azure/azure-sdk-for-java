@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.LivePipelineOperationStatusesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.LivePipelineOperationStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LivePipelineOperationStatusesClient. */
 public final class LivePipelineOperationStatusesClientImpl implements LivePipelineOperationStatusesClient {
-    private final ClientLogger logger = new ClientLogger(LivePipelineOperationStatusesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LivePipelineOperationStatusesService service;
 
@@ -86,7 +83,8 @@ public final class LivePipelineOperationStatusesClientImpl implements LivePipeli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status of a live pipeline.
+     * @return the operation status of a live pipeline along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LivePipelineOperationStatusInner>> getWithResponseAsync(
@@ -146,7 +144,8 @@ public final class LivePipelineOperationStatusesClientImpl implements LivePipeli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status of a live pipeline.
+     * @return the operation status of a live pipeline along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LivePipelineOperationStatusInner>> getWithResponseAsync(
@@ -202,20 +201,13 @@ public final class LivePipelineOperationStatusesClientImpl implements LivePipeli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status of a live pipeline.
+     * @return the operation status of a live pipeline on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LivePipelineOperationStatusInner> getAsync(
         String resourceGroupName, String accountName, String livePipelineName, String operationId) {
         return getWithResponseAsync(resourceGroupName, accountName, livePipelineName, operationId)
-            .flatMap(
-                (Response<LivePipelineOperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -247,7 +239,7 @@ public final class LivePipelineOperationStatusesClientImpl implements LivePipeli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status of a live pipeline.
+     * @return the operation status of a live pipeline along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LivePipelineOperationStatusInner> getWithResponse(

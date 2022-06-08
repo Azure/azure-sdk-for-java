@@ -10,7 +10,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -275,7 +274,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
-            policies.add(new CookiePolicy());
             httpPipeline = buildHttpPipeline(
                 null,
                 testProfile,
@@ -322,7 +320,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 try {
                     testAuthFile = AuthFile.parse(credFile);
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format.", e));
                 }
                 credential = testAuthFile.getCredential();
                 testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
@@ -347,7 +345,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
-            policies.add(new CookiePolicy());
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }

@@ -26,13 +26,14 @@ public final class CreationData {
     private String storageAccountId;
 
     /*
-     * Disk source information.
+     * Disk source information for PIR or user images.
      */
     @JsonProperty(value = "imageReference")
     private ImageDiskReference imageReference;
 
     /*
-     * Required if creating from a Gallery Image. The id of the
+     * Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the
      * ImageDiskReference will be the ARM id of the shared galley image version
      * from which to create a disk.
      */
@@ -126,7 +127,7 @@ public final class CreationData {
     }
 
     /**
-     * Get the imageReference property: Disk source information.
+     * Get the imageReference property: Disk source information for PIR or user images.
      *
      * @return the imageReference value.
      */
@@ -135,7 +136,7 @@ public final class CreationData {
     }
 
     /**
-     * Set the imageReference property: Disk source information.
+     * Set the imageReference property: Disk source information for PIR or user images.
      *
      * @param imageReference the imageReference value to set.
      * @return the CreationData object itself.
@@ -146,8 +147,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     * Get the galleryImageReference property: Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      *
      * @return the galleryImageReference value.
      */
@@ -156,8 +158,9 @@ public final class CreationData {
     }
 
     /**
-     * Set the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     * Set the galleryImageReference property: Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      *
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the CreationData object itself.

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** ORC dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -68,6 +70,55 @@ public class OrcDataset extends Dataset {
      */
     public OrcDataset setOrcCompressionCodec(Object orcCompressionCodec) {
         this.orcCompressionCodec = orcCompressionCodec;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

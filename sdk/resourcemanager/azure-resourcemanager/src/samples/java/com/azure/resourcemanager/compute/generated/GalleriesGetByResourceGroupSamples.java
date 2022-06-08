@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.SelectPermissions;
 /** Samples for Galleries GetByResourceGroup. */
 public final class GalleriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetACommunityGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/CommunityGallery_Get.json
      */
     /**
      * Sample code: Get a community gallery.
@@ -28,7 +28,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryWithSelectPermissions.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
      */
     /**
      * Sample code: Get a gallery with select permissions.
@@ -46,7 +46,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_Get.json
      */
     /**
      * Sample code: Get a gallery.
@@ -63,7 +63,7 @@ public final class GalleriesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryWithExpandSharingProfileGroups.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
      */
     /**
      * Sample code: Get a gallery with expand sharingProfile groups.

@@ -45,7 +45,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  *     producer.
  */
 public final class EventDataBatch {
-    private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventDataBatch.class);
     private final int maxMessageSize;
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
@@ -112,7 +112,7 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw logger.logExceptionAsWarning(new NullPointerException("eventData cannot be null"));
+            throw LOGGER.logExceptionAsWarning(new NullPointerException("eventData cannot be null"));
         }
         EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
@@ -120,7 +120,7 @@ public final class EventDataBatch {
         try {
             size = getSize(event, events.isEmpty());
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            throw LOGGER.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
                     maxMessageSize / 1024),
                 contextProvider.getErrorContext()));
@@ -155,13 +155,17 @@ public final class EventDataBatch {
                 .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
                 .addData(ENTITY_PATH_KEY, this.entityPath)
                 .addData(HOST_NAME_KEY, this.hostname);
-            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, eventContext,
+            eventContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, eventContext,
                 ProcessKind.MESSAGE);
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+            Optional<Object> eventDiagnosticIdOptional = eventContext.getData(DIAGNOSTIC_ID_KEY);
             if (eventDiagnosticIdOptional.isPresent()) {
                 eventData.getProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                eventData.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
+                tracerProvider.endSpan(eventContext, Signal.complete());
+
+                Object spanContext = eventContext.getData(SPAN_CONTEXT_KEY).orElse(null);
+                if (spanContext != null) {
+                    eventData.addContext(SPAN_CONTEXT_KEY, spanContext);
+                }
             }
         }
 

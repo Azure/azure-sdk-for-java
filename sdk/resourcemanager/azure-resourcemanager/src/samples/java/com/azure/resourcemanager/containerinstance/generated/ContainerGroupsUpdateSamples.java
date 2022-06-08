@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ContainerGroups Update. */
 public final class ContainerGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsUpdate.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsUpdate.json
      */
     /**
      * Sample code: ContainerGroupsUpdate.

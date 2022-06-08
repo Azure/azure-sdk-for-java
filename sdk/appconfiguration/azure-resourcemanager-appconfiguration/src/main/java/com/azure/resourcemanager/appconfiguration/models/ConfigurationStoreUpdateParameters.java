@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStorePropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters for updating a configuration store. */
 @Fluent
 public final class ConfigurationStoreUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreUpdateParameters.class);
-
     /*
      * The properties for updating a configuration store.
      */

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner;
 import com.azure.resourcemanager.apimanagement.models.IssueContract;
 import com.azure.resourcemanager.apimanagement.models.Issues;
 import com.azure.resourcemanager.apimanagement.models.IssuesGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IssuesImpl implements Issues {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IssuesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IssuesImpl.class);
 
     private final IssuesClient innerClient;
 

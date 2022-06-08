@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,10 +14,8 @@ import java.util.Map;
 /** Properties of the Topic update. */
 @Fluent
 public final class TopicUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameters.class);
-
     /*
-     * Tags of the resource.
+     * Tags of the Topic resource.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -32,13 +28,19 @@ public final class TopicUpdateParameters {
     private IdentityInfo identity;
 
     /*
-     * Properties of the resource.
+     * Properties of the Topic resource.
      */
     @JsonProperty(value = "properties")
     private TopicUpdateParameterProperties innerProperties;
 
+    /*
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
     /**
-     * Get the tags property: Tags of the resource.
+     * Get the tags property: Tags of the Topic resource.
      *
      * @return the tags value.
      */
@@ -47,7 +49,7 @@ public final class TopicUpdateParameters {
     }
 
     /**
-     * Set the tags property: Tags of the resource.
+     * Set the tags property: Tags of the Topic resource.
      *
      * @param tags the tags value to set.
      * @return the TopicUpdateParameters object itself.
@@ -78,12 +80,32 @@ public final class TopicUpdateParameters {
     }
 
     /**
-     * Get the innerProperties property: Properties of the resource.
+     * Get the innerProperties property: Properties of the Topic resource.
      *
      * @return the innerProperties value.
      */
     private TopicUpdateParameterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -168,6 +190,29 @@ public final class TopicUpdateParameters {
     }
 
     /**
+     * Get the dataResidencyBoundary property: The data residency boundary for the topic.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataResidencyBoundary();
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: The data residency boundary for the topic.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -178,6 +223,9 @@ public final class TopicUpdateParameters {
         }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 }

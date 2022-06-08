@@ -100,4 +100,39 @@ public final class AzureDataExplorerSink extends CopySink {
         this.flushImmediately = flushImmediately;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

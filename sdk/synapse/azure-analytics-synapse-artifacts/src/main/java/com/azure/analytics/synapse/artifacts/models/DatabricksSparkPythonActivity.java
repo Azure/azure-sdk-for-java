@@ -99,4 +99,46 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
         this.libraries = libraries;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DatabricksSparkPythonActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
+        return this;
+    }
 }

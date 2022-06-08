@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Azure Search Index. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -42,6 +44,55 @@ public class AzureSearchIndexDataset extends Dataset {
      */
     public AzureSearchIndexDataset setIndexName(Object indexName) {
         this.indexName = indexName;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSearchIndexDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

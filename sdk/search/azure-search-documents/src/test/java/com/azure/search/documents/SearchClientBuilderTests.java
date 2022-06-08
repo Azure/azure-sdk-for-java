@@ -7,6 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -135,6 +136,7 @@ public class SearchClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName("test_builder")
+            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .httpClient(new SearchIndexClientBuilderTests.FreshDateTestClient())
             .buildAsyncClient();
 

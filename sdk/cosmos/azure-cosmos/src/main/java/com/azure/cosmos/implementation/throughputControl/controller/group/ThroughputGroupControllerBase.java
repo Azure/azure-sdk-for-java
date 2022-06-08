@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.throughputControl.controller.IThroughputC
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.IThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.exceptions.ThroughputControlInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -217,9 +218,10 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     protected Mono<IThroughputRequestController> resolveRequestController() {
         return this.requestControllerAsyncCache.getAsync(
-            this.group.getGroupName(),
-            null,
-            () -> this.createAndInitializeRequestController());
+                    this.group.getGroupName(),
+                    null,
+                    () -> this.createAndInitializeRequestController())
+                .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
     private void refreshRequestController() {

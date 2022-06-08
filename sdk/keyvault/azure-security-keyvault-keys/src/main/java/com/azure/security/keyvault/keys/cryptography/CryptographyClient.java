@@ -10,6 +10,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;

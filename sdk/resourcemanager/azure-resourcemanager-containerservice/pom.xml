@@ -10,7 +10,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-containerservice</artifactId>
-  <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
+  <version>2.16.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service Management</name>
@@ -53,7 +53,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.16.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -70,13 +70,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.33</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -117,7 +117,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>

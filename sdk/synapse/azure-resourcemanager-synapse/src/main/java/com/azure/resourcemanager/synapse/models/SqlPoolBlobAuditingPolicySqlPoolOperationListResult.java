@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolOperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list Sql pool operations request. */
 @Immutable
 public final class SqlPoolBlobAuditingPolicySqlPoolOperationListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SqlPoolBlobAuditingPolicySqlPoolOperationListResult.class);
-
     /*
      * Array of results.
      */

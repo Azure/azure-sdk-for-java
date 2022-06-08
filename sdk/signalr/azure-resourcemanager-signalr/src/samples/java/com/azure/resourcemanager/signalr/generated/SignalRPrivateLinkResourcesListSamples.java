@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SignalRPrivateLinkResources List. */
 public final class SignalRPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRPrivateLinkResources_List.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRPrivateLinkResources_List.json
      */
     /**
      * Sample code: SignalRPrivateLinkResources_List.

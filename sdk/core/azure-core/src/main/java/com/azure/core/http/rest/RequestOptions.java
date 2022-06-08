@@ -149,7 +149,7 @@ public final class RequestOptions {
      *
      * @return The additional context that is passed during the service call.
      */
-    Context getContext() {
+    public Context getContext() {
         return context;
     }
 
@@ -237,7 +237,7 @@ public final class RequestOptions {
      */
     public RequestOptions setBody(BinaryData requestBody) {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
-        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody.toBytes()));
+        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
         return this;
     }
 

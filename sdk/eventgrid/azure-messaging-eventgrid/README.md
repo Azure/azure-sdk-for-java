@@ -75,12 +75,12 @@ and then include the direct dependency in the dependencies section without the v
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;current})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventgrid;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.10.0</version>
+    <version>4.11.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -283,6 +283,16 @@ the synchronous client is used for samples, however the asynchronous client has 
 Note: figure out what schema (cloud event, event grid event, or custom event) the event grid topic accepts before you start sending.
 #### Sending `EventGridEvent` to a topic that accepts EventGridEvent schema
 
+```java readme-sample-sendEventGridEventsToTopic
+// Make sure that the event grid topic or domain you're sending to is able to accept the EventGridEvent schema.
+List<EventGridEvent> events = new ArrayList<>();
+User user = new User("John", "James");
+events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
+eventGridEventClient.sendEvents(events);
+```
+
+#### Sending `CloudEvent` to a topic that accepts CloudEvent schema
+
 ```java readme-sample-sendCloudEventsToTopic
 // Make sure that the event grid topic or domain you're sending to is able to accept the CloudEvent schema.
 List<CloudEvent> events = new ArrayList<>();
@@ -290,16 +300,6 @@ User user = new User("John", "James");
 events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
     BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
 cloudEventClient.sendEvents(events);
-```
-
-#### Sending `CloudEvent` to a topic that accepts CloudEvent schema
-
-```java readme-sample-sendEventGridEventsToTopic
-// Make sure that the event grid topic or domain you're sending to is able to accept the EventGridEvent schema.
-List<EventGridEvent> events = new ArrayList<>();
-User user = new User("John", "James");
-events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
-eventGridEventClient.sendEvents(events);
 ```
 
 #### Sending Custom Events to a topic that accepts custom event schema

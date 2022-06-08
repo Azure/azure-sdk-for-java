@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerGroups Stop. */
 public final class ContainerGroupsStopSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsStop.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsStop.json
      */
     /**
      * Sample code: ContainerStop.

@@ -39,4 +39,39 @@ public final class PostgreSqlSource extends TabularSource {
         this.query = query;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public PostgreSqlSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PostgreSqlSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PostgreSqlSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PostgreSqlSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PostgreSqlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

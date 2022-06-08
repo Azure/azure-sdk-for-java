@@ -17,6 +17,8 @@ import java.util.Map;
  * @see RuleProperties#setAction(RuleAction)
  */
 public class SqlRuleAction extends RuleAction {
+    private static final ClientLogger LOGGER = new ClientLogger(SqlRuleAction.class);
+
     private final Map<String, Object> properties = new HashMap<>();
     private final String sqlExpression;
     private final String compatibilityLevel;
@@ -31,12 +33,10 @@ public class SqlRuleAction extends RuleAction {
      * @throws IllegalArgumentException if {@code sqlExpression} is an empty string.
      */
     public SqlRuleAction(String sqlExpression) {
-        final ClientLogger logger = new ClientLogger(SqlRuleAction.class);
-
         if (sqlExpression == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'sqlExpression' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'sqlExpression' cannot be null."));
         } else if (sqlExpression.isEmpty()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'sqlExpression' cannot be an empty string."));
         }
 

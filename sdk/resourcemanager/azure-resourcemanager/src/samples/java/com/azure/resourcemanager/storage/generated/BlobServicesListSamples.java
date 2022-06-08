@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BlobServices List. */
 public final class BlobServicesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobServicesList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobServicesList.json
      */
     /**
      * Sample code: ListBlobServices.

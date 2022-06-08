@@ -38,6 +38,12 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*InteractiveBrowserCredentialBuilder.java"/>
 
+  <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
+
+  <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
+
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
@@ -109,6 +115,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverClient.java"/>
 
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="ServiceBusMessageBatch.java"/>
+
   <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ContainerRepository.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ContainerRepositoryAsync.java"/>
@@ -119,6 +127,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.vertx.VertxAsyncHttpClientBuilder"/>
 
   <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
@@ -141,6 +150,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.storage.blob.nio/*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck"
+            files="com.azure.storage.blob.nio.AzureFileSystemProvider.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.storage.blob.batch.BlobBatchOperationResponse.java"
@@ -165,11 +176,15 @@ the main ServiceBusClientBuilder. -->
   <!-- The constant name is public static. -->
   <suppress checks="ConstantNames" files=".*[/\\]azure[/\\]storage[/\\].*LoggingOptions.java"/>
 
-  <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
+  <!-- Suppress external dependency Checkstyle on Netty, OkHttp and Vert.x HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.http.vertx.VertxAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.http.vertx.VertxProvider"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"/>
 
@@ -348,63 +363,59 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppression for Event Hubs client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.(EventHubConsumerClient|EventHubConsumerAsyncClient|EventHubProducerClient|EventHubProducerAsyncClient).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.messaging.eventhubs.EventDataBatch.java"/>
 
   <!-- ### begin: Spring related suppression -->
+
+  <!-- The constant name is public static. -->
+  <suppress checks="ConstantName" files="com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties"/>
+
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.storage.queue.core.properties.*"/>
+
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|UseCaughtExceptionCauseCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
-  <!-- Package Name: B2C is the product name -->
-  <suppress checks="PackageName" files="com.azure.spring.b2c.*|com.azure.spring.autoconfigure.b2c.*"/>
+  <suppress files="com.azure.spring[\\/].*Properties\.java" checks="MissingJavadocMethod" />
+  <suppress files="com.azure.spring[\\/].*AutoConfiguration\.java" checks="MissingJavadocMethod|JavadocThrowsChecks" />
+  <suppress files="com.azure.spring[\\/].*Configuration\.java" checks="MissingJavadocMethod" />
+  <suppress files="com.azure.spring[\\/].*Metadata\.java" checks="MissingJavadocMethod" />
 
-  <!-- MissingJavadocMethod: Temporarily skip -->
-  <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-  <!-- MissingJavadocMethod: gremlin is not shipping now -->
-  <suppress checks="MissingJavadocType" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]gremlin.*"/>
-  <!-- MissingJavadocMethod: internal packages -->
-  <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
+  <!-- Suppress package name warning: b2c is the product name. -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
+  <!-- Suppress package name warning: oauth2 is the protocol name. -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
+  <!-- The package name length limit -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.package-info.java"/>
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"/>
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.package-info.java"/>
 
   <!--BlacklistedWordsCheck: URL is the name -->
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.(BlobStorageResource|FileStorageResource).java"/>
-
-  <!--BlacklistedWordsCheck: B2C is the product name -->
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageBlobResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageFileResource.java"/>
 
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.(ServiceEndpointsProperties|UserGroups)"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.(AzureStorageQueueAutoConfiguration|AzureStorageAutoConfiguration).java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.servicebus.(AzureServiceBusTopicAutoConfiguration|AzureServiceBusQueueAutoConfiguration).java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.servicebus.stream.binder.config.(ServiceBusTopicBinderConfiguration|ServiceBusQueueBinderConfiguration).java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation.java"/>
 
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.gremlin.conversion.source.AbstractGremlinSource.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
-
-  <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
-
-  <suppress checks="MethodName" files="com.azure.spring.integration.core.api.(CheckpointConfig|BatchConsumerConfig).java"/>
-  <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.resourcemanager.appplatform.models.BuildProperties.java"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
   <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
-  <suppress checks="PackageName" files="com.azure.spring.data.cosmos.multidatasource.*\.java"/>
   <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
-
-  <!-- Checkstyle suppressions for com.microsoft.azure.spring package,
-  if you change the package name to com.azure.spring, please remove the configuration here. -->
-  <suppress checks="ConstantName|VisibilityModifier" files="src[/\\]test[/\\]java[/\\]com[/\\]microsoft[/\\]azure[/\\]spring[/\\]cloud[/\\]config|properties.*.java"/>
-
   <!-- ### end: Spring related suppression -->
+
+  <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
+  <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
@@ -480,7 +491,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>
 
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
-  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020, 1024"/>
+  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1002, 1006"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>
@@ -498,4 +509,7 @@ the main ServiceBusClientBuilder. -->
   files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+
+  <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
 </suppressions>

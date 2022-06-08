@@ -16,10 +16,9 @@ import com.azure.resourcemanager.appconfiguration.models.CheckNameAvailabilityPa
 import com.azure.resourcemanager.appconfiguration.models.NameAvailabilityStatus;
 import com.azure.resourcemanager.appconfiguration.models.OperationDefinition;
 import com.azure.resourcemanager.appconfiguration.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 

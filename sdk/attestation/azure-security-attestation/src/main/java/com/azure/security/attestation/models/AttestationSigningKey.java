@@ -109,13 +109,13 @@ public final class AttestationSigningKey {
             }
         } catch (NoSuchAlgorithmException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         } catch (InvalidKeyException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         } catch (SignatureException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         }
     }
 

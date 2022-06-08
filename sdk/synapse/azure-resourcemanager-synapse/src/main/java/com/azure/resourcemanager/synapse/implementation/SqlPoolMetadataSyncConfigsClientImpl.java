@@ -23,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolMetadataSyncConfigsClient;
 import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolMetadataSyncConfigsClient. */
 public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetadataSyncConfigsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolMetadataSyncConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolMetadataSyncConfigsService service;
 

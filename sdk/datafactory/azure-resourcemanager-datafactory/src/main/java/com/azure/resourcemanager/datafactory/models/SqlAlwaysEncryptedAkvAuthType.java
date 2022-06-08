@@ -31,7 +31,11 @@ public final class SqlAlwaysEncryptedAkvAuthType extends ExpandableStringEnum<Sq
         return fromString(name, SqlAlwaysEncryptedAkvAuthType.class);
     }
 
-    /** @return known SqlAlwaysEncryptedAkvAuthType values. */
+    /**
+     * Gets known SqlAlwaysEncryptedAkvAuthType values.
+     *
+     * @return known SqlAlwaysEncryptedAkvAuthType values.
+     */
     public static Collection<SqlAlwaysEncryptedAkvAuthType> values() {
         return values(SqlAlwaysEncryptedAkvAuthType.class);
     }

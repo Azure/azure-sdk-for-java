@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.RegistrationDelegationSettingsProperties;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSettingsProperties;
 import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sign-in settings contract properties. */
 @Fluent
 public final class PortalSettingsContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSettingsContractProperties.class);
-
     /*
      * A delegation Url.
      */

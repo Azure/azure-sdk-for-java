@@ -30,7 +30,11 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
         return fromString(name, ImpalaAuthenticationType.class);
     }
 
-    /** @return known ImpalaAuthenticationType values. */
+    /**
+     * Gets known ImpalaAuthenticationType values.
+     *
+     * @return known ImpalaAuthenticationType values.
+     */
     public static Collection<ImpalaAuthenticationType> values() {
         return values(ImpalaAuthenticationType.class);
     }

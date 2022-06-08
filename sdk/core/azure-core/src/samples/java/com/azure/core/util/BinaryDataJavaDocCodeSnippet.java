@@ -90,6 +90,55 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromFlux(Flux, Long)}.
+     */
+    public void fromFluxWithLength() throws InterruptedException {
+        // BEGIN: com.azure.core.util.BinaryData.fromFlux#Flux-Long
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final long length = data.length;
+        final Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(dataFlux, length);
+
+        Disposable subscriber = binaryDataMono
+            .map(binaryData -> {
+                System.out.println(binaryData.toString());
+                return true;
+            })
+            .subscribe();
+
+        // So that your program wait for above subscribe to complete.
+        TimeUnit.SECONDS.sleep(5);
+        subscriber.dispose();
+        // END: com.azure.core.util.BinaryData.fromFlux#Flux-Long
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFlux(Flux, Long)}.
+     */
+    public void fromFluxWithLengthLazily() throws InterruptedException {
+        // BEGIN: com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final long length = data.length;
+        final boolean shouldAggregateData = false;
+        final Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(dataFlux, length, shouldAggregateData);
+
+        Disposable subscriber = binaryDataMono
+            .map(binaryData -> {
+                System.out.println(binaryData.toString());
+                return true;
+            })
+            .subscribe();
+
+        // So that your program wait for above subscribe to complete.
+        TimeUnit.SECONDS.sleep(5);
+        subscriber.dispose();
+        // END: com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromString(String)}.
      */
     public void fromString() {
@@ -130,6 +179,33 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: com.azure.core.util.BinaryData.fromFile#Path-int
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, Long, Long)}.
+     */
+    public void fromFileSegment() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-Long-Long
+        long position = 1024;
+        long length = 100 * 1048;
+        BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-Long-Long
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, Long, Long, int)}.
+     */
+    public void fromFileSegmentWithChunkSize() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int
+        long position = 1024;
+        long length = 100 * 1048;
+        int chunkSize = 8092;
+        BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length, chunkSize);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int
     }
 
     /**

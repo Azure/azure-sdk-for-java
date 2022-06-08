@@ -72,7 +72,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME
 class ServiceBusMessageSerializer implements MessageSerializer {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMessageSerializer.class);
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -127,7 +127,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(object, "'object' to serialize cannot be null.");
 
         if (!(object instanceof ServiceBusMessage)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Cannot serialize object that is not ServiceBusMessage. Clazz: " + object.getClass()));
         }
 
@@ -277,7 +277,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (clazz == ServiceBusReceivedMessage.class) {
             return (T) deserializeMessage(message);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
         }
     }
@@ -294,7 +294,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         } else if (clazz == Long.class) {
             return (List<T>) deserializeListOfLong(message);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format(Messages.CLASS_NOT_A_SUPPORTED_TYPE, clazz)));
         }
     }
@@ -341,34 +341,34 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(amqpMessage);
 
         if (statusCode != AmqpResponseCode.OK) {
-            logger.warning("AMQP response did not contain OK status code. Actual: {}", statusCode);
+            LOGGER.warning("AMQP response did not contain OK status code. Actual: {}", statusCode);
             return Collections.emptyList();
         }
 
         final Object responseBodyMap = ((AmqpValue) amqpMessage.getBody()).getValue();
 
         if (responseBodyMap == null) {
-            logger.warning("AMQP response did not contain a body.");
+            LOGGER.warning("AMQP response did not contain a body.");
             return Collections.emptyList();
         } else if (!(responseBodyMap instanceof Map)) {
-            logger.warning("AMQP response body is not correct instance. Expected: {}. Actual: {}",
+            LOGGER.warning("AMQP response body is not correct instance. Expected: {}. Actual: {}",
                 Map.class, responseBodyMap.getClass());
             return Collections.emptyList();
         }
 
         final Object messages = ((Map) responseBodyMap).get(ManagementConstants.MESSAGES);
         if (messages == null) {
-            logger.warning("Response body did not contain key: {}", ManagementConstants.MESSAGES);
+            LOGGER.warning("Response body did not contain key: {}", ManagementConstants.MESSAGES);
             return Collections.emptyList();
         } else if (!(messages instanceof Iterable)) {
-            logger.warning("Response body contents is not the correct type. Expected: {}. Actual: {}",
+            LOGGER.warning("Response body contents is not the correct type. Expected: {}. Actual: {}",
                 Iterable.class, messages.getClass());
             return Collections.emptyList();
         }
 
         for (Object message : (Iterable) messages) {
             if (!(message instanceof Map)) {
-                logger.warning("Message inside iterable of message is not correct type. Expected: {}. Actual: {}",
+                LOGGER.warning("Message inside iterable of message is not correct type. Expected: {}. Actual: {}",
                     Map.class, message.getClass());
                 continue;
             }
@@ -407,11 +407,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 amqpMessageBody = AmqpMessageBody.fromSequence(messageData);
 
             } else {
-                logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
+                LOGGER.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
                 amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);
             }
         } else {
-            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
+            LOGGER.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
             amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);
         }
 

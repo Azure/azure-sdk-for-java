@@ -10,22 +10,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Lists all of the available Healthcare service REST API operations.
+     * Lists all of the available operations supported by Microsoft Healthcare resource provider.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service operations.
+     * @return available operations of the service as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Operation> list();
+    PagedIterable<OperationDetail> list();
 
     /**
-     * Lists all of the available Healthcare service REST API operations.
+     * Lists all of the available operations supported by Microsoft Healthcare resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service operations.
+     * @return available operations of the service as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Operation> list(Context context);
+    PagedIterable<OperationDetail> list(Context context);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cognitive Services resource type and SKU. */
 @Fluent
 public final class AccountSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountSku.class);
-
     /*
      * Resource Namespace and Type
      */

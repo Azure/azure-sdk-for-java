@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.AzureADOnlyAuthenticationInner;
 import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationName;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AzureADOnlyAuthenticationsClient. */
 public interface AzureADOnlyAuthenticationsClient {
@@ -61,8 +60,7 @@ public interface AzureADOnlyAuthenticationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of azure Active Directory Only Authentication Info.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
@@ -82,8 +80,7 @@ public interface AzureADOnlyAuthenticationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of azure Active Directory Only Authentication Info.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
@@ -141,7 +138,8 @@ public interface AzureADOnlyAuthenticationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureADOnlyAuthenticationInner> list(String resourceGroupName, String workspaceName);
@@ -155,7 +153,8 @@ public interface AzureADOnlyAuthenticationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureADOnlyAuthenticationInner> list(String resourceGroupName, String workspaceName, Context context);

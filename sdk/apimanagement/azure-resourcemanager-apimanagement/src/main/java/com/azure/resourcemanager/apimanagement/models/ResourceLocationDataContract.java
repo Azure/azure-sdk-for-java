@@ -6,14 +6,11 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource location data properties. */
 @Fluent
 public final class ResourceLocationDataContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceLocationDataContract.class);
-
     /*
      * A canonical name for the geographic or physical location.
      */
@@ -125,10 +122,12 @@ public final class ResourceLocationDataContract {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ResourceLocationDataContract"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceLocationDataContract.class);
 }

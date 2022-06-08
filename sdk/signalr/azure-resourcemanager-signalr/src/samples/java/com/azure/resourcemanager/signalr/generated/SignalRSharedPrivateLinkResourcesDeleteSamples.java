@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SignalRSharedPrivateLinkResources Delete. */
 public final class SignalRSharedPrivateLinkResourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalRSharedPrivateLinkResources_Delete.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRSharedPrivateLinkResources_Delete.json
      */
     /**
      * Sample code: SignalRSharedPrivateLinkResources_Delete.

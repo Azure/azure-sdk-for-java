@@ -172,14 +172,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(
         String location, String resourceType) {
         return listOrchestratorsWithResponseAsync(location, resourceType)
-            .flatMap(
-                (Response<OrchestratorVersionProfileListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -196,14 +189,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
     public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location) {
         final String resourceType = null;
         return listOrchestratorsWithResponseAsync(location, resourceType)
-            .flatMap(
-                (Response<OrchestratorVersionProfileListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** SQL pool A SQL Analytics pool. */
 @JsonFlatten
@@ -309,6 +310,20 @@ public class SqlPool extends TrackedResource {
      */
     public SqlPool setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPool setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPool setLocation(String location) {
+        super.setLocation(location);
         return this;
     }
 }

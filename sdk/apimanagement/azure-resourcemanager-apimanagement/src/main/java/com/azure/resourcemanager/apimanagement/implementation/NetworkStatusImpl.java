@@ -14,13 +14,12 @@ import com.azure.resourcemanager.apimanagement.fluent.models.NetworkStatusContra
 import com.azure.resourcemanager.apimanagement.models.NetworkStatus;
 import com.azure.resourcemanager.apimanagement.models.NetworkStatusContract;
 import com.azure.resourcemanager.apimanagement.models.NetworkStatusContractByLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class NetworkStatusImpl implements NetworkStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkStatusImpl.class);
 
     private final NetworkStatusClient innerClient;
 

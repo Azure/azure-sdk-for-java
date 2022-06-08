@@ -34,7 +34,11 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
         return fromString(name, HiveAuthenticationType.class);
     }
 
-    /** @return known HiveAuthenticationType values. */
+    /**
+     * Gets known HiveAuthenticationType values.
+     *
+     * @return known HiveAuthenticationType values.
+     */
     public static Collection<HiveAuthenticationType> values() {
         return values(HiveAuthenticationType.class);
     }

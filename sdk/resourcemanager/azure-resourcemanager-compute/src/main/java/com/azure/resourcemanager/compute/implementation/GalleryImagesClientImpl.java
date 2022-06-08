@@ -204,7 +204,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -274,7 +274,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -542,7 +542,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -612,7 +612,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         } else {
             galleryImage.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -872,7 +872,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -929,7 +929,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -959,14 +959,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageInner> getAsync(String resourceGroupName, String galleryName, String galleryImageName) {
         return getWithResponseAsync(resourceGroupName, galleryName, galleryImageName)
-            .flatMap(
-                (Response<GalleryImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1041,7 +1034,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1097,7 +1090,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1294,7 +1287,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1354,7 +1347,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

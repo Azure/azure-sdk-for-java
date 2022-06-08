@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 class OrderByDocumentProducer extends DocumentProducer<Document> {
     private final OrderbyRowComparer<Document> consumeComparer;
@@ -51,10 +52,11 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             int initialPageSize,
             String initialContinuationToken,
             int top,
-            Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
+            Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap,
+            Supplier<String> operationContextTextProvider) {
         super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange,
               collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
-              initialContinuationToken,top, feedRange);
+              initialContinuationToken,top, feedRange, operationContextTextProvider);
         this.consumeComparer = consumeComparer;
         this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
     }
@@ -98,7 +100,8 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
             pageSize,
             initialContinuationToken,
             top,
-            this.targetRangeToOrderByContinuationTokenMap);
+            this.targetRangeToOrderByContinuationTokenMap,
+            this.operationContextTextProvider);
     }
 
 }

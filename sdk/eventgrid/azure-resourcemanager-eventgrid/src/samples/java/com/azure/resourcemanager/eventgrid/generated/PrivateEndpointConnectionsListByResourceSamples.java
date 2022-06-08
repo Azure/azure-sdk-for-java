@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
+import com.azure.resourcemanager.eventgrid.models.ParentType;
 
 /** Samples for PrivateEndpointConnections ListByResource. */
 public final class PrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_ListByResource.json
      */
     /**
      * Sample code: PrivateEndpointConnections_ListByResource.
@@ -21,7 +21,6 @@ public final class PrivateEndpointConnectionsListByResourceSamples {
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .privateEndpointConnections()
-            .listByResource(
-                "examplerg", PrivateEndpointConnectionsParentType.TOPICS, "exampletopic1", null, null, Context.NONE);
+            .listByResource("examplerg", ParentType.TOPICS, "exampletopic1", null, null, Context.NONE);
     }
 }

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Hadoop Distributed File System (HDFS) linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -158,6 +160,34 @@ public class HdfsLinkedService extends LinkedService {
      */
     public HdfsLinkedService setPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HdfsLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

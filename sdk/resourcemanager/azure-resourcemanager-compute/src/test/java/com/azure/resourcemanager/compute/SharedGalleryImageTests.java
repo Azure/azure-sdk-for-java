@@ -22,7 +22,6 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -163,7 +162,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         String description = "This is my gallery image";
         String releaseURI = "http://www.example.com/compute/galleryimageuri";
         OffsetDateTime offsetDateTime = OffsetDateTime.now().plusDays(10);
-        String eula = "This is my eula";
         Map<String, String> tags = new HashMap<>();
         tags.put("tag1", "myTag1");
         galleryImage
@@ -171,7 +169,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withDescription(description)
             .withReleaseNoteUri(releaseURI)
             .withEndOfLifeDate(offsetDateTime)
-            .withEula(eula)
             .withRecommendedCPUsCountForVirtualMachine(10, 20)
             .withRecommendedMemoryForVirtualMachine(10, 20)
             .withUnsupportedDiskType(DiskSkuTypes.PREMIUM_LRS)
@@ -183,7 +180,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
         Assertions.assertEquals(description, galleryImage.description());
         Assertions.assertEquals(releaseURI, galleryImage.releaseNoteUri());
-        Assertions.assertEquals(eula, galleryImage.eula());
         Assertions.assertEquals(tags, galleryImage.tags());
         Assertions.assertEquals(10, galleryImage.recommendedVirtualMachineConfiguration().vCPUs().min());
         Assertions.assertEquals(20, galleryImage.recommendedVirtualMachineConfiguration().vCPUs().max());
@@ -212,9 +208,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
     }
 
     @Test
-    @Disabled(
-        "Service consistently fail with error 'Replication job not completed at region:XXXXX', reported to service"
-            + " team, ")
     public void canCreateUpdateGetDeleteGalleryImageVersion() {
         //
         // Create {
@@ -377,7 +370,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

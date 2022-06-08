@@ -6,20 +6,18 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.communication.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** A class that describes the properties of the CommunicationService. */
 @Fluent
 public final class CommunicationServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationServiceProperties.class);
-
     /*
      * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private CommunicationServicesProvisioningState provisioningState;
 
     /*
      * FQDN of the CommunicationService instance.
@@ -52,12 +50,18 @@ public final class CommunicationServiceProperties {
     @JsonProperty(value = "immutableResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String immutableResourceId;
 
+    /*
+     * List of email Domain resource Ids.
+     */
+    @JsonProperty(value = "linkedDomains")
+    private List<String> linkedDomains;
+
     /**
      * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public CommunicationServicesProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -119,16 +123,38 @@ public final class CommunicationServiceProperties {
     }
 
     /**
+     * Get the linkedDomains property: List of email Domain resource Ids.
+     *
+     * @return the linkedDomains value.
+     */
+    public List<String> linkedDomains() {
+        return this.linkedDomains;
+    }
+
+    /**
+     * Set the linkedDomains property: List of email Domain resource Ids.
+     *
+     * @param linkedDomains the linkedDomains value to set.
+     * @return the CommunicationServiceProperties object itself.
+     */
+    public CommunicationServiceProperties withLinkedDomains(List<String> linkedDomains) {
+        this.linkedDomains = linkedDomains;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataLocation in model CommunicationServiceProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationServiceProperties.class);
 }

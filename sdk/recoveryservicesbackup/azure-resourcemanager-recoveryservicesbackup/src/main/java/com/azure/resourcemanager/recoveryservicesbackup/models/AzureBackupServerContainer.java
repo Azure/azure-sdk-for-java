@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 @JsonTypeName("AzureBackupServerContainer")
 @Fluent
 public final class AzureBackupServerContainer extends DpmContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupServerContainer.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureBackupServerContainer withCanReRegister(Boolean canReRegister) {

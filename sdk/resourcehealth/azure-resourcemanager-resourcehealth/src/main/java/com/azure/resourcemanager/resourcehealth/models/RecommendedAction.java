@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Lists actions the user can take based on the current availabilityState of the resource. */
 @Fluent
 public final class RecommendedAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedAction.class);
-
     /*
      * Recommended action.
      */

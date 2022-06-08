@@ -12,10 +12,9 @@ import com.azure.resourcemanager.botservice.fluent.HostSettingsClient;
 import com.azure.resourcemanager.botservice.fluent.models.HostSettingsResponseInner;
 import com.azure.resourcemanager.botservice.models.HostSettings;
 import com.azure.resourcemanager.botservice.models.HostSettingsResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HostSettingsImpl implements HostSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HostSettingsImpl.class);
 
     private final HostSettingsClient innerClient;
 

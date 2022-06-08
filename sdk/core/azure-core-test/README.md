@@ -5,7 +5,7 @@ Library containing core classes used to test Azure SDK client libraries.
 * Create live or playback JUnit tests using [TestBase][TestBase.java] and
   leveraging [InterceptorManager][InterceptorManager.java] to keep track of
   network calls.
-* Record network calls using using pipeline policy,
+* Record network calls using pipeline policy,
   [RecordNetworkCallPolicy][RecordNetworkCallPolicy.java].
 * Playback test session records with [PlaybackClient][PlaybackClient.java].
 
@@ -18,7 +18,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.7.9</version>
+  <version>1.9.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

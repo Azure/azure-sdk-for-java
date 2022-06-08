@@ -55,14 +55,11 @@ public class ResponseConstructorsCacheBenchMark {
                 (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
             MethodHandle handle = defaultCache.get(responseClass);
-            if (handle == null) {
-                throw new IllegalStateException("Response constructor with expected parameters not found.");
-            }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
+            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
                 inputs[i].bodyAsObject());
             // avoid JVM dead code detection
-            blackhole.consume(response.block());
+            blackhole.consume(response);
         }
     }
 

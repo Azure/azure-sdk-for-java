@@ -16,9 +16,11 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -30,6 +32,8 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -129,6 +133,27 @@ public class DataLakePathClient {
     }
 
     /**
+     * Gets the {@link CpkInfo} used to encrypt this path's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CustomerProvidedKey getCustomerProvidedKey() {
+        return this.dataLakePathAsyncClient.getCustomerProvidedKey();
+    }
+
+    /**
+     * Creates a new {@link DataLakePathClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the path,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakePathClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakePathClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new DataLakePathClient(dataLakePathAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey),
+            blockBlobClient.getCustomerProvidedKeyClient(Transforms.toBlobCustomerProvidedKey(customerProvidedKey)));
+    }
+
+    /**
      * Creates a resource. By default, this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
@@ -224,6 +249,137 @@ public class DataLakePathClient {
             context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Creates a resource if a path does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
+     * <pre>
+     * PathInfo pathInfo = client.createIfNotExists&#40;&#41;;
+     * System.out.printf&#40;&quot;Last Modified Time:%s&quot;, pathInfo.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return {@link PathInfo} that contains information about the created resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathInfo createIfNotExists() {
+        return createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null).getValue();
+    }
+
+    /**
+     * Creates a resource if a path does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
+     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;metadata&#41;;
+     *
+     * Response&lt;PathInfo&gt; response = client.createIfNotExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * metadata key or value, it must be removed or encoded.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
+     * {@link PathInfo} containing information about the resource. If {@link Response}'s status code is 201, a new
+     * resource was successfully created. If status code is 409, a resource already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout,
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient
+            .createIfNotExistsWithResponse(options, context), timeout);
+    }
+
+    /**
+     * Deletes paths under the resource if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists -->
+     * <pre>
+     * client.create&#40;&#41;;
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete complete: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     * @return {@code true} if the resource is successfully deleted, {@code false} if resource does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, null).getValue();
+    }
+
+    /**
+     * Deletes all paths under the specified resource if exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;;
+     *
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathDeleteOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 200, the resource
+     * was successfully deleted. If status code is 404, the resource does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
+        Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient
+            .deleteIfExistsWithResponse(options, context), timeout);
     }
 
     /**

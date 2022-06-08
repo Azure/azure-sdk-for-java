@@ -23,6 +23,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.secrets.implementation.SecretRequestAttributes;
+import com.azure.security.keyvault.secrets.implementation.SecretRequestParameters;
+import com.azure.security.keyvault.secrets.implementation.SecretRestoreRequestParameters;
+import com.azure.security.keyvault.secrets.implementation.SecretService;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -66,7 +70,7 @@ public final class SecretAsyncClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 

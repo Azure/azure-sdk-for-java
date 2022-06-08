@@ -7,16 +7,12 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cognitive Services account deployment. */
 @Fluent
 public final class DeploymentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */

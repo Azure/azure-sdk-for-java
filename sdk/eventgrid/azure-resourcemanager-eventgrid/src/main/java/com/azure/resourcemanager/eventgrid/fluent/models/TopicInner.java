@@ -7,14 +7,16 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
+import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceKind;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,6 @@ import java.util.Map;
 /** EventGrid Topic. */
 @Fluent
 public final class TopicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicInner.class);
-
     /*
      * Properties of the topic.
      */
@@ -31,10 +31,28 @@ public final class TopicInner extends Resource {
     private TopicProperties innerProperties;
 
     /*
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /*
      * Identity information for the resource.
      */
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
+
+    /*
+     * Kind of the resource.
+     */
+    @JsonProperty(value = "kind")
+    private ResourceKind kind;
+
+    /*
+     * Extended location of the resource.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The system metadata relating to Topic resource.
@@ -49,6 +67,26 @@ public final class TopicInner extends Resource {
      */
     private TopicProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -68,6 +106,46 @@ public final class TopicInner extends Resource {
      */
     public TopicInner withIdentity(IdentityInfo identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    public ResourceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of the resource.
+     *
+     * @param kind the kind value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withKind(ResourceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended location of the resource.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended location of the resource.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -262,6 +340,29 @@ public final class TopicInner extends Resource {
     }
 
     /**
+     * Get the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataResidencyBoundary();
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicProperties();
+        }
+        this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -270,8 +371,14 @@ public final class TopicInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

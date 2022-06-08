@@ -7,14 +7,11 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an operation executed on a recommended sensitivity label. */
 @Fluent
 public final class RecommendedSensitivityLabelUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedSensitivityLabelUpdateProperties.class);
-
     /*
      * The op property.
      */
@@ -126,28 +123,30 @@ public final class RecommendedSensitivityLabelUpdateProperties {
      */
     public void validate() {
         if (op() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property op in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (schema() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schema in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (table() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property table in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (column() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property column in model RecommendedSensitivityLabelUpdateProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendedSensitivityLabelUpdateProperties.class);
 }

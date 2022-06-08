@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed identity properties retrieved from ARM request headers. */
 @Fluent
 public final class ManagedIdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentityProperties.class);
-
     /*
      * Type of the managed identity
      */
@@ -21,13 +17,13 @@ public final class ManagedIdentityProperties {
     private ManagedIdentityType type;
 
     /*
-     * Principal Id
+     * Principal Id of system-assigned managed identity.
      */
     @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
-     * Tenant Id
+     * Tenant Id of system-assigned managed identity.
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
@@ -53,7 +49,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Get the principalId property: Principal Id.
+     * Get the principalId property: Principal Id of system-assigned managed identity.
      *
      * @return the principalId value.
      */
@@ -62,7 +58,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the principalId property: Principal Id.
+     * Set the principalId property: Principal Id of system-assigned managed identity.
      *
      * @param principalId the principalId value to set.
      * @return the ManagedIdentityProperties object itself.
@@ -73,7 +69,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Get the tenantId property: Tenant Id.
+     * Get the tenantId property: Tenant Id of system-assigned managed identity.
      *
      * @return the tenantId value.
      */
@@ -82,7 +78,7 @@ public final class ManagedIdentityProperties {
     }
 
     /**
-     * Set the tenantId property: Tenant Id.
+     * Set the tenantId property: Tenant Id of system-assigned managed identity.
      *
      * @param tenantId the tenantId value to set.
      * @return the ManagedIdentityProperties object itself.

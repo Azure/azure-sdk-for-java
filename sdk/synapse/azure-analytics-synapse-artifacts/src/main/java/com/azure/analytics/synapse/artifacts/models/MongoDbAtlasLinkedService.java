@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for MongoDB Atlas data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -72,6 +74,34 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      */
     public MongoDbAtlasLinkedService setDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbAtlasLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

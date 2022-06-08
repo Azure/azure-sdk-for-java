@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** timeOffRequest. */
 @Fluent
 public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleChangeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTimeOffRequest.class);
-
     /*
      * The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1,

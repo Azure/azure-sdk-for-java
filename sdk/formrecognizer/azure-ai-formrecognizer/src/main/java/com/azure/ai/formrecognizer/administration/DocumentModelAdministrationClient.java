@@ -5,19 +5,19 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.administration.models.AccountProperties;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
+import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -83,12 +83,13 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-String -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE, &quot;my-model&quot;
-     *     &#41;.getFinalResult&#40;&#41;;
+     * DocumentModel documentModel
+     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE&#41;
+     *     .getFinalResult&#40;&#41;;
+     *
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
@@ -99,17 +100,14 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-String -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode -->
      *
-     * @param trainingFilesUrl an externally accessible Azure storage blob container Url (preferably a Shared Access
-     * Signature Url).
-     * For instructions on setting up forms for administration in an Azure Storage Blob Container, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
-     * @param modelId unique model identifier. If not specified, a model ID will be created for you.
-     *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModel custom document analysis model}.
      * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
@@ -117,8 +115,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginBuildModel(
-        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId) {
-        return beginBuildModel(trainingFilesUrl, buildMode, modelId, null, Context.NONE);
+        String trainingFilesUrl, DocumentBuildMode buildMode) {
+        return beginBuildModel(trainingFilesUrl, buildMode, null, Context.NONE);
     }
 
     /**
@@ -131,16 +129,18 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-String-BuildModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * String modelId = &quot;custom-model-id&quot;;
      * String prefix = &quot;Invoice&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
-     *         DocumentBuildMode.TEMPLATE, &quot;my-model&quot;,
+     *         DocumentBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setPrefix&#40;prefix&#41;
      *             .setTags&#40;attrs&#41;, Context.NONE&#41;
@@ -158,16 +158,14 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-String-BuildModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context -->
      *
-     * @param trainingFilesUrl an externally accessible Azure storage blob container Url (preferably a Shared Access
-     * Signature Url).
-     * For instructions on setting up forms for administration in an Azure Storage Blob Container, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * can be used if the container is public or has a managed identity configured. For more information on
+     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
-     * @param modelId unique model identifier. If not specified, a model ID will be created for you.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -179,10 +177,10 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginBuildModel(
-        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId,
+        String trainingFilesUrl, DocumentBuildMode buildMode,
         BuildModelOptions buildModelOptions,
         Context context) {
-        return client.beginBuildModel(trainingFilesUrl, buildMode, modelId, buildModelOptions, context)
+        return client.beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, context)
             .getSyncPoller();
     }
 
@@ -240,7 +238,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.deleteModel#string -->
      * <pre>
-     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * documentModelAdministrationClient.deleteModel&#40;modelId&#41;;
      * System.out.printf&#40;&quot;Model ID: %s is deleted.%n&quot;, modelId&#41;;
      * </pre>
@@ -260,7 +258,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.deleteModelWithResponse#string-Context -->
      * <pre>
-     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * Response&lt;Void&gt; response = documentModelAdministrationClient.deleteModelWithResponse&#40;modelId, Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s is deleted.%n&quot;, modelId&#41;;
@@ -284,29 +282,11 @@ public final class DocumentModelAdministrationClient {
      * the target parameter into {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
-     * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorization#string -->
-     * <pre>
-     * String modelId = &quot;my-copied-model&quot;;
-     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;modelId&#41;;
-     * System.out.printf&#40;&quot;Copy Authorization for model id: %s, access token: %s, expiration time: %s, &quot;
-     *         + &quot;target resource ID; %s, target resource region: %s%n&quot;,
-     *     copyAuthorization.getTargetModelId&#40;&#41;,
-     *     copyAuthorization.getAccessToken&#40;&#41;,
-     *     copyAuthorization.getExpiresOn&#40;&#41;,
-     *     copyAuthorization.getTargetResourceId&#40;&#41;,
-     *     copyAuthorization.getTargetResourceRegion&#40;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorization#string -->
-     *
      * @return The {@link CopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyAuthorization getCopyAuthorization(String modelId) {
-        return getCopyAuthorizationWithResponse(modelId, null, Context.NONE).getValue();
+    public CopyAuthorization getCopyAuthorization() {
+        return getCopyAuthorizationWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -315,21 +295,21 @@ public final class DocumentModelAdministrationClient {
      * the target parameter into {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}.
      * </p>
      *
-     * @param modelId A unique ID for your copied model. If not specified, a model ID will be created for you.
      * @param copyAuthorizationOptions The configurable {@link CopyAuthorizationOptions options} to pass when
      * copying a model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#string-CopyAuthorizationOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions-Context -->
      * <pre>
      * String modelId = &quot;my-copied-model&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * Response&lt;CopyAuthorization&gt; copyAuthorizationResponse =
-     *     documentModelAdministrationClient.getCopyAuthorizationWithResponse&#40;modelId,
+     *     documentModelAdministrationClient.getCopyAuthorizationWithResponse&#40;
      *         new CopyAuthorizationOptions&#40;&#41;
+     *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model-desc&quot;&#41;
      *             .setTags&#40;attrs&#41;,
      *         Context.NONE&#41;;
@@ -346,14 +326,15 @@ public final class DocumentModelAdministrationClient {
      *     copyAuthorization.getTargetResourceRegion&#40;&#41;
      * &#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#string-CopyAuthorizationOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions-Context -->
      *
      * @return A {@link Response} containing the {@link CopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String modelId,
-        CopyAuthorizationOptions copyAuthorizationOptions, Context context) {
-        return client.getCopyAuthorizationWithResponse(modelId, copyAuthorizationOptions, context).block();
+    public Response<CopyAuthorization> getCopyAuthorizationWithResponse(
+        CopyAuthorizationOptions copyAuthorizationOptions,
+        Context context) {
+        return client.getCopyAuthorizationWithResponse(copyAuthorizationOptions, context).block();
     }
 
     /**
@@ -366,13 +347,12 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list -->
      * <pre>
-     * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
-     * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
-     * String modelId = &quot;my-composed-model&quot;;
+     * String modelId1 = &quot;&#123;custom-model-id_1&#125;&quot;;
+     * String modelId2 = &quot;&#123;custom-model-id_2&#125;&quot;;
      * final DocumentModel documentModel
-     *     = documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;, modelId&#41;
+     *     = documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;&#41;
      *     .getFinalResult&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
@@ -386,11 +366,9 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list -->
      *
-     * @param componentModelIDs The list of models IDs to form the composed model.
-     * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
-     *
+     * @param componentModelIds The list of models IDs to form the composed model.
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModel composed model}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
@@ -399,8 +377,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs, String modelId) {
-        return beginCreateComposedModel(componentModelIDs, modelId, null, Context.NONE);
+        List<String> componentModelIds) {
+        return beginCreateComposedModel(componentModelIds, null, Context.NONE);
     }
 
     /**
@@ -413,18 +391,19 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String-CreateComposedModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
      * <pre>
-     * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
-     * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
+     * String modelId1 = &quot;&#123;custom-model-id_1&#125;&quot;;
+     * String modelId2 = &quot;&#123;custom-model-id_2&#125;&quot;;
      * String modelId = &quot;my-composed-model&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * final DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;, modelId,
+     *     documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;,
      *             new CreateComposedModelOptions&#40;&#41;
-     *                 .setDescription&#40;&quot;my composed model name&quot;&#41;
+     *                 .setModelId&#40;modelId&#41;
+     *                 .setDescription&#40;&quot;my composed model desc&quot;&#41;
      *                 .setTags&#40;attrs&#41;,
      *             Context.NONE&#41;
      *         .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
@@ -442,10 +421,9 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String-CreateComposedModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
      *
-     * @param componentModelIDs The list of models IDs to form the composed model.
-     * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
+     * @param componentModelIds The list of models IDs to form the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -458,8 +436,9 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs, String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
-        return client.beginCreateComposedModel(componentModelIDs, modelId, createComposedModelOptions, context).getSyncPoller();
+        List<String> componentModelIds, CreateComposedModelOptions createComposedModelOptions,
+        Context context) {
+        return client.beginCreateComposedModel(componentModelIds, createComposedModelOptions, context).getSyncPoller();
     }
 
     /**
@@ -467,7 +446,7 @@ public final class DocumentModelAdministrationClient {
      *
      * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
      * The target parameter should be supplied from the target resource's output from
-     * {@link DocumentModelAdministrationClient#getCopyAuthorization(String)} method.
+     * {@link DocumentModelAdministrationClient#getCopyAuthorization()} method.
      * </p>
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -477,9 +456,8 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
-     * String targetModelId = &quot;my-copied-model-id&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
-     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;copyModelId&#41;;
+     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
      * &#47;&#47; Start copy operation from the source client
      * DocumentModel documentModel =
      *     documentModelAdministrationClient.beginCopyModelTo&#40;copyModelId, copyAuthorization&#41;.getFinalResult&#40;&#41;;
@@ -491,7 +469,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
-     * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization(String)}
+     * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}
      *
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
@@ -507,7 +485,7 @@ public final class DocumentModelAdministrationClient {
      *
      * <p>This should be called with the source Form Recognizer resource (with the model that is intended to be copied).
      * The target parameter should be supplied from the target resource's output from
-     * {@link DocumentModelAdministrationClient#getCopyAuthorization(String)} method.
+     * {@link DocumentModelAdministrationClient#getCopyAuthorization()} method.
      * </p>
      *
      * <p>The service does not support cancellation of the long running operation and returns with an
@@ -517,9 +495,8 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
-     * String targetModelId = &quot;my-copied-model-id&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
-     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;targetModelId&#41;;
+     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
      * &#47;&#47; Start copy operation from the source client
      * DocumentModel documentModel =
      *     documentModelAdministrationClient.beginCopyModelTo&#40;copyModelId, copyAuthorization, Context.NONE&#41;.getFinalResult&#40;&#41;;
@@ -531,7 +508,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
-     * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization(String)}.
+     * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
@@ -598,7 +575,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getModel#string -->
      * <pre>
-     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * DocumentModel documentModel = documentModelAdministrationClient.getModel&#40;modelId&#41;;
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
@@ -629,7 +606,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getModelWithResponse#string-Context -->
      * <pre>
-     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * Response&lt;DocumentModel&gt; response = documentModelAdministrationClient.getModelWithResponse&#40;modelId, Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * DocumentModel documentModel = response.getValue&#40;&#41;;
@@ -663,7 +640,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getOperation#string -->
      * <pre>
-     * String operationId = &quot;&#123;operation_Id&#125;&quot;;
+     * String operationId = &quot;&#123;operation-id&#125;&quot;;
      * ModelOperation modelOperation = documentModelAdministrationClient.getOperation&#40;operationId&#41;;
      * System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
@@ -692,7 +669,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context -->
      * <pre>
-     * String operationId = &quot;&#123;operation_Id&#125;&quot;;
+     * String operationId = &quot;&#123;operation-id&#125;&quot;;
      * Response&lt;ModelOperation&gt; response =
      *     documentModelAdministrationClient.getOperationWithResponse&#40;operationId, Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;

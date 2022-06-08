@@ -132,8 +132,8 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             AsyncPollResponse<T, U> asyncPollResponse = pollingLoop(context)
                 .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
                 .last()
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new NoSuchElementException(
-                    "Polling completed without receiving the given status '" + statusToWaitFor + "'."))))
+                .switchIfEmpty(Mono.error(() -> new NoSuchElementException(
+                    "Polling completed without receiving the given status '" + statusToWaitFor + "'.")))
                 .block();
             PollResponse<T> response = toPollResponse(asyncPollResponse);
             if (response.getStatus().isComplete()) {
@@ -161,8 +161,8 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                     .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
                     .last()
                     .timeout(timeout)
-                    .switchIfEmpty(Mono.defer(() -> Mono.error(new NoSuchElementException(
-                        "Polling completed without receiving the given status '" + statusToWaitFor + "'."))))
+                    .switchIfEmpty(Mono.error(() -> new NoSuchElementException(
+                        "Polling completed without receiving the given status '" + statusToWaitFor + "'.")))
                     .block();
             PollResponse<T> response = toPollResponse(asyncPollResponse);
             if (response.getStatus().isComplete()) {
@@ -245,8 +245,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                     .delaySubscription(getDelay(cxt.getLatestResponse()))
-                    .switchIfEmpty(Mono.defer(() -> Mono.error(new IllegalStateException(
-                        "PollOperation returned Mono.empty()."))))
+                    .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                     .repeat()
                     .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                     .concatMap(currentPollResponse -> {

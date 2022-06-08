@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GenericContainer")
 @Fluent
 public final class GenericContainer extends ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericContainer.class);
-
     /*
      * Name of the container's fabric
      */

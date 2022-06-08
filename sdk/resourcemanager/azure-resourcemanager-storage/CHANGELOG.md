@@ -1,14 +1,27 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported toggling blob versioning in `BlobServiceProperties`.
+- Supported `containerDeleteRetentionPolicy` in `BlobServiceProperties`.
 
-### Bugs Fixed
+## 2.15.0 (2022-05-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.14.0 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-09-01`.
 
 ## 2.13.0 (2022-03-11)
 

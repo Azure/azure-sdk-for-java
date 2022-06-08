@@ -602,8 +602,7 @@ public class CosmosQueryRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
 
@@ -615,6 +614,10 @@ public class CosmosQueryRequestOptions {
 
                 @Override
                 public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
+                    if (queryRequestOptions == null) {
+                        return null;
+                    }
+
                     return queryRequestOptions.getOperationContextAndListenerTuple();
                 }
 
@@ -684,4 +687,6 @@ public class CosmosQueryRequestOptions {
                 }
             });
     }
+
+    static { initialize(); }
 }

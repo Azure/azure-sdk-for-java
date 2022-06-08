@@ -6,14 +6,11 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Certificate configuration which consist of non-trusted intermediates and root certificates. */
 @Fluent
 public final class CertificateConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateConfiguration.class);
-
     /*
      * Base64 Encoded certificate.
      */
@@ -128,7 +125,7 @@ public final class CertificateConfiguration {
      */
     public void validate() {
         if (storeName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storeName in model CertificateConfiguration"));
@@ -137,4 +134,6 @@ public final class CertificateConfiguration {
             certificate().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateConfiguration.class);
 }

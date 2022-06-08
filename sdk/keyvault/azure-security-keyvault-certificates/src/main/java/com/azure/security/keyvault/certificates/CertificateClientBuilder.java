@@ -265,7 +265,7 @@ public final class CertificateClientBuilder implements
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
         }
 
         return this;

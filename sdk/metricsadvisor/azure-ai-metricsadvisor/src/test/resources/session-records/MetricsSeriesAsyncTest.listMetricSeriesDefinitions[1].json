@@ -1,67 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/series/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c579488b-187b-401f-a954-942bc541d970",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f5d0aee-f953-4a19-ae7d-3a0a91af6dca",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "90887718-33d5-461f-ba28-e04c622f67d2",
-      "content-length" : "2487",
-      "x-envoy-upstream-service-time" : "52",
+      "x-request-id" : "fd4de017-8e45-4aa6-bc5e-54969d6b0370",
+      "content-length" : "675",
+      "x-envoy-upstream-service-time" : "119",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "90887718-33d5-461f-ba28-e04c622f67d2",
+      "apim-request-id" : "fd4de017-8e45-4aa6-bc5e-54969d6b0370",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Istanbul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"Tianjin\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Beijing\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Mumbai\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Grocery & Gourmet Food\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Karachi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Tianjin\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query?$maxpagesize=20&$skip=20\"}",
-      "Date" : "Thu, 28 Oct 2021 22:36:42 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query?$maxpagesize=20&$skip=20",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dce86df7-dd87-4935-84a5-19cc5433ee01",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "a624a0f8-f5fc-4159-ba53-ac6b87eb0ba7",
-      "content-length" : "2521",
-      "x-envoy-upstream-service-time" : "59",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a624a0f8-f5fc-4159-ba53-ac6b87eb0ba7",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Delhi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Beijing\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Tianjin\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Istanbul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Beijing\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Karachi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"New York\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"New York\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Delhi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"New York\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Tianjin\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Mumbai\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"Delhi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Grocery & Gourmet Food\",\"region\":\"Seoul\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query?$maxpagesize=20&$skip=40\"}",
-      "Date" : "Thu, 28 Oct 2021 22:36:42 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query?$maxpagesize=20&$skip=40",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "04b111b3-6766-4ec8-aa9c-58750ca5835a",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "be47c9ae-e1d7-4c49-8388-ac0121ecddce",
-      "content-length" : "2516",
-      "x-envoy-upstream-service-time" : "56",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "be47c9ae-e1d7-4c49-8388-ac0121ecddce",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Delhi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Istanbul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Mumbai\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"New York\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Grocery & Gourmet Food\",\"region\":\"Beijing\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Karachi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Mumbai\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Istanbul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Cairo\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"New York\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Karachi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Delhi\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Seoul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Istanbul\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"__SUM__\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Grocery & Gourmet Food\",\"region\":\"__SUM__\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query?$maxpagesize=20&$skip=60\"}",
-      "Date" : "Thu, 28 Oct 2021 22:36:42 GMT",
+      "Body" : "{\"value\":[{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"__SUM__\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"JP\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"USD\",\"Dim2\":\"US\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"US\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"USD\",\"Dim2\":\"__SUM__\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:16 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

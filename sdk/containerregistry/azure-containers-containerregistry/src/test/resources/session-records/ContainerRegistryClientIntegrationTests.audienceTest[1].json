@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "15da3973-c41a-4d2d-8959-7532ff3256b4",
+      "x-ms-client-request-id" : "77190227-737c-456c-883e-3ff0dbfe97d5",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "a5476dfd-ce7d-46cf-b19c-8afb420b8d1e",
+      "X-Ms-Correlation-Request-Id" : "6480cf53-68e8-479b-8383-d7f5481b13f2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "160.366667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "163.916667",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"refresh_token\":\"REDACTED\"}",
-      "Date" : "Tue, 01 Mar 2022 22:57:22 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,20 +26,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "922c1dcc-9b30-4f64-8476-9d3ef4116ea8",
+      "x-ms-client-request-id" : "d456e4b3-7b19-4f86-9908-da1f3fd97aed",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "32e9b423-f3b9-40b4-92ab-21e7c51344aa",
+      "X-Ms-Correlation-Request-Id" : "2e334840-0ff2-4d28-b0be-3de5f3f2564c",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "163.75",
+      "x-ms-ratelimit-remaining-calls-per-second" : "163.9",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Tue, 01 Mar 2022 22:57:22 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,7 +48,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7704bf17-5d5a-4341-a28e-8749dcd38ac1"
+      "x-ms-client-request-id" : "74236a51-b7b5-49c7-bf4f-8093f5803933"
     },
     "Response" : {
       "content-length" : "58",
@@ -57,9 +57,9 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 01 Mar 2022 22:57:22 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:54 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "1acd92d6-8982-4aed-9359-88d52286e531",
+      "X-Ms-Correlation-Request-Id" : "a4978741-0b23-4753-8436-d02e363ce82b",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Body" : "{\"repositories\":[\"library/alpine\",\"library/hello-world\"]}\n",
@@ -71,20 +71,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "889b9e2c-be56-4425-ab71-d411813d2482",
+      "x-ms-client-request-id" : "42ef45b4-ddc8-4739-9299-88ceae81a782",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
-      "X-Ms-Correlation-Request-Id" : "aed828ae-7ba0-4af6-89c1-fae590868f92",
+      "X-Ms-Correlation-Request-Id" : "160eef4c-b0c7-4f6f-8333-d757e0576443",
       "content-length" : "78",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "160.35",
+      "x-ms-ratelimit-remaining-calls-per-second" : "163.883333",
       "retry-after" : "0",
       "StatusCode" : "401",
       "Body" : "{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"retrieving permissions failed\"}]}",
-      "Date" : "Tue, 01 Mar 2022 22:57:22 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:55 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
@@ -93,7 +93,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7eea0acf-9d14-4695-8416-af398a0d77fe"
+      "x-ms-client-request-id" : "01301a38-2fc8-4d6c-ba76-3e492b3bdc7e"
     },
     "Response" : null,
     "Exception" : {
@@ -105,20 +105,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "cba562ff-0b23-4fa7-a359-3eb8f58d7fe2",
+      "x-ms-client-request-id" : "3bed8902-31b2-4502-b74c-69007a76bbee",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
-      "X-Ms-Correlation-Request-Id" : "711d1db9-facb-403a-8d30-8ddc0e8d8a71",
+      "X-Ms-Correlation-Request-Id" : "daa81b8e-8319-4aa3-a52c-e4857b02d3c1",
       "content-length" : "78",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "164.983333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "160.95",
       "retry-after" : "0",
       "StatusCode" : "401",
       "Body" : "{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"retrieving permissions failed\"}]}",
-      "Date" : "Tue, 01 Mar 2022 22:57:52 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:17:25 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
@@ -127,7 +127,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7eea0acf-9d14-4695-8416-af398a0d77fe"
+      "x-ms-client-request-id" : "01301a38-2fc8-4d6c-ba76-3e492b3bdc7e"
     },
     "Response" : null,
     "Exception" : {
@@ -139,20 +139,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3b3a971f-b310-4e49-88b6-86d73861c71c",
+      "x-ms-client-request-id" : "3e22322a-3bf5-423c-a557-9b2b30b98c91",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
-      "X-Ms-Correlation-Request-Id" : "2709f8ae-fb5e-41d4-8753-5001a3aad1f8",
+      "X-Ms-Correlation-Request-Id" : "cfaa0a07-fd0e-47d2-9ed4-66fc0fd1445f",
       "content-length" : "78",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "165.183333",
+      "x-ms-ratelimit-remaining-calls-per-second" : "164.3",
       "retry-after" : "0",
       "StatusCode" : "401",
       "Body" : "{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"retrieving permissions failed\"}]}",
-      "Date" : "Tue, 01 Mar 2022 22:58:22 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:17:55 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
@@ -161,7 +161,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7eea0acf-9d14-4695-8416-af398a0d77fe"
+      "x-ms-client-request-id" : "01301a38-2fc8-4d6c-ba76-3e492b3bdc7e"
     },
     "Response" : null,
     "Exception" : {
@@ -173,20 +173,20 @@
     "Uri" : "https://REDACTED.azurecr.io/oauth2/exchange?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5dc09d9e-0b9d-422f-9ba3-5873ec1754da",
+      "x-ms-client-request-id" : "1f0bcf6a-8159-4865-908d-5e5368f807d5",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
-      "X-Ms-Correlation-Request-Id" : "532dfa54-24b8-49d4-ad02-7220bc5c18c8",
+      "X-Ms-Correlation-Request-Id" : "59336daa-4df0-4a6f-80c8-e499fa0067e6",
       "content-length" : "78",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "164",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.15",
       "retry-after" : "0",
       "StatusCode" : "401",
       "Body" : "{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"retrieving permissions failed\"}]}",
-      "Date" : "Tue, 01 Mar 2022 22:58:52 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:18:25 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
@@ -195,7 +195,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7eea0acf-9d14-4695-8416-af398a0d77fe"
+      "x-ms-client-request-id" : "01301a38-2fc8-4d6c-ba76-3e492b3bdc7e"
     },
     "Response" : null,
     "Exception" : {

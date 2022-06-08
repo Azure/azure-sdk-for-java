@@ -147,7 +147,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -206,7 +206,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -238,14 +238,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     public Mono<VirtualMachineExtensionImageInner> getAsync(
         String location, String publisherName, String type, String version) {
         return getWithResponseAsync(location, publisherName, type, version)
-            .flatMap(
-                (Response<VirtualMachineExtensionImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -316,7 +309,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -366,7 +359,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -392,15 +385,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineExtensionImageInner>> listTypesAsync(String location, String publisherName) {
-        return listTypesWithResponseAsync(location, publisherName)
-            .flatMap(
-                (Response<List<VirtualMachineExtensionImageInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listTypesWithResponseAsync(location, publisherName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -474,7 +459,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -541,7 +526,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -577,14 +562,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     public Mono<List<VirtualMachineExtensionImageInner>> listVersionsAsync(
         String location, String publisherName, String type, String filter, Integer top, String orderby) {
         return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby)
-            .flatMap(
-                (Response<List<VirtualMachineExtensionImageInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -605,14 +583,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         final Integer top = null;
         final String orderby = null;
         return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby)
-            .flatMap(
-                (Response<List<VirtualMachineExtensionImageInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

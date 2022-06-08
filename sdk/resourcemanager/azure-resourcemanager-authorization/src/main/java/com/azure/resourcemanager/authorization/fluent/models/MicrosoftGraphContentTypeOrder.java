@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** contentTypeOrder. */
 @Fluent
 public final class MicrosoftGraphContentTypeOrder {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphContentTypeOrder.class);
-
     /*
      * Whether this is the default Content Type
      */

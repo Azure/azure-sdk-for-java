@@ -1,5 +1,5 @@
 # Azure Form Recognizer client library for Java
-Azure Cognitive Services Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
 It includes the following main features:
 
 * Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
@@ -37,7 +37,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-Then, include the direct dependency in the dependencies section without the version tag.
+Then, include the direct dependency in the dependencies' section without the version tag.
 
 ```xml
 <dependencies>
@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.9</version>
+    <version>3.1.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,7 +78,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
-|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-06-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -162,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.4</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -190,23 +190,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
 provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
-Use the `modelId` parameter to select the type of model for analysis.
-
-| Model                   | Features                                                                                                  |
-|-------------------------|-----------------------------------------------------------------------------------------------------------|
-| "prebuilt-layout"       | Text extraction, selection marks, tables                                                                  |
-| "prebuilt-document"     | Text extraction, selection marks, tables, key-value pairs, and entities                                   |
-| "prebuilt-read"         | Text extraction, text languages and styles                                                                |  
-| "prebuilt-invoice"      | Text extraction, selection marks, tables, and prebuilt fields and values related to English invoices      |
-| "prebuilt-businessCard" | Text extraction and prebuilt fields, and values related to English business cards                         |
-| "prebuilt-idDocument"   | Text extraction and prebuilt fields and values related to US driver licenses and international passports  |
-| "prebuilt-receipt"      | Text extraction and prebuilt fields and values related to English sales receipts                          |
-| "prebuilt-tax.us.w2"    | Text extraction and pre-trained fields and values pertaining to US W2 tax forms                           |
-| "{custom-model-id}"     | Text extraction, selection marks, tables, labeled fields, and values from your custom documents           |
+See a full list of supported models [here][fr_models].
 
 Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
 More information about analyzing documents, including supported features, locales, and document types can be found
-[here][fr-models].
+[here][fr_models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -265,13 +253,13 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
-            documentSelectionMark.getBoundingBox().toString(),
+            documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
 
@@ -390,8 +378,8 @@ String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-        DocumentBuildMode.TEMPLATE, "my-build-model",
-        new BuildModelOptions().setDescription("model desc"), Context.NONE);
+        DocumentBuildMode.TEMPLATE,
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
 DocumentModel documentModel = buildOperationPoller.getFinalResult();
 
@@ -445,7 +433,7 @@ analyzeResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
@@ -608,10 +596,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [fr-studio]: https://aka.ms/azsdk/formrecognizer/formrecognizerstudio
-[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
+[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
+[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
 
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java

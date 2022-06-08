@@ -42,8 +42,8 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
             } catch (MalformedURLException e) {
-                return Mono.error(new RuntimeException(
-                    String.format("Failed to set the HTTP request protocol to %s.", protocol), e));
+                return Mono.error(new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".",
+                    e));
             }
         }
         return next.process();

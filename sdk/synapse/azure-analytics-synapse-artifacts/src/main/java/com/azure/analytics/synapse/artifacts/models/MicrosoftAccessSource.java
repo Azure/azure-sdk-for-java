@@ -69,4 +69,25 @@ public final class MicrosoftAccessSource extends CopySource {
         this.additionalColumns = additionalColumns;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MicrosoftAccessSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

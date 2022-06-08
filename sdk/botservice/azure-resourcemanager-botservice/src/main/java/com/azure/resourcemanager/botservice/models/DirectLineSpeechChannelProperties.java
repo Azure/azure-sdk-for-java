@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the DirectLine Speech channel. */
 @Fluent
 public final class DirectLineSpeechChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLineSpeechChannelProperties.class);
-
     /*
      * The cognitive service region with this channel registration.
      */
@@ -181,17 +178,19 @@ public final class DirectLineSpeechChannelProperties {
      */
     public void validate() {
         if (cognitiveServiceRegion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property cognitiveServiceRegion in model DirectLineSpeechChannelProperties"));
         }
         if (cognitiveServiceSubscriptionKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property cognitiveServiceSubscriptionKey in model"
                             + " DirectLineSpeechChannelProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DirectLineSpeechChannelProperties.class);
 }

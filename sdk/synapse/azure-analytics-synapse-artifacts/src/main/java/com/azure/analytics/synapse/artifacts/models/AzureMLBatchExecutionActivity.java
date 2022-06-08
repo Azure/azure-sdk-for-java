@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Azure ML Batch Execution activity. */
@@ -113,6 +114,48 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
      */
     public AzureMLBatchExecutionActivity setWebServiceInputs(Map<String, AzureMLWebServiceFile> webServiceInputs) {
         this.webServiceInputs = webServiceInputs;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLBatchExecutionActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

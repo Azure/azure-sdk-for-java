@@ -10,10 +10,12 @@ import com.azure.resourcemanager.containerservice.implementation.ContainerServic
 import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+
+import java.util.Objects;
 
 /** Entry point to Azure Container Service management. */
 public final class ContainerServiceManager
@@ -39,17 +41,21 @@ public final class ContainerServiceManager
      * @return the ContainerServiceManager
      */
     public static ContainerServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ContainerServiceManager that exposes Service resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the ContainerServiceManager
      */
-    private static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ContainerServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new ContainerServiceManager(httpPipeline, profile);
     }
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties controlling TLS Certificate Validation. */
 @Fluent
 public final class BackendTlsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendTlsProperties.class);
-
     /*
      * Flag indicating whether SSL certificate chain validation should be done
      * when using self-signed certificates for this backend host.

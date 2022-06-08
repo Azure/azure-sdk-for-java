@@ -48,6 +48,9 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
@@ -326,6 +329,15 @@ public final class SystemEventMappingNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
 
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_CREATED = "Microsoft.HealthcareApis.FhirResourceCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceDeleted event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_DELETED = "Microsoft.HealthcareApis.FhirResourceDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_UPDATED = "Microsoft.HealthcareApis.FhirResourceUpdated";
+
     /** Event data for Microsoft.Devices.DeviceConnected event. */
     public static final String IOT_HUB_DEVICE_CONNECTED = "Microsoft.Devices.DeviceConnected";
 
@@ -497,7 +509,7 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
      */
     public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
-            "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
+        "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
 
     /**
      * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
@@ -522,28 +534,28 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED =
-            "Microsoft.Media.LiveEventIncomingDataChunkDropped";
+        "Microsoft.Media.LiveEventIncomingDataChunkDropped";
 
     /**
      * Encoder connect event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamReceived event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED =
-            "Microsoft.Media.LiveEventIncomingStreamReceived";
+        "Microsoft.Media.LiveEventIncomingStreamReceived";
 
     /**
      * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC =
-            "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
+        "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
 
     /**
      * Incoming video stream out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC =
-            "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
+        "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
 
     /**
      * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
@@ -556,7 +568,7 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
      */
     public static final String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED =
-            "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
+        "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged event. */
     public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
@@ -804,6 +816,9 @@ public final class SystemEventMappingNames {
                             CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
                             ContainerServiceNewKubernetesVersionAvailableEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
+                    put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
+                    put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
+                    put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);
                     put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
                     put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
                     put(IOT_HUB_DEVICE_DELETED, IotHubDeviceDeletedEventData.class);
@@ -849,25 +864,25 @@ public final class SystemEventMappingNames {
                     put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
                     put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
-                            MediaLiveEventChannelArchiveHeartbeatEventData.class);
+                        MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
+                        MediaLiveEventChannelArchiveHeartbeatEventData.class);
                     put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
                     put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
                     put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
-                            MediaLiveEventIncomingDataChunkDroppedEventData.class);
+                        MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
+                        MediaLiveEventIncomingDataChunkDroppedEventData.class);
                     put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED, MediaLiveEventIncomingStreamReceivedEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
-                            MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
+                        MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
+                        MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
-                            MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
+                        MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
+                        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
                     put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
-                            MediaLiveEventTrackDiscontinuityDetectedEventData.class);
+                        MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
+                        MediaLiveEventTrackDiscontinuityDetectedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
