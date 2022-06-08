@@ -23,7 +23,7 @@ stages:
         - name: ${{ parameters.PackageName }}
           groupId: com.azure
           safeName: ${{ parameters.SafeName }}
-      ServiceDirectory: communication
+      ServiceDirectory: maps
       PreSteps:
         - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
           condition: not(startsWith(variables['System.StageName'], 'Public'))
