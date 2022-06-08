@@ -48,7 +48,7 @@ public class AzureStorageQueueAutoConfiguration {
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
     AzureStorageQueueProperties azureStorageQueueProperties(AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadStorageProperties(azureStorageProperties, new AzureStorageQueueProperties());
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
     }
 
     /**

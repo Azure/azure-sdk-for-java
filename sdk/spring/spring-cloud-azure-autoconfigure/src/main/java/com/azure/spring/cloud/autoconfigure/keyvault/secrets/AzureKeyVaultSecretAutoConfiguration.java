@@ -6,10 +6,11 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
@@ -19,27 +20,28 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Key Vault Secrets support.
  *
  * @since 4.0.0
  */
+@Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties
 @ConditionalOnClass(SecretClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.keyvault.secret.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.keyvault.secret", name = "endpoint")
-public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
-
-
-    AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
+@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.keyvault.secret", "spring.cloud.azure.keyvault" }, name = { "endpoint" })
+@Import(AzureKeyVaultConfiguration.class)
+public class AzureKeyVaultSecretAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
-    AzureKeyVaultSecretProperties azureKeyVaultSecretProperties() {
-        return loadProperties(getAzureGlobalProperties(), new AzureKeyVaultSecretProperties());
+    AzureKeyVaultSecretProperties azureKeyVaultSecretProperties(AzureKeyVaultProperties azureKeyVaultProperties) {
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties, new AzureKeyVaultSecretProperties());
     }
 
     /**

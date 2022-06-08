@@ -52,7 +52,7 @@ public class AzureStorageFileShareAutoConfiguration {
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
     AzureStorageFileShareProperties azureStorageFileShareProperties(AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadStorageProperties(azureStorageProperties, new AzureStorageFileShareProperties());
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageFileShareProperties());
     }
 
     /**
