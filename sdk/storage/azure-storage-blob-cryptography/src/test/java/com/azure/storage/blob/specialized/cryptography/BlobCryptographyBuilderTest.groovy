@@ -40,9 +40,9 @@ class BlobCryptographyBuilderTest extends APISpec {
 
     def "Pipeline integrity"() {
         expect:
-        // TODO: Check FetchEncryptionDataPolicy?
-        // Http pipeline of encrypted client additionally includes decryption policy and blob user agent modification policy
-        beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 2
+        // Http pipeline of encrypted client additionally includes decryption policy,
+        // blob user agent modification policy, and fetch encryption version policy
+        beac.getHttpPipeline().getPolicyCount() == bc.getHttpPipeline().getPolicyCount() + 3
 
         beac.getBlobUrl() == bc.getBlobUrl()
 
@@ -74,9 +74,10 @@ class BlobCryptographyBuilderTest extends APISpec {
 
         then:
         // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy and a blob user agent modification policy
-        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 2
-        encryptedClient.getHttpPipeline().getPolicy(0) instanceof BlobDecryptionPolicy
-        encryptedClient.getHttpPipeline().getPolicy(2) instanceof BlobUserAgentModificationPolicy
+        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 3
+        encryptedClient.getHttpPipeline().getPolicy(0) instanceof FetchEncryptionVersionPolicy
+        encryptedClient.getHttpPipeline().getPolicy(1) instanceof BlobDecryptionPolicy
+        encryptedClient.getHttpPipeline().getPolicy(3) instanceof BlobUserAgentModificationPolicy
     }
 
     def "Customer provided key"() {

@@ -512,7 +512,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param requestConditions {@link BlobRequestConditions}
      * @return An empty response
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000 MB
-     * @throws UncheckedIOException     If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -562,7 +562,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param options {@link BlobUploadFromFileOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000 MB
-     * @throws UncheckedIOException     If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)

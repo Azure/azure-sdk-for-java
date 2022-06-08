@@ -1533,7 +1533,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
                     .flatMap({ r ->
-                        if (counter.incrementAndGet() == 1) {
+                        if (counter.incrementAndGet() == 2) {
                             /*
                              * When the download begins trigger an upload to overwrite the downloading blob
                              * so that the download is able to get an ETag before it is changed.

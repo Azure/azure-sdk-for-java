@@ -36,10 +36,17 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_NO_PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_PKCS5PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_RANGE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.RANGE_HEADER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 /**
@@ -151,8 +158,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  */
                 boolean padding = encryptionDataFinal.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
                     && (encryptedRangeFinal.toBlobRange().getOffset()
-                    + encryptedRangeFinal.toBlobRange().getCount() >
-                    (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+                    + encryptedRangeFinal.toBlobRange().getCount()
+                    > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
                 Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRangeFinal, padding,
                     encryptionDataFinal, httpResponse.getRequest().getUrl().toString());
@@ -297,26 +304,26 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         byte[] contentEncryptionKey) {
         // Buffer an exact region with the nonce and tag
         EncryptionDataV2 encryptionDataV2 = (EncryptionDataV2) encryptionData;
-        final int GCM_ENCRYPTION_REGION_LENGTH = Integer.parseInt(encryptionDataV2
+        final int gcmEncryptionRegionLength = Integer.parseInt(encryptionDataV2
             .getAuthenticationRegionInfo()
             .getEncryptionRegionLength());
-        final int NONCE_LENGTH =
+        final int nonceLength =
             Integer.parseInt(encryptionDataV2
                 .getAuthenticationRegionInfo()
                 .getNonceLength());
         BufferStagingArea stagingArea =
-            new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH,
-            GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH + NONCE_LENGTH);
+            new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
+            gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
 
         return UploadUtils.chunkSource(encryptedFlux,
                 new com.azure.storage.common.ParallelTransferOptions()
-                    .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH
-                        + TAG_LENGTH + NONCE_LENGTH))
+                    .setBlockSizeLong((long) gcmEncryptionRegionLength
+                        + TAG_LENGTH + nonceLength))
             .flatMapSequential(stagingArea::write)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(aggregator -> {
                 // Get the IV out of the beginning of the aggregator
-                byte[] gmcIv = aggregator.getFirstNBytes(NONCE_LENGTH);
+                byte[] gmcIv = aggregator.getFirstNBytes(nonceLength);
 
                 Cipher gmcCipher;
                 try {
@@ -325,7 +332,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
                 }
 
-                ByteBuffer decryptedRegion = ByteBuffer.allocate(GCM_ENCRYPTION_REGION_LENGTH);
+                ByteBuffer decryptedRegion = ByteBuffer.allocate(gcmEncryptionRegionLength);
                 return aggregator.asFlux()
                     .map(buffer -> {
                         // Write into the preallocated buffer and always return this buffer.
