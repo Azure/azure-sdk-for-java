@@ -7,6 +7,7 @@
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
 #  2. Update `SPRING_BOOT_VERSION` in this script manually.
 #  3. Run command, sample: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.0`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.0`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
 # Please refer to ./README.md to get more information about this script.
@@ -34,14 +35,25 @@ def get_spring_boot_managed_external_dependencies_file_name(spring_boot_version)
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
-    return parser.parse_args()
+    parser.add_argument(
+        '--log',
+        type = str,
+        choices = ['debug', 'info', 'warn', 'error', 'none'],
+        required = False,
+        default = 'info',
+        help = 'Set log level.'
+    )
+    args = parser.parse_args()
+    log.set_log_level(args.log)
+    return args
 
 
 def main():
     start_time = time.time()
     change_to_root_dir()
+    args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    sync_external_dependencies(get_spring_boot_managed_external_dependencies_file_name(get_args().spring_boot_dependencies_version), EXTERNAL_DEPENDENCIES_FILE)
+    sync_external_dependencies(get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version), EXTERNAL_DEPENDENCIES_FILE)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 

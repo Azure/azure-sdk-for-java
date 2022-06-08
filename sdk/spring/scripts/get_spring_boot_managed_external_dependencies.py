@@ -6,7 +6,7 @@
 #     Note that spring-cloud version should compatible with spring-boot version.
 #     Refs: https://spring.io/projects/spring-cloud
 #  2. Run command ,sample: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 2.7.0 -c 2021.0.3`.
-#     or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3`.
+#     Or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3`.
 #  3. Then a file named `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt` will be created.
 #
 # Please refer to ./README.md to get more information about this script.
@@ -60,8 +60,9 @@ def main():
     change_to_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = {}
-    spring_boot_dependencies_version = get_args().spring_boot_dependencies_version
-    spring_cloud_dependencies_version = get_args().spring_cloud_dependencies_version
+    args = get_args()
+    spring_boot_dependencies_version = args.spring_boot_dependencies_version
+    spring_cloud_dependencies_version = args.spring_cloud_dependencies_version
     for root_pom in get_root_poms(spring_boot_dependencies_version, spring_cloud_dependencies_version):
         update_dependency_dict(dependency_dict, root_pom)
     output_version_dict_to_file(dependency_dict, get_spring_boot_managed_external_dependencies_file_name(spring_boot_dependencies_version))
