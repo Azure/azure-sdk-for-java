@@ -27,7 +27,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_A
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.messaging.servicebus.ServiceBusReceivedMessage.SERVICE_BUS_MESSAGE_STATE_KEY;
+import static com.azure.core.amqp.AmqpMessageConstant.SERVICE_BUS_MESSAGE_STATE_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -167,7 +167,7 @@ public class ServiceBusReceivedMessageTest {
     public void canGetMessageState(Integer value, ServiceBusMessageState expected) {
         // Arrange
         final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
-        message.getRawAmqpMessage().getMessageAnnotations().put(SERVICE_BUS_MESSAGE_STATE_KEY, value);
+        message.getRawAmqpMessage().getMessageAnnotations().put(SERVICE_BUS_MESSAGE_STATE_ANNOTATION_NAME.getValue(), value);
 
         // Act
         final ServiceBusMessageState actual = message.getState();
@@ -187,7 +187,7 @@ public class ServiceBusReceivedMessageTest {
     public void throwsOnInvalidMessageState() {
         // Arrange
         final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
-        message.getRawAmqpMessage().getMessageAnnotations().put(SERVICE_BUS_MESSAGE_STATE_KEY, 10);
+        message.getRawAmqpMessage().getMessageAnnotations().put(SERVICE_BUS_MESSAGE_STATE_ANNOTATION_NAME.getValue(), 10);
 
         // Act & Assert
         assertThrows(UnsupportedOperationException.class, () -> message.getState());
