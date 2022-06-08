@@ -66,7 +66,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/(kotlin|okhttp3|okio)(\\..+)?/"
+            "match": "/(kotlin|okhttp3|okio|io\\.vertx)(\\..+)?/"
           },
           {
             "matcher": "java-package",
@@ -236,6 +236,30 @@
           "new": "class com.azure.messaging.eventhubs.EventData",
           "superClass": "com.azure.core.models.MessageContent",
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
+        },
+        {
+          "regex": true,
+          "code": "java.class.noLongerInheritsFromClass",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeRemoved",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeAdded",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
+          "justification": "To support for storage services to share values of common properties."
         },
         {
           "code": "java.method.visibilityReduced",

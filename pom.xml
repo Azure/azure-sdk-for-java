@@ -51,6 +51,7 @@
         <module>sdk/core/azure-core-http-jdk-httpclient</module>
         <module>sdk/core/azure-core-http-netty</module>
 <!--        <module>sdk/core/azure-core-http-okhttp</module>-->
+        <module>sdk/core/azure-core-http-vertx</module>
         <module>sdk/core/azure-core-management</module>
         <module>sdk/core/azure-core-serializer-avro-apache</module>
         <module>sdk/core/azure-core-serializer-json-gson</module>
@@ -215,6 +216,7 @@
         <module>sdk/core/azure-core-http-jdk-httpclient</module>
         <module>sdk/core/azure-core-http-netty</module>
         <module>sdk/core/azure-core-http-okhttp</module>
+        <module>sdk/core/azure-core-http-vertx</module>
         <module>sdk/core/azure-core-management</module>
         <module>sdk/core/azure-core-serializer-avro-apache</module>
         <module>sdk/core/azure-core-serializer-json-gson</module>

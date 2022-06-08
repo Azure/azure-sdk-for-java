@@ -20,17 +20,17 @@ public final class DocumentPage {
      * The general orientation of the content in clockwise direction, measured
      * in degrees between (-180, 180].
      */
-    private float angle;
+    private Float angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
-    private float width;
+    private Float width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
-    private float height;
+    private Float height;
 
     /*
      * The unit used by the width, height, and boundingBox properties. For
@@ -84,7 +84,7 @@ public final class DocumentPage {
      *
      * @return the angle value.
      */
-    public float getAngle() {
+    public Float getAngle() {
         return this.angle;
     }
 
@@ -95,7 +95,7 @@ public final class DocumentPage {
      * @param angle the angle value to set.
      * @return the DocumentPage object itself.
      */
-    void setAngle(float angle) {
+    void setAngle(Float angle) {
         this.angle = angle;
     }
 
@@ -104,7 +104,7 @@ public final class DocumentPage {
      *
      * @return the width value.
      */
-    public float getWidth() {
+    public Float getWidth() {
         return this.width;
     }
 
@@ -114,7 +114,7 @@ public final class DocumentPage {
      * @param width the width value to set.
      * @return the DocumentPage object itself.
      */
-    void setWidth(float width) {
+    void setWidth(Float width) {
         this.width = width;
     }
 
@@ -123,7 +123,7 @@ public final class DocumentPage {
      *
      * @return the height value.
      */
-    public float getHeight() {
+    public Float getHeight() {
         return this.height;
     }
 
@@ -133,7 +133,7 @@ public final class DocumentPage {
      * @param height the height value to set.
      * @return the DocumentPage object itself.
      */
-    void setHeight(float height) {
+    void setHeight(Float height) {
         this.height = height;
     }
 
@@ -242,17 +242,17 @@ public final class DocumentPage {
             }
 
             @Override
-            public void setAngle(DocumentPage documentPage, float angle) {
+            public void setAngle(DocumentPage documentPage, Float angle) {
                 documentPage.setAngle(angle);
             }
 
             @Override
-            public void setWidth(DocumentPage documentPage, float width) {
+            public void setWidth(DocumentPage documentPage, Float width) {
                 documentPage.setWidth(width);
             }
 
             @Override
-            public void setHeight(DocumentPage documentPage, float height) {
+            public void setHeight(DocumentPage documentPage, Float height) {
                 documentPage.setHeight(height);
             }
 

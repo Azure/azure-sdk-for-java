@@ -26,9 +26,9 @@ public final class DocumentPageHelper {
      */
     public interface DocumentPageAccessor {
         void setPageNumber(DocumentPage documentPage, int pageNumber);
-        void setAngle(DocumentPage documentPage, float angle);
-        void setWidth(DocumentPage documentPage, float width);
-        void setHeight(DocumentPage documentPage, float height);
+        void setAngle(DocumentPage documentPage, Float angle);
+        void setWidth(DocumentPage documentPage, Float width);
+        void setHeight(DocumentPage documentPage, Float height);
         void setUnit(DocumentPage documentPage, LengthUnit unit);
         void setSpans(DocumentPage documentPage, List<DocumentSpan> spans);
         void setWords(DocumentPage documentPage, List<DocumentWord> words);
@@ -49,15 +49,15 @@ public final class DocumentPageHelper {
         accessor.setPageNumber(documentPage, pageNumber);
     }
 
-    static void setAngle(DocumentPage documentPage, float angle) {
+    static void setAngle(DocumentPage documentPage, Float angle) {
         accessor.setAngle(documentPage, angle);
     }
 
-    static void setWidth(DocumentPage documentPage, float width) {
+    static void setWidth(DocumentPage documentPage, Float width) {
         accessor.setWidth(documentPage, width);
     }
 
-    static void setHeight(DocumentPage documentPage, float height) {
+    static void setHeight(DocumentPage documentPage, Float height) {
         accessor.setHeight(documentPage, height);
     }
 

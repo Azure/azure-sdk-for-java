@@ -240,7 +240,11 @@ public final class QueryLanguage extends ExpandableStringEnum<QueryLanguage> {
         return fromString(name, QueryLanguage.class);
     }
 
-    /** @return known QueryLanguage values. */
+    /**
+     * Gets known QueryLanguage values.
+     *
+     * @return known QueryLanguage values.
+     */
     public static Collection<QueryLanguage> values() {
         return values(QueryLanguage.class);
     }

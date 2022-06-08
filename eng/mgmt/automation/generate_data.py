@@ -166,16 +166,17 @@ def generate(
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4} '\
+        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4} {5}'\
             .format(
                 autorest,
                 use,
                 os.path.abspath(sdk_root),
                 os.path.abspath(output_dir),
-                readme_file_path
+                readme_file_path,
+                autorest_options
             )
         if require_sdk_integration:
-            command += LLC_ARGUMENTS
+            command += ' --java.namespace={0} '.format(namespace) + LLC_ARGUMENTS
         logging.info(command)
         try:
             subprocess.run(command, shell=True, check=True)
@@ -195,13 +196,14 @@ def generate(
             logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
             command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} ' \
-                      '--java.output-folder={2} {3}'\
+                      '--java.output-folder={2} {3} {4}'\
                 .format(
                     autorest,
                     use,
                     os.path.abspath(sdk_root),
                     os.path.abspath(output_dir),
-                    readme_file_path
+                    readme_file_path,
+                    autorest_options
                 )
             logging.info(command)
             try:
