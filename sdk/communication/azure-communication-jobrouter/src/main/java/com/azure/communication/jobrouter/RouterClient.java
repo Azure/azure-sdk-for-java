@@ -34,7 +34,6 @@ import java.time.OffsetDateTime;
  * Sync Client that supports job router operations.
  *
  * <p><strong>Instantiating a synchronous JobRouter Client</strong></p>
- * <p>
  * <!-- src_embed com.azure.communication.jobrouter.routerclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router client builder

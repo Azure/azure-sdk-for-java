@@ -43,7 +43,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Async Client that supports job router operations.
  *
  * <p><strong>Instantiating an asynchronous job router Client</strong></p>
- * <p>
  * <!-- src_embed com.azure.communication.jobrouter.routerasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router client builder
