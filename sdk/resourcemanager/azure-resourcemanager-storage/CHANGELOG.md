@@ -5,6 +5,7 @@
 ### Features Added
 
 - Supported toggling blob versioning in `BlobServiceProperties`.
+- Supported `containerDeleteRetentionPolicy` in `BlobServiceProperties`.
 
 ## 2.15.0 (2022-05-25)
 
