@@ -4,14 +4,15 @@
 package com.azure.communication.callingserver;
 
 import static com.azure.core.util.FluxUtil.monoError;
-
-import com.azure.communication.callingserver.implementation.converters.PagedConverter;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.converters.PagedConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
@@ -27,15 +28,13 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.callingserver.models.TransferCallOptions;
 import com.azure.communication.common.PhoneNumberIdentifier;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
 
 import reactor.core.publisher.Mono;
 
 /**
  * Asynchronous client that supports call connection operations.
  */
-public class CallConnectionAsync {
+public final class CallConnectionAsync {
 
     private final String callLegId;
     private final CallConnectionsImpl callConnectionInternal;
