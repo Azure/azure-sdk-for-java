@@ -23,7 +23,7 @@ pr:
       - sdk/maps/azure-maps-search/
 
     exclude:
-      - sdk/maps/azure-maps-search//pom.xml
+      - sdk/maps/azure-maps-search/pom.xml
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
