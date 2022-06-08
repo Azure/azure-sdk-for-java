@@ -56,16 +56,16 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
                 .setIfModifiedSince(headers.getValue("If-Modified-Since") == null ? null
                     : new DateTimeRfc1123(headers.getValue("If-Modified-Since")).getDateTime());
             return this.blobClient.getPropertiesWithResponse(rc).map(response -> {
-                    EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                        response.getValue().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY), requiresEncryption);
+                EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+                    response.getValue().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY), requiresEncryption);
 
-                    if (encryptionData != null) {
-                        context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
-                    }
+                if (encryptionData != null) {
+                    context.setData(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionData);
+                }
 
-                    return response;
-                })
-                .then(Mono.defer(nextPolicy::process));
+                return response;
+            })
+            .then(Mono.defer(nextPolicy::process));
         }
     }
 }
