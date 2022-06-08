@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The action to take when the exception is triggered. */
+/**
+ * The action to take when the exception is triggered.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = ExceptionAction.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = ExceptionAction.class)
 @JsonTypeName("ExceptionAction")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "cancel", value = CancelExceptionAction.class),
@@ -22,4 +24,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionAction.class)
 })
 @Immutable
-public class ExceptionAction {}
+public class ExceptionAction {
+}

@@ -3,13 +3,20 @@
 
 package com.azure.communication.jobrouter.implementation.utils;
 
-import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -18,13 +25,10 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This class provides helper methods for common builder patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderHelper {
@@ -38,17 +42,15 @@ public final class BuilderHelper {
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
-     * @param tokenCredential {@link TokenCredential} if present.
-     * @param azureSasCredential {@link AzureSasCredential} if present.
-     * @param sasToken SAS token if present.
-     * @param retryOptions Storage's retry options to set in the retry policy.
-     * @param logOptions Logging options to set in the logging policy.
-     * @param clientOptions Client options.
-     * @param httpClient HttpClient to use in the builder.
-     * @param perCallPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
-     * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
-     * @param configuration Configuration store contain environment settings.
-     * @param logger {@link ClientLogger} used to log any exception.
+     * @param credentialPolicy    {@link HttpPipelinePolicy} if present.
+     * @param retryOptions       Storage's retry options to set in the retry policy.
+     * @param logOptions         Logging options to set in the logging policy.
+     * @param clientOptions      Client options.
+     * @param httpClient         HttpClient to use in the builder.
+     * @param perCallPolicies    Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
+     * @param perRetryPolicies   Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
+     * @param configuration      Configuration store contain environment settings.
+     * @param logger             {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(
@@ -82,7 +84,7 @@ public final class BuilderHelper {
             policies.add(credentialPolicy);
         }
 
-        if (perRetryPolicies!= null) {
+        if (perRetryPolicies != null) {
             policies.addAll(perRetryPolicies);
         }
 

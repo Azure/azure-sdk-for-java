@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
  */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = RouterRule.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = RouterRule.class)
 @JsonTypeName("RouterRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "azure-function-rule", value = AzureFunctionRule.class),
@@ -29,4 +29,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "static-rule", value = StaticRule.class)
 })
 @Immutable
-public class RouterRule {}
+public class RouterRule {
+}

@@ -5,7 +5,24 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
-import com.azure.communication.jobrouter.models.*;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.JobPositionDetails;
+import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.models.JobStateSelector;
+import com.azure.communication.jobrouter.models.PagedClassificationPolicy;
+import com.azure.communication.jobrouter.models.PagedDistributionPolicy;
+import com.azure.communication.jobrouter.models.PagedExceptionPolicy;
+import com.azure.communication.jobrouter.models.PagedJob;
+import com.azure.communication.jobrouter.models.PagedQueue;
+import com.azure.communication.jobrouter.models.PagedWorker;
+import com.azure.communication.jobrouter.models.QueueStatistics;
+import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +34,16 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-import static com.azure.core.util.FluxUtil.*;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
+
 
 /**
  * Async Client that supports job router operations.
  *
  * <p><strong>Instantiating an asynchronous job router Client</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.communication.jobrouter.routerasyncclient.instantiation -->
  * <pre>
  * &#47;&#47; Initialize the router client builder
@@ -52,12 +72,12 @@ public final class RouterAsyncClient {
     /**
      * Creates or updates classification policy.
      *
-     * @param id Id of the classification policy.
+     * @param id                   Id of the classification policy.
      * @param classificationPolicy Model of classification policy properties to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for the rules that govern how jobs are classified.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
@@ -80,10 +100,10 @@ public final class RouterAsyncClient {
      * Retrieves an existing classification policy by Id.
      *
      * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for the rules that govern how jobs are classified.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponse(String id) {
@@ -106,10 +126,10 @@ public final class RouterAsyncClient {
      * Deletes a Classification Policy by Id.
      *
      * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationPolicyWithResponse(String id) {
@@ -131,9 +151,9 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing classification policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPolicies() {
@@ -148,10 +168,10 @@ public final class RouterAsyncClient {
      * Retrieves existing classification policies.
      *
      * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPolicies(Integer maxPageSize) {
@@ -165,12 +185,12 @@ public final class RouterAsyncClient {
     /**
      * Creates or updates a distribution policy.
      *
-     * @param id Id of the distribution policy.
+     * @param id                 Id of the distribution policy.
      * @param distributionPolicy Model of distribution policy properties to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy governing how jobs are distributed to workers.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
@@ -193,10 +213,10 @@ public final class RouterAsyncClient {
      * Retrieves an existing distribution policy by Id.
      *
      * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy governing how jobs are distributed to workers.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponse(String id) {
@@ -219,10 +239,10 @@ public final class RouterAsyncClient {
      * Delete a distribution policy by Id.
      *
      * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDistributionPolicyWithResponse(String id) {
@@ -244,9 +264,9 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing distribution policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPolicies() {
@@ -261,10 +281,10 @@ public final class RouterAsyncClient {
      * Retrieves existing distribution policies.
      *
      * @param maxPageSize Maximum page size.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPolicies(Integer maxPageSize) {
@@ -278,12 +298,12 @@ public final class RouterAsyncClient {
     /**
      * Creates or updates an exception policy.
      *
-     * @param id Id of the exception policy.
+     * @param id              Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a policy that defines actions to execute when exception are triggered.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
@@ -306,10 +326,10 @@ public final class RouterAsyncClient {
      * Retrieves an existing exception policy by Id.
      *
      * @param id Id of the exception policy to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a policy that defines actions to execute when exception are triggered.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponse(String id) {
@@ -332,10 +352,10 @@ public final class RouterAsyncClient {
      * Deletes a exception policy by Id.
      *
      * @param id Id of the exception policy to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteExceptionPolicyWithResponse(String id) {
@@ -357,9 +377,9 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing exception policies.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of exception policies.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPolicies() {
@@ -374,10 +394,10 @@ public final class RouterAsyncClient {
      * Retrieves existing exception policies.
      *
      * @param maxPageSize Maximum Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of exception policies.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPolicies(Integer maxPageSize) {
@@ -391,12 +411,12 @@ public final class RouterAsyncClient {
     /**
      * Upsert a job.
      *
-     * @param id Id of the job.
+     * @param id        Id of the job.
      * @param routerJob Model of job properties to be created or patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a unit of work to be routed.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJob routerJob) {
@@ -419,10 +439,10 @@ public final class RouterAsyncClient {
      * Retrieves an existing job by Id.
      *
      * @param id Id of the job to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a unit of work to be routed.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> getJobWithResponse(String id) {
@@ -445,10 +465,10 @@ public final class RouterAsyncClient {
      * Deletes a job and all of its traces.
      *
      * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponse(String id) {
@@ -470,12 +490,12 @@ public final class RouterAsyncClient {
     /**
      * Reclassify a job.
      *
-     * @param id Id of the job.
+     * @param id                   Id of the job.
      * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest) {
@@ -497,14 +517,14 @@ public final class RouterAsyncClient {
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param id              Id of the job.
+     * @param note            (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
-     *     provided, default value of "Cancelled" is set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     *                        provided, default value of "Cancelled" is set.
      * @return any object.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> cancelJobActionWithResponse(String id, String note, String dispositionCode) {
@@ -526,13 +546,13 @@ public final class RouterAsyncClient {
     /**
      * Completes an assigned job.
      *
-     * @param id Id of the job.
+     * @param id           Id of the job.
      * @param assignmentId The assignment within the job to complete.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param note         (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @return any object.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> completeJobActionWithResponse(String id, String assignmentId, String note) {
@@ -554,17 +574,17 @@ public final class RouterAsyncClient {
     /**
      * Closes a completed job.
      *
-     * @param id Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
+     * @param id              Id of the job.
+     * @param assignmentId    The assignment within which the job is to be closed.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     *     notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     *     time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param closeTime       If not provided, worker capacity is released immediately along with a JobClosedEvent
+     *                        notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
+     *                        time.
+     * @param note            (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @return any object.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> closeJobActionWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
@@ -586,9 +606,9 @@ public final class RouterAsyncClient {
     /**
      * Retrieves list of jobs based on filter parameters.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of jobs.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobs() {
@@ -603,13 +623,13 @@ public final class RouterAsyncClient {
      * Retrieves list of jobs based on filter parameters.
      *
      * @param jobStateSelector (Optional) If specified, filter jobs by status.
-     * @param queueId (Optional) If specified, filter jobs by queue.
-     * @param channelId (Optional) If specified, filter jobs by channel.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param queueId          (Optional) If specified, filter jobs by queue.
+     * @param channelId        (Optional) If specified, filter jobs by channel.
+     * @param maxPageSize      Number of objects to return per page.
      * @return a paged collection of jobs.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobs(JobStateSelector jobStateSelector, String queueId, String channelId, Integer maxPageSize) {
@@ -624,10 +644,10 @@ public final class RouterAsyncClient {
      * Gets a job's position details.
      *
      * @param id Id of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a job's position details.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponse(String id) {
@@ -649,12 +669,12 @@ public final class RouterAsyncClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
+     * @param offerId  Id of the offer.
      * @param workerId Id of the worker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponse(String offerId, String workerId) {
@@ -676,12 +696,12 @@ public final class RouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
+     * @param offerId  Id of the offer.
      * @param workerId Id of the worker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> declineJobActionWithResponse(String offerId, String workerId) {
@@ -703,12 +723,12 @@ public final class RouterAsyncClient {
     /**
      * Upsert a queue.
      *
-     * @param id Id of the queue.
+     * @param id       Id of the queue.
      * @param jobQueue Model of queue properties to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a queue that can contain jobs to be routed.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue) {
@@ -731,10 +751,10 @@ public final class RouterAsyncClient {
      * Retrieves an existing queue by Id.
      *
      * @param id Id of the queue to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a queue that can contain jobs to be routed.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> getQueueWithResponse(String id) {
@@ -757,10 +777,10 @@ public final class RouterAsyncClient {
      * Deletes a queue by Id.
      *
      * @param id Id of the queue to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String id) {
@@ -782,9 +802,9 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing queues.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueues() {
@@ -799,10 +819,10 @@ public final class RouterAsyncClient {
      * Retrieves existing queues.
      *
      * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueues(Integer maxPageSize) {
@@ -817,10 +837,10 @@ public final class RouterAsyncClient {
      * Retrieves a queue's statistics.
      *
      * @param id Id of the queue to retrieve statistics.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return statistics for the queue.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponse(String id) {
@@ -842,12 +862,12 @@ public final class RouterAsyncClient {
     /**
      * Upsert a worker.
      *
-     * @param id Id of the worker.
+     * @param id           Id of the worker.
      * @param routerWorker Model of worker properties to be patched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker) {
@@ -870,10 +890,10 @@ public final class RouterAsyncClient {
      * Retrieves an existing worker by Id.
      *
      * @param id Id of the worker to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> getWorkerWithResponse(String id) {
@@ -896,10 +916,10 @@ public final class RouterAsyncClient {
      * Deletes a worker and all of its traces.
      *
      * @param id Id of the worker to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWorkerWithResponse(String id) {
@@ -921,9 +941,9 @@ public final class RouterAsyncClient {
     /**
      * Retrieves existing workers.
      *
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of workers.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkers() {
@@ -938,16 +958,16 @@ public final class RouterAsyncClient {
      * Retrieves existing workers.
      *
      * @param workerStateSelector (Optional) If specified, select workers by worker status.
-     * @param channelId (Optional) If specified, select workers who have a channel configuration with this channel.
-     * @param queueId (Optional) If specified, select workers who are assigned to this queue.
-     * @param hasCapacity (Optional) If set to true, select only workers who have capacity for the channel specified by
-     *     `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
-     *     including workers without any capacity for jobs. Defaults to false.
-     * @param maxPageSize Number of objects to return per page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param channelId           (Optional) If specified, select workers who have a channel configuration with this channel.
+     * @param queueId             (Optional) If specified, select workers who are assigned to this queue.
+     * @param hasCapacity         (Optional) If set to true, select only workers who have capacity for the channel specified by
+     *                            `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers
+     *                            including workers without any capacity for jobs. Defaults to false.
+     * @param maxPageSize         Number of objects to return per page.
      * @return a paged collection of workers.
+     * @throws IllegalArgumentException            thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException                    all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkers(WorkerStateSelector workerStateSelector, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {

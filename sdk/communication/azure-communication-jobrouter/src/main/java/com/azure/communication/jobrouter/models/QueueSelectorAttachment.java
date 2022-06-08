@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** An attachment of label selectors to resolve a queue to a job from a classification policy. */
+/**
+ * An attachment of label selectors to resolve a queue to a job from a classification policy.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = QueueSelectorAttachment.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = QueueSelectorAttachment.class)
 @JsonTypeName("QueueSelectorAttachment")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "conditional", value = ConditionalQueueSelector.class),
@@ -24,4 +26,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "weighted-allocation-queue-selector", value = WeightedAllocationQueueSelector.class)
 })
 @Immutable
-public class QueueSelectorAttachment {}
+public class QueueSelectorAttachment {
+}

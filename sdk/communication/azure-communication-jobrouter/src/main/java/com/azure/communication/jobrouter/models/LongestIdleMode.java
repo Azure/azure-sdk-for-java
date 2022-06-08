@@ -8,8 +8,11 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Jobs are directed to the worker who has been idle longest. */
+/**
+ * Jobs are directed to the worker who has been idle longest.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("longest-idle")
 @Immutable
-public final class LongestIdleMode extends DistributionMode {}
+public final class LongestIdleMode extends DistributionMode {
+}

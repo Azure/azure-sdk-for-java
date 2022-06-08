@@ -9,16 +9,19 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The trigger for this exception rule. */
+/**
+ * The trigger for this exception rule.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = JobExceptionTrigger.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = JobExceptionTrigger.class)
 @JsonTypeName("JobExceptionTrigger")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "queue-length", value = QueueLengthExceptionTrigger.class),
     @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTrigger.class)
 })
 @Immutable
-public class JobExceptionTrigger {}
+public class JobExceptionTrigger {
+}

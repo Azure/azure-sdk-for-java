@@ -15,7 +15,12 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
@@ -33,7 +38,7 @@ import java.util.Objects;
 public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuilder>,
     EndpointTrait<RouterClientBuilder>,
     HttpTrait<RouterClientBuilder> {
-    private static final ClientLogger logger = new ClientLogger(RouterClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RouterClientBuilder.class);
 
     private String endpoint;
     private HttpClient httpClient;
@@ -282,7 +287,7 @@ public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuild
                 customPolicies,
                 null,
                 configuration,
-                logger);
+                LOGGER);
         }
 
         AzureCommunicationRoutingServiceImplBuilder clientBuilder = new AzureCommunicationRoutingServiceImplBuilder()
