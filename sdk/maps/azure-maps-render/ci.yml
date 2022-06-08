@@ -23,7 +23,7 @@ pr:
       - sdk/maps/azure-maps-render/
 
     exclude:
-      - sdk/maps/azure-maps-render//pom.xml
+      - sdk/maps/azure-maps-render/pom.xml
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
