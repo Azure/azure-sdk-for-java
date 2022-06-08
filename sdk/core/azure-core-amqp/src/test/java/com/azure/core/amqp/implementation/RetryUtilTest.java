@@ -20,6 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.test.scheduler.VirtualTimeScheduler;
 import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
 
@@ -107,14 +108,20 @@ public class RetryUtilTest {
         final Flux<AmqpTransportType> flux = singleItem.flux()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
-        // Act & Assert
-        StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage))
-            .expectSubscription()
-            .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
-            .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .expectNoEvent(totalWaitTime)
-            .thenCancel()
-            .verify();
+        final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
+        try {
+            // Act & Assert
+            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage),
+                    () -> virtualTimeScheduler, 1)
+                .expectSubscription()
+                .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
+                .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .expectNoEvent(totalWaitTime)
+                .thenCancel()
+                .verify();
+        } finally {
+            virtualTimeScheduler.dispose();
+        }
 
         assertEquals(1, resubscribe.get());
     }
