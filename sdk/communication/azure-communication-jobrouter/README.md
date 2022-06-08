@@ -134,7 +134,7 @@ An exception policy controls the behavior of a Job based on a trigger and execut
 To initialize the SMS Client, the connection string can be used to instantiate.
 Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
 
-```java sample-client
+```java 
 RouterClient routerClient = new RouterClientBuilder()
     .connectionString(connectionString);
     .buildClient();
