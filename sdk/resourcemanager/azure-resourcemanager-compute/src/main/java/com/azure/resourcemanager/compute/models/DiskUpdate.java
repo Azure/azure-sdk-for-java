@@ -28,7 +28,7 @@ public final class DiskUpdate {
 
     /*
      * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS,
-     * UltraSSD_LRS, Premium_ZRS, or StandardSSD_ZRS.
+     * UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
@@ -64,7 +64,7 @@ public final class DiskUpdate {
 
     /**
      * Get the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
-     * Premium_ZRS, or StandardSSD_ZRS.
+     * Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      *
      * @return the sku value.
      */
@@ -74,7 +74,7 @@ public final class DiskUpdate {
 
     /**
      * Set the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
-     * Premium_ZRS, or StandardSSD_ZRS.
+     * Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      *
      * @param sku the sku value to set.
      * @return the DiskUpdate object itself.

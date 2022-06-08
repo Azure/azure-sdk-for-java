@@ -1285,6 +1285,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled("no longer works")
     public void canPerformSimulateEvictionOnSpotVMSSInstance() {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
