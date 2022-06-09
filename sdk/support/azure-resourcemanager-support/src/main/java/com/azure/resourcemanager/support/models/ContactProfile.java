@@ -6,15 +6,12 @@ package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contact information associated with the support ticket. */
 @Fluent
 public final class ContactProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContactProfile.class);
-
     /*
      * First name.
      */
@@ -281,43 +278,45 @@ public final class ContactProfile {
      */
     public void validate() {
         if (firstName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property firstName in model ContactProfile"));
         }
         if (lastName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property lastName in model ContactProfile"));
         }
         if (preferredContactMethod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredContactMethod in model ContactProfile"));
         }
         if (primaryEmailAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property primaryEmailAddress in model ContactProfile"));
         }
         if (preferredTimeZone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredTimeZone in model ContactProfile"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model ContactProfile"));
         }
         if (preferredSupportLanguage() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property preferredSupportLanguage in model ContactProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContactProfile.class);
 }

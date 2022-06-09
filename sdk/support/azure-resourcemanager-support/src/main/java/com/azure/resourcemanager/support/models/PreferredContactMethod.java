@@ -27,7 +27,11 @@ public final class PreferredContactMethod extends ExpandableStringEnum<Preferred
         return fromString(name, PreferredContactMethod.class);
     }
 
-    /** @return known PreferredContactMethod values. */
+    /**
+     * Gets known PreferredContactMethod values.
+     *
+     * @return known PreferredContactMethod values.
+     */
     public static Collection<PreferredContactMethod> values() {
         return values(PreferredContactMethod.class);
     }

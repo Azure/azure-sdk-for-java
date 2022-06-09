@@ -27,7 +27,11 @@ public final class CommunicationDirection extends ExpandableStringEnum<Communica
         return fromString(name, CommunicationDirection.class);
     }
 
-    /** @return known CommunicationDirection values. */
+    /**
+     * Gets known CommunicationDirection values.
+     *
+     * @return known CommunicationDirection values.
+     */
     public static Collection<CommunicationDirection> values() {
         return values(CommunicationDirection.class);
     }

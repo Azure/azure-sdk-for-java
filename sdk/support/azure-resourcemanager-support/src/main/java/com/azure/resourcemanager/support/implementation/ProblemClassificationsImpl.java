@@ -13,10 +13,9 @@ import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import com.azure.resourcemanager.support.models.ProblemClassification;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProblemClassificationsImpl implements ProblemClassifications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProblemClassificationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProblemClassificationsImpl.class);
 
     private final ProblemClassificationsClient innerClient;
 

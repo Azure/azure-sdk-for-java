@@ -16,10 +16,9 @@ import com.azure.resourcemanager.support.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.support.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.support.models.CommunicationDetails;
 import com.azure.resourcemanager.support.models.Communications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CommunicationsImpl implements Communications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationsImpl.class);
 
     private final CommunicationsClient innerClient;
 
@@ -98,7 +97,7 @@ public final class CommunicationsImpl implements Communications {
     public CommunicationDetails getById(String id) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class CommunicationsImpl implements Communications {
         }
         String communicationName = Utils.getValueFromIdByName(id, "communications");
         if (communicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class CommunicationsImpl implements Communications {
     public Response<CommunicationDetails> getByIdWithResponse(String id, Context context) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,7 +125,7 @@ public final class CommunicationsImpl implements Communications {
         }
         String communicationName = Utils.getValueFromIdByName(id, "communications");
         if (communicationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

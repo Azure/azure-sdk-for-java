@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Support engineer information. */
 @Immutable
 public final class SupportEngineer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportEngineer.class);
-
     /*
      * Email address of the Azure Support engineer assigned to the support
      * ticket.

@@ -27,7 +27,11 @@ public final class CommunicationType extends ExpandableStringEnum<CommunicationT
         return fromString(name, CommunicationType.class);
     }
 
-    /** @return known CommunicationType values. */
+    /**
+     * Gets known CommunicationType values.
+     *
+     * @return known CommunicationType values.
+     */
     public static Collection<CommunicationType> values() {
         return values(CommunicationType.class);
     }

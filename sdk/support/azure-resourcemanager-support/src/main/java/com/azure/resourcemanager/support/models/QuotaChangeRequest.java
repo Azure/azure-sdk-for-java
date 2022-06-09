@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This property is required for providing the region and new quota limits. */
 @Fluent
 public final class QuotaChangeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaChangeRequest.class);
-
     /*
      * Region for which the quota increase request is being made.
      */

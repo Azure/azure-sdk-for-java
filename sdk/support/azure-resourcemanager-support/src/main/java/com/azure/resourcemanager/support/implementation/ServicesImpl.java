@@ -13,10 +13,9 @@ import com.azure.resourcemanager.support.fluent.ServicesClient;
 import com.azure.resourcemanager.support.fluent.models.ServiceInner;
 import com.azure.resourcemanager.support.models.Service;
 import com.azure.resourcemanager.support.models.Services;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 

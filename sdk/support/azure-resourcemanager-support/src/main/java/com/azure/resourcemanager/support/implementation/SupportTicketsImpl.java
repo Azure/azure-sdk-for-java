@@ -16,10 +16,9 @@ import com.azure.resourcemanager.support.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.support.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.support.models.SupportTicketDetails;
 import com.azure.resourcemanager.support.models.SupportTickets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SupportTicketsImpl implements SupportTickets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportTicketsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SupportTicketsImpl.class);
 
     private final SupportTicketsClient innerClient;
 
@@ -90,7 +89,7 @@ public final class SupportTicketsImpl implements SupportTickets {
     public SupportTicketDetails getById(String id) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,7 +101,7 @@ public final class SupportTicketsImpl implements SupportTickets {
     public Response<SupportTicketDetails> getByIdWithResponse(String id, Context context) {
         String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

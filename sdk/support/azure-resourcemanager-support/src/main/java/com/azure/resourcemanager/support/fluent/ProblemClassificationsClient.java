@@ -22,7 +22,7 @@ public interface ProblemClassificationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProblemClassificationInner> list(String serviceName);
@@ -37,7 +37,7 @@ public interface ProblemClassificationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProblemClassificationInner> list(String serviceName, Context context);
@@ -64,7 +64,7 @@ public interface ProblemClassificationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return problem classification details for a specific Azure service.
+     * @return problem classification details for a specific Azure service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProblemClassificationInner> getWithResponse(

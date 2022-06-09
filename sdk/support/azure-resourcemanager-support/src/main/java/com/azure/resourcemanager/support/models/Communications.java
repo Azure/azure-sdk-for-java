@@ -34,7 +34,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API.
+     * @return output of check name availability API along with {@link Response}.
      */
     Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
         String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
@@ -51,7 +51,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationDetails> list(String supportTicketName);
 
@@ -73,7 +73,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources.
+     * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationDetails> list(String supportTicketName, Integer top, String filter, Context context);
 
@@ -98,7 +98,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response}.
      */
     Response<CommunicationDetails> getWithResponse(String supportTicketName, String communicationName, Context context);
 
@@ -109,7 +109,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response}.
      */
     CommunicationDetails getById(String id);
 
@@ -121,7 +121,7 @@ public interface Communications {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a Communication resource.
+     * @return object that represents a Communication resource along with {@link Response}.
      */
     Response<CommunicationDetails> getByIdWithResponse(String id, Context context);
 
