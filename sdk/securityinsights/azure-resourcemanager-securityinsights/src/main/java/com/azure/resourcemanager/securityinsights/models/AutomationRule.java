@@ -104,6 +104,13 @@ public interface AutomationRule {
     ClientInfo createdBy();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.AutomationRuleInner object.
      *
      * @return the inner object.

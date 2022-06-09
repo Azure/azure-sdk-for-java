@@ -89,6 +89,10 @@ public final class PartnerDestinationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerDestinationInner innerModel() {
         return this.innerObject;
     }

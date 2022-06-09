@@ -30,7 +30,11 @@ public final class ParentType extends ExpandableStringEnum<ParentType> {
         return fromString(name, ParentType.class);
     }
 
-    /** @return known ParentType values. */
+    /**
+     * Gets known ParentType values.
+     *
+     * @return known ParentType values.
+     */
     public static Collection<ParentType> values() {
         return values(ParentType.class);
     }

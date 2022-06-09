@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,42 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.10.0 (2022-06-03)
+
+### Features Added
+- Added `callTimeout` method to OkHttpAsyncHttpClientBuilder.
+- This client can now stream bodies larger than 2GB. The buffering for `Flux<ByteBuffer>` request bodies has been removed.
+
+### Other Changes
+
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+## 1.9.0 (2022-05-06)
+
+### Features Added
+
+- The `OkHttpAsyncClientProvider.createInstance()` now has the option to share a single shared `HttpClient`.
+  Set the environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` to `true` before starting the process to use
+  the shared `HttpClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
 
 ## 1.8.0 (2022-04-01)
 

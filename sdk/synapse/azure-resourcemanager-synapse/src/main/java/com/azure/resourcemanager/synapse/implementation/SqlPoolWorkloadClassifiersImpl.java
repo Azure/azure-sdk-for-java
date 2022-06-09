@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolWorkloadClassifiersClient
 import com.azure.resourcemanager.synapse.fluent.models.WorkloadClassifierInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolWorkloadClassifiers;
 import com.azure.resourcemanager.synapse.models.WorkloadClassifier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClassifiers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolWorkloadClassifiersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolWorkloadClassifiersImpl.class);
 
     private final SqlPoolWorkloadClassifiersClient innerClient;
 
@@ -108,7 +107,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
     public WorkloadClassifier getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,21 +115,21 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workloadClassifierName = Utils.getValueFromIdByName(id, "workloadClassifiers");
         if (workloadClassifierName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
     public Response<WorkloadClassifier> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,21 +161,21 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +183,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workloadClassifierName = Utils.getValueFromIdByName(id, "workloadClassifiers");
         if (workloadClassifierName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -199,7 +198,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,21 +206,21 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -229,7 +228,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workloadClassifierName = Utils.getValueFromIdByName(id, "workloadClassifiers");
         if (workloadClassifierName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,7 +243,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -252,21 +251,21 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String workloadGroupName = Utils.getValueFromIdByName(id, "workloadGroups");
         if (workloadGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -274,7 +273,7 @@ public final class SqlPoolWorkloadClassifiersImpl implements SqlPoolWorkloadClas
         }
         String workloadClassifierName = Utils.getValueFromIdByName(id, "workloadClassifiers");
         if (workloadClassifierName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

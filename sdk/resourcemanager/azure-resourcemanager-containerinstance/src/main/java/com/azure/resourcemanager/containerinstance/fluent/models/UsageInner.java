@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.models.UsageName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A single usage result. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * Unit of the usage result
      */

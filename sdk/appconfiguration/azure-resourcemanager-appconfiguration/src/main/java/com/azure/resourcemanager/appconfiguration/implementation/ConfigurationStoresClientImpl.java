@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appconfiguration.fluent.ConfigurationStoresClient;
@@ -49,8 +48,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConfigurationStoresClient. */
 public final class ConfigurationStoresClientImpl implements ConfigurationStoresClient {
-    private final ClientLogger logger = new ClientLogger(ConfigurationStoresClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConfigurationStoresService service;
 
@@ -767,14 +764,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationStoreInner> getByResourceGroupAsync(String resourceGroupName, String configStoreName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, configStoreName)
-            .flatMap(
-                (Response<ConfigurationStoreInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1999,14 +1989,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     private Mono<ApiKeyInner> regenerateKeyAsync(
         String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, configStoreName, regenerateKeyParameters)
-            .flatMap(
-                (Response<ApiKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2303,15 +2286,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeletedConfigurationStoreInner> getDeletedAsync(String location, String configStoreName) {
-        return getDeletedWithResponseAsync(location, configStoreName)
-            .flatMap(
-                (Response<DeletedConfigurationStoreInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getDeletedWithResponseAsync(location, configStoreName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

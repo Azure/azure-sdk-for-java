@@ -105,7 +105,12 @@ class ChangeFeedQueryImpl<T> {
             INITIAL_TOP_VALUE,
             this.options.getMaxItemCount(),
             this.options.getMaxPrefetchPageCount(),
-            ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options));
+            ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options),
+            ImplementationBridgeHelpers
+                .CosmosChangeFeedRequestOptionsHelper
+                .getCosmosChangeFeedRequestOptionsAccessor()
+                .getOperationContext(this.options)
+            );
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
@@ -119,6 +124,10 @@ class ChangeFeedQueryImpl<T> {
 
         if (options.isQuotaInfoEnabled()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
+        }
+
+        if (this.client.getConsistencyLevel() != null) {
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
 
         return RxDocumentServiceRequest.create(clientContext,

@@ -42,7 +42,7 @@ import java.util.Map;
  *         checkpointer.success()
  *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
  *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
- *                 .subscribe();
+ *                 .block();
  *     }
  *
  *    {@literal @}Bean
@@ -107,7 +107,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     @Override
     protected void onInit() {
-        Assert.state(ListenerMode.RECORD.equals(this.listenerMode), "Only record mode is supported!");
+        Assert.state(ListenerMode.RECORD == this.listenerMode, "Only record mode is supported!");
 
         this.listenerContainer.setupMessageListener(this.recordListener);
 
@@ -187,25 +187,18 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
         @Override
         public void onMessage(ServiceBusReceivedMessageContext messageContext) {
-            Checkpointer checkpointer = new AzureCheckpointer(() -> Mono.fromRunnable(messageContext::complete),
-                () -> Mono.fromRunnable(messageContext::abandon));
             Map<String, Object> headers = new HashMap<>();
             headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext);
 
             if (!isAutoComplete) {
+                Checkpointer checkpointer = new AzureCheckpointer(() -> Mono.fromRunnable(messageContext::complete),
+                    () -> Mono.fromRunnable(messageContext::abandon));
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
             Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
                 payloadType);
             sendMessage(message);
-
-            if (isAutoComplete) {
-                checkpointer.success()
-                            .doOnSuccess(t -> LOGGER.debug("Settled {} with autocomplete enabled.", message))
-                            .doOnError(t -> LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
-                            .block();
-            }
         }
 
     }

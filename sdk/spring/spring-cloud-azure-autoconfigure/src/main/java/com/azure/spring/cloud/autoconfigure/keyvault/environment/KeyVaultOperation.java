@@ -119,7 +119,7 @@ public class KeyVaultOperation {
             return properties
                 .keySet()
                 .stream()
-                .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
+                .flatMap(p -> Stream.of(p, p.replace("-", ".")))
                 .distinct()
                 .toArray(String[]::new);
         } else {
@@ -182,12 +182,12 @@ public class KeyVaultOperation {
             if (property.matches("[a-z0-9A-Z-]+")) {
                 return property.toLowerCase(Locale.US);
             } else if (property.matches("[A-Z0-9_]+")) {
-                return property.toLowerCase(Locale.US).replaceAll("_", "-");
+                return property.toLowerCase(Locale.US).replace("_", "-");
             } else {
                 return property.toLowerCase(Locale.US)
-                    .replaceAll("-", "") // my-project -> myproject
-                    .replaceAll("_", "") // my_project -> myproject
-                    .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
+                    .replace("-", "") // my-project -> myproject
+                    .replace("_", "") // my_project -> myproject
+                    .replace(".", "-"); // acme.myproject -> acme-myproject
             }
         } else {
             return property;

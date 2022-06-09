@@ -19,12 +19,13 @@ from utils import ListIndentDumper
 
 
 GROUP_ID = 'com.azure'
-LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples --generate-tests'
+LLC_ARGUMENTS = '--data-plane --sdk-integration --generate-samples --generate-tests'
 
 
 def sdk_automation(config: dict) -> List[dict]:
     # 1. README.java.md in spec repo, and it contains 'output-folder' option.
-    # 2. Use default options, run integration task.
+    # 2. swagger/README.md in sdk repo, and it is sdk/<service>/<module>/swagger/README.md
+    # 3. Use default options, run integration task.
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
@@ -42,7 +43,7 @@ def sdk_automation(config: dict) -> List[dict]:
         if match:
             readme_file_paths.append(file_path)
 
-    processed_readme_file_paths = []
+    processed_files = []
 
     for file_path in config['changedFiles']:
         match = re.search(
@@ -50,17 +51,20 @@ def sdk_automation(config: dict) -> List[dict]:
             file_path,
             re.IGNORECASE,
         )
-        if match and '/examples/' not in file_path:
+        if match and '/examples/' not in file_path and os.path.isfile(os.path.join(spec_root, file_path)):
             service = match.group(1)
             file_name = match.group(2)
 
             readme_file_path = find_readme(file_path, readme_file_paths, spec_root)
 
-            if readme_file_path and readme_file_path in processed_readme_file_paths:
+            if (readme_file_path and readme_file_path in processed_files) \
+                    or (file_name in processed_files):
                 continue
             else:
                 if readme_file_path:
-                    processed_readme_file_paths.append(readme_file_path)
+                    processed_files.append(readme_file_path)
+                else:
+                    processed_files.append(file_name)
 
                 file_path = os.path.join(spec_root, file_path)
                 readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
@@ -69,7 +73,7 @@ def sdk_automation(config: dict) -> List[dict]:
             logging.info('[Skip] changed file {0}'.format(file_path))
 
     for readme_file_path in readme_file_paths:
-        if readme_file_path in processed_readme_file_paths:
+        if readme_file_path in processed_files:
             pass
         else:
             match = re.search(
@@ -80,7 +84,7 @@ def sdk_automation(config: dict) -> List[dict]:
             if match:
                 service = match.group(1)
 
-                processed_readme_file_paths.append(readme_file_path)
+                processed_files.append(readme_file_path)
 
                 readme_file_path = os.path.join(spec_root, readme_file_path)
                 sdk_automation_readme(readme_file_path, None, None, packages, service, sdk_root)
@@ -148,7 +152,7 @@ def generate(
         sdk_root,
         'sdk', service, module
     )
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
+    # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
@@ -158,20 +162,21 @@ def generate(
         # use readme from spec repo
         readme_file_path = readme
 
-        require_sdk_integration = not os.path.exists(output_dir)
+        require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4} '\
+        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4} {5}'\
             .format(
                 autorest,
                 use,
                 os.path.abspath(sdk_root),
                 os.path.abspath(output_dir),
-                readme_file_path
+                readme_file_path,
+                autorest_options
             )
         if require_sdk_integration:
-            command += LLC_ARGUMENTS
+            command += ' --java.namespace={0} '.format(namespace) + LLC_ARGUMENTS
         logging.info(command)
         try:
             subprocess.run(command, shell=True, check=True)
@@ -191,13 +196,14 @@ def generate(
             logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
             command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} ' \
-                      '--java.output-folder={2} {3}'\
+                      '--java.output-folder={2} {3} {4}'\
                 .format(
                     autorest,
                     use,
                     os.path.abspath(sdk_root),
                     os.path.abspath(output_dir),
-                    readme_file_path
+                    readme_file_path,
+                    autorest_options
                 )
             logging.info(command)
             try:
@@ -257,16 +263,18 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
 
 
 def get_generate_parameters(
-    service, file_name, json_file_path, readme_file_path: str
+    service, file_name, json_file_path, readme_file_abspath: str
 ) -> Tuple[str, str, str]:
     # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
 
     input_file = json_file_path
     module = None
-    if readme_file_path:
+    if readme_file_abspath:
         # try readme.java.md, it must contain 'output-folder' and
         # match pattern $(java-sdks-folder)/sdk/<service>/<module>
-        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
+        java_readme_file_path = readme_file_abspath
+        if not java_readme_file_path.endswith('.java.md'):
+            java_readme_file_path = readme_file_abspath.replace('.md', '.java.md')
         if uri_file_exists(java_readme_file_path):
             content = uri_file_read(java_readme_file_path)
             if content:
@@ -280,6 +288,19 @@ def get_generate_parameters(
                                 and output_folder_segments[1] == 'sdk':
                             service = output_folder_segments[2]
                             module = output_folder_segments[3]
+
+        # try swagger/readme.md for service and module
+        if not module and os.path.basename(readme_file_abspath).lower() == 'readme.md':
+            dir_name = os.path.dirname(readme_file_abspath).lower()
+            if os.path.basename(dir_name) == 'swagger':
+                dir_name = os.path.dirname(dir_name)
+                module = os.path.basename(dir_name)
+                dir_name = os.path.dirname(dir_name)
+                service = os.path.basename(dir_name)
+                dir_name = os.path.dirname(dir_name)
+                if not os.path.basename(dir_name) == 'sdk':
+                    module = None
+                    service = None
 
     if not module and file_name:
         # deduce from json file path
@@ -342,7 +363,7 @@ def update_readme(
                     yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                     for yaml_str in yaml_blocks:
                         yaml_json = yaml.safe_load(yaml_str)
-                        if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
+                        if 'data-plane' in yaml_json and yaml_json['data-plane']:
                             match_found, input_files = update_yaml_input_files(yaml_json, input_file)
                             if match_found:
                                 # yaml block found, update
@@ -411,8 +432,7 @@ def parse_args() -> argparse.Namespace:
         '-r',
         '--readme',
         required=False,
-        help='URL to "readme.md" as configuration file. '
-             'A "readme.java.md" configuration file is required at the same folder.',
+        help='URL to "readme.md" as configuration file.',
     )
     parser.add_argument(
         '--service',
@@ -492,9 +512,12 @@ def main():
         args['security_scopes'] = args['credential_scopes']
 
     if args['readme']:
-        input_file, service, module = get_generate_parameters(None, None, None, args['readme'])
+        readme_file_abspath = args['readme']
+        if not os.path.isabs(readme_file_abspath):
+            readme_file_abspath = os.path.abspath(readme_file_abspath)
+        input_file, service, module = get_generate_parameters(None, None, None, readme_file_abspath)
         if not module:
-            raise ValueError('readme.java.md not found or not well-formed')
+            raise ValueError('readme.md not found or not well-formed')
         args['service'] = service
         args['module'] = module
 

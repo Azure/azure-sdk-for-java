@@ -63,7 +63,11 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
         return fromString(name, AccessTier.class);
     }
 
-    /** @return known AccessTier values. */
+    /**
+     * Gets known AccessTier values.
+     *
+     * @return known AccessTier values.
+     */
     public static Collection<AccessTier> values() {
         return values(AccessTier.class);
     }

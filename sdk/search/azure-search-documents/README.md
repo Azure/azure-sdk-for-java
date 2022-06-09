@@ -73,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.7</version>
+    <version>11.5.0-beta.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -421,6 +421,9 @@ searchAsyncClient.search("luxury")
 ```
 
 ## Troubleshooting
+
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/TROUBLESHOOTING.md) 
+for details on how to diagnose various failure scenarios.
 
 ### General
 

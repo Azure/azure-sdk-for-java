@@ -73,7 +73,7 @@ Samples are provided in azure-storage/src/test/groovy/com/microsoft/azure/storag
 
 ## Code Sample
 
-The following is a quick example on how to upload some data to an azure blob and download it back. You may also run the samples in azure-storage/src/test/groovy/com/microsoft/azure/storage/Samples.java. For additional information on using the client libraries to access Azure services see the How To guides for [blobs](https://azure.microsoft.com/documentation/articles/storage-java-how-to-use-blob-storage/) and the [general documentation](https://azure.microsoft.com/develop/java/).
+The following is a quick example on how to upload some data to an azure blob and download it back. You may also run the samples in azure-storage/src/test/groovy/com/microsoft/azure/storage/Samples.java. For additional information on using the client libraries to access Azure services see the How To guides for [blobs](https://docs.microsoft.com/azure/storage/blobs/storage-quickstart-blobs-java) and the [general documentation](https://azure.microsoft.com/develop/java/).
 
 ```java
 public class Sample {

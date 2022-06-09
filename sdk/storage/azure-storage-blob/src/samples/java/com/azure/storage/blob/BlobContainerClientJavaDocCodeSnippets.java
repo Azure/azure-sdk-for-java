@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -16,6 +17,7 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -456,6 +458,56 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#createIfNotExists()} and
+     * {@link BlobContainerClient#createIfNotExistsWithResponse(BlobContainerCreateOptions, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExists
+        boolean result = client.createIfNotExists();
+        System.out.println("Create completed: " + result);
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Context context = new Context("Key", "Value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
+
+        Response<Boolean> response = client.createIfNotExistsWithResponse(options, timeout, context);
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#deleteIfExists()} and
+     * {@link BlobContainerClient#deleteIfExistsWithResponse(BlobRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExists
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete completed: " + result);
+        // END: com.azure.storage.blob.BlobContainerClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("Key", "Value");
+
+        Response<Boolean> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
     }
 //
 //    /**

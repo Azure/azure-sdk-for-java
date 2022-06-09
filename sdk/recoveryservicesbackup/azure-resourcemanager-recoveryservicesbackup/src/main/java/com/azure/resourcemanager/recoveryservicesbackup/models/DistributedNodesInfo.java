@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This is used to represent the various nodes of the distributed container. */
 @Fluent
 public final class DistributedNodesInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DistributedNodesInfo.class);
-
     /*
      * Name of the node under a distributed container.
      */

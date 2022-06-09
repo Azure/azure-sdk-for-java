@@ -86,7 +86,7 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
         AzureListenerEndpointRegistry customRegistry =
             context.getBean("customRegistry", AzureListenerEndpointRegistry.class);
         assertEquals(2, customRegistry.getListenerContainerIds().size(), "Wrong number of containers in the registry");
-        assertEquals(2, customRegistry.getListenerContainers().size(), "Wrong number of containers in the registry");
+        assertEquals(2, customRegistry.getListenerContainersMap().size(), "Wrong number of containers in the registry");
         assertNotNull(customRegistry.getListenerContainer("listenerId"), "Container with custom id on the annotation should be found");
         assertNotNull(customRegistry.getListenerContainer("myCustomEndpointId"), "Container created with custom id should be found");
     }

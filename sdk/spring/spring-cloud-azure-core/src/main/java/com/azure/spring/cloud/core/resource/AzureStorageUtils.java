@@ -11,6 +11,10 @@ import java.util.Locale;
  * Azure storage resource utility class
  */
 final class AzureStorageUtils {
+
+    private AzureStorageUtils() {
+    }
+
     /**
      * Path separator character for resource location.
      */

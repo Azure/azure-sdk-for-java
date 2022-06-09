@@ -1042,7 +1042,7 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode("2019-11-01", StandardCharsets.UTF_8.name()));
 
-            URL url = new URL(String.format("%s?%s", identityEndpoint, payload));
+            URL url = getUrl(String.format("%s?%s", identityEndpoint, payload));
 
 
             String secretKey = null;
@@ -1152,7 +1152,7 @@ public class IdentityClient {
 
                 HttpURLConnection connection = null;
 
-                URL url = new URL(authorityUrl);
+                URL url = getUrl(authorityUrl);
 
                 try {
                     connection = (HttpURLConnection) url.openConnection();
@@ -1216,7 +1216,7 @@ public class IdentityClient {
 
             try {
 
-                URL url = new URL(String.format("%s?%s", endpoint, payload));
+                URL url = getUrl(String.format("%s?%s", endpoint, payload));
                 connection = (HttpsURLConnection) url.openConnection();
 
                 IdentitySslUtil.addTrustedCertificateThumbprint(connection, thumbprint, LOGGER);
@@ -1304,7 +1304,7 @@ public class IdentityClient {
                 payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
             }
             try {
-                URL url = new URL(String.format("%s?%s", endpoint, payload));
+                URL url = getUrl(String.format("%s?%s", endpoint, payload));
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
@@ -1332,6 +1332,9 @@ public class IdentityClient {
         });
     }
 
+    static URL getUrl(String uri) throws MalformedURLException {
+        return new URL(uri);
+    }
     /**
      * Asynchronously acquire a token from the Virtual Machine IMDS endpoint.
      *
@@ -1369,7 +1372,7 @@ public class IdentityClient {
                 URL url = null;
                 HttpURLConnection connection = null;
                 try {
-                    url = new URL(String.format("%s?%s", endpoint, payload));
+                    url = getUrl(String.format("%s?%s", endpoint, payload));
 
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -1447,7 +1450,7 @@ public class IdentityClient {
         }
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            URL url = new URL(String.format("%s?%s", endpoint, payload));
+            URL url = getUrl(String.format("%s?%s", endpoint, payload));
 
             try {
                 connection = (HttpURLConnection) url.openConnection();

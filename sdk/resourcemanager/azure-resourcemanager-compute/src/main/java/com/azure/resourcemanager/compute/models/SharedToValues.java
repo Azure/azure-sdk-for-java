@@ -24,7 +24,11 @@ public final class SharedToValues extends ExpandableStringEnum<SharedToValues> {
         return fromString(name, SharedToValues.class);
     }
 
-    /** @return known SharedToValues values. */
+    /**
+     * Gets known SharedToValues values.
+     *
+     * @return known SharedToValues values.
+     */
     public static Collection<SharedToValues> values() {
         return values(SharedToValues.class);
     }

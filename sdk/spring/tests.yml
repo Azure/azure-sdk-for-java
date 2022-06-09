@@ -17,7 +17,5 @@ stages:
       TimeoutInMinutes: 240
       ServiceDirectory: spring
       TestName: IntegrationTestInAzureGlobal
-      TestStepMavenInputs:
-        options: '$(DefaultTestOptions) -DskipSpringITs=false'
-        mavenOptions: '$(DefaultTestMavenOptions)'
-        goals: "verify"
+      TestGoals: 'verify'
+      TestOptions: '-DskipSpringITs=false'

@@ -74,4 +74,25 @@ public final class SharePointOnlineListSource extends CopySource {
         this.httpRequestTimeout = httpRequestTimeout;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SharePointOnlineListSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

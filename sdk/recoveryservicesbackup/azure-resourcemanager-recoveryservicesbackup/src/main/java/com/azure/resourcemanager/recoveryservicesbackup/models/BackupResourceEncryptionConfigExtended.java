@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BackupResourceEncryptionConfigExtended model. */
 @Fluent
 public final class BackupResourceEncryptionConfigExtended extends BackupResourceEncryptionConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfigExtended.class);
-
     /*
      * User Assigned Identity Id
      */

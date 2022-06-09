@@ -20,7 +20,7 @@ public final class DocumentWord {
     /*
      * Bounding box of the word.
      */
-    private List<Float> boundingBox;
+    private List<Point> boundingPolygon;
 
     /*
      * Location of the word in the reading order concatenated content.
@@ -52,22 +52,26 @@ public final class DocumentWord {
     }
 
     /**
-     * Get the boundingBox property: Bounding box of the word.
+     * Get the list of coordinates of the bounding polygon for the word.
+     * The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees inclusive)
+     * relative to the element orientation.
      *
-     * @return the boundingBox value.
+     * @return the boundingPolygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Point> getBoundingPolygon() {
+        return this.boundingPolygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box of the word.
+     * Set the list of coordinates of the bounding polygon for the word.
+     * The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees inclusive)
+     * relative to the element orientation.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param boundingPolygon the boundingPolygon value to set.
      * @return the DocumentWord object itself.
      */
-    void setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    void setBoundingPolygon(List<Point> boundingPolygon) {
+        this.boundingPolygon = boundingPolygon;
     }
 
     /**
@@ -111,8 +115,8 @@ public final class DocumentWord {
     static {
         DocumentWordHelper.setAccessor(new DocumentWordHelper.DocumentWordAccessor() {
             @Override
-            public void setBoundingBox(DocumentWord documentWord, List<Float> boundingBox) {
-                documentWord.setBoundingBox(boundingBox);
+            public void setBoundingPolygon(DocumentWord documentWord, List<Point> boundingPolygon) {
+                documentWord.setBoundingPolygon(boundingPolygon);
             }
 
             @Override

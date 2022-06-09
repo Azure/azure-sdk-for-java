@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,320 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2022-05-13)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2021-10-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.PrivateEndpointConnectionsParentType` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `listByResource(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String)` was removed
+* `get(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String)` was removed
+* `update(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner)` was removed
+* `getWithResponse(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String)` was removed
+* `listByResource(java.lang.String,models.PrivateEndpointConnectionsParentType,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.PartnerDestinationInfo` was added
+
+* `models.PartnerUpdateDestinationInfo` was added
+
+* `models.Channels` was added
+
+* `models.PartnerNamespaceSharedAccessKeys` was added
+
+* `models.InlineEventProperties` was added
+
+* `models.EventChannel` was added
+
+* `models.Sku` was added
+
+* `models.Channel` was added
+
+* `models.PartnerNamespace` was added
+
+* `models.PartnerConfiguration` was added
+
+* `models.Channel$UpdateStages` was added
+
+* `models.PartnerRegistration$UpdateStages` was added
+
+* `models.PartnerConfigurationUpdateParameters` was added
+
+* `models.PartnerDestination$Definition` was added
+
+* `models.PartnerTopic$Definition` was added
+
+* `models.DataResidencyBoundary` was added
+
+* `models.ResourceSku` was added
+
+* `models.ResourceKind` was added
+
+* `models.PartnerClientAuthentication` was added
+
+* `models.EventChannelSource` was added
+
+* `models.PartnerEndpointType` was added
+
+* `models.PartnerConfigurations` was added
+
+* `models.PartnerRegistration$Definition` was added
+
+* `models.VerifiedPartners` was added
+
+* `models.PartnerTopicActivationState` was added
+
+* `models.ParentType` was added
+
+* `models.PartnerDestinationProvisioningState` was added
+
+* `models.PartnerRegistrationProvisioningState` was added
+
+* `models.DomainEventSubscriptions` was added
+
+* `models.PartnerTopics` was added
+
+* `models.ChannelProvisioningState` was added
+
+* `models.ChannelsListResult` was added
+
+* `models.PartnerDestinations` was added
+
+* `models.PartnerDestination` was added
+
+* `models.PartnerRegistration` was added
+
+* `models.PartnerTopicRoutingMode` was added
+
+* `models.PartnerTopicInfo` was added
+
+* `models.PartnerNamespace$DefinitionStages` was added
+
+* `models.Channel$Update` was added
+
+* `models.EventChannelFilter` was added
+
+* `models.ResourceMoveChangeHistory` was added
+
+* `models.PartnerTopicProvisioningState` was added
+
+* `models.EventChannel$UpdateStages` was added
+
+* `models.PartnerTopic` was added
+
+* `models.EventDefinitionKind` was added
+
+* `models.WebhookPartnerDestinationInfo` was added
+
+* `models.PartnerNamespace$Definition` was added
+
+* `models.PartnerNamespaceRegenerateKeyRequest` was added
+
+* `models.PartnerAuthorization` was added
+
+* `models.PartnerDestination$Update` was added
+
+* `models.VerifiedPartnersListResult` was added
+
+* `models.PartnerConfigurationProvisioningState` was added
+
+* `models.PartnerNamespaces` was added
+
+* `models.TopicEventSubscriptions` was added
+
+* `models.DomainTopicEventSubscriptions` was added
+
+* `models.PartnerConfigurationsListResult` was added
+
+* `models.PartnerUpdateTopicInfo` was added
+
+* `models.PartnerEventSubscriptionDestination` was added
+
+* `models.EventChannel$Definition` was added
+
+* `models.PartnerRegistration$Update` was added
+
+* `models.EventChannels` was added
+
+* `models.EventChannelDestination` was added
+
+* `models.PartnerTopicUpdateParameters` was added
+
+* `models.PartnerDetails` was added
+
+* `models.PartnerDestinationUpdateParameters` was added
+
+* `models.PartnerRegistration$DefinitionStages` was added
+
+* `models.EventChannelProvisioningState` was added
+
+* `models.PartnerTopicEventSubscriptions` was added
+
+* `models.PartnerClientAuthenticationType` was added
+
+* `models.PartnerNamespace$Update` was added
+
+* `models.EventChannel$DefinitionStages` was added
+
+* `models.PartnerDestinationActivationState` was added
+
+* `models.PartnerTopic$Update` was added
+
+* `models.EventTypeInfo` was added
+
+* `models.PartnerTopicReadinessState` was added
+
+* `models.PartnerNamespacesListResult` was added
+
+* `models.EventChannel$Update` was added
+
+* `models.WebhookUpdatePartnerDestinationInfo` was added
+
+* `models.PartnerTopic$DefinitionStages` was added
+
+* `models.ReadinessState` was added
+
+* `models.PartnerNamespaceUpdateParameters` was added
+
+* `models.Channel$Definition` was added
+
+* `models.PartnerTopic$UpdateStages` was added
+
+* `models.PartnerRegistrationsListResult` was added
+
+* `models.PartnerRegistrationUpdateParameters` was added
+
+* `models.Channel$DefinitionStages` was added
+
+* `models.VerifiedPartnerProvisioningState` was added
+
+* `models.EventChannelsListResult` was added
+
+* `models.PartnerRegistrationVisibilityState` was added
+
+* `models.AzureADPartnerClientAuthentication` was added
+
+* `models.ChannelType` was added
+
+* `models.ChannelUpdateParameters` was added
+
+* `models.PartnerNamespaceProvisioningState` was added
+
+* `models.PartnerTopicsListResult` was added
+
+* `models.PartnerDestination$UpdateStages` was added
+
+* `models.ExtendedLocation` was added
+
+* `models.PartnerDestination$DefinitionStages` was added
+
+* `models.PartnerRegistrations` was added
+
+* `models.VerifiedPartner` was added
+
+* `models.PartnerNamespace$UpdateStages` was added
+
+* `models.Partner` was added
+
+* `models.PartnerDestinationsListResult` was added
+
+#### `models.SystemTopic` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.TopicUpdateParameters` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `dataResidencyBoundary()` was added
+* `sku()` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+
+#### `models.Domain$Update` was modified
+
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+* `withKind(models.ResourceKind)` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.DomainUpdateParameters` was modified
+
+* `dataResidencyBoundary()` was added
+* `withSku(models.ResourceSku)` was added
+* `sku()` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+
+#### `models.Topic$Update` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+
+#### `models.Domain` was modified
+
+* `resourceGroupName()` was added
+* `sku()` was added
+* `dataResidencyBoundary()` was added
+
+#### `EventGridManager` was modified
+
+* `domainTopicEventSubscriptions()` was added
+* `partnerTopics()` was added
+* `partnerTopicEventSubscriptions()` was added
+* `verifiedPartners()` was added
+* `channels()` was added
+* `topicEventSubscriptions()` was added
+* `partnerRegistrations()` was added
+* `eventChannels()` was added
+* `partnerNamespaces()` was added
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+* `domainEventSubscriptions()` was added
+* `partnerConfigurations()` was added
+* `partnerDestinations()` was added
+
+#### `models.Topic` was modified
+
+* `sku()` was added
+* `dataResidencyBoundary()` was added
+* `extendedLocation()` was added
+* `kind()` was added
+* `resourceGroupName()` was added
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `delete(java.lang.String,models.ParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,models.ParentType,java.lang.String,java.lang.String)` was added
+* `update(java.lang.String,models.ParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner)` was added
+* `delete(java.lang.String,models.ParentType,java.lang.String,java.lang.String)` was added
+* `getWithResponse(java.lang.String,models.ParentType,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResource(java.lang.String,models.ParentType,java.lang.String)` was added
+* `update(java.lang.String,models.ParentType,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,com.azure.core.util.Context)` was added
+* `listByResource(java.lang.String,models.ParentType,java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+
+#### `models.Domain$Definition` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `withDataResidencyBoundary(models.DataResidencyBoundary)` was added
+
+#### `EventGridManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 ## 1.2.0-beta.1 (2022-03-28)
 

@@ -20,6 +20,7 @@ import org.springframework.util.StopWatch;
 public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractResourceCrud.class);
+    static final int RESOURCE_NOT_FOUND = 404;
 
     protected final AzureResourceManager resourceManager;
     protected final AzureResourceMetadata resourceMetadata;
@@ -30,7 +31,7 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
      * @param resourceManager The Azure resource manager.
      * @param resourceMetadata The Azure resource metadata.
      */
-    public AbstractResourceCrud(@NonNull AzureResourceManager resourceManager,
+    protected AbstractResourceCrud(@NonNull AzureResourceManager resourceManager,
                                 @NonNull AzureResourceMetadata resourceMetadata) {
         this.resourceManager = resourceManager;
         this.resourceMetadata = resourceMetadata;
@@ -57,8 +58,8 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
             LOGGER.info("Fetching {} with name '{}' ...", resourceType, name);
             return internalGet(key);
         } catch (ManagementException e) {
-            LOGGER.error("Fetching {} with name '{}' failed due to: {}", resourceType, name, e.toString());
-            throw new RuntimeException(e.getMessage(), e);
+            String message = String.format("Fetching %s with name '%s' failed due to: %s", resourceType, name, e.toString());
+            throw new RuntimeException(message, e);
         } finally {
             stopWatch.stop();
             LOGGER.info("Fetching {} with name '{}' finished in {} seconds", resourceType, name,
@@ -78,8 +79,8 @@ public abstract class AbstractResourceCrud<T, K> implements ResourceCrud<T, K> {
             LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
             return internalCreate(key);
         } catch (ManagementException e) {
-            LOGGER.error("Creating {} with name '{}' failed due to: {}", resourceType, name, e.toString());
-            throw new RuntimeException(e.getMessage(), e);
+            String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
+            throw new RuntimeException(message, e);
         } finally {
             stopWatch.stop();
             LOGGER.info("Creating {} with name '{}' finished in {} seconds", getResourceType(), name,

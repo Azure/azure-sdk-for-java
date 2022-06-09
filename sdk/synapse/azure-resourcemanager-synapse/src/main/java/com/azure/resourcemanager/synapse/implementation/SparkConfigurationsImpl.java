@@ -12,10 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.SparkConfigurationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourceInner;
 import com.azure.resourcemanager.synapse.models.SparkConfigurationResource;
 import com.azure.resourcemanager.synapse.models.SparkConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SparkConfigurationsImpl implements SparkConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SparkConfigurationsImpl.class);
 
     private final SparkConfigurationsClient innerClient;
 

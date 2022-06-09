@@ -16,7 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.NameAvailability;
 import com.azure.resourcemanager.appplatform.models.NameAvailabilityParameters;
-import com.azure.resourcemanager.appplatform.models.TestKeyType;
+import com.azure.resourcemanager.appplatform.models.RegenerateTestKeyRequestPayload;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -39,7 +39,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service and its properties.
+     * @return a Service and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServiceResourceInner>> getByResourceGroupWithResponseAsync(
@@ -54,7 +54,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service and its properties.
+     * @return a Service and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceResourceInner> getByResourceGroupAsync(String resourceGroupName, String serviceName);
@@ -83,7 +83,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service and its properties.
+     * @return a Service and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceResourceInner> getByResourceGroupWithResponse(
@@ -99,7 +99,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -115,9 +115,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return the {@link PollerFlux} for polling of service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, ServiceResourceInner resource);
 
@@ -131,9 +131,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return the {@link SyncPoller} for polling of service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource);
 
@@ -148,9 +148,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return the {@link SyncPoller} for polling of service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource, Context context);
 
@@ -164,7 +164,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceResourceInner> createOrUpdateAsync(
@@ -211,7 +211,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName);
@@ -225,9 +225,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName);
 
     /**
@@ -239,9 +239,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName);
 
     /**
@@ -254,9 +254,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, Context context);
 
     /**
@@ -268,7 +268,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serviceName);
@@ -310,7 +310,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -326,9 +326,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return the {@link PollerFlux} for polling of service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdateAsync(
         String resourceGroupName, String serviceName, ServiceResourceInner resource);
 
@@ -342,9 +342,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return the {@link SyncPoller} for polling of service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource);
 
@@ -359,9 +359,9 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return the {@link SyncPoller} for polling of service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource, Context context);
 
@@ -375,7 +375,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service resource.
+     * @return service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceResourceInner> updateAsync(String resourceGroupName, String serviceName, ServiceResourceInner resource);
@@ -421,7 +421,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TestKeys>> listTestKeysWithResponseAsync(String resourceGroupName, String serviceName);
@@ -435,7 +435,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TestKeys> listTestKeysAsync(String resourceGroupName, String serviceName);
@@ -464,7 +464,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TestKeys> listTestKeysWithResponse(String resourceGroupName, String serviceName, Context context);
@@ -475,15 +475,15 @@ public interface ServicesClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param keyType Type of the test key.
+     * @param regenerateTestKeyRequest Parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TestKeys>> regenerateTestKeyWithResponseAsync(
-        String resourceGroupName, String serviceName, TestKeyType keyType);
+        String resourceGroupName, String serviceName, RegenerateTestKeyRequestPayload regenerateTestKeyRequest);
 
     /**
      * Regenerate a test key for a Service.
@@ -491,14 +491,31 @@ public interface ServicesClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param keyType Type of the test key.
+     * @param regenerateTestKeyRequest Parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test keys payload on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TestKeys> regenerateTestKeyAsync(
+        String resourceGroupName, String serviceName, RegenerateTestKeyRequestPayload regenerateTestKeyRequest);
+
+    /**
+     * Regenerate a test key for a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param regenerateTestKeyRequest Parameters for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return test keys payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestKeys> regenerateTestKeyAsync(String resourceGroupName, String serviceName, TestKeyType keyType);
+    TestKeys regenerateTestKey(
+        String resourceGroupName, String serviceName, RegenerateTestKeyRequestPayload regenerateTestKeyRequest);
 
     /**
      * Regenerate a test key for a Service.
@@ -506,31 +523,19 @@ public interface ServicesClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param keyType Type of the test key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestKeys regenerateTestKey(String resourceGroupName, String serviceName, TestKeyType keyType);
-
-    /**
-     * Regenerate a test key for a Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param keyType Type of the test key.
+     * @param regenerateTestKeyRequest Parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TestKeys> regenerateTestKeyWithResponse(
-        String resourceGroupName, String serviceName, TestKeyType keyType, Context context);
+        String resourceGroupName,
+        String serviceName,
+        RegenerateTestKeyRequestPayload regenerateTestKeyRequest,
+        Context context);
 
     /**
      * Disable test endpoint functionality for a Service.
@@ -541,7 +546,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> disableTestEndpointWithResponseAsync(String resourceGroupName, String serviceName);
@@ -555,7 +560,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> disableTestEndpointAsync(String resourceGroupName, String serviceName);
@@ -583,7 +588,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> disableTestEndpointWithResponse(String resourceGroupName, String serviceName, Context context);
@@ -597,7 +602,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<TestKeys>> enableTestEndpointWithResponseAsync(String resourceGroupName, String serviceName);
@@ -611,7 +616,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TestKeys> enableTestEndpointAsync(String resourceGroupName, String serviceName);
@@ -640,7 +645,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
+     * @return test keys payload along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TestKeys> enableTestEndpointWithResponse(String resourceGroupName, String serviceName, Context context);
@@ -653,7 +658,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return name availability result payload.
+     * @return name availability result payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NameAvailability>> checkNameAvailabilityWithResponseAsync(
@@ -667,7 +672,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return name availability result payload.
+     * @return name availability result payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NameAvailability> checkNameAvailabilityAsync(
@@ -695,7 +700,7 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return name availability result payload.
+     * @return name availability result payload along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailability> checkNameAvailabilityWithResponse(
@@ -706,7 +711,8 @@ public interface ServicesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Service resources and a possible link for next set.
+     * @return object that includes an array of Service resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServiceResourceInner> listAsync();
@@ -716,7 +722,8 @@ public interface ServicesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Service resources and a possible link for next set.
+     * @return object that includes an array of Service resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> list();
@@ -728,7 +735,8 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Service resources and a possible link for next set.
+     * @return object that includes an array of Service resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> list(Context context);
@@ -741,7 +749,8 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Service resources and a possible link for next set.
+     * @return object that includes an array of Service resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServiceResourceInner> listByResourceGroupAsync(String resourceGroupName);
@@ -754,7 +763,8 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Service resources and a possible link for next set.
+     * @return object that includes an array of Service resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> listByResourceGroup(String resourceGroupName);
@@ -768,7 +778,8 @@ public interface ServicesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Service resources and a possible link for next set.
+     * @return object that includes an array of Service resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> listByResourceGroup(String resourceGroupName, Context context);

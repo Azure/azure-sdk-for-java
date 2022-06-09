@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AgentPools Delete. */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-02-01/examples/AgentPoolsDelete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/AgentPoolsDelete.json
      */
     /**
      * Sample code: Delete Agent Pool.

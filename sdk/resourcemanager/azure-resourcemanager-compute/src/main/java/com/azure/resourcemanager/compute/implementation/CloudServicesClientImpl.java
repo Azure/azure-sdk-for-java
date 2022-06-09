@@ -1238,14 +1238,7 @@ public final class CloudServicesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceInner> getByResourceGroupAsync(String resourceGroupName, String cloudServiceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, cloudServiceName)
-            .flatMap(
-                (Response<CloudServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1391,14 +1384,7 @@ public final class CloudServicesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CloudServiceInstanceViewInner> getInstanceViewAsync(String resourceGroupName, String cloudServiceName) {
         return getInstanceViewWithResponseAsync(resourceGroupName, cloudServiceName)
-            .flatMap(
-                (Response<CloudServiceInstanceViewInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

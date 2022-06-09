@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Application level properties for the edge module resource. */
 @Immutable
 public final class EdgeModuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeModuleProperties.class);
-
     /*
      * Internal ID generated for the instance of the Video Analyzer edge
      * module.

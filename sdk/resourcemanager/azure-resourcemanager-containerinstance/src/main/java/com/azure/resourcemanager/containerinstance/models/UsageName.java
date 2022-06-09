@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name object of the resource. */
 @Immutable
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
-
     /*
      * The name of the resource
      */

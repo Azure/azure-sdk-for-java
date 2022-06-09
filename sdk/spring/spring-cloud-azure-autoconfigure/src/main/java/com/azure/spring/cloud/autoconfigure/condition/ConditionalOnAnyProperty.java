@@ -35,6 +35,14 @@ public @interface ConditionalOnAnyProperty {
     String prefix() default "";
 
     /**
+     * The prefixes that should be applied to each property. The prefixes automatically ends
+     * with a dot if not specified. A valid prefix is defined by one or more words
+     * separated with dots (e.g. {@code "spring.cloud.azure"}).
+     * @return the prefix array
+     */
+    String[] prefixes() default {};
+
+    /**
      * The name of the properties to test. If a prefix has been defined, it is applied to
      * compute the full key of each property. For instance if the prefix is {@code "spring.cloud.azure"}
      * and one value is {@code "my-value"}, the full key would be

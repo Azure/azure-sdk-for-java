@@ -43,13 +43,13 @@ public class AadB2cProperties implements InitializingBean {
     protected static final String DEFAULT_KEY_PASSWORD_RESET = "password-reset";
 
     /**
-     * AAD B2C profile information.
+     * Azure AD B2C profile information.
      */
     @NestedConfigurationProperty
     private final AadB2cProfileProperties profile = new AadB2cProfileProperties();
 
     /**
-     * AAD B2C credential information.
+     * Azure AD B2C credential information.
      */
     @NestedConfigurationProperty
     private final AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
@@ -95,7 +95,7 @@ public class AadB2cProperties implements InitializingBean {
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * AAD B2C endpoint base uri.
+     * Azure AD B2C endpoint base uri.
      */
     private String baseUri;
 
@@ -174,7 +174,7 @@ public class AadB2cProperties implements InitializingBean {
         }
         try {
             new java.net.URL(uri);
-        } catch (MalformedURLException var) {
+        } catch (MalformedURLException ex) {
             return false;
         }
         return true;

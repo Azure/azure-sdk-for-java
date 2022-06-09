@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.videoanalyzer.fluent.PipelineJobsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PipelineJobsClient. */
 public final class PipelineJobsClientImpl implements PipelineJobsClient {
-    private final ClientLogger logger = new ClientLogger(PipelineJobsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PipelineJobsService service;
 
@@ -191,7 +188,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PipelineJobInner>> listSinglePageAsync(
@@ -254,7 +252,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PipelineJobInner>> listSinglePageAsync(
@@ -313,7 +312,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PipelineJobInner> listAsync(
@@ -331,7 +330,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PipelineJobInner> listAsync(String resourceGroupName, String accountName) {
@@ -354,7 +353,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PipelineJobInner> listAsync(
@@ -372,7 +371,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineJobInner> list(String resourceGroupName, String accountName) {
@@ -393,7 +392,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineJobInner> list(
@@ -412,7 +411,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PipelineJobInner>> getWithResponseAsync(
@@ -469,7 +468,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PipelineJobInner>> getWithResponseAsync(
@@ -522,19 +521,12 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PipelineJobInner> getAsync(String resourceGroupName, String accountName, String pipelineJobName) {
         return getWithResponseAsync(resourceGroupName, accountName, pipelineJobName)
-            .flatMap(
-                (Response<PipelineJobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -567,7 +559,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineJobInner> getWithResponse(
@@ -586,7 +578,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PipelineJobInner>> createOrUpdateWithResponseAsync(
@@ -649,7 +641,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PipelineJobInner>> createOrUpdateWithResponseAsync(
@@ -712,20 +704,13 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PipelineJobInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String pipelineJobName, PipelineJobInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, pipelineJobName, parameters)
-            .flatMap(
-                (Response<PipelineJobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -759,7 +744,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineJobInner> createOrUpdateWithResponse(
@@ -781,7 +766,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -836,7 +821,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -887,12 +872,12 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String pipelineJobName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, pipelineJobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -920,7 +905,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -939,7 +924,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PipelineJobInner>> updateWithResponseAsync(
@@ -1002,7 +987,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PipelineJobInner>> updateWithResponseAsync(
@@ -1065,20 +1050,13 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PipelineJobInner> updateAsync(
         String resourceGroupName, String accountName, String pipelineJobName, PipelineJobUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, pipelineJobName, parameters)
-            .flatMap(
-                (Response<PipelineJobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1112,7 +1090,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline job represents a unique instance of a batch topology, used for offline processing of selected
-     *     portions of archived content.
+     *     portions of archived content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineJobInner> updateWithResponse(
@@ -1133,7 +1111,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
@@ -1188,7 +1166,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
@@ -1239,7 +1217,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
@@ -1248,7 +1226,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
             cancelWithResponseAsync(resourceGroupName, accountName, pipelineJobName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1261,7 +1240,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
@@ -1283,7 +1262,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
@@ -1301,7 +1280,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(
@@ -1318,7 +1297,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String accountName, String pipelineJobName) {
@@ -1337,7 +1316,7 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(
@@ -1385,7 +1364,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PipelineJobInner>> listNextSinglePageAsync(String nextLink) {
@@ -1421,7 +1401,8 @@ public final class PipelineJobsClientImpl implements PipelineJobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of PipelineJob items.
+     * @return a collection of PipelineJob items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PipelineJobInner>> listNextSinglePageAsync(String nextLink, Context context) {

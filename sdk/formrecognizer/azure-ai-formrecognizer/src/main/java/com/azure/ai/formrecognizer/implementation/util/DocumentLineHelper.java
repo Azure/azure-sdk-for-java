@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentSpan;
+import com.azure.ai.formrecognizer.models.Point;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public final class DocumentLineHelper {
      */
     public interface DocumentLineAccessor {
         void setContent(DocumentLine documentLine, String content);
-        void setBoundingBox(DocumentLine documentLine, List<Float> boundingBox);
+        void setBoundingPolygon(DocumentLine documentLine, List<Point> boundingPolygon);
         void setSpans(DocumentLine documentLine, List<DocumentSpan> spans);
     }
 
@@ -39,8 +40,8 @@ public final class DocumentLineHelper {
         accessor.setContent(documentLine, content);
     }
 
-    static void setBoundingBox(DocumentLine documentLine, List<Float> boundingBox) {
-        accessor.setBoundingBox(documentLine, boundingBox);
+    static void setBoundingPolygon(DocumentLine documentLine, List<Point> boundingPolygon) {
+        accessor.setBoundingPolygon(documentLine, boundingPolygon);
     }
 
     static void setSpans(DocumentLine documentLine, List<DocumentSpan> spans) {

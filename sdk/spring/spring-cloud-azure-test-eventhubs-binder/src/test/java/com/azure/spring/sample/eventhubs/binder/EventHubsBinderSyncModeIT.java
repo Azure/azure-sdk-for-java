@@ -3,14 +3,12 @@
 
 package com.azure.spring.sample.eventhubs.binder;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -41,9 +39,6 @@ class EventHubsBinderSyncModeIT {
 
     @Autowired
     private Sinks.Many<Message<String>> many;
-
-    @Rule
-    OutputCaptureRule capture = new OutputCaptureRule();
 
     private static final CountDownLatch LATCH = new CountDownLatch(1);
 

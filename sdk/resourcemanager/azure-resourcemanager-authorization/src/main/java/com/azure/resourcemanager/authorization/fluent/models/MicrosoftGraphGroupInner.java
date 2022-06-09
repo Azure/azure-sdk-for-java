@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,13 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * group Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
 public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphGroupInner.class);
-
     /*
      * The list of sensitivity label pairs (label ID, label name) associated
      * with an Microsoft 365 group. Returned only on $select. Read-only.
@@ -210,11 +207,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     private String preferredLanguage;
 
     /*
-     * Email addresses for the group that direct to the same group mailbox. For
-     * example: ['SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com']. The
-     * any operator is required to filter expressions on multi-valued
-     * properties. Returned by default. Read-only. Not nullable. Supports
-     * $filter.
+     * The proxyAddresses property.
      */
     @JsonProperty(value = "proxyAddresses")
     private List<String> proxyAddresses;
@@ -318,11 +311,12 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * The appRoleAssignments property.
      */
     @JsonProperty(value = "appRoleAssignments")
-    private List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments;
+    private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * directoryObject Represents an Azure Active Directory object. The
+     * directoryObject type is the base type for many other directory entity
+     * types.
      */
     @JsonProperty(value = "createdOnBehalfOf")
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
@@ -364,7 +358,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * The permissionGrants property.
      */
     @JsonProperty(value = "permissionGrants")
-    private List<MicrosoftGraphResourceSpecificPermissionGrantInner> permissionGrants;
+    private List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants;
 
     /*
      * Read-only. Nullable.
@@ -420,13 +414,13 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * profilePhoto
      */
     @JsonProperty(value = "photo")
-    private MicrosoftGraphProfilePhotoInner photo;
+    private MicrosoftGraphProfilePhoto photo;
 
     /*
      * The profile photos owned by the group. Read-only. Nullable.
      */
     @JsonProperty(value = "photos")
-    private List<MicrosoftGraphProfilePhotoInner> photos;
+    private List<MicrosoftGraphProfilePhoto> photos;
 
     /*
      * The list of users or groups that are not allowed to create posts or
@@ -465,14 +459,14 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * Nullable.
      */
     @JsonProperty(value = "extensions")
-    private List<MicrosoftGraphExtensionInner> extensions;
+    private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The collection of lifecycle policies for this group. Read-only.
      * Nullable.
      */
     @JsonProperty(value = "groupLifecyclePolicies")
-    private List<MicrosoftGraphGroupLifecyclePolicyInner> groupLifecyclePolicies;
+    private List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies;
 
     /*
      * plannerGroup
@@ -1037,9 +1031,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Get the proxyAddresses property: Email addresses for the group that direct to the same group mailbox. For
-     * example: ['SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com']. The any operator is required to filter
-     * expressions on multi-valued properties. Returned by default. Read-only. Not nullable. Supports $filter.
+     * Get the proxyAddresses property: The proxyAddresses property.
      *
      * @return the proxyAddresses value.
      */
@@ -1048,9 +1040,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the proxyAddresses property: Email addresses for the group that direct to the same group mailbox. For
-     * example: ['SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com']. The any operator is required to filter
-     * expressions on multi-valued properties. Returned by default. Read-only. Not nullable. Supports $filter.
+     * Set the proxyAddresses property: The proxyAddresses property.
      *
      * @param proxyAddresses the proxyAddresses value to set.
      * @return the MicrosoftGraphGroupInner object itself.
@@ -1339,7 +1329,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the appRoleAssignments value.
      */
-    public List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments() {
+    public List<MicrosoftGraphAppRoleAssignment> appRoleAssignments() {
         return this.appRoleAssignments;
     }
 
@@ -1349,15 +1339,14 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param appRoleAssignments the appRoleAssignments value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withAppRoleAssignments(
-        List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments) {
+    public MicrosoftGraphGroupInner withAppRoleAssignments(List<MicrosoftGraphAppRoleAssignment> appRoleAssignments) {
         this.appRoleAssignments = appRoleAssignments;
         return this;
     }
 
     /**
-     * Get the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
-     * base type for many other directory entity types.
+     * Get the createdOnBehalfOf property: directoryObject Represents an Azure Active Directory object. The
+     * directoryObject type is the base type for many other directory entity types.
      *
      * @return the createdOnBehalfOf value.
      */
@@ -1366,8 +1355,8 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
     }
 
     /**
-     * Set the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
-     * base type for many other directory entity types.
+     * Set the createdOnBehalfOf property: directoryObject Represents an Azure Active Directory object. The
+     * directoryObject type is the base type for many other directory entity types.
      *
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
      * @return the MicrosoftGraphGroupInner object itself.
@@ -1477,7 +1466,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the permissionGrants value.
      */
-    public List<MicrosoftGraphResourceSpecificPermissionGrantInner> permissionGrants() {
+    public List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants() {
         return this.permissionGrants;
     }
 
@@ -1488,7 +1477,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @return the MicrosoftGraphGroupInner object itself.
      */
     public MicrosoftGraphGroupInner withPermissionGrants(
-        List<MicrosoftGraphResourceSpecificPermissionGrantInner> permissionGrants) {
+        List<MicrosoftGraphResourceSpecificPermissionGrant> permissionGrants) {
         this.permissionGrants = permissionGrants;
         return this;
     }
@@ -1661,7 +1650,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the photo value.
      */
-    public MicrosoftGraphProfilePhotoInner photo() {
+    public MicrosoftGraphProfilePhoto photo() {
         return this.photo;
     }
 
@@ -1671,7 +1660,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param photo the photo value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withPhoto(MicrosoftGraphProfilePhotoInner photo) {
+    public MicrosoftGraphGroupInner withPhoto(MicrosoftGraphProfilePhoto photo) {
         this.photo = photo;
         return this;
     }
@@ -1681,7 +1670,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the photos value.
      */
-    public List<MicrosoftGraphProfilePhotoInner> photos() {
+    public List<MicrosoftGraphProfilePhoto> photos() {
         return this.photos;
     }
 
@@ -1691,7 +1680,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param photos the photos value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withPhotos(List<MicrosoftGraphProfilePhotoInner> photos) {
+    public MicrosoftGraphGroupInner withPhotos(List<MicrosoftGraphProfilePhoto> photos) {
         this.photos = photos;
         return this;
     }
@@ -1803,7 +1792,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the extensions value.
      */
-    public List<MicrosoftGraphExtensionInner> extensions() {
+    public List<MicrosoftGraphExtension> extensions() {
         return this.extensions;
     }
 
@@ -1813,7 +1802,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withExtensions(List<MicrosoftGraphExtensionInner> extensions) {
+    public MicrosoftGraphGroupInner withExtensions(List<MicrosoftGraphExtension> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -1824,7 +1813,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the groupLifecyclePolicies value.
      */
-    public List<MicrosoftGraphGroupLifecyclePolicyInner> groupLifecyclePolicies() {
+    public List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies() {
         return this.groupLifecyclePolicies;
     }
 
@@ -1836,7 +1825,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @return the MicrosoftGraphGroupInner object itself.
      */
     public MicrosoftGraphGroupInner withGroupLifecyclePolicies(
-        List<MicrosoftGraphGroupLifecyclePolicyInner> groupLifecyclePolicies) {
+        List<MicrosoftGraphGroupLifecyclePolicy> groupLifecyclePolicies) {
         this.groupLifecyclePolicies = groupLifecyclePolicies;
         return this;
     }

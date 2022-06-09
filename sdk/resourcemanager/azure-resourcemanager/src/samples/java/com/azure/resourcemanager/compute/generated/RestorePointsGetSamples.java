@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorePoints Get. */
 public final class RestorePointsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetRestorePoint.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePoint_Get.json
      */
     /**
      * Sample code: Get a restore point.
@@ -26,7 +26,7 @@ public final class RestorePointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetRestorePointWithInstanceView.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePoint_Get_WithInstanceView.json
      */
     /**
      * Sample code: Get restore point with instance view.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -16,8 +14,6 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public final class LibraryInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LibraryInfo.class);
-
     /*
      * Name of the library.
      */

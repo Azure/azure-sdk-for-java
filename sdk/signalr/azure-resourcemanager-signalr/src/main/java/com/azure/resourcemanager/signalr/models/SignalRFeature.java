@@ -6,7 +6,6 @@ package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Feature of a resource, which controls the runtime behavior. */
 @Fluent
 public final class SignalRFeature {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRFeature.class);
-
     /*
      * FeatureFlags is the supported features of Azure SignalR service.
      * - ServiceMode: Flag for backend server for SignalR service. Values
@@ -138,14 +135,16 @@ public final class SignalRFeature {
      */
     public void validate() {
         if (flag() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property flag in model SignalRFeature"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SignalRFeature"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SignalRFeature.class);
 }

@@ -55,7 +55,7 @@ public final class MetastoresImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientMetas")
-    private interface MetastoresService {
+    public interface MetastoresService {
         @Put("/metastore/create-database-operations/{id}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorContractException.class)

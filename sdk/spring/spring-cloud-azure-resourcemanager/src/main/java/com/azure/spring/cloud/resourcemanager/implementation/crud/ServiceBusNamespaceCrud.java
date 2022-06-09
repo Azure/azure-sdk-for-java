@@ -35,7 +35,7 @@ public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusName
             return this.resourceManager.serviceBusNamespaces().getByResourceGroup(resourceMetadata.getResourceGroup(),
                                                                                   namespace);
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

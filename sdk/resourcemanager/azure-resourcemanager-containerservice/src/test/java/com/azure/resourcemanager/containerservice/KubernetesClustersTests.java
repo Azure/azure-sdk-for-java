@@ -7,8 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
@@ -26,24 +24,19 @@ import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 import java.util.Map;
-
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
     private static final String SSH_KEY = sshPublicKey();
 
     @Test
-    public void canCRUDKubernetesCluster() throws Exception {
+    public void canCRUDKubernetesCluster() {
         // enable preview feature of ACR Teleport for AKS
         Context context = new Context(
             AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
@@ -54,23 +47,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName = generateRandomResourceName("ap0", 10);
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
         String agentPoolName2 = generateRandomResourceName("ap2", 10);
-        String servicePrincipalClientId = "spId";
-        String servicePrincipalSecret = "spSecret";
-
-        // aks can use another azure auth rather than original client auth to access azure service.
-        // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
-        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
-        if (envSecondaryServicePrincipal == null
-            || envSecondaryServicePrincipal.isEmpty()
-            || !(new File(envSecondaryServicePrincipal).exists())) {
-            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
-        }
-
-        if (!isPlaybackMode()) {
-            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
-            servicePrincipalClientId = credentialsMap.get("clientId");
-            servicePrincipalSecret = credentialsMap.get("clientSecret");
-        }
 
         /*
         KubeletDiskType requires registering following preview feature:
@@ -87,8 +63,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withDefaultVersion()
                 .withRootUsername("testaks")
                 .withSshKey(SSH_KEY)
-                .withServicePrincipalClientId(servicePrincipalClientId)
-                .withServicePrincipalSecret(servicePrincipalSecret)
+                .withSystemAssignedManagedServiceIdentity()
                 .defineAgentPool(agentPoolName)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
                     .withAgentPoolVirtualMachineCount(1)
@@ -199,33 +174,25 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));
+
+        // preview feature
+//        // stop agent pool
+//        agentPool.stop();
+//        Assertions.assertEquals(Code.STOPPED, agentPool.powerState().code());
+//
+//        // start agent pool
+//        agentPool.start();
+//        Assertions.assertEquals(Code.RUNNING, agentPool.powerState().code());
     }
 
     @Test
-    public void canAutoScaleKubernetesCluster() throws Exception {
+    public void canAutoScaleKubernetesCluster() {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
         String agentPoolName2 = generateRandomResourceName("ap2", 10);
         String agentPoolName3 = generateRandomResourceName("ap2", 10);
-        String servicePrincipalClientId = "spId";
-        String servicePrincipalSecret = "spSecret";
-
-        // aks can use another azure auth rather than original client auth to access azure service.
-        // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
-        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
-        if (envSecondaryServicePrincipal == null
-            || envSecondaryServicePrincipal.isEmpty()
-            || !(new File(envSecondaryServicePrincipal).exists())) {
-            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
-        }
-
-        if (!isPlaybackMode()) {
-            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
-            servicePrincipalClientId = credentialsMap.get("clientId");
-            servicePrincipalSecret = credentialsMap.get("clientSecret");
-        }
 
         Map<String, String> nodeLables = new HashMap<>(2);
         nodeLables.put("environment", "dev");
@@ -239,10 +206,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withRegion(Region.US_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
-            .withRootUsername("testaks")
-            .withSshKey(SSH_KEY)
-            .withServicePrincipalClientId(servicePrincipalClientId)
-            .withServicePrincipalSecret(servicePrincipalSecret)
+            .withSystemAssignedManagedServiceIdentity()
             // zone redundancy
             .defineAgentPool(agentPoolName)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
@@ -300,6 +264,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .parent()
             .apply();
 
+        Assertions.assertFalse(agentPoolProfile1.isAutoScalingEnabled());
+
         // remove agent pool
         kubernetesCluster.update()
             .withoutAgentPool(agentPoolName1)
@@ -317,7 +283,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
-    public void canCreateClusterWithSpotVM() throws Exception {
+    public void canCreateClusterWithSpotVM() {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
@@ -388,11 +354,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-            .withAgentPoolVirtualMachineCount(1)
-            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-            .withAgentPoolMode(AgentPoolMode.SYSTEM)
-            .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
@@ -433,11 +399,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .enableAzureRbac()
             .disableLocalAccounts()
             .defineAgentPool(agentPoolName)
-            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-            .withAgentPoolVirtualMachineCount(1)
-            .withAgentPoolMode(AgentPoolMode.SYSTEM)
-            .withOSDiskSizeInGB(30)
-            .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withOSDiskSizeInGB(30)
+                .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
@@ -445,34 +411,5 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
         Assertions.assertTrue(kubernetesCluster.isAzureRbacEnabled());
         Assertions.assertTrue(kubernetesCluster.enableRBAC());
-    }
-
-    /**
-     * Parse azure auth to hashmap
-     *
-     * @param authFilename the azure auth location
-     * @return all fields in azure auth json
-     * @throws Exception exception
-     */
-    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
-        String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
-        HashMap<String, String> auth = new HashMap<>();
-        if (isJsonBased(content)) {
-            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
-        } else {
-            Properties authSettings = new Properties();
-            FileInputStream credentialsFileStream = new FileInputStream(new File(authFilename));
-            authSettings.load(credentialsFileStream);
-            credentialsFileStream.close();
-
-            for (final String authName : authSettings.stringPropertyNames()) {
-                auth.put(authName, authSettings.getProperty(authName));
-            }
-        }
-        return auth;
-    }
-
-    private static boolean isJsonBased(String content) {
-        return content.startsWith("{");
     }
 }

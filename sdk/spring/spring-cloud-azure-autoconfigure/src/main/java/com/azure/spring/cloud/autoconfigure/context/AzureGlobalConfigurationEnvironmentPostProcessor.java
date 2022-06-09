@@ -66,39 +66,39 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
     enum AzureCoreEnvMapping {
 
-        clientId(PROPERTY_AZURE_CLIENT_ID, "credential.client-id"),
+        CLIENT_ID(PROPERTY_AZURE_CLIENT_ID, "credential.client-id"),
 
-        clientSecret(PROPERTY_AZURE_CLIENT_SECRET, "credential.client-secret"),
+        CLIENT_SECRET(PROPERTY_AZURE_CLIENT_SECRET, "credential.client-secret"),
 
-        clientCertificatePath(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),
+        CLIENT_CERTIFICATE_PATH(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),
 
-        username(PROPERTY_AZURE_USERNAME, "credential.username"),
+        USERNAME(PROPERTY_AZURE_USERNAME, "credential.username"),
 
-        password(PROPERTY_AZURE_PASSWORD, "credential.password"),
+        PASSWORD(PROPERTY_AZURE_PASSWORD, "credential.password"),
 
-        tenantId(PROPERTY_AZURE_TENANT_ID, "profile.tenant-id"),
+        TENANT_ID(PROPERTY_AZURE_TENANT_ID, "profile.tenant-id"),
 
-        subscriptionId(PROPERTY_AZURE_SUBSCRIPTION_ID, "profile.subscription-id"),
+        SUBSCRIPTION_ID(PROPERTY_AZURE_SUBSCRIPTION_ID, "profile.subscription-id"),
 
-        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud-type"),
+        AZURE_CLOUD(PROPERTY_AZURE_CLOUD, "profile.cloud-type"),
 
-        authorityHost(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
+        AUTHORITY_HOST(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
 
-        maxFixedRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.exponential.max-retries"),
+        MAX_FIXED_RETRY(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.exponential.max-retries"),
 
-        maxExponentialRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.fixed.max-retries"),
+        MAX_EXPONENTIAL_RETRY(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.fixed.max-retries"),
 
-        httpLogLevel(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.http.logging.level"),
+        HTTP_LOG_LEVEL(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.http.logging.level"),
 
-        httpConnectTimeout(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, "client.http.connect-timeout", convertMillisToDuration()),
+        HTTP_CONNECT_TIMEOUT(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, "client.http.connect-timeout", convertMillisToDuration()),
 
-        httpReadTimeout(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, "client.http.read-timeout", convertMillisToDuration()),
+        HTTP_READ_TIMEOUT(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, "client.http.read-timeout", convertMillisToDuration()),
 
-        httpWriteTimeout(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, "client.http.write-timeout", convertMillisToDuration()),
+        HTTP_WRITE_TIMEOUT(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, "client.http.write-timeout", convertMillisToDuration()),
 
-        httpResponseTimeout(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "client.http.response-timeout", convertMillisToDuration()),
+        HTTP_RESPONSE_TIMEOUT(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "client.http.response-timeout", convertMillisToDuration()),
 
-        httpNoProxy(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts");
+        HTTP_NO_PROXY(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts");
 
 
         // TODO (xiada): how to set this proxy?
@@ -130,16 +130,16 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
             };
         }
 
-        public static void setLogger(Log logger) {
+        private static void setLogger(Log logger) {
             AzureCoreEnvMapping.logger = logger;
         }
 
     }
 
     enum AzureSdkEnvMapping {
-        keyVaultSecretEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.secret.endpoint"),
-        keyVaultCertificateEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.certificate.endpoint"),
-        eventHubsConnectionString("AZURE_EVENT_HUBS_CONNECTION_STRING", "eventhubs.connection-string");
+        KEY_VAULT_SECRET_ENDPOINT("AZURE_KEYVAULT_ENDPOINT", "keyvault.secret.endpoint"),
+        KEY_VAULT_CERTIFICATE_ENDPOINT("AZURE_KEYVAULT_ENDPOINT", "keyvault.certificate.endpoint"),
+        EVENT_HUBS_CONNECTION_STRING("AZURE_EVENT_HUBS_CONNECTION_STRING", "eventhubs.connection-string");
 
         private final String sdkEnvName;
         private final String springPropertyName;

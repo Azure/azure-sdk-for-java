@@ -29,7 +29,7 @@ public final class AzureHttpRetryOptionsConverter implements Converter<RetryOpti
 
         RetryOptionsProvider.RetryMode retryMode = retry.getMode();
 
-        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retryMode)) {
+        if (RetryOptionsProvider.RetryMode.EXPONENTIAL == retryMode) {
             RetryOptionsProvider.RetryOptions.ExponentialRetryOptions exponential = retry.getExponential();
             if (exponential != null && exponential.getMaxRetries() != null) {
                 ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions();
@@ -40,7 +40,7 @@ public final class AzureHttpRetryOptionsConverter implements Converter<RetryOpti
             } else {
                 LOGGER.debug("The max-retries is not set, skip the convert.");
             }
-        } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retryMode)) {
+        } else if (RetryOptionsProvider.RetryMode.FIXED == retryMode) {
             RetryOptionsProvider.RetryOptions.FixedRetryOptions fixed = retry.getFixed();
             if (fixed != null && fixed.getMaxRetries() != null) {
                 FixedDelayOptions fixedDelayOptions = new FixedDelayOptions(fixed.getMaxRetries(), fixed.getDelay());

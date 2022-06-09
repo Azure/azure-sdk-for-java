@@ -104,7 +104,7 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $folde
         # Log and warn
         Write-Host "Not able to find namespaces from javadoc jar $package-$version-javadoc.jar"
     }
-    return (Get-Content $filePath | ForEach-Object {$_.Trim() + "*"})
+    return (Get-Content $filePath | ForEach-Object {$_.Trim()})
 }
   
 function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
@@ -159,6 +159,59 @@ function Get-java-UpdatedDocsMsToc($toc) {
     # Add services exsting in old toc but missing in automation.
     $otherService = $services[-1]
     $sortableServices = $services | Where-Object { $_ –ne $otherService }
+    foreach ($service in $sortableServices) {
+        if ($service.name -eq "SQL") {
+            $items = $service.items
+            $service.items = @(
+                [PSCustomObject]@{
+                    name  = "Client"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.elasticdb*")
+                }
+            ) + $items
+        }
+        if ($service.name -eq "Log Analytics") {
+            $items = $service.items
+            $service.items = @(
+                [PSCustomObject]@{
+                    name  = "Client"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.loganalytics*")
+                }
+            ) + $items
+        }
+        if ($service.name -eq "Data Lake Analytics") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.management.datalake.analytics*")
+                }
+            )
+        }
+        if ($service.name -eq "Data Lake Store") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @(
+                        "com.microsoft.azure.management.datalakestore*",
+                        "com.microsoft.azure.management.datalake.store*",
+                        "com.microsoft.azure.management.datalake.store.models*"
+                    )
+                }
+            )
+        }
+        if ($service.name -eq "Stream Analytics") {
+            $service.items += @(
+                [PSCustomObject]@{
+                    name  = "Resource Management"
+                    landingPageType = "Service"
+                    children = @("com.microsoft.azure.management.streamanalytics*")
+                }
+            )
+        }
+    }
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
         href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
@@ -170,7 +223,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
                 children = @("com.azure.resourcemanager.msi*")
             }, 
             [PSCustomObject]@{
-                name  = "client"
+                name  = "Client"
                 href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
                 children = @(
                     "com.microsoft.aad.adal*",

@@ -1,45 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/anomalies/dimension/query?$maxpagesize=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6f273929-c143-4ff3-a01e-4c1f1998fcd7",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1d8ee91b-44b7-4b02-80a1-b4d23d00074f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "4093940c-0210-4264-aa9d-dc6bdeca2061",
-      "content-length" : "327",
-      "x-envoy-upstream-service-time" : "195",
+      "x-request-id" : "79ae02f2-2d49-4cb2-8d72-d2737cfd30e3",
+      "content-length" : "27",
+      "x-envoy-upstream-service-time" : "244",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4093940c-0210-4264-aa9d-dc6bdeca2061",
+      "apim-request-id" : "79ae02f2-2d49-4cb2-8d72-d2737cfd30e3",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"__SUM__\",\"Karachi\",\"Delhi\",\"Mumbai\",\"Seoul\",\"Beijing\",\"Cairo\",\"New York\",\"Miami\",\"Tianjin\"],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10&$skip=10\"}",
-      "Date" : "Thu, 28 Oct 2021 22:36:24 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10&$skip=10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "38deeeec-c5db-4455-be6e-301e5877452a",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "8b21842a-00c6-433b-b2bf-141a5ed87093",
-      "content-length" : "22",
-      "x-envoy-upstream-service-time" : "169",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8b21842a-00c6-433b-b2bf-141a5ed87093",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Istanbul\"]}",
-      "Date" : "Thu, 28 Oct 2021 22:36:25 GMT",
+      "Body" : "{\"value\":[\"__SUM__\",\"JPN\"]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:07 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

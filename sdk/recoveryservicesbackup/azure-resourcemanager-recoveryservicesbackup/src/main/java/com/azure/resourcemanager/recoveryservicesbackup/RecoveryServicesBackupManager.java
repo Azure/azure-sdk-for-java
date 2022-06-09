@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -257,6 +259,19 @@ public final class RecoveryServicesBackupManager {
     }
 
     /**
+     * Creates an instance of RecoveryServicesBackup service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the RecoveryServicesBackup service API instance.
+     */
+    public static RecoveryServicesBackupManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new RecoveryServicesBackupManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create RecoveryServicesBackupManager with optional
      * configuration.
      *
@@ -268,13 +283,14 @@ public final class RecoveryServicesBackupManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -336,15 +352,30 @@ public final class RecoveryServicesBackupManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -366,7 +397,7 @@ public final class RecoveryServicesBackupManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesbackup")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -384,10 +415,15 @@ public final class RecoveryServicesBackupManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -418,7 +454,11 @@ public final class RecoveryServicesBackupManager {
         }
     }
 
-    /** @return Resource collection API of BackupResourceStorageConfigsNonCrrs. */
+    /**
+     * Gets the resource collection API of BackupResourceStorageConfigsNonCrrs.
+     *
+     * @return Resource collection API of BackupResourceStorageConfigsNonCrrs.
+     */
     public BackupResourceStorageConfigsNonCrrs backupResourceStorageConfigsNonCrrs() {
         if (this.backupResourceStorageConfigsNonCrrs == null) {
             this.backupResourceStorageConfigsNonCrrs =
@@ -428,7 +468,11 @@ public final class RecoveryServicesBackupManager {
         return backupResourceStorageConfigsNonCrrs;
     }
 
-    /** @return Resource collection API of ProtectionIntents. */
+    /**
+     * Gets the resource collection API of ProtectionIntents. It manages ProtectionIntentResource.
+     *
+     * @return Resource collection API of ProtectionIntents.
+     */
     public ProtectionIntents protectionIntents() {
         if (this.protectionIntents == null) {
             this.protectionIntents = new ProtectionIntentsImpl(clientObject.getProtectionIntents(), this);
@@ -436,7 +480,11 @@ public final class RecoveryServicesBackupManager {
         return protectionIntents;
     }
 
-    /** @return Resource collection API of BackupStatus. */
+    /**
+     * Gets the resource collection API of BackupStatus.
+     *
+     * @return Resource collection API of BackupStatus.
+     */
     public BackupStatus backupStatus() {
         if (this.backupStatus == null) {
             this.backupStatus = new BackupStatusImpl(clientObject.getBackupStatus(), this);
@@ -444,7 +492,11 @@ public final class RecoveryServicesBackupManager {
         return backupStatus;
     }
 
-    /** @return Resource collection API of FeatureSupports. */
+    /**
+     * Gets the resource collection API of FeatureSupports.
+     *
+     * @return Resource collection API of FeatureSupports.
+     */
     public FeatureSupports featureSupports() {
         if (this.featureSupports == null) {
             this.featureSupports = new FeatureSupportsImpl(clientObject.getFeatureSupports(), this);
@@ -452,7 +504,11 @@ public final class RecoveryServicesBackupManager {
         return featureSupports;
     }
 
-    /** @return Resource collection API of BackupProtectionIntents. */
+    /**
+     * Gets the resource collection API of BackupProtectionIntents.
+     *
+     * @return Resource collection API of BackupProtectionIntents.
+     */
     public BackupProtectionIntents backupProtectionIntents() {
         if (this.backupProtectionIntents == null) {
             this.backupProtectionIntents =
@@ -461,7 +517,11 @@ public final class RecoveryServicesBackupManager {
         return backupProtectionIntents;
     }
 
-    /** @return Resource collection API of BackupUsageSummaries. */
+    /**
+     * Gets the resource collection API of BackupUsageSummaries.
+     *
+     * @return Resource collection API of BackupUsageSummaries.
+     */
     public BackupUsageSummaries backupUsageSummaries() {
         if (this.backupUsageSummaries == null) {
             this.backupUsageSummaries = new BackupUsageSummariesImpl(clientObject.getBackupUsageSummaries(), this);
@@ -469,7 +529,11 @@ public final class RecoveryServicesBackupManager {
         return backupUsageSummaries;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -477,7 +541,11 @@ public final class RecoveryServicesBackupManager {
         return operations;
     }
 
-    /** @return Resource collection API of BackupResourceVaultConfigs. */
+    /**
+     * Gets the resource collection API of BackupResourceVaultConfigs.
+     *
+     * @return Resource collection API of BackupResourceVaultConfigs.
+     */
     public BackupResourceVaultConfigs backupResourceVaultConfigs() {
         if (this.backupResourceVaultConfigs == null) {
             this.backupResourceVaultConfigs =
@@ -486,7 +554,11 @@ public final class RecoveryServicesBackupManager {
         return backupResourceVaultConfigs;
     }
 
-    /** @return Resource collection API of BackupResourceEncryptionConfigs. */
+    /**
+     * Gets the resource collection API of BackupResourceEncryptionConfigs.
+     *
+     * @return Resource collection API of BackupResourceEncryptionConfigs.
+     */
     public BackupResourceEncryptionConfigs backupResourceEncryptionConfigs() {
         if (this.backupResourceEncryptionConfigs == null) {
             this.backupResourceEncryptionConfigs =
@@ -495,7 +567,11 @@ public final class RecoveryServicesBackupManager {
         return backupResourceEncryptionConfigs;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnectionResource.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -504,7 +580,11 @@ public final class RecoveryServicesBackupManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateEndpoints. */
+    /**
+     * Gets the resource collection API of PrivateEndpoints.
+     *
+     * @return Resource collection API of PrivateEndpoints.
+     */
     public PrivateEndpoints privateEndpoints() {
         if (this.privateEndpoints == null) {
             this.privateEndpoints = new PrivateEndpointsImpl(clientObject.getPrivateEndpoints(), this);
@@ -512,7 +592,11 @@ public final class RecoveryServicesBackupManager {
         return privateEndpoints;
     }
 
-    /** @return Resource collection API of ResourceProviders. */
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
     public ResourceProviders resourceProviders() {
         if (this.resourceProviders == null) {
             this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
@@ -520,7 +604,11 @@ public final class RecoveryServicesBackupManager {
         return resourceProviders;
     }
 
-    /** @return Resource collection API of BmsPrepareDataMoveOperationResults. */
+    /**
+     * Gets the resource collection API of BmsPrepareDataMoveOperationResults.
+     *
+     * @return Resource collection API of BmsPrepareDataMoveOperationResults.
+     */
     public BmsPrepareDataMoveOperationResults bmsPrepareDataMoveOperationResults() {
         if (this.bmsPrepareDataMoveOperationResults == null) {
             this.bmsPrepareDataMoveOperationResults =
@@ -529,7 +617,11 @@ public final class RecoveryServicesBackupManager {
         return bmsPrepareDataMoveOperationResults;
     }
 
-    /** @return Resource collection API of ProtectedItems. */
+    /**
+     * Gets the resource collection API of ProtectedItems. It manages ProtectedItemResource.
+     *
+     * @return Resource collection API of ProtectedItems.
+     */
     public ProtectedItems protectedItems() {
         if (this.protectedItems == null) {
             this.protectedItems = new ProtectedItemsImpl(clientObject.getProtectedItems(), this);
@@ -537,7 +629,11 @@ public final class RecoveryServicesBackupManager {
         return protectedItems;
     }
 
-    /** @return Resource collection API of ProtectedItemOperationResults. */
+    /**
+     * Gets the resource collection API of ProtectedItemOperationResults.
+     *
+     * @return Resource collection API of ProtectedItemOperationResults.
+     */
     public ProtectedItemOperationResults protectedItemOperationResults() {
         if (this.protectedItemOperationResults == null) {
             this.protectedItemOperationResults =
@@ -546,7 +642,11 @@ public final class RecoveryServicesBackupManager {
         return protectedItemOperationResults;
     }
 
-    /** @return Resource collection API of RecoveryPoints. */
+    /**
+     * Gets the resource collection API of RecoveryPoints.
+     *
+     * @return Resource collection API of RecoveryPoints.
+     */
     public RecoveryPoints recoveryPoints() {
         if (this.recoveryPoints == null) {
             this.recoveryPoints = new RecoveryPointsImpl(clientObject.getRecoveryPoints(), this);
@@ -554,7 +654,11 @@ public final class RecoveryServicesBackupManager {
         return recoveryPoints;
     }
 
-    /** @return Resource collection API of Restores. */
+    /**
+     * Gets the resource collection API of Restores.
+     *
+     * @return Resource collection API of Restores.
+     */
     public Restores restores() {
         if (this.restores == null) {
             this.restores = new RestoresImpl(clientObject.getRestores(), this);
@@ -562,7 +666,11 @@ public final class RecoveryServicesBackupManager {
         return restores;
     }
 
-    /** @return Resource collection API of BackupPolicies. */
+    /**
+     * Gets the resource collection API of BackupPolicies.
+     *
+     * @return Resource collection API of BackupPolicies.
+     */
     public BackupPolicies backupPolicies() {
         if (this.backupPolicies == null) {
             this.backupPolicies = new BackupPoliciesImpl(clientObject.getBackupPolicies(), this);
@@ -570,7 +678,11 @@ public final class RecoveryServicesBackupManager {
         return backupPolicies;
     }
 
-    /** @return Resource collection API of ProtectionPolicies. */
+    /**
+     * Gets the resource collection API of ProtectionPolicies. It manages ProtectionPolicyResource.
+     *
+     * @return Resource collection API of ProtectionPolicies.
+     */
     public ProtectionPolicies protectionPolicies() {
         if (this.protectionPolicies == null) {
             this.protectionPolicies = new ProtectionPoliciesImpl(clientObject.getProtectionPolicies(), this);
@@ -578,7 +690,11 @@ public final class RecoveryServicesBackupManager {
         return protectionPolicies;
     }
 
-    /** @return Resource collection API of ProtectionPolicyOperationResults. */
+    /**
+     * Gets the resource collection API of ProtectionPolicyOperationResults.
+     *
+     * @return Resource collection API of ProtectionPolicyOperationResults.
+     */
     public ProtectionPolicyOperationResults protectionPolicyOperationResults() {
         if (this.protectionPolicyOperationResults == null) {
             this.protectionPolicyOperationResults =
@@ -587,7 +703,11 @@ public final class RecoveryServicesBackupManager {
         return protectionPolicyOperationResults;
     }
 
-    /** @return Resource collection API of BackupJobs. */
+    /**
+     * Gets the resource collection API of BackupJobs.
+     *
+     * @return Resource collection API of BackupJobs.
+     */
     public BackupJobs backupJobs() {
         if (this.backupJobs == null) {
             this.backupJobs = new BackupJobsImpl(clientObject.getBackupJobs(), this);
@@ -595,7 +715,11 @@ public final class RecoveryServicesBackupManager {
         return backupJobs;
     }
 
-    /** @return Resource collection API of JobDetails. */
+    /**
+     * Gets the resource collection API of JobDetails.
+     *
+     * @return Resource collection API of JobDetails.
+     */
     public JobDetails jobDetails() {
         if (this.jobDetails == null) {
             this.jobDetails = new JobDetailsImpl(clientObject.getJobDetails(), this);
@@ -603,7 +727,11 @@ public final class RecoveryServicesBackupManager {
         return jobDetails;
     }
 
-    /** @return Resource collection API of JobCancellations. */
+    /**
+     * Gets the resource collection API of JobCancellations.
+     *
+     * @return Resource collection API of JobCancellations.
+     */
     public JobCancellations jobCancellations() {
         if (this.jobCancellations == null) {
             this.jobCancellations = new JobCancellationsImpl(clientObject.getJobCancellations(), this);
@@ -611,7 +739,11 @@ public final class RecoveryServicesBackupManager {
         return jobCancellations;
     }
 
-    /** @return Resource collection API of JobOperationResults. */
+    /**
+     * Gets the resource collection API of JobOperationResults.
+     *
+     * @return Resource collection API of JobOperationResults.
+     */
     public JobOperationResults jobOperationResults() {
         if (this.jobOperationResults == null) {
             this.jobOperationResults = new JobOperationResultsImpl(clientObject.getJobOperationResults(), this);
@@ -619,7 +751,11 @@ public final class RecoveryServicesBackupManager {
         return jobOperationResults;
     }
 
-    /** @return Resource collection API of ExportJobsOperationResults. */
+    /**
+     * Gets the resource collection API of ExportJobsOperationResults.
+     *
+     * @return Resource collection API of ExportJobsOperationResults.
+     */
     public ExportJobsOperationResults exportJobsOperationResults() {
         if (this.exportJobsOperationResults == null) {
             this.exportJobsOperationResults =
@@ -628,7 +764,11 @@ public final class RecoveryServicesBackupManager {
         return exportJobsOperationResults;
     }
 
-    /** @return Resource collection API of Jobs. */
+    /**
+     * Gets the resource collection API of Jobs.
+     *
+     * @return Resource collection API of Jobs.
+     */
     public Jobs jobs() {
         if (this.jobs == null) {
             this.jobs = new JobsImpl(clientObject.getJobs(), this);
@@ -636,7 +776,11 @@ public final class RecoveryServicesBackupManager {
         return jobs;
     }
 
-    /** @return Resource collection API of BackupProtectedItems. */
+    /**
+     * Gets the resource collection API of BackupProtectedItems.
+     *
+     * @return Resource collection API of BackupProtectedItems.
+     */
     public BackupProtectedItems backupProtectedItems() {
         if (this.backupProtectedItems == null) {
             this.backupProtectedItems = new BackupProtectedItemsImpl(clientObject.getBackupProtectedItems(), this);
@@ -644,7 +788,11 @@ public final class RecoveryServicesBackupManager {
         return backupProtectedItems;
     }
 
-    /** @return Resource collection API of OperationOperations. */
+    /**
+     * Gets the resource collection API of OperationOperations.
+     *
+     * @return Resource collection API of OperationOperations.
+     */
     public OperationOperations operationOperations() {
         if (this.operationOperations == null) {
             this.operationOperations = new OperationOperationsImpl(clientObject.getOperationOperations(), this);
@@ -652,7 +800,11 @@ public final class RecoveryServicesBackupManager {
         return operationOperations;
     }
 
-    /** @return Resource collection API of ValidateOperations. */
+    /**
+     * Gets the resource collection API of ValidateOperations.
+     *
+     * @return Resource collection API of ValidateOperations.
+     */
     public ValidateOperations validateOperations() {
         if (this.validateOperations == null) {
             this.validateOperations = new ValidateOperationsImpl(clientObject.getValidateOperations(), this);
@@ -660,7 +812,11 @@ public final class RecoveryServicesBackupManager {
         return validateOperations;
     }
 
-    /** @return Resource collection API of ValidateOperationResults. */
+    /**
+     * Gets the resource collection API of ValidateOperationResults.
+     *
+     * @return Resource collection API of ValidateOperationResults.
+     */
     public ValidateOperationResults validateOperationResults() {
         if (this.validateOperationResults == null) {
             this.validateOperationResults =
@@ -669,7 +825,11 @@ public final class RecoveryServicesBackupManager {
         return validateOperationResults;
     }
 
-    /** @return Resource collection API of ValidateOperationStatuses. */
+    /**
+     * Gets the resource collection API of ValidateOperationStatuses.
+     *
+     * @return Resource collection API of ValidateOperationStatuses.
+     */
     public ValidateOperationStatuses validateOperationStatuses() {
         if (this.validateOperationStatuses == null) {
             this.validateOperationStatuses =
@@ -678,7 +838,11 @@ public final class RecoveryServicesBackupManager {
         return validateOperationStatuses;
     }
 
-    /** @return Resource collection API of BackupEngines. */
+    /**
+     * Gets the resource collection API of BackupEngines.
+     *
+     * @return Resource collection API of BackupEngines.
+     */
     public BackupEngines backupEngines() {
         if (this.backupEngines == null) {
             this.backupEngines = new BackupEnginesImpl(clientObject.getBackupEngines(), this);
@@ -686,7 +850,11 @@ public final class RecoveryServicesBackupManager {
         return backupEngines;
     }
 
-    /** @return Resource collection API of ProtectionContainerRefreshOperationResults. */
+    /**
+     * Gets the resource collection API of ProtectionContainerRefreshOperationResults.
+     *
+     * @return Resource collection API of ProtectionContainerRefreshOperationResults.
+     */
     public ProtectionContainerRefreshOperationResults protectionContainerRefreshOperationResults() {
         if (this.protectionContainerRefreshOperationResults == null) {
             this.protectionContainerRefreshOperationResults =
@@ -696,7 +864,11 @@ public final class RecoveryServicesBackupManager {
         return protectionContainerRefreshOperationResults;
     }
 
-    /** @return Resource collection API of ProtectableContainers. */
+    /**
+     * Gets the resource collection API of ProtectableContainers.
+     *
+     * @return Resource collection API of ProtectableContainers.
+     */
     public ProtectableContainers protectableContainers() {
         if (this.protectableContainers == null) {
             this.protectableContainers = new ProtectableContainersImpl(clientObject.getProtectableContainers(), this);
@@ -704,7 +876,11 @@ public final class RecoveryServicesBackupManager {
         return protectableContainers;
     }
 
-    /** @return Resource collection API of ProtectionContainers. */
+    /**
+     * Gets the resource collection API of ProtectionContainers. It manages ProtectionContainerResource.
+     *
+     * @return Resource collection API of ProtectionContainers.
+     */
     public ProtectionContainers protectionContainers() {
         if (this.protectionContainers == null) {
             this.protectionContainers = new ProtectionContainersImpl(clientObject.getProtectionContainers(), this);
@@ -712,7 +888,11 @@ public final class RecoveryServicesBackupManager {
         return protectionContainers;
     }
 
-    /** @return Resource collection API of BackupWorkloadItems. */
+    /**
+     * Gets the resource collection API of BackupWorkloadItems.
+     *
+     * @return Resource collection API of BackupWorkloadItems.
+     */
     public BackupWorkloadItems backupWorkloadItems() {
         if (this.backupWorkloadItems == null) {
             this.backupWorkloadItems = new BackupWorkloadItemsImpl(clientObject.getBackupWorkloadItems(), this);
@@ -720,7 +900,11 @@ public final class RecoveryServicesBackupManager {
         return backupWorkloadItems;
     }
 
-    /** @return Resource collection API of ProtectionContainerOperationResults. */
+    /**
+     * Gets the resource collection API of ProtectionContainerOperationResults.
+     *
+     * @return Resource collection API of ProtectionContainerOperationResults.
+     */
     public ProtectionContainerOperationResults protectionContainerOperationResults() {
         if (this.protectionContainerOperationResults == null) {
             this.protectionContainerOperationResults =
@@ -730,7 +914,11 @@ public final class RecoveryServicesBackupManager {
         return protectionContainerOperationResults;
     }
 
-    /** @return Resource collection API of Backups. */
+    /**
+     * Gets the resource collection API of Backups.
+     *
+     * @return Resource collection API of Backups.
+     */
     public Backups backups() {
         if (this.backups == null) {
             this.backups = new BackupsImpl(clientObject.getBackups(), this);
@@ -738,7 +926,11 @@ public final class RecoveryServicesBackupManager {
         return backups;
     }
 
-    /** @return Resource collection API of ProtectedItemOperationStatuses. */
+    /**
+     * Gets the resource collection API of ProtectedItemOperationStatuses.
+     *
+     * @return Resource collection API of ProtectedItemOperationStatuses.
+     */
     public ProtectedItemOperationStatuses protectedItemOperationStatuses() {
         if (this.protectedItemOperationStatuses == null) {
             this.protectedItemOperationStatuses =
@@ -747,7 +939,11 @@ public final class RecoveryServicesBackupManager {
         return protectedItemOperationStatuses;
     }
 
-    /** @return Resource collection API of ItemLevelRecoveryConnections. */
+    /**
+     * Gets the resource collection API of ItemLevelRecoveryConnections.
+     *
+     * @return Resource collection API of ItemLevelRecoveryConnections.
+     */
     public ItemLevelRecoveryConnections itemLevelRecoveryConnections() {
         if (this.itemLevelRecoveryConnections == null) {
             this.itemLevelRecoveryConnections =
@@ -756,7 +952,11 @@ public final class RecoveryServicesBackupManager {
         return itemLevelRecoveryConnections;
     }
 
-    /** @return Resource collection API of BackupOperationResults. */
+    /**
+     * Gets the resource collection API of BackupOperationResults.
+     *
+     * @return Resource collection API of BackupOperationResults.
+     */
     public BackupOperationResults backupOperationResults() {
         if (this.backupOperationResults == null) {
             this.backupOperationResults =
@@ -765,7 +965,11 @@ public final class RecoveryServicesBackupManager {
         return backupOperationResults;
     }
 
-    /** @return Resource collection API of BackupOperationStatuses. */
+    /**
+     * Gets the resource collection API of BackupOperationStatuses.
+     *
+     * @return Resource collection API of BackupOperationStatuses.
+     */
     public BackupOperationStatuses backupOperationStatuses() {
         if (this.backupOperationStatuses == null) {
             this.backupOperationStatuses =
@@ -774,7 +978,11 @@ public final class RecoveryServicesBackupManager {
         return backupOperationStatuses;
     }
 
-    /** @return Resource collection API of ProtectionPolicyOperationStatuses. */
+    /**
+     * Gets the resource collection API of ProtectionPolicyOperationStatuses.
+     *
+     * @return Resource collection API of ProtectionPolicyOperationStatuses.
+     */
     public ProtectionPolicyOperationStatuses protectionPolicyOperationStatuses() {
         if (this.protectionPolicyOperationStatuses == null) {
             this.protectionPolicyOperationStatuses =
@@ -783,7 +991,11 @@ public final class RecoveryServicesBackupManager {
         return protectionPolicyOperationStatuses;
     }
 
-    /** @return Resource collection API of BackupProtectableItems. */
+    /**
+     * Gets the resource collection API of BackupProtectableItems.
+     *
+     * @return Resource collection API of BackupProtectableItems.
+     */
     public BackupProtectableItems backupProtectableItems() {
         if (this.backupProtectableItems == null) {
             this.backupProtectableItems =
@@ -792,7 +1004,11 @@ public final class RecoveryServicesBackupManager {
         return backupProtectableItems;
     }
 
-    /** @return Resource collection API of BackupProtectionContainers. */
+    /**
+     * Gets the resource collection API of BackupProtectionContainers.
+     *
+     * @return Resource collection API of BackupProtectionContainers.
+     */
     public BackupProtectionContainers backupProtectionContainers() {
         if (this.backupProtectionContainers == null) {
             this.backupProtectionContainers =
@@ -801,7 +1017,11 @@ public final class RecoveryServicesBackupManager {
         return backupProtectionContainers;
     }
 
-    /** @return Resource collection API of SecurityPINs. */
+    /**
+     * Gets the resource collection API of SecurityPINs.
+     *
+     * @return Resource collection API of SecurityPINs.
+     */
     public SecurityPINs securityPINs() {
         if (this.securityPINs == null) {
             this.securityPINs = new SecurityPINsImpl(clientObject.getSecurityPINs(), this);
@@ -809,7 +1029,11 @@ public final class RecoveryServicesBackupManager {
         return securityPINs;
     }
 
-    /** @return Resource collection API of RecoveryPointsRecommendedForMoves. */
+    /**
+     * Gets the resource collection API of RecoveryPointsRecommendedForMoves.
+     *
+     * @return Resource collection API of RecoveryPointsRecommendedForMoves.
+     */
     public RecoveryPointsRecommendedForMoves recoveryPointsRecommendedForMoves() {
         if (this.recoveryPointsRecommendedForMoves == null) {
             this.recoveryPointsRecommendedForMoves =
@@ -818,7 +1042,11 @@ public final class RecoveryServicesBackupManager {
         return recoveryPointsRecommendedForMoves;
     }
 
-    /** @return Resource collection API of ResourceGuardProxies. */
+    /**
+     * Gets the resource collection API of ResourceGuardProxies.
+     *
+     * @return Resource collection API of ResourceGuardProxies.
+     */
     public ResourceGuardProxies resourceGuardProxies() {
         if (this.resourceGuardProxies == null) {
             this.resourceGuardProxies = new ResourceGuardProxiesImpl(clientObject.getResourceGuardProxies(), this);
@@ -826,7 +1054,11 @@ public final class RecoveryServicesBackupManager {
         return resourceGuardProxies;
     }
 
-    /** @return Resource collection API of ResourceGuardProxyOperations. */
+    /**
+     * Gets the resource collection API of ResourceGuardProxyOperations. It manages ResourceGuardProxyBaseResource.
+     *
+     * @return Resource collection API of ResourceGuardProxyOperations.
+     */
     public ResourceGuardProxyOperations resourceGuardProxyOperations() {
         if (this.resourceGuardProxyOperations == null) {
             this.resourceGuardProxyOperations =

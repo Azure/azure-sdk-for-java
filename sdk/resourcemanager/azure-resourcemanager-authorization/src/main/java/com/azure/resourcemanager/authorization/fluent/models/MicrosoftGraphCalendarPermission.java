@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** calendarPermission. */
 @Fluent
 public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCalendarPermission.class);
-
     /*
      * List of allowed sharing or delegating permission levels for the
      * calendar. Possible values are: none, freeBusyRead, limitedRead, read,
@@ -52,7 +49,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     private Boolean isRemovable;
 
     /*
-     * The role property.
+     * calendarRoleType
      */
     @JsonProperty(value = "role")
     private MicrosoftGraphCalendarRoleType role;
@@ -153,7 +150,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     }
 
     /**
-     * Get the role property: The role property.
+     * Get the role property: calendarRoleType.
      *
      * @return the role value.
      */
@@ -162,7 +159,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     }
 
     /**
-     * Set the role property: The role property.
+     * Set the role property: calendarRoleType.
      *
      * @param role the role value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.

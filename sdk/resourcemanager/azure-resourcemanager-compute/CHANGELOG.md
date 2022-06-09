@@ -1,6 +1,31 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.16.0-beta.1 (Unreleased)
+
+### Breaking Changes
+
+- Provisioning state in gallery changed to `GalleryProvisioningState`.
+- User assigned identity in virtual machine scale set changed to `VirtualMachineIdentityUserAssignedIdentities`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-02`.
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `DiskEncryptionSet` for disk encryption set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
+
+## 2.14.0 (2022-04-11)
 
 ### Features Added
 

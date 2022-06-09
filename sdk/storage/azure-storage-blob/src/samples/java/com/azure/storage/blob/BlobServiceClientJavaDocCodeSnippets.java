@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -12,6 +13,7 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -337,6 +339,54 @@ public class BlobServiceClientJavaDocCodeSnippets {
             }
         );
         // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#createBlobContainerIfNotExists(String)} and
+     * {@link BlobServiceClient#createBlobContainerIfNotExistsWithResponse(String, BlobContainerCreateOptions, Context)}
+     */
+    public void createContainerIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExists#String
+        BlobContainerClient blobContainerClient = client.createBlobContainerIfNotExists("containerName");
+        // END: com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExists#String
+
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Context context = new Context("Key", "Value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
+
+        Response<BlobContainerClient> response = client.createBlobContainerIfNotExistsWithResponse("containerName",
+            options, context);
+
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#deleteBlobContainerIfExists(String)} and
+     * {@link BlobServiceClient#deleteBlobContainerIfExistsWithResponse(String, Context)}
+     */
+    public void deleteContainerIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String
+        boolean result = client.deleteBlobContainerIfExists("container Name");
+        System.out.println("Delete container completed: " + result);
+        // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String
+
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context
+        Context context = new Context("Key", "Value");
+
+        Response<Boolean> response = client.deleteBlobContainerIfExistsWithResponse("containerName", context);
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context
     }
 
 //    /**

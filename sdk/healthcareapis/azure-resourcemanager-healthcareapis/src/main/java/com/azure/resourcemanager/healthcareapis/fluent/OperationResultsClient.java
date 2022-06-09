@@ -34,7 +34,7 @@ public interface OperationResultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a long running operation.
+     * @return the operation result for a long running operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationResultsDescriptionInner> getWithResponse(

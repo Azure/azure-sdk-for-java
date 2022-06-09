@@ -42,7 +42,7 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<Stri
                 .queues()
                 .getByName(namespaceAndName.getT2());
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

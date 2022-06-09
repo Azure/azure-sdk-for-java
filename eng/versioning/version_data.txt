@@ -22,7 +22,7 @@ com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;1.0
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-contentmoderator;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customvision-prediction;1.1.0-beta.3;1.1.0-beta.3
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customvision-training;1.1.0-beta.3;1.1.0-beta.3
-com.microsoft.azure.cognitiveservices:azure-cognitiveservices-faceapi;1.0.1-beta;1.0.1-beta
+com.microsoft.azure.cognitiveservices:azure-cognitiveservices-faceapi;1.0.1-beta;1.1.0-beta
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;1.0.0-beta.2;1.0.0-beta.3
 com.microsoft.azure:azure-eventhubs;3.3.0;3.4.0-beta.1
 com.microsoft.azure:azure-eventhubs-eph;3.3.0;3.4.0-beta.1

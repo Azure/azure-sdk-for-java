@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIntegrationRuntimeStatusTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.List;
 @JsonTypeName("Managed")
 @Fluent
 public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeStatus.class);
-
     /*
      * Managed integration runtime status type properties.
      */
@@ -82,7 +79,7 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
@@ -90,4 +87,6 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIntegrationRuntimeStatus.class);
 }

@@ -56,7 +56,7 @@ public class AzureListenerEndpointRegistrarTests {
         this.registrar.registerEndpoint(endpoint, null);
         this.registrar.afterPropertiesSet();
         assertNotNull("Container not created", this.registry.getListenerContainer("some id"));
-        assertEquals(1, this.registry.getListenerContainers().size());
+        assertEquals(1, this.registry.getListenerContainersMap().size());
         assertEquals("some id", this.registry.getListenerContainerIds().iterator().next());
     }
 
@@ -77,7 +77,7 @@ public class AzureListenerEndpointRegistrarTests {
         this.registrar.registerEndpoint(endpoint);
         this.registrar.afterPropertiesSet();
         assertNotNull("Container not created", this.registry.getListenerContainer("myEndpoint"));
-        assertEquals(1, this.registry.getListenerContainers().size());
+        assertEquals(1, this.registry.getListenerContainersMap().size());
         assertEquals("myEndpoint", this.registry.getListenerContainerIds().iterator().next());
     }
 

@@ -47,7 +47,7 @@ import java.util.Map;
  *         checkpointer.success()
  *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
  *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
- *                 .subscribe();
+ *                 .block();
  *     }
  *
  *    {@literal @}Bean
@@ -85,7 +85,6 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
     private final CheckpointConfig checkpointConfig;
     private EventCheckpointManager checkpointManager;
-    private Class<?> payloadType;
     private InstrumentationManager instrumentationManager;
     private String instrumentationId;
 
@@ -118,7 +117,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     @Override
     protected void onInit() {
         MessageListener<?> listener;
-        if (ListenerMode.BATCH.equals(this.listenerMode)) {
+        if (ListenerMode.BATCH == this.listenerMode) {
             listener = batchListener;
         } else {
             listener = recordListener;
@@ -164,7 +163,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
      * @param payloadType the payload Type
      */
     public void setPayloadType(Class<?> payloadType) {
-        if (ListenerMode.BATCH.equals(this.listenerMode)) {
+        if (ListenerMode.BATCH == this.listenerMode) {
             this.batchListener.setPayloadType(payloadType);
         } else {
             this.recordListener.setPayloadType(payloadType);
@@ -237,8 +236,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
             final EventData event = eventContext.getEventData();
 
-            Checkpointer checkpointer = new AzureCheckpointer(eventContext::updateCheckpointAsync);
-            if (CheckpointMode.MANUAL.equals(checkpointConfig.getMode())) {
+            if (CheckpointMode.MANUAL == checkpointConfig.getMode()) {
+                Checkpointer checkpointer = new AzureCheckpointer(eventContext::updateCheckpointAsync);
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
@@ -261,15 +260,15 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
             headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
             headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES, eventBatchContext.getLastEnqueuedEventProperties());
 
-            Checkpointer checkpointer = new AzureCheckpointer(eventBatchContext::updateCheckpointAsync);
-            if (CheckpointMode.MANUAL.equals(checkpointConfig.getMode())) {
+            if (CheckpointMode.MANUAL == checkpointConfig.getMode()) {
+                Checkpointer checkpointer = new AzureCheckpointer(eventBatchContext::updateCheckpointAsync);
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
             Message<?> message = this.getMessageConverter().toMessage(eventBatchContext, new MessageHeaders(headers), payloadType);
 
             sendMessage(message);
-            if (checkpointConfig.getMode().equals(CheckpointMode.BATCH)) {
+            if (checkpointConfig.getMode() == CheckpointMode.BATCH) {
                 checkpointManager.checkpoint(eventBatchContext);
             }
         }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifications of the Dimension of metrics. */
 @Fluent
 public final class MetricDimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDimension.class);
-
     /*
      * Name of the dimension
      */
@@ -25,6 +21,13 @@ public final class MetricDimension {
      */
     @JsonProperty(value = "displayName")
     private String displayName;
+
+    /*
+     * Whether this dimension should be included for the Shoebox export
+     * scenario
+     */
+    @JsonProperty(value = "toBeExportedForShoebox")
+    private Boolean toBeExportedForShoebox;
 
     /**
      * Get the name property: Name of the dimension.
@@ -63,6 +66,28 @@ public final class MetricDimension {
      */
     public MetricDimension withDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the toBeExportedForShoebox property: Whether this dimension should be included for the Shoebox export
+     * scenario.
+     *
+     * @return the toBeExportedForShoebox value.
+     */
+    public Boolean toBeExportedForShoebox() {
+        return this.toBeExportedForShoebox;
+    }
+
+    /**
+     * Set the toBeExportedForShoebox property: Whether this dimension should be included for the Shoebox export
+     * scenario.
+     *
+     * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
+     * @return the MetricDimension object itself.
+     */
+    public MetricDimension withToBeExportedForShoebox(Boolean toBeExportedForShoebox) {
+        this.toBeExportedForShoebox = toBeExportedForShoebox;
         return this;
     }
 

@@ -107,7 +107,6 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
 
-            //TODO(yiliu6): whether to make the producer client share the same service bus client builder
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
 
             factory.setDefaultTokenCredential(this.defaultCredential);

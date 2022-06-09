@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of the init container. Only valid in response. */
 @Immutable
 public final class InitContainerPropertiesDefinitionInstanceView {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InitContainerPropertiesDefinitionInstanceView.class);
-
     /*
      * The number of times that the init container has been restarted.
      */

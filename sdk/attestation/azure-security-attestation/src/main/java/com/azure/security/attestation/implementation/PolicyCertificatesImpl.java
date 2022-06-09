@@ -50,7 +50,7 @@ public final class PolicyCertificatesImpl {
      */
     @Host("{instanceUrl}")
     @ServiceInterface(name = "AttestationClientPol")
-    private interface PolicyCertificatesService {
+    public interface PolicyCertificatesService {
         @Get("/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

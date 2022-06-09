@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,9 +15,6 @@ import java.util.Map;
 /** singleValueLegacyExtendedProperty. */
 @Fluent
 public final class MicrosoftGraphSingleValueLegacyExtendedProperty extends MicrosoftGraphEntity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphSingleValueLegacyExtendedProperty.class);
-
     /*
      * A property value.
      */

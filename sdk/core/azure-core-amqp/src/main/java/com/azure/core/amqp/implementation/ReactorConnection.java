@@ -130,7 +130,7 @@ public class ReactorConnection implements AmqpConnection {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
                     .filter(state -> state == AmqpEndpointState.ACTIVE)
                     .next()
-                    .timeout(operationTimeout, Mono.error(new AmqpException(true, String.format(
+                    .timeout(operationTimeout, Mono.error(() -> new AmqpException(true, String.format(
                         "Connection '%s' not opened within AmqpRetryOptions.tryTimeout(): %s", connectionId,
                         operationTimeout), handler.getErrorContext())));
                 return activeEndpoint.thenReturn(reactorConnection);
@@ -318,7 +318,7 @@ public class ReactorConnection implements AmqpConnection {
             final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
                 .filter(state -> state == AmqpEndpointState.ACTIVE)
                 .next()
-                .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(new AmqpException(true,
+                .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(() -> new AmqpException(true,
                     String.format("connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
                         connectionId, sessionName), handler.getErrorContext())));
 
@@ -411,7 +411,9 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
-            .repeat();
+            // Create channel only when connection is active, to avoid repeatedly requesting and closing channels
+            // after connection emits the shutdown signal.
+            .repeat(() -> !this.isDisposed());
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
@@ -474,13 +476,14 @@ public class ReactorConnection implements AmqpConnection {
         });
 
         return Mono.whenDelayError(
-            cbsCloseOperation.doFinally(signalType ->
-                logger.atVerbose()
-                    .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                    .log("Closed CBS node.")),
-            managementNodeCloseOperations.doFinally(signalType ->
-                logger.atVerbose()
-                    .log("Closed management nodes.")))
+                cbsCloseOperation.doFinally(signalType ->
+                    logger.atVerbose()
+                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
+                        .log("Closed CBS node.")),
+                managementNodeCloseOperations.doFinally(signalType ->
+                    logger.atVerbose()
+                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
+                        .log("Closed management nodes.")))
             .then(closeReactor.doFinally(signalType ->
                 logger.atVerbose()
                     .addKeyValue(SIGNAL_TYPE_KEY, signalType)

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.List;
 /** Properties of a security alert policy. */
 @Fluent
 public final class ServerSecurityAlertPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyProperties.class);
-
     /*
      * Specifies the state of the policy, whether it is enabled or disabled or
      * a policy has not been applied yet on the specific server
@@ -235,10 +232,12 @@ public final class ServerSecurityAlertPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property state in model ServerSecurityAlertPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerSecurityAlertPolicyProperties.class);
 }

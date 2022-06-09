@@ -10,7 +10,7 @@ parameters:
   default: 'Public'
 - name: SupportedClouds
   type: string
-  default: 'Public,Canary'
+  default: 'Public'
 - name: UnsupportedClouds
   type: string
   default: ''
@@ -59,16 +59,6 @@ parameters:
 - name: TestMode
   type: string
   default: 'LIVE'
-- name: TestStepMavenInputs
-  type: object
-  default:
-    options: '$(DefaultTestOptions)'
-    mavenOptions: '$(DefaultTestMavenOptions)'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '$(JavaTestVersion)'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    goals: 'verify'
 - name: CloudConfig
   type: object
   default:
@@ -114,12 +104,12 @@ parameters:
 - name: AdditionalBuildOptions
   type: string
   default: $(AdditionalBuildOptions)
+- name: LtsVersion
+  type: string
+  default: $(JavaTestVersion)
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
-  # TODO: re-enable tests-weekly allow filter once sovereign cloud live tests are stable: https://github.com/Azure/azure-sdk/issues/2074
-  # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
-  # - ${{ if or(contains(parameters.Clouds, cloud.key), contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
   - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
     - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
       - stage: ${{ cloud.key }}_${{ parameters.TestName }}
@@ -144,7 +134,6 @@ stages:
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
               TestMode: ${{ parameters.TestMode }}
-              TestStepMavenInputs: ${{ parameters.TestStepMavenInputs }}
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}

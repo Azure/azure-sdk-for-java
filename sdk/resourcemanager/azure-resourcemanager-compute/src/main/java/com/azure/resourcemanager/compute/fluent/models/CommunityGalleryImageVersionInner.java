@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
+import com.azure.resourcemanager.compute.models.SharedGalleryImageVersionStorageProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -81,6 +82,55 @@ public final class CommunityGalleryImageVersionInner extends PirCommunityGallery
             this.innerProperties = new CommunityGalleryImageVersionProperties();
         }
         this.innerProperties().withEndOfLifeDate(endOfLifeDate);
+        return this;
+    }
+
+    /**
+     * Get the excludeFromLatest property: If set to true, Virtual Machines deployed from the latest version of the
+     * Image Definition won't use this Image Version.
+     *
+     * @return the excludeFromLatest value.
+     */
+    public Boolean excludeFromLatest() {
+        return this.innerProperties() == null ? null : this.innerProperties().excludeFromLatest();
+    }
+
+    /**
+     * Set the excludeFromLatest property: If set to true, Virtual Machines deployed from the latest version of the
+     * Image Definition won't use this Image Version.
+     *
+     * @param excludeFromLatest the excludeFromLatest value to set.
+     * @return the CommunityGalleryImageVersionInner object itself.
+     */
+    public CommunityGalleryImageVersionInner withExcludeFromLatest(Boolean excludeFromLatest) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryImageVersionProperties();
+        }
+        this.innerProperties().withExcludeFromLatest(excludeFromLatest);
+        return this;
+    }
+
+    /**
+     * Get the storageProfile property: Describes the storage profile of the image version.
+     *
+     * @return the storageProfile value.
+     */
+    public SharedGalleryImageVersionStorageProfile storageProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
+    }
+
+    /**
+     * Set the storageProfile property: Describes the storage profile of the image version.
+     *
+     * @param storageProfile the storageProfile value to set.
+     * @return the CommunityGalleryImageVersionInner object itself.
+     */
+    public CommunityGalleryImageVersionInner withStorageProfile(
+        SharedGalleryImageVersionStorageProfile storageProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryImageVersionProperties();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 

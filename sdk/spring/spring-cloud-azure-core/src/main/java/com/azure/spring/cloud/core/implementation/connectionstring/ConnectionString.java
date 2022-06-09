@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -77,7 +78,7 @@ class ConnectionString {
     }
 
     private static Map<ConnectionStringType, List<Set<String>>> initTokensMap() {
-        final Map<ConnectionStringType, List<Set<String>>> tokensMap = new HashMap<>();
+        final Map<ConnectionStringType, List<Set<String>>> tokensMap = new EnumMap<>(ConnectionStringType.class);
         for (ConnectionStringType type : ConnectionStringType.values()) {
             final List<Set<String>> tokensList = new ArrayList<>();
 

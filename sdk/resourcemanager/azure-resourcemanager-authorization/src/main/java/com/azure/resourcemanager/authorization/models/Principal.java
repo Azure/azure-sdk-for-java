@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name of the entity last modified it. */
 @Fluent
 public final class Principal {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Principal.class);
-
     /*
      * The id of the principal made changes
      */

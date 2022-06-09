@@ -511,7 +511,7 @@ public final class DomainEventSubscriptionsListSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void domainEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.domainEventSubscriptions().list("examplerg", "exampleDomain1", Context.NONE);
+        manager.domainEventSubscriptions().list("examplerg", "exampleDomain1", null, null, Context.NONE);
     }
 }
 ```
@@ -712,7 +712,7 @@ public final class DomainTopicEventSubscriptionsListSamples {
     public static void domainTopicEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .domainTopicEventSubscriptions()
-            .list("examplerg", "exampleDomain1", "exampleDomainTopic1", Context.NONE);
+            .list("examplerg", "exampleDomain1", "exampleDomainTopic1", null, null, Context.NONE);
     }
 }
 ```
@@ -4440,7 +4440,7 @@ public final class TopicEventSubscriptionsListSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicEventSubscriptions().list("examplerg", "exampleTopic1", Context.NONE);
+        manager.topicEventSubscriptions().list("examplerg", "exampleTopic1", null, null, Context.NONE);
     }
 }
 ```

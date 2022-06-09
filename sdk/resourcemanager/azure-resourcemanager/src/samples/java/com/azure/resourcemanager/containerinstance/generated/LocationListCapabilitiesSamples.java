@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Location ListCapabilities. */
 public final class LocationListCapabilitiesSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/CapabilitiesList.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/CapabilitiesList.json
      */
     /**
      * Sample code: GetCapabilities.

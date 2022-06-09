@@ -14,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
-import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,7 +31,7 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
+     * @return a Binding and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BindingResourceInner>> getWithResponseAsync(
@@ -49,7 +48,7 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
+     * @return a Binding and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BindingResourceInner> getAsync(
@@ -83,7 +82,7 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
+     * @return a Binding and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BindingResourceInner> getWithResponse(
@@ -97,11 +96,11 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return binding resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -109,7 +108,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -119,19 +118,19 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return the {@link PollerFlux} for polling of binding resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -141,19 +140,19 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return the {@link SyncPoller} for polling of binding resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -163,20 +162,20 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return the {@link SyncPoller} for polling of binding resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties,
+        BindingResourceInner bindingResource,
         Context context);
 
     /**
@@ -187,11 +186,11 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return binding resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BindingResourceInner> createOrUpdateAsync(
@@ -199,7 +198,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -209,24 +208,7 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,7 +220,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
@@ -248,24 +230,7 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
-
-    /**
-     * Create a new Binding or update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -278,7 +243,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties,
+        BindingResourceInner bindingResource,
         Context context);
 
     /**
@@ -292,7 +257,7 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -309,9 +274,9 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName, String bindingName);
 
@@ -326,9 +291,9 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String bindingName);
 
@@ -344,9 +309,9 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
 
@@ -361,7 +326,7 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String bindingName);
@@ -405,11 +370,11 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return binding resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -417,7 +382,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
@@ -427,19 +392,19 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return the {@link PollerFlux} for polling of binding resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
@@ -449,19 +414,19 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return the {@link SyncPoller} for polling of binding resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
@@ -471,20 +436,20 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return the {@link SyncPoller} for polling of binding resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties,
+        BindingResourceInner bindingResource,
         Context context);
 
     /**
@@ -495,11 +460,11 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
+     * @return binding resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BindingResourceInner> updateAsync(
@@ -507,7 +472,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
@@ -517,24 +482,7 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BindingResourceInner> updateAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -546,7 +494,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties);
+        BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
@@ -556,23 +504,7 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binding resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner update(String resourceGroupName, String serviceName, String appName, String bindingName);
-
-    /**
-     * Operation to update an exiting Binding.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param properties Properties of the Binding resource.
+     * @param bindingResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -585,7 +517,7 @@ public interface BindingsClient {
         String serviceName,
         String appName,
         String bindingName,
-        BindingResourceProperties properties,
+        BindingResourceInner bindingResource,
         Context context);
 
     /**
@@ -598,7 +530,8 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
+     * @return object that includes an array of Binding resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BindingResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
@@ -613,7 +546,8 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
+     * @return object that includes an array of Binding resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BindingResourceInner> list(String resourceGroupName, String serviceName, String appName);
@@ -629,7 +563,8 @@ public interface BindingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Binding resources and a possible link for next set.
+     * @return object that includes an array of Binding resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BindingResourceInner> list(

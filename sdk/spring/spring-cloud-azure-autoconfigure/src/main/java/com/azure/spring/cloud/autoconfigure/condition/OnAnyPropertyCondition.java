@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.condition;
 
+import com.azure.spring.cloud.core.implementation.util.AzureStringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -11,8 +12,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 class OnAnyPropertyCondition extends PropertyCondition {
 
@@ -49,7 +54,7 @@ class OnAnyPropertyCondition extends PropertyCondition {
 
     private static class Spec {
 
-        private final String prefix;
+        private final Set<String> prefixes;
 
         private final String havingValue;
 
@@ -58,11 +63,7 @@ class OnAnyPropertyCondition extends PropertyCondition {
         private final boolean matchIfMissing;
 
         Spec(AnnotationAttributes annotationAttributes) {
-            String prefix = annotationAttributes.getString("prefix").trim();
-            if (StringUtils.hasText(prefix) && !prefix.endsWith(".")) {
-                prefix = prefix + ".";
-            }
-            this.prefix = prefix;
+            this.prefixes = getPrefixes(annotationAttributes);
             this.havingValue = annotationAttributes.getString("havingValue");
             this.names = getNames(annotationAttributes);
             this.matchIfMissing = annotationAttributes.getBoolean("matchIfMissing");
@@ -78,21 +79,36 @@ class OnAnyPropertyCondition extends PropertyCondition {
             return (value.length > 0) ? value : name;
         }
 
+        private Set<String> getPrefixes(AnnotationAttributes annotationAttributes) {
+            Set<String> prefixSet = new HashSet<>();
+            prefixSet.add(annotationAttributes.getString("prefix"));
+            prefixSet.addAll(Arrays.asList(annotationAttributes.getStringArray("prefixes")));
+            return prefixSet.stream()
+                .filter(item -> !item.isEmpty())
+                .map(p -> AzureStringUtils.ensureEndsWithSuffix(p.trim(), PROPERTY_SUFFIX))
+                .collect(Collectors.toSet());
+        }
+
         private void collectProperties(PropertyResolver resolver, List<String> missing, List<String> nonMatching,
                                        List<String> matching) {
-            for (String name : this.names) {
-                String key = this.prefix + name;
-                if (resolver.containsProperty(key)) {
-                    if (!isMatch(resolver.getProperty(key), this.havingValue)) {
-                        nonMatching.add(name);
+            if (this.prefixes.isEmpty()) {
+                this.prefixes.add("");
+            }
+            for (String prefix : this.prefixes) {
+                for (String name : this.names) {
+                    String key = prefix + name;
+                    if (resolver.containsProperty(key)) {
+                        if (!isMatch(resolver.getProperty(key), this.havingValue)) {
+                            nonMatching.add(name);
+                        } else {
+                            matching.add(name);
+                        }
                     } else {
-                        matching.add(name);
-                    }
-                } else {
-                    if (!this.matchIfMissing) {
-                        missing.add(name);
-                    } else {
-                        matching.add(name);
+                        if (!this.matchIfMissing) {
+                            missing.add(name);
+                        } else {
+                            matching.add(name);
+                        }
                     }
                 }
             }
@@ -109,7 +125,15 @@ class OnAnyPropertyCondition extends PropertyCondition {
         public String toString() {
             StringBuilder result = new StringBuilder();
             result.append("(");
-            result.append(this.prefix);
+            if (this.prefixes.size() > 0) {
+                if (this.prefixes.size() == 1) {
+                    result.append(this.prefixes.iterator().next());
+                } else {
+                    result.append("[");
+                    result.append(StringUtils.collectionToCommaDelimitedString(this.prefixes));
+                    result.append("]");
+                }
+            }
             if (this.names.length == 1) {
                 result.append(this.names[0]);
             } else {

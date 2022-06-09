@@ -14,10 +14,8 @@ import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
-
 /**
- *
+ * Event Hubs extended binding properties.
  */
 @ConfigurationProperties(EventHubsExtendedBindingProperties.PREFIX)
 public class EventHubsExtendedBindingProperties
@@ -25,6 +23,9 @@ public class EventHubsExtendedBindingProperties
     EventHubsBindingProperties>
     implements InitializingBean {
 
+    /**
+     * Event Hubs extended binding properties prefix.
+     */
     public static final String PREFIX = "spring.cloud.stream.eventhubs";
     private static final String DEFAULTS_PREFIX = PREFIX + ".default";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsExtendedBindingProperties.class);
@@ -43,6 +44,7 @@ public class EventHubsExtendedBindingProperties
      *
      * @return Bindings value
      */
+    @Override
     public Map<String, EventHubsBindingProperties> getBindings() {
         return doGetBindings();
     }

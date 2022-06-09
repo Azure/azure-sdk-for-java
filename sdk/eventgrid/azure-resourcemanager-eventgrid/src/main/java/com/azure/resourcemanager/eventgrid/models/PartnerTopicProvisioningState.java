@@ -39,7 +39,11 @@ public final class PartnerTopicProvisioningState extends ExpandableStringEnum<Pa
         return fromString(name, PartnerTopicProvisioningState.class);
     }
 
-    /** @return known PartnerTopicProvisioningState values. */
+    /**
+     * Gets known PartnerTopicProvisioningState values.
+     *
+     * @return known PartnerTopicProvisioningState values.
+     */
     public static Collection<PartnerTopicProvisioningState> values() {
         return values(PartnerTopicProvisioningState.class);
     }

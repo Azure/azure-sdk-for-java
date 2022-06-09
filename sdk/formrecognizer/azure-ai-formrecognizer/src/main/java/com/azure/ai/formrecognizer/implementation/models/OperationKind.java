@@ -30,7 +30,11 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
         return fromString(name, OperationKind.class);
     }
 
-    /** @return known OperationKind values. */
+    /**
+     * Gets known OperationKind values.
+     *
+     * @return known OperationKind values.
+     */
     public static Collection<OperationKind> values() {
         return values(OperationKind.class);
     }

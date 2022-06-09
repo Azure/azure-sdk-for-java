@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolTablesClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolTableInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolTable;
 import com.azure.resourcemanager.synapse.models.SqlPoolTables;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolTablesImpl implements SqlPoolTables {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolTablesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolTablesImpl.class);
 
     private final SqlPoolTablesClient innerClient;
 

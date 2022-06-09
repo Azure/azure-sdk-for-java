@@ -37,7 +37,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from servicePrincipals.
+     * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(
@@ -57,7 +57,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from servicePrincipals.
+     * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync();
@@ -68,7 +68,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from servicePrincipals.
+     * @return entities from servicePrincipals as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphServicePrincipalInner> listServicePrincipal();
@@ -90,7 +90,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from servicePrincipals.
+     * @return entities from servicePrincipals as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphServicePrincipalInner> listServicePrincipal(
@@ -113,7 +113,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return servicePrincipal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphServicePrincipalInner>> createServicePrincipalWithResponseAsync(
@@ -127,7 +127,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return servicePrincipal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphServicePrincipalInner> createServicePrincipalAsync(MicrosoftGraphServicePrincipalInner body);
@@ -140,7 +140,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return servicePrincipal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MicrosoftGraphServicePrincipalInner createServicePrincipal(MicrosoftGraphServicePrincipalInner body);
@@ -154,7 +154,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return servicePrincipal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphServicePrincipalInner> createServicePrincipalWithResponse(
@@ -171,7 +171,8 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key.
+     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipalWithResponseAsync(
@@ -191,7 +192,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key.
+     * @return entity from servicePrincipals by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphServicePrincipalInner> getServicePrincipalAsync(
@@ -208,7 +209,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key.
+     * @return entity from servicePrincipals by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphServicePrincipalInner> getServicePrincipalAsync(String servicePrincipalId);
@@ -238,7 +239,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key.
+     * @return entity from servicePrincipals by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphServicePrincipalInner> getServicePrincipalWithResponse(
@@ -257,7 +258,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> updateServicePrincipalWithResponseAsync(
@@ -272,7 +273,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> updateServicePrincipalAsync(String servicePrincipalId, MicrosoftGraphServicePrincipalInner body);
@@ -300,7 +301,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateServicePrincipalWithResponse(
@@ -315,7 +316,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteServicePrincipalWithResponseAsync(String servicePrincipalId, String ifMatch);
@@ -329,7 +330,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteServicePrincipalAsync(String servicePrincipalId, String ifMatch);
@@ -342,7 +343,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteServicePrincipalAsync(String servicePrincipalId);
@@ -369,7 +370,7 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteServicePrincipalWithResponse(String servicePrincipalId, String ifMatch, Context context);

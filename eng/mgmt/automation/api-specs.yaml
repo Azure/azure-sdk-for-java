@@ -3,6 +3,8 @@
 # Args:
   # service: name of service, used for namespace and artifact id
   # suffix: suffix for sdk automation, usually it is due to premium sdk
+app:
+  service: appcontainers
 appplatform:
   suffix: generated
 authorization:
@@ -41,6 +43,8 @@ eventhub:
   suffix: generated
 keyvault:
   suffix: generated
+machinelearningservices:
+  service: machinelearning
 monitor:
   suffix: generated
 msi:

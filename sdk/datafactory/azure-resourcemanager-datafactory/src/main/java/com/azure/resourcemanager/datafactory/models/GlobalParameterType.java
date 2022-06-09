@@ -39,7 +39,11 @@ public final class GlobalParameterType extends ExpandableStringEnum<GlobalParame
         return fromString(name, GlobalParameterType.class);
     }
 
-    /** @return known GlobalParameterType values. */
+    /**
+     * Gets known GlobalParameterType values.
+     *
+     * @return known GlobalParameterType values.
+     */
     public static Collection<GlobalParameterType> values() {
         return values(GlobalParameterType.class);
     }

@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceEncryptionConfigsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigExtendedResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupResourceEncryptionConfigsClient. */
 public final class BackupResourceEncryptionConfigsClientImpl implements BackupResourceEncryptionConfigsClient {
-    private final ClientLogger logger = new ClientLogger(BackupResourceEncryptionConfigsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupResourceEncryptionConfigsService service;
 
@@ -200,15 +197,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceEncryptionConfigExtendedResourceInner> getAsync(
         String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<BackupResourceEncryptionConfigExtendedResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -368,8 +357,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(
         String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
-        return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return updateWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**

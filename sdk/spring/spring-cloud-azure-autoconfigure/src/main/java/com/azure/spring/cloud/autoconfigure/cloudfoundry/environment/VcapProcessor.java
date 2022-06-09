@@ -91,7 +91,7 @@ public class VcapProcessor implements EnvironmentPostProcessor {
             serviceConfig.setVolumeMounts(volumeMounts.toArray(new String[0]));
         }
 
-        serviceConfig.setCredentials((Map<String, String>) configMap.get("credentials"));
+        serviceConfig.setCredentials((Map<String, String>) configMap.get(CREDENTIALS));
 
         return serviceConfig;
     }
@@ -130,9 +130,9 @@ public class VcapProcessor implements EnvironmentPostProcessor {
                         final List<VcapServiceConfig> azureServices = getVcapServiceConfigList(serviceEntry.getValue());
 
                         results.addAll(
-                                azureServices.stream()
-                                        .map(service -> parseService(name, service, vcapServices))
-                                        .filter(Objects::nonNull).collect(Collectors.toList())
+                            azureServices.stream()
+                                         .map(service -> parseService(name, service, vcapServices))
+                                         .filter(Objects::nonNull).collect(Collectors.toList())
                         );
                     }
                 }
@@ -167,7 +167,7 @@ public class VcapProcessor implements EnvironmentPostProcessor {
             result.setServiceBrokerName(serviceBrokerName);
             serviceConfig.setPlan(serviceConfig.getPlan());
             if (credentials == null) {
-                LOGGER.error("Found " + serviceBrokerName + ", but missing " + CREDENTIALS + " : " + vCapServices);
+                LOGGER.error("Found {}, but missing {} : {}", serviceBrokerName, CREDENTIALS, vCapServices);
             }
         }
 

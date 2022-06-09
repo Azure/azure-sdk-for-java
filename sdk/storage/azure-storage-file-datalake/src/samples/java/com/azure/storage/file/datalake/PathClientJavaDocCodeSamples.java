@@ -17,6 +17,8 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -480,6 +482,63 @@ public class PathClientJavaDocCodeSamples {
 
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.file.datalake.DataLakePathClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#createIfNotExists()} and
+     * {@link DataLakePathClient#createIfNotExistsWithResponse(DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
+        PathInfo pathInfo = client.createIfNotExists();
+        System.out.printf("Last Modified Time:%s", pathInfo.getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+            .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
+
+        Response<PathInfo> response = client.createIfNotExistsWithResponse(options, timeout, new Context(key1, value1));
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createIfNotExistsWithResponse#DataLakePathCreateOptions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#deleteIfExists()} and
+     * {@link DataLakePathClient#deleteIfExistsWithResponse(DataLakePathDeleteOptions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
+        client.create();
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete complete: " + result);
+        // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(requestConditions);
+
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
+
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.file.datalake.DataLakePathClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
     }
 
 }

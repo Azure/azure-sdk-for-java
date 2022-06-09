@@ -7,18 +7,23 @@ package com.azure.resourcemanager.appplatform.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClient;
 import com.azure.resourcemanager.appplatform.fluent.AppsClient;
 import com.azure.resourcemanager.appplatform.fluent.BindingsClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildServiceAgentPoolsClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildServiceBuildersClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildServicesClient;
+import com.azure.resourcemanager.appplatform.fluent.BuildpackBindingsClient;
 import com.azure.resourcemanager.appplatform.fluent.CertificatesClient;
 import com.azure.resourcemanager.appplatform.fluent.ConfigServersClient;
+import com.azure.resourcemanager.appplatform.fluent.ConfigurationServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
 import com.azure.resourcemanager.appplatform.fluent.MonitoringSettingsClient;
 import com.azure.resourcemanager.appplatform.fluent.OperationsClient;
 import com.azure.resourcemanager.appplatform.fluent.RuntimeVersionsClient;
+import com.azure.resourcemanager.appplatform.fluent.ServiceRegistriesClient;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.SkusClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
@@ -27,8 +32,6 @@ import java.time.Duration;
 /** Initializes a new instance of the AppPlatformManagementClientImpl type. */
 @ServiceClient(builder = AppPlatformManagementClientBuilder.class)
 public final class AppPlatformManagementClientImpl extends AzureServiceClient implements AppPlatformManagementClient {
-    private final ClientLogger logger = new ClientLogger(AppPlatformManagementClientImpl.class);
-
     /**
      * Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -127,6 +130,78 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
      */
     public ConfigServersClient getConfigServers() {
         return this.configServers;
+    }
+
+    /** The ConfigurationServicesClient object to access its operations. */
+    private final ConfigurationServicesClient configurationServices;
+
+    /**
+     * Gets the ConfigurationServicesClient object to access its operations.
+     *
+     * @return the ConfigurationServicesClient object.
+     */
+    public ConfigurationServicesClient getConfigurationServices() {
+        return this.configurationServices;
+    }
+
+    /** The ServiceRegistriesClient object to access its operations. */
+    private final ServiceRegistriesClient serviceRegistries;
+
+    /**
+     * Gets the ServiceRegistriesClient object to access its operations.
+     *
+     * @return the ServiceRegistriesClient object.
+     */
+    public ServiceRegistriesClient getServiceRegistries() {
+        return this.serviceRegistries;
+    }
+
+    /** The BuildServicesClient object to access its operations. */
+    private final BuildServicesClient buildServices;
+
+    /**
+     * Gets the BuildServicesClient object to access its operations.
+     *
+     * @return the BuildServicesClient object.
+     */
+    public BuildServicesClient getBuildServices() {
+        return this.buildServices;
+    }
+
+    /** The BuildpackBindingsClient object to access its operations. */
+    private final BuildpackBindingsClient buildpackBindings;
+
+    /**
+     * Gets the BuildpackBindingsClient object to access its operations.
+     *
+     * @return the BuildpackBindingsClient object.
+     */
+    public BuildpackBindingsClient getBuildpackBindings() {
+        return this.buildpackBindings;
+    }
+
+    /** The BuildServiceBuildersClient object to access its operations. */
+    private final BuildServiceBuildersClient buildServiceBuilders;
+
+    /**
+     * Gets the BuildServiceBuildersClient object to access its operations.
+     *
+     * @return the BuildServiceBuildersClient object.
+     */
+    public BuildServiceBuildersClient getBuildServiceBuilders() {
+        return this.buildServiceBuilders;
+    }
+
+    /** The BuildServiceAgentPoolsClient object to access its operations. */
+    private final BuildServiceAgentPoolsClient buildServiceAgentPools;
+
+    /**
+     * Gets the BuildServiceAgentPoolsClient object to access its operations.
+     *
+     * @return the BuildServiceAgentPoolsClient object.
+     */
+    public BuildServiceAgentPoolsClient getBuildServiceAgentPools() {
+        return this.buildServiceAgentPools;
     }
 
     /** The MonitoringSettingsClient object to access its operations. */
@@ -261,9 +336,15 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-11-01-preview";
+        this.apiVersion = "2022-04-01";
         this.services = new ServicesClientImpl(this);
         this.configServers = new ConfigServersClientImpl(this);
+        this.configurationServices = new ConfigurationServicesClientImpl(this);
+        this.serviceRegistries = new ServiceRegistriesClientImpl(this);
+        this.buildServices = new BuildServicesClientImpl(this);
+        this.buildpackBindings = new BuildpackBindingsClientImpl(this);
+        this.buildServiceBuilders = new BuildServiceBuildersClientImpl(this);
+        this.buildServiceAgentPools = new BuildServiceAgentPoolsClientImpl(this);
         this.monitoringSettings = new MonitoringSettingsClientImpl(this);
         this.apps = new AppsClientImpl(this);
         this.bindings = new BindingsClientImpl(this);

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +14,6 @@ import java.util.UUID;
 /** Properties of a Sql pool blob auditing policy. */
 @Fluent
 public final class SqlPoolBlobAuditingPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolBlobAuditingPolicyProperties.class);
-
     /*
      * Specifies the state of the policy. If state is Enabled, storageEndpoint
      * or isAzureMonitorTargetEnabled are required.
@@ -437,10 +434,12 @@ public final class SqlPoolBlobAuditingPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property state in model SqlPoolBlobAuditingPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolBlobAuditingPolicyProperties.class);
 }

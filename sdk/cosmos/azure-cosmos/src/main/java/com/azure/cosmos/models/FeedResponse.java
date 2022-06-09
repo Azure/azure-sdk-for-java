@@ -551,8 +551,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
             new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
                 @Override
@@ -568,4 +567,6 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                 }
             });
     }
+
+    static { initialize(); }
 }

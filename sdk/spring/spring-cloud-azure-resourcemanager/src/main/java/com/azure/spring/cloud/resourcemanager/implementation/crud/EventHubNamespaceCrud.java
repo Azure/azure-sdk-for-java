@@ -40,7 +40,7 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
             return this.resourceManager.eventHubNamespaces()
                                        .getByResourceGroup(this.resourceMetadata.getResourceGroup(), namespace);
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

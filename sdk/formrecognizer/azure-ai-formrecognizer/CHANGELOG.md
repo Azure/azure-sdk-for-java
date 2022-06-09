@@ -1,18 +1,53 @@
 # Release History
 
-## 4.0.0-beta.5 (Unreleased)
+## 4.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
-- Renamed method `beginCopyModel` to `beginCopyModelTo`
-- Removed `modelId` as a required parameter from `beginBuildModel`, `beginCreateComposedModel` and `getCopyAuthorization`
-and moved to `BuildModelOptions`, `CreateComposedModelOptions` and `CopyAuthorizationOptions` respectively
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.0-beta.5 (2022-06-07)
+
+### Features Added
+- Added support for address type field value.
+- Added support for vertex coordinates with model `Point` to represent polygon vertices in `boundingPolygon` property.
+- Added `paragraphs` property on `AnalyzeResult`.
+- Added a new `DocumentParagraph` model to represent document paragraphs.
+- Added `kind` property on `DocumentPage` to represent the document page kind.
+
+### Breaking Changes
+- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
+- Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Renamed property `boundingBox` in model `BoundingRegion`, `DocumentLine`, `DocumentWord`, and `DocumentSelectionMark`
+to `boundingPolygon`.
+- Removed `entities` property on model `AnalyzeResult`
+- Renamed `code` property on `DocumentLanguage` model to `locale`
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
+
+## 3.1.11 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+
+## 3.1.10 (2022-04-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
 
 ## 3.1.9 (2022-03-08)
 ### Bug Fixes

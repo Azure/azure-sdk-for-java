@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -29,6 +30,7 @@ import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
@@ -37,6 +39,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -245,6 +248,83 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String -->
+     * <pre>
+     * BlobContainerAsyncClient blobContainerAsyncClient =
+     *     client.createBlobContainerIfNotExists&#40;&quot;containerName&quot;&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String -->
+     *
+     * @param containerName Name of the container to create
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainerAsyncClient> createBlobContainerIfNotExists(String containerName) {
+        return createBlobContainerIfNotExistsWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
+     *
+     * client.createBlobContainerIfNotExistsWithResponse&#40;&quot;containerName&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions -->
+     *
+     * @param containerName Name of the container to create
+     * @param options {@link BlobContainerCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * BlobContainerAsyncClient} used to interact with the container created. If {@link Response}'s status code is 201,
+     * a new container was successfully created. If status code is 409, a container with the same name already existed
+     * at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
+        BlobContainerCreateOptions options) {
+        try {
+            return withContext(context -> createBlobContainerIfNotExistsWithResponse(containerName, options,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
+        BlobContainerCreateOptions options, Context context) {
+        try {
+            options = options == null ? new BlobContainerCreateOptions() : options;
+            return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
+                context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
+                .getStatusCode() == 409, t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
@@ -296,6 +376,82 @@ public final class BlobServiceAsyncClient {
     Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
         throwOnAnonymousAccess();
         return getBlobContainerAsyncClient(containerName).deleteWithResponse(null, context);
+    }
+
+    /**
+     * Deletes the specified container in the storage account if it exists. For
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
+     * <pre>
+     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
+     *
+     * @param containerName Name of the container to delete
+     * @return A reactive {@link Mono} signaling completion. {@code true} indicates that the container was deleted.
+     * {@code false} indicates the container does not exist at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteBlobContainerIfExists(String containerName) {
+        return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified container in the storage account if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
+     *
+     * @param containerName Name of the container to delete
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the blob container was
+     * successfully deleted. If status code is 404, the blob container does not exist.
+     *
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteBlobContainerIfExistsWithResponse(String containerName) {
+        try {
+            return withContext(context -> deleteBlobContainerIfExistsWithResponse(containerName, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
+        try {
+            return deleteBlobContainerWithResponse(containerName, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((BlobStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

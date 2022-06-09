@@ -868,6 +868,64 @@ class FileAsyncAPITests extends APISpec {
             .verifyError(ShareStorageException)
     }
 
+    def "Delete if exists file"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(null))
+            .assertNext {
+                assert assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete file that does not exist"() {
+        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null).block()
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !client.exists().block()
+    }
+
+    def "Delete if exists file that was already deleted"() {
+        setup:
+        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null, null).block()
+
+        when:
+        def result1 = primaryFileAsyncClient.deleteIfExists().block()
+        def result2 = primaryFileAsyncClient.deleteIfExists().block()
+
+        then:
+        result1
+        !result2
+    }
+
+    def "Delete if exists file lease"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(new ShareRequestConditions().setLeaseId(leaseId)))
+            .assertNext {
+                assert assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete if exists file lease fail"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
+            .verifyError(ShareStorageException)
+    }
+
     def "Get properties"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -1265,4 +1323,5 @@ class FileAsyncAPITests extends APISpec {
         expect:
         filePath == primaryFileAsyncClient.getFilePath()
     }
+
 }

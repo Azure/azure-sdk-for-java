@@ -6,15 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used for tracking the status of an operation on the pipeline job. */
 @Immutable
 public final class PipelineJobOperationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineJobOperationStatusInner.class);
-
     /*
      * The name of the pipeline job operation.
      */

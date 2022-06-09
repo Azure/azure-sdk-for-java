@@ -1,6 +1,6 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,26 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.11.1 (2022-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 4.11.0 (2022-04-12)
+
+### Features Added
+- Added system event classes for Azure Healthcare FHIR Services under package `com.azure.messaging.eventgrid.systemevents`,
+  `HealthcareFhirResourceCreatedEventData`, `HealthcareFhirResourceDeletedEventData` and `HealthcareFhirResourceUpdatedEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
 
 ## 4.10.0 (2022-03-10)
 

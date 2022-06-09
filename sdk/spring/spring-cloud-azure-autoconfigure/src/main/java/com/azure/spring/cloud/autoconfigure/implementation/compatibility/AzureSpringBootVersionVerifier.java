@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.util.StringUtils;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,20 +17,43 @@ import java.util.Map;
 
 public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
-    final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
-        {
-            this.put("2.5", AzureSpringBootVersionVerifier.this.is2_5());
-            this.put("2.6", AzureSpringBootVersionVerifier.this.is2_6());
-        }
-    };
+
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5 = "org.springframework.boot.context.properties.bind.Bindable.BindRestriction";
+
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6 = "org.springframework.boot.autoconfigure.data.redis.ClientResourcesBuilderCustomizer";
+
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_7 = "org.springframework.boot.autoconfigure.amqp.RabbitStreamTemplateConfigurer";
+    /**
+     * Versions supported by Spring Cloud Azure, for present is [2.5, 2.6]. Update this value if needed.
+     */
+    private final Map<String, String> supportedVersions = new HashMap<>();
+
+    /**
+     * Versionsspecified in the configuration or environment.
+     */
     private final List<String> acceptedVersions;
 
-    public AzureSpringBootVersionVerifier(List<String> acceptedVersions) {
+    private final ClassNameResolverPredicate classNameResolver;
+
+    public AzureSpringBootVersionVerifier(List<String> acceptedVersions, ClassNameResolverPredicate classNameResolver) {
         this.acceptedVersions = acceptedVersions;
+        this.classNameResolver = classNameResolver;
+        initDefaultSupportedBootVersionCheckMeta();
+    }
+
+
+    /**
+     * Init default supported Spring Boot Version compatibility check meta data.
+     */
+    private void initDefaultSupportedBootVersionCheckMeta() {
+        supportedVersions.put("2.5", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_5);
+        supportedVersions.put("2.6", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6);
+        supportedVersions.put("2.7", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_7);
     }
 
     /**
      * Verify the current spring-boot version
+     *
      * @return Verification result of spring-boot version
      * @throws AzureCompatibilityNotMetException thrown if using an unsupported spring-boot version
      */
@@ -37,23 +61,30 @@ public class AzureSpringBootVersionVerifier {
         if (this.springBootVersionMatches()) {
             return VerificationResult.compatible();
         } else {
-            List<VerificationResult> errors = new ArrayList<>(Collections.singleton(VerificationResult.notCompatible(this.errorDescription(), this.action())));
+            List<VerificationResult> errors =
+                new ArrayList<>(Collections.singleton(VerificationResult.notCompatible(this.errorDescription(),
+                    this.action())));
             throw new AzureCompatibilityNotMetException(errors);
         }
     }
 
     private String errorDescription() {
         String versionFromManifest = this.getVersionFromManifest();
-        return StringUtils.hasText(versionFromManifest) ? String.format("Spring Boot [%s] is not compatible with this Spring Cloud Azure release train", versionFromManifest) : "Spring Boot is not compatible with this Spring Cloud Azure release train";
+        return StringUtils.hasText(versionFromManifest) ? String.format("Spring Boot [%s] is not compatible with this"
+            + " Spring Cloud Azure release", versionFromManifest) : "Spring Boot is not compatible with this "
+            + "Spring Cloud Azure release";
     }
 
     private String action() {
-        return String.format("Change Spring Boot version to one of the following versions %s .%n"
-            + "You can find the latest Spring Boot versions here [%s]. %n"
-            + "If you want to learn more about the Spring Cloud Azure Release train compatibility, "
-            + "you can visit this page [%s] and check the [Release Trains] section.%nIf you want to disable this check, "
-            + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]", this.acceptedVersions,
-            "https://spring.io/projects/spring-boot#learn", "https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping");
+        return String.format("Change Spring Boot version to one of the following versions %s.%n"
+                + "You can find the latest Spring Boot versions here [%s]. %n"
+                + "If you want to learn more about the Spring Cloud Azure compatibility, "
+                + "you can visit this page [%s] and check the [Which Version of Spring Cloud Azure Should I Use] section.%n"
+                + "If you want to disable this check, "
+                + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]",
+            this.acceptedVersions,
+            "https://spring.io/projects/spring-boot#learn",
+            "https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping");
     }
 
     String getVersionFromManifest() {
@@ -63,33 +94,31 @@ public class AzureSpringBootVersionVerifier {
     private boolean springBootVersionMatches() {
         for (String acceptedVersion : acceptedVersions) {
             try {
-                boolean matched = this.matchSpringBootVersionFromManifest(acceptedVersion);
-                if (matched) {
+                if (this.matchSpringBootVersionFromManifest(acceptedVersion)) {
                     return true;
                 }
             } catch (FileNotFoundException e) {
-                CompatibilityPredicate predicate = this.supportedVersions.get(stripWildCardFromVersion(acceptedVersion));
-                if (predicate != null && predicate.isCompatible()) {
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Predicate [" + predicate + "] was matched");
-                    }
+                String versionString = stripWildCardFromVersion(acceptedVersion);
+                String fullyQualifiedClassName = this.supportedVersions.get(versionString);
+
+                if (classNameResolver.resolve(fullyQualifiedClassName)) {
+                    LOGGER.debug("Predicate for Spring Boot Version of [{}] was matched", versionString);
                     return true;
                 }
             }
         }
+
         return false;
     }
 
-    private boolean matchSpringBootVersionFromManifest(String s) throws FileNotFoundException {
+    private boolean matchSpringBootVersionFromManifest(String acceptedVersion) throws FileNotFoundException {
         String version = this.getVersionFromManifest();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Version found in Boot manifest [" + version + "]");
-        }
+        LOGGER.debug("Version found in Boot manifest [{}]", version);
         if (!StringUtils.hasText(version)) {
             LOGGER.info("Cannot check Boot version from manifest");
             throw new FileNotFoundException("Spring Boot version not found");
         } else {
-            return version.startsWith(stripWildCardFromVersion(s));
+            return version.startsWith(stripWildCardFromVersion(acceptedVersion));
         }
     }
 
@@ -97,45 +126,4 @@ public class AzureSpringBootVersionVerifier {
         return version.endsWith(".x") ? version.substring(0, version.indexOf(".x")) : version;
     }
 
-    private CompatibilityPredicate is2_6() {
-        return new CompatibilityPredicate() {
-            public String toString() {
-                return "Predicate for Boot 2.6";
-            }
-            public boolean isCompatible() {
-                try {
-                    Class.forName("org.springframework.boot.autoconfigure.data.redis.ClientResourcesBuilderCustomizer");
-                    return true;
-                } catch (ClassNotFoundException ex) {
-                    return false;
-                }
-            }
-        };
-    }
-
-    private CompatibilityPredicate is2_5() {
-        return new CompatibilityPredicate() {
-            public String toString() {
-                return "Predicate for Boot 2.5";
-            }
-            public boolean isCompatible() {
-                try {
-                    Class.forName("org.springframework.boot.context.properties.bind.Bindable.BindRestriction");
-                    return true;
-                } catch (ClassNotFoundException ex) {
-                    return false;
-                }
-            }
-        };
-    }
-
-    @FunctionalInterface
-    interface CompatibilityPredicate {
-
-        /**
-         * Compatible of the current spring-boot version
-         * @return the version supported or not
-         */
-        boolean isCompatible();
-    }
 }

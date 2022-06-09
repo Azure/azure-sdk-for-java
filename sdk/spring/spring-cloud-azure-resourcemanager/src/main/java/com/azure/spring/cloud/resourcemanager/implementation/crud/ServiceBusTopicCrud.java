@@ -41,7 +41,7 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
                 .topics()
                 .getByName(namespaceAndName.getT2());
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

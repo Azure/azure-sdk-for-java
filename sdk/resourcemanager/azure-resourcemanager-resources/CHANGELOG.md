@@ -1,6 +1,30 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.16.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `ResourceManager.resourceChangeClient()`.
+
+### Breaking Changes
+
+- Removed unused classes `DeploymentsWhatIfAtManagementGroupScopeHeaders`, `DeploymentsWhatIfAtManagementGroupScopeResponse`, `DeploymentsWhatIfAtSubscriptionScopeHeaders`, `DeploymentsWhatIfAtSubscriptionScopeResponse`, `DeploymentsWhatIfAtTenantScopeHeaders`, `DeploymentsWhatIfAtTenantScopeResponse`, `DeploymentsWhatIfHeaders`, `DeploymentsWhatIfResponse`
+
+## 2.14.0 (2022-04-11)
+
+### Bugs Fixed
+
+- Fixed a bug that `ResourceManager.pipeline()` be `null`.
 
 ### Other Changes
 

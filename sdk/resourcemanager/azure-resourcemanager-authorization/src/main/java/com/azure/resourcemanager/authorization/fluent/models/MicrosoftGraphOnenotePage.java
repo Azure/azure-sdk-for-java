@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** onenotePage. */
 @Fluent
 public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntitySchemaObjectModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenotePage.class);
-
     /*
      * The page's HTML content.
      */
@@ -104,7 +101,7 @@ public final class MicrosoftGraphOnenotePage extends MicrosoftGraphOnenoteEntity
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return new byte[0];
         }
         return this.content.decodedBytes();
     }

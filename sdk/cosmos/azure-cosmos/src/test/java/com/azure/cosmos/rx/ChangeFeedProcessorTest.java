@@ -55,6 +55,7 @@ import java.util.function.Consumer;
 import static com.azure.cosmos.BridgeInternal.extractContainerSelfLink;
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ChangeFeedProcessorTest extends TestSuiteBase {
     private final static Logger log = LoggerFactory.getLogger(ChangeFeedProcessorTest.class);
@@ -212,7 +213,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -225,12 +226,21 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .buildChangeFeedProcessor();
 
+            ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
+                .hostName("side-cart")
+                .handleChanges((List<JsonNode> docs) -> {
+                    fail("ERROR - we should not execute this handler");
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
             try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessorMain.start().subscribeOn(Schedulers.elastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .then(Mono.just(changeFeedProcessor)
+                    .then(Mono.just(changeFeedProcessorMain)
                         .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .flatMap(value -> changeFeedProcessor.stop()
+                        .flatMap(value -> changeFeedProcessorMain.stop()
                             .subscribeOn(Schedulers.elastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         ))
@@ -243,7 +253,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             // Test for "zero" lag
-            Map<String, Integer> estimatedLagResult = changeFeedProcessor.getEstimatedLag()
+            Map<String, Integer> estimatedLagResult = changeFeedProcessorMain.getEstimatedLag()
                 .map(estimatedLag -> {
                     try {
                         log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
@@ -253,17 +263,40 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     return estimatedLag;
                 }).block();
 
+            assertThat(estimatedLagResult.size()).isNotZero().as("Change Feed Processor number of leases should not be 0.");
+
             int totalLag = 0;
             for (int lag : estimatedLagResult.values()) {
                 totalLag += lag;
             }
 
-            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor estimated total lag at start");
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor Main estimated total lag at start");
+
+            // check the side cart CFP instance
+            Map<String, Integer> estimatedLagSideCartResult = changeFeedProcessorSideCart.getEstimatedLag()
+                .map(estimatedLag -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return estimatedLag;
+                }).block();
+
+            assertThat(estimatedLagSideCartResult.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
+
+            totalLag = 0;
+            for (int lag : estimatedLagSideCartResult.values()) {
+                totalLag += lag;
+            }
+
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor Side Cart estimated total lag at start");
+
 
             // Test for "FEED_COUNT total lag
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
-            estimatedLagResult = changeFeedProcessor.getEstimatedLag()
+            estimatedLagResult = changeFeedProcessorMain.getEstimatedLag()
                 .map(estimatedLag -> {
                     try {
                         log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
@@ -278,7 +311,27 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor estimated total lag");
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor Main estimated total lag");
+
+            // check the side cart CFP instance
+            estimatedLagSideCartResult = changeFeedProcessorSideCart.getEstimatedLag()
+                .map(estimatedLag -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(estimatedLag));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return estimatedLag;
+                }).block();
+
+            totalLag = 0;
+            for (int lag : estimatedLagSideCartResult.values()) {
+                totalLag += lag;
+            }
+
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor Side Cart estimated total lag");
+
+
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
@@ -296,7 +349,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -309,12 +362,21 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .buildChangeFeedProcessor();
 
+            ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
+                .hostName("side-cart")
+                .handleChanges((List<JsonNode> docs) -> {
+                    fail("ERROR - we should not execute this handler");
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
             try {
-                changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
+                changeFeedProcessorMain.start().subscribeOn(Schedulers.elastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .then(Mono.just(changeFeedProcessor)
+                    .then(Mono.just(changeFeedProcessorMain)
                         .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                        .flatMap(value -> changeFeedProcessor.stop()
+                        .flatMap(value -> changeFeedProcessorMain.stop()
                             .subscribeOn(Schedulers.elastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         ))
@@ -327,7 +389,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             // Test for "zero" lag
-            List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessor.getCurrentState()
+            List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessorMain.getCurrentState()
                 .map(state -> {
                     try {
                         log.info(OBJECT_MAPPER.writeValueAsString(state));
@@ -337,17 +399,40 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     return state;
                 }).block();
 
+            assertThat(cfpCurrentState.size()).isNotZero().as("Change Feed Processor number of leases should not be 0.");
+
             int totalLag = 0;
             for (ChangeFeedProcessorState item : cfpCurrentState) {
                 totalLag += item.getEstimatedLag();
             }
 
-            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor estimated total lag at start");
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor Main estimated total lag at start");
+
+            // check the side cart CFP instance
+            List<ChangeFeedProcessorState> cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
+
+            assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
+
+            totalLag = 0;
+            for (ChangeFeedProcessorState item : cfpCurrentStateSideCart) {
+                totalLag += item.getEstimatedLag();
+            }
+
+            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor Side Cart estimated total lag at start");
+
 
             // Test for "FEED_COUNT total lag
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
-            cfpCurrentState = changeFeedProcessor.getCurrentState()
+            cfpCurrentState = changeFeedProcessorMain.getCurrentState()
                 .map(state -> {
                     try {
                         log.info(OBJECT_MAPPER.writeValueAsString(state));
@@ -362,7 +447,29 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += item.getEstimatedLag();
             }
 
-            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor estimated total lag");
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor Main estimated total lag");
+
+            // check the side cart CFP instance
+            cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
+
+            assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
+
+            totalLag = 0;
+            for (ChangeFeedProcessorState item : cfpCurrentStateSideCart) {
+                totalLag += item.getEstimatedLag();
+            }
+
+            assertThat(totalLag).isEqualTo(FEED_COUNT).as("Change Feed Processor Side Cart estimated total lag");
+
+
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);

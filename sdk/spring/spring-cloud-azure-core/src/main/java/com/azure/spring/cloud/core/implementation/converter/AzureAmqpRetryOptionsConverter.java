@@ -30,7 +30,7 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOpti
 
         RetryOptionsProvider.RetryMode retryMode = retry.getMode();
 
-        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retryMode)) {
+        if (RetryOptionsProvider.RetryMode.EXPONENTIAL == retryMode) {
             RetryOptionsProvider.RetryOptions.ExponentialRetryOptions exponential = retry.getExponential();
             if (exponential != null && exponential.getMaxRetries() != null) {
                 AmqpRetryOptions result = new AmqpRetryOptions();
@@ -46,7 +46,7 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOpti
             } else {
                 LOGGER.debug("The max-retries is not set, skip the convert.");
             }
-        } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retryMode)) {
+        } else if (RetryOptionsProvider.RetryMode.FIXED == retryMode) {
             RetryOptionsProvider.RetryOptions.FixedRetryOptions fixed = retry.getFixed();
             if (fixed != null && fixed.getMaxRetries() != null) {
                 AmqpRetryOptions result = new AmqpRetryOptions();

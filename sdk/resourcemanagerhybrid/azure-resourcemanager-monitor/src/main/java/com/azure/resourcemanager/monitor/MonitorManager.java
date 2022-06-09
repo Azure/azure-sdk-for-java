@@ -25,6 +25,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
+import java.util.Objects;
+
 /** Entry point to Azure Monitor. */
 public final class MonitorManager extends Manager<MonitorClient> {
     // Collections
@@ -61,7 +63,9 @@ public final class MonitorManager extends Manager<MonitorClient> {
      * @param profile the profile to use
      * @return the MonitorManager
      */
-    private static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static MonitorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new MonitorManager(httpPipeline, profile);
     }
 

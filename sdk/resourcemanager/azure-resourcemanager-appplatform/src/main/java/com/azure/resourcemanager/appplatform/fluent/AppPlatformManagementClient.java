@@ -60,6 +60,48 @@ public interface AppPlatformManagementClient {
     ConfigServersClient getConfigServers();
 
     /**
+     * Gets the ConfigurationServicesClient object to access its operations.
+     *
+     * @return the ConfigurationServicesClient object.
+     */
+    ConfigurationServicesClient getConfigurationServices();
+
+    /**
+     * Gets the ServiceRegistriesClient object to access its operations.
+     *
+     * @return the ServiceRegistriesClient object.
+     */
+    ServiceRegistriesClient getServiceRegistries();
+
+    /**
+     * Gets the BuildServicesClient object to access its operations.
+     *
+     * @return the BuildServicesClient object.
+     */
+    BuildServicesClient getBuildServices();
+
+    /**
+     * Gets the BuildpackBindingsClient object to access its operations.
+     *
+     * @return the BuildpackBindingsClient object.
+     */
+    BuildpackBindingsClient getBuildpackBindings();
+
+    /**
+     * Gets the BuildServiceBuildersClient object to access its operations.
+     *
+     * @return the BuildServiceBuildersClient object.
+     */
+    BuildServiceBuildersClient getBuildServiceBuilders();
+
+    /**
+     * Gets the BuildServiceAgentPoolsClient object to access its operations.
+     *
+     * @return the BuildServiceAgentPoolsClient object.
+     */
+    BuildServiceAgentPoolsClient getBuildServiceAgentPools();
+
+    /**
      * Gets the MonitoringSettingsClient object to access its operations.
      *
      * @return the MonitoringSettingsClient object.

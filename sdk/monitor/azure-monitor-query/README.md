@@ -64,7 +64,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 
@@ -85,7 +85,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.3</version>
+    <version>1.5.2</version>
 </dependency>
 ```
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
@@ -148,6 +148,8 @@ Each set of metric values is a time series with the following characteristics:
 - [Advanced logs query scenarios](#advanced-logs-query-scenarios)
   - [Set logs query timeout](#set-logs-query-timeout)
   - [Query multiple workspaces](#query-multiple-workspaces)
+  - [Include statistics](#include-statistics)
+  - [Include visualization](#include-visualization)
 - [Metrics query](#metrics-query)
   - [Handle metrics query response](#handle-metrics-query-response)
   - [Get average and count metrics](#get-average-and-count-metrics)
@@ -285,6 +287,100 @@ Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse(
                 .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
         Context.NONE);
 LogsQueryResult result = response.getValue();
+```
+
+#### Include statistics
+
+To get logs query execution statistics, such as CPU and memory consumption:
+
+1. Use `LogsQueryOptions` to request for statistics in the response by setting `setIncludeStatistics()` to `true`.
+2. Invoke the `getStatistics` method on the `LogsQueryResult` object.
+
+The following example prints the query execution time:
+```java readme-sample-includestatistics
+LogsQueryClient client = new LogsQueryClientBuilder()
+        .credential(credential)
+        .buildClient();
+
+LogsQueryOptions options = new LogsQueryOptions()
+        .setIncludeStatistics(true);
+Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}",
+        "AzureActivity | top 10 by TimeGenerated", QueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
+LogsQueryResult result = response.getValue();
+BinaryData statistics = result.getStatistics();
+
+ObjectMapper objectMapper = new ObjectMapper();
+JsonNode statisticsJson = objectMapper.readTree(statistics.toBytes());
+JsonNode queryStatistics = statisticsJson.get("query");
+System.out.println("Query execution time = " + queryStatistics.get("executionTime").asDouble());
+```
+
+Because the structure of the statistics payload varies by query, a `BinaryData` return type is used. It contains the 
+raw JSON response. The statistics are found within the `query` property of the JSON. For example:
+
+```json
+{
+  "query": {
+    "executionTime": 0.0156478,
+    "resourceUsage": {...},
+    "inputDatasetStatistics": {...},
+    "datasetStatistics": [{...}]
+  }
+}
+```
+
+#### Include visualization
+To get visualization data for logs queries using the [render operator](https://docs.microsoft.com/azure/data-explorer/kusto/query/renderoperator?pivots=azuremonitor):
+
+1. Use `LogsQueryOptions` to request for visualization data in the response by setting `setIncludeVisualization()` to `true`.
+2. Invoke the `getVisualization` method on the `LogsQueryResult` object.
+
+For example:
+```java readme-sample-includevisualization
+LogsQueryClient client = new LogsQueryClientBuilder()
+        .credential(credential)
+        .buildClient();
+
+String visualizationQuery = "StormEvents"
+        + "| summarize event_count = count() by State"
+        + "| where event_count > 10"
+        + "| project State, event_count"
+        + "| render columnchart";
+LogsQueryOptions options = new LogsQueryOptions()
+        .setIncludeVisualization(true);
+Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}", visualizationQuery,
+        QueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
+LogsQueryResult result = response.getValue();
+BinaryData visualization = result.getVisualization();
+
+ObjectMapper objectMapper = new ObjectMapper();
+JsonNode visualizationJson = objectMapper.readTree(visualization.toBytes());
+System.out.println("Visualization graph type = " + visualizationJson.get("visualization").asText());
+```
+
+Because the structure of the visualization payload varies by query, a `BinaryData` return type is used. It contains the
+raw JSON response. For example:
+
+```json
+{
+  "visualization": "columnchart",
+  "title": null,
+  "accumulate": false,
+  "isQuerySorted": false,
+  "kind": null,
+  "legend": null,
+  "series": null,
+  "yMin": "",
+  "yMax": "",
+  "xAxis": null,
+  "xColumn": null,
+  "xTitle": null,
+  "yAxis": null,
+  "yColumns": null,
+  "ySplit": null,
+  "yTitle": null,
+  "anomalyColumns": null
+}
 ```
 
 ### Metrics query

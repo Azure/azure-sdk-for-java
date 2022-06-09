@@ -184,14 +184,214 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     /** Static value web desc for Get6ItemsItem. */
     public static final Get6ItemsItem WEB_DESC = fromString("web desc");
 
-    /** Static value alternateNotificationEmails for Get6ItemsItem. */
-    public static final Get6ItemsItem ALTERNATE_NOTIFICATION_EMAILS = fromString("alternateNotificationEmails");
+    /** Static value assignedLabels for Get6ItemsItem. */
+    public static final Get6ItemsItem ASSIGNED_LABELS = fromString("assignedLabels");
 
-    /** Static value groupLifetimeInDays for Get6ItemsItem. */
-    public static final Get6ItemsItem GROUP_LIFETIME_IN_DAYS = fromString("groupLifetimeInDays");
+    /** Static value assignedLabels desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ASSIGNED_LABELS_DESC = fromString("assignedLabels desc");
 
-    /** Static value managedGroupTypes for Get6ItemsItem. */
-    public static final Get6ItemsItem MANAGED_GROUP_TYPES = fromString("managedGroupTypes");
+    /** Static value assignedLicenses for Get6ItemsItem. */
+    public static final Get6ItemsItem ASSIGNED_LICENSES = fromString("assignedLicenses");
+
+    /** Static value assignedLicenses desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ASSIGNED_LICENSES_DESC = fromString("assignedLicenses desc");
+
+    /** Static value classification for Get6ItemsItem. */
+    public static final Get6ItemsItem CLASSIFICATION = fromString("classification");
+
+    /** Static value classification desc for Get6ItemsItem. */
+    public static final Get6ItemsItem CLASSIFICATION_DESC = fromString("classification desc");
+
+    /** Static value expirationDateTime for Get6ItemsItem. */
+    public static final Get6ItemsItem EXPIRATION_DATE_TIME = fromString("expirationDateTime");
+
+    /** Static value expirationDateTime desc for Get6ItemsItem. */
+    public static final Get6ItemsItem EXPIRATION_DATE_TIME_DESC = fromString("expirationDateTime desc");
+
+    /** Static value groupTypes for Get6ItemsItem. */
+    public static final Get6ItemsItem GROUP_TYPES = fromString("groupTypes");
+
+    /** Static value groupTypes desc for Get6ItemsItem. */
+    public static final Get6ItemsItem GROUP_TYPES_DESC = fromString("groupTypes desc");
+
+    /** Static value hasMembersWithLicenseErrors for Get6ItemsItem. */
+    public static final Get6ItemsItem HAS_MEMBERS_WITH_LICENSE_ERRORS = fromString("hasMembersWithLicenseErrors");
+
+    /** Static value hasMembersWithLicenseErrors desc for Get6ItemsItem. */
+    public static final Get6ItemsItem HAS_MEMBERS_WITH_LICENSE_ERRORS_DESC =
+        fromString("hasMembersWithLicenseErrors desc");
+
+    /** Static value licenseProcessingState for Get6ItemsItem. */
+    public static final Get6ItemsItem LICENSE_PROCESSING_STATE = fromString("licenseProcessingState");
+
+    /** Static value licenseProcessingState desc for Get6ItemsItem. */
+    public static final Get6ItemsItem LICENSE_PROCESSING_STATE_DESC = fromString("licenseProcessingState desc");
+
+    /** Static value mail for Get6ItemsItem. */
+    public static final Get6ItemsItem MAIL = fromString("mail");
+
+    /** Static value mail desc for Get6ItemsItem. */
+    public static final Get6ItemsItem MAIL_DESC = fromString("mail desc");
+
+    /** Static value mailEnabled for Get6ItemsItem. */
+    public static final Get6ItemsItem MAIL_ENABLED = fromString("mailEnabled");
+
+    /** Static value mailEnabled desc for Get6ItemsItem. */
+    public static final Get6ItemsItem MAIL_ENABLED_DESC = fromString("mailEnabled desc");
+
+    /** Static value mailNickname for Get6ItemsItem. */
+    public static final Get6ItemsItem MAIL_NICKNAME = fromString("mailNickname");
+
+    /** Static value mailNickname desc for Get6ItemsItem. */
+    public static final Get6ItemsItem MAIL_NICKNAME_DESC = fromString("mailNickname desc");
+
+    /** Static value membershipRule for Get6ItemsItem. */
+    public static final Get6ItemsItem MEMBERSHIP_RULE = fromString("membershipRule");
+
+    /** Static value membershipRule desc for Get6ItemsItem. */
+    public static final Get6ItemsItem MEMBERSHIP_RULE_DESC = fromString("membershipRule desc");
+
+    /** Static value membershipRuleProcessingState for Get6ItemsItem. */
+    public static final Get6ItemsItem MEMBERSHIP_RULE_PROCESSING_STATE = fromString("membershipRuleProcessingState");
+
+    /** Static value membershipRuleProcessingState desc for Get6ItemsItem. */
+    public static final Get6ItemsItem MEMBERSHIP_RULE_PROCESSING_STATE_DESC =
+        fromString("membershipRuleProcessingState desc");
+
+    /** Static value onPremisesDomainName for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_DOMAIN_NAME = fromString("onPremisesDomainName");
+
+    /** Static value onPremisesDomainName desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_DOMAIN_NAME_DESC = fromString("onPremisesDomainName desc");
+
+    /** Static value onPremisesLastSyncDateTime for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME = fromString("onPremisesLastSyncDateTime");
+
+    /** Static value onPremisesLastSyncDateTime desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME_DESC =
+        fromString("onPremisesLastSyncDateTime desc");
+
+    /** Static value onPremisesNetBiosName for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_NET_BIOS_NAME = fromString("onPremisesNetBiosName");
+
+    /** Static value onPremisesNetBiosName desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_NET_BIOS_NAME_DESC = fromString("onPremisesNetBiosName desc");
+
+    /** Static value onPremisesProvisioningErrors for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_PROVISIONING_ERRORS = fromString("onPremisesProvisioningErrors");
+
+    /** Static value onPremisesProvisioningErrors desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_PROVISIONING_ERRORS_DESC =
+        fromString("onPremisesProvisioningErrors desc");
+
+    /** Static value onPremisesSamAccountName for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME = fromString("onPremisesSamAccountName");
+
+    /** Static value onPremisesSamAccountName desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME_DESC = fromString("onPremisesSamAccountName desc");
+
+    /** Static value onPremisesSecurityIdentifier for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_SECURITY_IDENTIFIER = fromString("onPremisesSecurityIdentifier");
+
+    /** Static value onPremisesSecurityIdentifier desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_SECURITY_IDENTIFIER_DESC =
+        fromString("onPremisesSecurityIdentifier desc");
+
+    /** Static value onPremisesSyncEnabled for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_SYNC_ENABLED = fromString("onPremisesSyncEnabled");
+
+    /** Static value onPremisesSyncEnabled desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ON_PREMISES_SYNC_ENABLED_DESC = fromString("onPremisesSyncEnabled desc");
+
+    /** Static value preferredDataLocation for Get6ItemsItem. */
+    public static final Get6ItemsItem PREFERRED_DATA_LOCATION = fromString("preferredDataLocation");
+
+    /** Static value preferredDataLocation desc for Get6ItemsItem. */
+    public static final Get6ItemsItem PREFERRED_DATA_LOCATION_DESC = fromString("preferredDataLocation desc");
+
+    /** Static value preferredLanguage for Get6ItemsItem. */
+    public static final Get6ItemsItem PREFERRED_LANGUAGE = fromString("preferredLanguage");
+
+    /** Static value preferredLanguage desc for Get6ItemsItem. */
+    public static final Get6ItemsItem PREFERRED_LANGUAGE_DESC = fromString("preferredLanguage desc");
+
+    /** Static value proxyAddresses for Get6ItemsItem. */
+    public static final Get6ItemsItem PROXY_ADDRESSES = fromString("proxyAddresses");
+
+    /** Static value proxyAddresses desc for Get6ItemsItem. */
+    public static final Get6ItemsItem PROXY_ADDRESSES_DESC = fromString("proxyAddresses desc");
+
+    /** Static value renewedDateTime for Get6ItemsItem. */
+    public static final Get6ItemsItem RENEWED_DATE_TIME = fromString("renewedDateTime");
+
+    /** Static value renewedDateTime desc for Get6ItemsItem. */
+    public static final Get6ItemsItem RENEWED_DATE_TIME_DESC = fromString("renewedDateTime desc");
+
+    /** Static value securityEnabled for Get6ItemsItem. */
+    public static final Get6ItemsItem SECURITY_ENABLED = fromString("securityEnabled");
+
+    /** Static value securityEnabled desc for Get6ItemsItem. */
+    public static final Get6ItemsItem SECURITY_ENABLED_DESC = fromString("securityEnabled desc");
+
+    /** Static value securityIdentifier for Get6ItemsItem. */
+    public static final Get6ItemsItem SECURITY_IDENTIFIER = fromString("securityIdentifier");
+
+    /** Static value securityIdentifier desc for Get6ItemsItem. */
+    public static final Get6ItemsItem SECURITY_IDENTIFIER_DESC = fromString("securityIdentifier desc");
+
+    /** Static value theme for Get6ItemsItem. */
+    public static final Get6ItemsItem THEME = fromString("theme");
+
+    /** Static value theme desc for Get6ItemsItem. */
+    public static final Get6ItemsItem THEME_DESC = fromString("theme desc");
+
+    /** Static value visibility for Get6ItemsItem. */
+    public static final Get6ItemsItem VISIBILITY = fromString("visibility");
+
+    /** Static value visibility desc for Get6ItemsItem. */
+    public static final Get6ItemsItem VISIBILITY_DESC = fromString("visibility desc");
+
+    /** Static value allowExternalSenders for Get6ItemsItem. */
+    public static final Get6ItemsItem ALLOW_EXTERNAL_SENDERS = fromString("allowExternalSenders");
+
+    /** Static value allowExternalSenders desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ALLOW_EXTERNAL_SENDERS_DESC = fromString("allowExternalSenders desc");
+
+    /** Static value autoSubscribeNewMembers for Get6ItemsItem. */
+    public static final Get6ItemsItem AUTO_SUBSCRIBE_NEW_MEMBERS = fromString("autoSubscribeNewMembers");
+
+    /** Static value autoSubscribeNewMembers desc for Get6ItemsItem. */
+    public static final Get6ItemsItem AUTO_SUBSCRIBE_NEW_MEMBERS_DESC = fromString("autoSubscribeNewMembers desc");
+
+    /** Static value hideFromAddressLists for Get6ItemsItem. */
+    public static final Get6ItemsItem HIDE_FROM_ADDRESS_LISTS = fromString("hideFromAddressLists");
+
+    /** Static value hideFromAddressLists desc for Get6ItemsItem. */
+    public static final Get6ItemsItem HIDE_FROM_ADDRESS_LISTS_DESC = fromString("hideFromAddressLists desc");
+
+    /** Static value hideFromOutlookClients for Get6ItemsItem. */
+    public static final Get6ItemsItem HIDE_FROM_OUTLOOK_CLIENTS = fromString("hideFromOutlookClients");
+
+    /** Static value hideFromOutlookClients desc for Get6ItemsItem. */
+    public static final Get6ItemsItem HIDE_FROM_OUTLOOK_CLIENTS_DESC = fromString("hideFromOutlookClients desc");
+
+    /** Static value isSubscribedByMail for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_SUBSCRIBED_BY_MAIL = fromString("isSubscribedByMail");
+
+    /** Static value isSubscribedByMail desc for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_SUBSCRIBED_BY_MAIL_DESC = fromString("isSubscribedByMail desc");
+
+    /** Static value unseenCount for Get6ItemsItem. */
+    public static final Get6ItemsItem UNSEEN_COUNT = fromString("unseenCount");
+
+    /** Static value unseenCount desc for Get6ItemsItem. */
+    public static final Get6ItemsItem UNSEEN_COUNT_DESC = fromString("unseenCount desc");
+
+    /** Static value isArchived for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_ARCHIVED = fromString("isArchived");
+
+    /** Static value isArchived desc for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_ARCHIVED_DESC = fromString("isArchived desc");
 
     /** Static value accountEnabled for Get6ItemsItem. */
     public static final Get6ItemsItem ACCOUNT_ENABLED = fromString("accountEnabled");
@@ -204,12 +404,6 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
 
     /** Static value ageGroup desc for Get6ItemsItem. */
     public static final Get6ItemsItem AGE_GROUP_DESC = fromString("ageGroup desc");
-
-    /** Static value assignedLicenses for Get6ItemsItem. */
-    public static final Get6ItemsItem ASSIGNED_LICENSES = fromString("assignedLicenses");
-
-    /** Static value assignedLicenses desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ASSIGNED_LICENSES_DESC = fromString("assignedLicenses desc");
 
     /** Static value assignedPlans for Get6ItemsItem. */
     public static final Get6ItemsItem ASSIGNED_PLANS = fromString("assignedPlans");
@@ -353,18 +547,6 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     /** Static value licenseAssignmentStates desc for Get6ItemsItem. */
     public static final Get6ItemsItem LICENSE_ASSIGNMENT_STATES_DESC = fromString("licenseAssignmentStates desc");
 
-    /** Static value mail for Get6ItemsItem. */
-    public static final Get6ItemsItem MAIL = fromString("mail");
-
-    /** Static value mail desc for Get6ItemsItem. */
-    public static final Get6ItemsItem MAIL_DESC = fromString("mail desc");
-
-    /** Static value mailNickname for Get6ItemsItem. */
-    public static final Get6ItemsItem MAIL_NICKNAME = fromString("mailNickname");
-
-    /** Static value mailNickname desc for Get6ItemsItem. */
-    public static final Get6ItemsItem MAIL_NICKNAME_DESC = fromString("mailNickname desc");
-
     /** Static value mobilePhone for Get6ItemsItem. */
     public static final Get6ItemsItem MOBILE_PHONE = fromString("mobilePhone");
 
@@ -384,12 +566,6 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     public static final Get6ItemsItem ON_PREMISES_DISTINGUISHED_NAME_DESC =
         fromString("onPremisesDistinguishedName desc");
 
-    /** Static value onPremisesDomainName for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_DOMAIN_NAME = fromString("onPremisesDomainName");
-
-    /** Static value onPremisesDomainName desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_DOMAIN_NAME_DESC = fromString("onPremisesDomainName desc");
-
     /** Static value onPremisesExtensionAttributes for Get6ItemsItem. */
     public static final Get6ItemsItem ON_PREMISES_EXTENSION_ATTRIBUTES = fromString("onPremisesExtensionAttributes");
 
@@ -402,39 +578,6 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
 
     /** Static value onPremisesImmutableId desc for Get6ItemsItem. */
     public static final Get6ItemsItem ON_PREMISES_IMMUTABLE_ID_DESC = fromString("onPremisesImmutableId desc");
-
-    /** Static value onPremisesLastSyncDateTime for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME = fromString("onPremisesLastSyncDateTime");
-
-    /** Static value onPremisesLastSyncDateTime desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME_DESC =
-        fromString("onPremisesLastSyncDateTime desc");
-
-    /** Static value onPremisesProvisioningErrors for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_PROVISIONING_ERRORS = fromString("onPremisesProvisioningErrors");
-
-    /** Static value onPremisesProvisioningErrors desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_PROVISIONING_ERRORS_DESC =
-        fromString("onPremisesProvisioningErrors desc");
-
-    /** Static value onPremisesSamAccountName for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME = fromString("onPremisesSamAccountName");
-
-    /** Static value onPremisesSamAccountName desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME_DESC = fromString("onPremisesSamAccountName desc");
-
-    /** Static value onPremisesSecurityIdentifier for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_SECURITY_IDENTIFIER = fromString("onPremisesSecurityIdentifier");
-
-    /** Static value onPremisesSecurityIdentifier desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_SECURITY_IDENTIFIER_DESC =
-        fromString("onPremisesSecurityIdentifier desc");
-
-    /** Static value onPremisesSyncEnabled for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_SYNC_ENABLED = fromString("onPremisesSyncEnabled");
-
-    /** Static value onPremisesSyncEnabled desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ON_PREMISES_SYNC_ENABLED_DESC = fromString("onPremisesSyncEnabled desc");
 
     /** Static value onPremisesUserPrincipalName for Get6ItemsItem. */
     public static final Get6ItemsItem ON_PREMISES_USER_PRINCIPAL_NAME = fromString("onPremisesUserPrincipalName");
@@ -467,23 +610,11 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     /** Static value postalCode desc for Get6ItemsItem. */
     public static final Get6ItemsItem POSTAL_CODE_DESC = fromString("postalCode desc");
 
-    /** Static value preferredLanguage for Get6ItemsItem. */
-    public static final Get6ItemsItem PREFERRED_LANGUAGE = fromString("preferredLanguage");
-
-    /** Static value preferredLanguage desc for Get6ItemsItem. */
-    public static final Get6ItemsItem PREFERRED_LANGUAGE_DESC = fromString("preferredLanguage desc");
-
     /** Static value provisionedPlans for Get6ItemsItem. */
     public static final Get6ItemsItem PROVISIONED_PLANS = fromString("provisionedPlans");
 
     /** Static value provisionedPlans desc for Get6ItemsItem. */
     public static final Get6ItemsItem PROVISIONED_PLANS_DESC = fromString("provisionedPlans desc");
-
-    /** Static value proxyAddresses for Get6ItemsItem. */
-    public static final Get6ItemsItem PROXY_ADDRESSES = fromString("proxyAddresses");
-
-    /** Static value proxyAddresses desc for Get6ItemsItem. */
-    public static final Get6ItemsItem PROXY_ADDRESSES_DESC = fromString("proxyAddresses desc");
 
     /** Static value showInAddressList for Get6ItemsItem. */
     public static final Get6ItemsItem SHOW_IN_ADDRESS_LIST = fromString("showInAddressList");
@@ -607,17 +738,51 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     /** Static value skills desc for Get6ItemsItem. */
     public static final Get6ItemsItem SKILLS_DESC = fromString("skills desc");
 
-    /** Static value addresses for Get6ItemsItem. */
-    public static final Get6ItemsItem ADDRESSES = fromString("addresses");
+    /** Static value authenticationType for Get6ItemsItem. */
+    public static final Get6ItemsItem AUTHENTICATION_TYPE = fromString("authenticationType");
 
-    /** Static value addresses desc for Get6ItemsItem. */
-    public static final Get6ItemsItem ADDRESSES_DESC = fromString("addresses desc");
+    /** Static value availabilityStatus for Get6ItemsItem. */
+    public static final Get6ItemsItem AVAILABILITY_STATUS = fromString("availabilityStatus");
 
-    /** Static value phones for Get6ItemsItem. */
-    public static final Get6ItemsItem PHONES = fromString("phones");
+    /** Static value isAdminManaged for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_ADMIN_MANAGED = fromString("isAdminManaged");
 
-    /** Static value phones desc for Get6ItemsItem. */
-    public static final Get6ItemsItem PHONES_DESC = fromString("phones desc");
+    /** Static value isDefault for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_DEFAULT = fromString("isDefault");
+
+    /** Static value isInitial for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_INITIAL = fromString("isInitial");
+
+    /** Static value isRoot for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_ROOT = fromString("isRoot");
+
+    /** Static value isVerified for Get6ItemsItem. */
+    public static final Get6ItemsItem IS_VERIFIED = fromString("isVerified");
+
+    /** Static value manufacturer for Get6ItemsItem. */
+    public static final Get6ItemsItem MANUFACTURER = fromString("manufacturer");
+
+    /** Static value model for Get6ItemsItem. */
+    public static final Get6ItemsItem MODEL = fromString("model");
+
+    /** Static value passwordNotificationWindowInDays for Get6ItemsItem. */
+    public static final Get6ItemsItem PASSWORD_NOTIFICATION_WINDOW_IN_DAYS =
+        fromString("passwordNotificationWindowInDays");
+
+    /** Static value passwordValidityPeriodInDays for Get6ItemsItem. */
+    public static final Get6ItemsItem PASSWORD_VALIDITY_PERIOD_IN_DAYS = fromString("passwordValidityPeriodInDays");
+
+    /** Static value supportedServices for Get6ItemsItem. */
+    public static final Get6ItemsItem SUPPORTED_SERVICES = fromString("supportedServices");
+
+    /** Static value domainNameReferences for Get6ItemsItem. */
+    public static final Get6ItemsItem DOMAIN_NAME_REFERENCES = fromString("domainNameReferences");
+
+    /** Static value serviceConfigurationRecords for Get6ItemsItem. */
+    public static final Get6ItemsItem SERVICE_CONFIGURATION_RECORDS = fromString("serviceConfigurationRecords");
+
+    /** Static value verificationDnsRecords for Get6ItemsItem. */
+    public static final Get6ItemsItem VERIFICATION_DNS_RECORDS = fromString("verificationDnsRecords");
 
     /**
      * Creates or finds a Get6ItemsItem from its string representation.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0-beta.16 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,121 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.15 (2022-05-10)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PrivateEndpoint` was added
+
+#### `models.PrivateLinkConnectionApprovalRequest` was modified
+
+* `withPrivateEndpoint(models.PrivateEndpoint)` was added
+* `privateEndpoint()` was added
+
+#### `models.PowerQuerySink` was modified
+
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+
+#### `models.DataFlowSink` was modified
+
+* `rejectedDataLinkedService()` was added
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+
+## 1.0.0-beta.14 (2022-04-19)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.DataFlowDebugSessionsExecuteCommandResponse` was removed
+
+* `models.DataFlowDebugSessionsExecuteCommandHeaders` was removed
+
+* `models.DataFlowDebugSessionsCreateHeaders` was removed
+
+* `models.DataFlowDebugSessionsCreateResponse` was removed
+
+#### `models.DataFlowReference` was modified
+
+* `java.lang.String type()` -> `models.DataFlowReferenceType type()`
+* `withType(java.lang.String)` was removed
+
+#### `models.ManagedVirtualNetworkReference` was modified
+
+* `withType(java.lang.String)` was removed
+* `java.lang.String type()` -> `models.ManagedVirtualNetworkReferenceType type()`
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.TriggerReference` was modified
+
+* `withType(java.lang.String)` was removed
+* `java.lang.String type()` -> `models.TriggerReferenceType type()`
+
+#### `models.CredentialReference` was modified
+
+* `withType(java.lang.String)` was removed
+* `java.lang.String type()` -> `models.CredentialReferenceType type()`
+
+### Features Added
+
+* `models.TwilioLinkedService` was added
+
+* `models.ExecutePipelineActivityPolicy` was added
+
+* `models.DataFlowReferenceType` was added
+
+* `models.TriggerReferenceType` was added
+
+* `models.AppFiguresLinkedService` was added
+
+* `models.AsanaLinkedService` was added
+
+* `models.ManagedVirtualNetworkReferenceType` was added
+
+* `models.CredentialReferenceType` was added
+
+* `models.DataworldLinkedService` was added
+
+#### `DataFactoryManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.DataFlowReference` was modified
+
+* `withType(models.DataFlowReferenceType)` was added
+
+#### `models.ManagedVirtualNetworkReference` was modified
+
+* `withType(models.ManagedVirtualNetworkReferenceType)` was added
+
+#### `DataFactoryManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.ExecutePipelineActivity` was modified
+
+* `withPolicy(models.ExecutePipelineActivityPolicy)` was added
+* `policy()` was added
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.TriggerReference` was modified
+
+* `withType(models.TriggerReferenceType)` was added
+
+#### `models.CredentialReference` was modified
+
+* `withType(models.CredentialReferenceType)` was added
 
 ## 1.0.0-beta.13 (2022-03-24)
 

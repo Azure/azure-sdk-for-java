@@ -30,7 +30,11 @@ public final class PartnerTopicActivationState extends ExpandableStringEnum<Part
         return fromString(name, PartnerTopicActivationState.class);
     }
 
-    /** @return known PartnerTopicActivationState values. */
+    /**
+     * Gets known PartnerTopicActivationState values.
+     *
+     * @return known PartnerTopicActivationState values.
+     */
     public static Collection<PartnerTopicActivationState> values() {
         return values(PartnerTopicActivationState.class);
     }

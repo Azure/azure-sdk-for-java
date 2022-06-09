@@ -41,7 +41,7 @@ public class EventHubsConsumerGroupCrud
                 .getByName(this.resourceMetadata.getResourceGroup(), consumerGroupCoordinate.getT1(),
                            consumerGroupCoordinate.getT2(), consumerGroupCoordinate.getT3());
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404) {
+            if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
             } else {
                 throw e;

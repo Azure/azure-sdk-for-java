@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier;
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicate;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,7 +25,7 @@ public class AzureCompatibilityVerifierAutoConfiguration {
 
     @Bean
     AzureSpringBootVersionVerifier springCloudAzureSpringBootVersionVerifier(AzureCompatibilityVerifierProperties properties) {
-        AzureSpringBootVersionVerifier verifier = new AzureSpringBootVersionVerifier(properties.getCompatibleBootVersions());
+        AzureSpringBootVersionVerifier verifier = new AzureSpringBootVersionVerifier(properties.getCompatibleBootVersions(), new ClassNameResolverPredicate());
         verifier.verify();
         return verifier;
     }

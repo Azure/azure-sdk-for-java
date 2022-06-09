@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DataMaskingFunction;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a Sql pool data masking rule. */
 @Fluent
 public final class DataMaskingRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingRuleProperties.class);
-
     /*
      * The rule Id.
      */
@@ -352,28 +349,30 @@ public final class DataMaskingRuleProperties {
      */
     public void validate() {
         if (schemaName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaName in model DataMaskingRuleProperties"));
         }
         if (tableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tableName in model DataMaskingRuleProperties"));
         }
         if (columnName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property columnName in model DataMaskingRuleProperties"));
         }
         if (maskingFunction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property maskingFunction in model DataMaskingRuleProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataMaskingRuleProperties.class);
 }

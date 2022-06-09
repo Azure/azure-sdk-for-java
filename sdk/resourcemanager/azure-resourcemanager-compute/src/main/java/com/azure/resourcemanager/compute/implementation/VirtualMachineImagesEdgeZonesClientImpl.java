@@ -194,7 +194,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -270,7 +270,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -306,14 +306,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     public Mono<VirtualMachineImageInner> getAsync(
         String location, String edgeZone, String publisherName, String offer, String skus, String version) {
         return getWithResponseAsync(location, edgeZone, publisherName, offer, skus, version)
-            .flatMap(
-                (Response<VirtualMachineImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -418,7 +411,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -498,7 +491,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -547,14 +540,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         Integer top,
         String orderby) {
         return listWithResponseAsync(location, edgeZone, publisherName, offer, skus, expand, top, orderby)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -579,14 +565,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         final Integer top = null;
         final String orderby = null;
         return listWithResponseAsync(location, edgeZone, publisherName, offer, skus, expand, top, orderby)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -683,7 +662,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -738,7 +717,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -769,14 +748,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     public Mono<List<VirtualMachineImageResourceInner>> listOffersAsync(
         String location, String edgeZone, String publisherName) {
         return listOffersWithResponseAsync(location, edgeZone, publisherName)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -846,7 +818,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -896,7 +868,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -923,15 +895,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, String edgeZone) {
-        return listPublishersWithResponseAsync(location, edgeZone)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listPublishersWithResponseAsync(location, edgeZone).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1007,7 +971,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1067,7 +1031,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1100,14 +1064,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     public Mono<List<VirtualMachineImageResourceInner>> listSkusAsync(
         String location, String edgeZone, String publisherName, String offer) {
         return listSkusWithResponseAsync(location, edgeZone, publisherName, offer)
-            .flatMap(
-                (Response<List<VirtualMachineImageResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

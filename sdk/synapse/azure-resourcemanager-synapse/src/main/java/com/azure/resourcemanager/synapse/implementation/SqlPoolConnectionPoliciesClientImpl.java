@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolConnectionPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolConnectionPolicyInner;
 import com.azure.resourcemanager.synapse.models.ConnectionPolicyName;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolConnectionPoliciesClient. */
 public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnectionPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolConnectionPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolConnectionPoliciesService service;
 

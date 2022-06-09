@@ -7,13 +7,19 @@ package com.azure.resourcemanager.iotcentral.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iotcentral.fluent.models.AppInner;
+import com.azure.resourcemanager.iotcentral.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iotcentral.models.App;
-import com.azure.resourcemanager.iotcentral.models.AppPatch;
 import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
 import com.azure.resourcemanager.iotcentral.models.AppState;
+import com.azure.resourcemanager.iotcentral.models.NetworkRuleSets;
+import com.azure.resourcemanager.iotcentral.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.iotcentral.models.ProvisioningState;
+import com.azure.resourcemanager.iotcentral.models.PublicNetworkAccess;
 import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentity;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class AppImpl implements App, App.Definition, App.Update {
     private AppInner innerObject;
@@ -53,6 +59,10 @@ public final class AppImpl implements App, App.Definition, App.Update {
         return this.innerModel().identity();
     }
 
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public String applicationId() {
         return this.innerModel().applicationId();
     }
@@ -71,6 +81,28 @@ public final class AppImpl implements App, App.Definition, App.Update {
 
     public AppState state() {
         return this.innerModel().state();
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public NetworkRuleSets networkRuleSets() {
+        return this.innerModel().networkRuleSets();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -92,8 +124,6 @@ public final class AppImpl implements App, App.Definition, App.Update {
     private String resourceGroupName;
 
     private String resourceName;
-
-    private AppPatch updateAppPatch;
 
     public AppImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -125,7 +155,6 @@ public final class AppImpl implements App, App.Definition, App.Update {
     }
 
     public AppImpl update() {
-        this.updateAppPatch = new AppPatch();
         return this;
     }
 
@@ -134,13 +163,16 @@ public final class AppImpl implements App, App.Definition, App.Update {
             serviceManager
                 .serviceClient()
                 .getApps()
-                .update(resourceGroupName, resourceName, updateAppPatch, Context.NONE);
+                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public App apply(Context context) {
         this.innerObject =
-            serviceManager.serviceClient().getApps().update(resourceGroupName, resourceName, updateAppPatch, context);
+            serviceManager
+                .serviceClient()
+                .getApps()
+                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -182,53 +214,28 @@ public final class AppImpl implements App, App.Definition, App.Update {
     }
 
     public AppImpl withSku(AppSkuInfo sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateAppPatch.withSku(sku);
-            return this;
-        }
+        this.innerModel().withSku(sku);
+        return this;
     }
 
     public AppImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateAppPatch.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public AppImpl withIdentity(SystemAssignedServiceIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateAppPatch.withIdentity(identity);
-            return this;
-        }
+        this.innerModel().withIdentity(identity);
+        return this;
     }
 
     public AppImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateAppPatch.withDisplayName(displayName);
-            return this;
-        }
+        this.innerModel().withDisplayName(displayName);
+        return this;
     }
 
     public AppImpl withSubdomain(String subdomain) {
-        if (isInCreateMode()) {
-            this.innerModel().withSubdomain(subdomain);
-            return this;
-        } else {
-            this.updateAppPatch.withSubdomain(subdomain);
-            return this;
-        }
+        this.innerModel().withSubdomain(subdomain);
+        return this;
     }
 
     public AppImpl withTemplate(String template) {
@@ -236,7 +243,13 @@ public final class AppImpl implements App, App.Definition, App.Update {
         return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public AppImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    public AppImpl withNetworkRuleSets(NetworkRuleSets networkRuleSets) {
+        this.innerModel().withNetworkRuleSets(networkRuleSets);
+        return this;
     }
 }
