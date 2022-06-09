@@ -36,6 +36,7 @@ import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
 import com.azure.storage.file.datalake.models.FileQuerySerialization
 import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.LeaseDurationType
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
@@ -402,11 +403,15 @@ class FileAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        // assert whether lease has been acquired
+        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProps.getLeaseState() == LeaseStateType.LEASED
+        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
     def "Create options with time expires on"() {
         when:
-        def deletionOptions = new DataLakePathScheduleDeletionOptions(expiryTime)
         def options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
         def response = fc.createWithResponse(options, null, null)
 
@@ -414,9 +419,9 @@ class FileAPITest extends APISpec {
         response.getStatusCode() == 201
 
         where:
-        expiryTime                        || _
-        OffsetDateTime.now().plusDays(1)  || _
-        null                              || _
+        deletionOptions                                                             || _
+        new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))   || _
+        null                                                                        || _
 
     }
 
@@ -430,6 +435,10 @@ class FileAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        def expireTime = fileProps.getExpiresOn()
+        def expectedExpire = fileProps.getCreationTime().plusDays(6)
+        expireTime == expectedExpire
     }
 
     def "Create if not exists min"() {
@@ -687,6 +696,12 @@ class FileAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        // assert whether lease has been acquired
+        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProps.getLeaseState() == LeaseStateType.LEASED
+        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
+
     }
 
     def "Create if not exists options with time expires on"() {
@@ -717,6 +732,10 @@ class FileAPITest extends APISpec {
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        def expireTime = fileProps.getExpiresOn()
+        def expectedExpire = fileProps.getCreationTime().plusDays(6)
+        expireTime == expectedExpire
     }
 
     def "Delete min"() {
