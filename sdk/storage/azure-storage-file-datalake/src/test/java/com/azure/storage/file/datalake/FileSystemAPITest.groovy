@@ -913,13 +913,15 @@ class FileSystemAPITest extends APISpec {
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
         def options = new DataLakePathCreateOptions()
             .setScheduleDeletionOptions(deletionOptions)
-
-        def response = fsc.createFileWithResponse(generatePathName(), options, null, null)
+        def name = generatePathName()
+        def response = fsc.createFileWithResponse(name, options, null, null)
 
         then:
         response.getStatusCode() == 201
-        System.out.println(response.getProperties())
-        System.out.println(fsc.getProperties().getProperties())
+        def fileProps = fsc.getFileClient(name).getProperties()
+        def expireTime = fileProps.getExpiresOn()
+        def expectedExpire = fileProps.getCreationTime().plusDays(6)
+        expireTime == expectedExpire
     }
 
     def "Create if not exists file min"() {

@@ -85,8 +85,6 @@ class DirectoryAPITest extends APISpec {
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         options.setMetadata(metadata)
-            .setRequestConditions(new DataLakeRequestConditions())
-            .setPathHttpHeaders(new PathHttpHeaders())
             .setAccessControlList(pathAccessControlEntries)
 
         when:
