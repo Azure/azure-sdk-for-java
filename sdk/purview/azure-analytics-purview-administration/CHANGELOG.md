@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Removed class `PurviewAccountClientBuilder`. It was replaced by `AccountsClientBuilder`, `CollectionsClient`, `ResourceSetRulesClientBuilder`.
+- Removed class `PurviewAccountClientBuilder`. It was replaced by `AccountsClientBuilder`, `CollectionsClientBuilder`, `ResourceSetRulesClientBuilder`.
 - Removed class `PurviewMetadataClientBuilder`. It was replaced by `MetadataPolicyClientBuilder`, `MetadataRolesClientBuilder`.
 - Merged the `Context` parameter into the `RequestOptions` parameter in methods of clients.
 
@@ -12,7 +12,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` to `1.23.0`.
+- Upgraded `azure-core` to `1.29.1`.
 
 ## 1.0.0-beta.1 (2021-10-15)
 
