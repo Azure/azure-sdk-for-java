@@ -18,6 +18,7 @@ import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.render.implementation.RenderV2sImpl;
 import com.azure.maps.render.implementation.helpers.Utility;
 import com.azure.maps.render.implementation.models.BoundingBox;
@@ -38,6 +39,7 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = RenderClientBuilder.class, isAsync = true)
 public final class RenderAsyncClient {
     private final RenderV2sImpl serviceClient;
+    private final ClientLogger logger = new ClientLogger("RenderAsyncClient");
 
     /**
      * Initializes an instance of RenderClient client.
@@ -81,7 +83,11 @@ public final class RenderAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMapTileWithResponse(MapTileOptions options) {
         StreamResponse response = this.getMapTileWithResponse(options, null).block();
-        return  Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        if (response != null) {
+            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException("Response is null"));
+        }      
     }
 
     /**
@@ -243,7 +249,11 @@ public final class RenderAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> downloadMapStateTileWithResponse(String statesetId, TileIndex tileIndex) {
         StreamResponse response = this.downloadMapStateTileWithResponse(statesetId, tileIndex, null).block();
-        return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        if (response != null) {
+            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException("Response is null"));
+        }   
     }
 
     /**
@@ -367,7 +377,11 @@ public final class RenderAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMapStaticImageWithResponse(MapStaticImageOptions options) {
         StreamResponse response = this.getMapStaticImageWithResponse(options, null).block();
-        return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        if (response != null) {
+            return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException("Response is null"));
+        } 
     }
 
     /**
@@ -392,7 +406,7 @@ public final class RenderAsyncClient {
         GeoBoundingBox boundingBox = options.getBoundingBox();
         GeoPosition center = options.getCenter();
         List<Double> centerPrivate = center != null ? Arrays.asList(center.getLatitude(),
-            center.getLongitude(), Double.valueOf(center.getAltitude())) : null;
+            center.getLongitude(), center.getAltitude()) : null;
         List<Double> bbox = Arrays.asList(boundingBox.getWest(), boundingBox.getSouth(), boundingBox.getEast(), boundingBox.getNorth());
         return this.serviceClient.getMapStaticImageWithResponseAsync(
             options.getRasterTileFormat(),

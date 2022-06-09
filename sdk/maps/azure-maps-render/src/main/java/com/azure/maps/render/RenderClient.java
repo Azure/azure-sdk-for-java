@@ -16,6 +16,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.FluxUtil;
 import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
@@ -27,8 +28,6 @@ import com.azure.maps.render.models.MapTileset;
 import com.azure.maps.render.models.TileIndex;
 import com.azure.maps.render.models.TilesetId;
 
-import reactor.core.publisher.Mono;
-
 /** Initializes a new instance of the synchronous RenderClient type. */
 @ServiceClient(builder = RenderClientBuilder.class)
 public final class RenderClient {
@@ -39,6 +38,8 @@ public final class RenderClient {
      * @param serviceClient the service client implementation.
      */
     private final RenderAsyncClient asyncClient;
+
+    private final ClientLogger logger = new ClientLogger("RenderClient");
 
     /**
      * Initializes an instance of Render client.
@@ -81,10 +82,13 @@ public final class RenderClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getMapTileWithResponse(OutputStream stream, MapTileOptions options, Context context) {
         Objects.requireNonNull(stream);
-        Mono<StreamResponse> monoResp = this.asyncClient.getMapTileWithResponse(options, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream).thenReturn(response));
-        StreamResponse resp = monoResp.block();
-        return new SimpleResponse<Void>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(), null);
+        StreamResponse response = this.asyncClient.getMapTileWithResponse(options, context)
+            .flatMap(resp -> FluxUtil.writeToOutputStream(resp.getValue(), stream).thenReturn(resp)).block();
+        if (response != null) {
+            return new SimpleResponse<Void>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException("Response is null"));
+        }
     }
 
     /**
@@ -185,10 +189,13 @@ public final class RenderClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadMapStateTileWithResponse(OutputStream stream, String statesetId, TileIndex tileIndex, Context context) {
         Objects.requireNonNull(stream);
-        Mono<StreamResponse> monoResp = this.asyncClient.downloadMapStateTileWithResponse(statesetId, tileIndex, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream).thenReturn(response));
-        StreamResponse resp = monoResp.block();
-        return new SimpleResponse<Void>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(), null);
+        StreamResponse response = this.asyncClient.downloadMapStateTileWithResponse(statesetId, tileIndex, context)
+            .flatMap(resp -> FluxUtil.writeToOutputStream(resp.getValue(), stream).thenReturn(resp)).block();
+        if (response != null) {
+            return new SimpleResponse<Void>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException("Response is null"));
+        }
     }
 
     /**
@@ -273,7 +280,11 @@ public final class RenderClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMapStaticImageWithResponse(MapStaticImageOptions options, Context context) {
         StreamResponse response = this.asyncClient.getMapStaticImageWithResponse(options, context).block();
-        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromFlux(response.getValue()).block());
+        if (response != null) {
+            return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromFlux(response.getValue()).block());
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException("Response is null"));
+        }
     }
 
     /**
