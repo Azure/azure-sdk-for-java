@@ -19,7 +19,10 @@ In Spark the data frame containing the input data will usually be partitioned. F
 
 ![Spark partitioning overview](./media/Spark_partitioning.png)
 
-The `cosmos.oltp` data source will create one singleton `CosmosAsyncClient` per Executor/Driver-node - so, this client instance will be shared across multiple Spark tasks being executed concurrently on a single Executor node. But it will create one `BulkWriter` for each Spark task/partition - this `BulkWriter` will only be responsible for ingesting the data of a single Spark partition.
+The `cosmos.oltp` data source will create one single `CosmosAsyncClient` per Executor/Driver-node - so, this client instance will be shared across multiple Spark tasks being executed concurrently on a single Executor node. But it will create one `BulkWriter` for each Spark task/partition - this `BulkWriter` will only be responsible for ingesting the data of a single Spark partition.
+
+![Bulk ingestion process overview](./media/BulkIngestionProcessOverview.png)
+
 Each `BulkWriter` will buffer data in-memory for each physical partition in Cosmos DB and "flush" it by sending a single request ingesting multiple documents. The buffers are flushed when certain thresholds are met. Thresholds resulting in "flushing" documents for a physical partition into the Cosmos DB backend are based on the currently determined micro batch size, the total payload size for all buffered documents and an interval, measuring how long the documents buffered have not been persisted yet. This "flush interval" makes sure that even on partitions with just a few documents, the documents get persisted after a couple of seconds at least.
 The benefit of this model where each `BulkWriter` can write data across all Cosmos partitions independently is that it maintains the isolation of Spark tasks and partitions, and plays well with built-in Spark retry policies and its scalability behaviour. On the other hand, the drawback is that when ingesting a large data volume into a target Cosmos DB container with many physical partitions (significantly above 100 physical partitions or 5 TB of data), there is a relatively large client-side compute overhead, because each Spark Task will create its own `BulkWriter` which will have to buffer data for hundreds of partitions. As an example, when using a Spark Cluster with Executor nodes with 16 or 32 cores - there will be 16 (or 32) `BulkWriter` instances all buffering data (and processing it in separate reactor pipelines) for several hundred partitions. In this use case it can be beneficial to repartition the input data first - to avoid that each Spark partition contains data for all Cosmos partitions (see the [Optimization recommendations when migrating  into large containers (>> 100 physical partitions or >> 5 TB of data)](#optimization-recommendations-when-migrating-into-large-containers--100-physical-partitions-or--5-tb-of-data) section below)
 
@@ -41,11 +44,27 @@ df \
    .save()
 ```
 
-You can find more details about the client-throughput control feature and its configuration options here - see [Client throughput control](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/scenarios/ThroughputControl.md)
+
+
+### Write strategies
+
+Different write strategies in the `spark.cosmos.write.strategy` configuration parameter can be used to determine what activity shoudl be processed for the records in the DataFrame "written" to Cosmos DB.
+
+- `ItemOverwrite` (the default write strategy): All items of the source DataFrame will be inserted or updated. If the Cosmos DB container contains a document with the same pk+id, it will be updated otherwise a new documented will be created. Existing documents will be replaced independent of when they have been last updated or if the content would actually change.
+- `ItemAppend`: For all items in the source DataFrame an attempt will be made to insert a  new document - if a document with the same pk+id exists already, the 409/Conflict response will be ignore and the existing document will not be modified.
+- `ItemOverwriteIfNotModified`:  If an etag value exists it will attempt to replace the document with etag pre-condition. If the document changed since being read into the source DataFrame - identified by precondition failure - the update is skipped and the document is not updated with the content of the data frame row. This write strategy can be used when it is important to not override changes made by a different job/application between the time when spark read the document from Cosmos DB.
+- `ItemDelete`: Will delete all documents with a pk+id as in the source DataFrame. This is the most robust option to bulk delete documents in Cosmos DB - deletes in Cosmos DB are having the same high RU charge as replacing a document - so deleting a large number of documents can be challenging - using this write strategy will allow to delete documents in bulk - and also use the client throughput control mechanism also used for bulk ingestion to limit the "RU budget" for this operations.
+- `ItemDeleteIfNotModified`: Same as `ItemDelete` - except that it will only delete documents when the etag value hasn't changed. This is helpful when trying to delete documents based on a query. You would read the result of the query into a source DataFrame - then "write" it to Cosmos DB with the `ItemDeleteIfNotModified` write strategy. Using the etag pre-condition check will avoid deleting documents that have been changed since running the query (because the updated document might not match the query filter conditions anymore)
 
 ### Retry policies and data validation
-All transient errors (Throttled requests, network timeouts, any recoverable service errors etc.) are retried automatically by the `cosmos.oltp` data source. Any non-transient errors - for example "400-Bad request" when the value of the "id" column is invalid - which would not be recoverable by retries, will result in the Spark job failing. When your container has a "unique key constraint policy" any 409 "Conflict" (indicating violation of unique key constraint) handling will depend on the `spark.cosmos.write.strategy`.
-- For `ItemOverwrite` a 409 - Conflict due to unique key violation will result in an error - and the Spark hob will fail.
+
+All transient errors (Throttled requests, network timeouts, any recoverable service errors etc.) are retried automatically by the `cosmos.oltp` data source. Any non-transient errors - for example "400-Bad request" when the value of the "id" column is invalid - which would not be recoverable by retries, will result in the Spark job failing. 
+
+#### Handling of 409/Conflict due to "unique key constraint policy"
+
+When your container has a "unique key constraint policy" any 409 "Conflict" (indicating violation of unique key constraint) handling will depend on the `spark.cosmos.write.strategy`.
+
+- For `ItemOverwrite` a 409 - Conflict due to unique key violation will result in an error - and the Spark job will fail. *NOTE: Conflicts due to pk+id being identical to another document  won't even result in a 409 - because with Upsert the existing document would simply be updated.*
 - For `ItemAppend` like conflicts on pk+id any unique key policy constraint violation will be ignored.
 
 ## Preparation
