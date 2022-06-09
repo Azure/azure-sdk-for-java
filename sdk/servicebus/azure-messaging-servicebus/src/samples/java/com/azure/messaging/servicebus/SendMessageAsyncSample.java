@@ -62,7 +62,7 @@ public class SendMessageAsyncSample {
             .forEach(message -> messageBatch.tryAddMessage(message));
 
         // Send that message. It completes successfully when the event has been delivered to the Service queue or topic.
-        //  It completes with an error if an exception occurred while sending the message.
+        // It completes with an error if an exception occurred while sending the message.
         sender.sendMessages(messageBatch);
 
         // Close the sender.
