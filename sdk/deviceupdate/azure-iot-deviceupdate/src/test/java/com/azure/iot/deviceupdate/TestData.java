@@ -4,9 +4,6 @@ package com.azure.iot.deviceupdate;
 
 import com.azure.core.util.Configuration;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-
 public class TestData {
     public static final String TENANT_ID = getTestValue("TENANT_ID", "tenantId");
 

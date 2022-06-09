@@ -51,7 +51,7 @@ public class DeviceManagementClientTests extends TestBase {
     }
 
     @Test
-    public void testGetDevice_NotFound() {
+    public void testGetDeviceNotFound() {
         DeviceManagementAsyncClient client = createClient();
         try {
             client.getDeviceWithResponse("foo", null).block();
@@ -61,7 +61,7 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-//    @Test
+    @Test
     public void testGetGroups() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listGroups(null);
@@ -70,7 +70,7 @@ public class DeviceManagementClientTests extends TestBase {
         assertTrue(response.toStream().count() > 0);
     }
 
-//    @Test
+    @Test
     public void testGetGroup() {
         DeviceManagementAsyncClient client = createClient();
         Response<BinaryData> response = client.getGroupWithResponse(TestData.DEVICE_GROUP, null).block();
@@ -78,7 +78,7 @@ public class DeviceManagementClientTests extends TestBase {
     }
 
     @Test
-    public void testGetGroup_NotFound() {
+    public void testGetGroupNotFound() {
         DeviceManagementAsyncClient client = createClient();
         try {
             client.getGroupWithResponse("foo", null).block();
@@ -88,7 +88,8 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-//    @Test
+    // Temporary disabled because the service doesn't properly handle this method yet
+    // @Test
     public void testGetDeviceClasses() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDeviceClasses(null);
@@ -98,7 +99,7 @@ public class DeviceManagementClientTests extends TestBase {
     }
 
     @Test
-    public void testGetDeviceClasses_NotFound() {
+    public void testGetDeviceClassesNotFound() {
         DeviceManagementAsyncClient client = createClient();
         try {
             client.getDeviceClassWithResponse("foo", null).block();
@@ -108,7 +109,8 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-//    @Test
+    // Temporary disabled because the service doesn't properly handle this method yet
+    // @Test
     public void testGetBestUpdatesForGroup() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listBestUpdatesForGroup(TestData.DEVICE_GROUP, null);
@@ -118,7 +120,7 @@ public class DeviceManagementClientTests extends TestBase {
     }
 
     @Test
-    public void testGetBestUpdatesForGroup_NotFound() {
+    public void testGetBestUpdatesForGroupNotFound() {
         DeviceManagementAsyncClient client = createClient();
 
         try {
@@ -130,7 +132,8 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-//    @Test
+    // Temporary disabled because the service doesn't properly handle this method yet
+    // @Test
     public void testGetDeploymentsForGroup() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDeploymentsForGroup(TestData.DEVICE_GROUP, null);
@@ -140,7 +143,7 @@ public class DeviceManagementClientTests extends TestBase {
     }
 
     @Test
-    public void testGetDeploymentsForGroup_NotFound() {
+    public void testGetDeploymentsForGroupNotFound() {
         DeviceManagementAsyncClient client = createClient();
 
         try {

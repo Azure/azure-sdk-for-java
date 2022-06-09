@@ -60,7 +60,7 @@ public class DeviceUpdateClientTests extends TestBase {
     }
 
     @Test
-    public void testGetNames_NotFound() {
+    public void testGetNamesNotFound() {
         DeviceUpdateAsyncClient client = createClient();
 
         try {
@@ -82,7 +82,7 @@ public class DeviceUpdateClientTests extends TestBase {
     }
 
     @Test
-    public void testGetVersions_NotFound() {
+    public void testGetVersionsNotFound() {
         DeviceUpdateAsyncClient client = createClient();
 
         try {
@@ -122,7 +122,7 @@ public class DeviceUpdateClientTests extends TestBase {
     }
 
     @Test
-    public void testGetFiles_NotFound() {
+    public void testGetFilesNotFound() {
         DeviceUpdateAsyncClient client = createClient();
 
         try {
