@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpResponse;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 
@@ -57,6 +58,6 @@ public interface RetryStrategy {
      * @return Whether a retry should be attempted.
      */
     default boolean shouldRetryException(Throwable throwable) {
-        return throwable instanceof Exception;
+        return throwable instanceof IOException;
     }
 }
