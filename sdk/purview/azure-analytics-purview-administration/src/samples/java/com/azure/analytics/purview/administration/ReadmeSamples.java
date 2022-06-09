@@ -15,10 +15,10 @@ public class ReadmeSamples {
      */
     public void createClient() {
         // BEGIN: readme-sample-createAccountsClient
-        AccountsClient client = new PurviewAccountClientBuilder()
+        AccountsClient client = new AccountsClientBuilder()
             .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAccountsClient();
+            .buildClient();
         // END: readme-sample-createAccountsClient
     }
 
@@ -27,10 +27,10 @@ public class ReadmeSamples {
      */
     public void getAccounts() {
         // BEGIN: readme-sample-getAccountProperties
-        AccountsClient client = new PurviewAccountClientBuilder()
+        AccountsClient client = new AccountsClientBuilder()
             .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAccountsClient();
+            .buildClient();
         BinaryData response = client.getAccountPropertiesWithResponse(null).getValue();
         // END: readme-sample-getAccountProperties
     }

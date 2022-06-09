@@ -4,6 +4,7 @@
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
+- GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
 
 ### Breaking Changes
 
@@ -14,9 +15,11 @@
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-#### Breaking Changes
+#### Features Added
 + Add `AzureStorageConfiguration` to make Azure storage service share common property configuration [#29094](https://github.com/Azure/azure-sdk-for-java/pull/29094).
     +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
++ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29306](https://github.com/Azure/azure-sdk-for-java/pull/29306).
+    + Add properties `spring.cloud.azure.keyvault`.
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
