@@ -51,7 +51,9 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
@@ -222,6 +224,7 @@ public final class ServiceBusClientBuilder implements
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
     private boolean crossEntityTransactions;
+    private URL customEndpointAddress;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -272,6 +275,34 @@ public final class ServiceBusClientBuilder implements
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
+     * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     * <p>
+     * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
+     * used.
+     *
+     * @param customEndpointAddress The custom endpoint address.
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
+     */
+    public ServiceBusClientBuilder customEndpointAddress(String customEndpointAddress) {
+        if (customEndpointAddress == null) {
+            this.customEndpointAddress = null;
+            return this;
+        }
+
+        try {
+            this.customEndpointAddress = new URL(customEndpointAddress);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(customEndpointAddress + " : is not a valid URL,", e));
+        }
+
+        return this;
     }
 
     /**
@@ -711,9 +742,16 @@ public final class ServiceBusClientBuilder implements
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-            options, verificationMode, product, clientVersion);
+        if (customEndpointAddress == null) {
+            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
+                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+                options, verificationMode, product, clientVersion);
+        } else {
+            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
+                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+                options, verificationMode, product, clientVersion, customEndpointAddress.getHost(),
+                customEndpointAddress.getPort());
+        }
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

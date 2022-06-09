@@ -3,6 +3,7 @@
 ## 7.10.0-beta.1 (Unreleased)
 
 ### Features Added
+- Expose `ServiceBusClientBuilder.customEndpointAddress` to support connecting to an intermediary before Azure ServiceBus.
 
 ### Breaking Changes
 

@@ -11,14 +11,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 /**
- * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue.
+ * Sample demonstrates how to send a {@link ServiceBusMessage} to an Azure Service Bus queue.
  */
 public class SendMessageAsyncSample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
+     * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
@@ -29,7 +29,7 @@ public class SendMessageAsyncSample {
     }
 
     /**
-     * This method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
+     * This method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
@@ -61,9 +61,8 @@ public class SendMessageAsyncSample {
             .mapToObj(index -> new ServiceBusMessage(BinaryData.fromString("Hello world! " + index)))
             .forEach(message -> messageBatch.tryAddMessage(message));
 
-        // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
-        // while sending the message.
+        // Send that message. It completes successfully when the event has been delivered to the Service queue or topic.
+        //  It completes with an error if an exception occurred while sending the message.
         sender.sendMessages(messageBatch);
 
         // Close the sender.
