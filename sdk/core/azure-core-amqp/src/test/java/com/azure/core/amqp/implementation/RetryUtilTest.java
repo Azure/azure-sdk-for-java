@@ -226,7 +226,7 @@ public class RetryUtilTest {
         // Act & Assert
         try {
             StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage),
-                    () -> virtualTimeScheduler, 1)
+                    () -> virtualTimeScheduler, 4)
                 .expectNext(0, 1, 2)
                 .expectErrorMatches(error -> error.equals(nonTransientError))
                 .verify();
