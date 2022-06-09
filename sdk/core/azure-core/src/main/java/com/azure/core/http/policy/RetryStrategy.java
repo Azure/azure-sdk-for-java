@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.exception.AzureException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 import java.io.IOException;
@@ -58,6 +60,14 @@ public interface RetryStrategy {
      * @return Whether a retry should be attempted.
      */
     default boolean shouldRetryException(Throwable throwable) {
-        return throwable instanceof IOException;
+        boolean shouldRetryOnHttpResponseException = false;
+
+        if (throwable instanceof HttpResponseException) {
+            int statusCode = (((HttpResponseException) throwable).getResponse().getStatusCode());
+            shouldRetryOnHttpResponseException = statusCode != 401 && statusCode != 403;
+        }
+
+        return (throwable instanceof IOException || throwable instanceof AzureException)
+            && shouldRetryOnHttpResponseException;
     }
 }
