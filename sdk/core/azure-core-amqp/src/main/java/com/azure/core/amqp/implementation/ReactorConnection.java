@@ -411,9 +411,7 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
-            .repeat()
-            .takeUntilOther(shutdownSignalSink.asMono());
-
+            .repeat(() -> !isDisposed());
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
@@ -434,17 +432,14 @@ public class ReactorConnection implements AmqpConnection {
 
     Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
-        
-        final Mono<Void> emitShutdownSignalOperation = Mono.fromRunnable(() -> {
-            final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
+        final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
 
-            if (result.isFailure()) {
-                // It's possible that another one was already emitted, so it's all good.
-                addShutdownSignal(logger.atInfo(), shutdownSignal)
-                    .addKeyValue(EMIT_RESULT_KEY, result)
-                    .log("Unable to emit shutdown signal.");
-            }
-        });
+        if (result.isFailure()) {
+            // It's possible that another one was already emitted, so it's all good.
+            addShutdownSignal(logger.atInfo(), shutdownSignal)
+                .addKeyValue(EMIT_RESULT_KEY, result)
+                .log("Unable to emit shutdown signal.");
+        }
 
         final Mono<Void> cbsCloseOperation;
         if (cbsChannelProcessor != null) {
@@ -486,11 +481,7 @@ public class ReactorConnection implements AmqpConnection {
                 managementNodeCloseOperations.doFinally(signalType ->
                     logger.atVerbose()
                         .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                        .log("Closed management nodes.")),
-                emitShutdownSignalOperation.doFinally(signalType ->
-                    logger.atVerbose()
-                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                        .log("Emitted connection shutdown signal. ")))
+                        .log("Closed management nodes.")))
             .then(closeReactor.doFinally(signalType ->
                 logger.atVerbose()
                     .addKeyValue(SIGNAL_TYPE_KEY, signalType)
