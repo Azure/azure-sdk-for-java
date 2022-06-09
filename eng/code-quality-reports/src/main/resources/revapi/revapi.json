@@ -326,6 +326,12 @@
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "class com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",
           "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManagementException",
+          "justification": "This is used by both Feature Management libraries and is Public."
         }
       ]
     }
