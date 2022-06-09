@@ -411,7 +411,7 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
-            .repeat(() -> !isDisposed());
+            .repeat(() -> !this.isDisposed());
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
