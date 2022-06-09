@@ -40,6 +40,10 @@
             "_justification": "Mocked key used in performance testing."
         },
         {
+            "placeholder": "OAuth2ClientCredential",
+            "_justification": "This is not a credential key"
+        },
+        {
             "file":[
                 "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
