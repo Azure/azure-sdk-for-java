@@ -14,7 +14,7 @@ import com.azure.spring.cloud.feature.manager.implementation.models.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * TODO
+ * Configuration Properties for Feature Management. Processes the configurations to be usable by Feature Management.
  */
 @ConfigurationProperties(prefix = "feature-management")
 public class FeatureManagementProperties extends HashMap<String, Object> {

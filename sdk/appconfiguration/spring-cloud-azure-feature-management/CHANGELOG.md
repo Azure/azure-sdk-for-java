@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 4.0.0-beta.1 (Unreleased)
 - Adds Support for Dynamic Features.
 - Updated to use both the old and new Feature Management schema.
 

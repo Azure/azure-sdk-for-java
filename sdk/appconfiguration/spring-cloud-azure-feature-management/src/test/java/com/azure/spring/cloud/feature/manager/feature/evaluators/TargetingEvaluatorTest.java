@@ -2,7 +2,6 @@ package com.azure.spring.cloud.feature.manager.feature.evaluators;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -26,193 +25,193 @@ import reactor.core.publisher.Mono;
 
 public class TargetingEvaluatorTest {
 
-	/**
-	 * users field in the filter
-	 */
-	protected static final String USERS = "users";
+    /**
+     * users field in the filter
+     */
+    protected static final String USERS = "users";
 
-	/**
-	 * groups field in the filter
-	 */
-	protected static final String GROUPS = "groups";
+    /**
+     * groups field in the filter
+     */
+    protected static final String GROUPS = "groups";
 
-	/**
-	 * Audience in the filter
-	 */
-	protected static final String AUDIENCE = "Audience";
+    /**
+     * Audience in the filter
+     */
+    protected static final String AUDIENCE = "Audience";
 
-	@Mock
-	private FeatureDefinition featureDefinitionMock;
+    @Mock
+    private FeatureDefinition featureDefinitionMock;
 
-	private TargetingEvaluator targetingEvaluator;
+    private TargetingEvaluator targetingEvaluator;
 
-	private LinkedHashMap<String, Object> assignmentParameters;
+    private LinkedHashMap<String, Object> assignmentParameters;
 
-	private LinkedHashMap<String, Object> assignedUsers;
+    private LinkedHashMap<String, Object> assignedUsers;
 
-	private List<String> users;
+    private List<String> users;
 
-	private List<GroupRollout> groups;
+    private List<GroupRollout> groups;
 
-	private List<FeatureVariant> variants;
+    private List<FeatureVariant> variants;
 
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
 
-		targetingEvaluator = new TargetingEvaluator(new TestTargetingContextAccessor());
+        targetingEvaluator = new TargetingEvaluator(new TestTargetingContextAccessor());
 
-		assignmentParameters = new LinkedHashMap<>();
-		assignedUsers = new LinkedHashMap<>();
-		users = new ArrayList<>();
-		groups = new ArrayList<>();
-		variants = new ArrayList<>();
+        assignmentParameters = new LinkedHashMap<>();
+        assignedUsers = new LinkedHashMap<>();
+        users = new ArrayList<>();
+        groups = new ArrayList<>();
+        variants = new ArrayList<>();
 
-		when(featureDefinitionMock.getVariants()).thenReturn(variants);
+        when(featureDefinitionMock.getVariants()).thenReturn(variants);
 
-		when(featureDefinitionMock.getName()).thenReturn("TestFeatureDefinition");
-	}
+        when(featureDefinitionMock.getName()).thenReturn("TestFeatureDefinition");
+    }
 
-	@Test
-	public void evalulateByUser() {
-		users.add("Doe");
+    @Test
+    public void evalulateByUser() {
+        users.add("Doe");
 
-		assignedUsers.put(USERS, users);
+        assignedUsers.put(USERS, users);
 
-		assignmentParameters.put(AUDIENCE, assignedUsers);
+        assignmentParameters.put(AUDIENCE, assignedUsers);
 
-		variants.add(createFeatureVariant(true));
+        variants.add(createFeatureVariant(true));
 
-		FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
-		assertNotNull(returnedVariant);
-		assertEquals(variants.get(0), returnedVariant);
+        FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
+        assertNotNull(returnedVariant);
+        assertEquals(variants.get(0), returnedVariant);
 
-	}
+    }
 
-	@Test
-	public void evalulateByGroup() {
-		groups = new ArrayList<>();
+    @Test
+    public void evalulateByGroup() {
+        groups = new ArrayList<>();
 
-		GroupRollout gr = new GroupRollout();
+        GroupRollout gr = new GroupRollout();
 
-		gr.setName("G1");
-		gr.setRolloutPercentage(100);
+        gr.setName("G1");
+        gr.setRolloutPercentage(100);
 
-		groups.add(gr);
+        groups.add(gr);
 
-		assignedUsers.put(GROUPS, groups);
+        assignedUsers.put(GROUPS, groups);
 
-		assignmentParameters.put(AUDIENCE, assignedUsers);
+        assignmentParameters.put(AUDIENCE, assignedUsers);
 
-		variants.add(createFeatureVariant(true));
+        variants.add(createFeatureVariant(true));
 
-		FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
-		assertNotNull(returnedVariant);
-		assertEquals(variants.get(0), returnedVariant);
+        FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
+        assertNotNull(returnedVariant);
+        assertEquals(variants.get(0), returnedVariant);
 
-	}
+    }
 
-	@Test
-	public void evalulateByDefaultPercentage() {
-		assignmentParameters.put("defaultRolloutPercentage", 100);
+    @Test
+    public void evalulateByDefaultPercentage() {
+        assignmentParameters.put("defaultRolloutPercentage", 100);
 
-		variants.add(createFeatureVariant(true));
+        variants.add(createFeatureVariant(true));
 
-		FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
-		assertNotNull(returnedVariant);
-		assertEquals(variants.get(0), returnedVariant);
-	}
+        FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
+        assertNotNull(returnedVariant);
+        assertEquals(variants.get(0), returnedVariant);
+    }
 
-	@Test
-	public void evalulateByDefault() {
-		variants.add(createFeatureVariant(true));
+    @Test
+    public void evalulateByDefault() {
+        variants.add(createFeatureVariant(true));
 
-		FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
-		assertNotNull(returnedVariant);
-		assertEquals(variants.get(0), returnedVariant);
-	}
+        FeatureVariant returnedVariant = targetingEvaluator.assignVariantAsync(featureDefinitionMock).block();
+        assertNotNull(returnedVariant);
+        assertEquals(variants.get(0), returnedVariant);
+    }
 
-	@Test
-	public void noContextAccessor() {
-		assertEquals(Mono.justOrEmpty(null), new TargetingEvaluator(null).assignVariantAsync(featureDefinitionMock));
-	}
+    @Test
+    public void noContextAccessor() {
+        assertEquals(Mono.justOrEmpty(null), new TargetingEvaluator(null).assignVariantAsync(featureDefinitionMock));
+    }
 
-	@Test
-	public void noContext() {
-		assertEquals(Mono.justOrEmpty(null), new TargetingEvaluator(new InvlaidTargetingContextAccessor())
-				.assignVariantAsync(featureDefinitionMock));
-	}
+    @Test
+    public void noContext() {
+        assertEquals(Mono.justOrEmpty(null), new TargetingEvaluator(new InvlaidTargetingContextAccessor())
+            .assignVariantAsync(featureDefinitionMock));
+    }
 
-	@Test
-	public void groupOutOfRange() {
-		groups = new ArrayList<>();
+    @Test
+    public void groupOutOfRange() {
+        groups = new ArrayList<>();
 
-		GroupRollout gr = new GroupRollout();
+        GroupRollout gr = new GroupRollout();
 
-		gr.setName("G1");
-		gr.setRolloutPercentage(50);
+        gr.setName("G1");
+        gr.setRolloutPercentage(50);
 
-		groups.add(gr);
-		
-		gr.setName("G2");
-		gr.setRolloutPercentage(51);
+        groups.add(gr);
 
-		groups.add(gr);
+        gr.setName("G2");
+        gr.setRolloutPercentage(51);
 
-		assignedUsers.put(GROUPS, groups);
+        groups.add(gr);
 
-		assignmentParameters.put(AUDIENCE, assignedUsers);
+        assignedUsers.put(GROUPS, groups);
 
-		variants.add(createFeatureVariant(true));
+        assignmentParameters.put(AUDIENCE, assignedUsers);
 
-		assertThrows(TargetingException.class,
-				() -> targetingEvaluator.assignVariantAsync(featureDefinitionMock).block());
-	}
+        variants.add(createFeatureVariant(true));
 
-	@Test
-	public void defaultPercentageOutOfRange() {
-		assignmentParameters.put("defaultRolloutPercentage", 101);
+        assertThrows(TargetingException.class,
+            () -> targetingEvaluator.assignVariantAsync(featureDefinitionMock).block());
+    }
 
-		variants.add(createFeatureVariant(true));
+    @Test
+    public void defaultPercentageOutOfRange() {
+        assignmentParameters.put("defaultRolloutPercentage", 101);
 
-		assertThrows(TargetingException.class,
-				() -> targetingEvaluator.assignVariantAsync(featureDefinitionMock).block());
+        variants.add(createFeatureVariant(true));
 
-	}
+        assertThrows(TargetingException.class,
+            () -> targetingEvaluator.assignVariantAsync(featureDefinitionMock).block());
 
-	private FeatureVariant createFeatureVariant(Boolean isDefault) {
-		FeatureVariant featureVariant = new FeatureVariant();
+    }
 
-		featureVariant.setAssignmentParameters(assignmentParameters);
+    private FeatureVariant createFeatureVariant(Boolean isDefault) {
+        FeatureVariant featureVariant = new FeatureVariant();
 
-		featureVariant.setDefault(isDefault);
+        featureVariant.setAssignmentParameters(assignmentParameters);
 
-		return featureVariant;
-	}
+        featureVariant.setDefault(isDefault);
 
-	private class TestTargetingContextAccessor implements ITargetingContextAccessor {
+        return featureVariant;
+    }
 
-		@Override
-		public Mono<TargetingContext> getContextAsync() {
-			TargetingContext context = new TargetingContext();
-			context.setUserId("Doe");
+    private class TestTargetingContextAccessor implements ITargetingContextAccessor {
 
-			List<String> groups = new ArrayList<>();
-			groups.add("G1");
+        @Override
+        public Mono<TargetingContext> getContextAsync() {
+            TargetingContext context = new TargetingContext();
+            context.setUserId("Doe");
 
-			context.setGroups(groups);
-			return Mono.just(context);
-		}
+            List<String> groups = new ArrayList<>();
+            groups.add("G1");
 
-	}
+            context.setGroups(groups);
+            return Mono.just(context);
+        }
 
-	private class InvlaidTargetingContextAccessor implements ITargetingContextAccessor {
+    }
 
-		@Override
-		public Mono<TargetingContext> getContextAsync() {
-			return Mono.justOrEmpty(null);
-		}
+    private class InvlaidTargetingContextAccessor implements ITargetingContextAccessor {
 
-	}
+        @Override
+        public Mono<TargetingContext> getContextAsync() {
+            return Mono.justOrEmpty(null);
+        }
+
+    }
 
 }

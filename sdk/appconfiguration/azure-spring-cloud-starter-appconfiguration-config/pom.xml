@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-      <version>3.0.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
+      <version>4.0.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
     </dependency>
   </dependencies>
   <build>

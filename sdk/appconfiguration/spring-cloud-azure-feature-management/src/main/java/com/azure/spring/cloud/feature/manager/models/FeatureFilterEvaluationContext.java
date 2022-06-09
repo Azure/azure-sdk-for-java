@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class FeatureFilterEvaluationContext {
 
-    @JsonProperty("name")
     private String name;
 
     @JsonProperty("parameters")

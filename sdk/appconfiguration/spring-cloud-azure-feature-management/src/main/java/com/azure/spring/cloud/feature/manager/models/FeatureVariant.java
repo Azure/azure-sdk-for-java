@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class FeatureVariant {
 
-    @JsonProperty("name")
     private String name;
 
     @JsonProperty("default")

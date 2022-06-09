@@ -4,9 +4,6 @@ package com.azure.spring.cloud.config.feature.management.entity;
 
 import java.util.Map;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,15 +14,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureVariant {
 
-    @NotBlank
-    @JsonProperty("name")
     private String name;
 
-    @NotNull
     @JsonProperty("default")
-    private Boolean isDefault;
+    private Boolean isDefault = false;
 
-    @NotBlank
     @JsonProperty("configuration-reference")
     @JsonAlias("configuration_reference")
     private String configurationReference;

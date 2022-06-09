@@ -40,7 +40,8 @@ public class DynamicFeatureManagerSnapshotTest {
     }
 
     @Test
-    public void initialLoad() throws InterruptedException, ExecutionException {
+    public void initialLoad()
+        throws InterruptedException, ExecutionException, FilterNotFoundException, FeatureManagementException {
         when(dynamicFeatureManager.getVariantAsync(Mockito.matches("myVariant"), Mockito.any()))
             .thenReturn(Mono.just(new Object()));
 
@@ -50,7 +51,7 @@ public class DynamicFeatureManagerSnapshotTest {
     }
 
     @Test
-    public void initialAlreadyExists() throws InterruptedException, ExecutionException {
+    public void initialAlreadyExists() throws InterruptedException, ExecutionException, FilterNotFoundException, FeatureManagementException {
         when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any()))
             .thenReturn(Mono.just(new Object()));
 
@@ -64,7 +65,8 @@ public class DynamicFeatureManagerSnapshotTest {
     }
 
     @Test
-    public void invalidType() throws InterruptedException, ExecutionException {
+    public void invalidType()
+        throws InterruptedException, ExecutionException, FilterNotFoundException, FeatureManagementException {
         when(dynamicFeatureManager.getVariantAsync(Mockito.matches("exitingVariant"), Mockito.any()))
             .thenReturn(Mono.just(1));
 

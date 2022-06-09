@@ -492,7 +492,7 @@ public class AppConfigurationPropertySourceTest {
             propertySource.getProperty(getFeatureSchema()).toString().length());
     }
     
-    private Integer getFeatureSchemaVersion() {
+    private int getFeatureSchemaVersion() {
         String version = System
             .getenv(AppConfigurationConstants.AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION);
 

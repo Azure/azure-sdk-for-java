@@ -68,13 +68,13 @@ public class DynamicFeatureManagerTest {
 
     @Mock
     private MockableProperties variantProperties;
-    
+
     @Mock
     private ObjectProvider<IDynamicFeatureProperties> propertiesProviderMock;
-    
+
     @Mock
     private Stream<IDynamicFeatureProperties> streamMock;
-    
+
     @Mock
     private Stream<IDynamicFeatureProperties> filterStreamMock;
 
@@ -82,14 +82,14 @@ public class DynamicFeatureManagerTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
-        
+
         DiscountBanner discountBannerBig = new DiscountBanner();
         discountBannerBig.setColor("#DDD");
         discountBannerBig.setSize(400);
         DiscountBanner discountBannerSmall = new DiscountBanner();
         discountBannerSmall.setColor("#999");
         discountBannerSmall.setSize(150);
-        
+
         Map<String, DiscountBanner> discountBannerMap = new HashMap<>();
 
         discountBannerMap.put("Big", discountBannerBig);
@@ -98,7 +98,7 @@ public class DynamicFeatureManagerTest {
         when(variantProperties.getDiscountBanner()).thenReturn(discountBannerMap);
         when(propertiesProviderMock.stream()).thenReturn(streamMock);
         when(streamMock.filter(Mockito.any())).thenReturn(filterStreamMock);
-        
+
         featureManager = new DynamicFeatureManager(context, propertiesProviderMock, featureManagementPropertiesMock);
     }
 
@@ -108,9 +108,9 @@ public class DynamicFeatureManagerTest {
     }
 
     @Test
-    public void getVariantAsyncDefaultBasic() {
-    	when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
-    	
+    public void getVariantAsyncDefaultBasic() throws FilterNotFoundException, FeatureManagementException {
+        when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+
         DynamicFeature dynamicFeature = new DynamicFeature();
         dynamicFeature.setAssigner("Test.Assigner");
 
@@ -119,13 +119,12 @@ public class DynamicFeatureManagerTest {
         variants.put("0", createFeatureVariant("DiscountBanner.Big", EMPTY_MAP, EMPTY_MAP, 100));
         variants.get("0").setDefault(true);
         dynamicFeature.setVariants(variants);
-        
 
         when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variants.get("0")));
 
         Map<String, DynamicFeature> params = new LinkedHashMap<>();
         params.put("DiscountBanner", dynamicFeature);
-        
+
         Optional<IDynamicFeatureProperties> optionalProp = Optional.of(variantProperties);
 
         when(featureManagementPropertiesMock.getDynamicFeatures()).thenReturn(params);
@@ -151,10 +150,9 @@ public class DynamicFeatureManagerTest {
 
         Map<String, DynamicFeature> params = new LinkedHashMap<>();
         params.put("DiscountBanner", dynamicFeature);
-        
+
         Optional<IDynamicFeatureProperties> optionalProp = Optional.of(variantProperties);
-        
-        
+
         when(featureManagementPropertiesMock.getDynamicFeatures()).thenReturn(params);
         when(filterStreamMock.findFirst()).thenReturn(optionalProp);
 
@@ -164,7 +162,7 @@ public class DynamicFeatureManagerTest {
     }
 
     @Test
-    public void getVariantAsyncNonDefault() {
+    public void getVariantAsyncNonDefault() throws FilterNotFoundException, FeatureManagementException {
         FeatureVariant variant = createFeatureVariant("DiscountBanner.Small", EMPTY_MAP, EMPTY_MAP, 100);
 
         when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
@@ -182,7 +180,7 @@ public class DynamicFeatureManagerTest {
 
         Map<String, DynamicFeature> params = new LinkedHashMap<>();
         params.put("DiscountBanner", dynamicFeature);
-        
+
         Optional<IDynamicFeatureProperties> optionalProp = Optional.of(variantProperties);
 
         when(featureManagementPropertiesMock.getDynamicFeatures()).thenReturn(params);
@@ -193,19 +191,20 @@ public class DynamicFeatureManagerTest {
         assertNotNull(testObject);
         assertEquals(150, testObject.getSize());
     }
-    
+
     @Test
     public void featureWithoutAName() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
             () -> featureManager.getVariantAsync("", DiscountBanner.class).block());
         assertThat(e).hasMessage("Feature Variant name can not be empty or null.");
     }
-    
+
     @Test
     public void featureAssignerNotFound() {
         FeatureVariant variant = createFeatureVariant("DiscountBanner.Small", EMPTY_MAP, EMPTY_MAP, 100);
 
-        when(context.getBean(Mockito.matches("FeatureAssignerThatDoesntExist"))).thenThrow(new NoSuchBeanDefinitionException(""));
+        when(context.getBean(Mockito.matches("FeatureAssignerThatDoesntExist")))
+            .thenThrow(new NoSuchBeanDefinitionException(""));
         when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
 
         DynamicFeature dynamicFeature = new DynamicFeature();
@@ -220,7 +219,7 @@ public class DynamicFeatureManagerTest {
 
         Map<String, DynamicFeature> params = new LinkedHashMap<>();
         params.put("FeatureAssignerThatDoesntExist", dynamicFeature);
-        
+
         Optional<IDynamicFeatureProperties> optionalProp = Optional.of(variantProperties);
 
         when(featureManagementPropertiesMock.getDynamicFeatures()).thenReturn(params);
@@ -228,7 +227,8 @@ public class DynamicFeatureManagerTest {
 
         FeatureManagementException e = assertThrows(FeatureManagementException.class,
             () -> featureManager.getVariantAsync("FeatureAssignerThatDoesntExist", DiscountBanner.class).block());
-        assertThat(e).hasMessage("The feature variant assigner FeatureAssignerThatDoesntExist specified for feature FeatureAssignerThatDoesntExist was not found.");
+        assertThat(e).hasMessage(
+            "The feature variant assigner FeatureAssignerThatDoesntExist specified for feature FeatureAssignerThatDoesntExist was not found.");
     }
 
     class MockFilter implements IFeatureFilter, IFeatureVariantAssigner {
