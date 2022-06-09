@@ -4,8 +4,8 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.{PartitionKey, ThroughputProperties}
-import org.apache.spark.sql.SparkSession
+import com.azure.cosmos.models.{ModelBridgeInternal, PartitionKey, ThroughputProperties}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
 import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
 
@@ -663,6 +663,84 @@ class SparkE2EStructuredStreamingITest
     targetContainer.delete().block()
   }
 
+  "spark change feed micro batch (incremental)" can
+    "filter by feedRange" taggedAs(Retryable) in {
+
+    val processedRecordCount = new AtomicLong(0)
+    val forEachBatchRecordCount = new AtomicLong(0)
+    var spark = this.createSparkSession(processedRecordCount)
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val testId = UUID.randomUUID().toString
+
+    // Initially ingest 100 records
+    var lastId = ""
+    for (i <- 0 until 20) {
+      lastId = this.ingestTestDocument(sourceContainer, i)
+    }
+
+    Thread.sleep(2100)
+
+    val pkDefinition = sourceContainer.read().block().getProperties.getPartitionKeyDefinition
+    val pkDefinitionJson = ModelBridgeInternal.getJsonSerializable(pkDefinition).toJson
+
+    val feedRangeFilter = new GetFeedRangeForPartitionKeyValue().call(pkDefinitionJson, lastId)
+
+    val changeFeedCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.partitioning.feedRangeFilter" -> feedRangeFilter
+    )
+
+    val changeFeedDF = spark
+      .readStream
+      .format("cosmos.oltp.changeFeed")
+      .options(changeFeedCfg)
+      .load()
+
+    val microBatchQuery = changeFeedDF
+      .writeStream
+      .foreachBatch { (batchDF: DataFrame, batchId: Long) =>
+        batchDF.persist()
+        val recordCount = batchDF.count()
+        forEachBatchRecordCount.addAndGet(recordCount)
+        println(s"BatchId: $batchId, Document count: $recordCount")
+        batchDF.unpersist()
+        ()
+      }
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
+      .queryName(testId)
+      .option("checkpointLocation", s"/tmp/$testId/")
+      .start()
+
+    Thread.sleep(5000)
+
+    microBatchQuery.lastProgress should not be null
+    microBatchQuery.lastProgress.sources should not be null
+    microBatchQuery.lastProgress.sources should not be null
+    microBatchQuery.lastProgress.sources(0).endOffset should not be null
+    getPartitionCountInOffset(microBatchQuery.lastProgress.sources(0).endOffset) >= 1 shouldEqual true
+
+    microBatchQuery.stop()
+
+    var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
+    logInfo(s"RecordCount in source container after first execution: $sourceCount")
+
+    forEachBatchRecordCount.get() shouldEqual 1L
+    processedRecordCount.get() shouldEqual 1L
+    sourceCount shouldEqual 20L
+
+    // close and recreate spark session to validate
+    // that it is possible to recover the previous query
+    // from the commit log
+    spark.close()
+  }
+
   private[this] def ingestTestDocument
   (
     container: CosmosAsyncContainer,
@@ -690,7 +768,7 @@ class SparkE2EStructuredStreamingITest
       override def onQueryStarted(queryStarted: QueryStartedEvent): Unit = {}
       override def onQueryTerminated(queryTerminated: QueryTerminatedEvent): Unit = {}
       override def onQueryProgress(queryProgress: QueryProgressEvent): Unit = {
-        processedRecordCount.addAndGet(queryProgress.progress.sink.numOutputRows)
+        processedRecordCount.addAndGet(queryProgress.progress.numInputRows)
       }
     })
 
