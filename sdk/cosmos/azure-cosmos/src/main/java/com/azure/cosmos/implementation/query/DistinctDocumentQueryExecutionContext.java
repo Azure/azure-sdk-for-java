@@ -83,6 +83,7 @@ public class DistinctDocumentQueryExecutionContext<T>
         return this.component.drainAsync(maxPageSize).map(tFeedResponse -> {
             final List<T> distinctResults = new ArrayList<>();
 
+            System.out.println("Distinct drainAsync result " + tFeedResponse.getResults());
             tFeedResponse.getResults().forEach(document -> {
                 Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
                 if (this.distinctMap.add(document, outHash)) {

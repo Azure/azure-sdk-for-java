@@ -324,6 +324,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                     emptyPageQueryMetricsMap.clear();
                 }
 
+                System.out.println("Parallel document query execution context results: " + documentProducerFeedResponse.pageResult.getResults());
                 // Add the request charge
                 double charge = tracker.getAndResetCharge();
                 if (charge > 0) {
