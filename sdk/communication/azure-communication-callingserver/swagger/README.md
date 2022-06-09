@@ -114,6 +114,15 @@ directive:
 - rename-model:
     from: CreateCallRequest
     to: CreateCallRequestInternal
+- rename-model:
+    from: AnswerCallRequest
+    to: AnswerCallRequestInternal
+- rename-model:
+    from: RedirectCallRequest
+    to: RedirectCallRequestInternal
+- rename-model:
+    from: RejectCallRequest
+    to: RejectCallRequestInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannel

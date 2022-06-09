@@ -4,13 +4,13 @@
 
 package com.azure.communication.callingserver.implementation;
 
-import com.azure.communication.callingserver.implementation.models.AnswerCallRequest;
+import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallResponse;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallResultInternal;
-import com.azure.communication.callingserver.implementation.models.RedirectCallRequest;
-import com.azure.communication.callingserver.implementation.models.RejectCallRequest;
+import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
+import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -76,7 +76,7 @@ public final class ServerCallingsImpl {
         Mono<Response<AnswerCallResponse>> answerCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AnswerCallRequest answerCallRequest,
+                @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -89,7 +89,7 @@ public final class ServerCallingsImpl {
         Mono<Response<Void>> redirectCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RedirectCallRequest redirectCallRequest,
+                @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -102,7 +102,7 @@ public final class ServerCallingsImpl {
         Mono<Response<Void>> rejectCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RejectCallRequest rejectCallRequest,
+                @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -248,7 +248,7 @@ public final class ServerCallingsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResponse>> answerCallWithResponseAsync(AnswerCallRequest answerCallRequest) {
+    public Mono<Response<AnswerCallResponse>> answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -274,7 +274,7 @@ public final class ServerCallingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnswerCallResponse>> answerCallWithResponseAsync(
-            AnswerCallRequest answerCallRequest, Context context) {
+            AnswerCallRequestInternal answerCallRequest, Context context) {
         final String accept = "application/json";
         return service.answerCall(
                 this.client.getEndpoint(), this.client.getApiVersion(), answerCallRequest, accept, context);
@@ -292,7 +292,7 @@ public final class ServerCallingsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResponse> answerCallAsync(AnswerCallRequest answerCallRequest) {
+    public Mono<AnswerCallResponse> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
         return answerCallWithResponseAsync(answerCallRequest)
                 .flatMap(
                         (Response<AnswerCallResponse> res) -> {
@@ -317,7 +317,7 @@ public final class ServerCallingsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResponse> answerCallAsync(AnswerCallRequest answerCallRequest, Context context) {
+    public Mono<AnswerCallResponse> answerCallAsync(AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context)
                 .flatMap(
                         (Response<AnswerCallResponse> res) -> {
@@ -341,7 +341,7 @@ public final class ServerCallingsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnswerCallResponse answerCall(AnswerCallRequest answerCallRequest) {
+    public AnswerCallResponse answerCall(AnswerCallRequestInternal answerCallRequest) {
         return answerCallAsync(answerCallRequest).block();
     }
 
@@ -358,7 +358,8 @@ public final class ServerCallingsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResponse> answerCallWithResponse(AnswerCallRequest answerCallRequest, Context context) {
+    public Response<AnswerCallResponse> answerCallWithResponse(
+            AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context).block();
     }
 
@@ -374,7 +375,7 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequest redirectCallRequest) {
+    public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequestInternal redirectCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -400,7 +401,7 @@ public final class ServerCallingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponseAsync(
-            RedirectCallRequest redirectCallRequest, Context context) {
+            RedirectCallRequestInternal redirectCallRequest, Context context) {
         final String accept = "application/json";
         return service.redirectCall(
                 this.client.getEndpoint(), this.client.getApiVersion(), redirectCallRequest, accept, context);
@@ -418,7 +419,7 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCallAsync(RedirectCallRequest redirectCallRequest) {
+    public Mono<Void> redirectCallAsync(RedirectCallRequestInternal redirectCallRequest) {
         return redirectCallWithResponseAsync(redirectCallRequest).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -435,7 +436,7 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCallAsync(RedirectCallRequest redirectCallRequest, Context context) {
+    public Mono<Void> redirectCallAsync(RedirectCallRequestInternal redirectCallRequest, Context context) {
         return redirectCallWithResponseAsync(redirectCallRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -451,7 +452,7 @@ public final class ServerCallingsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void redirectCall(RedirectCallRequest redirectCallRequest) {
+    public void redirectCall(RedirectCallRequestInternal redirectCallRequest) {
         redirectCallAsync(redirectCallRequest).block();
     }
 
@@ -468,7 +469,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> redirectCallWithResponse(RedirectCallRequest redirectCallRequest, Context context) {
+    public Response<Void> redirectCallWithResponse(RedirectCallRequestInternal redirectCallRequest, Context context) {
         return redirectCallWithResponseAsync(redirectCallRequest, context).block();
     }
 
@@ -484,7 +485,7 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequest rejectCallRequest) {
+    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequestInternal rejectCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -509,7 +510,8 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequest rejectCallRequest, Context context) {
+    public Mono<Response<Void>> rejectCallWithResponseAsync(
+            RejectCallRequestInternal rejectCallRequest, Context context) {
         final String accept = "application/json";
         return service.rejectCall(
                 this.client.getEndpoint(), this.client.getApiVersion(), rejectCallRequest, accept, context);
@@ -527,7 +529,7 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCallAsync(RejectCallRequest rejectCallRequest) {
+    public Mono<Void> rejectCallAsync(RejectCallRequestInternal rejectCallRequest) {
         return rejectCallWithResponseAsync(rejectCallRequest).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -544,7 +546,7 @@ public final class ServerCallingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCallAsync(RejectCallRequest rejectCallRequest, Context context) {
+    public Mono<Void> rejectCallAsync(RejectCallRequestInternal rejectCallRequest, Context context) {
         return rejectCallWithResponseAsync(rejectCallRequest, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -559,7 +561,7 @@ public final class ServerCallingsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rejectCall(RejectCallRequest rejectCallRequest) {
+    public void rejectCall(RejectCallRequestInternal rejectCallRequest) {
         rejectCallAsync(rejectCallRequest).block();
     }
 
@@ -576,7 +578,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(RejectCallRequest rejectCallRequest, Context context) {
+    public Response<Void> rejectCallWithResponse(RejectCallRequestInternal rejectCallRequest, Context context) {
         return rejectCallWithResponseAsync(rejectCallRequest, context).block();
     }
 }

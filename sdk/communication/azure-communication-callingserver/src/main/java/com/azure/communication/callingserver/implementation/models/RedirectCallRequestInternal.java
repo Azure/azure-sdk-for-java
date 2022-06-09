@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for rejecting the call. */
+/** The request payload for redirecting the call. */
 @Fluent
-public final class RejectCallRequest {
+public final class RedirectCallRequestInternal {
     /*
      * The context associated with the call.
      */
@@ -23,10 +23,10 @@ public final class RejectCallRequest {
     private String callbackUri;
 
     /*
-     * The rejection reason.
+     * The target identity to redirect the call to.
      */
-    @JsonProperty(value = "callRejectReason")
-    private CallRejectReason callRejectReason;
+    @JsonProperty(value = "target", required = true)
+    private CommunicationIdentifierModel target;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -41,9 +41,9 @@ public final class RejectCallRequest {
      * Set the incomingCallContext property: The context associated with the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @return the RejectCallRequest object itself.
+     * @return the RedirectCallRequestInternal object itself.
      */
-    public RejectCallRequest setIncomingCallContext(String incomingCallContext) {
+    public RedirectCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         return this;
     }
@@ -61,30 +61,30 @@ public final class RejectCallRequest {
      * Set the callbackUri property: The callback uri.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the RejectCallRequest object itself.
+     * @return the RedirectCallRequestInternal object itself.
      */
-    public RejectCallRequest setCallbackUri(String callbackUri) {
+    public RedirectCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }
 
     /**
-     * Get the callRejectReason property: The rejection reason.
+     * Get the target property: The target identity to redirect the call to.
      *
-     * @return the callRejectReason value.
+     * @return the target value.
      */
-    public CallRejectReason getCallRejectReason() {
-        return this.callRejectReason;
+    public CommunicationIdentifierModel getTarget() {
+        return this.target;
     }
 
     /**
-     * Set the callRejectReason property: The rejection reason.
+     * Set the target property: The target identity to redirect the call to.
      *
-     * @param callRejectReason the callRejectReason value to set.
-     * @return the RejectCallRequest object itself.
+     * @param target the target value to set.
+     * @return the RedirectCallRequestInternal object itself.
      */
-    public RejectCallRequest setCallRejectReason(CallRejectReason callRejectReason) {
-        this.callRejectReason = callRejectReason;
+    public RedirectCallRequestInternal setTarget(CommunicationIdentifierModel target) {
+        this.target = target;
         return this;
     }
 }

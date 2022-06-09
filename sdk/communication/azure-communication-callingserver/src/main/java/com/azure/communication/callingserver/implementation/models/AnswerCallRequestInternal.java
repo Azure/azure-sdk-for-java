@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for redirecting the call. */
+/** The request payload for answering the call. */
 @Fluent
-public final class RedirectCallRequest {
+public final class AnswerCallRequestInternal {
     /*
      * The context associated with the call.
      */
@@ -21,12 +21,6 @@ public final class RedirectCallRequest {
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
-
-    /*
-     * The target identity to redirect the call to.
-     */
-    @JsonProperty(value = "target", required = true)
-    private CommunicationIdentifierModel target;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -41,9 +35,9 @@ public final class RedirectCallRequest {
      * Set the incomingCallContext property: The context associated with the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @return the RedirectCallRequest object itself.
+     * @return the AnswerCallRequestInternal object itself.
      */
-    public RedirectCallRequest setIncomingCallContext(String incomingCallContext) {
+    public AnswerCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         return this;
     }
@@ -61,30 +55,10 @@ public final class RedirectCallRequest {
      * Set the callbackUri property: The callback uri.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the RedirectCallRequest object itself.
+     * @return the AnswerCallRequestInternal object itself.
      */
-    public RedirectCallRequest setCallbackUri(String callbackUri) {
+    public AnswerCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the target property: The target identity to redirect the call to.
-     *
-     * @return the target value.
-     */
-    public CommunicationIdentifierModel getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: The target identity to redirect the call to.
-     *
-     * @param target the target value to set.
-     * @return the RedirectCallRequest object itself.
-     */
-    public RedirectCallRequest setTarget(CommunicationIdentifierModel target) {
-        this.target = target;
         return this;
     }
 }

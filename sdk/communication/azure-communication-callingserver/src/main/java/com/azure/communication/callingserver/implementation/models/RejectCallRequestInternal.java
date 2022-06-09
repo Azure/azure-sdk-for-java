@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for answering the call. */
+/** The request payload for rejecting the call. */
 @Fluent
-public final class AnswerCallRequest {
+public final class RejectCallRequestInternal {
     /*
      * The context associated with the call.
      */
@@ -21,6 +21,12 @@ public final class AnswerCallRequest {
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
+
+    /*
+     * The rejection reason.
+     */
+    @JsonProperty(value = "callRejectReason")
+    private CallRejectReason callRejectReason;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -35,9 +41,9 @@ public final class AnswerCallRequest {
      * Set the incomingCallContext property: The context associated with the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @return the AnswerCallRequest object itself.
+     * @return the RejectCallRequestInternal object itself.
      */
-    public AnswerCallRequest setIncomingCallContext(String incomingCallContext) {
+    public RejectCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
         return this;
     }
@@ -55,10 +61,30 @@ public final class AnswerCallRequest {
      * Set the callbackUri property: The callback uri.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the AnswerCallRequest object itself.
+     * @return the RejectCallRequestInternal object itself.
      */
-    public AnswerCallRequest setCallbackUri(String callbackUri) {
+    public RejectCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the callRejectReason property: The rejection reason.
+     *
+     * @return the callRejectReason value.
+     */
+    public CallRejectReason getCallRejectReason() {
+        return this.callRejectReason;
+    }
+
+    /**
+     * Set the callRejectReason property: The rejection reason.
+     *
+     * @param callRejectReason the callRejectReason value to set.
+     * @return the RejectCallRequestInternal object itself.
+     */
+    public RejectCallRequestInternal setCallRejectReason(CallRejectReason callRejectReason) {
+        this.callRejectReason = callRejectReason;
         return this;
     }
 }
