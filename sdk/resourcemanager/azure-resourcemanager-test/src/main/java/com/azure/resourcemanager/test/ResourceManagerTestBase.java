@@ -395,7 +395,9 @@ public abstract class ResourceManagerTestBase extends TestBase {
     }
 
     private void setAccessible(final AccessibleObject accessibleObject) {
-        accessibleObject.setAccessible(true);
+        // avoid bug in Java8
+        Runnable runnable = () -> accessibleObject.setAccessible(true);
+        runnable.run();
     }
 
     /**
@@ -408,7 +410,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return the manager instance
      * @throws RuntimeException when field cannot be found or set.
      */
-    @SuppressWarnings("removal")
     protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
             Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());
