@@ -108,7 +108,7 @@ public class DynamicFeatureManagerTest {
     }
 
     @Test
-    public void getVariantAsyncDefaultBasic() throws FilterNotFoundException, FeatureManagementException {
+    public void getVariantAsyncDefaultBasic() {
         when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
 
         DynamicFeature dynamicFeature = new DynamicFeature();

@@ -343,13 +343,14 @@ feature-management:
             - name: Ring1
               rollout-percentage: 50
             default-rollout-percentage: 30
-ShoppingCart:
-  Big:
-    Size: 400
-    Color: green
-  Small:
-    Size: 150
-    Color: gray
+feature-variants:
+  ShoppingCart:
+    Big:
+      Size: 400
+      Color: green
+    Small:
+      Size: 150
+      Color: gray
 ```
 
 In the example above we see the declaration of a dynamic feature in a json configuration file. The dynamic feature is defined in the `feature-management.dynamic-features` section of configuration. The name of this dynamic feature is `ShoppingCart`. A dynamic feature must declare a feature variant assigner that should be used to select a variant when requested. In this case the built-in `Microsoft.Targeting` feature variant assigner is used. The dynamic feature has two different variants that are available to the application. One variant is named `Big` and the other is named `Small`. Each variant contains a configuration reference denoted by the `configuration-reference` property. The configuration reference is a pointer to a section of application configuration that contains the options that should be used for that variant. The variant also contains assignment parameters denoted by the `assignment-parameters` property. The assignment parameters are used by the assigner associated with the dynamic feature. The assigner reads the assignment parameters at run time when a variant of the dynamic feature is requested to choose which variant should be returned.

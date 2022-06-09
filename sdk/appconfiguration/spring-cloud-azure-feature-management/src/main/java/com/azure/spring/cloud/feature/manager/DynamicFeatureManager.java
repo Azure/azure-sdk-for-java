@@ -56,16 +56,13 @@ public class DynamicFeatureManager {
      * @param variantName name of the feature being checked.
      * @param returnClass Type of the feature being checked.
      * @return variant of the provided type
-     * @throws FeatureManagementException A generic exception for when something goes wrong with the variant generation
-     * process.
      */
-    public <T> Mono<T> getVariantAsync(String variantName, Class<T> returnClass)
-        throws FeatureManagementException {
+    public <T> Mono<T> getVariantAsync(String variantName, Class<T> returnClass) {
         return generateVariant(variantName, returnClass);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Mono<T> generateVariant(String featureName, Class<T> type) throws FeatureManagementException {
+    private <T> Mono<T> generateVariant(String featureName, Class<T> type) {
 
         if (!StringUtils.hasText(featureName)) {
             throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
