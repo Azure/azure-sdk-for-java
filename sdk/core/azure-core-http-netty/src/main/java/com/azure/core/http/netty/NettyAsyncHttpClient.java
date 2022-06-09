@@ -12,6 +12,7 @@ import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.RequestProgressHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -24,6 +25,7 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -113,8 +115,11 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
+        ProgressReporter progressReporter = (ProgressReporter) context.getData("azure-progress-reporter")
+            .orElse(null);
+
         return nettyClient
-            .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
+            .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout, progressReporter))
             .doAfterRequest((r, connection) -> addResponseTimeoutHandler(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
@@ -284,7 +289,12 @@ class NettyAsyncHttpClient implements HttpClient {
     /*
      * Adds write timeout handler once the request is ready to begin sending.
      */
-    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
+    private static void addWriteTimeoutHandler(
+        Connection connection, long timeoutMillis, ProgressReporter progressReporter) {
+        connection.removeHandler(RequestProgressHandler.HANDLER_NAME);
+        if (progressReporter != null) {
+            connection.addHandlerLast(RequestProgressHandler.HANDLER_NAME, new RequestProgressHandler(progressReporter));
+        }
         connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
     }
 

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.Exceptions;
@@ -59,8 +60,10 @@ class JdkAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        ProgressReporter progressReporter = (ProgressReporter) context.getData("azure-progress-reporter")
+            .orElse(null);
 
-        return toJdkHttpRequest(request)
+        return toJdkHttpRequest(request, progressReporter)
             .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))
                 .flatMap(innerResponse -> {
                     if (eagerlyReadResponse) {
@@ -81,9 +84,10 @@ class JdkAsyncHttpClient implements HttpClient {
      * Converts the given azure-core request to the JDK HttpRequest type.
      *
      * @param request the azure-core request
+     * @param progressReporter the progress reporter
      * @return the Mono emitting HttpRequest
      */
-    private Mono<java.net.http.HttpRequest> toJdkHttpRequest(HttpRequest request) {
+    private Mono<java.net.http.HttpRequest> toJdkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
         return Mono.fromCallable(() -> {
             final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
             try {
@@ -112,7 +116,14 @@ class JdkAsyncHttpClient implements HttpClient {
                     return builder.method("HEAD", noBody()).build();
                 default:
                     final String contentLength = request.getHeaders().getValue("content-length");
-                    final BodyPublisher bodyPublisher = toBodyPublisher(request.getBody(), contentLength);
+                    Flux<ByteBuffer> body = request.getBody();
+                    if (progressReporter != null) {
+                        body = body.map(byteBuffer -> {
+                            progressReporter.reportProgress(byteBuffer.remaining());
+                            return byteBuffer;
+                        });
+                    }
+                    final BodyPublisher bodyPublisher = toBodyPublisher(body, contentLength);
                     return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
             }
         });

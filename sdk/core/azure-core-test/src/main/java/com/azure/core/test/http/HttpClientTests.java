@@ -9,6 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -203,12 +205,10 @@ public abstract class HttpClientTests {
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      * @param requestBody The BinaryData that contains random bytes.
      * @param expectedResponseBody The expected bytes in the echo response.
-     * @throws MalformedURLException If it can't parse URL
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody)
-        throws MalformedURLException {
+    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
             getRequestUrl(ECHO_RESPONSE),
@@ -220,6 +220,32 @@ public abstract class HttpClientTests {
             .flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
             .verifyComplete();
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        ProgressReporter progressReporter = new ProgressReporter();
+        Context context = Context.NONE.addData("azure-progress-reporter", progressReporter);
+
+        StepVerifier.create(createHttpClient()
+                .send(request, context)
+                .flatMap(HttpResponse::getBodyAsByteArray))
+            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .verifyComplete();
+
+        assertEquals(expectedResponseBody.length, progressReporter.getProgress());
     }
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {
