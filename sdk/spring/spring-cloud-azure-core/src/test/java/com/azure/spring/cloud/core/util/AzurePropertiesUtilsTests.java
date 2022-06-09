@@ -497,10 +497,6 @@ class AzurePropertiesUtilsTests {
         assertEquals(1, target.getClient().getHeaders().size());
     }
 
-    static class AzureHttpClientProperties extends AzureHttpSdkProperties {
-
-    }
-
     @Test
     void testCopyPropertiesAmqpClientPropertiesShouldBeCopied() {
         AzureAmqpClientProperties source = new AzureAmqpClientProperties();
@@ -526,6 +522,9 @@ class AzurePropertiesUtilsTests {
         assertEquals(AmqpTransportType.AMQP, target.getClient().getTransportType());
     }
 
+    static class AzureHttpClientProperties extends AzureHttpSdkProperties {
+
+    }
 
     static class AzureAmqpClientProperties extends AzureAmqpSdkProperties {
 
