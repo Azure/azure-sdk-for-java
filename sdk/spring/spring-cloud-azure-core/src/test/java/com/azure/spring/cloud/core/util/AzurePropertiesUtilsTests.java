@@ -3,8 +3,10 @@
 
 package com.azure.spring.cloud.core.util;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
@@ -416,7 +418,7 @@ class AzurePropertiesUtilsTests {
     }
 
     @Test
-    void httpClientPropertiesShouldBeCopied() {
+    void testCopyPropertiesHttpClientPropertiesShouldBeCopied() {
         HeaderProperties headerProperties = new HeaderProperties();
         headerProperties.setName("header-1");
         headerProperties.setValues(Arrays.asList("value-1", "value-2"));
@@ -429,9 +431,19 @@ class AzurePropertiesUtilsTests {
         source.getClient().setConnectionIdleTimeout(Duration.ofSeconds(5));
         source.getClient().setApplicationId("global-application-id");
         source.getClient().getLogging().setLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
-        source.getClient().getLogging().getAllowedHeaderNames().add("abc");
+        source.getClient().getLogging().getAllowedHeaderNames().add("header-name1");
         source.getClient().getHeaders().add(headerProperties);
         AzureHttpClientProperties target = new AzureHttpClientProperties();
+        target.getClient().setConnectTimeout(Duration.ofSeconds(3));
+        target.getClient().setMaximumConnectionPoolSize(5);
+        target.getClient().setConnectionIdleTimeout(Duration.ofSeconds(5));
+        target.getClient().setApplicationId("target-global-application-id");
+        target.getClient().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
+        target.getClient().getLogging().getAllowedHeaderNames().add("header-name2");
+        HeaderProperties targetHeaderProperties = new HeaderProperties();
+        targetHeaderProperties.setName("header-2");
+        targetHeaderProperties.setValues(Arrays.asList("value-1", "value-2"));
+        target.getClient().getHeaders().add(targetHeaderProperties);
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
         assertEquals(Duration.ofSeconds(3), target.getClient().getWriteTimeout());
         assertEquals(Duration.ofSeconds(4), target.getClient().getResponseTimeout());
@@ -442,12 +454,80 @@ class AzurePropertiesUtilsTests {
         assertEquals("global-application-id", target.getClient().getApplicationId());
         assertEquals(HttpLogDetailLevel.BODY_AND_HEADERS, target.getClient().getLogging().getLevel());
         Set<String> allowedHeaderNames = new HashSet<>();
-        allowedHeaderNames.add("abc");
+        allowedHeaderNames.add("header-name1");
+        allowedHeaderNames.add("header-name2");
+        assertEquals(allowedHeaderNames, target.getClient().getLogging().getAllowedHeaderNames());
+        assertEquals(2, target.getClient().getHeaders().size());
+    }
+
+    @Test
+    void testCopyPropertiesIgnoreNullHttpClientPropertiesShouldBeCopied() {
+        AzureHttpClientProperties source = new AzureHttpClientProperties();
+        source.getClient().setReadTimeout(Duration.ofSeconds(4));
+        source.getClient().setConnectTimeout(Duration.ofSeconds(2));
+        source.getClient().setMaximumConnectionPoolSize(5);
+        source.getClient().getLogging().getAllowedHeaderNames().add("header-name1");
+        AzureHttpClientProperties target = new AzureHttpClientProperties();
+        target.getClient().setWriteTimeout(Duration.ofSeconds(4));
+        target.getClient().setResponseTimeout(Duration.ofSeconds(5));
+        target.getClient().setReadTimeout(Duration.ofSeconds(5));
+        target.getClient().setConnectTimeout(Duration.ofSeconds(3));
+        target.getClient().setMaximumConnectionPoolSize(5);
+        target.getClient().setConnectionIdleTimeout(Duration.ofSeconds(5));
+        target.getClient().setApplicationId("target-global-application-id");
+        target.getClient().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
+        target.getClient().getLogging().getAllowedHeaderNames().add("header-name2");
+        HeaderProperties headerProperties = new HeaderProperties();
+        headerProperties.setName("header-2");
+        headerProperties.setValues(Arrays.asList("value-1", "value-2"));
+        target.getClient().getHeaders().add(headerProperties);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(source, target);
+        assertEquals(Duration.ofSeconds(4), target.getClient().getWriteTimeout());
+        assertEquals(Duration.ofSeconds(5), target.getClient().getResponseTimeout());
+        assertEquals(Duration.ofSeconds(4), target.getClient().getReadTimeout());
+        assertEquals(Duration.ofSeconds(2), target.getClient().getConnectTimeout());
+        assertEquals(Duration.ofSeconds(5), target.getClient().getConnectionIdleTimeout());
+        assertEquals(5, target.getClient().getMaximumConnectionPoolSize());
+        assertEquals("target-global-application-id", target.getClient().getApplicationId());
+        assertEquals(HttpLogDetailLevel.HEADERS, target.getClient().getLogging().getLevel());
+        Set<String> allowedHeaderNames = new HashSet<>();
+        allowedHeaderNames.add("header-name1");
+        allowedHeaderNames.add("header-name2");
         assertEquals(allowedHeaderNames, target.getClient().getLogging().getAllowedHeaderNames());
         assertEquals(1, target.getClient().getHeaders().size());
     }
 
     static class AzureHttpClientProperties extends AzureHttpSdkProperties {
+
+    }
+
+    @Test
+    void testCopyPropertiesAmqpClientPropertiesShouldBeCopied() {
+        AzureAmqpClientProperties source = new AzureAmqpClientProperties();
+        source.getClient().setApplicationId("global-application-id");
+        source.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureAmqpClientProperties target = new AzureAmqpClientProperties();
+        target.getClient().setApplicationId("target-global-application-id");
+        target.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
+        assertEquals("global-application-id", target.getClient().getApplicationId());
+        assertEquals(AmqpTransportType.AMQP, target.getClient().getTransportType());
+    }
+
+    @Test
+    void testCopyPropertiesIgnoreNullAmqpClientPropertiesShouldBeCopied() {
+        AzureAmqpClientProperties source = new AzureAmqpClientProperties();
+        source.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureAmqpClientProperties target = new AzureAmqpClientProperties();
+        target.getClient().setApplicationId("target-global-application-id");
+        target.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(source, target);
+        assertEquals("target-global-application-id", target.getClient().getApplicationId());
+        assertEquals(AmqpTransportType.AMQP, target.getClient().getTransportType());
+    }
+
+
+    static class AzureAmqpClientProperties extends AzureAmqpSdkProperties {
 
     }
 
