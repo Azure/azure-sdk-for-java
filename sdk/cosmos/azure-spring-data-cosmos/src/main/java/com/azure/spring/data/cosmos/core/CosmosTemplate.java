@@ -950,11 +950,19 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
+                       LOGGER.info("getJsonNodeFluxFromQuerySpec page response {}", cosmosItemFeedResponse.getResults());
                        CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                                                      cosmosItemFeedResponse.getCosmosDiagnostics(),
                                                                      cosmosItemFeedResponse);
                        return Flux.fromIterable(cosmosItemFeedResponse.getResults());
                    })
+                    .doOnNext(jsonNode -> {
+                        try {
+                            LOGGER.info("getJsonNodeFluxFromQuerySpec " + OBJECT_MAPPER.writeValueAsString(jsonNode));
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
+                    })
                    .onErrorResume(throwable ->
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
                                           this.responseDiagnosticsProcessor));

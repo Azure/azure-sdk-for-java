@@ -11,6 +11,7 @@ import com.azure.spring.data.cosmos.repository.query.CosmosEntityMetadata;
 import com.azure.spring.data.cosmos.repository.query.CosmosParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.CosmosParameterParameterAccessor;
 import com.azure.spring.data.cosmos.repository.query.CosmosQueryMethod;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.ResultProcessor;
