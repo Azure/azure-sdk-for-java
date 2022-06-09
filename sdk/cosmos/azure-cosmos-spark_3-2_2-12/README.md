@@ -1,5 +1,6 @@
-## Azure Cosmos DB OLTP Spark 3 connector
+# Azure Cosmos DB OLTP Spark 3 connector
 
+## Azure Cosmos DB OLTP Spark 3 connector for Spark 3.2
 **Azure Cosmos DB OLTP Spark connector** provides Apache Spark support for Azure Cosmos DB using 
 the [SQL API][sql_api_query].
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows 
