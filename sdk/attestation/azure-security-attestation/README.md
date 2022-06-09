@@ -127,15 +127,16 @@ clients to add, remove or enumerate the policy management certificates.
 
 ## Examples
 
-- [Instantiate a synchronous attestation client](#create-a-synchronous-attestation-client)
-- [Retrieve token validation certificates](#retrieve-token-certificates)
+- [Create a synchronous attestation client](#create-a-synchronous-attestation-client)
+- [Retrieve Token Certificates](#retrieve-token-certificates)
 - [Attest an SGX enclave](#attest-an-sgx-enclave)
-- [Instantiate a synchronous administrative client](#create-a-synchronous-administrative-client)
-- [Get attestation policy](#retrieve-current-attestation-policy-for-openenclave)
-- [Set unsigned attestation policy](#set-unsigned-attestation-policy-aad-clients-only)
+- [Create a synchronous administrative client](#create-a-synchronous-administrative-client)
+- [Retrieve current attestation policy for OpenEnclave](#retrieve-current-attestation-policy-for-openenclave)
+- [Set unsigned attestation policy (AAD clients only)](#set-unsigned-attestation-policy-aad-clients-only)
 - [Set signed attestation policy](#set-signed-attestation-policy)
-- [List policy management certificates](#list-attestation-signing-certificates)
-- [Add policy management certificate](#add-attestation-signing-certificate)
+- [List attestation signing certificates](#list-attestation-signing-certificates)
+- [Add attestation signing certificate](#add-attestation-signing-certificate)
+- [Remove attestation signing certificate](#remove-attestation-signing-certificate)
 
 ### Create a synchronous attestation client
 
