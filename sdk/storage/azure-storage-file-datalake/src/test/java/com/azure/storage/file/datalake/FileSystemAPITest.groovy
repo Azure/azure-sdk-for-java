@@ -11,6 +11,7 @@ import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.LeaseDurationType
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.ListPathsOptions
@@ -886,10 +887,16 @@ class FileSystemAPITest extends APISpec {
         when:
         def leaseId = UUID.randomUUID().toString()
         def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def response = fsc.createFileWithResponse(generatePathName(), options, null, null)
+        def fileName = generatePathName()
+        def response = fsc.createFileWithResponse(fileName, options, null, null)
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fsc.getFileClient(fileName).getProperties()
+        // assert whether lease has been acquired
+        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProps.getLeaseState() == LeaseStateType.LEASED
+        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
     def "Create file options with time expires on absolute and never expire"() {
@@ -913,12 +920,12 @@ class FileSystemAPITest extends APISpec {
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
         def options = new DataLakePathCreateOptions()
             .setScheduleDeletionOptions(deletionOptions)
-        def name = generatePathName()
-        def response = fsc.createFileWithResponse(name, options, null, null)
+        def fileName = generatePathName()
+        def response = fsc.createFileWithResponse(fileName, options, null, null)
 
         then:
         response.getStatusCode() == 201
-        def fileProps = fsc.getFileClient(name).getProperties()
+        def fileProps = fsc.getFileClient(fileName).getProperties()
         def expireTime = fileProps.getExpiresOn()
         def expectedExpire = fileProps.getCreationTime().plusDays(6)
         expireTime == expectedExpire
@@ -1151,10 +1158,17 @@ class FileSystemAPITest extends APISpec {
         when:
         def leaseId = UUID.randomUUID().toString()
         def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def response = fsc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null)
+        def fileName = generatePathName()
+        def response = fsc.createFileIfNotExistsWithResponse(fileName, options, null, null)
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fsc.getFileClient(fileName).getProperties()
+        // assert whether lease has been acquired
+        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProps.getLeaseState() == LeaseStateType.LEASED
+        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
+
     }
 
     def "Create if not exists file options with time expires on absolute and never expire"() {
@@ -1178,11 +1192,15 @@ class FileSystemAPITest extends APISpec {
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
         def options = new DataLakePathCreateOptions()
             .setScheduleDeletionOptions(deletionOptions)
-
-        def response = fsc.createFileWithResponse(generatePathName(), options, null, null)
+        def fileName = generatePathName()
+        def response = fsc.createFileWithResponse(fileName, options, null, null)
 
         then:
         response.getStatusCode() == 201
+        def fileProps = fsc.getFileClient(fileName).getProperties()
+        def expireTime = fileProps.getExpiresOn()
+        def expectedExpire = fileProps.getCreationTime().plusDays(6)
+        expireTime == expectedExpire
     }
 
     def "Delete file min"() {
@@ -1638,7 +1656,7 @@ class FileSystemAPITest extends APISpec {
         when:
         def leaseId = UUID.randomUUID().toString()
         def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
-        def response = fsc.createDirectoryWithResponse(generatePathName(), options, null, null)
+        fsc.createDirectoryWithResponse(generatePathName(), options, null, null)
 
         then:
         // lease id not supported for directories
@@ -1649,7 +1667,7 @@ class FileSystemAPITest extends APISpec {
         when:
         def leaseId = UUID.randomUUID().toString()
         def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def response = fsc.createDirectoryWithResponse(generatePathName(), options, null, null)
+        fsc.createDirectoryWithResponse(generatePathName(), options, null, null)
 
         then:
         // lease duration not supported for directories
@@ -1663,7 +1681,7 @@ class FileSystemAPITest extends APISpec {
         def options = new DataLakePathCreateOptions()
             .setProposedLeaseId(leaseId)
             .setScheduleDeletionOptions(deletionOptions)
-        def response = fsc.createFileWithResponse(generatePathName(), options, null, null)
+        fsc.createFileWithResponse(generatePathName(), options, null, null)
 
         then:
         // expires on not supported for directories
@@ -1894,7 +1912,7 @@ class FileSystemAPITest extends APISpec {
         when:
         def leaseId = UUID.randomUUID().toString()
         def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
-        def response = fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+        fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
 
         then:
         // assert lease id not supported for directory
@@ -1916,7 +1934,7 @@ class FileSystemAPITest extends APISpec {
         when:
         def leaseId = UUID.randomUUID().toString()
         def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
-        def response = fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+        fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
 
         then:
         // assert expires on not supported for directory
@@ -1928,7 +1946,7 @@ class FileSystemAPITest extends APISpec {
         def deletionOptions = new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))
         def options = new DataLakePathCreateOptions()
             .setScheduleDeletionOptions(deletionOptions)
-        def response = fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+        fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
 
         then:
         // assert expires on not supported for directory
@@ -1941,7 +1959,7 @@ class FileSystemAPITest extends APISpec {
         def options = new DataLakePathCreateOptions()
             .setScheduleDeletionOptions(deletionOptions)
 
-        def response = fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
+        fsc.createDirectoryIfNotExistsWithResponse(generatePathName(), options, null, null)
 
         then:
         // assert time to expire not supported for directory

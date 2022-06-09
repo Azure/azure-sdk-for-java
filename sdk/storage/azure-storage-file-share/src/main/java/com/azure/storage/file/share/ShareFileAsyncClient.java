@@ -582,11 +582,10 @@ public class ShareFileAsyncClient {
      *     .setDestinationRequestConditions&#40;requestConditions&#41;
      *     .setSmbPropertiesToCopy&#40;list&#41;
      *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
-     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .setPollInterval&#40;Duration.ofSeconds&#40;2&#41;&#41;;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * PollerFlux&lt;ShareFileCopyInfo, Void&gt; poller = shareFileAsyncClient.beginCopy&#40;
-     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options&#41;;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, Duration.ofSeconds&#40;2&#41;, options&#41;;
      *
      * poller.subscribe&#40;response -&gt; &#123;
      *     final ShareFileCopyInfo value = response.getValue&#40;&#41;;

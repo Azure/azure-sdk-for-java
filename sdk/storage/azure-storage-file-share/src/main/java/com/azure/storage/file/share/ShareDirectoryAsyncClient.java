@@ -1898,6 +1898,7 @@ public class ShareDirectoryAsyncClient {
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileIfExistsWithResponse#string-ShareRequestConditions -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
      * shareDirectoryAsyncClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, requestConditions&#41;.subscribe&#40;response -&gt; &#123;
      *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
