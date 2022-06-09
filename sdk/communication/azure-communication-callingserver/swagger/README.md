@@ -111,6 +111,9 @@ directive:
 - rename-model:
     from: CallConnectionProperties
     to: CallConnectionPropertiesInternal
+- rename-model:
+    from: CreateCallRequest
+    to: CreateCallRequestInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannel
