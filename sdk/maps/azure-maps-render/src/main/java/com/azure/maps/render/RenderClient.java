@@ -14,6 +14,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.maps.render.models.Copyright;
@@ -240,15 +241,15 @@ public final class RenderClient {
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
      *
-     * @param stream the {@code OutputStream} the image will be written to.
      * @param options the {@code MapStaticImageOptions} used in the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return BinaryData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getMapStaticImage(OutputStream stream, MapStaticImageOptions options) {
-        getMapStaticImageWithResponse(stream, options, Context.NONE);
+    public BinaryData getMapStaticImage(MapStaticImageOptions options) {
+        return this.asyncClient.getMapStaticImage(options).block();
     }
 
     /**
@@ -262,7 +263,6 @@ public final class RenderClient {
      * choice. If you want to support a lot of zooming, panning and changing of the map content, the map tile service
      * would be a better choice.
      *
-     * @param stream the {@code OutputStream} the image will be written to.
      * @param options the {@code MapStaticImageOptions} used in the call.
      * @param context the context associated with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,12 +271,9 @@ public final class RenderClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getMapStaticImageWithResponse(OutputStream stream, MapStaticImageOptions options, Context context) {
-        Objects.requireNonNull(stream);
-        Mono<StreamResponse> monoResp = this.asyncClient.getMapStaticImageWithResponse(options)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream).thenReturn(response));
-        StreamResponse resp = monoResp.block();
-        return new SimpleResponse<Void>(resp.getRequest(), resp.getStatusCode(), resp.getHeaders(), null);
+    public Response<BinaryData> getMapStaticImageWithResponse(MapStaticImageOptions options, Context context) {
+        StreamResponse response = this.asyncClient.getMapStaticImageWithResponse(options, context).block();
+        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), BinaryData.fromFlux(response.getValue()).block());
     }
 
     /**

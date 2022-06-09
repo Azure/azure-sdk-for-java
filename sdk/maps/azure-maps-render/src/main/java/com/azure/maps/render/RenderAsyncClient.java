@@ -4,7 +4,6 @@
 
 package com.azure.maps.render;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,9 +12,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.maps.render.implementation.RenderV2sImpl;
 import com.azure.maps.render.implementation.helpers.Utility;
@@ -31,7 +32,6 @@ import com.azure.maps.render.models.MapTileset;
 import com.azure.maps.render.models.TileIndex;
 import com.azure.maps.render.models.TilesetId;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous RenderClient type. */
@@ -57,14 +57,14 @@ public final class RenderAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the map tile as a {@code Flux<ByteBuffer>}
+     * @return the map tile as a {@code BinaryData}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> getMapTile(MapTileOptions options) {
+    public Mono<BinaryData> getMapTile(MapTileOptions options) {
         Mono<StreamResponse> responseMono = this.getMapTileWithResponse(options, null);
-        return responseMono.flatMapMany(response -> {
+        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
             return response.getValue();
-        });
+        })); 
     }
 
     /**
@@ -76,11 +76,12 @@ public final class RenderAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the tile as a {@code Mono<StreamResponse>}
+     * @return the tile as a {@code Mono<Response<BinaryData>>}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getMapTileWithResponse(MapTileOptions options) {
-        return this.getMapTileWithResponse(options, null);
+    public Mono<Response<BinaryData>> getMapTileWithResponse(MapTileOptions options) {
+        StreamResponse response = this.getMapTileWithResponse(options, null).block();
+        return  Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
     }
 
     /**
@@ -222,11 +223,11 @@ public final class RenderAsyncClient {
      * @return the map tile
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadMapStateTile(String statesetId, TileIndex tileIndex) {
+    public Mono<BinaryData> downloadMapStateTile(String statesetId, TileIndex tileIndex) {
         Mono<StreamResponse> responseMono = this.downloadMapStateTileWithResponse(statesetId, tileIndex, null);
-        return responseMono.flatMapMany(response -> {
+        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
             return response.getValue();
-        });
+        })); 
     }
 
     /**
@@ -240,8 +241,9 @@ public final class RenderAsyncClient {
      * @return the map tile
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadMapStateTileWithResponse(String statesetId, TileIndex tileIndex) {
-        return this.downloadMapStateTileWithResponse(statesetId, tileIndex, null);
+    public Mono<Response<BinaryData>> downloadMapStateTileWithResponse(String statesetId, TileIndex tileIndex) {
+        StreamResponse response = this.downloadMapStateTileWithResponse(statesetId, tileIndex, null).block();
+        return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
     }
 
     /**
@@ -337,11 +339,12 @@ public final class RenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the static map image as a {@code Flux<ByteBuffer>}
      */
-    public Flux<ByteBuffer> getMapStaticImage(MapStaticImageOptions options) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getMapStaticImage(MapStaticImageOptions options) {
         Mono<StreamResponse> responseMono = this.getMapStaticImageWithResponse(options, null);
-        return responseMono.flatMapMany(response -> {
+        return BinaryData.fromFlux(responseMono.flatMapMany(response -> {
             return response.getValue();
-        });
+        }));  
     }
 
     /**
@@ -362,8 +365,9 @@ public final class RenderAsyncClient {
      * @return the static map image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getMapStaticImageWithResponse(MapStaticImageOptions options) {
-        return this.getMapStaticImageWithResponse(options, null);
+    public Mono<Response<BinaryData>> getMapStaticImageWithResponse(MapStaticImageOptions options) {
+        StreamResponse response = this.getMapStaticImageWithResponse(options, null).block();
+        return Mono.just(new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
     }
 
     /**
