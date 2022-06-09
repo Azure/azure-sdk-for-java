@@ -51,10 +51,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
-import org.springframework.expression.spel.ast.Literal;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +72,7 @@ import java.util.stream.Collectors;
 public class CosmosTemplate implements CosmosOperations, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
@@ -862,7 +860,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
                 .doOnNext(jsonNode -> {
                     try {
-                        LOGGER.info(objectMapper.writeValueAsString(jsonNode));
+                        LOGGER.info(OBJECT_MAPPER.writeValueAsString(jsonNode));
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
