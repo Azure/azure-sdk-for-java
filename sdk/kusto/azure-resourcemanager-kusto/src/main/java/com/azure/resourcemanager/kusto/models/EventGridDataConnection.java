@@ -66,6 +66,31 @@ public final class EventGridDataConnection extends DataConnectionInner {
     }
 
     /**
+     * Get the eventGridResourceId property: The resource ID of the event grid that is subscribed to the storage account
+     * events.
+     *
+     * @return the eventGridResourceId value.
+     */
+    public String eventGridResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventGridResourceId();
+    }
+
+    /**
+     * Set the eventGridResourceId property: The resource ID of the event grid that is subscribed to the storage account
+     * events.
+     *
+     * @param eventGridResourceId the eventGridResourceId value to set.
+     * @return the EventGridDataConnection object itself.
+     */
+    public EventGridDataConnection withEventGridResourceId(String eventGridResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventGridConnectionProperties();
+        }
+        this.innerProperties().withEventGridResourceId(eventGridResourceId);
+        return this;
+    }
+
+    /**
      * Get the eventHubResourceId property: The resource ID where the event grid is configured to send events.
      *
      * @return the eventHubResourceId value.
@@ -231,6 +256,65 @@ public final class EventGridDataConnection extends DataConnectionInner {
             this.innerProperties = new EventGridConnectionProperties();
         }
         this.innerProperties().withBlobStorageEventType(blobStorageEventType);
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub and storage account.
+     *
+     * @return the managedIdentityResourceId value.
+     */
+    public String managedIdentityResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedIdentityResourceId();
+    }
+
+    /**
+     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub and storage account.
+     *
+     * @param managedIdentityResourceId the managedIdentityResourceId value to set.
+     * @return the EventGridDataConnection object itself.
+     */
+    public EventGridDataConnection withManagedIdentityResourceId(String managedIdentityResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventGridConnectionProperties();
+        }
+        this.innerProperties().withManagedIdentityResourceId(managedIdentityResourceId);
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityObjectId property: The object ID of managedIdentityResourceId.
+     *
+     * @return the managedIdentityObjectId value.
+     */
+    public String managedIdentityObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedIdentityObjectId();
+    }
+
+    /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseRouting();
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the EventGridDataConnection object itself.
+     */
+    public EventGridDataConnection withDatabaseRouting(DatabaseRouting databaseRouting) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventGridConnectionProperties();
+        }
+        this.innerProperties().withDatabaseRouting(databaseRouting);
         return this;
     }
 

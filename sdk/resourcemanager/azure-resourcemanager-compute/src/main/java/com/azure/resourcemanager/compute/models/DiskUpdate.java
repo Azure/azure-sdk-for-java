@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DiskUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Disk update resource. */
 @Fluent
 public final class DiskUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskUpdate.class);
-
     /*
      * Disk resource update properties.
      */
@@ -32,7 +28,7 @@ public final class DiskUpdate {
 
     /*
      * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS,
-     * UltraSSD_LRS, Premium_ZRS, or StandardSSD_ZRS.
+     * UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
@@ -68,7 +64,7 @@ public final class DiskUpdate {
 
     /**
      * Get the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
-     * Premium_ZRS, or StandardSSD_ZRS.
+     * Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      *
      * @return the sku value.
      */
@@ -78,7 +74,7 @@ public final class DiskUpdate {
 
     /**
      * Set the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
-     * Premium_ZRS, or StandardSSD_ZRS.
+     * Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
      *
      * @param sku the sku value to set.
      * @return the DiskUpdate object itself.
@@ -437,8 +433,7 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) to be added
-     * on the OS disk.
+     * Get the supportedCapabilities property: List of supported capabilities to be added on the OS disk.
      *
      * @return the supportedCapabilities value.
      */
@@ -447,8 +442,7 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) to be added
-     * on the OS disk.
+     * Set the supportedCapabilities property: List of supported capabilities to be added on the OS disk.
      *
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the DiskUpdate object itself.
@@ -513,6 +507,31 @@ public final class DiskUpdate {
             this.innerProperties = new DiskUpdateProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataAccessAuthMode();
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
         return this;
     }
 

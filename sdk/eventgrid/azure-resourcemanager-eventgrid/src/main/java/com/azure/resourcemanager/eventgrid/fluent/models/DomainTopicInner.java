@@ -7,16 +7,12 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain Topic. */
 @Immutable
 public final class DomainTopicInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainTopicInner.class);
-
     /*
      * Properties of the Domain Topic.
      */

@@ -4,9 +4,8 @@
 
 package com.azure.resourcemanager.botservice.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -33,9 +32,74 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "LineChannel", value = LineChannel.class),
     @JsonSubTypes.Type(name = "DirectLineSpeechChannel", value = DirectLineSpeechChannel.class)
 })
-@Immutable
+@Fluent
 public class Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Channel.class);
+    /*
+     * Entity Tag of the resource
+     */
+    @JsonProperty(value = "etag")
+    private String etag;
+
+    /*
+     * Provisioning state of the resource
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
+
+    /*
+     * Specifies the location of the resource.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /**
+     * Get the etag property: Entity Tag of the resource.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Entity Tag of the resource.
+     *
+     * @param etag the etag value to set.
+     * @return the Channel object itself.
+     */
+    public Channel withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the location property: Specifies the location of the resource.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Specifies the location of the resource.
+     *
+     * @param location the location value to set.
+     * @return the Channel object itself.
+     */
+    public Channel withLocation(String location) {
+        this.location = location;
+        return this;
+    }
 
     /**
      * Validates the instance.

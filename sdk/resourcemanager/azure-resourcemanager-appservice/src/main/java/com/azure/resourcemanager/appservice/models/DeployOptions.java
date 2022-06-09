@@ -11,6 +11,7 @@ public class DeployOptions {
     private String path;
     private Boolean restartSite;
     private Boolean cleanDeployment;
+    private Boolean trackDeployment;
 
     /**
      * @return the path for deploy
@@ -70,6 +71,27 @@ public class DeployOptions {
      */
     public DeployOptions withCleanDeployment(Boolean cleanDeployment) {
         this.cleanDeployment = cleanDeployment;
+        return this;
+    }
+
+    /**
+     * @return whether to track deployment progress
+     */
+    public Boolean trackDeployment() {
+        return trackDeployment;
+    }
+
+    /**
+     * Specifies whether to have {@link KuduDeploymentResult#deploymentId()} to track deployment progress.
+     *
+     * This option only takes effect when used in
+     * {@link SupportsOneDeploy#pushDeploy(DeployType, java.io.File, DeployOptions)}.
+     *
+     * @param trackDeployment whether to track deployment progress
+     * @return the DeployOptions object
+     */
+    public DeployOptions withTrackDeployment(Boolean trackDeployment) {
+        this.trackDeployment = trackDeployment;
         return this;
     }
 }

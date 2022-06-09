@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -44,78 +43,54 @@ import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
 public final class HttpResponseBodyDecoder {
     private static final Map<Type, Boolean> RETURN_TYPE_DECODEABLE_MAP = new ConcurrentHashMap<>();
 
-    // TODO (jogiles) JavaDoc (even though it is non-public
-    static Mono<Object> decode(final String body,
-        final HttpResponse httpResponse,
-        final SerializerAdapter serializer,
-        final HttpResponseDecodeData decodeData) {
-        return decodeByteArray(body == null ? null : body.getBytes(StandardCharsets.UTF_8),
-            httpResponse, serializer, decodeData);
-    }
+    // HttpResponseBodyDecoder is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(HttpResponseBodyDecoder.class);
 
     /**
-     * Decodes body of a http response.
+     * Decodes the body of an {@link HttpResponse} into the type returned by the called API.
+     * <p>
+     * If the response body isn't able to be decoded null will be returned.
      *
-     * The content reading and decoding happens when caller subscribe to the returned {@code Mono<Object>}, if the
-     * response body is not decodable then {@code Mono.empty()} will be returned.
-     *
-     * @param body the response body to decode, null for this parameter indicate read body from {@code httpResponse}
-     * parameter and decode it.
-     * @param httpResponse the response containing the body to be decoded
-     * @param serializer the adapter to use for decoding
-     * @param decodeData the necessary data required to decode a Http response
-     * @return publisher that emits decoded response body upon subscription if body is decodable, no emission if the
-     * body is not-decodable
+     * @param body The response body retrieved from the {@code httpResponse} to decode.
+     * @param httpResponse The {@link HttpResponse}.
+     * @param serializer The {@link SerializerAdapter} that performs decoding.
+     * @param decodeData The API method metadata used during decoding of the response.
+     * @return The decoded response body, or null if the body wasn't able to be decoded.
+     * @throws HttpResponseException If the body fails to decode.
      */
-    static Mono<Object> decodeByteArray(final byte[] body,
-        final HttpResponse httpResponse,
-        final SerializerAdapter serializer,
-        final HttpResponseDecodeData decodeData) {
+    static Object decodeByteArray(byte[] body, HttpResponse httpResponse, SerializerAdapter serializer,
+        HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
-        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
 
-        return Mono.defer(() -> {
-            if (isErrorStatus(httpResponse, decodeData)) {
-                Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
-                return bodyMono.flatMap(bodyAsByteArray -> {
-                    try {
-                        final Object decodedErrorEntity = deserializeBody(bodyAsByteArray,
-                            decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
-                            null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-
-                        return Mono.justOrEmpty(decodedErrorEntity);
-                    } catch (IOException | MalformedValueException ex) {
-                        // This translates in RestProxy as a RestException with no deserialized body.
-                        // The response content will still be accessible via the .response() member.
-                        logger.warning("Failed to deserialize the error entity.", ex);
-                        return Mono.empty();
-                    }
-                });
-            } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
-                // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
-                return Mono.empty();
-            } else {
-                if (!isReturnTypeDecodable(decodeData.getReturnType())) {
-                    return Mono.empty();
-                }
-
-                Mono<byte[]> bodyMono = body == null ? httpResponse.getBodyAsByteArray() : Mono.just(body);
-                return bodyMono.flatMap(bodyAsByteArray -> {
-                    try {
-                        final Object decodedSuccessEntity = deserializeBody(bodyAsByteArray,
-                            extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
-                            serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-
-                        return Mono.justOrEmpty(decodedSuccessEntity);
-                    } catch (MalformedValueException e) {
-                        return Mono.error(new HttpResponseException("HTTP response has a malformed body.",
-                            httpResponse, e));
-                    } catch (IOException e) {
-                        return Mono.error(new HttpResponseException("Deserialization Failed.", httpResponse, e));
-                    }
-                });
+        if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
+            try {
+                return deserializeBody(body,
+                    decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
+                    null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+            } catch (IOException | MalformedValueException ex) {
+                // This translates in RestProxy as a RestException with no deserialized body.
+                // The response content will still be accessible via the .response() member.
+                LOGGER.warning("Failed to deserialize the error entity.", ex);
+                return null;
             }
-        });
+        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            return null;
+        } else {
+            if (!isReturnTypeDecodable(decodeData.getReturnType())) {
+                return null;
+            }
+
+            try {
+                return deserializeBody(body,
+                    extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
+                    serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+            } catch (MalformedValueException e) {
+                throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, e);
+            } catch (IOException e) {
+                throw new HttpResponseException("Deserialization Failed.", httpResponse, e);
+            }
+        }
     }
 
     /**
@@ -124,7 +99,7 @@ public final class HttpResponseBodyDecoder {
     static Type decodedType(final HttpResponse httpResponse, final HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
-        if (isErrorStatus(httpResponse, decodeData)) {
+        if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
             return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType();
@@ -141,12 +116,12 @@ public final class HttpResponseBodyDecoder {
     /**
      * Checks the response status code is considered as error.
      *
-     * @param httpResponse the response to check
-     * @param decodeData the response metadata
+     * @param statusCode The status code from the response.
+     * @param decodeData Metadata about the API response.
      * @return true if the response status code is considered as error, false otherwise.
      */
-    static boolean isErrorStatus(HttpResponse httpResponse, HttpResponseDecodeData decodeData) {
-        return !decodeData.isExpectedResponseStatusCode(httpResponse.getStatusCode());
+    static boolean isErrorStatus(int statusCode, HttpResponseDecodeData decodeData) {
+        return !decodeData.isExpectedResponseStatusCode(statusCode);
     }
 
     /**

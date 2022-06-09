@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,106 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2022-02-22)
+
+- Azure Resource Manager Kusto client library for Java. This package contains Microsoft Azure SDK for Kusto Management SDK. The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete clusters and databases. Package tag package-2022-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ClustersUpdateResponse` was added
+
+* `models.DatabasesUpdateResponse` was added
+
+* `models.ManagedPrivateEndpointsUpdateResponse` was added
+
+* `models.ManagedPrivateEndpointsUpdateHeaders` was added
+
+* `models.PublicIpType` was added
+
+* `models.DataConnectionsUpdateResponse` was added
+
+* `models.DatabasesUpdateHeaders` was added
+
+* `models.OperationsResultsLocations` was added
+
+* `models.DatabaseRouting` was added
+
+* `models.ScriptsUpdateResponse` was added
+
+* `models.ScriptsUpdateHeaders` was added
+
+* `models.ClustersUpdateHeaders` was added
+
+* `models.DataConnectionsUpdateHeaders` was added
+
+#### `models.IotHubDataConnection` was modified
+
+* `databaseRouting()` was added
+* `withDatabaseRouting(models.DatabaseRouting)` was added
+
+#### `KustoManager` was modified
+
+* `operationsResultsLocations()` was added
+
+#### `models.EventHubDataConnection` was modified
+
+* `databaseRouting()` was added
+* `managedIdentityObjectId()` was added
+* `withDatabaseRouting(models.DatabaseRouting)` was added
+
+#### `models.Script$Definition` was modified
+
+* `withScriptContent(java.lang.String)` was added
+
+#### `models.EventGridDataConnection` was modified
+
+* `databaseRouting()` was added
+* `withEventGridResourceId(java.lang.String)` was added
+* `withManagedIdentityResourceId(java.lang.String)` was added
+* `eventGridResourceId()` was added
+* `managedIdentityResourceId()` was added
+* `withDatabaseRouting(models.DatabaseRouting)` was added
+* `managedIdentityObjectId()` was added
+
+#### `models.DatabasePrincipalAssignment` was modified
+
+* `aadObjectId()` was added
+
+#### `models.Cluster` was modified
+
+* `virtualClusterGraduationProperties()` was added
+* `publicIpType()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.OperationResult` was modified
+
+* `provisioningState()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withVirtualClusterGraduationProperties(java.lang.String)` was added
+* `withPublicIpType(models.PublicIpType)` was added
+
+#### `models.ClusterPrincipalAssignment` was modified
+
+* `aadObjectId()` was added
+
+#### `models.Script` was modified
+
+* `scriptContent()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withPublicIpType(models.PublicIpType)` was added
+* `virtualClusterGraduationProperties()` was added
+* `publicIpType()` was added
+* `privateEndpointConnections()` was added
+* `withVirtualClusterGraduationProperties(java.lang.String)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withPublicIpType(models.PublicIpType)` was added
 
 ## 1.0.0-beta.3 (2021-09-13)
 

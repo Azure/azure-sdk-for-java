@@ -5,7 +5,9 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -30,7 +32,7 @@ public class CertificateClientBuilderTest {
     public void setUp() {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         certificateName = "TestCertificate";
-        serviceVersion = CertificateServiceVersion.V7_2;
+        serviceVersion = CertificateServiceVersion.V7_3;
     }
 
     @Test
@@ -134,6 +136,17 @@ public class CertificateClientBuilderTest {
             .buildClient();
 
         assertThrows(RuntimeException.class, () -> certificateClient.getCertificate(certificateName));
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () ->  new CertificateClientBuilder()
+            .vaultUrl(vaultUrl)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

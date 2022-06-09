@@ -7,18 +7,19 @@ package com.azure.resourcemanager.communication.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.communication.fluent.models.CommunicationServiceResourceInner;
 
 /** Resource collection API of CommunicationServices. */
 public interface CommunicationServices {
     /**
      * Checks that the CommunicationService name is valid and is not already in use.
      *
+     * @param nameAvailabilityParameters Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
+     * @return the check availability result.
      */
-    NameAvailability checkNameAvailability();
+    CheckNameAvailabilityResponse checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters);
 
     /**
      * Checks that the CommunicationService name is valid and is not already in use.
@@ -28,9 +29,9 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to check name availability.
+     * @return the check availability result along with {@link Response}.
      */
-    Response<NameAvailability> checkNameAvailabilityWithResponse(
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
         NameAvailabilityParameters nameAvailabilityParameters, Context context);
 
     /**
@@ -55,7 +56,7 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notification hub that has been linked to the communication service.
+     * @return a notification hub that has been linked to the communication service along with {@link Response}.
      */
     Response<LinkedNotificationHub> linkNotificationHubWithResponse(
         String resourceGroupName,
@@ -68,7 +69,8 @@ public interface CommunicationServices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> list();
 
@@ -79,7 +81,8 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> list(Context context);
 
@@ -90,7 +93,8 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName);
 
@@ -102,39 +106,10 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of CommunicationServices and a possible link for next set.
+     * @return object that includes an array of CommunicationServices and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    CommunicationServiceResource update(String resourceGroupName, String communicationServiceName);
-
-    /**
-     * Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    Response<CommunicationServiceResource> updateWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
-        Context context);
 
     /**
      * Get the CommunicationService and its properties.
@@ -157,54 +132,10 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CommunicationService and its properties.
+     * @return the CommunicationService and its properties along with {@link Response}.
      */
     Response<CommunicationServiceResource> getByResourceGroupWithResponse(
         String resourceGroupName, String communicationServiceName, Context context);
-
-    /**
-     * Create a new CommunicationService or update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the create or update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    CommunicationServiceResource createOrUpdate(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceInner parameters);
-
-    /**
-     * Create a new CommunicationService or update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    CommunicationServiceResource createOrUpdate(String resourceGroupName, String communicationServiceName);
-
-    /**
-     * Create a new CommunicationService or update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the create or update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    CommunicationServiceResource createOrUpdate(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceInner parameters,
-        Context context);
 
     /**
      * Operation to delete a CommunicationService.
@@ -250,7 +181,7 @@ public interface CommunicationServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the CommunicationService resource.
+     * @return the access keys of the CommunicationService resource along with {@link Response}.
      */
     Response<CommunicationServiceKeys> listKeysWithResponse(
         String resourceGroupName, String communicationServiceName, Context context);
@@ -281,6 +212,58 @@ public interface CommunicationServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class representing the access keys of a CommunicationService.
      */
-    Response<CommunicationServiceKeys> regenerateKeyWithResponse(
+    CommunicationServiceKeys regenerateKey(
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters, Context context);
+
+    /**
+     * Get the CommunicationService and its properties.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CommunicationService and its properties along with {@link Response}.
+     */
+    CommunicationServiceResource getById(String id);
+
+    /**
+     * Get the CommunicationService and its properties.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CommunicationService and its properties along with {@link Response}.
+     */
+    Response<CommunicationServiceResource> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Operation to delete a CommunicationService.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Operation to delete a CommunicationService.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new CommunicationServiceResource resource.
+     *
+     * @param name resource name.
+     * @return the first stage of the new CommunicationServiceResource definition.
+     */
+    CommunicationServiceResource.DefinitionStages.Blank define(String name);
 }

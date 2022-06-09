@@ -60,7 +60,8 @@ public class PolicySamples {
         // BEGIN: readme-sample-set-unsigned-policy
         // Set the listed policy on an attestation instance. Please note that this particular policy will deny all
         // attestation requests and should not be used in production.
-        PolicyResult policyResult = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};");
+        PolicyResult policyResult = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+            "version=1.0; authorizationrules{=> deny();}; issuancerules{};");
         System.out.printf("Policy set for OpenEnclave result: %s\n", policyResult.getPolicyResolution());
         // END: readme-sample-set-unsigned-policy
     }
@@ -77,8 +78,10 @@ public class PolicySamples {
         System.out.println("Setting an async policy");
         // Set the listed policy on an attestation instance. Please note that this particular policy will deny all
         // attestation requests and should not be used in production.
-        client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};")
-                .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
+        client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+            "version=1.0; authorizationrules{=> deny();}; issuancerules{};")
+            .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n",
+                result.getPolicyResolution()));
     }
 
     public static void setSignedPolicy() {
@@ -121,7 +124,8 @@ public class PolicySamples {
         client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions()
                 .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)))
-            .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
+            .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n",
+                result.getPolicyResolution()));
     }
 
 
@@ -152,7 +156,8 @@ public class PolicySamples {
             .buildAsyncClient();
 
         client.resetAttestationPolicy(AttestationType.OPEN_ENCLAVE)
-                .subscribe(result -> System.out.printf("Policy Reset for OpenEnclave result: %s\n", result.getPolicyResolution()));
+                .subscribe(result -> System.out.printf("Policy Reset for OpenEnclave result: %s\n",
+                    result.getPolicyResolution()));
 
     }
 

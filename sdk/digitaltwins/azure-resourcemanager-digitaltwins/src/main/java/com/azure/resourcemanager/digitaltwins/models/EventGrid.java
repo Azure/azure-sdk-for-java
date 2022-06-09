@@ -19,7 +19,7 @@ public final class EventGrid extends DigitalTwinsEndpointResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventGrid.class);
 
     /*
-     * EventGrid Topic Endpoint
+     * EventGrid Topic Endpoint.
      */
     @JsonProperty(value = "TopicEndpoint", required = true)
     private String topicEndpoint;

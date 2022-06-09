@@ -18,19 +18,19 @@
 
 	<name>Microsoft Azure SDK for Key Vault Cryptography</name>
   <description>
-    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure KeyVault service are:${line.separator}
-    1. https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys${line.separator}
-    2. https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets${line.separator}
-    3. https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates${line.separator}
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Key Vault service are:
+    (1) https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys.
+    (2) https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets.
+    (3) https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates.
     It is recommended that you move to the new package.
   </description>
 	<url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <distributionManagement>
-        <site>
-            <id>azure-java-build-docs</id>
-            <url>${site.url}/site/${project.artifactId}</url>
-        </site>
+      <site>
+        <id>azure-java-build-docs</id>
+        <url>${site.url}/site/${project.artifactId}</url>
+      </site>
     </distributionManagement>
 
     <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
@@ -59,7 +59,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.13.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+        <version>2.13.2.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       </dependency>
 
       <!-- Other Dependencies -->

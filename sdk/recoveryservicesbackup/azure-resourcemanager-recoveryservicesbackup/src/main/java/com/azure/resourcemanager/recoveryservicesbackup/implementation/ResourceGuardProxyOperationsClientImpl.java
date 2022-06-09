@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProxyOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ResourceGuardProxyBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.UnlockDeleteResponseInner;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGuardProxyOperationsClient. */
 public final class ResourceGuardProxyOperationsClientImpl implements ResourceGuardProxyOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ResourceGuardProxyOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceGuardProxyOperationsService service;
 
@@ -91,6 +88,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGuardProxyName") String resourceGuardProxyName,
+            @BodyParam("application/json") ResourceGuardProxyBaseResourceInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -137,7 +135,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardProxyBaseResourceInner>> getWithResponseAsync(
@@ -193,7 +191,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardProxyBaseResourceInner>> getWithResponseAsync(
@@ -245,20 +243,13 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceGuardProxyBaseResourceInner> getAsync(
         String vaultName, String resourceGroupName, String resourceGuardProxyName) {
         return getWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName)
-            .flatMap(
-                (Response<ResourceGuardProxyBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -288,7 +279,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardProxyBaseResourceInner> getWithResponse(
@@ -302,14 +293,18 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardProxyBaseResourceInner>> putWithResponseAsync(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -333,6 +328,11 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
             return Mono
                 .error(
                     new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -346,6 +346,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             resourceGuardProxyName,
+                            parameters,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -357,15 +358,20 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardProxyBaseResourceInner>> putWithResponseAsync(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -390,6 +396,11 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
                 .error(
                     new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -400,6 +411,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 resourceGuardProxyName,
+                parameters,
                 accept,
                 context);
     }
@@ -410,23 +422,20 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceGuardProxyBaseResourceInner> putAsync(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        return putWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName)
-            .flatMap(
-                (Response<ResourceGuardProxyBaseResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters) {
+        return putWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -435,6 +444,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -442,8 +452,11 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceGuardProxyBaseResourceInner put(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        return putAsync(vaultName, resourceGroupName, resourceGuardProxyName).block();
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters) {
+        return putAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters).block();
     }
 
     /**
@@ -452,16 +465,21 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param resourceGuardProxyName The resourceGuardProxyName parameter.
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceGuardProxyBaseResourceInner> putWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
-        return putWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, context).block();
+        String vaultName,
+        String resourceGroupName,
+        String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters,
+        Context context) {
+        return putWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context).block();
     }
 
     /**
@@ -473,7 +491,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -529,7 +547,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -581,12 +599,12 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String resourceGuardProxyName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -614,7 +632,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -632,7 +650,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
+     * @return response of Unlock Delete API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(
@@ -695,7 +713,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
+     * @return response of Unlock Delete API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(
@@ -758,20 +776,13 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
+     * @return response of Unlock Delete API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UnlockDeleteResponseInner> unlockDeleteAsync(
         String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
         return unlockDeleteWithResponseAsync(vaultName, resourceGroupName, resourceGuardProxyName, parameters)
-            .flatMap(
-                (Response<UnlockDeleteResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -803,7 +814,7 @@ public final class ResourceGuardProxyOperationsClientImpl implements ResourceGua
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
+     * @return response of Unlock Delete API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(

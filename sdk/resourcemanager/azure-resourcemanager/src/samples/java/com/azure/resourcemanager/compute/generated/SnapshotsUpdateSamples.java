@@ -6,13 +6,38 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.SnapshotUpdate;
+import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Snapshots Update. */
 public final class SnapshotsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateASnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/snapshotExamples/Snapshot_Update_WithAcceleratedNetwork.json
+     */
+    /**
+     * Sample code: Update a snapshot with accelerated networking.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateASnapshotWithAcceleratedNetworking(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSnapshots()
+            .update(
+                "myResourceGroup",
+                "mySnapshot",
+                new SnapshotUpdate()
+                    .withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
+                    .withDiskSizeGB(20)
+                    .withSupportedCapabilities(new SupportedCapabilities().withAcceleratedNetwork(false)),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/snapshotExamples/Snapshot_Update.json
      */
     /**
      * Sample code: Update a snapshot.

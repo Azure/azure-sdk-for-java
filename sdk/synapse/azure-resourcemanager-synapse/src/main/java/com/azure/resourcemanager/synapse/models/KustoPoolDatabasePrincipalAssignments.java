@@ -42,7 +42,7 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response}.
      */
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String workspaceName,
@@ -62,7 +62,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response.
+     * @return the list Kusto database principal assignments operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DatabasePrincipalAssignment> list(
         String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName);
@@ -78,7 +79,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response.
+     * @return the list Kusto database principal assignments operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DatabasePrincipalAssignment> list(
         String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName, Context context);
@@ -115,7 +117,7 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool database principalAssignment.
+     * @return a Kusto pool database principalAssignment along with {@link Response}.
      */
     Response<DatabasePrincipalAssignment> getWithResponse(
         String workspaceName,
@@ -172,7 +174,7 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool database principalAssignment.
+     * @return a Kusto pool database principalAssignment along with {@link Response}.
      */
     DatabasePrincipalAssignment getById(String id);
 
@@ -184,7 +186,7 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool database principalAssignment.
+     * @return a Kusto pool database principalAssignment along with {@link Response}.
      */
     Response<DatabasePrincipalAssignment> getByIdWithResponse(String id, Context context);
 

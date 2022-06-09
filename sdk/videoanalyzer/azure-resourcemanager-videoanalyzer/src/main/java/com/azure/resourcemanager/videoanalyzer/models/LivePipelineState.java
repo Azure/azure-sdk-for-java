@@ -33,7 +33,11 @@ public final class LivePipelineState extends ExpandableStringEnum<LivePipelineSt
         return fromString(name, LivePipelineState.class);
     }
 
-    /** @return known LivePipelineState values. */
+    /**
+     * Gets known LivePipelineState values.
+     *
+     * @return known LivePipelineState values.
+     */
     public static Collection<LivePipelineState> values() {
         return values(LivePipelineState.class);
     }

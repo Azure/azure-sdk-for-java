@@ -12,6 +12,7 @@ import java.util.Map;
  * An instance of this class describes an environment in Azure.
  */
 public final class AzureEnvironment {
+
     /** the map of all endpoints. */
     private final Map<String, String> endpoints;
 
@@ -28,7 +29,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure.
      */
     public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "http://go.microsoft.com/fwlink/?LinkId=254433");
+            put("portalUrl", "https://portal.azure.com");
             put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
             put("managementEndpointUrl", "https://management.core.windows.net/");
             put("resourceManagerEndpointUrl", "https://management.azure.com/");
@@ -53,7 +54,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure China.
      */
     public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "http://go.microsoft.com/fwlink/?LinkId=301902");
+            put("portalUrl", "https://portal.azure.cn");
             put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
             put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
             put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn/");
@@ -64,13 +65,10 @@ public final class AzureEnvironment {
             put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
             put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
             put("microsoftGraphResourceId", "https://microsoftgraph.chinacloudapi.cn/");
-            // TODO: add resource id for the china cloud for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.chinacloudapi.cn");
             put("keyVaultDnsSuffix", ".vault.azure.cn");
-            // TODO: add dns suffixes for the china cloud for datalake store and datalake analytics once they are
-            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");
@@ -81,7 +79,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure US Government.
      */
     public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "https://manage.windowsazure.us");
+            put("portalUrl", "https://portal.azure.us");
             put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
             put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
             put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net/");
@@ -92,13 +90,10 @@ public final class AzureEnvironment {
             put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
             put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
             put("microsoftGraphResourceId", "https://graph.microsoft.us/");
-            // TODO: add resource id for the US government for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.usgovcloudapi.net");
             put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
-            // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are
-            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
@@ -109,7 +104,7 @@ public final class AzureEnvironment {
      * Provides the settings for authentication with Azure Germany.
      */
     public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "http://portal.microsoftazure.de/");
+            put("portalUrl", "https://portal.microsoftazure.de");
             put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
             put("managementEndpointUrl", "https://management.core.cloudapi.de/");
             put("resourceManagerEndpointUrl", "https://management.microsoftazure.de/");
@@ -120,13 +115,10 @@ public final class AzureEnvironment {
             put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
             put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
             put("microsoftGraphResourceId", "https://graph.microsoft.de/");
-            // TODO: add resource id for the germany cloud for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.cloudapi.de");
             put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
-            // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are
-            //  defined.
             put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
             put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
             put("azureLogAnalyticsResourceId", "N/A");

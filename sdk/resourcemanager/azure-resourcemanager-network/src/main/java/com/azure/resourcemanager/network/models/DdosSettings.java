@@ -6,15 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the DDoS protection settings of the public IP. */
 @Fluent
 public final class DdosSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosSettings.class);
-
     /*
      * The DDoS custom policy associated with the public IP.
      */

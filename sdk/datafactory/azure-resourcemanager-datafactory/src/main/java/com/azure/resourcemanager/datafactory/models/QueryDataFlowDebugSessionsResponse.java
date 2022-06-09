@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DataFlowDebugSessionInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of active debug sessions. */
 @Fluent
 public final class QueryDataFlowDebugSessionsResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryDataFlowDebugSessionsResponse.class);
-
     /*
      * Array with all active debug sessions.
      */

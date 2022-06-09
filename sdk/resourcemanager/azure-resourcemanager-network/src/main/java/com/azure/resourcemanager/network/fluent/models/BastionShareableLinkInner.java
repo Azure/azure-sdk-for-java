@@ -7,14 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.VM;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Bastion Shareable Link. */
 @Fluent
 public final class BastionShareableLinkInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionShareableLinkInner.class);
-
     /*
      * Reference of the virtual machine resource.
      */
@@ -95,11 +92,13 @@ public final class BastionShareableLinkInner {
      */
     public void validate() {
         if (vm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
         } else {
             vm().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BastionShareableLinkInner.class);
 }

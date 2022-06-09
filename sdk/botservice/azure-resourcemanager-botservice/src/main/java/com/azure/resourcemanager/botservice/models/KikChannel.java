@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("KikChannel")
 @Fluent
 public final class KikChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KikChannel.class);
-
     /*
      * The set of properties specific to Kik channel resource
      */
@@ -41,6 +37,20 @@ public final class KikChannel extends Channel {
      */
     public KikChannel withProperties(KikChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KikChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public KikChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

@@ -19,7 +19,7 @@ public interface SqlPoolRestorePoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -33,7 +33,7 @@ public interface SqlPoolRestorePoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RestorePoint> list(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
@@ -101,7 +101,7 @@ public interface SqlPoolRestorePoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response}.
      */
     Response<RestorePoint> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
@@ -130,7 +130,7 @@ public interface SqlPoolRestorePoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);

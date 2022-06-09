@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** timeOffReason. */
 @Fluent
 public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrackedEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphTimeOffReason.class);
-
     /*
      * The name of the timeOffReason. Required.
      */
@@ -26,7 +23,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
     private String displayName;
 
     /*
-     * The iconType property.
+     * timeOffReasonIconType
      */
     @JsonProperty(value = "iconType")
     private MicrosoftGraphTimeOffReasonIconType iconType;
@@ -64,7 +61,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
     }
 
     /**
-     * Get the iconType property: The iconType property.
+     * Get the iconType property: timeOffReasonIconType.
      *
      * @return the iconType value.
      */
@@ -73,7 +70,7 @@ public final class MicrosoftGraphTimeOffReason extends MicrosoftGraphChangeTrack
     }
 
     /**
-     * Set the iconType property: The iconType property.
+     * Set the iconType property: timeOffReasonIconType.
      *
      * @param iconType the iconType value to set.
      * @return the MicrosoftGraphTimeOffReason object itself.

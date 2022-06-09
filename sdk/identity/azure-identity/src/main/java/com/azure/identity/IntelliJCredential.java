@@ -28,10 +28,10 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class IntelliJCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(IntelliJCredential.class);
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
-    private final ClientLogger logger = new ClientLogger(IntelliJCredential.class);
 
     /**
      * Creates an {@link IntelliJCredential} with default identity client options.
@@ -46,7 +46,7 @@ public class IntelliJCredential implements TokenCredential {
         IntelliJCacheAccessor accessor =
                 new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
 
-        IntelliJAuthMethodDetails authMethodDetails = null;
+        IntelliJAuthMethodDetails authMethodDetails;
         try {
             authMethodDetails = accessor.getAuthDetailsIfAvailable();
         } catch (Exception e) {
@@ -89,7 +89,8 @@ public class IntelliJCredential implements TokenCredential {
                        cachedToken.set(msalToken);
                        return (AccessToken) msalToken;
                    })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 }

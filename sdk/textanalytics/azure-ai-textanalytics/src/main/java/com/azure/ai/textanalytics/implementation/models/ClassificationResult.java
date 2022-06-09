@@ -17,7 +17,7 @@ public final class ClassificationResult {
     private String category;
 
     /*
-     * Confidence score between 0 and 1 of the recognized classification.
+     * Confidence score between 0 and 1 of the recognized class.
      */
     @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
@@ -43,7 +43,7 @@ public final class ClassificationResult {
     }
 
     /**
-     * Get the confidenceScore property: Confidence score between 0 and 1 of the recognized classification.
+     * Get the confidenceScore property: Confidence score between 0 and 1 of the recognized class.
      *
      * @return the confidenceScore value.
      */
@@ -52,7 +52,7 @@ public final class ClassificationResult {
     }
 
     /**
-     * Set the confidenceScore property: Confidence score between 0 and 1 of the recognized classification.
+     * Set the confidenceScore property: Confidence score between 0 and 1 of the recognized class.
      *
      * @param confidenceScore the confidenceScore value to set.
      * @return the ClassificationResult object itself.

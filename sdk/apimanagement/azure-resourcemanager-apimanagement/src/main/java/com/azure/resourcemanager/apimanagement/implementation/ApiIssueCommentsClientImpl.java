@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssueCommentsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueCommentContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsCreateOrUpdateResponse;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApiIssueCommentsClient. */
 public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient {
-    private final ClientLogger logger = new ClientLogger(ApiIssueCommentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApiIssueCommentsService service;
 
@@ -188,7 +185,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueCommentContractInner>> listByServiceSinglePageAsync(
@@ -271,7 +269,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueCommentContractInner>> listByServiceSinglePageAsync(
@@ -351,7 +350,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IssueCommentContractInner> listByServiceAsync(
@@ -377,7 +376,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IssueCommentContractInner> listByServiceAsync(
@@ -407,7 +406,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IssueCommentContractInner> listByServiceAsync(
@@ -436,7 +435,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssueCommentContractInner> listByService(
@@ -465,7 +464,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssueCommentContractInner> listByService(
@@ -492,7 +491,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
+     * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueCommentsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -556,7 +556,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
+     * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueCommentsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -616,7 +617,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
+     * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(
@@ -675,7 +677,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Comment for an API specified by its identifier.
+     * @return the details of the issue Comment for an API specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueCommentsGetResponse> getWithResponseAsync(
@@ -739,7 +742,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Comment for an API specified by its identifier.
+     * @return the details of the issue Comment for an API specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueCommentsGetResponse> getWithResponseAsync(
@@ -799,7 +803,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Comment for an API specified by its identifier.
+     * @return the details of the issue Comment for an API specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueCommentContractInner> getAsync(
@@ -867,7 +872,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Comment Contract details.
+     * @return issue Comment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueCommentsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -946,7 +951,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Comment Contract details.
+     * @return issue Comment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiIssueCommentsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -1022,7 +1027,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Comment Contract details.
+     * @return issue Comment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueCommentContractInner> createOrUpdateAsync(
@@ -1057,7 +1062,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Comment Contract details.
+     * @return issue Comment Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueCommentContractInner> createOrUpdateAsync(
@@ -1151,7 +1156,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1221,7 +1226,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1293,7 +1298,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1336,7 +1341,7 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1358,7 +1363,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueCommentContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1394,7 +1400,8 @@ public final class ApiIssueCommentsClientImpl implements ApiIssueCommentsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Issue Comment list representation.
+     * @return paged Issue Comment list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IssueCommentContractInner>> listByServiceNextSinglePageAsync(

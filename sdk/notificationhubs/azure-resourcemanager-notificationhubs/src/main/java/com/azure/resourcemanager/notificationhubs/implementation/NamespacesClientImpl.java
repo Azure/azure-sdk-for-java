@@ -38,7 +38,6 @@ import com.azure.resourcemanager.notificationhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.notificationhubs.fluent.models.CheckAvailabilityResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleListResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceCreateOrUpdateParameters;
@@ -46,6 +45,7 @@ import com.azure.resourcemanager.notificationhubs.models.NamespaceListResult;
 import com.azure.resourcemanager.notificationhubs.models.NamespacePatchParameters;
 import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -230,7 +230,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
                 + "/namespaces/{namespaceName}/AuthorizationRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRules(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRules(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -245,7 +245,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
                 + "/namespaces/{namespaceName}/AuthorizationRules/{authorizationRuleName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listKeys(
+        Mono<Response<ResourceListKeysInner>> listKeys(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("namespaceName") String namespaceName,
@@ -296,7 +296,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listAuthorizationRulesNext(
+        Mono<Response<SharedAccessAuthorizationRuleListResult>> listAuthorizationRulesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -891,7 +891,8 @@ public final class NamespacesClientImpl implements NamespacesClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, namespaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2186,7 +2187,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listKeysWithResponseAsync(
+    private Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2241,7 +2242,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedAccessAuthorizationRuleListResultInner>> listKeysWithResponseAsync(
+    private Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2292,11 +2293,11 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SharedAccessAuthorizationRuleListResultInner> listKeysAsync(
+    private Mono<ResourceListKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String authorizationRuleName) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, authorizationRuleName)
             .flatMap(
-                (Response<SharedAccessAuthorizationRuleListResultInner> res) -> {
+                (Response<ResourceListKeysInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2317,7 +2318,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessAuthorizationRuleListResultInner listKeys(
+    public ResourceListKeysInner listKeys(
         String resourceGroupName, String namespaceName, String authorizationRuleName) {
         return listKeysAsync(resourceGroupName, namespaceName, authorizationRuleName).block();
     }
@@ -2335,7 +2336,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SharedAccessAuthorizationRuleListResultInner> listKeysWithResponse(
+    public Response<ResourceListKeysInner> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, namespaceName, authorizationRuleName, context).block();
     }

@@ -1,7 +1,36 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+- Added `DeviceManagementClientBuilder` to create `DeviceManagementClient` instance via `DeviceManagementClientBuilder.buildClient()`.
+- Modified `DeviceUpdateClientBuilder` to create `DeviceUpdateClient` instance via `DeviceUpdateClientBuilder.buildClient()`.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.2 (2022-01-19)
+
+### Breaking Changes
+
+This is a new version of client SDK. Changes are:
+
+- Remove models, use `BinaryData` as request and response payload.
+- A sync client and an async client for each operation group.
+- Add `RequestOptions` to client method parameters.
+- Return type of client method is always `Response` except paging and long-running operations.
+- Allow users to set `ServiceVersion` in client builder.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.24.1`.
+- Upgraded `azure-core-http-netty` to `1.11.6`.
 
 ## 1.0.0-beta.1 (2021-03-02)
 This is the initial release of Azure Device Update for IoT Hub library. For more information, please see the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/deviceupdate/azure-iot-deviceupdate/README.md) 

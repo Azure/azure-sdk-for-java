@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response after calling a manual recovery walk. */
 @Immutable
 public final class RecoveryWalkResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryWalkResponseInner.class);
-
     /*
      * Whether the recovery walk was performed
      */

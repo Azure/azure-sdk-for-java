@@ -49,7 +49,7 @@ public class FluxAutoLockRenewTest {
     private static final Duration MAX_AUTO_LOCK_RENEW_DURATION = Duration.ofSeconds(6);
     private static final Duration DISABLE_AUTO_LOCK_RENEW_DURATION = Duration.ofSeconds(0);
 
-    private final ClientLogger logger = new ClientLogger(FluxAutoLockRenewTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FluxAutoLockRenewTest.class);
 
     private final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(BinaryData.fromString("Some Data"));
     private final ServiceBusMessageContext message = new ServiceBusMessageContext(receivedMessage);
@@ -180,7 +180,7 @@ public class FluxAutoLockRenewTest {
                 try {
                     TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
                 } catch (InterruptedException e) {
-                    logger.warning("Exception while wait. ", e);
+                    LOGGER.warning("Exception while wait. ", e);
                 }
                 Assertions.assertNotNull(actual);
                 Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
@@ -472,7 +472,7 @@ public class FluxAutoLockRenewTest {
 
         final boolean enableAutoComplete = false;
         final int totalProcessingTimeSeconds = 2;
-        final int renewedForAtLeast = 3;
+        final int renewedForAtLeast = 2;
         final AtomicInteger actualTokenRenewCalledTimes = new AtomicInteger();
         final Function<String, Mono<OffsetDateTime>> lockTokenRenewFunction = (lockToken) -> {
             actualTokenRenewCalledTimes.getAndIncrement();
@@ -493,7 +493,7 @@ public class FluxAutoLockRenewTest {
                 try {
                     TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
                 } catch (InterruptedException e) {
-                    logger.warning("Exception while wait. ", e);
+                    LOGGER.warning("Exception while wait. ", e);
                 }
                 Assertions.assertNotNull(actual);
                 Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());

@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,7 +24,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.communication.fluent.CommunicationServiceManagementClient;
 import com.azure.resourcemanager.communication.fluent.CommunicationServicesClient;
-import com.azure.resourcemanager.communication.fluent.OperationStatusesClient;
+import com.azure.resourcemanager.communication.fluent.DomainsClient;
+import com.azure.resourcemanager.communication.fluent.EmailServicesClient;
 import com.azure.resourcemanager.communication.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -31,15 +33,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the CommunicationServiceManagementClientImpl type. */
 @ServiceClient(builder = CommunicationServiceManagementClientBuilder.class)
 public final class CommunicationServiceManagementClientImpl implements CommunicationServiceManagementClient {
-    private final ClientLogger logger = new ClientLogger(CommunicationServiceManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -136,16 +135,28 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         return this.communicationServices;
     }
 
-    /** The OperationStatusesClient object to access its operations. */
-    private final OperationStatusesClient operationStatuses;
+    /** The DomainsClient object to access its operations. */
+    private final DomainsClient domains;
 
     /**
-     * Gets the OperationStatusesClient object to access its operations.
+     * Gets the DomainsClient object to access its operations.
      *
-     * @return the OperationStatusesClient object.
+     * @return the DomainsClient object.
      */
-    public OperationStatusesClient getOperationStatuses() {
-        return this.operationStatuses;
+    public DomainsClient getDomains() {
+        return this.domains;
+    }
+
+    /** The EmailServicesClient object to access its operations. */
+    private final EmailServicesClient emailServices;
+
+    /**
+     * Gets the EmailServicesClient object to access its operations.
+     *
+     * @return the EmailServicesClient object.
+     */
+    public EmailServicesClient getEmailServices() {
+        return this.emailServices;
     }
 
     /**
@@ -170,10 +181,11 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-08-20";
+        this.apiVersion = "2021-10-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.communicationServices = new CommunicationServicesClientImpl(this);
-        this.operationStatuses = new OperationStatusesClientImpl(this);
+        this.domains = new DomainsClientImpl(this);
+        this.emailServices = new EmailServicesClientImpl(this);
     }
 
     /**
@@ -192,10 +204,7 @@ public final class CommunicationServiceManagementClientImpl implements Communica
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -259,7 +268,7 @@ public final class CommunicationServiceManagementClientImpl implements Communica
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -318,4 +327,6 @@ public final class CommunicationServiceManagementClientImpl implements Communica
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationServiceManagementClientImpl.class);
 }

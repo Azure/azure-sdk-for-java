@@ -30,7 +30,11 @@ public final class SnapshotStorageAccountTypes extends ExpandableStringEnum<Snap
         return fromString(name, SnapshotStorageAccountTypes.class);
     }
 
-    /** @return known SnapshotStorageAccountTypes values. */
+    /**
+     * Gets known SnapshotStorageAccountTypes values.
+     *
+     * @return known SnapshotStorageAccountTypes values.
+     */
     public static Collection<SnapshotStorageAccountTypes> values() {
         return values(SnapshotStorageAccountTypes.class);
     }

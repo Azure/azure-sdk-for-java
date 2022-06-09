@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -21,26 +22,25 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssign
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
-import com.azure.core.management.Region;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class ApplicationGatewayTests extends NetworkManagementTest {
 
@@ -133,6 +133,78 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             .assertEquals(
                 appGateway.webApplicationFirewallConfiguration().disabledRuleGroups().get(0).ruleGroupName(),
                 "REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
+    }
+
+    @Test
+    public void canSpecifyWildcardListeners() {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+        String listener1 = "listener1";
+        // regular hostname
+        String hostname1 = "my.contoso.com";
+        ApplicationGateway gateway = networkManager.applicationGateways()
+            .define(appGatewayName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+
+            // Request routing rules
+            .defineRequestRoutingRule("rule80")
+            .fromPublicFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("11.1.1.1")
+            .toBackendIPAddress("11.1.1.2")
+            .withCookieBasedAffinity()
+            .attach()
+
+            // Additional/explicit frontend listeners
+            .defineListener(listener1)
+            .withPublicFrontend()
+            .withFrontendPort(9000)
+            .withHttp()
+            .withHostname(hostname1)
+            .attach()
+
+            .withTier(ApplicationGatewayTier.WAF_V2)
+            .withSize(ApplicationGatewaySkuName.WAF_V2)
+            .withAutoScale(2, 5)
+            .withExistingPublicIpAddress(pip)
+            .create();
+
+        Assertions.assertEquals(hostname1, gateway.listeners().get(listener1).hostname());
+
+        // wildcard hostname
+        String hostname2 = "*.contoso.com";
+        gateway.update()
+            .updateListener(listener1)
+            .withHostname(hostname2)
+            .parent()
+            .apply();
+
+        Assertions.assertEquals(hostname2, gateway.listeners().get(listener1).hostname());
+
+        // multiple host names, mixed regular and wildcard
+        List<String> hostnames = new ArrayList<>();
+        hostnames.add(hostname1);
+        hostnames.add(hostname2);
+
+        gateway.update()
+            .updateListener(listener1)
+            .withHostnames(hostnames)
+            .parent()
+            .apply();
+
+        Assertions.assertEquals(hostnames, gateway.listeners().get(listener1).hostnames());
     }
 
     @Test

@@ -57,7 +57,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     private Float maxBatchCount;
 
     /*
-     * Max Write r count, currently only 1(single writer) and 0(based on query
+     * Max Writer count, currently only 1(single writer) and 0(based on query
      * partition) are available. Optional on PUT requests.
      */
     @JsonProperty(value = "maxWriterCount")
@@ -200,7 +200,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     }
 
     /**
-     * Get the maxWriterCount property: Max Write r count, currently only 1(single writer) and 0(based on query
+     * Get the maxWriterCount property: Max Writer count, currently only 1(single writer) and 0(based on query
      * partition) are available. Optional on PUT requests.
      *
      * @return the maxWriterCount value.
@@ -210,7 +210,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     }
 
     /**
-     * Set the maxWriterCount property: Max Write r count, currently only 1(single writer) and 0(based on query
+     * Set the maxWriterCount property: Max Writer count, currently only 1(single writer) and 0(based on query
      * partition) are available. Optional on PUT requests.
      *
      * @param maxWriterCount the maxWriterCount value to set.

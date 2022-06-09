@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the storage of the tokens if a file system is used. */
 @Fluent
 public final class FileSystemTokenStore {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileSystemTokenStore.class);
-
     /*
      * The directory in which the tokens will be stored.
      */

@@ -11,11 +11,14 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -39,6 +42,8 @@ public final class CosmosChangeFeedRequestOptions {
     private boolean quotaInfoEnabled;
     private String throughputControlGroupName;
     private Map<String, String> customOptions;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private Function<JsonNode, ?> itemFactoryMethod;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -468,11 +473,25 @@ public final class CosmosChangeFeedRequestOptions {
         return this.customOptions;
     }
 
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
+    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+
+    CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
+        this.itemFactoryMethod = factoryMethod;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.setCosmosChangeFeedRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor() {
 
@@ -485,6 +504,43 @@ public final class CosmosChangeFeedRequestOptions {
                 public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getHeaders();
                 }
+
+                @Override
+                public void setOperationContext
+                    (
+                        CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                        OperationContextAndListenerTuple operationContextAndListenerTuple
+                    ) {
+
+                    changeFeedRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext
+                    (
+                        CosmosChangeFeedRequestOptions changeFeedRequestOptions
+                    ) {
+
+                    return changeFeedRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> Function<JsonNode, T> getItemFactoryMethod(
+                    CosmosChangeFeedRequestOptions options, Class<T> classOfT) {
+
+                    return (Function<JsonNode, T>)options.getItemFactoryMethod();
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions setItemFactoryMethod(
+                    CosmosChangeFeedRequestOptions options,
+                    Function<JsonNode, ?> factoryMethod) {
+
+                    return options.setItemFactoryMethod(factoryMethod);
+                }
             });
     }
+
+    static { initialize(); }
 }

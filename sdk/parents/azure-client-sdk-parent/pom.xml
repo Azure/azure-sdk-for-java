@@ -106,6 +106,7 @@
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
+    <revapi.skip>false</revapi.skip>
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
@@ -143,11 +144,21 @@
     <parallelizeLiveTests>false</parallelizeLiveTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
-    <codesnippet.skip>true</codesnippet.skip>
+    <codesnippet.skip>false</codesnippet.skip>
 
     <!-- The following properties configure the maven-checkstyle-plugin. -->
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
     <checkstyle.skip>false</checkstyle.skip>
+
+    <!-- These properties configures whether maven-checkstyle-plugin should fail on errors. -->
+    <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
+    <checkstyle.failsOnError>true</checkstyle.failsOnError>
+
+    <!-- This property configures a regex of source files to exclude from Checkstyle. -->
+    <checkstyle.excludes></checkstyle.excludes>
+
+    <!-- This property configures whether test source files are included in Checkstyle. Default is true. -->
+    <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
 
     <!-- The following properties configure the spotbugs-maven-plugin. -->
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
@@ -156,10 +167,30 @@
     <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
 
-    <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
-    <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
-    <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
+    <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
+    <spotbugs.failOnError>true</spotbugs.failOnError>
+
     <graalvm.enable>false</graalvm.enable>
+    <nativeImage.buildArgs></nativeImage.buildArgs>
+
+    <!-- The following properties configure the revapi-maven-plugin. -->
+    <!-- This property configures whether the revapi-maven-plugin should run. -->
+    <revapi.skip>false</revapi.skip>
+
+    <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
+    <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
+
+    <!-- This property configures whether doclinting is performed when generating Javadocs. -->
+    <doclint>all</doclint>
+
+    <!-- The following properties configure compile skipping. -->
+    <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
+    <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
+    <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
+    <skipCompile>false</skipCompile>
+    <skipTestCompile>false</skipTestCompile>
+
+    <compiler.proc>none</compiler.proc>
   </properties>
 
   <build>
@@ -227,9 +258,10 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <skip>${codesnippet.skip}</skip>
+          <readmeGlob>**/*.md</readmeGlob>
         </configuration>
         <executions>
           <execution>
@@ -304,7 +336,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <dataFileIncludes>
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
@@ -344,6 +376,7 @@
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                <exclude>**/com/azure/cosmos/encryption/implementation/mdesrc/**/*</exclude>
               </excludes>
             </configuration>
           </execution>
@@ -410,7 +443,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -487,10 +520,9 @@
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
+            <skipMain>${skipCompile}</skipMain>
+            <skip>${skipTestCompile}</skip>
             <compilerArgs combine.children="append" combine.self="append">
-              <!-- Turn off annotation processing -->
-              <arg>-proc:none</arg>
-
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
@@ -511,6 +543,9 @@
               <arg>-Xlint:unchecked</arg>
               <arg>-Xlint:varargs</arg>
             </compilerArgs>
+
+            <!-- Default is annotation processing being off. -->
+            <proc>${compiler.proc}</proc>
           </configuration>
         </plugin>
 
@@ -536,13 +571,14 @@
             <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
             <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <excludes>${checkstyle.excludes}</excludes>
             <propertyExpansion>samedir=</propertyExpansion>
             <encoding>UTF-8</encoding>
             <consoleOutput>true</consoleOutput>
-            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <includeTestSourceDirectory>${checkstyle.includeTestSourceDirectory}</includeTestSourceDirectory>
             <linkXRef>true</linkXRef>
-            <failsOnError>true</failsOnError>
-            <failOnViolation>true</failOnViolation>
+            <failsOnError>${checkstyle.failsOnError}</failsOnError>
+            <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
           </configuration>
         </plugin>
 
@@ -571,7 +607,7 @@
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <fork>true</fork>
-            <failOnError>true</failOnError>
+            <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
 
@@ -607,7 +643,8 @@
               com.azure.core.test*:
               com.azure.endtoend*:
               com.azure.perf*:
-              com.azure.storage.internal.avro*
+              com.azure.storage.internal.avro*:
+              com.azure.cosmos.encryption.implementation.mdesrc*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -684,21 +721,9 @@
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
-            <doclint>all</doclint>
+            <doclint>${doclint}</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-            <doclet>${javadocDoclet}</doclet>
-            <docletArtifact>
-              <groupId>org.apidesign.javadoc</groupId>
-              <artifactId>codesnippet-doclet</artifactId>
-              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
-            </docletArtifact>
-            <additionalOptions>
-              <!-- '-version' is a dummy option, it's needed to prevent the Javadoc plugin from throwing a NullPointerException when '${javadocDocletOptions}' is empty. -->
-              <!-- '${javadocDocletOptions}' will be empty when the new codesnippet tooling is being used. -->
-              <!-- '-version' will indicate to Javadoc to include '@version' tags in generation, but none of the SDKs use this, so it is a good dummy option. -->
-              <additionalOption>-version ${javadocDocletOptions}</additionalOption>
-            </additionalOptions>
           </configuration>
         </plugin>
 
@@ -737,8 +762,10 @@
         <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
-          <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
+            <skip>${revapi.skip}</skip>
+            <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
                 <resource>revapi/revapi.json</resource>
@@ -746,7 +773,25 @@
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
             <checkDependencies>true</checkDependencies>
-            <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
+            <failBuildOnProblemsFound>${revapi.failBuildOnProblemsFound}</failBuildOnProblemsFound>
+            <!-- The following configures reporting to file in addition to CLI reporting. -->
+            <analysisConfiguration>
+              <revapi.reporter.json id="file-report">
+                <minSeverity>NON_BREAKING</minSeverity>
+                <minCriticality>error</minCriticality>
+                <indent>true</indent>
+                <output>${project.build.directory}/revapi.json</output>
+                <keepEmptyFile>false</keepEmptyFile>
+              </revapi.reporter.json>
+            </analysisConfiguration>
+            <pipelineConfiguration>
+              <transformationBlocks>
+                <block>
+                  <item>revapi.differences</item>
+                  <item>transitive-core-changes</item>
+                </block>
+              </transformationBlocks>
+            </pipelineConfiguration>
           </configuration>
           <dependencies>
             <dependency>
@@ -757,7 +802,12 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
-              <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-reporter-json</artifactId>
+              <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -771,7 +821,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.7</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.8</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -831,7 +881,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <checkDependencies>false</checkDependencies>
         </configuration>
@@ -916,18 +966,34 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <testRelease>${java.vm.specification.version}</testRelease>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>
             <executions>
-              <!-- compile first with module-info for Java 9+ -->
+              <!-- compile first with VM's default Java version -->
+              <!-- this will generate module-info with major class version 61 or higher (i.e Java 17 or higher) -->
               <execution>
                 <id>default-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
                 <configuration>
                   <release>${java.vm.specification.version}</release>
+                </configuration>
+              </execution>
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -941,6 +1007,39 @@
                   <excludes>
                     <exclude>module-info.java</exclude>
                   </excludes>
+                </configuration>
+              </execution>
+
+              <!-- test compile with the current VM's default Java version -->
+              <execution>
+                <id>default-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <testRelease>${java.vm.specification.version}</testRelease>
+                </configuration>
+              </execution>
+
+              <!-- compile tests with Java 11 -->
+              <execution>
+                <id>base-modules-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <testRelease>11</testRelease>
+                </configuration>
+              </execution>
+
+              <!-- then compile with Java 8 -->
+              <execution>
+                <id>base-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
             </executions>
@@ -957,6 +1056,12 @@
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
+                <!-- This is required as the Java 8 based implementation for ReflectionUtils may be loaded by IntelliJ when running tests with later versions of Java. -->
+                <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
+                --add-opens java.base/java.lang.invoke=com.azure.core
+                <!-- Surefire doesn't load dependency jars properly, i.e. it disregards module-info manifests. This is a stop gap solution. -->
+                <!-- See https://github.com/Azure/azure-sdk-for-java/issues/29245 for proper solution -->
+                --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 ${additionalSurefireArgLine}
               </argLine>
             </configuration>
@@ -1015,80 +1120,6 @@
             <configuration combine.children="append">
               <overview>${project.build.directory}/readme_overview.html</overview>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Profiles for updating README file using embedme tool to inject code snippets from compilable Java source files.
-     Activate the profile below to update README files when corresponding Java files are updated. -->
-    <profile>
-      <id>readme-codesnippet</id>
-      <activation>
-        <property>
-          <name>readme-codesnippet</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>code-snippet-for-readme</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>python</executable>
-                  <arguments>
-                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
-                    <argument>--readme</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Verify that there are no changes to README file. Build fails if the there's a difference in README after running the embedme tool. -->
-    <profile>
-      <id>verify-readme</id>
-      <activation>
-        <property>
-          <name>verify-readme</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>verify-readme-codesnippet</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>python</executable>
-                  <arguments>
-                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/scripts/invoke_embedme.py</argument>
-                    <argument>--readme</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                    <argument>--verify</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1387,7 +1418,7 @@
         <dependency>
           <groupId>org.graalvm.buildtools</groupId>
           <artifactId>junit-platform-native</artifactId>
-          <version>0.9.8</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <version>0.9.10</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -1396,10 +1427,10 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.8</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <version>0.9.10</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
               <skip>${graalvm.enable}</skip>
-              <buildArgs>--no-fallback</buildArgs>
+              <buildArgs>--no-fallback ${nativeImage.buildArgs}</buildArgs>
             </configuration>
             <executions>
               <execution>

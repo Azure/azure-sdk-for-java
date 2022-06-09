@@ -40,6 +40,7 @@ string value can be obtained by:
 - [Publish events with custom metadata][sample_publish_custom_metadata]
 - [Publish stream of events][sample_publish_stream_events]
 - [Publish events through an intermediary endpoint][sample_intermediary_endpoint]
+- [Publish events and consume events using a shared connection][sample_share_connection]
 - [Consume events from an Event Hub partition][sample_consume_event]
 - [Consume events from all partitions using EventProcessorClient][sample_event_processor]
 - [Consume events from all partitions and manage state of processed events][sample_event_processor_state_management]
@@ -73,6 +74,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [sample_publish_size_limited]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithSizeLimitedBatches.java
 [sample_publish_stream_events]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishStreamOfEvents.java
 [sample_publish_web_sockets_proxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithWebSocketsAndProxy.java
+[sample_share_connection]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/ShareConnectionBetweenClients.java
 [sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md#getting-started
 [sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md#key-concepts
 [sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md#next-steps

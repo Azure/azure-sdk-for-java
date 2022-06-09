@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TableServices GetServiceProperties. */
 public final class TableServicesGetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/TableServicesGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/TableServicesGet.json
      */
     /**
      * Sample code: TableServicesGet.

@@ -22,7 +22,7 @@ import java.util.Map;
 @Fluent
 public final class AnswerResult {
     /*
-     * The score value represents how relevant the answer is to the the query
+     * The score value represents how relevant the answer is to the query
      * relative to other answers returned for the query.
      */
     @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
@@ -56,7 +56,7 @@ public final class AnswerResult {
     @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the score property: The score value represents how relevant the answer is to the the query relative to other
+     * Get the score property: The score value represents how relevant the answer is to the query relative to other
      * answers returned for the query.
      *
      * @return the score value.

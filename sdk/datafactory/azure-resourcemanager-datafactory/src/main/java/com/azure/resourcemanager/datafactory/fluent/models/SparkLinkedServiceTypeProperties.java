@@ -10,14 +10,11 @@ import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SparkAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SparkServerType;
 import com.azure.resourcemanager.datafactory.models.SparkThriftTransportProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Spark Server linked service properties. */
 @Fluent
 public final class SparkLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkLinkedServiceTypeProperties.class);
-
     /*
      * IP address or host name of the Spark server
      */
@@ -416,19 +413,19 @@ public final class SparkLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model SparkLinkedServiceTypeProperties"));
         }
         if (port() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property port in model SparkLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model SparkLinkedServiceTypeProperties"));
@@ -437,4 +434,6 @@ public final class SparkLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SparkLinkedServiceTypeProperties.class);
 }

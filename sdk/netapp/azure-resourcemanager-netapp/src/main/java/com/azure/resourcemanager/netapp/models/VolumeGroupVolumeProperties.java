@@ -815,6 +815,16 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
+     * Get the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     *
+     * @return the maximumNumberOfFiles value.
+     */
+    public Long maximumNumberOfFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfFiles();
+    }
+
+    /**
      * Get the volumeGroupName property: Volume Group Name.
      *
      * @return the volumeGroupName value.
@@ -925,6 +935,29 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withPlacementRules(placementRules);
+        return this;
+    }
+
+    /**
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @return the enableSubvolumes value.
+     */
+    public EnableSubvolumes enableSubvolumes() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableSubvolumes();
+    }
+
+    /**
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @param enableSubvolumes the enableSubvolumes value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

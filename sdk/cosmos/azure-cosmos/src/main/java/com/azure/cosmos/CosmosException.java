@@ -7,9 +7,11 @@ import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
@@ -19,10 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
@@ -44,6 +45,7 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
  * service, an IllegalStateException is thrown instead of CosmosException.
  */
 public class CosmosException extends AzureException {
+    private static final long MAX_RETRY_AFTER_IN_MS = BatchExecUtils.MAX_RETRY_AFTER_IN_MS;
     private static final long serialVersionUID = 1L;
 
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -150,8 +152,9 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
-        this.responseHeaders = new ConcurrentHashMap<>();
+        this.responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
+        //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
             for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
@@ -337,7 +340,7 @@ public class CosmosException extends AzureException {
 
             if (StringUtils.isNotEmpty(header)) {
                 try {
-                    retryIntervalInMilliseconds = Long.parseLong(header);
+                    retryIntervalInMilliseconds = Math.min(Long.parseLong(header), MAX_RETRY_AFTER_IN_MS);
                 } catch (NumberFormatException e) {
                     // If the value cannot be parsed as long, return 0.
                 }
@@ -538,4 +541,14 @@ public class CosmosException extends AzureException {
     void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
         this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
+            (statusCode, innerException) -> new CosmosException(statusCode, innerException));
+    }
+
+    static { initialize(); }
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DirectLineSpeechChannel")
 @Fluent
 public final class DirectLineSpeechChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLineSpeechChannel.class);
-
     /*
      * The set of properties specific to DirectLine Speech channel resource
      */
@@ -41,6 +37,20 @@ public final class DirectLineSpeechChannel extends Channel {
      */
     public DirectLineSpeechChannel withProperties(DirectLineSpeechChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DirectLineSpeechChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DirectLineSpeechChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

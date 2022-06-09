@@ -13,7 +13,6 @@ import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,8 +20,6 @@ import java.util.List;
 /** Domain resource specific properties. */
 @Fluent
 public final class DomainProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainProperties.class);
-
     /*
      * Administrative contact.
      */
@@ -462,21 +459,21 @@ public final class DomainProperties {
      */
     public void validate() {
         if (contactAdmin() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactAdmin in model DomainProperties"));
         } else {
             contactAdmin().validate();
         }
         if (contactBilling() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactBilling in model DomainProperties"));
         } else {
             contactBilling().validate();
         }
         if (contactRegistrant() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property contactRegistrant in model DomainProperties"));
@@ -484,7 +481,7 @@ public final class DomainProperties {
             contactRegistrant().validate();
         }
         if (contactTech() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property contactTech in model DomainProperties"));
         } else {
@@ -494,11 +491,13 @@ public final class DomainProperties {
             managedHostNames().forEach(e -> e.validate());
         }
         if (consent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property consent in model DomainProperties"));
         } else {
             consent().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DomainProperties.class);
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
@@ -54,6 +55,13 @@ public interface Volume {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the fileSystemId property: FileSystem ID Unique FileSystem Identifier.
@@ -317,6 +325,14 @@ public interface Volume {
     Long defaultGroupQuotaInKiBs();
 
     /**
+     * Gets the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     *
+     * @return the maximumNumberOfFiles value.
+     */
+    Long maximumNumberOfFiles();
+
+    /**
      * Gets the volumeGroupName property: Volume Group Name.
      *
      * @return the volumeGroupName value.
@@ -360,6 +376,13 @@ public interface Volume {
      * @return the placementRules value.
      */
     List<PlacementKeyValuePairs> placementRules();
+
+    /**
+     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @return the enableSubvolumes value.
+     */
+    EnableSubvolumes enableSubvolumes();
 
     /**
      * Gets the region of the resource.
@@ -498,7 +521,8 @@ public interface Volume {
                 DefinitionStages.WithCapacityPoolResourceId,
                 DefinitionStages.WithProximityPlacementGroup,
                 DefinitionStages.WithVolumeSpecName,
-                DefinitionStages.WithPlacementRules {
+                DefinitionStages.WithPlacementRules,
+                DefinitionStages.WithEnableSubvolumes {
             /**
              * Executes the create request.
              *
@@ -845,6 +869,17 @@ public interface Volume {
              */
             WithCreate withPlacementRules(List<PlacementKeyValuePairs> placementRules);
         }
+        /** The stage of the Volume definition allowing to specify enableSubvolumes. */
+        interface WithEnableSubvolumes {
+            /**
+             * Specifies the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the
+             * volume.
+             *
+             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);
+        }
     }
     /**
      * Begins update for the Volume resource.
@@ -863,7 +898,8 @@ public interface Volume {
             UpdateStages.WithDataProtection,
             UpdateStages.WithIsDefaultQuotaEnabled,
             UpdateStages.WithDefaultUserQuotaInKiBs,
-            UpdateStages.WithDefaultGroupQuotaInKiBs {
+            UpdateStages.WithDefaultGroupQuotaInKiBs,
+            UpdateStages.WithUnixPermissions {
         /**
          * Executes the update request.
          *
@@ -982,6 +1018,24 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs);
+        }
+        /** The stage of the Volume update allowing to specify unixPermissions. */
+        interface WithUnixPermissions {
+            /**
+             * Specifies the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format.
+             * First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
+             * permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for
+             * other users in the same group. the fourth for other users not in the group. 0755 - gives
+             * read/write/execute permissions to owner and read/execute to group and other users..
+             *
+             * @param unixPermissions UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+             *     selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects
+             *     permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions
+             *     for other users in the same group. the fourth for other users not in the group. 0755 - gives
+             *     read/write/execute permissions to owner and read/execute to group and other users.
+             * @return the next definition stage.
+             */
+            Update withUnixPermissions(String unixPermissions);
         }
     }
     /**

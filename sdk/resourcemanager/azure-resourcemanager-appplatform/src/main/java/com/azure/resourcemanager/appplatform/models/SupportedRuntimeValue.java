@@ -16,6 +16,9 @@ public final class SupportedRuntimeValue extends ExpandableStringEnum<SupportedR
     /** Static value Java_11 for SupportedRuntimeValue. */
     public static final SupportedRuntimeValue JAVA_11 = fromString("Java_11");
 
+    /** Static value Java_17 for SupportedRuntimeValue. */
+    public static final SupportedRuntimeValue JAVA_17 = fromString("Java_17");
+
     /** Static value NetCore_31 for SupportedRuntimeValue. */
     public static final SupportedRuntimeValue NET_CORE_31 = fromString("NetCore_31");
 
@@ -30,7 +33,11 @@ public final class SupportedRuntimeValue extends ExpandableStringEnum<SupportedR
         return fromString(name, SupportedRuntimeValue.class);
     }
 
-    /** @return known SupportedRuntimeValue values. */
+    /**
+     * Gets known SupportedRuntimeValue values.
+     *
+     * @return known SupportedRuntimeValue values.
+     */
     public static Collection<SupportedRuntimeValue> values() {
         return values(SupportedRuntimeValue.class);
     }

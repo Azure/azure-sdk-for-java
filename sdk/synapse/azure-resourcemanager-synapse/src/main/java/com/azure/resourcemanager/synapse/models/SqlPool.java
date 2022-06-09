@@ -218,10 +218,8 @@ public interface SqlPool {
                 DefinitionStages.WithSourceDatabaseId,
                 DefinitionStages.WithRecoverableDatabaseId,
                 DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithStatus,
                 DefinitionStages.WithRestorePointInTime,
                 DefinitionStages.WithCreateMode,
-                DefinitionStages.WithCreationDate,
                 DefinitionStages.WithStorageAccountType,
                 DefinitionStages.WithSourceDatabaseDeletionDate {
             /**
@@ -309,16 +307,6 @@ public interface SqlPool {
              */
             WithCreate withProvisioningState(String provisioningState);
         }
-        /** The stage of the SqlPool definition allowing to specify status. */
-        interface WithStatus {
-            /**
-             * Specifies the status property: Resource status.
-             *
-             * @param status Resource status.
-             * @return the next definition stage.
-             */
-            WithCreate withStatus(String status);
-        }
         /** The stage of the SqlPool definition allowing to specify restorePointInTime. */
         interface WithRestorePointInTime {
             /**
@@ -360,16 +348,6 @@ public interface SqlPool {
              */
             WithCreate withCreateMode(CreateMode createMode);
         }
-        /** The stage of the SqlPool definition allowing to specify creationDate. */
-        interface WithCreationDate {
-            /**
-             * Specifies the creationDate property: Date the SQL pool was created.
-             *
-             * @param creationDate Date the SQL pool was created.
-             * @return the next definition stage.
-             */
-            WithCreate withCreationDate(OffsetDateTime creationDate);
-        }
         /** The stage of the SqlPool definition allowing to specify storageAccountType. */
         interface WithStorageAccountType {
             /**
@@ -408,12 +386,9 @@ public interface SqlPool {
             UpdateStages.WithSourceDatabaseId,
             UpdateStages.WithRecoverableDatabaseId,
             UpdateStages.WithProvisioningState,
-            UpdateStages.WithStatus,
             UpdateStages.WithRestorePointInTime,
             UpdateStages.WithCreateMode,
-            UpdateStages.WithCreationDate,
-            UpdateStages.WithStorageAccountType,
-            UpdateStages.WithSourceDatabaseDeletionDate {
+            UpdateStages.WithStorageAccountType {
         /**
          * Executes the update request.
          *
@@ -501,16 +476,6 @@ public interface SqlPool {
              */
             Update withProvisioningState(String provisioningState);
         }
-        /** The stage of the SqlPool update allowing to specify status. */
-        interface WithStatus {
-            /**
-             * Specifies the status property: Resource status.
-             *
-             * @param status Resource status.
-             * @return the next definition stage.
-             */
-            Update withStatus(String status);
-        }
         /** The stage of the SqlPool update allowing to specify restorePointInTime. */
         interface WithRestorePointInTime {
             /**
@@ -552,16 +517,6 @@ public interface SqlPool {
              */
             Update withCreateMode(CreateMode createMode);
         }
-        /** The stage of the SqlPool update allowing to specify creationDate. */
-        interface WithCreationDate {
-            /**
-             * Specifies the creationDate property: Date the SQL pool was created.
-             *
-             * @param creationDate Date the SQL pool was created.
-             * @return the next definition stage.
-             */
-            Update withCreationDate(OffsetDateTime creationDate);
-        }
         /** The stage of the SqlPool update allowing to specify storageAccountType. */
         interface WithStorageAccountType {
             /**
@@ -572,16 +527,6 @@ public interface SqlPool {
              * @return the next definition stage.
              */
             Update withStorageAccountType(StorageAccountType storageAccountType);
-        }
-        /** The stage of the SqlPool update allowing to specify sourceDatabaseDeletionDate. */
-        interface WithSourceDatabaseDeletionDate {
-            /**
-             * Specifies the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
-             *
-             * @param sourceDatabaseDeletionDate Specifies the time that the sql pool was deleted.
-             * @return the next definition stage.
-             */
-            Update withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate);
         }
     }
     /**
@@ -657,7 +602,7 @@ public interface SqlPool {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> renameWithResponse(ResourceMoveDefinition parameters, Context context);
 }

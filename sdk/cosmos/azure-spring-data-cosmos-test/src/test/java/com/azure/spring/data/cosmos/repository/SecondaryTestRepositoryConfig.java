@@ -34,6 +34,9 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
+    @Value("${cosmos.secondary.maxDegreeOfParallelism}")
+    private int maxDegreeOfParallelism;
+
     @Bean
     public CosmosClientBuilder secondaryCosmosClientBuilder() {
         return new CosmosClientBuilder()
@@ -57,6 +60,7 @@ public class SecondaryTestRepositoryConfig {
 
             CosmosConfig config =  CosmosConfig.builder()
                 .enableQueryMetrics(queryMetricsEnabled)
+                .maxDegreeOfParallelism(maxDegreeOfParallelism)
                 .build();
 
             return new ReactiveCosmosTemplate(new CosmosFactory(client, getFirstDatabase()), config, mappingCosmosConverter);
@@ -73,6 +77,7 @@ public class SecondaryTestRepositoryConfig {
 
             CosmosConfig config =  CosmosConfig.builder()
                 .enableQueryMetrics(queryMetricsEnabled)
+                .maxDegreeOfParallelism(maxDegreeOfParallelism)
                 .build();
 
             return new ReactiveCosmosTemplate(new CosmosFactory(client, getSecondDatabase()), config, mappingCosmosConverter);

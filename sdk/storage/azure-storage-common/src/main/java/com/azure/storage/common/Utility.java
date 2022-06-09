@@ -17,18 +17,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.time.LocalDateTime;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Utility methods for storage client libraries.
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final String UTF8_CHARSET = "UTF-8";
 
     /**
      * Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
@@ -80,7 +76,7 @@ public final class Utility {
      */
     private static String decode(final String stringToDecode) {
         try {
-            return URLDecoder.decode(stringToDecode, UTF8_CHARSET);
+            return URLDecoder.decode(stringToDecode, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -133,7 +129,7 @@ public final class Utility {
      */
     private static String encode(final String stringToEncode) {
         try {
-            return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
+            return URLEncoder.encode(stringToEncode, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -168,35 +164,10 @@ public final class Utility {
      */
     @Deprecated
     public static OffsetDateTime parseDate(String dateString) {
-        String pattern = StorageImplUtils.MAX_PRECISION_PATTERN;
-        switch (dateString.length()) {
-            case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
-            case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
-            case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
-            case 25: // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
-            case 24: // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
-                dateString = dateString.substring(0, StorageImplUtils.MAX_PRECISION_DATESTRING_LENGTH);
-                break;
-            case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
-                // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = StorageImplUtils.Z_PATTERN.matcher(dateString).replaceAll("0");
-                break;
-            case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
-                // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = StorageImplUtils.Z_PATTERN.matcher(dateString).replaceAll("00");
-                break;
-            case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                pattern = StorageImplUtils.ISO8601_PATTERN;
-                break;
-            case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
-                pattern = StorageImplUtils.ISO8601_PATTERN_NO_SECONDS;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, StorageImplUtils.INVALID_DATE_STRING, dateString));
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
-        return LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime();
+        // Call into the internal method that replaces this deprecated method and extract the OffsetDateTime value that
+        // would have been returned before. This allows for the same implementation to be shared, reducing a duplication
+        // of effort if an update needs to be made to logic.
+        return StorageImplUtils.parseDateAndFormat(dateString).getDateTime();
     }
 
     /**

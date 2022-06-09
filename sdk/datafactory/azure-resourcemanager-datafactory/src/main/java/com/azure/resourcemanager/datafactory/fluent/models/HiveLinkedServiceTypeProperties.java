@@ -10,14 +10,11 @@ import com.azure.resourcemanager.datafactory.models.HiveAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.HiveServerType;
 import com.azure.resourcemanager.datafactory.models.HiveThriftTransportProtocol;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hive Server linked service properties. */
 @Fluent
 public final class HiveLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HiveLinkedServiceTypeProperties.class);
-
     /*
      * IP address or host name of the Hive server, separated by ';' for
      * multiple hosts (only when serviceDiscoveryMode is enable).
@@ -499,13 +496,13 @@ public final class HiveLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model HiveLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model HiveLinkedServiceTypeProperties"));
@@ -514,4 +511,6 @@ public final class HiveLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HiveLinkedServiceTypeProperties.class);
 }

@@ -74,7 +74,7 @@ public final class BlobBatch {
     private static final int[] EXPECTED_DELETE_STATUS_CODES = {202};
     private static final int[] EXPECTED_SET_TIER_STATUS_CODES = {200, 202};
 
-    private final ClientLogger logger = new ClientLogger(BlobBatch.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatch.class);
 
     private final BlobAsyncClient blobAsyncClient;
 
@@ -359,14 +359,14 @@ public final class BlobBatch {
         if (this.batchType == null) {
             this.batchType = batchType;
         } else if (this.batchType != batchType) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
                 "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
         }
     }
 
     Mono<BlobBatchOperationInfo> prepareBlobBatchSubmission() {
         if (batchOperationQueue.isEmpty()) {
-            return monoError(logger, new UnsupportedOperationException("Empty batch requests aren't allowed."));
+            return monoError(LOGGER, new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
         BlobBatchOperationInfo operationInfo = new BlobBatchOperationInfo();
@@ -428,7 +428,7 @@ public final class BlobBatch {
             requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
             context.getHttpRequest().setUrl(requestUrl.toUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
         }
 
         return next.process();

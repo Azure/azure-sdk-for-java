@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Issue contract Base Properties. */
 @Fluent
 public class IssueContractBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IssueContractBaseProperties.class);
-
     /*
      * Date and time when the issue was created.
      */

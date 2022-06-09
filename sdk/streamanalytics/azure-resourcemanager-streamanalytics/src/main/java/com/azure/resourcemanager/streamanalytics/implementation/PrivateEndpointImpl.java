@@ -7,7 +7,9 @@ package com.azure.resourcemanager.streamanalytics.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.streamanalytics.models.PrivateEndpoint;
-import com.azure.resourcemanager.streamanalytics.models.PrivateEndpointProperties;
+import com.azure.resourcemanager.streamanalytics.models.PrivateLinkServiceConnection;
+import java.util.Collections;
+import java.util.List;
 
 public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoint.Definition, PrivateEndpoint.Update {
     private PrivateEndpointInner innerObject;
@@ -26,12 +28,21 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
         return this.innerModel().type();
     }
 
-    public PrivateEndpointProperties properties() {
-        return this.innerModel().properties();
-    }
-
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public String createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
+        List<PrivateLinkServiceConnection> inner = this.innerModel().manualPrivateLinkServiceConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public PrivateEndpointInner innerModel() {
@@ -174,28 +185,33 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
         return this;
     }
 
-    public PrivateEndpointImpl withProperties(PrivateEndpointProperties properties) {
-        this.innerModel().withProperties(properties);
+    public PrivateEndpointImpl withManualPrivateLinkServiceConnections(
+        List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections) {
+        this.innerModel().withManualPrivateLinkServiceConnections(manualPrivateLinkServiceConnections);
         return this;
     }
 
     public PrivateEndpointImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public PrivateEndpointImpl withIfNoneMatch(String ifNoneMatch) {
-        this.createIfNoneMatch = ifNoneMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
     }
 
-    public PrivateEndpointImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
-    }
-
-    public PrivateEndpointImpl ifNoneMatch(String ifNoneMatch) {
-        this.updateIfNoneMatch = ifNoneMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

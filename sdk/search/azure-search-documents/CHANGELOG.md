@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.6 (Unreleased)
+## 11.5.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,141 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.4.11 (2022-06-07)
+
+### Bugs Fixed
+
+- Fixed a bug where a custom `ObjectSerializer`'s output wasn't being respected in regard to null field values. ([#29238](https://github.com/Azure/azure-sdk-for-java/pull/29238))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.16` to version `1.2.18`.
+
+## 11.5.0-beta.10 (2022-06-07)
+
+### Bugs Fixed
+
+- Fixed a bug where a custom `ObjectSerializer`'s output wasn't being respected in regard to null field values. ([#29238](https://github.com/Azure/azure-sdk-for-java/pull/29238))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.16` to version `1.2.18`.
+
+## 11.4.10 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.15` to version `1.2.16`.
+
+## 11.5.0-beta.9 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.15` to version `1.2.16`.
+
+## 11.5.0-beta.8 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.14` to version `1.2.15`.
+
+## 11.4.9 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.14` to version `1.2.15`.
+
+## 11.5.0-beta.7 (2022-03-10)
+
+### Features Added
+
+- Added support to create, update and delete aliases via the `SearchIndexClient`.
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.13` to version `1.2.14`.
+
+## 11.4.8 (2022-03-10)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.13` to version `1.2.14`.
+
+## 11.5.0-beta.6 (2022-02-08)
+
+### Features Added
+
+- Added `Unk` as an `OcrSkillLanguage` value. The values are used to set the default language code for the 
+  [OCR cognitive skill](https://docs.microsoft.com/azure/search/cognitive-search-skill-ocr).
+- Support for [`AzureMachineLearningSkill`](https://docs.microsoft.com/azure/search/cognitive-search-aml-skill). The 
+  AML skill allows you to extend AI enrichment with a custom [Azure Machine Learning](https://docs.microsoft.com/azure/machine-learning/overview-what-is-azure-machine-learning) 
+  (AML) model. Once an AML model is [trained and deployed](https://docs.microsoft.com/azure/machine-learning/concept-azure-machine-learning-architecture#workspace), 
+  an AML skill integrates it into AI enrichment.
+- Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder` 
+  and `SearchClientBuilder`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.12` to version `1.2.13`.
+
+## 11.4.7 (2022-02-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.12` to version `1.2.13`.
+
+## 11.4.6 (2022-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.9` to version `1.2.12`.
 
 ## 11.5.0-beta.5 (2021-11-24)
 

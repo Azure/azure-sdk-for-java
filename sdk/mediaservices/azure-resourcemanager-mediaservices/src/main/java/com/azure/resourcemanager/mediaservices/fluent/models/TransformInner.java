@@ -5,12 +5,9 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -20,10 +17,13 @@ import java.util.List;
  * transcoding or by extracting insights. After the Transform is created, it can be applied to input media by creating
  * Jobs.
  */
-@JsonFlatten
 @Fluent
-public class TransformInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransformInner.class);
+public final class TransformInner extends ProxyResource {
+    /*
+     * The resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private TransformProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
@@ -31,32 +31,14 @@ public class TransformInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The UTC date and time when the Transform was created, in
-     * 'YYYY-MM-DDThh:mm:ssZ' format.
+    /**
+     * Get the innerProperties property: The resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
-
-    /*
-     * An optional verbose description of the Transform.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The UTC date and time when the Transform was last updated, in
-     * 'YYYY-MM-DDThh:mm:ssZ' format.
-     */
-    @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModified;
-
-    /*
-     * An array of one or more TransformOutputs that the Transform should
-     * generate.
-     */
-    @JsonProperty(value = "properties.outputs")
-    private List<TransformOutput> outputs;
+    private TransformProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
@@ -73,7 +55,7 @@ public class TransformInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -82,7 +64,7 @@ public class TransformInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -92,7 +74,10 @@ public class TransformInner extends ProxyResource {
      * @return the TransformInner object itself.
      */
     public TransformInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TransformProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -103,7 +88,7 @@ public class TransformInner extends ProxyResource {
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
-        return this.lastModified;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModified();
     }
 
     /**
@@ -112,7 +97,7 @@ public class TransformInner extends ProxyResource {
      * @return the outputs value.
      */
     public List<TransformOutput> outputs() {
-        return this.outputs;
+        return this.innerProperties() == null ? null : this.innerProperties().outputs();
     }
 
     /**
@@ -122,7 +107,10 @@ public class TransformInner extends ProxyResource {
      * @return the TransformInner object itself.
      */
     public TransformInner withOutputs(List<TransformOutput> outputs) {
-        this.outputs = outputs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TransformProperties();
+        }
+        this.innerProperties().withOutputs(outputs);
         return this;
     }
 
@@ -132,8 +120,8 @@ public class TransformInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (outputs() != null) {
-            outputs().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

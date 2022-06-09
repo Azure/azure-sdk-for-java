@@ -19,6 +19,8 @@ import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddres
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
+import com.azure.resourcemanager.containerinstance.models.ContainerNetworkProtocol;
+import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
 import com.azure.resourcemanager.containerinstance.models.Event;
 import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
@@ -189,6 +191,13 @@ public class ContainerGroupImpl
         if (this.innerModel().containers() != null && this.innerModel().containers().size() > 0) {
             for (Container containerInstance : this.innerModel().containers()) {
                 this.containers.put(containerInstance.name(), containerInstance);
+                if (containerInstance.ports() != null) {
+                    for (ContainerPort port : containerInstance.ports()) {
+                        if (port.protocol() == null) {
+                            port.withProtocol(ContainerNetworkProtocol.TCP);
+                        }
+                    }
+                }
             }
         }
 
@@ -214,6 +223,9 @@ public class ContainerGroupImpl
             List<Port> tcpPorts = new ArrayList<>();
             List<Port> udpPorts = new ArrayList<>();
             for (Port port : this.innerModel().ipAddress().ports()) {
+                if (port.protocol() == null) {
+                    port.withProtocol(ContainerGroupNetworkProtocol.TCP);
+                }
                 if (port.protocol().equals(ContainerGroupNetworkProtocol.TCP)) {
                     tcpPorts.add(port);
                 } else if (port.protocol().equals(ContainerGroupNetworkProtocol.UDP)) {

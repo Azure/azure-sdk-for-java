@@ -12,7 +12,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 import reactor.util.context.Context;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
@@ -45,7 +45,7 @@ public class AsyncListKeyVaultSecretsLoggingExporterSample {
         // the Azure Monitor exporter.
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
-                .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+                .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
                 .build();
 
         return OpenTelemetrySdk.builder()

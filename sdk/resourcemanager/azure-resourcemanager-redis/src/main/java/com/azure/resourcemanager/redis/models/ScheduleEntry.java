@@ -6,15 +6,12 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Patch schedule entry for a Premium Redis Cache. */
 @Fluent
 public final class ScheduleEntry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleEntry.class);
-
     /*
      * Day of the week when a cache can be patched.
      */
@@ -100,9 +97,11 @@ public final class ScheduleEntry {
      */
     public void validate() {
         if (dayOfWeek() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dayOfWeek in model ScheduleEntry"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleEntry.class);
 }

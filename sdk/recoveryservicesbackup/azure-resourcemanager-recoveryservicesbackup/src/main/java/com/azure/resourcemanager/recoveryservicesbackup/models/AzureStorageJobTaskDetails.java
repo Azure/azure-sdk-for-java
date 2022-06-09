@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure storage workload specific job task details. */
 @Fluent
 public final class AzureStorageJobTaskDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageJobTaskDetails.class);
-
     /*
      * The task display name.
      */

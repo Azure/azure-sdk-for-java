@@ -482,20 +482,15 @@ public final class RemoteRenderingAsyncClient {
         private static <T, Y> T fromGeneratedGeneric(Y value) {
             if (value == null) {
                 return null;
-            }
-            else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Conversion) {
+            } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Conversion) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Conversion) value);
-            }
-            else if (value instanceof SessionProperties) {
+            } else if (value instanceof SessionProperties) {
                 return (T) fromGenerated((SessionProperties) value);
-            }
-            else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Error) {
+            } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.Error) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.Error) value);
-            }
-            else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) {
+            } else if (value instanceof com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) {
                 return (T) fromGenerated((com.azure.mixedreality.remoterendering.implementation.models.ConversionSettings) value);
-            }
-            else {
+            } else {
                 // throw?
                 return null;
             }

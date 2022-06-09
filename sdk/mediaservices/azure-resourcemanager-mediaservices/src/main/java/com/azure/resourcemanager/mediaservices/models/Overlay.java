@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,18 +16,15 @@ import java.time.Duration;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = Overlay.class)
 @JsonTypeName("Overlay")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioOverlay", value = AudioOverlay.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.VideoOverlay", value = VideoOverlay.class)
 })
-@JsonFlatten
 @Fluent
 public class Overlay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Overlay.class);
-
     /*
      * The label of the job input which is to be used as an overlay. The Input
      * must specify exactly one file. You can specify an image file in JPG,
@@ -239,9 +234,11 @@ public class Overlay {
      */
     public void validate() {
         if (inputLabel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property inputLabel in model Overlay"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Overlay.class);
 }

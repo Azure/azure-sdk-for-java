@@ -175,11 +175,8 @@ public final class PollOperation {
             }).next()
             .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
                 .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
-                .switchIfEmpty(Mono.defer(() -> {
-                    return Mono.just(pollingState.update(response.getStatusCode(),
-                        response.getHeaders(),
-                        null));
-                })));
+                .switchIfEmpty(Mono.fromSupplier(() -> pollingState.update(response.getStatusCode(),
+                    response.getHeaders(), null))));
     }
 
     private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(
@@ -237,8 +234,8 @@ public final class PollOperation {
      */
     @SuppressWarnings("unchecked")
     public static <U> U deserialize(SerializerAdapter serializerAdapter, String value, Type type) {
-        if (value == null || value.equalsIgnoreCase("")) {
-            LOGGER.info("Ignoring decoding of null or empty value to:" + type.getTypeName());
+        if (value == null || "".equalsIgnoreCase(value)) {
+            LOGGER.verbose("Ignoring decoding of null or empty value to:" + type.getTypeName());
             return null;
         } else {
             try {

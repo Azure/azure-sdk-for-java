@@ -22,9 +22,12 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.ExtensionsClient;
+import com.azure.resourcemanager.kubernetesconfiguration.fluent.FluxConfigOperationStatusClient;
+import com.azure.resourcemanager.kubernetesconfiguration.fluent.FluxConfigurationsClient;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.OperationStatusClient;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.OperationsClient;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.SourceControlConfigurationClient;
+import com.azure.resourcemanager.kubernetesconfiguration.fluent.SourceControlConfigurationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -38,8 +41,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the SourceControlConfigurationClientImpl type. */
 @ServiceClient(builder = SourceControlConfigurationClientBuilder.class)
 public final class SourceControlConfigurationClientImpl implements SourceControlConfigurationClient {
-    private final ClientLogger logger = new ClientLogger(SourceControlConfigurationClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -136,6 +137,42 @@ public final class SourceControlConfigurationClientImpl implements SourceControl
         return this.operationStatus;
     }
 
+    /** The FluxConfigurationsClient object to access its operations. */
+    private final FluxConfigurationsClient fluxConfigurations;
+
+    /**
+     * Gets the FluxConfigurationsClient object to access its operations.
+     *
+     * @return the FluxConfigurationsClient object.
+     */
+    public FluxConfigurationsClient getFluxConfigurations() {
+        return this.fluxConfigurations;
+    }
+
+    /** The FluxConfigOperationStatusClient object to access its operations. */
+    private final FluxConfigOperationStatusClient fluxConfigOperationStatus;
+
+    /**
+     * Gets the FluxConfigOperationStatusClient object to access its operations.
+     *
+     * @return the FluxConfigOperationStatusClient object.
+     */
+    public FluxConfigOperationStatusClient getFluxConfigOperationStatus() {
+        return this.fluxConfigOperationStatus;
+    }
+
+    /** The SourceControlConfigurationsClient object to access its operations. */
+    private final SourceControlConfigurationsClient sourceControlConfigurations;
+
+    /**
+     * Gets the SourceControlConfigurationsClient object to access its operations.
+     *
+     * @return the SourceControlConfigurationsClient object.
+     */
+    public SourceControlConfigurationsClient getSourceControlConfigurations() {
+        return this.sourceControlConfigurations;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -170,9 +207,12 @@ public final class SourceControlConfigurationClientImpl implements SourceControl
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-09-01";
+        this.apiVersion = "2022-03-01";
         this.extensions = new ExtensionsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
+        this.fluxConfigurations = new FluxConfigurationsClientImpl(this);
+        this.fluxConfigOperationStatus = new FluxConfigOperationStatusClientImpl(this);
+        this.sourceControlConfigurations = new SourceControlConfigurationsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 
@@ -259,7 +299,7 @@ public final class SourceControlConfigurationClientImpl implements SourceControl
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -318,4 +358,6 @@ public final class SourceControlConfigurationClientImpl implements SourceControl
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlConfigurationClientImpl.class);
 }

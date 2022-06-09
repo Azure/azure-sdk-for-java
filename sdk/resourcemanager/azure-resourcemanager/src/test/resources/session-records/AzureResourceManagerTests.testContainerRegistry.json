@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c68e37f4-2ddb-46a9-8e75-ff89cbdeb095",
@@ -28,7 +28,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ddc165a2-81ef-4f0e-b87b-fdaafdea8096",
@@ -81,7 +81,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100981?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100981?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "be34164b-a3f0-4f9a-b755-37f814cac541",
@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100981/listCredentials?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100981/listCredentials?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "69af7325-7167-49ad-bcf8-ea0f62bc219d",
@@ -135,7 +135,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100981/webhooks?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100981/webhooks?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "032a8380-5cba-419f-b3c2-1cb5bd5992d0",
@@ -188,7 +188,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "bc2f8e29-ee70-4fc5-ba47-8e30ce4200fe",
@@ -215,7 +215,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cf2a6804-8ded-4331-84bb-18b3f87a65bb",
@@ -242,7 +242,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2aaf7412-2307-4ef3-9eb0-10061c7bcfa7",
@@ -269,7 +269,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5f15e155-5a28-47da-bd00-81d28f9b2aba",
@@ -296,7 +296,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "246eb513-49f4-4df1-8571-b141aae5466e",
@@ -323,7 +323,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/listCredentials?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/listCredentials?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "85b8dba8-4a8e-459e-ada3-52f3205897b0",
@@ -350,7 +350,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c57c887e-78bd-4caa-8003-dd0941ea9ab1",
@@ -377,7 +377,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5c35e21e-0828-44c0-a7bb-9720902c797d",
@@ -404,7 +404,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "86070110-2508-4fc1-9340-dc1fab172118",
@@ -431,7 +431,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5b602be4-3895-44d7-9c2c-3d8536f479d7",
@@ -458,7 +458,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f5c26041-0ffb-4210-8f84-1d8b1ef7a437",
@@ -485,7 +485,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d48c8611-b67d-4a89-8693-38ebea6c4999",
@@ -512,7 +512,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "67534f20-4dda-4f6a-89ab-57039f02907d",
@@ -539,7 +539,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "49e4e128-ad54-433e-8d33-e483968fda4a",
@@ -566,7 +566,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c6e6a846-5bc5-4327-84cb-c8f30fa5ba40",
@@ -593,7 +593,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0ca615e8-41bd-448d-b295-ea53f93187eb",
@@ -620,7 +620,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ee99207d-62e4-4550-942d-3f6d086e3bfe",
@@ -647,7 +647,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f6a5a586-b6d0-4519-96cb-047a829aad9d",
@@ -674,7 +674,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e1ac00a8-72bb-43cc-8c81-f120928a6326",
@@ -701,7 +701,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing1?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "674b237a-fb1c-44eb-80fd-ecd6a0be5d25",
@@ -726,7 +726,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3a1428f2-4211-4afb-bbb2-01af91ba5e39",
@@ -753,7 +753,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0d1f5f67-f9fb-45b3-bd0c-79740c2b3a37",
@@ -780,7 +780,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookms?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookms?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3057ff1a-d457-4810-bbf3-445bd3f90a3b",
@@ -807,7 +807,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookms/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookms/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9a032f14-25a8-4e86-a074-fa8dd60c7158",
@@ -834,7 +834,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9b5d6bae-3cd3-4645-acf2-be3a20c75413",
@@ -861,7 +861,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1b4d42d6-1ea9-47b3-83c8-ed22ac5c253e",
@@ -888,7 +888,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b2ed3160-2778-468e-a555-a55bd8e498be",
@@ -915,7 +915,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "dad65578-c29b-45c6-a1e2-9b536a4aed81",
@@ -942,7 +942,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "51710d9b-84ff-4d57-8a6e-87588240d4c3",
@@ -969,7 +969,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "297a5788-9077-41a3-902c-d3e3e6516e62",
@@ -996,7 +996,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8a9ec4fd-d8f3-4e01-9e00-0fb06fe5d8a4",
@@ -1023,7 +1023,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/getCallbackConfig?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "add73ac7-93f6-477a-9117-bf16d926d75b",
@@ -1050,7 +1050,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/ping?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2/ping?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9b1bce74-2342-48f4-926d-3daa26098231",
@@ -1077,7 +1077,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982/webhooks/webhookbing2?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "392a394f-2236-4d66-a4cf-1257e5cc3e2e",
@@ -1102,7 +1102,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr210098/providers/Microsoft.ContainerRegistry/registries/acr2100982?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "86a22cc3-2e4b-479f-aef6-e370efdca4d7",

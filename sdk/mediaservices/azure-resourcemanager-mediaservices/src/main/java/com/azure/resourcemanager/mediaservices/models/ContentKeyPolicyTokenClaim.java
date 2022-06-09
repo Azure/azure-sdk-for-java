@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a token claim. */
 @Fluent
 public final class ContentKeyPolicyTokenClaim {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyTokenClaim.class);
-
     /*
      * Token claim type.
      */

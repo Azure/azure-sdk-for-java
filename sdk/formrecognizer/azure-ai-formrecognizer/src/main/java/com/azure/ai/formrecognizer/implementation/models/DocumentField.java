@@ -86,6 +86,18 @@ public final class DocumentField {
     private Map<String, DocumentField> valueObject;
 
     /*
+     * Currency value.
+     */
+    @JsonProperty(value = "valueCurrency")
+    private CurrencyValue valueCurrency;
+
+    /*
+     * Address value.
+     */
+    @JsonProperty(value = "valueAddress")
+    private AddressValue valueAddress;
+
+    /*
      * Field content.
      */
     @JsonProperty(value = "content")
@@ -346,6 +358,46 @@ public final class DocumentField {
      */
     public DocumentField setValueObject(Map<String, DocumentField> valueObject) {
         this.valueObject = valueObject;
+        return this;
+    }
+
+    /**
+     * Get the valueCurrency property: Currency value.
+     *
+     * @return the valueCurrency value.
+     */
+    public CurrencyValue getValueCurrency() {
+        return this.valueCurrency;
+    }
+
+    /**
+     * Set the valueCurrency property: Currency value.
+     *
+     * @param valueCurrency the valueCurrency value to set.
+     * @return the DocumentField object itself.
+     */
+    public DocumentField setValueCurrency(CurrencyValue valueCurrency) {
+        this.valueCurrency = valueCurrency;
+        return this;
+    }
+
+    /**
+     * Get the valueAddress property: Address value.
+     *
+     * @return the valueAddress value.
+     */
+    public AddressValue getValueAddress() {
+        return this.valueAddress;
+    }
+
+    /**
+     * Set the valueAddress property: Address value.
+     *
+     * @param valueAddress the valueAddress value to set.
+     * @return the DocumentField object itself.
+     */
+    public DocumentField setValueAddress(AddressValue valueAddress) {
+        this.valueAddress = valueAddress;
         return this;
     }
 

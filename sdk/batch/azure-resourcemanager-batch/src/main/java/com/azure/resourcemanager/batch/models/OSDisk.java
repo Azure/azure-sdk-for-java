@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for the operating system disk of the virtual machine. */
 @Fluent
 public final class OSDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDisk.class);
-
     /*
      * Specifies the ephemeral Disk Settings for the operating system disk used
      * by the virtual machine.

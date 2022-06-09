@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,80 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2022-05-13)
+
+### Features Added
+
+- Cache parsed and fetched schemas.
+
+### Breaking Changes
+
+- Renamed `autoRegisterSchema` to `autoRegisterSchemas` in `SchemaRegistryApacheAvroSerializerBuilder`.
+- Removed "MessageData" from `serializeMessageData`, `deserializeMessageData`, `serializeMessageDataAsync`, `deserializeMessageDataAsync`.
+- Removed old support for preamble deserialization.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.2.0`.
+
+## 1.0.0-beta.11 (2022-04-07)
+
+### Bugs Fixed
+
+- Fixed a bug that caused deserialize operation to throw `SchemaParseException` when multiple messages with same schema
+  were deserialized (https://github.com/Azure/azure-sdk-for-java/issues/27602).
+- Wrap Apache Avro exceptions with new exception type, `SchemaRegistryApacheAvroException`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.1.1`.
+
+## 1.0.0-beta.10 (2022-03-15)
+
+### Breaking Changes
+
+- Changed `SchemaRegistryApacheAvroEncoder` to `SchemaRegistryApacheAvroSerializer`.
+- Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
+- Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.1.0`.
+
+## 1.0.0-beta.9 (2022-02-12)
+
+### Features Added
+
+- Changed `SchemaRegistryApacheAvroEncoder` to deserialize `MessageContent` rather than tied to a binary format
+  with preamble. Backwards compatibility with preamble format supported for this release. See issue #26449.
+
+### Breaking Changes
+
+- Renamed `SchemaRegistryApacheAvroSerializer` to `SchemaRegistryApacheAvroEncoder`.
+- `SchemaRegistryApacheAvroEncoder` no longer extends from `ObjectSerializer`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.2`.
+- Remove dependency on `azure-core-serializer-avro-apache`.
+
+## 1.0.0-beta.8 (2022-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.1`.
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.17`.
 
 ## 1.0.0-beta.7 (2021-11-12)
 

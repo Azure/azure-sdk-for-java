@@ -5,7 +5,15 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteFailure event. This is raised
@@ -13,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ResourceWriteFailureEventData {
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceWriteFailureEventData.class);
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
     /*
      * The tenant ID of the resource.
      */
@@ -55,17 +66,19 @@ public final class ResourceWriteFailureEventData {
     @JsonProperty(value = "status")
     private String status;
 
+    private String authorizationString;
+
     /*
      * The requested authorization for the operation.
      */
     @JsonProperty(value = "authorization")
-    private String authorization;
+    private ResourceAuthorization authorization;
 
     /*
      * The properties of the claims.
      */
     @JsonProperty(value = "claims")
-    private String claims;
+    private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
@@ -77,7 +90,7 @@ public final class ResourceWriteFailureEventData {
      * The details of the operation.
      */
     @JsonProperty(value = "httpRequest")
-    private String httpRequest;
+    private ResourceHttpRequest httpRequest;
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -223,8 +236,45 @@ public final class ResourceWriteFailureEventData {
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#getResourceAuthorization()} instead.
      */
+    @Deprecated
     public String getAuthorization() {
+        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Set the authorization property: The requested authorization for the operation.
+     *
+     * @param authorization the authorization value to set.
+     * @return the ResourceWriteFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     */
+    @Deprecated
+    public ResourceWriteFailureEventData setAuthorization(String authorization) {
+        try {
+            setResourceAuthorization(
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                    SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the authorization property: The requested authorization for the operation.
+     *
+     * @return the authorization value.
+     */
+    public ResourceAuthorization getResourceAuthorization() {
         return this.authorization;
     }
 
@@ -234,7 +284,7 @@ public final class ResourceWriteFailureEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setAuthorization(String authorization) {
+    public ResourceWriteFailureEventData setResourceAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -243,8 +293,46 @@ public final class ResourceWriteFailureEventData {
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#getResourceClaims()} instead.
      */
+    @Deprecated
     public String getClaims() {
+        final Map<String, String> resourceClaims = getResourceClaims();
+        if (!resourceClaims.isEmpty()) {
+            try {
+                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set the claims property: The properties of the claims.
+     *
+     * @param claims the claims value to set.
+     * @return the ResourceWriteFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#setResourceClaims(Map)} instead.
+     */
+    @Deprecated
+    public ResourceWriteFailureEventData setClaims(String claims) {
+        try {
+            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the claims property: The properties of the claims.
+     *
+     * @return the claims value.
+     */
+    public Map<String, String> getResourceClaims() {
         return this.claims;
     }
 
@@ -254,7 +342,7 @@ public final class ResourceWriteFailureEventData {
      * @param claims the claims value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setClaims(String claims) {
+    public ResourceWriteFailureEventData setResourceClaims(Map<String, String> claims) {
         this.claims = claims;
         return this;
     }
@@ -283,8 +371,44 @@ public final class ResourceWriteFailureEventData {
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#getResourceHttpRequest()} instead.
      */
+    @Deprecated
     public String getHttpRequest() {
+        ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Set the httpRequest property: The details of the operation.
+     *
+     * @param httpRequest the httpRequest value to set.
+     * @return the ResourceWriteFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     */
+    @Deprecated
+    public ResourceWriteFailureEventData setHttpRequest(String httpRequest) {
+        try {
+            setResourceHttpRequest(
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the httpRequest property: The details of the operation.
+     *
+     * @return the httpRequest value.
+     */
+    public ResourceHttpRequest getResourceHttpRequest() {
         return this.httpRequest;
     }
 
@@ -294,7 +418,7 @@ public final class ResourceWriteFailureEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setHttpRequest(String httpRequest) {
+    public ResourceWriteFailureEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }

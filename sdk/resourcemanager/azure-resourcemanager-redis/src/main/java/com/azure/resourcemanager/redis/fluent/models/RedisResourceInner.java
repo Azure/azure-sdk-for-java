@@ -7,13 +7,14 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.redis.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,6 @@ import java.util.Map;
 /** A single Redis item in List or Get Operation. */
 @Fluent
 public final class RedisResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisResourceInner.class);
-
     /*
      * Redis cache properties.
      */
@@ -35,6 +34,12 @@ public final class RedisResourceInner extends Resource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /**
      * Get the innerProperties property: Redis cache properties.
@@ -62,6 +67,26 @@ public final class RedisResourceInner extends Resource {
      */
     public RedisResourceInner withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -204,8 +229,8 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Get the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
-     * Virtual Network.
+     * Get the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
+     * existing Azure Virtual Network; auto assigned by default.
      *
      * @return the staticIp value.
      */
@@ -214,8 +239,8 @@ public final class RedisResourceInner extends Resource {
     }
 
     /**
-     * Set the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
-     * Virtual Network.
+     * Set the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
+     * existing Azure Virtual Network; auto assigned by default.
      *
      * @param staticIp the staticIp value to set.
      * @return the RedisResourceInner object itself.
@@ -235,7 +260,7 @@ public final class RedisResourceInner extends Resource {
      *
      * @return the redisConfiguration value.
      */
-    public Map<String, String> redisConfiguration() {
+    public RedisConfiguration redisConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().redisConfiguration();
     }
 
@@ -247,7 +272,7 @@ public final class RedisResourceInner extends Resource {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisResourceInner object itself.
      */
-    public RedisResourceInner withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisResourceInner withRedisConfiguration(RedisConfiguration redisConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RedisPropertiesInner();
         }
@@ -454,12 +479,17 @@ public final class RedisResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model RedisResourceInner"));
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisResourceInner.class);
 }

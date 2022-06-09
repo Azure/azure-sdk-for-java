@@ -6,15 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The endpoint configuration for a pool. */
 @Fluent
 public final class PoolEndpointConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolEndpointConfiguration.class);
-
     /*
      * A list of inbound NAT pools that can be used to address specific ports
      * on an individual compute node externally. The maximum number of inbound
@@ -59,7 +56,7 @@ public final class PoolEndpointConfiguration {
      */
     public void validate() {
         if (inboundNatPools() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property inboundNatPools in model PoolEndpointConfiguration"));
@@ -67,4 +64,6 @@ public final class PoolEndpointConfiguration {
             inboundNatPools().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PoolEndpointConfiguration.class);
 }

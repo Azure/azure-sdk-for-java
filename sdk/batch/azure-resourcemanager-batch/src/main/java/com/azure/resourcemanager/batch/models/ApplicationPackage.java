@@ -159,7 +159,8 @@ public interface ApplicationPackage {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
+     * @return an application package which represents a particular version of an application along with {@link
+     *     Response}.
      */
     Response<ApplicationPackage> activateWithResponse(ActivateApplicationPackageParameters parameters, Context context);
 }

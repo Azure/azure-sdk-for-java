@@ -16,6 +16,9 @@ public final class StreamOptionsFlag extends ExpandableStringEnum<StreamOptionsF
     /** Static value LowLatency for StreamOptionsFlag. */
     public static final StreamOptionsFlag LOW_LATENCY = fromString("LowLatency");
 
+    /** Static value LowLatencyV2 for StreamOptionsFlag. */
+    public static final StreamOptionsFlag LOW_LATENCY_V2 = fromString("LowLatencyV2");
+
     /**
      * Creates or finds a StreamOptionsFlag from its string representation.
      *

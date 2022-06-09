@@ -174,7 +174,10 @@ public interface VirtualMachineScaleSet
     /** @return the name of the OS disk of virtual machines in the scale set */
     String osDiskName();
 
-    /** @return the upgrade model */
+    /** @return whether the instance OS disk is ephemeral */
+    boolean isEphemeralOSDisk();
+
+    /** @return the upgrade model, null for scale set with {@link OrchestrationMode#FLEXIBLE} */
     UpgradeMode upgradeModel();
 
     /** @return true if over provision is enabled for the virtual machines, false otherwise */
@@ -1371,6 +1374,13 @@ public interface VirtualMachineScaleSet
              * @return the next stage of the definition
              */
             WithCreate withOSDiskName(String name);
+
+            /**
+             * Specifies the OS disk to be ephemeral.
+             *
+             * @return the next stage of the definition
+             */
+            WithEphemeralOSDisk withEphemeralOSDisk();
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify the storage account. */
@@ -1763,6 +1773,18 @@ public interface VirtualMachineScaleSet
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to configure instance OS disk to be ephemeral.
+         */
+        interface WithEphemeralOSDisk {
+            /**
+             * Selects where you want to place the Ephemeral OS disk.
+             * @param placement placement of the Ephemeral OS disk
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withPlacement(DiffDiskPlacement placement);
+        }
+
+        /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
@@ -1790,6 +1812,7 @@ public interface VirtualMachineScaleSet
                 DefinitionStages.WithApplicationSecurityGroup,
                 DefinitionStages.WithSecrets,
                 DefinitionStages.WithPlan,
+                DefinitionStages.WithEphemeralOSDisk,
                 Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
     }

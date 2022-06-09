@@ -1,0 +1,1528 @@
+{
+  "properties": [
+    {
+      "name": "azure.activedirectory.active-directory-groups",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph API Call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-names"
+      }
+    },
+    {
+      "name": "azure.activedirectory.allow-telemetry",
+      "type": "java.lang.Boolean",
+      "description": "If Telemetry events should be published to Azure AD.",
+      "defaultValue": true,
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
+      }
+    },
+    {
+      "name": "azure.activedirectory.app-id-uri",
+      "type": "java.lang.String",
+      "description": "App ID URI which might be used in the 'aud' claim of an id_token.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.app-id-uri"
+      }
+    },
+    {
+      "name": "azure.activedirectory.application-type",
+      "type": "java.lang.String",
+      "description": "Type of the AAD application.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.application-type"
+      }
+    },
+    {
+      "name": "azure.activedirectory.authenticate-additional-parameters",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>",
+      "description": "Add additional parameters to the Authorization URL.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.authenticate-additional-parameters"
+      }
+    },
+    {
+      "name": "azure.activedirectory.authorization-clients",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.authorization-clients"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.allow-telemetry",
+      "type": "java.lang.Boolean",
+      "description": "Telemetry data will be collected if true, or disable data collection.",
+      "defaultValue": true,
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.app-id-uri",
+      "type": "java.lang.String",
+      "description": "App ID URI which might be used in the 'aud' claim of an token.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.app-id-uri"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.authenticate-additional-parameters",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.authenticate-additional-parameters"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.authorization-clients",
+      "description": "Specify client configuration.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.authorization-clients"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.base-uri",
+      "type": "java.lang.String",
+      "description": "AAD B2C endpoint base uri.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.base-uri"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.client-id",
+      "type": "java.lang.String",
+      "description": "The application ID that registered under b2c tenant.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.credential.client-id"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.client-secret",
+      "type": "java.lang.String",
+      "description": "The application secret that registered under b2c tenant.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.credential.client-secret"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.jwt-connect-timeout",
+      "type": "java.lang.Integer",
+      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.jwt-connect-timeout"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.jwt-read-timeout",
+      "type": "java.lang.Integer",
+      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.jwt-read-timeout"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.jwt-size-limit",
+      "type": "java.lang.Integer",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.jwt-size-limit"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.login-flow",
+      "type": "java.lang.String",
+      "description": "Specify the primary sign in flow key.",
+      "defaultValue": "sign-up-or-sign-in",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.login-flow"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.logout-success-url",
+      "type": "java.lang.String",
+      "defaultValue": "http:\/\/localhost:8080\/login",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.logout-success-url"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.reply-url",
+      "type": "java.lang.String",
+      "defaultValue": "{baseUrl}\/login\/oauth2\/code\/",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.reply-url"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.tenant",
+      "type": "java.lang.String",
+      "description": "The name of the b2c tenant.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Configuration updated to baseUri.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.base-uri"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.tenant-id",
+      "type": "java.lang.String",
+      "description": "The name of the b2c tenant ID.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.profile.tenant-id"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.user-flows",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.user-flows"
+      }
+    },
+    {
+      "name": "azure.activedirectory.b2c.user-name-attribute-name",
+      "type": "java.lang.String",
+      "description": "User name attribute name.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.b2c.user-name-attribute-name"
+      }
+    },
+    {
+      "name": "azure.activedirectory.base-uri",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.profile.environment.active-directory-endpoint"
+      }
+    },
+    {
+      "name": "azure.activedirectory.client-id",
+      "type": "java.lang.String",
+      "description": "Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.credential.client-id"
+      }
+    },
+    {
+      "name": "azure.activedirectory.client-secret",
+      "type": "java.lang.String",
+      "description": "API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.credential.client-secret"
+      }
+    },
+    {
+      "name": "azure.activedirectory.graph-base-uri",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint"
+      }
+    },
+    {
+      "name": "azure.activedirectory.graph-membership-uri",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint"
+      }
+    },
+    {
+      "name": "azure.activedirectory.jwk-set-cache-lifespan",
+      "type": "java.lang.Long",
+      "description": "The lifespan of the cached JWK set before it expires, default is 5 minutes.",
+      "defaultValue": 5,
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.jwk-set-cache-lifespan"
+      }
+    },
+    {
+      "name": "azure.activedirectory.jwk-set-cache-refresh-time",
+      "type": "java.lang.Long",
+      "description": "The refresh time of the cached JWK set before it expires, default is 5 minutes.",
+      "defaultValue": 5,
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.jwk-set-cache-refresh-time"
+      }
+    },
+    {
+      "name": "azure.activedirectory.jwt-connect-timeout",
+      "type": "java.lang.Integer",
+      "description": "Connection Timeout for the JWKSet Remote URL call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.jwt-connect-timeout"
+      }
+    },
+    {
+      "name": "azure.activedirectory.jwt-read-timeout",
+      "type": "java.lang.Integer",
+      "description": "Read Timeout for the JWKSet Remote URL call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.jwt-read-timeout"
+      }
+    },
+    {
+      "name": "azure.activedirectory.jwt-size-limit",
+      "type": "java.lang.Integer",
+      "description": "Size limit in Bytes of the JWKSet Remote URL call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.jwt-size-limit"
+      }
+    },
+    {
+      "name": "azure.activedirectory.post-logout-redirect-uri",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.post-logout-redirect-uri"
+      }
+    },
+    {
+      "name": "azure.activedirectory.redirect-uri-template",
+      "type": "java.lang.String",
+      "description": "Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials to the client via the resource owner user-agent.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.redirect-uri-template"
+      }
+    },
+    {
+      "name": "azure.activedirectory.resource-server.claim-to-authority-prefix-map",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map"
+      }
+    },
+    {
+      "name": "azure.activedirectory.resource-server.principal-claim-name",
+      "type": "java.lang.String",
+      "description": "Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\".",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.resource-server.principal-claim-name"
+      }
+    },
+    {
+      "name": "azure.activedirectory.session-stateless",
+      "type": "java.lang.Boolean",
+      "description": "If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The default is false which activates AADAuthenticationFilter.",
+      "defaultValue": false,
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.session-stateless"
+      }
+    },
+    {
+      "name": "azure.activedirectory.tenant-id",
+      "type": "java.lang.String",
+      "description": "Azure Tenant ID.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.profile.tenant-id"
+      }
+    },
+    {
+      "name": "azure.activedirectory.user-group.allowed-group-ids",
+      "type": "java.util.Set<java.lang.String>",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-ids"
+      }
+    },
+    {
+      "name": "azure.activedirectory.user-group.allowed-group-names",
+      "type": "java.util.List<java.lang.String>",
+      "description": "Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph API Call.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-names"
+      }
+    },
+    {
+      "name": "azure.activedirectory.user-group.allowed-groups",
+      "type": "java.util.List<java.lang.String>",
+      "deprecation": {
+        "level": "error",
+        "reason": "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups deprecated.",
+        "replacement": "spring.cloud.azure.active-directory.user-group.allowed-group-names"
+      }
+    },
+    {
+      "name": "azure.activedirectory.user-group.enable-full-list",
+      "type": "java.lang.Boolean",
+      "description": "The enableFullList is used to control whether to list all group id, default is false.",
+      "defaultValue": false,
+      "deprecation": {
+        "level": "error",
+        "reason": "enable-full-list is not easy to understand."
+      }
+    },
+    {
+      "name": "azure.activedirectory.user-name-attribute",
+      "type": "java.lang.String",
+      "description": "Decide which claim to be principal's name.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
+        "replacement": "spring.cloud.azure.active-directory.user-name-attribute"
+      }
+    },
+    {
+      "name": "azure.cosmos.allow-telemetry",
+      "type": "java.lang.Boolean",
+      "description": "Whether allow Microsoft to collect telemetry data.",
+      "defaultValue": true,
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
+      }
+    },
+    {
+      "name": "azure.cosmos.connection-mode",
+      "type": "com.azure.cosmos.ConnectionMode",
+      "description": "Represents the connection mode to be used by the client in the Azure Cosmos DB database service.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.connection-mode"
+      }
+    },
+    {
+      "name": "azure.cosmos.consistency-level",
+      "type": "com.azure.cosmos.ConsistencyLevel",
+      "description": "Cosmos DB consistency level.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.consistency-level"
+      }
+    },
+    {
+      "name": "azure.cosmos.database",
+      "type": "java.lang.String",
+      "description": "Cosmos DB database name.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.database"
+      }
+    },
+    {
+      "name": "azure.cosmos.key",
+      "type": "java.lang.String",
+      "description": "Document DB key.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.key"
+      }
+    },
+    {
+      "name": "azure.cosmos.populate-query-metrics",
+      "type": "java.lang.Boolean",
+      "description": "Populate Diagnostics Strings and Query metrics.",
+      "defaultValue": false,
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.populate-query-metrics"
+      }
+    },
+    {
+      "name": "azure.cosmos.response-diagnostics-processor",
+      "type": "com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor",
+      "description": "Response Diagnostics processor Default implementation is to log the response diagnostics string.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate for it's not a property."
+      }
+    },
+    {
+      "name": "azure.cosmos.uri",
+      "type": "java.lang.String",
+      "description": "Document DB URI.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.endpoint"
+      }
+    },
+    {
+      "name": "azure.cosmos.validate-uri",
+      "type": "java.lang.Boolean",
+      "description": "Whether to validate the uri, default is true.",
+      "defaultValue": true,
+      "deprecation": {
+        "level": "error",
+        "reason": "Remove validation on the uri."
+      }
+    },
+    {
+      "name": "azure.keyvault.allow-telemetry",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
+      }
+    },
+    {
+      "name": "azure.keyvault.case-sensitive-keys",
+      "type": "java.lang.String",
+      "description": "Defines the constant for the property that enables\/disables case sensitive keys.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+      }
+    },
+    {
+      "name": "azure.keyvault.certificate-password",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-certificate-password"
+      }
+    },
+    {
+      "name": "azure.keyvault.certificate-path",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-certificate-path"
+      }
+    },
+    {
+      "name": "azure.keyvault.client-id",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-id"
+      }
+    },
+    {
+      "name": "azure.keyvault.client-key",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-secret"
+      }
+    },
+    {
+      "name": "azure.keyvault.enabled",
+      "type": "java.lang.Boolean",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret related under 'spring.cloud.azure.keyvault.secret' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.enabled"
+      }
+    },
+    {
+      "name": "azure.keyvault.order",
+      "type": "java.lang.String",
+      "description": "The constant used to define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.keyvault.secret' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+      }
+    },
+    {
+      "name": "azure.keyvault.refresh-interval",
+      "type": "java.lang.Long",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.keyvault.secret' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+      }
+    },
+    {
+      "name": "azure.keyvault.secret-keys",
+      "type": "java.util.List<java.lang.String>",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.keyvault.secret' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+      }
+    },
+    {
+      "name": "azure.keyvault.tenant-id",
+      "type": "java.lang.String",
+      "description": "Tenant ID for the key vault.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret Azure environment related under 'spring.cloud.azure.keyvault.secret.profile' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.profile.tenant-id"
+      }
+    },
+    {
+      "name": "azure.keyvault.uri",
+      "type": "java.lang.String",
+      "description": "Azure Key Vault endpoint.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Key Vault Secret related under 'spring.cloud.azure.keyvault.secret' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.endpoint"
+      }
+    },
+    {
+      "name": "azure.storage.account-key",
+      "type": "java.lang.String",
+      "description": "Storage account access key.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.account-key"
+      }
+    },
+    {
+      "name": "azure.storage.account-name",
+      "type": "java.lang.String",
+      "description": "Name for the storage account.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.account-name"
+      }
+    },
+    {
+      "name": "azure.storage.blob-endpoint",
+      "type": "java.lang.String",
+      "description": "Endpoint for the storage blob.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.endpoint"
+      }
+    },
+    {
+      "name": "azure.storage.file-endpoint",
+      "type": "java.lang.String",
+      "description": "Endpoint for the storage file share.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Storage File Share related under 'spring.cloud.azure.storage.fileshare' prefix.",
+        "replacement": "spring.cloud.azure.storage.fileshare.endpoint"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.auto-create-resources",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "Whether to create Azure resources automatically. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate the ability to auto create resources."
+      }
+    },
+    {
+      "name": "spring.cloud.azure.client-id",
+      "type": "java.lang.String",
+      "description": "Client ID to use when performing service principal authentication with Azure. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix.",
+        "replacement": "spring.cloud.azure.credential.client-id"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.client-secret",
+      "type": "java.lang.String",
+      "description": "Client secret to use when performing service principal authentication with Azure. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix.",
+        "replacement": "spring.cloud.azure.credential.client-secret"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.environment",
+      "type": "java.lang.String",
+      "description": "The Azure environment, such as global Azure or Azure China. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
+        "replacement": "spring.cloud.azure.profile.cloud-type"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.eventhub.checkpoint-access-key",
+      "type": "java.lang.String",
+      "description": "Storage account access key. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'.",
+        "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-key"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.eventhub.checkpoint-container",
+      "type": "java.lang.String",
+      "description": "Name of the container. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'.",
+        "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.eventhub.checkpoint-storage-account",
+      "type": "java.lang.String",
+      "description": "Name for the storage account. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'.",
+        "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.eventhub.connection-string",
+      "type": "java.lang.String",
+      "description": "Connection string to connect to an event hub. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "To keep in accordance with Azure Event Hubs service name.",
+        "replacement": "spring.cloud.azure.eventhubs.connection-string"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.eventhub.namespace",
+      "type": "java.lang.String",
+      "description": "The namespace of an event hub. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "To keep in accordance with Azure Event Hubs service name.",
+        "replacement": "spring.cloud.azure.eventhubs.namespace"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.msi-enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "Whether managed identity is enabled. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix.",
+        "replacement": "spring.cloud.azure.credential.managed-identity-enabled"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.region",
+      "type": "java.lang.String",
+      "description": "The region of an Azure resource. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix."
+      }
+    },
+    {
+      "name": "spring.cloud.azure.resource-group",
+      "type": "java.lang.String",
+      "description": "The resource group holds an Azure resource. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix."
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.max-retries",
+      "type": "java.lang.Integer",
+      "description": "The maximum number of attempts. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.max-retries"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.delay",
+      "type": "java.time.Duration",
+      "description": "Amount of time to wait between retry attempts. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.base-delay"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.max-delay",
+      "type": "java.time.Duration",
+      "description": "Maximum permissible amount of time between retry attempts. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.max-delay"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.try-timeout",
+      "type": "java.time.Duration",
+      "description": "Amount of time to wait until a timeout. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.try-timeout"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.retry-mode",
+      "type": "com.azure.core.amqp.AmqpRetryMode",
+      "description": "The type of approach to apply when calculating the delay between retry attempts. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.mode"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.transport-type",
+      "type": "com.azure.core.amqp.AmqpTransportType",
+      "description": "Transport type for AMQP-based client. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.client.transport-type"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.storage.access-key",
+      "type": "java.lang.String",
+      "description": "Storage account access key. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.account-key"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.storage.account",
+      "type": "java.lang.String",
+      "description": "Name for the storage account. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.account-name"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.storage.resource-group",
+      "type": "java.lang.String",
+      "description": "Resource group the storage account belongs to. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.resource.resource-group"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.subscription-id",
+      "type": "java.lang.String",
+      "description": "Subscription ID to use when connecting to Azure resources. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
+        "replacement": "spring.cloud.azure.profile.subscription-id"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.tenant-id",
+      "type": "java.lang.String",
+      "description": "Tenant ID for Azure resources. This is a legacy property.",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
+        "replacement": "spring.cloud.azure.profile.tenant-id"
+      }
+    },
+    {
+      "name": "spring.cloud.stream.eventhub.bindings",
+      "deprecation": {
+        "level": "error",
+        "reason": "To keep in accordance with Azure Event Hubs service name, legacy is deprecated.",
+        "replacement": "spring.cloud.stream.eventhubs.bindings"
+      }
+    },
+    {
+      "name": "spring.cloud.stream.eventhub.checkpoint-storage-account",
+      "type": "java.lang.String",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to use the unified style with the prefix of 'spring.cloud.azure.eventhubs.processor'.",
+        "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
+      }
+    },
+    {
+      "name": "spring.cloud.stream.servicebus.queue.bindings",
+      "deprecation": {
+        "level": "error",
+        "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
+        "replacement": "spring.cloud.stream.servicebus.bindings"
+      }
+    },
+    {
+      "name": "spring.cloud.stream.servicebus.topic.bindings",
+      "deprecation": {
+        "level": "error",
+        "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
+        "replacement": "spring.cloud.stream.servicebus.bindings"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Azure Active Directory related auto-configuration.",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.b2c.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Azure Active Directory B2C related auto-configuration.",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-attempts-on-throttled-requests",
+      "description": "Maximum number of retries in the case where the request fails because the service has applied rate limiting on the client."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time",
+      "description": "Maximum retry time in seconds. When a request fails due to a throttle error, the service sends back a response that contains a value indicating the client should not retry before the time period has elapsed (Retry-After). The MaxRetryWaitTime flag allows the application to set a maximum wait time for all retry attempts. If the cumulative wait time exceeds the MaxRetryWaitTime, the SDK will stop retrying and return the error to the application."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.block-if-full",
+      "description": "Whether to block when a connection is requested and the pool is full. Set it to false to throw a 'JMSException' instead."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.block-if-full-timeout",
+      "description": "Blocking period before throwing an exception if the pool is still full."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.enabled",
+      "description": "Whether a JmsPoolConnectionFactory should be created, instead of a regular ConnectionFactory."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.idle-timeout",
+      "description": "Connection idle timeout."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.max-connections",
+      "description": "Maximum number of pooled connections."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.max-sessions-per-connection",
+      "description": "Maximum number of pooled sessions per connection in the pool."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.time-between-expiration-check",
+      "description": "Time to sleep between runs of the idle connection eviction thread. When negative, no idle connection eviction thread runs."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.use-anonymous-producers",
+      "description": "Whether to use only one anonymous 'MessageProducer' instance. Set it to false to create one 'MessageProducer' every time one is required."
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.client.http.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.client.http.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.eventhubs.processor.checkpoint-store.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.eventhubs.processor.checkpoint-store.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.certificate.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.certificate.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.storage.blob.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.storage.blob.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.storage.fileshare.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.storage.fileshare.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.storage.queue.client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.storage.queue.client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].case-sensitive",
+      "type": "java.lang.Boolean",
+      "description": "Defines the constant for the property that enables/disables case-sensitive keys.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.application-id",
+      "type": "java.lang.String",
+      "description": "Represents current application and is used for telemetry\/monitoring purposes.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connect-timeout",
+      "type": "java.time.Duration",
+      "description": "Amount of time the request attempts to connect to the remote host and the connection is resolved.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connection-idle-timeout",
+      "type": "java.time.Duration",
+      "description": "Amount of time before an idle connection.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.headers[0].name",
+      "type": "java.lang.String",
+      "description": "The name of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.headers[0].values",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of values of the header.",
+      "sourceType": "com.azure.spring.cloud.core.properties.client.HeaderProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-header-names",
+      "type": "java.util.Set<java.lang.String>",
+      "description": "Comma-delimited list of allowlist headers that should be logged.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-query-param-names",
+      "type": "java.util.Set<java.lang.String>",
+      "description": "Comma-delimited list of allowlist query parameters.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.level",
+      "type": "com.azure.core.http.policy.HttpLogDetailLevel",
+      "description": "The level of detail to log on HTTP messages.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.pretty-print-body",
+      "type": "java.lang.Boolean",
+      "description": "Whether to pretty print the message bodies.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.maximum-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Maximum connection pool size used by the underlying HTTP client.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.read-timeout",
+      "type": "java.time.Duration",
+      "description": "Amount of time used when reading the server response.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.response-timeout",
+      "type": "java.time.Duration",
+      "description": "Amount of time used when waiting for a server to reply.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.write-timeout",
+      "type": "java.time.Duration",
+      "description": "Amount of time each request being sent over the wire.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-certificate-password",
+      "type": "java.lang.String",
+      "description": "Password of the certificate file.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-certificate-path",
+      "type": "java.lang.String",
+      "description": "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-id",
+      "type": "java.lang.String",
+      "description": "Client ID to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-secret",
+      "type": "java.lang.String",
+      "description": "Client secret to use when performing service principal authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.managed-identity-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client ID as user assigned managed identity client ID.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.password",
+      "type": "java.lang.String",
+      "description": "Password to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.username",
+      "type": "java.lang.String",
+      "description": "Username to use when performing username\/password authentication with Azure.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether an Azure Service is enabled.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
+      "type": "java.lang.String",
+      "description": "Azure Key Vault endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].name",
+      "type": "java.lang.String",
+      "description": "Name of this property source.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.cloud-type",
+      "type": "com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider$CloudType",
+      "description": "Name of the Azure cloud to connect to.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory endpoint to connect to.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-api-version",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory Graph API version.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory Graph endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-resource-id",
+      "type": "java.lang.String",
+      "description": "The Azure Active Directory resource ID.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-application-insights-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Application Insights endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-data-lake-analytics-catalog-and-job-endpoint-suffix",
+      "type": "java.lang.String",
+      "description": "The Data Lake analytics catalog and job endpoint suffix.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-data-lake-store-file-system-endpoint-suffix",
+      "type": "java.lang.String",
+      "description": "The Data Lake storage file system endpoint suffix.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-log-analytics-endpoint",
+      "type": "java.lang.String",
+      "description": "The Azure Log Analytics endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.data-lake-endpoint-resource-id",
+      "type": "java.lang.String",
+      "description": "The Data Lake endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.gallery-endpoint",
+      "type": "java.lang.String",
+      "description": "The gallery endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.key-vault-dns-suffix",
+      "type": "java.lang.String",
+      "description": "The Key Vault DNS suffix.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.management-endpoint",
+      "type": "java.lang.String",
+      "description": "The management service endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.microsoft-graph-endpoint",
+      "type": "java.lang.String",
+      "description": "The Microsoft Graph endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.portal",
+      "type": "java.lang.String",
+      "description": "The management portal URL.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.publishing-profile",
+      "type": "java.lang.String",
+      "description": "The publishing settings file URL.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.resource-manager-endpoint",
+      "type": "java.lang.String",
+      "description": "The resource management endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.sql-management-endpoint",
+      "type": "java.lang.String",
+      "description": "The SQL management endpoint.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.sql-server-hostname-suffix",
+      "type": "java.lang.String",
+      "description": "The SQL Server hostname suffix.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.storage-endpoint-suffix",
+      "type": "java.lang.String",
+      "description": "The Storage endpoint suffix.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.subscription-id",
+      "type": "java.lang.String",
+      "description": "Subscription ID to use when connecting to Azure resources.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id",
+      "type": "java.lang.String",
+      "description": "Tenant ID for Azure resources.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.hostname",
+      "type": "java.lang.String",
+      "description": "The host of the proxy.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.non-proxy-hosts",
+      "type": "java.lang.String",
+      "description": "A list of hosts or CIDR to not use proxy HTTP\/HTTPS connections through.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.password",
+      "type": "java.lang.String",
+      "description": "Password used to authenticate with the proxy.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.port",
+      "type": "java.lang.Integer",
+      "description": "The port of the proxy.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.type",
+      "type": "java.lang.String",
+      "description": "Type of the proxy.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.username",
+      "type": "java.lang.String",
+      "description": "Username used to authenticate with the proxy.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.region",
+      "type": "java.lang.String",
+      "description": "The region of an Azure resource.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.resource-group",
+      "type": "java.lang.String",
+      "description": "The resource group holds an Azure resource.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.resource-id",
+      "type": "java.lang.String",
+      "description": "ID of an Azure resource.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.base-delay",
+      "type": "java.time.Duration",
+      "description": "Amount of time to wait between retry attempts.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-delay",
+      "type": "java.time.Duration",
+      "description": "Maximum permissible amount of time between retry attempts.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-retries",
+      "type": "java.lang.Integer",
+      "description": "The maximum number of attempts.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.delay",
+      "type": "java.time.Duration",
+      "description": "Amount of time to wait between retry attempts.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.FixedRetryConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.max-retries",
+      "type": "java.lang.Integer",
+      "description": "The maximum number of attempts.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.FixedRetryConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.mode",
+      "type": "com.azure.spring.cloud.core.provider.RetryOptionsProvider$RetryMode",
+      "description": "Retry backoff mode.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].secret-keys",
+      "type": "java.util.List<java.lang.String>",
+      "description": "The secret keys supported for this property source.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
+    },
+    {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].service-version",
+      "type": "com.azure.security.keyvault.secrets.SecretServiceVersion",
+      "description": "Secret service version used when making API requests.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
+    }
+  ],
+  "hints": [
+    {
+      "name": "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.keys",
+      "values": [
+        {
+          "value": "scp",
+          "description": "The prefix for the authority started with 'SCOPE_'."
+        },
+        {
+          "value": "roles",
+          "description": "The prefix for the authority started with 'APPROLE_'."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.authenticate-additional-parameters.keys",
+      "values": [
+        {
+          "value": "domain_hint",
+          "description": "If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience."
+        },
+        {
+          "value": "login_hint",
+          "description": "You can use this parameter to pre-fill the username and email address field of the sign-in page for the user."
+        },
+        {
+          "value": "prompt",
+          "description": "Indicates the type of user interaction that is required. Valid values are login, none, consent, and select_account."
+        }
+      ],
+      "providers": [
+      {
+        "name": "any"
+      }
+    ]
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.b2c.authenticate-additional-parameters.keys",
+      "values": [
+        {
+          "value": "domain_hint",
+          "description": "If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience."
+        },
+        {
+          "value": "login_hint",
+          "description": "You can use this parameter to pre-fill the username and email address field of the sign-in page for the user."
+        },
+        {
+          "value": "prompt",
+          "description": "Indicates the type of user interaction that is required. Valid values are login, none, consent, and select_account."
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}

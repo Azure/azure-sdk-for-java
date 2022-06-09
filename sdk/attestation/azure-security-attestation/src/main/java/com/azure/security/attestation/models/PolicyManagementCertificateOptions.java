@@ -11,7 +11,7 @@ import java.util.Objects;
  * <p>
  * AttestationPolicySetOptions represent the parameters sent to the
  * {@link com.azure.security.attestation.AttestationAdministrationClient#addPolicyManagementCertificate(PolicyManagementCertificateOptions)}
- * or {@link com.azure.security.attestation.AttestationAdministrationClient#removePolicyManagementCertificate(PolicyManagementCertificateOptions)} API.
+ * or {@link com.azure.security.attestation.AttestationAdministrationClient#deletePolicyManagementCertificate(PolicyManagementCertificateOptions)} API.
  * </p><p>
  * Each {@link AttestationPolicySetOptions} object expresses the options to verify the response
  * from the attestation service.
@@ -56,7 +56,7 @@ public final class PolicyManagementCertificateOptions {
     }
 
     /**
-     * Gets the attestation policy which will be used to generate an policy set request.
+     * Gets the attestation policy which will be used to generate a policy set request.
      * @return Attestation Policy Token associated with this request.
      */
     public X509Certificate getCertificate() {

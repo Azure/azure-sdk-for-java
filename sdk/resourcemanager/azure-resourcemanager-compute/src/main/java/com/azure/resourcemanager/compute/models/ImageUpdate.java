@@ -6,17 +6,13 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.ImageProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The source user image virtual hard disk. Only tags may be updated. */
 @Fluent
 public final class ImageUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageUpdate.class);
-
     /*
      * Describes the properties of an Image.
      */

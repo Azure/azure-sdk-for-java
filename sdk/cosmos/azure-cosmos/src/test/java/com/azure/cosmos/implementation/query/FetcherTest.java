@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -96,7 +97,11 @@ public class FetcherTest {
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
-                        ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
+                        ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options),
+                        ImplementationBridgeHelpers
+                            .CosmosQueryRequestOptionsHelper
+                            .getCosmosQueryRequestOptionsAccessor()
+                            .getOperationContext(options));
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
@@ -156,7 +161,11 @@ public class FetcherTest {
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
-                        options.getMaxItemCount());
+                        options.getMaxItemCount(),
+                        ImplementationBridgeHelpers
+                            .CosmosChangeFeedRequestOptionsHelper
+                            .getCosmosChangeFeedRequestOptionsAccessor()
+                            .getOperationContext(options));
 
         validateFetcher(fetcher, options, feedResponseList);
     }

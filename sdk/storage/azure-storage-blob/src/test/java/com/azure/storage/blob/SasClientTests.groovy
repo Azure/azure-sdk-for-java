@@ -143,9 +143,15 @@ class SasClientTests extends APISpec {
             .setListPermission(true)
         if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
             permissions
-                .setMovePermission(true)
-                .setExecutePermission(true)
+                .setDeleteVersionPermission(true)
+            permissions
+                .setFilterPermission(true)
         }
+        if (Constants.SAS_SERVICE_VERSION >= "2020-06-12") {
+            permissions
+                .setImmutabilityPolicyPermission(true)
+        }
+
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
@@ -157,6 +163,7 @@ class SasClientTests extends APISpec {
         and:
         sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
         def sasWithPermissions = cc.generateSas(sasValues)
+        System.out.println(sasWithPermissions)
         def client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
         client2.listBlobs().iterator().hasNext()
 
@@ -397,6 +404,65 @@ class SasClientTests extends APISpec {
         def tags = new HashMap<String, String>()
         tags.put("foo", "bar")
         client.setTags(tags)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "container sas filter blobs"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setDeleteVersionPermission(true)
+            .setTagsPermission(true)
+            .setFilterPermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = cc.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+
+        cc.findBlobsByTags("\"foo\"='bar'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "container sas filter blobs fail"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setDeleteVersionPermission(true)
+            // no filter or tags permission
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = cc.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        client.setTags(tags)
+
+        cc.findBlobsByTags("\"foo\"='bar'").iterator().hasNext()
 
         then:
         thrown(BlobStorageException)

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -14,7 +15,6 @@ import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +22,6 @@ import java.util.List;
 /** Describes the properties of a gallery image definition. */
 @Fluent
 public final class SharedGalleryImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageProperties.class);
-
     /*
      * This property allows you to specify the type of the OS that is included
      * in the disk when creating a VM from a managed image. <br><br> Possible
@@ -84,6 +82,12 @@ public final class SharedGalleryImageProperties {
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
+
+    /*
+     * The architecture of the image. Applicable to OS disks only.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
@@ -278,25 +282,45 @@ public final class SharedGalleryImageProperties {
     }
 
     /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the SharedGalleryImageProperties object itself.
+     */
+    public SharedGalleryImageProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model SharedGalleryImageProperties"));
         }
         if (osState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osState in model SharedGalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property identifier in model SharedGalleryImageProperties"));
@@ -316,4 +340,6 @@ public final class SharedGalleryImageProperties {
             purchasePlan().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharedGalleryImageProperties.class);
 }

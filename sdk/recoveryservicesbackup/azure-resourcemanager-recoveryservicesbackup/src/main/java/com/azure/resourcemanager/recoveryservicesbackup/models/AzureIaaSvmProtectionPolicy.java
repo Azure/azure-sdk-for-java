@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("AzureIaasVM")
 @Fluent
 public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSvmProtectionPolicy.class);
-
     /*
      * The instantRPDetails property.
      */
@@ -49,6 +45,12 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
+
+    /*
+     * The policyType property.
+     */
+    @JsonProperty(value = "policyType")
+    private IaasvmPolicyType policyType;
 
     /**
      * Get the instantRPDetails property: The instantRPDetails property.
@@ -147,6 +149,26 @@ public final class AzureIaaSvmProtectionPolicy extends ProtectionPolicy {
      */
     public AzureIaaSvmProtectionPolicy withTimeZone(String timeZone) {
         this.timeZone = timeZone;
+        return this;
+    }
+
+    /**
+     * Get the policyType property: The policyType property.
+     *
+     * @return the policyType value.
+     */
+    public IaasvmPolicyType policyType() {
+        return this.policyType;
+    }
+
+    /**
+     * Set the policyType property: The policyType property.
+     *
+     * @param policyType the policyType value to set.
+     * @return the AzureIaaSvmProtectionPolicy object itself.
+     */
+    public AzureIaaSvmProtectionPolicy withPolicyType(IaasvmPolicyType policyType) {
+        this.policyType = policyType;
         return this;
     }
 

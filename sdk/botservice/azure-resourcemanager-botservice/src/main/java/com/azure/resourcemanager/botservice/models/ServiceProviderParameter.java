@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Extra Parameters specific to each Service Provider. */
 @Immutable
 public final class ServiceProviderParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceProviderParameter.class);
-
     /*
      * Name of the Service Provider
      */
@@ -49,6 +45,12 @@ public final class ServiceProviderParameter {
      */
     @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultProperty;
+
+    /*
+     * Meta data for the Service Provider
+     */
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
+    private ServiceProviderParameterMetadata metadata;
 
     /**
      * Get the name property: Name of the Service Provider.
@@ -105,10 +107,22 @@ public final class ServiceProviderParameter {
     }
 
     /**
+     * Get the metadata property: Meta data for the Service Provider.
+     *
+     * @return the metadata value.
+     */
+    public ServiceProviderParameterMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (metadata() != null) {
+            metadata().validate();
+        }
     }
 }

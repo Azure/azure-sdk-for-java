@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeAutoUpdate;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeInternalChannelEncryptionMode;
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -19,9 +17,6 @@ import java.util.Map;
 /** Self-hosted integration runtime status type properties. */
 @Fluent
 public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntimeStatusTypeProperties.class);
-
     /*
      * The time at which the integration runtime was created, in ISO8601
      * format.

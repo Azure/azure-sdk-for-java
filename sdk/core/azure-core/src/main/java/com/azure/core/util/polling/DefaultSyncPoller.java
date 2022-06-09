@@ -25,7 +25,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of the long running operation
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
-    private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultSyncPoller.class);
     private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
@@ -59,7 +59,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
@@ -132,8 +132,8 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             AsyncPollResponse<T, U> asyncPollResponse = pollingLoop(context)
                 .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
                 .last()
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new NoSuchElementException(
-                    "Polling completed without receiving the given status '" + statusToWaitFor + "'."))))
+                .switchIfEmpty(Mono.error(() -> new NoSuchElementException(
+                    "Polling completed without receiving the given status '" + statusToWaitFor + "'.")))
                 .block();
             PollResponse<T> response = toPollResponse(asyncPollResponse);
             if (response.getStatus().isComplete()) {
@@ -147,7 +147,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for timeout is not allowed."));
         }
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
@@ -161,8 +161,8 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                     .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
                     .last()
                     .timeout(timeout)
-                    .switchIfEmpty(Mono.defer(() -> Mono.error(new NoSuchElementException(
-                        "Polling completed without receiving the given status '" + statusToWaitFor + "'."))))
+                    .switchIfEmpty(Mono.error(() -> new NoSuchElementException(
+                        "Polling completed without receiving the given status '" + statusToWaitFor + "'.")))
                     .block();
             PollResponse<T> response = toPollResponse(asyncPollResponse);
             if (response.getStatus().isComplete()) {
@@ -213,7 +213,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
@@ -245,8 +245,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                     .delaySubscription(getDelay(cxt.getLatestResponse()))
-                    .switchIfEmpty(Mono.defer(() -> Mono.error(new IllegalStateException(
-                        "PollOperation returned Mono.empty()."))))
+                    .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                     .repeat()
                     .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                     .concatMap(currentPollResponse -> {

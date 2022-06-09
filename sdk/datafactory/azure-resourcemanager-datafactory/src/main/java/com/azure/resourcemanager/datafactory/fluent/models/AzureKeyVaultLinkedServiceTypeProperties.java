@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Key Vault linked service properties. */
 @Fluent
 public final class AzureKeyVaultLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureKeyVaultLinkedServiceTypeProperties.class);
-
     /*
      * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net
      * Type: string (or Expression with resultType string).
@@ -77,7 +74,7 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
      */
     public void validate() {
         if (baseUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property baseUrl in model AzureKeyVaultLinkedServiceTypeProperties"));
@@ -86,4 +83,6 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyVaultLinkedServiceTypeProperties.class);
 }

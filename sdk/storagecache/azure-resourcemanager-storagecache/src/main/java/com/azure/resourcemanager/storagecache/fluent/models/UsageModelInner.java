@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.UsageModelDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A usage model. */
 @Fluent
 public final class UsageModelInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageModelInner.class);
-
     /*
      * Localized information describing this usage model.
      */

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
+import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,7 @@ import java.util.Map;
 /** Samples for DedicatedHostGroups CreateOrUpdate. */
 public final class DedicatedHostGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateADedicatedHostGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host group.
@@ -35,6 +36,35 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
                     .withZones(Arrays.asList("1"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+     */
+    /**
+     * Sample code: Create or update a dedicated host group with Ultra SSD support.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateADedicatedHostGroupWithUltraSSDSupport(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .createOrUpdateWithResponse(
+                "myResourceGroup",
+                "myDedicatedHostGroup",
+                new DedicatedHostGroupInner()
+                    .withLocation("westus")
+                    .withTags(mapOf("department", "finance"))
+                    .withZones(Arrays.asList("1"))
+                    .withPlatformFaultDomainCount(3)
+                    .withSupportAutomaticPlacement(true)
+                    .withAdditionalCapabilities(
+                        new DedicatedHostGroupPropertiesAdditionalCapabilities().withUltraSsdEnabled(true)),
                 Context.NONE);
     }
 

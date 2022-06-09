@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Resource type managed by the resource provider. */
 @Fluent
 public final class ProviderResourceType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderResourceType.class);
-
     /*
      * The resource type.
      */
@@ -52,6 +48,12 @@ public final class ProviderResourceType {
      */
     @JsonProperty(value = "defaultApiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultApiVersion;
+
+    /*
+     * The zoneMappings property.
+     */
+    @JsonProperty(value = "zoneMappings")
+    private List<ZoneMapping> zoneMappings;
 
     /*
      * The API profiles for the resource provider.
@@ -182,6 +184,26 @@ public final class ProviderResourceType {
     }
 
     /**
+     * Get the zoneMappings property: The zoneMappings property.
+     *
+     * @return the zoneMappings value.
+     */
+    public List<ZoneMapping> zoneMappings() {
+        return this.zoneMappings;
+    }
+
+    /**
+     * Set the zoneMappings property: The zoneMappings property.
+     *
+     * @param zoneMappings the zoneMappings value to set.
+     * @return the ProviderResourceType object itself.
+     */
+    public ProviderResourceType withZoneMappings(List<ZoneMapping> zoneMappings) {
+        this.zoneMappings = zoneMappings;
+        return this;
+    }
+
+    /**
      * Get the apiProfiles property: The API profiles for the resource provider.
      *
      * @return the apiProfiles value.
@@ -241,6 +263,9 @@ public final class ProviderResourceType {
         }
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
+        }
+        if (zoneMappings() != null) {
+            zoneMappings().forEach(e -> e.validate());
         }
         if (apiProfiles() != null) {
             apiProfiles().forEach(e -> e.validate());

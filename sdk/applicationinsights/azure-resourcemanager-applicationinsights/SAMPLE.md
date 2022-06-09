@@ -739,7 +739,7 @@ import java.util.Map;
 /** Samples for Components CreateOrUpdate. */
 public final class ComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsCreate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsCreate.json
      */
     /**
      * Sample code: ComponentCreate.
@@ -757,11 +757,13 @@ public final class ComponentsCreateOrUpdateSamples {
             .withApplicationType(ApplicationType.WEB)
             .withFlowType(FlowType.BLUEFIELD)
             .withRequestSource(RequestSource.REST)
+            .withWorkspaceResourceId(
+                "/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsUpdate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsUpdate.json
      */
     /**
      * Sample code: ComponentUpdate.
@@ -801,7 +803,7 @@ import com.azure.core.util.Context;
 /** Samples for Components Delete. */
 public final class ComponentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsDelete.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsDelete.json
      */
     /**
      * Sample code: ComponentsDelete.
@@ -823,7 +825,7 @@ import com.azure.core.util.Context;
 /** Samples for Components GetByResourceGroup. */
 public final class ComponentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsGet.json
      */
     /**
      * Sample code: ComponentGet.
@@ -844,7 +846,7 @@ import com.azure.core.util.Context;
 /** Samples for Components GetPurgeStatus. */
 public final class ComponentsGetPurgeStatusSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsPurgeStatus.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsPurgeStatus.json
      */
     /**
      * Sample code: ComponentPurge.
@@ -869,7 +871,7 @@ import com.azure.core.util.Context;
 /** Samples for Components List. */
 public final class ComponentsListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsList.json
      */
     /**
      * Sample code: ComponentsList.json.
@@ -891,7 +893,7 @@ import com.azure.core.util.Context;
 /** Samples for Components ListByResourceGroup. */
 public final class ComponentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsListByResourceGroup.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsListByResourceGroup.json
      */
     /**
      * Sample code: ComponentListByResourceGroup.
@@ -916,7 +918,7 @@ import java.util.Arrays;
 /** Samples for Components Purge. */
 public final class ComponentsPurgeSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsPurge.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsPurge.json
      */
     /**
      * Sample code: ComponentPurge.
@@ -955,7 +957,7 @@ import java.util.Map;
 /** Samples for Components UpdateTags. */
 public final class ComponentsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsUpdateTagsOnly.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsUpdateTagsOnly.json
      */
     /**
      * Sample code: ComponentUpdateTagsOnly.
@@ -1471,7 +1473,7 @@ import com.azure.core.util.Context;
 /** Samples for LiveToken Get. */
 public final class LiveTokenGetSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-06-02-preview/examples/LiveTokenGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-10-14/examples/LiveTokenGet.json
      */
     /**
      * Sample code: Get live token for resource.
@@ -2442,18 +2444,17 @@ public final class WorkbookTemplatesUpdateSamples {
 ### Workbooks_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.applicationinsights.models.Kind;
 import com.azure.resourcemanager.applicationinsights.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.applicationinsights.models.UserAssignedIdentity;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookResourceIdentity;
-import java.util.Arrays;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Workbooks CreateOrUpdate. */
 public final class WorkbooksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedAdd.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedAdd.json
      */
     /**
      * Sample code: WorkbookManagedAdd.
@@ -2467,32 +2468,30 @@ public final class WorkbooksCreateOrUpdateSamples {
             .define("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2")
             .withRegion("westus")
             .withExistingResourceGroup("my-resource-group")
-            .withTags(mapOf("hidden-title", "tttt"))
             .withIdentity(
                 new WorkbookResourceIdentity()
                     .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                     .withUserAssignedIdentities(
                         mapOf(
-                            "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid",
                             new UserAssignedIdentity())))
-            .withKind(Kind.SHARED)
-            .withEtag("\"4a00f78d-0000-0700-0000-5f8f616c1000\"")
-            .withDisplayName("tttt")
+            .withKind(WorkbookSharedTypeKind.SHARED)
+            .withDisplayName("Sample workbook")
             .withSerializedData(
                 "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text -"
-                    + " 0\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/MyGroup\"]}")
+                    + " 0\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/my-resource-group\"]}")
             .withVersion("Notebook/1.0")
             .withCategory("workbook")
-            .withTagsPropertiesTags(Arrays.asList())
             .withStorageUri(
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/MyGroup/providers/Microsoft.Storage/storageAccounts/testStorage/blobServices/default/containers/testContainer")
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer")
             .withDescription("Sample workbook")
-            .withSourceIdParameter("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/MyGroup")
+            .withSourceIdParameter(
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookAdd.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookAdd.json
      */
     /**
      * Sample code: WorkbookAdd.
@@ -2502,12 +2501,12 @@ public final class WorkbooksCreateOrUpdateSamples {
     public static void workbookAdd(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workbooks()
-            .define("deadb33f-8bee-4d3b-a059-9be8dac93960")
-            .withRegion("west us")
+            .define("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2")
+            .withRegion("westus")
             .withExistingResourceGroup("my-resource-group")
             .withTags(mapOf("TagSample01", "sample01", "TagSample02", "sample02"))
-            .withKind(Kind.SHARED)
-            .withDisplayName("tttt")
+            .withKind(WorkbookSharedTypeKind.SHARED)
+            .withDisplayName("Sample workbook")
             .withSerializedData(
                 "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r"
                     + "\\n"
@@ -2530,7 +2529,8 @@ public final class WorkbooksCreateOrUpdateSamples {
                     + " barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}")
             .withCategory("workbook")
             .withDescription("Sample workbook")
-            .withSourceIdParameter("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/MyGroup")
+            .withSourceIdParameter(
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")
             .create();
     }
 
@@ -2555,7 +2555,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks Delete. */
 public final class WorkbooksDeleteSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookDelete.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookDelete.json
      */
     /**
      * Sample code: WorkbookDelete.
@@ -2579,7 +2579,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks GetByResourceGroup. */
 public final class WorkbooksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet1.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet1.json
      */
     /**
      * Sample code: WorkbookGet1.
@@ -2589,11 +2589,12 @@ public final class WorkbooksGetByResourceGroupSamples {
     public static void workbookGet1(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedGet.json
      */
     /**
      * Sample code: WorkbookManagedGet.
@@ -2604,11 +2605,12 @@ public final class WorkbooksGetByResourceGroupSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet.json
      */
     /**
      * Sample code: WorkbookGet.
@@ -2618,7 +2620,8 @@ public final class WorkbooksGetByResourceGroupSamples {
     public static void workbookGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE);
     }
 }
 ```
@@ -2632,20 +2635,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks List. */
 public final class WorkbooksListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksManagedList.json
-     */
-    /**
-     * Sample code: WorkbooksManagedList.
-     *
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbooksManagedList(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.workbooks().list(CategoryType.WORKBOOK, null, null, Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksListSub.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksListSub.json
      */
     /**
      * Sample code: WorkbooksListSub.
@@ -2658,7 +2648,7 @@ public final class WorkbooksListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList2.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList2.json
      */
     /**
      * Sample code: WorkbooksList2.
@@ -2681,7 +2671,28 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks ListByResourceGroup. */
 public final class WorkbooksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksManagedList.json
+     */
+    /**
+     * Sample code: WorkbooksManagedList.
+     *
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void workbooksManagedList(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager
+            .workbooks()
+            .listByResourceGroup(
+                "my-resource-group",
+                CategoryType.WORKBOOK,
+                null,
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
+                null,
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList.json
      */
     /**
      * Sample code: WorkbooksList.
@@ -2695,7 +2706,7 @@ public final class WorkbooksListByResourceGroupSamples {
                 "my-resource-group",
                 CategoryType.WORKBOOK,
                 null,
-                "/subscriptions/ad2f1a83-caac-4e21-9d2a-9ca3f87105e2/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/MyTestApp-CodeLens1",
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp",
                 null,
                 Context.NONE);
     }
@@ -2710,7 +2721,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks RevisionGet. */
 public final class WorkbooksRevisionGetSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookRevisionGet.json
      */
     /**
      * Sample code: WorkbookRevisionGet.
@@ -2738,7 +2749,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks RevisionsList. */
 public final class WorkbooksRevisionsListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionsList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookRevisionsList.json
      */
     /**
      * Sample code: WorkbookRevisionsList.
@@ -2761,7 +2772,7 @@ import com.azure.resourcemanager.applicationinsights.models.Workbook;
 /** Samples for Workbooks Update. */
 public final class WorkbooksUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookUpdate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookUpdate.json
      */
     /**
      * Sample code: WorkbookUpdate.
@@ -2774,17 +2785,17 @@ public final class WorkbooksUpdateSamples {
             manager
                 .workbooks()
                 .getByResourceGroupWithResponse(
-                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", Context.NONE)
+                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE)
                 .getValue();
         resource
             .update()
             .withSourceId(
-                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/Default-Web-WestUS/providers/Microsoft.Web/sites/MyTestApp-CodeLens1")
+                "/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp")
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedUpdate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedUpdate.json
      */
     /**
      * Sample code: WorkbookManagedUpdate.
@@ -2797,11 +2808,11 @@ public final class WorkbooksUpdateSamples {
             manager
                 .workbooks()
                 .getByResourceGroupWithResponse(
-                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", Context.NONE)
+                    "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", null, Context.NONE)
                 .getValue();
         resource
             .update()
-            .withSourceId("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/MyGroup")
+            .withSourceId("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group")
             .apply();
     }
 }

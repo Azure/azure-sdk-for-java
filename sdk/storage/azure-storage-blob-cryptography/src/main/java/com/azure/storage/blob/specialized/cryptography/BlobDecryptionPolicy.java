@@ -43,7 +43,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  */
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
-    private final ClientLogger logger = new ClientLogger(BlobDecryptionPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobDecryptionPolicy.class);
 
     /**
      * The {@link AsyncKeyEncryptionKeyResolver} used to select the correct key for decrypting existing blobs.
@@ -56,7 +56,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private final AsyncKeyEncryptionKey keyWrapper;
 
     /**
-     * Whether or not encryption is enforced by this client. Throws an exception if data is downloaded and it is not
+     * Whether encryption is enforced by this client. Throws an exception if data is downloaded and it is not
      * encrypted.
      */
     private final boolean requiresEncryption;
@@ -73,7 +73,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption
      * key
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
-     * @param requiresEncryption Whether or not encryption is enforced by this client.
+     * @param requiresEncryption Whether encryption is enforced by this client.
      */
     BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
         boolean requiresEncryption) {
@@ -92,7 +92,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // Assumption: Download is the only API on an encrypted client that sets x-ms-range
         // Only set the x-ms-range header if it already exists
         if (requestHeaders.getValue(CryptographyConstants.RANGE_HEADER) != null) {
-            requestHeaders.put(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
+            requestHeaders.set(CryptographyConstants.RANGE_HEADER, encryptedRange.toBlobRange().toString());
         }
 
         // 2. Replace the body of the response with a decrypted version of the body
@@ -114,8 +114,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
                 String encryptedDataString = responseHeaders
-                    .getValue(Constants.HeaderConstants.X_MS_META + "-"
-                        + CryptographyConstants.ENCRYPTION_DATA_KEY);
+                    .getValue(Constants.HeaderConstants.X_MS_META + "-" + CryptographyConstants.ENCRYPTION_DATA_KEY);
 
                 Flux<ByteBuffer> plainTextData = this.decryptBlob(encryptedDataString,
                     httpResponse.getBody(), encryptedRange, padding);
@@ -157,7 +156,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      *
                      * If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
                      * Reactor makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
-                     * As a work around, we initialize the cipher with a garbage IV (empty byte array) and attempt to
+                     * As a workaround, we initialize the cipher with a garbage IV (empty byte array) and attempt to
                      * decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
                      * data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
                      * of downloaded data are in position to be used as the IV for the data actually requested and we
@@ -180,7 +179,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     try {
                         cipher = getCipher(contentEncryptionKey, encryptionData, iv, padding);
                     } catch (InvalidKeyException e) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(e));
+                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                     }
 
                     return encryptedFlux.map(encryptedByteBuffer -> {
@@ -205,7 +204,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                                 cipher.update(encryptedByteBuffer, plaintextByteBuffer);
                             }
                         } catch (GeneralSecurityException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                         }
                         totalInputBytes.addAndGet(bytesToInput);
 
@@ -314,7 +313,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private EncryptionData getAndValidateEncryptionData(String encryptedDataString) {
         if (encryptedDataString == null) {
             if (requiresEncryption) {
-                throw logger.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
+                throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
                     + "downloaded data is not encrypted."));
             }
             return null;
@@ -326,7 +325,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             // Blob being downloaded is not null.
             if (encryptionData == null) {
                 if (requiresEncryption) {
-                    throw logger.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
                         + "downloaded data is not encrypted."));
                 }
                 return null;
@@ -341,14 +340,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             // understands and is able to decrypt.
             if (!CryptographyConstants.ENCRYPTION_PROTOCOL_V1
                 .equals(encryptionData.getEncryptionAgent().getProtocol())) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
                     "Invalid Encryption Agent. This version of the client library does not understand the "
                         + "Encryption Agent set on the blob message: %s",
                     encryptionData.getEncryptionAgent())));
             }
             return encryptionData;
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -363,7 +362,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         /*
          * 1. Invoke the key resolver if specified to get the key. If the resolver is specified but does not have a
          * mapping for the key id, an error should be thrown. This is important for key rotation scenario.
-         * 2. If resolver is not specified but a key is specified, match the key id on the key and and use it.
+         * 2. If resolver is not specified but a key is specified, match the key id on the key and use it.
          */
         Mono<? extends AsyncKeyEncryptionKey> keyMono;
 
@@ -374,14 +373,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      * keyResolver returns null if it cannot find the key, but Reactor throws on null values
                      * passing through workflows, so we propagate this case with an IllegalArgumentException
                      */
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                 });
         } else {
             keyMono = this.keyWrapper.getKeyId().flatMap(keyId -> {
                 if (encryptionData.getWrappedContentKey().getKeyId().equals(keyId)) {
                     return Mono.just(this.keyWrapper);
                 } else {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. "
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. "
                         + "The key id stored on the service does not match the specified key.")));
                 }
             });
@@ -421,12 +420,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
                     return cipher;
                 default:
-                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "Invalid Encryption Algorithm found on the resource. This version of the client library "
                             + "does not support the specified encryption algorithm."));
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 

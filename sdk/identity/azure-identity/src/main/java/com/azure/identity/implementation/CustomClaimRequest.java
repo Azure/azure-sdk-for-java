@@ -78,10 +78,10 @@ public class CustomClaimRequest extends ClaimsRequest {
                     claimInfo = new RequestedClaimAdditionalInfo(essential == null ? false : essential, value, values);
                 }
 
-                if (group.equals("id_token")) {
+                if ("id_token".equals(group)) {
                     cr.requestClaimInIdToken(claim, claimInfo);
                 }
-                if (group.equals("access_token")) {
+                if ("access_token".equals(group)) {
                     cr.requestClaimInAccessToken(claim, claimInfo);
                 }
             }

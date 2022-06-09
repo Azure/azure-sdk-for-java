@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ItemLevelRecoveryConnectionsClient. */
 public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRecoveryConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(ItemLevelRecoveryConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ItemLevelRecoveryConnectionsService service;
 
@@ -115,7 +112,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> provisionWithResponseAsync(
@@ -202,7 +199,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> provisionWithResponseAsync(
@@ -286,7 +283,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> provisionAsync(
@@ -299,7 +296,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         IlrRequestResource parameters) {
         return provisionWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -350,7 +347,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> provisionWithResponse(
@@ -388,7 +385,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revokeWithResponseAsync(
@@ -466,7 +463,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revokeWithResponseAsync(
@@ -541,7 +538,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> revokeAsync(
@@ -553,7 +550,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
         String recoveryPointId) {
         return revokeWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -598,7 +595,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeWithResponse(

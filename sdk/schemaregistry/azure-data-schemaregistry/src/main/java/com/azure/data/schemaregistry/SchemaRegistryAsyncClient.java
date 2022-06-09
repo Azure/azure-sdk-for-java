@@ -14,14 +14,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
+import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -75,6 +76,9 @@ public final class SchemaRegistryAsyncClient {
 
     SchemaRegistryAsyncClient(AzureSchemaRegistryImpl restService) {
         this.restService = restService;
+
+        // So the accessor is initialised because there were NullPointerExceptions before.
+        new SchemaProperties("", SchemaFormat.AVRO);
     }
 
     /**
@@ -87,8 +91,13 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
-     * exists in this schema group, a new version with the updated schema string will be registered.
+     * Registers a new schema in the specified schema group with the given schema name. If a schema
+     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
+     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
+     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
+     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
+     * is assigned to it.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -109,8 +118,13 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
-     * exists in this schema group, a new version with the updated schema string will be registered.
+     * Registers a new schema in the specified schema group with the given schema name. If a schema
+     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
+     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
+     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
+     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
+     * is assigned to it.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -150,8 +164,7 @@ public final class SchemaRegistryAsyncClient {
 
         return restService.getSchemas().registerWithResponseAsync(groupName, name, schemaDefinition, contentType, context)
             .map(response -> {
-                final SchemasRegisterHeaders deserializedHeaders = response.getDeserializedHeaders();
-                final SchemaProperties registered = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -199,13 +212,12 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                //TODO (conniey): Will this change in the future if they support additional formats?
-                final SchemaFormat schemaFormat = SchemaFormat.AVRO;
-                final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat);
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+                final String schema = new String(response.getValue(), StandardCharsets.UTF_8);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, response.getValue()));
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
             });
     }
 
@@ -296,7 +308,7 @@ public final class SchemaRegistryAsyncClient {
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
                 final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
-                final SchemaProperties properties = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),

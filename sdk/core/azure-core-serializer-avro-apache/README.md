@@ -15,7 +15,7 @@ Azure Core Apache Avro Serializer is a plugin for the `azure-core` `AvroSerializ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-avro-apache</artifactId>
-    <version>1.0.0-beta.17</version>
+    <version>1.0.0-beta.25</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -23,14 +23,6 @@ Azure Core Apache Avro Serializer is a plugin for the `azure-core` `AvroSerializ
 ## Key concepts
 
 ## Examples
-
-## Troubleshooting
-
-### Enabling Logging
-
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 

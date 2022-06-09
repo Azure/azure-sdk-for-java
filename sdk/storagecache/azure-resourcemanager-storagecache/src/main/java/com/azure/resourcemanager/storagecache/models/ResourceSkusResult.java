@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.fluent.models.ResourceSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the List Cache SKUs operation. */
 @Fluent
 public final class ResourceSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkusResult.class);
-
     /*
      * The URI to fetch the next page of Cache SKUs.
      */

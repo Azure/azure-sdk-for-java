@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -85,7 +86,7 @@ class EventHubConsumerAsyncClientTest {
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
 
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerAsyncClientTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
@@ -221,6 +222,7 @@ class EventHubConsumerAsyncClientTest {
     void receivesNumberOfEvents() {
         // Arrange
         final int numberOfEvents = 10;
+        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))
@@ -249,7 +251,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Act
         eventsFlux.publishOn(Schedulers.boundedElastic()).subscribe(event -> {
-            logger.info("Current count: {}", countDownLatch.getCount());
+            LOGGER.info("Current count: {}", countDownLatch.getCount());
             saveAction(event.getData()).block(Duration.ofSeconds(2));
             countDownLatch.countDown();
         });
@@ -263,7 +265,7 @@ class EventHubConsumerAsyncClientTest {
 
     private Mono<Instant> saveAction(EventData event) {
         return Mono.delay(Duration.ofMillis(500)).then(Mono.fromCallable(() -> {
-            logger.info("Saved the event: {}", event.getBodyAsString());
+            LOGGER.info("Saved the event: {}", event.getBodyAsString());
             return Instant.now();
         }));
     }
@@ -389,7 +391,7 @@ class EventHubConsumerAsyncClientTest {
                     count.set(0);
                 }
 
-                logger.verbose("Event Received. {}", countDownLatch.getCount());
+                LOGGER.verbose("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -431,7 +433,7 @@ class EventHubConsumerAsyncClientTest {
                     count.set(0);
                 }
 
-                logger.info("Event Received. {}", countDownLatch.getCount());
+                LOGGER.info("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -460,7 +462,7 @@ class EventHubConsumerAsyncClientTest {
 
         final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).subscribe(
             e -> {
-                logger.info("Event received");
+                LOGGER.info("Event received");
                 final int count = counter.incrementAndGet();
                 if (count > backPressure) {
                     Assertions.fail("Shouldn't have more than " + backPressure + " events. Count: " + count);
@@ -470,9 +472,9 @@ class EventHubConsumerAsyncClientTest {
             },
             error -> Assertions.fail(error.toString()),
             () -> {
-                logger.info("Complete");
+                LOGGER.info("Complete");
             }, sub -> {
-                logger.info("requesting backpressure: {}", backPressure);
+                LOGGER.info("requesting backpressure: {}", backPressure);
                 sub.request(backPressure);
             });
 
@@ -491,13 +493,15 @@ class EventHubConsumerAsyncClientTest {
     @Test
     void setsCorrectProperties() {
         // Act
+        String endpointSuffix = Configuration.getGlobalConfiguration()
+            .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath=dummy-event-hub")
+            .connectionString(String.format("Endpoint=sb://doesnotexist%s/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath=dummy-event-hub", endpointSuffix))
             .consumerGroup(CONSUMER_GROUP)
             .buildAsyncConsumerClient();
 
         Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
-        Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+        Assertions.assertEquals(String.format("doesnotexist%s", endpointSuffix), consumer.getFullyQualifiedNamespace());
         Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
     }
 

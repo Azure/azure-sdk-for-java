@@ -60,7 +60,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
     @ServiceInterface(name = "CdnManagementClientM")
     private interface ManagedRuleSetsService {
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/CdnWebApplicationFirewallManagedRuleSets")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedRuleSetDefinitionList>> list(
@@ -86,7 +86,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedRuleSetDefinitionInner>> listSinglePageAsync() {
@@ -122,7 +123,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -132,7 +133,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedRuleSetDefinitionInner>> listSinglePageAsync(Context context) {
@@ -173,7 +175,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedRuleSetDefinitionInner> listAsync() {
@@ -187,7 +190,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagedRuleSetDefinitionInner> listAsync(Context context) {
@@ -200,7 +204,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedRuleSetDefinitionInner> list() {
@@ -214,7 +219,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedRuleSetDefinitionInner> list(Context context) {
@@ -228,7 +234,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedRuleSetDefinitionInner>> listNextSinglePageAsync(String nextLink) {
@@ -253,7 +260,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -264,7 +271,8 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed rule set definitions available for use in a policy.
+     * @return list of managed rule set definitions available for use in a policy along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedRuleSetDefinitionInner>> listNextSinglePageAsync(

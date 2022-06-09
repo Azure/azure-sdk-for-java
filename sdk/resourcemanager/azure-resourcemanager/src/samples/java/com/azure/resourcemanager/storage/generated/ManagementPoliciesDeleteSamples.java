@@ -10,7 +10,7 @@ import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 /** Samples for ManagementPolicies Delete. */
 public final class ManagementPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountDeleteManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountDeleteManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteManagementPolicies.

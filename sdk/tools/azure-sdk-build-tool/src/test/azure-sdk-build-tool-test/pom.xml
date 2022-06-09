@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.azure.tools</groupId>
+    <artifactId>azure-maven-build-tool-test</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-sdk-bom</artifactId>
+                <version>1.0.5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-data-appconfiguration</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-cosmos</artifactId>
+        </dependency>
+
+        <!-- Override the bom version for this dependency -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-keys</artifactId>
+            <version>4.3.6</version>
+        </dependency>
+
+        <!--
+        used for testing direct dependency on track one library. It also should report transitive dependencies
+        coming from this library
+        -->
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-cosmosdb</artifactId>
+            <version>2.6.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-keyvault</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+
+        <!--
+        This library has a direct dependency on com.microsoft.adal4j, a 'track one' library that we would like
+        to warn users about, if we have failOnDeprecatedMicrosoftLibraryUsage set to true
+        -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-mssql</artifactId>
+            <version>1.13.1.Final</version>
+        </dependency>
+
+        <!-- Use a beta dependency -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+            <version>1.0.0-beta.5</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.azure.tools</groupId>
+                <artifactId>azure-sdk-build-tool</artifactId>
+                <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.tools:azure-sdk-build-tool;current} -->
+                <configuration>
+                    <validateAzureSdkBomUsed>true</validateAzureSdkBomUsed>
+                    <validateNoDeprecatedMicrosoftLibraryUsed>true</validateNoDeprecatedMicrosoftLibraryUsed>
+                    <validateBomVersionsAreUsed>true</validateBomVersionsAreUsed>
+                    <validateNoBetaLibraryUsed>true</validateNoBetaLibraryUsed>
+                    <validateNoBetaApiUsed>true</validateNoBetaApiUsed>
+                    <reportFile>./azure-sdk-usage-report.txt</reportFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

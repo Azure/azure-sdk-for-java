@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the paths HTTP requests. */
 @Fluent
 public final class HttpSettingsRoutes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpSettingsRoutes.class);
-
     /*
      * The prefix that should precede all the authentication/authorization
      * paths.

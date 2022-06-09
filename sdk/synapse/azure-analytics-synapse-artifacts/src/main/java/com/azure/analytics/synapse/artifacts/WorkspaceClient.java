@@ -7,6 +7,7 @@ package com.azure.analytics.synapse.artifacts;
 import com.azure.analytics.synapse.artifacts.implementation.WorkspacesImpl;
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.Workspace;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -16,13 +17,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class WorkspaceClient {
-    private final WorkspacesImpl serviceClient;
+    @Generated private final WorkspacesImpl serviceClient;
 
     /**
-     * Initializes an instance of Workspaces client.
+     * Initializes an instance of WorkspaceClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     WorkspaceClient(WorkspacesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -34,6 +36,7 @@ public final class WorkspaceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Workspace get() {
         return this.serviceClient.get();
@@ -46,8 +49,9 @@ public final class WorkspaceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {
         return this.serviceClient.getWithResponse(context);

@@ -97,14 +97,14 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
                 new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("region", Collections.singletonList("Miami"));
+                        put("Dim1", Collections.singletonList("JPN"));
                     }}), Context.NONE)
             .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
-            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("region");
+            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim1");
             assertNotNull(dimensionFilterValue);
-            assertEquals("Miami", dimensionFilterValue);
+            assertEquals("JPN", dimensionFilterValue);
         });
     }
 

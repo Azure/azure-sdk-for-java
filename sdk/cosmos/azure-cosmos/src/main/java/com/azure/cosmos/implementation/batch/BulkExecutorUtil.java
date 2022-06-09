@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -12,6 +13,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -21,10 +23,13 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
@@ -94,10 +99,13 @@ final class BulkExecutorUtil {
 
         checkNotNull(operation, "expected non-null operation");
 
+        AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
+
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
-            final Mono<String> pkRangeIdMono = BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
+            final Mono<String> pkRangeIdMono = Mono.defer(() ->
+                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
                     final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
@@ -105,12 +113,39 @@ final class BulkExecutorUtil {
 
                     return docClientWrapper.getPartitionKeyRangeCache()
                         .tryLookupAsync(null, collection.getResourceId(), null, null)
-                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) ->
-                            routingMap.v.getRangeByEffectivePartitionKey(
+                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
+
+                            if (routingMap.v == null) {
+                                collectionBeforeRecreation.set(collection);
+                                throw new CollectionRoutingMapNotFoundException(
+                                    String.format(
+                                        "No collection routing map found for container %s(%s) in database %s.",
+                                        container.getId(),
+                                        collection.getResourceId(),
+                                        container.getDatabase().getId())
+                                        );
+                            }
+
+                            return routingMap.v.getRangeByEffectivePartitionKey(
                                 getEffectivePartitionKeyString(
                                     partitionKeyInternal,
-                                    definition)).getId());
-                });
+                                    definition)).getId();
+                        });
+                }))
+                .retryWhen(Retry
+                    .fixedDelay(
+                        BatchRequestResponseConstants.MAX_COLLECTION_RECREATION_RETRY_COUNT,
+                        Duration.ofSeconds(
+                            BatchRequestResponseConstants.MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS))
+                    .filter(t -> t instanceof CollectionRoutingMapNotFoundException)
+                    .doBeforeRetry((retrySignal) -> docClientWrapper
+                        .getCollectionCache()
+                        .refresh(
+                            null,
+                            Utils.getCollectionName(BridgeInternal.getLink(container)),
+                            null)
+                    )
+                );
 
             return pkRangeIdMono;
         } else {
@@ -139,7 +174,8 @@ final class BulkExecutorUtil {
      */
     private static Mono<DocumentCollection> getCollectionInfoAsync(
         AsyncDocumentClient documentClient,
-        CosmosAsyncContainer container) {
+        CosmosAsyncContainer container,
+        DocumentCollection obsoleteValue) {
 
         // Utils.joinPath sanitizes the path and make sure it ends with a single '/'.
         final String resourceAddress = Utils.joinPath(BridgeInternal.getLink(container), null);
@@ -149,7 +185,8 @@ final class BulkExecutorUtil {
             .resolveByNameAsync(
                 null,
                 resourceAddress,
-                null);
+                null,
+                obsoleteValue);
     }
 
     static boolean isWriteOperation(CosmosItemOperationType cosmosItemOperationType) {
@@ -159,4 +196,26 @@ final class BulkExecutorUtil {
             cosmosItemOperationType == CosmosItemOperationType.DELETE ||
             cosmosItemOperationType == CosmosItemOperationType.PATCH;
     }
+
+    static class CollectionRoutingMapNotFoundException extends CosmosException {
+
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Instantiates a new Invalid partition exception.
+         *
+         * @param msg the msg
+         */
+        public CollectionRoutingMapNotFoundException(String msg) {
+            super(HttpConstants.StatusCodes.NOTFOUND, msg);
+            setSubStatus();
+        }
+
+        private void setSubStatus() {
+            this.getResponseHeaders().put(
+                WFConstants.BackendHeaders.SUB_STATUS,
+                Integer.toString(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
+        }
+    }
+
 }

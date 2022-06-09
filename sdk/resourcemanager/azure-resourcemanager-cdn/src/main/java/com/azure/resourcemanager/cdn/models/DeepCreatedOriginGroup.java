@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedOriginGroupProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,9 +15,8 @@ import java.util.List;
  * The origin group for CDN content which is added when creating a CDN endpoint. Traffic is sent to the origins within
  * the origin group based on origin health.
  */
-@JsonFlatten
 @Fluent
-public class DeepCreatedOriginGroup {
+public final class DeepCreatedOriginGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeepCreatedOriginGroup.class);
 
     /*
@@ -27,33 +26,10 @@ public class DeepCreatedOriginGroup {
     private String name;
 
     /*
-     * Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Properties of the origin group created on the CDN endpoint.
      */
-    @JsonProperty(value = "properties.healthProbeSettings")
-    private HealthProbeParameters healthProbeSettings;
-
-    /*
-     * The source of the content being delivered via CDN within given origin
-     * group.
-     */
-    @JsonProperty(value = "properties.origins")
-    private List<ResourceReference> origins;
-
-    /*
-     * Time in minutes to shift the traffic to the endpoint gradually when an
-     * unhealthy endpoint comes healthy or a new endpoint is added. Default is
-     * 10 mins. This property is currently not supported.
-     */
-    @JsonProperty(value = "properties.trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
-    private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
-
-    /*
-     * The JSON object that contains the properties to determine origin health
-     * using real requests/responses.This property is currently not supported.
-     */
-    @JsonProperty(value = "properties.responseBasedOriginErrorDetectionSettings")
-    private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
+    @JsonProperty(value = "properties")
+    private DeepCreatedOriginGroupProperties innerProperties;
 
     /**
      * Get the name property: Origin group name which must be unique within the endpoint.
@@ -76,13 +52,22 @@ public class DeepCreatedOriginGroup {
     }
 
     /**
+     * Get the innerProperties property: Properties of the origin group created on the CDN endpoint.
+     *
+     * @return the innerProperties value.
+     */
+    private DeepCreatedOriginGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
      * the origin.
      *
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
-        return this.healthProbeSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().healthProbeSettings();
     }
 
     /**
@@ -93,7 +78,10 @@ public class DeepCreatedOriginGroup {
      * @return the DeepCreatedOriginGroup object itself.
      */
     public DeepCreatedOriginGroup withHealthProbeSettings(HealthProbeParameters healthProbeSettings) {
-        this.healthProbeSettings = healthProbeSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginGroupProperties();
+        }
+        this.innerProperties().withHealthProbeSettings(healthProbeSettings);
         return this;
     }
 
@@ -103,7 +91,7 @@ public class DeepCreatedOriginGroup {
      * @return the origins value.
      */
     public List<ResourceReference> origins() {
-        return this.origins;
+        return this.innerProperties() == null ? null : this.innerProperties().origins();
     }
 
     /**
@@ -113,7 +101,10 @@ public class DeepCreatedOriginGroup {
      * @return the DeepCreatedOriginGroup object itself.
      */
     public DeepCreatedOriginGroup withOrigins(List<ResourceReference> origins) {
-        this.origins = origins;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginGroupProperties();
+        }
+        this.innerProperties().withOrigins(origins);
         return this;
     }
 
@@ -125,7 +116,9 @@ public class DeepCreatedOriginGroup {
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
     /**
@@ -139,8 +132,13 @@ public class DeepCreatedOriginGroup {
      */
     public DeepCreatedOriginGroup withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
         Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes) {
-        this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes =
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginGroupProperties();
+        }
+        this
+            .innerProperties()
+            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
@@ -151,7 +149,9 @@ public class DeepCreatedOriginGroup {
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.responseBasedOriginErrorDetectionSettings;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
     /**
@@ -163,7 +163,10 @@ public class DeepCreatedOriginGroup {
      */
     public DeepCreatedOriginGroup withResponseBasedOriginErrorDetectionSettings(
         ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings) {
-        this.responseBasedOriginErrorDetectionSettings = responseBasedOriginErrorDetectionSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginGroupProperties();
+        }
+        this.innerProperties().withResponseBasedOriginErrorDetectionSettings(responseBasedOriginErrorDetectionSettings);
         return this;
     }
 
@@ -178,14 +181,8 @@ public class DeepCreatedOriginGroup {
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model DeepCreatedOriginGroup"));
         }
-        if (healthProbeSettings() != null) {
-            healthProbeSettings().validate();
-        }
-        if (origins() != null) {
-            origins().forEach(e -> e.validate());
-        }
-        if (responseBasedOriginErrorDetectionSettings() != null) {
-            responseBasedOriginErrorDetectionSettings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

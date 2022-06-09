@@ -14,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An immutable client-side representation of an Azure Spring App Deployment. */
@@ -34,9 +33,6 @@ public interface SpringAppDeployment
 
     /** @return whether the deployment is active */
     boolean isActive();
-
-    /** @return the creation time of the deployment */
-    OffsetDateTime createdTime();
 
     /** @return all the instances of the deployment */
     List<DeploymentInstance> instances();
@@ -74,6 +70,21 @@ public interface SpringAppDeployment
     /** @return the log file url of the deployment */
     Mono<String> getLogFileUrlAsync();
 
+    /** @return (Enterprise Tier Only) config file patterns */
+    List<String> configFilePatterns();
+
+    /** @return cpu count, can be 0.5, 1, 2, etc */
+    Double cpu();
+
+    /** @return memory in GB, can be 0.5, 1, 2, etc */
+    Double memoryInGB();
+
+    /** @return RuntimeVersion of the deployment, only support Basic/Standard Tier, null for Enterprise Tier */
+    RuntimeVersion runtimeVersion();
+
+    /** @return JVM options of the deployment */
+    String jvmOptions();
+
     /**
      * Container interface for all the definitions that need to be implemented.
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
@@ -101,6 +112,18 @@ public interface SpringAppDeployment
              */
             T withJarFile(File jar);
 
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the jar package for the deployment.
+             * @param jar the file of the jar
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                           {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding}),
+             *                           use null or empty list to clear existing configurations
+             * @return the next stage of deployment definition
+             */
+            T withJarFile(File jar, List<String> configFilePatterns);
+
             // Remove compression first due to tar.gz needs extern dependency
             // /**
             //  * Specifies the source code for the deployment.
@@ -115,6 +138,18 @@ public interface SpringAppDeployment
              * @return the next stage of deployment definition
              */
             WithModule<T> withSourceCodeTarGzFile(File sourceCodeTarGz);
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the source code for the deployment.
+             * @param sourceCodeTarGz a tar.gz file of the source code
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                           {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding}),
+             *                           use null or empty list to clear existing configurations.
+             * @return the next stage of deployment definition
+             */
+            WithModule<T> withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns);
 
             /**
              * Specifies the a existing source in the cloud storage.
@@ -158,11 +193,25 @@ public interface SpringAppDeployment
             T withCpu(int cpuCount);
 
             /**
+             * Specifies the cpu number of the deployment.
+             * @param cpuCount the number of the cpu, can be 0.5, 1, 2, etc
+             * @return the next stage of deployment definition
+             */
+            T withCpu(double cpuCount);
+
+            /**
              * Specifies the memory of the deployment.
              * @param sizeInGB the size of the memory in GB
              * @return the next stage of deployment definition
              */
             T withMemory(int sizeInGB);
+
+            /**
+             * Specifies the memory of the deployment.
+             * @param sizeInGB the size of the memory in GB, can be 0.5, 1, 2, etc
+             * @return the next stage of deployment definition
+             */
+            T withMemory(double sizeInGB);
 
             /**
              * Specifies the runtime version of the deployment.
@@ -198,6 +247,14 @@ public interface SpringAppDeployment
              * @return the next stage of deployment definition
              */
             T withActivation();
+
+            /**
+             * Specifies the config file patterns for the deployment.
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment definition
+             */
+            T withConfigFilePatterns(List<String> configFilePatterns);
         }
 
         /**
@@ -242,11 +299,25 @@ public interface SpringAppDeployment
             Update withCpu(int cpuCount);
 
             /**
+             * Specifies the cpu number of the deployment.
+             * @param cpuCount the number of the cpu, can be 0.5, 1, 2, etc
+             * @return the next stage of deployment update
+             */
+            Update withCpu(double cpuCount);
+
+            /**
              * Specifies the memory of the deployment.
              * @param sizeInGB the size of the memory in GB
              * @return the next stage of deployment update
              */
             Update withMemory(int sizeInGB);
+
+            /**
+             * Specifies the memory of the deployment.
+             * @param sizeInGB the size of the memory, can be 0.5, 1, 2, etc
+             * @return the next stage of deployment update
+             */
+            Update withMemory(double sizeInGB);
 
             /**
              * Specifies the runtime version of the deployment.
@@ -289,6 +360,14 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withActivation();
+
+            /**
+             * Specifies the config file patterns for the deployment.
+             * @param configFilePatterns Config file patterns to decide which patterns of Application Configuration Service will be used.
+             *                           Use null or empty list to clear existing configurations.
+             * @return the next stage of deployment update
+             */
+            Update withConfigFilePatterns(List<String> configFilePatterns);
         }
 
         /** The stage of a deployment update allowing to specify the source code or package. */
@@ -299,6 +378,18 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             Update withJarFile(File jar);
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the jar package for the deployment.
+             * @param jar the file of the jar
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                            {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding})
+             *                           use null or empty list to clear existing configurations
+             * @return the next stage of deployment update
+             */
+            Update withJarFile(File jar, List<String> configFilePatterns);
 
             // /**
             //  * Specifies the source code for the deployment.
@@ -313,6 +404,18 @@ public interface SpringAppDeployment
              * @return the next stage of deployment update
              */
             WithModule withSourceCodeTarGzFile(File sourceCodeTarGz);
+
+            /**
+             * (Enterprise Tier Only)
+             * Specifies the source code for the deployment.
+             * @param sourceCodeTarGz a tar.gz file of the source code
+             * @param configFilePatterns config file patterns to decide which patterns of Application Configuration Service will be used
+             *                           (App has to have a binding to the Configuration Service first in order to read the config files
+             *                            {@link com.azure.resourcemanager.appplatform.models.SpringApp.DefinitionStages.WithConfigurationServiceBinding})
+             *                           use null or empty list to clear existing configurations.
+             * @return the next stage of deployment update
+             */
+            WithModule withSourceCodeTarGzFile(File sourceCodeTarGz, List<String> configFilePatterns);
 
             /**
              * Specifies the a existing source in the cloud storage.

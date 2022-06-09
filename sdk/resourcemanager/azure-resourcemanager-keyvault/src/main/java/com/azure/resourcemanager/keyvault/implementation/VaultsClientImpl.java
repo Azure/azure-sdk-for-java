@@ -43,7 +43,6 @@ import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
 import com.azure.resourcemanager.keyvault.models.DeletedVaultListResult;
 import com.azure.resourcemanager.keyvault.models.ResourceListResult;
-import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
 import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultListResult;
@@ -411,7 +410,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -434,7 +433,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -457,7 +456,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters).getSyncPoller();
@@ -475,7 +474,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters, context).getSyncPoller();
@@ -1012,7 +1011,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1023,7 +1022,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties) {
+        VaultAccessPolicyParametersInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1046,14 +1045,12 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            properties.validate();
+            parameters.validate();
         }
         final String accept = "application/json";
-        VaultAccessPolicyParametersInner parameters = new VaultAccessPolicyParametersInner();
-        parameters.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -1077,7 +1074,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1089,7 +1086,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties,
+        VaultAccessPolicyParametersInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1113,14 +1110,12 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            properties.validate();
+            parameters.validate();
         }
         final String accept = "application/json";
-        VaultAccessPolicyParametersInner parameters = new VaultAccessPolicyParametersInner();
-        parameters.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
             .updateAccessPolicy(
@@ -1141,7 +1136,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1152,8 +1147,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties) {
-        return updateAccessPolicyWithResponseAsync(resourceGroupName, vaultName, operationKind, properties)
+        VaultAccessPolicyParametersInner parameters) {
+        return updateAccessPolicyWithResponseAsync(resourceGroupName, vaultName, operationKind, parameters)
             .flatMap(
                 (Response<VaultAccessPolicyParametersInner> res) -> {
                     if (res.getValue() != null) {
@@ -1170,7 +1165,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1181,8 +1176,8 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties) {
-        return updateAccessPolicyAsync(resourceGroupName, vaultName, operationKind, properties).block();
+        VaultAccessPolicyParametersInner parameters) {
+        return updateAccessPolicyAsync(resourceGroupName, vaultName, operationKind, parameters).block();
     }
 
     /**
@@ -1191,7 +1186,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
-     * @param properties Properties of the access policy.
+     * @param parameters Access policy to merge into the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1203,9 +1198,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
-        VaultAccessPolicyProperties properties,
+        VaultAccessPolicyParametersInner parameters,
         Context context) {
-        return updateAccessPolicyWithResponseAsync(resourceGroupName, vaultName, operationKind, properties, context)
+        return updateAccessPolicyWithResponseAsync(resourceGroupName, vaultName, operationKind, parameters, context)
             .block();
     }
 
@@ -1957,7 +1952,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String vaultName, String location) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
         return this
@@ -1977,7 +1972,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(
         String vaultName, String location, Context context) {
         context = this.client.mergeContext(context);
@@ -1997,7 +1992,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location) {
         return beginPurgeDeletedAsync(vaultName, location).getSyncPoller();
     }
@@ -2013,7 +2008,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location, Context context) {
         return beginPurgeDeletedAsync(vaultName, location, context).getSyncPoller();
     }
@@ -2245,14 +2240,15 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        VaultCheckNameAvailabilityParameters vaultName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2265,12 +2261,12 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        } else {
+            vaultName.validate();
         }
         final String accept = "application/json";
-        VaultCheckNameAvailabilityParameters vaultName = new VaultCheckNameAvailabilityParameters();
-        vaultName.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -2288,7 +2284,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2297,7 +2293,7 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String name, Context context) {
+        VaultCheckNameAvailabilityParameters vaultName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2310,12 +2306,12 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        } else {
+            vaultName.validate();
         }
         final String accept = "application/json";
-        VaultCheckNameAvailabilityParameters vaultName = new VaultCheckNameAvailabilityParameters();
-        vaultName.withName(name);
         context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
@@ -2330,15 +2326,16 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name) {
-        return checkNameAvailabilityWithResponseAsync(name)
+    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
+        VaultCheckNameAvailabilityParameters vaultName) {
+        return checkNameAvailabilityWithResponseAsync(vaultName)
             .flatMap(
                 (Response<CheckNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -2352,21 +2349,21 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(String name) {
-        return checkNameAvailabilityAsync(name).block();
+    public CheckNameAvailabilityResultInner checkNameAvailability(VaultCheckNameAvailabilityParameters vaultName) {
+        return checkNameAvailabilityAsync(vaultName).block();
     }
 
     /**
      * Checks that the vault name is valid and is not already in use.
      *
-     * @param name The vault name.
+     * @param vaultName The name of the vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2374,8 +2371,9 @@ public final class VaultsClientImpl implements InnerSupportsGet<VaultInner>, Inn
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String name, Context context) {
-        return checkNameAvailabilityWithResponseAsync(name, context).block();
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        VaultCheckNameAvailabilityParameters vaultName, Context context) {
+        return checkNameAvailabilityWithResponseAsync(vaultName, context).block();
     }
 
     /**

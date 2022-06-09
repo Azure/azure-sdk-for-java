@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -20,12 +21,14 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
@@ -55,6 +58,7 @@ public final class Utility {
         CLIENT_NAME = properties.getOrDefault(Constants.NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(Constants.VERSION, "UnknownVersion");
     }
+    static final String DEFAULT_SCOPE = "/.default";
 
     private Utility() {
     }
@@ -76,8 +80,10 @@ public final class Utility {
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential credential,
-                                                 TokenCredential tokenCredential, List<HttpPipelinePolicy> perCallPolicies,
+                                                 Configuration configuration, RetryPolicy retryPolicy,
+                                                 RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
+                                                 TokenCredential tokenCredential, FormRecognizerAudience audience,
+                                                 List<HttpPipelinePolicy> perCallPolicies,
                                                  List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
 
         Configuration buildConfiguration = (configuration == null)
@@ -98,17 +104,22 @@ public final class Utility {
 
         httpPipelinePolicies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        httpPipelinePolicies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
         // Authentications
         if (tokenCredential != null) {
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.DEFAULT_SCOPE));
-        } else if (credential != null) {
-            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY, credential));
+            if (audience == null) {
+                audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            }
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                audience + DEFAULT_SCOPE));
+        } else if (azureKeyCredential != null) {
+            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
+                azureKeyCredential));
         } else {
-            // Throw exception that credential and tokenCredential cannot be null
+            // Throw exception that azureKeyCredential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }

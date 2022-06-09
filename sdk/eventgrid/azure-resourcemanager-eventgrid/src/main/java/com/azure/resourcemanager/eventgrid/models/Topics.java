@@ -31,7 +31,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic along with {@link Response}.
      */
     Response<Topic> getByResourceGroupWithResponse(String resourceGroupName, String topicName, Context context);
 
@@ -63,7 +63,7 @@ public interface Topics {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Topic> list();
 
@@ -82,7 +82,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Topic> list(String filter, Integer top, Context context);
 
@@ -93,7 +93,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Topic> listByResourceGroup(String resourceGroupName);
 
@@ -113,7 +113,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Topic> listByResourceGroup(String resourceGroupName, String filter, Integer top, Context context);
 
@@ -138,7 +138,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response}.
      */
     Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(
         String resourceGroupName, String topicName, Context context);
@@ -182,7 +182,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventType> listEventTypes(
         String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName);
@@ -198,7 +198,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventType> listEventTypes(
         String resourceGroupName,
@@ -214,7 +214,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic along with {@link Response}.
      */
     Topic getById(String id);
 
@@ -226,7 +226,7 @@ public interface Topics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic along with {@link Response}.
      */
     Response<Topic> getByIdWithResponse(String id, Context context);
 

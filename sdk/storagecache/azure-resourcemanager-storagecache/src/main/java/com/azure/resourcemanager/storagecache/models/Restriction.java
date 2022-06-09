@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The restrictions preventing this SKU from being used. */
 @Fluent
 public final class Restriction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Restriction.class);
-
     /*
      * The type of restrictions. In this version, the only possible value for
      * this is location.

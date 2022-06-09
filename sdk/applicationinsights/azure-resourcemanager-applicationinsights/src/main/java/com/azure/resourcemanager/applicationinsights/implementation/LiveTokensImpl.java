@@ -12,10 +12,9 @@ import com.azure.resourcemanager.applicationinsights.fluent.LiveTokensClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.LiveTokenResponseInner;
 import com.azure.resourcemanager.applicationinsights.models.LiveTokenResponse;
 import com.azure.resourcemanager.applicationinsights.models.LiveTokens;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LiveTokensImpl implements LiveTokens {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveTokensImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LiveTokensImpl.class);
 
     private final LiveTokensClient innerClient;
 

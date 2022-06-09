@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PortalRevisionContractProperties model. */
 @Fluent
 public final class PortalRevisionContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalRevisionContractProperties.class);
-
     /*
      * Portal revision description.
      */
@@ -29,19 +25,19 @@ public final class PortalRevisionContractProperties {
     private String statusDetails;
 
     /*
-     * Portal revision publishing status
+     * Status of the portal's revision.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PortalRevisionStatus status;
 
     /*
-     * Indicates if the Portal Revision is public.
+     * Indicates if the portal's revision is public.
      */
     @JsonProperty(value = "isCurrent")
     private Boolean isCurrent;
 
     /*
-     * Portal revision creation date and time.
+     * Portal's revision creation date and time.
      */
     @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
@@ -82,7 +78,7 @@ public final class PortalRevisionContractProperties {
     }
 
     /**
-     * Get the status property: Portal revision publishing status.
+     * Get the status property: Status of the portal's revision.
      *
      * @return the status value.
      */
@@ -91,7 +87,7 @@ public final class PortalRevisionContractProperties {
     }
 
     /**
-     * Get the isCurrent property: Indicates if the Portal Revision is public.
+     * Get the isCurrent property: Indicates if the portal's revision is public.
      *
      * @return the isCurrent value.
      */
@@ -100,7 +96,7 @@ public final class PortalRevisionContractProperties {
     }
 
     /**
-     * Set the isCurrent property: Indicates if the Portal Revision is public.
+     * Set the isCurrent property: Indicates if the portal's revision is public.
      *
      * @param isCurrent the isCurrent value to set.
      * @return the PortalRevisionContractProperties object itself.
@@ -111,7 +107,7 @@ public final class PortalRevisionContractProperties {
     }
 
     /**
-     * Get the createdDateTime property: Portal revision creation date and time.
+     * Get the createdDateTime property: Portal's revision creation date and time.
      *
      * @return the createdDateTime value.
      */

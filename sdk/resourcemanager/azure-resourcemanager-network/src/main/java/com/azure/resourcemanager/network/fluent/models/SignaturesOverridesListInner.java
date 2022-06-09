@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes an object containing an array with a single item. */
 @Fluent
 public final class SignaturesOverridesListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignaturesOverridesListInner.class);
-
     /*
      * Describes a list consisting exactly one item describing the policy's
      * signature override status

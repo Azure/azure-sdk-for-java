@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,8 +24,6 @@ import java.util.Map;
 @JsonSubTypes({@JsonSubTypes.Type(name = "TabularTranslator", value = TabularTranslator.class)})
 @Fluent
 public class CopyTranslator {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyTranslator.class);
-
     /*
      * A copy activity translator.
      */

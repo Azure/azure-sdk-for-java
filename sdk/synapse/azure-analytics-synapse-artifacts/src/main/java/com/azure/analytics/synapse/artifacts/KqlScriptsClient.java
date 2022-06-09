@@ -7,6 +7,7 @@ package com.azure.analytics.synapse.artifacts;
 import com.azure.analytics.synapse.artifacts.implementation.KqlScriptsImpl;
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -16,13 +17,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class KqlScriptsClient {
-    private final KqlScriptsImpl serviceClient;
+    @Generated private final KqlScriptsImpl serviceClient;
 
     /**
-     * Initializes an instance of KqlScripts client.
+     * Initializes an instance of KqlScriptsClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     KqlScriptsClient(KqlScriptsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -32,8 +34,9 @@ public final class KqlScriptsClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all KQL scripts.
+     * @return all KQL scripts as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KqlScriptResource> getAll() {
         return this.serviceClient.getAll();
@@ -46,8 +49,9 @@ public final class KqlScriptsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all KQL scripts.
+     * @return all KQL scripts as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KqlScriptResource> getAll(Context context) {
         return this.serviceClient.getAll(context);

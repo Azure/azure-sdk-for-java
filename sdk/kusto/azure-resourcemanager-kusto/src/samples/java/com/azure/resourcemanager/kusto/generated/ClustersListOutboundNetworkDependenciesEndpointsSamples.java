@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters ListOutboundNetworkDependenciesEndpoints. */
 public final class ClustersListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoOutboundNetworkDependenciesList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoOutboundNetworkDependenciesList.json
      */
     /**
      * Sample code: Get Kusto cluster outbound network dependencies.
@@ -18,6 +18,6 @@ public final class ClustersListOutboundNetworkDependenciesEndpointsSamples {
      */
     public static void getKustoClusterOutboundNetworkDependencies(
         com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().listOutboundNetworkDependenciesEndpoints("kustorptest", "kustoclusterrptest", Context.NONE);
+        manager.clusters().listOutboundNetworkDependenciesEndpoints("kustorptest", "kustoCluster", Context.NONE);
     }
 }

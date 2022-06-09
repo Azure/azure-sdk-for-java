@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +17,10 @@ import java.util.concurrent.ForkJoinPool;
  * @see AzureApplicationCredential
  */
 class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureApplicationCredentialBuilder.class);
+
     private String managedIdentityClientId;
+    private String managedIdentityResourceId;
 
     /**
      * Creates an instance of a AzureApplicationCredentialBuilder.
@@ -52,6 +56,18 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     }
 
     /**
+     * Specifies the resource ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities.
+     *
+     * @param resourceId the resource ID
+     * @return An updated instance of this builder with the managed identity client id set as specified.
+     */
+    public AzureApplicationCredentialBuilder managedIdentityResourceId(String resourceId) {
+        this.managedIdentityResourceId = resourceId;
+        return this;
+    }
+
+    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
@@ -74,17 +90,22 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
 
     /**
      * Creates new {@link AzureApplicationCredential} with the configured options set.
-     *
      * @return a {@link AzureApplicationCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public AzureApplicationCredential build() {
+        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+        }
+
         return new AzureApplicationCredential(getCredentialsChain());
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
         return output;
     }
 }

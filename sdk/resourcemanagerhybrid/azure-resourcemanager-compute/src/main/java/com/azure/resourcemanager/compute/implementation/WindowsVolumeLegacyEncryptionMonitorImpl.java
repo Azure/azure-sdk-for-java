@@ -102,7 +102,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
             || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("All")
             || ((String) publicSettings.get("VolumeType")).equalsIgnoreCase("Data")) {
             String encryptionOperation = (String) publicSettings.get("EncryptionOperation");
-            if (encryptionOperation != null && encryptionOperation.equalsIgnoreCase("EnableEncryption")) {
+            if (encryptionOperation != null && "EnableEncryption".equalsIgnoreCase(encryptionOperation)) {
                 return EncryptionStatus.ENCRYPTED;
             }
             return EncryptionStatus.NOT_ENCRYPTED;

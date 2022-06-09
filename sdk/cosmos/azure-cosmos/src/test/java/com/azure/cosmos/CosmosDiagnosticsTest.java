@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -35,7 +36,9 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,6 +51,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -58,11 +62,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,10 +79,31 @@ import static org.assertj.core.api.Assertions.fail;
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = DateTimeFormatter.ISO_INSTANT;
+    private static final String tempMachineId = getTempMachineId();
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
+    private CosmosAsyncDatabase cosmosAsyncDatabase;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
+
+    private static String getTempMachineId() {
+        Field field = null;
+        try {
+            field = RxDocumentClientImpl.class.getDeclaredField("tempMachineId");
+        } catch (NoSuchFieldException e) {
+            fail(e.toString());
+        }
+        field.setAccessible(true);
+
+        try {
+            return (String)field.get(null);
+        } catch (IllegalAccessException e) {
+            fail(e.toString());
+
+            return null;
+        }
+    }
+
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
@@ -92,6 +121,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             .directMode()
             .buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
+        cosmosAsyncDatabase = directClient.asyncClient().getDatabase(cosmosAsyncContainer.getDatabase().getId());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
 
@@ -138,6 +168,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "connectionStateListenerArgProvider")
+    public Object[][] connectionStateListenerArgProvider() {
+        return new Object[][]{
+            {true},
+            {false}
+        };
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() throws Exception {
         CosmosClient testGatewayClient = null;
@@ -148,6 +186,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .gatewayMode()
                 .buildClient();
+            // Adding a delay to allow async VM instance metadata initialization to complete
+            Thread.sleep(2000);
             CosmosContainer container =
                 testGatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -159,6 +199,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
@@ -197,6 +241,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).contains("\"exceptionMessage\":\"Entity with the specified id does not exist in the system.");
+            assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
+            assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
@@ -247,6 +298,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).containsAnyOf(
+                "\"machineId\":\"" + tempMachineId + "\"", // logged machineId should be static uuid or
+                "\"machineId\":\"" + ClientTelemetry.getMachineId(null) + "\"" // the vmId from Azure
+            );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
@@ -264,6 +319,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             } catch (CosmosException e) {
                 diagnostics = e.getDiagnostics().toString();
                 assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+                assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
+                assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
+                assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
         } finally {
@@ -397,6 +455,50 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryDiagnosticsOnOrderBy() {
+        //  create container with more than 4 physical partitions
+        String containerId = "testcontainer";
+        cosmosAsyncDatabase.createContainer(containerId, "/mypk",
+            ThroughputProperties.createManualThroughput(40000)).block();
+        CosmosAsyncContainer testcontainer = cosmosAsyncDatabase.getContainer(containerId);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+        testcontainer.createItem(getInternalObjectNode()).block();
+        options.setMaxDegreeOfParallelism(-1);
+        String query = "SELECT * from c ORDER BY c._ts DESC";
+        CosmosPagedFlux<InternalObjectNode> cosmosPagedFlux = testcontainer.queryItems(query, options,
+            InternalObjectNode.class);
+        Set<String> partitionKeyRangeIds = new HashSet<>();
+        Set<String> pkRids = new HashSet<>();
+        cosmosPagedFlux.byPage().flatMap(feedResponse -> {
+            String cosmosDiagnosticsString = feedResponse.getCosmosDiagnostics().toString();
+            //  find all partition key range ids in cosmos diagnostics
+            Pattern pattern = Pattern.compile("(\"partitionKeyRangeId\":\")(\\d)");
+            Matcher matcher = pattern.matcher(cosmosDiagnosticsString);
+            while (matcher.find()) {
+                //  get the partition key range id from cosmos diagnostics
+                String group = matcher.group(2);
+                partitionKeyRangeIds.add(group);
+            }
+            //  find all partition key range ids in query metrics
+            pattern = Pattern.compile("(pkrId:)(\\d)");
+            matcher = pattern.matcher(cosmosDiagnosticsString);
+            while (matcher.find()) {
+                //  get the partition key range id from query metrics
+                String group = matcher.group(2);
+                pkRids.add(group);
+            }
+            return Flux.just(feedResponse);
+        }).blockLast();
+
+        // assert that cosmos diagnostics has diagnostics information for all partitions ids same as query metrics
+        assertThat(pkRids).isNotEmpty();
+        assertThat(pkRids).isEqualTo(partitionKeyRangeIds);
+
+        deleteCollection(testcontainer);
+    }
+
     private void validateDirectModeQueryDiagnostics(String diagnostics) {
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
@@ -450,7 +552,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
-            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+            if (!query.contains("group by") || qroupByFirstResponse) {
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateGatewayModeQueryDiagnostics(queryDiagnostics);
                 if (query.contains("group by")) {
@@ -574,6 +676,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
+            assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource Not Found.");
+            assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
+            assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\":null");
             isValidJSON(diagnostics);
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), client.asyncClient());
@@ -609,6 +714,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+            assertThat(diagnostics).contains("\"exceptionMessage\":\"TestBadRequest\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(diagnostics).contains("\"resourceType\":\"DocumentCollection\"");
             assertThat(exception.getDiagnostics().getContactedRegionNames()).isNotEmpty();
@@ -623,10 +729,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void supplementalResponseStatisticsList() throws Exception {
-        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext(),null);
+        ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
         for (int i = 0; i < 15; i++) {
             RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
-            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null, null);
         }
         List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -641,7 +747,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(storeResponseStatistics.size()).isEqualTo(0);
         for (int i = 0; i < 7; i++) {
             RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Head, ResourceType.Document);
-            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null);
+            clientSideRequestStatistics.recordResponse(rxDocumentServiceRequest, null, null);
         }
         storeResponseStatistics = getStoreResponseStatistics(clientSideRequestStatistics);
         objectMapper = new ObjectMapper();
@@ -722,6 +828,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             fail("expected to fail due to 409");
         } catch (CosmosException e) {
             // no request payload and no response payload
+            logger.info("Diagnostics are : {}", e.getDiagnostics());
+            String diagnostics = e.getDiagnostics().toString();
+            assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
+            assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
+            assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
+
             validate(e.getDiagnostics(), testItemLength, 0);
         }
 
@@ -736,17 +848,20 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         validate(deleteItemResponse.getDiagnostics(), 0, 0);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void rntbdStatistics() throws Exception {
+    @Test(groups = {"simple"}, dataProvider = "connectionStateListenerArgProvider", timeOut = TIMEOUT)
+    public void rntbdStatistics(boolean connectionStateListenerEnabled) throws Exception {
         Instant beforeClientInitialization = Instant.now();
 
         CosmosClient client1 = null;
         try {
 
+            DirectConnectionConfig connectionConfig = DirectConnectionConfig.getDefaultConfig();
+            connectionConfig.setConnectionEndpointRediscoveryEnabled(connectionStateListenerEnabled);
+
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .directMode()
+                .directMode(connectionConfig)
                 .buildClient();
 
             TestItem testItem = new TestItem();
@@ -781,7 +896,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 beforeOperation2,
                 afterOperation2,
                 beforeOperation3,
-                afterOperation3);
+                afterOperation3,
+                connectionStateListenerEnabled);
 
             // read
             CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
@@ -804,7 +920,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                                          Instant beforeOperation2,
                                          Instant afterOperation2,
                                          Instant beforeOperation3,
-                                         Instant afterOperation3) throws Exception {
+                                         Instant afterOperation3,
+                                         boolean connectionStateListenerEnabled) throws Exception {
         ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
         JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
@@ -812,8 +929,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
         assertThat(storeResult).isNotNull();
 
-        boolean hasPayload = storeResult.get("exception").isNull();
-        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThan(0);
+        assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
         assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
 
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
@@ -827,25 +943,35 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
 
+        JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
+        if (connectionStateListenerEnabled) {
+
+            assertThat(connectionStateListenerMetrics).isNotNull();
+            assertThat(connectionStateListenerMetrics.get("lastCallTimestamp")).isNull();
+            assertThat(connectionStateListenerMetrics.get("lastActionableContext")).isNull();
+        } else {
+            assertThat(connectionStateListenerMetrics).isNull();
+        }
+
         // first request initialized the rntbd service endpoint
         Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isAfterOrEqualTo(beforeInitializationThreshold);
 
-        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(1);
+        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isBeforeOrEqualTo(afterInitializationThreshold);
 
-        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterOperation2Threshold = afterOperation2.plusMillis(1);
-        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(1);
+        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
+        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastSuccessfulRequestTime").asText()))
-            .isAfterOrEqualTo(beforeOperation2Threshold)
-            .isBeforeOrEqualTo(afterOperation2Threshold);
+            .isAfterOrEqualTo(beforeOperation2Threshold.toString())
+            .isBeforeOrEqualTo(afterOperation2Threshold.toString());
     }
 
     private void validate(CosmosDiagnostics cosmosDiagnostics, int expectedRequestPayloadSize, int expectedResponsePayloadSize) throws Exception {
@@ -855,7 +981,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(responseStatisticsList.size()).isGreaterThan(0);
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
 
-        boolean hasPayload = storeResult.get("exception").isNull();
+        boolean hasPayload = storeResult.get("exceptionMessage") == null;
         assertThat(storeResult).isNotNull();
         assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
         assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
@@ -892,9 +1018,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(writeResourceResponse.getDiagnostics().toString()).contains("addressResolutionStatistics");
             assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
             assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
-            assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
-            assertThat(writeResourceResponse.getDiagnostics().toString()).doesNotContain("\"errorMessage\":\"io.netty" +
-                ".channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information");
+            assertThat(writeResourceResponse.getDiagnostics().toString()).contains("\"exceptionMessage\":null");
 
             client2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -935,8 +1059,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("addressResolutionStatistics");
             assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"inflightRequest\":false");
             assertThat(readResourceResponse.getDiagnostics().toString()).doesNotContain("endTime=\"null\"");
-            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":null");
-            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"errorMessage\":\"io.netty" +
+            assertThat(readResourceResponse.getDiagnostics().toString()).contains("\"exceptionMessage\":\"io.netty" +
                 ".channel.AbstractChannel$AnnotatedConnectException: Connection refused");
         } catch (Exception ex) {
             logger.error("Error in test addressResolutionStatistics", ex);
@@ -986,7 +1109,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateTransportRequestTimelineGateway(String diagnostics) {
         assertThat(diagnostics).contains("\"eventName\":\"connectionConfigured\"");
-        assertThat(diagnostics).contains("\"eventName\":\"connectionConfigured\"");
         assertThat(diagnostics).contains("\"eventName\":\"requestSent\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
@@ -998,6 +1120,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"channelAcquisitionStarted\"");
         assertThat(diagnostics).contains("\"eventName\":\"pipelined\"");
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
+        assertThat(diagnostics).contains("\"eventName\":\"decodeTime");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
         assertThat(diagnostics).contains("\"startTimeUTC\"");

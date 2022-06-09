@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Values returned by the List operation. */
 @Fluent
 public final class OutboundEnvironmentEndpointCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundEnvironmentEndpointCollection.class);
-
     /*
      * The collection of outbound network dependency endpoints returned by the
      * listing operation.

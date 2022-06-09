@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.SharingProfileGroup;
 import com.azure.resourcemanager.compute.models.SharingUpdateOperationTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies information about the gallery sharing profile update. */
 @Fluent
 public final class SharingUpdateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharingUpdateInner.class);
-
     /*
      * This property allows you to specify the operation type of gallery
      * sharing update. <br><br> Possible values are: <br><br> **Add** <br><br>
@@ -82,7 +79,7 @@ public final class SharingUpdateInner {
      */
     public void validate() {
         if (operationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operationType in model SharingUpdateInner"));
@@ -91,4 +88,6 @@ public final class SharingUpdateInner {
             groups().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharingUpdateInner.class);
 }

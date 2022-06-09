@@ -16,7 +16,7 @@ import java.time.Duration;
  * for details on each of the options.
  */
 public class FindBlobsOptions {
-    private final ClientLogger logger = new ClientLogger(FindBlobsOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FindBlobsOptions.class);
 
     private final String query;
     private Integer maxResultsPerPage;
@@ -56,7 +56,7 @@ public class FindBlobsOptions {
      */
     public FindBlobsOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
         if (maxResultsPerPage != null && maxResultsPerPage <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
         return this;

@@ -11,7 +11,8 @@ import java.util.Objects;
  * Represents a credential that uses a key to authenticate to an Azure Service.
  */
 public final class AzureKeyCredential {
-    private final ClientLogger logger = new ClientLogger(AzureKeyCredential.class);
+    // AzureKeyCredential is a commonly used credential type, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredential.class);
     private volatile String key;
 
     /**
@@ -24,7 +25,7 @@ public final class AzureKeyCredential {
     public AzureKeyCredential(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
 
         this.key = key;
@@ -50,7 +51,7 @@ public final class AzureKeyCredential {
     public AzureKeyCredential update(String key) {
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
 
         this.key = key;

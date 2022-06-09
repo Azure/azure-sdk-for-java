@@ -23,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.DataMaskingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingPolicyInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient. */
 public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(DataMaskingPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataMaskingPoliciesService service;
 
@@ -102,7 +99,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(
@@ -166,7 +163,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(
@@ -230,7 +227,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingPolicyInner> createOrUpdateAsync(
@@ -275,7 +272,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingPolicyInner> createOrUpdateWithResponse(
@@ -297,7 +294,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(
@@ -354,7 +351,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(
@@ -407,7 +404,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataMaskingPolicyInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -448,7 +445,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingPolicyInner> getWithResponse(

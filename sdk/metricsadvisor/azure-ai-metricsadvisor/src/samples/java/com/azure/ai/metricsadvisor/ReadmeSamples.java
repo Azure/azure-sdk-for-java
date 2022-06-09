@@ -41,18 +41,15 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- * <p>
  * Class containing code snippets that will be injected to README.md.
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
     private MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder().buildClient();
     private MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
@@ -224,7 +221,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createHook
         NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
             .setDescription("my email Hook")
-            .setEmailsToAlert(new ArrayList<String>() {{ add("alertme@alertme.com"); }})
+            .setEmailsToAlert(Collections.singletonList("alertme@alertme.com"))
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
         final NotificationHook notificationHook = metricsAdvisorAdminClient.createHook(emailNotificationHook);

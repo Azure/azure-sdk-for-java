@@ -6,11 +6,9 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** SQL pool A SQL Analytics pool. */
 @Fluent
 public final class SqlPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolInner.class);
-
     /*
      * Sku SQL pool SKU
      */
@@ -200,20 +196,6 @@ public final class SqlPoolInner extends Resource {
     }
 
     /**
-     * Set the status property: Resource status.
-     *
-     * @param status the status value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withStatus(String status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SqlPoolResourceProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
      * Get the restorePointInTime property: Snapshot time to restore.
      *
      * @return the restorePointInTime value.
@@ -290,20 +272,6 @@ public final class SqlPoolInner extends Resource {
      */
     public OffsetDateTime creationDate() {
         return this.innerProperties() == null ? null : this.innerProperties().creationDate();
-    }
-
-    /**
-     * Set the creationDate property: Date the SQL pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withCreationDate(OffsetDateTime creationDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SqlPoolResourceProperties();
-        }
-        this.innerProperties().withCreationDate(creationDate);
-        return this;
     }
 
     /**

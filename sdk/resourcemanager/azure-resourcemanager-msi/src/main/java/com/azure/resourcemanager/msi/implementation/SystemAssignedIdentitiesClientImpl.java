@@ -6,6 +6,7 @@ package com.azure.resourcemanager.msi.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -54,7 +55,7 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
     @Host("{$host}")
     @ServiceInterface(name = "ManagedServiceIdenti")
     private interface SystemAssignedIdentitiesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.ManagedIdentity/identities/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -62,6 +63,7 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -85,10 +87,12 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -112,8 +116,9 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context);
+        return service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context);
     }
 
     /**

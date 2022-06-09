@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -14,7 +15,6 @@ import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +22,6 @@ import java.util.List;
 /** Describes the properties of a gallery image definition. */
 @Fluent
 public final class CommunityGalleryImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunityGalleryImageProperties.class);
-
     /*
      * This property allows you to specify the type of the OS that is included
      * in the disk when creating a VM from a managed image. <br><br> Possible
@@ -84,6 +82,24 @@ public final class CommunityGalleryImageProperties {
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
+
+    /*
+     * The architecture of the image. Applicable to OS disks only.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
+
+    /*
+     * Privacy statement uri for the current community gallery image.
+     */
+    @JsonProperty(value = "privacyStatementUri")
+    private String privacyStatementUri;
+
+    /*
+     * End-user license agreement for the current community gallery image.
+     */
+    @JsonProperty(value = "eula")
+    private String eula;
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
@@ -278,25 +294,85 @@ public final class CommunityGalleryImageProperties {
     }
 
     /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
+     * Get the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @return the privacyStatementUri value.
+     */
+    public String privacyStatementUri() {
+        return this.privacyStatementUri;
+    }
+
+    /**
+     * Set the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @param privacyStatementUri the privacyStatementUri value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withPrivacyStatementUri(String privacyStatementUri) {
+        this.privacyStatementUri = privacyStatementUri;
+        return this;
+    }
+
+    /**
+     * Get the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @return the eula value.
+     */
+    public String eula() {
+        return this.eula;
+    }
+
+    /**
+     * Set the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @param eula the eula value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withEula(String eula) {
+        this.eula = eula;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model CommunityGalleryImageProperties"));
         }
         if (osState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osState in model CommunityGalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property identifier in model CommunityGalleryImageProperties"));
@@ -316,4 +392,6 @@ public final class CommunityGalleryImageProperties {
             purchasePlan().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommunityGalleryImageProperties.class);
 }

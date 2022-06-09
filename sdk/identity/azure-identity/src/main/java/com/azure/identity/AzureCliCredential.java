@@ -20,8 +20,9 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public class AzureCliCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredential.class);
+
     private final IdentityClient identityClient;
-    private final ClientLogger logger = new ClientLogger(AzureCliCredential.class);
 
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
@@ -37,7 +38,8 @@ public class AzureCliCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request)
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+                error));
     }
 }

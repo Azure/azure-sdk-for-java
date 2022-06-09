@@ -40,6 +40,7 @@ public class QueryAndUpdateASession extends SampleBase {
 
         client.beginSession(sessionId, options).getFinalResult();
 
+        // BEGIN: readme-sample-queryAndUpdateASession
         RenderingSession currentSession = client.getSession(sessionId);
 
         Duration sessionTimeAlive = Duration.between(OffsetDateTime.now(), currentSession.getCreationTime()).abs();
@@ -48,6 +49,7 @@ public class QueryAndUpdateASession extends SampleBase {
             UpdateSessionOptions longerLeaseOptions = new UpdateSessionOptions().maxLeaseTime(newLeaseTime);
             client.updateSession(sessionId, longerLeaseOptions);
         }
+        // END: readme-sample-queryAndUpdateASession
 
         client.endSession(sessionId);
     }

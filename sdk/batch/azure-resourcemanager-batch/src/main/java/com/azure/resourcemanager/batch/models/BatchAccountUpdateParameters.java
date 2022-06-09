@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Parameters for updating an Azure Batch account. */
 @Fluent
 public final class BatchAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountUpdateParameters.class);
-
     /*
      * The user-specified tags associated with the account.
      */

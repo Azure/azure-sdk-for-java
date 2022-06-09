@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProximityPlacementGroups Delete. */
 public final class ProximityPlacementGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/DeleteAProximityPlacementGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_Delete.json
      */
     /**
      * Sample code: Create a proximity placement group.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data used when creating a disk. */
 @Fluent
 public final class CreationData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);
-
     /*
      * This enumerates the possible sources of a disk's creation.
      */
@@ -29,13 +26,14 @@ public final class CreationData {
     private String storageAccountId;
 
     /*
-     * Disk source information.
+     * Disk source information for PIR or user images.
      */
     @JsonProperty(value = "imageReference")
     private ImageDiskReference imageReference;
 
     /*
-     * Required if creating from a Gallery Image. The id of the
+     * Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the
      * ImageDiskReference will be the ARM id of the shared galley image version
      * from which to create a disk.
      */
@@ -78,6 +76,13 @@ public final class CreationData {
      */
     @JsonProperty(value = "logicalSectorSize")
     private Integer logicalSectorSize;
+
+    /*
+     * If createOption is ImportSecure, this is the URI of a blob to be
+     * imported into VM guest state.
+     */
+    @JsonProperty(value = "securityDataUri")
+    private String securityDataUri;
 
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
@@ -122,7 +127,7 @@ public final class CreationData {
     }
 
     /**
-     * Get the imageReference property: Disk source information.
+     * Get the imageReference property: Disk source information for PIR or user images.
      *
      * @return the imageReference value.
      */
@@ -131,7 +136,7 @@ public final class CreationData {
     }
 
     /**
-     * Set the imageReference property: Disk source information.
+     * Set the imageReference property: Disk source information for PIR or user images.
      *
      * @param imageReference the imageReference value to set.
      * @return the CreationData object itself.
@@ -142,8 +147,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     * Get the galleryImageReference property: Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      *
      * @return the galleryImageReference value.
      */
@@ -152,8 +158,9 @@ public final class CreationData {
     }
 
     /**
-     * Set the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     * Set the galleryImageReference property: Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      *
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the CreationData object itself.
@@ -262,13 +269,35 @@ public final class CreationData {
     }
 
     /**
+     * Get the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
+     * VM guest state.
+     *
+     * @return the securityDataUri value.
+     */
+    public String securityDataUri() {
+        return this.securityDataUri;
+    }
+
+    /**
+     * Set the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
+     * VM guest state.
+     *
+     * @param securityDataUri the securityDataUri value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withSecurityDataUri(String securityDataUri) {
+        this.securityDataUri = securityDataUri;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property createOption in model CreationData"));
         }
@@ -279,4 +308,6 @@ public final class CreationData {
             galleryImageReference().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreationData.class);
 }

@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Role definition. */
-@JsonFlatten
 @Fluent
-public class RoleDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
-
+public final class RoleDefinitionInner {
     /*
      * The role definition ID.
      */
@@ -36,34 +30,10 @@ public class RoleDefinitionInner {
     private String type;
 
     /*
-     * The role name.
+     * Role definition properties.
      */
-    @JsonProperty(value = "properties.roleName")
-    private String roleName;
-
-    /*
-     * The role definition description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The role type.
-     */
-    @JsonProperty(value = "properties.type")
-    private String roleType;
-
-    /*
-     * Role definition permissions.
-     */
-    @JsonProperty(value = "properties.permissions")
-    private List<PermissionInner> permissions;
-
-    /*
-     * Role definition assignable scopes.
-     */
-    @JsonProperty(value = "properties.assignableScopes")
-    private List<String> assignableScopes;
+    @JsonProperty(value = "properties")
+    private RoleDefinitionProperties innerProperties;
 
     /**
      * Get the id property: The role definition ID.
@@ -93,12 +63,21 @@ public class RoleDefinitionInner {
     }
 
     /**
+     * Get the innerProperties property: Role definition properties.
+     *
+     * @return the innerProperties value.
+     */
+    private RoleDefinitionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the roleName property: The role name.
      *
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
@@ -108,7 +87,10 @@ public class RoleDefinitionInner {
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withRoleName(String roleName) {
-        this.roleName = roleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withRoleName(roleName);
         return this;
     }
 
@@ -118,7 +100,7 @@ public class RoleDefinitionInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -128,7 +110,10 @@ public class RoleDefinitionInner {
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -138,7 +123,7 @@ public class RoleDefinitionInner {
      * @return the roleType value.
      */
     public String roleType() {
-        return this.roleType;
+        return this.innerProperties() == null ? null : this.innerProperties().roleType();
     }
 
     /**
@@ -148,7 +133,10 @@ public class RoleDefinitionInner {
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withRoleType(String roleType) {
-        this.roleType = roleType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withRoleType(roleType);
         return this;
     }
 
@@ -158,7 +146,7 @@ public class RoleDefinitionInner {
      * @return the permissions value.
      */
     public List<PermissionInner> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
@@ -168,7 +156,10 @@ public class RoleDefinitionInner {
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withPermissions(List<PermissionInner> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
@@ -178,7 +169,7 @@ public class RoleDefinitionInner {
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
-        return this.assignableScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().assignableScopes();
     }
 
     /**
@@ -188,7 +179,10 @@ public class RoleDefinitionInner {
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withAssignableScopes(List<String> assignableScopes) {
-        this.assignableScopes = assignableScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withAssignableScopes(assignableScopes);
         return this;
     }
 
@@ -198,8 +192,8 @@ public class RoleDefinitionInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (permissions() != null) {
-            permissions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

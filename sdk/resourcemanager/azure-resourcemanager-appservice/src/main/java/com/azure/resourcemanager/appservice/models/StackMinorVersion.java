@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application stack minor version. */
 @Fluent
 public final class StackMinorVersion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StackMinorVersion.class);
-
     /*
      * Application stack minor version (display only).
      */

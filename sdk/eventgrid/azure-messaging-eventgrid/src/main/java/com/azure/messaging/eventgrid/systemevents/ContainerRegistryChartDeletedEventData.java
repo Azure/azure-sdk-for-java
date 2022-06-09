@@ -33,8 +33,23 @@ public final class ContainerRegistryChartDeletedEventData extends ContainerRegis
 
     /** {@inheritDoc} */
     @Override
+    public ContainerRegistryChartDeletedEventData setLocation(String location) {
+        super.setLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ContainerRegistryChartDeletedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
         super.setTarget(target);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryChartDeletedEventData setConnectedRegistry(
+            ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super.setConnectedRegistry(connectedRegistry);
         return this;
     }
 }

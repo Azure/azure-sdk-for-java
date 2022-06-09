@@ -155,6 +155,15 @@ public final class ClusterPrincipalAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the aadObjectId property: The service principal object id in AAD (Azure active directory).
+     *
+     * @return the aadObjectId value.
+     */
+    public String aadObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadObjectId();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

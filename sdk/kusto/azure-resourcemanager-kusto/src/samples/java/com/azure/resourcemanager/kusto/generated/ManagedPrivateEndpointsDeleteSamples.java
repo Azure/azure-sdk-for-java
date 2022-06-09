@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedPrivateEndpoints Delete. */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoManagedPrivateEndpointsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoManagedPrivateEndpointsDelete.json
      */
     /**
      * Sample code: ManagedPrivateEndpointsDelete.
@@ -19,6 +19,6 @@ public final class ManagedPrivateEndpointsDeleteSamples {
     public static void managedPrivateEndpointsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .managedPrivateEndpoints()
-            .delete("kustorptest", "kustoclusterrptest4", "kustoManagedPrivateEndpoint1", Context.NONE);
+            .delete("kustorptest", "kustoCluster", "managedPrivateEndpointTest", Context.NONE);
     }
 }

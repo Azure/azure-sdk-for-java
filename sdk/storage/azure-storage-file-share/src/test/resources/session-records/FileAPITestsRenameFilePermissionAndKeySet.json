@@ -1,0 +1,73 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d90a03e3d90a03e30ef859940f746ee3783b489d96?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dfe74b36-a110-4e71-a6d7-d804aa7944bd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "eTag" : "0x8D9BF71C2CF0EF6",
+      "Last-Modified" : "Wed, 15 Dec 2021 02:22:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "bba62202-201a-0000-015a-f1e568000000",
+      "x-ms-client-request-id" : "dfe74b36-a110-4e71-a6d7-d804aa7944bd",
+      "Date" : "Wed, 15 Dec 2021 02:22:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d90a03e3d90a03e30ef859940f746ee3783b489d96/d90a03e3d90a03e30ef35446c9abe723d1384d949b",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0fd85676-d19a-4a8a-a428-137481502778"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-file-permission-key" : "17566099191294621851*1292734777967284221",
+      "x-ms-file-id" : "13835128424026341376",
+      "x-ms-file-creation-time" : "2021-12-15T02:22:37.4261704Z",
+      "Last-Modified" : "Wed, 15 Dec 2021 02:22:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 15 Dec 2021 02:22:37 GMT",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2021-12-15T02:22:37.4261704Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8D9BF71C30D1BC8",
+      "x-ms-request-id" : "bba62205-201a-0000-025a-f1e568000000",
+      "x-ms-client-request-id" : "0fd85676-d19a-4a8a-a428-137481502778",
+      "x-ms-file-last-write-time" : "2021-12-15T02:22:37.4261704Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d90a03e3d90a03e30ef859940f746ee3783b489d96/d90a03e30d90a03e30ef98256a15025ef3ac844c48ad?comp=rename",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c3b5acf3-e2ca-491d-b05e-ae486c5481b5"
+    },
+    "Response" : {
+      "content-length" : "293",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-error-code" : "BothPermissionAndPermissionKeyHeaderPresent",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "bba62207-201a-0000-035a-f1e568000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BothPermissionAndPermissionKeyHeaderPresent</Code><Message>Both x-ms-file-permission header and x-ms-file-permission-key header are present.\nRequestId:bba62207-201a-0000-035a-f1e568000000\nTime:2021-12-15T02:22:37.7025686Z</Message></Error>",
+      "x-ms-client-request-id" : "c3b5acf3-e2ca-491d-b05e-ae486c5481b5",
+      "Date" : "Wed, 15 Dec 2021 02:22:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "d90a03e3d90a03e30ef859940f746ee3783b489d96", "d90a03e3d90a03e30ef35446c9abe723d1384d949b", "d90a03e30d90a03e30ef98256a15025ef3ac844c48ad" ]
+}

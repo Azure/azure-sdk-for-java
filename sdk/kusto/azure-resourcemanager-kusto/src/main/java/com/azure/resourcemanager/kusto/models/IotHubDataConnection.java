@@ -211,6 +211,31 @@ public final class IotHubDataConnection extends DataConnectionInner {
     }
 
     /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseRouting();
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withDatabaseRouting(DatabaseRouting databaseRouting) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withDatabaseRouting(databaseRouting);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioned state of the resource.
      *
      * @return the provisioningState value.

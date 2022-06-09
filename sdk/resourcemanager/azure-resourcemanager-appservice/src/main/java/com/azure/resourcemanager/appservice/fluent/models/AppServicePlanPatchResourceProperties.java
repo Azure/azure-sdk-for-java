@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** AppServicePlanPatchResource resource specific properties. */
 @Fluent
 public final class AppServicePlanPatchResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanPatchResourceProperties.class);
-
     /*
      * Target worker tier assigned to the App Service plan.
      */

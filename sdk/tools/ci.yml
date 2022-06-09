@@ -5,6 +5,7 @@ trigger:
   paths:
     include:
       - /sdk/tools/azure-sdk-archetype/
+      - /sdk/tools/azure-sdk-build-tool/
 
 pr:
   branches:
@@ -16,6 +17,7 @@ pr:
   paths:
     include:
       - /sdk/tools/azure-sdk-archetype/
+      - /sdk/tools/azure-sdk-build-tool/
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -26,3 +28,6 @@ extends:
       - name: azure-sdk-archetype
         groupId: com.azure.tools
         safeName: azuresdkarchetype
+      - name: azure-sdk-build-tool
+        groupId: com.azure.tools
+        safeName: azuresdkbuildtool

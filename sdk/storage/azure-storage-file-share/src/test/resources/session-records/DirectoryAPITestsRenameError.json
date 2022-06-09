@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/8c7f4c188c7f4c1813a001075e17cc9399ec42359d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f43ff1b9-865d-485a-bb2a-6d5cc57678dc"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "eTag" : "0x8D9BFDC5B4A55E1",
+      "Last-Modified" : "Wed, 15 Dec 2021 15:05:39 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "888e717a-a01a-0005-09c5-f1f0c9000000",
+      "x-ms-client-request-id" : "f43ff1b9-865d-485a-bb2a-6d5cc57678dc",
+      "Date" : "Wed, 15 Dec 2021 15:05:39 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/8c7f4c188c7f4c1813a001075e17cc9399ec42359d/8c7f4c1818c7f4c1813a169989f6987dfecdc46cead8?restype=directory&comp=rename",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "544b47b8-d45f-4445-87a6-ff53f989bcf7"
+    },
+    "Response" : {
+      "content-length" : "223",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "888e717d-a01a-0005-0ac5-f1f0c9000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:888e717d-a01a-0005-0ac5-f1f0c9000000\nTime:2021-12-15T15:05:40.0754563Z</Message></Error>",
+      "x-ms-client-request-id" : "544b47b8-d45f-4445-87a6-ff53f989bcf7",
+      "Date" : "Wed, 15 Dec 2021 15:05:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "8c7f4c188c7f4c1813a001075e17cc9399ec42359d", "8c7f4c188c7f4c1813a5778795d3059cefd64c9294", "8c7f4c1808c7f4c1813a8212998e79c5b1a10460a9dd", "8c7f4c1818c7f4c1813a169989f6987dfecdc46cead8" ]
+}

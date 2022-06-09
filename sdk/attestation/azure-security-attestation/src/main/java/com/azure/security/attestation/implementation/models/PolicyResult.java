@@ -65,7 +65,7 @@ public final class PolicyResult {
      */
     public byte[] getPolicyTokenHash() {
         if (this.policyTokenHash == null) {
-            return null;
+            return new byte[0];
         }
         return this.policyTokenHash.decodedBytes();
     }

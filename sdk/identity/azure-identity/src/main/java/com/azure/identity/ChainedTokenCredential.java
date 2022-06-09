@@ -41,7 +41,7 @@ import java.util.List;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final ClientLogger logger = new ClientLogger(getClass());
+    private static final ClientLogger LOGGER = new ClientLogger(ChainedTokenCredential.class);
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
@@ -69,7 +69,7 @@ public class ChainedTokenCredential implements TokenCredential {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(request)
-                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                .doOnNext(t -> LOGGER.info("Azure Identity => Attempted credential {} returns a token",
                     p.getClass().getSimpleName()))
                 .onErrorResume(Exception.class, t -> {
                     if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
@@ -79,7 +79,7 @@ public class ChainedTokenCredential implements TokenCredential {
                             null, t));
                     }
                     exceptions.add((CredentialUnavailableException) t);
-                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                    LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
                         p.getClass().getSimpleName());
                     return Mono.empty();
                 }), 1)

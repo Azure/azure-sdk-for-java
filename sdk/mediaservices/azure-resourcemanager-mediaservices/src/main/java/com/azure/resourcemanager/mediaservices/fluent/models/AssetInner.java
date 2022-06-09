@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.AssetStorageEncryptionFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** An Asset. */
-@JsonFlatten
 @Fluent
-public class AssetInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssetInner.class);
+public final class AssetInner extends ProxyResource {
+    /*
+     * The resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private AssetProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
@@ -27,53 +27,14 @@ public class AssetInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The Asset ID.
+    /**
+     * Get the innerProperties property: The resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.assetId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID assetId;
-
-    /*
-     * The creation date of the Asset.
-     */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
-
-    /*
-     * The last modified date of the Asset.
-     */
-    @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModified;
-
-    /*
-     * The alternate ID of the Asset.
-     */
-    @JsonProperty(value = "properties.alternateId")
-    private String alternateId;
-
-    /*
-     * The Asset description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The name of the asset blob container.
-     */
-    @JsonProperty(value = "properties.container")
-    private String container;
-
-    /*
-     * The name of the storage account.
-     */
-    @JsonProperty(value = "properties.storageAccountName")
-    private String storageAccountName;
-
-    /*
-     * The Asset encryption format. One of None or MediaStorageEncryption.
-     */
-    @JsonProperty(value = "properties.storageEncryptionFormat", access = JsonProperty.Access.WRITE_ONLY)
-    private AssetStorageEncryptionFormat storageEncryptionFormat;
+    private AssetProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
@@ -90,7 +51,7 @@ public class AssetInner extends ProxyResource {
      * @return the assetId value.
      */
     public UUID assetId() {
-        return this.assetId;
+        return this.innerProperties() == null ? null : this.innerProperties().assetId();
     }
 
     /**
@@ -99,7 +60,7 @@ public class AssetInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -108,7 +69,7 @@ public class AssetInner extends ProxyResource {
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
-        return this.lastModified;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModified();
     }
 
     /**
@@ -117,7 +78,7 @@ public class AssetInner extends ProxyResource {
      * @return the alternateId value.
      */
     public String alternateId() {
-        return this.alternateId;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateId();
     }
 
     /**
@@ -127,7 +88,10 @@ public class AssetInner extends ProxyResource {
      * @return the AssetInner object itself.
      */
     public AssetInner withAlternateId(String alternateId) {
-        this.alternateId = alternateId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssetProperties();
+        }
+        this.innerProperties().withAlternateId(alternateId);
         return this;
     }
 
@@ -137,7 +101,7 @@ public class AssetInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -147,7 +111,10 @@ public class AssetInner extends ProxyResource {
      * @return the AssetInner object itself.
      */
     public AssetInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssetProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -157,7 +124,7 @@ public class AssetInner extends ProxyResource {
      * @return the container value.
      */
     public String container() {
-        return this.container;
+        return this.innerProperties() == null ? null : this.innerProperties().container();
     }
 
     /**
@@ -167,7 +134,10 @@ public class AssetInner extends ProxyResource {
      * @return the AssetInner object itself.
      */
     public AssetInner withContainer(String container) {
-        this.container = container;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssetProperties();
+        }
+        this.innerProperties().withContainer(container);
         return this;
     }
 
@@ -177,7 +147,7 @@ public class AssetInner extends ProxyResource {
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
-        return this.storageAccountName;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountName();
     }
 
     /**
@@ -187,7 +157,10 @@ public class AssetInner extends ProxyResource {
      * @return the AssetInner object itself.
      */
     public AssetInner withStorageAccountName(String storageAccountName) {
-        this.storageAccountName = storageAccountName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssetProperties();
+        }
+        this.innerProperties().withStorageAccountName(storageAccountName);
         return this;
     }
 
@@ -197,7 +170,7 @@ public class AssetInner extends ProxyResource {
      * @return the storageEncryptionFormat value.
      */
     public AssetStorageEncryptionFormat storageEncryptionFormat() {
-        return this.storageEncryptionFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().storageEncryptionFormat();
     }
 
     /**
@@ -206,5 +179,8 @@ public class AssetInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

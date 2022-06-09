@@ -9,6 +9,7 @@ import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ThroughputProperties;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,9 +71,9 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             new CosmosContainerProperties(UUID.randomUUID().toString(), pkDefinition));
 
         ThroughputControlGroupConfig groupConfig = new ThroughputControlGroupConfigBuilder()
-            .setGroupName("test-group")
-            .setTargetThroughputThreshold(0.2)
-            .setDefault(true)
+            .groupName("test-group")
+            .targetThroughputThreshold(0.2)
+            .defaultControlGroup(true)
             .build();
         bulkAsyncContainerWithThroughputControl.enableLocalThroughputControlGroup(groupConfig);
 
@@ -171,6 +172,72 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }).blockLast();
 
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_after_collectionRecreate() {
+        int totalRequest = getTotalRequest();
+
+        for(int x = 0; x < 2; x = x + 1) {
+            Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+                Flux.range(0, totalRequest).map(i -> {
+                    String partitionKey = UUID.randomUUID().toString();
+                    TestDoc testDoc = this.populateTestDoc(partitionKey);
+
+                    return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+                }),
+                Flux.range(0, totalRequest).map(i -> {
+                    String partitionKey = UUID.randomUUID().toString();
+                    EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
+
+                    return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+                }));
+
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+
+            Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
+
+            AtomicInteger processedDoc = new AtomicInteger(0);
+            responseFlux
+                .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+
+                    processedDoc.incrementAndGet();
+
+                    com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                    if (cosmosBulkOperationResponse.getException() != null) {
+                        logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                        fail(cosmosBulkOperationResponse.getException().toString());
+                    }
+
+                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                    assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                    return Mono.just(cosmosBulkItemResponse);
+                }).blockLast();
+
+            assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+
+            CosmosAsyncDatabase db = bulkAsyncContainer
+                .getDatabase();
+            String containerName = bulkAsyncContainer.getId();
+
+            // Manually deleting and recreating the container
+            // on the same client (same async cache instances)
+            // to validate correct mitigation after delete and recreate
+            bulkAsyncContainer.delete().block();
+            db
+                .createContainer(
+                    containerName,
+                    "/mypk",
+                    ThroughputProperties.createManualThroughput(10_100))
+                .block();
+            bulkAsyncContainer = db.getContainer(containerName);
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)

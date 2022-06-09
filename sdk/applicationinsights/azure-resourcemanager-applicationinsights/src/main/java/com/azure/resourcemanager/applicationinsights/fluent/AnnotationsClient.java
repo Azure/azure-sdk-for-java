@@ -25,7 +25,8 @@ public interface AnnotationsClient {
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range.
+     * @return the list of annotations for a component for given time range as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AnnotationInner> list(String resourceGroupName, String resourceName, String start, String end);
@@ -42,7 +43,8 @@ public interface AnnotationsClient {
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of annotations for a component for given time range.
+     * @return the list of annotations for a component for given time range as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AnnotationInner> list(
@@ -76,7 +78,7 @@ public interface AnnotationsClient {
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
+     * @return array of Annotation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<AnnotationInner>> createWithResponse(
@@ -105,7 +107,7 @@ public interface AnnotationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -137,7 +139,7 @@ public interface AnnotationsClient {
      * @throws com.azure.resourcemanager.applicationinsights.models.AnnotationErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
+     * @return the annotation for given id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<AnnotationInner>> getWithResponse(

@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Extended Properties for Azure IaasVM Backup. */
 @Fluent
 public final class ExtendedProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedProperties.class);
-
     /*
      * Extended Properties for Disk Exclusion.
      */
     @JsonProperty(value = "diskExclusionProperties")
     private DiskExclusionProperties diskExclusionProperties;
+
+    /*
+     * Linux VM name
+     */
+    @JsonProperty(value = "linuxVmApplicationName")
+    private String linuxVmApplicationName;
 
     /**
      * Get the diskExclusionProperties property: Extended Properties for Disk Exclusion.
@@ -37,6 +39,26 @@ public final class ExtendedProperties {
      */
     public ExtendedProperties withDiskExclusionProperties(DiskExclusionProperties diskExclusionProperties) {
         this.diskExclusionProperties = diskExclusionProperties;
+        return this;
+    }
+
+    /**
+     * Get the linuxVmApplicationName property: Linux VM name.
+     *
+     * @return the linuxVmApplicationName value.
+     */
+    public String linuxVmApplicationName() {
+        return this.linuxVmApplicationName;
+    }
+
+    /**
+     * Set the linuxVmApplicationName property: Linux VM name.
+     *
+     * @param linuxVmApplicationName the linuxVmApplicationName value to set.
+     * @return the ExtendedProperties object itself.
+     */
+    public ExtendedProperties withLinuxVmApplicationName(String linuxVmApplicationName) {
+        this.linuxVmApplicationName = linuxVmApplicationName;
         return this;
     }
 

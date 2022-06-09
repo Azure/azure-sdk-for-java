@@ -25,10 +25,6 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
     public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_ELEVATED_CONTRIBUTOR =
         fromString("StorageFileDataSmbShareElevatedContributor");
 
-    /** Static value StorageFileDataSmbShareOwner for DefaultSharePermission. */
-    public static final DefaultSharePermission STORAGE_FILE_DATA_SMB_SHARE_OWNER =
-        fromString("StorageFileDataSmbShareOwner");
-
     /**
      * Creates or finds a DefaultSharePermission from its string representation.
      *
@@ -40,7 +36,11 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
         return fromString(name, DefaultSharePermission.class);
     }
 
-    /** @return known DefaultSharePermission values. */
+    /**
+     * Gets known DefaultSharePermission values.
+     *
+     * @return known DefaultSharePermission values.
+     */
     public static Collection<DefaultSharePermission> values() {
         return values(DefaultSharePermission.class);
     }

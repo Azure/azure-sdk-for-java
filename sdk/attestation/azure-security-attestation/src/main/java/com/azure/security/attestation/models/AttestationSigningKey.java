@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
@@ -35,7 +34,7 @@ public final class AttestationSigningKey {
     public AttestationSigningKey(X509Certificate certificate, PrivateKey privateKey) {
         this.certificate = certificate;
         this.privateKey = privateKey;
-        this.allowWeakKey = false;
+        this.weakKeyAllowed = false;
     }
 
     /**
@@ -55,11 +54,11 @@ public final class AttestationSigningKey {
     /**
      * Sets whether the privateKey is allowed to be a weak key (less than or equal to 1024 bits).
      *
-     * @param allowWeakKey - boolean indicating if weak keys should be allowed (default False).
+     * @param weakKeyAllowed - boolean indicating if weak keys should be allowed (default False).
      * @return Returns the AttestationSigningKey.
      */
-    public AttestationSigningKey setAllowWeakKey(boolean allowWeakKey) {
-        this.allowWeakKey = allowWeakKey;
+    public AttestationSigningKey setWeakKeyAllowed(boolean weakKeyAllowed) {
+        this.weakKeyAllowed = weakKeyAllowed;
         return this;
     }
 
@@ -67,54 +66,60 @@ public final class AttestationSigningKey {
      *
      * @return Returns if a weak key is allowed on this signing key.
      */
-    public boolean getAllowWeakKey() {
-        return this.allowWeakKey;
+    public boolean isWeakKeyAllowed() {
+        return this.weakKeyAllowed;
     }
 
     /**
      * Verifies that the provided privateKey can sign a buffer which is verified by certificate.
      *
-     * @throws InvalidKeyException - Thrown if the PrivateKey provided is from an API family different from the certificate.
-     * @throws SignatureException - Thrown if the digital signature cannot be verified or created.
-     * @throws NoSuchAlgorithmException - Thrown if the signature algorithm is not supported.
-     * @throws NoSuchProviderException - Thrown if the specified provider is incorrect.
-     * @throws InvalidParameterException - Thrown if the certificate could not validate a buffer signed with the signing key.
      */
-    public void verify() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchProviderException {
+    public void verify() {
         Objects.requireNonNull(certificate);
         Objects.requireNonNull(privateKey);
 
-        Signature signer;
-        Signature verifier;
-        if (privateKey instanceof RSAPrivateKey) {
-            signer = Signature.getInstance("SHA256WITHRSA");
-            verifier = Signature.getInstance("SHA256WITHRSA");
-        } else if (privateKey instanceof ECPrivateKey) {
-            signer = Signature.getInstance("SHA256WITHECDSA");
-            verifier = Signature.getInstance("SHA256WITHECDSA");
-        } else {
+        try {
+            Signature signer;
+            Signature verifier;
+            if (privateKey instanceof RSAPrivateKey) {
+                signer = Signature.getInstance("SHA256WITHRSA");
+                verifier = Signature.getInstance("SHA256WITHRSA");
+            } else if (privateKey instanceof ECPrivateKey) {
+                signer = Signature.getInstance("SHA256WITHECDSA");
+                verifier = Signature.getInstance("SHA256WITHECDSA");
+            } else {
+                ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+                throw logger.logExceptionAsError(new InvalidParameterException("AttestationSigningKey privateKey must be an RSA or DSA private key"));
+            }
+
+            /* Buffer to be signed - this can basically be anything, it doesn't really matter. */
+            final byte[] bufferToSign = { 1, 2, 3, 4, 5};
+
+            // Sign the buffer.
+            signer.initSign(privateKey);
+            signer.update(bufferToSign);
+            byte[] signedBuffer = signer.sign();
+
+            // Verify the signed buffer.
+            verifier.initVerify(certificate);
+            verifier.update(bufferToSign);
+            if (!verifier.verify(signedBuffer)) {
+                ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+                throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            }
+        } catch (NoSuchAlgorithmException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new InvalidParameterException("AttestationSigningKey privateKey must be an RSA or DSA private key"));
-        }
-
-        /* Buffer to be signed - this can basically be anything, it doesn't really matter. */
-        final byte[] bufferToSign = { 1, 2, 3, 4, 5};
-
-        // Sign the buffer.
-        signer.initSign(privateKey);
-        signer.update(bufferToSign);
-        byte[] signedBuffer = signer.sign();
-
-        // Verify the signed buffer.
-        verifier.initVerify(certificate);
-        verifier.update(bufferToSign);
-        if (!verifier.verify(signedBuffer)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
+        } catch (InvalidKeyException e) {
             ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
+        } catch (SignatureException e) {
+            ClientLogger logger = new ClientLogger(AttestationSigningKey.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("AttestationSigningKey certificate cannot verify buffer signed with AttestationSigningKey key", e));
         }
     }
 
-    private boolean allowWeakKey;
+    private boolean weakKeyAllowed;
     private final X509Certificate certificate;
     private final PrivateKey privateKey;
 }

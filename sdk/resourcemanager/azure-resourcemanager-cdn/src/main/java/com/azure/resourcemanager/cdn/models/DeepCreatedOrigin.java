@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedOriginProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The main origin of CDN content which is added when creating a CDN endpoint. */
-@JsonFlatten
 @Fluent
-public class DeepCreatedOrigin {
+public final class DeepCreatedOrigin {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeepCreatedOrigin.class);
 
     /*
@@ -23,82 +22,10 @@ public class DeepCreatedOrigin {
     private String name;
 
     /*
-     * The address of the origin. It can be a domain name, IPv4 address, or
-     * IPv6 address. This should be unique across all origins in an endpoint.
+     * Properties of the origin created on the CDN endpoint.
      */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
-
-    /*
-     * The value of the HTTP port. Must be between 1 and 65535.
-     */
-    @JsonProperty(value = "properties.httpPort")
-    private Integer httpPort;
-
-    /*
-     * The value of the HTTPS port. Must be between 1 and 65535.
-     */
-    @JsonProperty(value = "properties.httpsPort")
-    private Integer httpsPort;
-
-    /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default.
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
-
-    /*
-     * Priority of origin in given origin group for load balancing. Higher
-     * priorities will not be used for load balancing if any lower priority
-     * origin is healthy.Must be between 1 and 5.
-     */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * Weight of the origin in given origin group for load balancing. Must be
-     * between 1 and 1000
-     */
-    @JsonProperty(value = "properties.weight")
-    private Integer weight;
-
-    /*
-     * Origin is enabled for load balancing or not. By default, origin is
-     * always enabled.
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * The Alias of the Private Link resource. Populating this optional field
-     * indicates that this origin is 'Private'
-     */
-    @JsonProperty(value = "properties.privateLinkAlias")
-    private String privateLinkAlias;
-
-    /*
-     * The Resource Id of the Private Link resource. Populating this optional
-     * field indicates that this backend is 'Private'
-     */
-    @JsonProperty(value = "properties.privateLinkResourceId")
-    private String privateLinkResourceId;
-
-    /*
-     * The location of the Private Link resource. Required only if
-     * 'privateLinkResourceId' is populated
-     */
-    @JsonProperty(value = "properties.privateLinkLocation")
-    private String privateLinkLocation;
-
-    /*
-     * A custom message to be included in the approval request to connect to
-     * the Private Link.
-     */
-    @JsonProperty(value = "properties.privateLinkApprovalMessage")
-    private String privateLinkApprovalMessage;
+    @JsonProperty(value = "properties")
+    private DeepCreatedOriginProperties innerProperties;
 
     /**
      * Get the name property: Origin name which must be unique within the endpoint.
@@ -121,13 +48,22 @@ public class DeepCreatedOrigin {
     }
 
     /**
+     * Get the innerProperties property: Properties of the origin created on the CDN endpoint.
+     *
+     * @return the innerProperties value.
+     */
+    private DeepCreatedOriginProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the hostname property: The address of the origin. It can be a domain name, IPv4 address, or IPv6 address.
      * This should be unique across all origins in an endpoint.
      *
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -138,7 +74,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -148,7 +87,7 @@ public class DeepCreatedOrigin {
      * @return the httpPort value.
      */
     public Integer httpPort() {
-        return this.httpPort;
+        return this.innerProperties() == null ? null : this.innerProperties().httpPort();
     }
 
     /**
@@ -158,7 +97,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withHttpPort(Integer httpPort) {
-        this.httpPort = httpPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withHttpPort(httpPort);
         return this;
     }
 
@@ -168,7 +110,7 @@ public class DeepCreatedOrigin {
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
-        return this.httpsPort;
+        return this.innerProperties() == null ? null : this.innerProperties().httpsPort();
     }
 
     /**
@@ -178,7 +120,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withHttpsPort(Integer httpsPort) {
-        this.httpsPort = httpsPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withHttpsPort(httpsPort);
         return this;
     }
 
@@ -190,7 +135,7 @@ public class DeepCreatedOrigin {
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
-        return this.originHostHeader;
+        return this.innerProperties() == null ? null : this.innerProperties().originHostHeader();
     }
 
     /**
@@ -202,7 +147,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withOriginHostHeader(originHostHeader);
         return this;
     }
 
@@ -213,7 +161,7 @@ public class DeepCreatedOrigin {
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -224,7 +172,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -235,7 +186,7 @@ public class DeepCreatedOrigin {
      * @return the weight value.
      */
     public Integer weight() {
-        return this.weight;
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
     }
 
     /**
@@ -246,7 +197,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withWeight(Integer weight) {
-        this.weight = weight;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withWeight(weight);
         return this;
     }
 
@@ -256,7 +210,7 @@ public class DeepCreatedOrigin {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -266,7 +220,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -277,7 +234,7 @@ public class DeepCreatedOrigin {
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
-        return this.privateLinkAlias;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkAlias();
     }
 
     /**
@@ -288,7 +245,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withPrivateLinkAlias(String privateLinkAlias) {
-        this.privateLinkAlias = privateLinkAlias;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withPrivateLinkAlias(privateLinkAlias);
         return this;
     }
 
@@ -299,7 +259,7 @@ public class DeepCreatedOrigin {
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
-        return this.privateLinkResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkResourceId();
     }
 
     /**
@@ -310,7 +270,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withPrivateLinkResourceId(String privateLinkResourceId) {
-        this.privateLinkResourceId = privateLinkResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withPrivateLinkResourceId(privateLinkResourceId);
         return this;
     }
 
@@ -321,7 +284,7 @@ public class DeepCreatedOrigin {
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
-        return this.privateLinkLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkLocation();
     }
 
     /**
@@ -332,7 +295,10 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withPrivateLinkLocation(String privateLinkLocation) {
-        this.privateLinkLocation = privateLinkLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withPrivateLinkLocation(privateLinkLocation);
         return this;
     }
 
@@ -343,7 +309,7 @@ public class DeepCreatedOrigin {
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
-        return this.privateLinkApprovalMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkApprovalMessage();
     }
 
     /**
@@ -354,8 +320,20 @@ public class DeepCreatedOrigin {
      * @return the DeepCreatedOrigin object itself.
      */
     public DeepCreatedOrigin withPrivateLinkApprovalMessage(String privateLinkApprovalMessage) {
-        this.privateLinkApprovalMessage = privateLinkApprovalMessage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeepCreatedOriginProperties();
+        }
+        this.innerProperties().withPrivateLinkApprovalMessage(privateLinkApprovalMessage);
         return this;
+    }
+
+    /**
+     * Get the privateEndpointStatus property: The approval status for the connection to the Private Link.
+     *
+     * @return the privateEndpointStatus value.
+     */
+    public PrivateEndpointStatus privateEndpointStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointStatus();
     }
 
     /**
@@ -368,6 +346,9 @@ public class DeepCreatedOrigin {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model DeepCreatedOrigin"));
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

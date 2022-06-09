@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Purview Configuration. */
 @Fluent
 public final class PurviewConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurviewConfiguration.class);
-
     /*
      * Purview Resource ID
      */

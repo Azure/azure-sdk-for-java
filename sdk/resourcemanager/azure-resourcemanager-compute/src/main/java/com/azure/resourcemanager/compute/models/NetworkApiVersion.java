@@ -24,7 +24,11 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
         return fromString(name, NetworkApiVersion.class);
     }
 
-    /** @return known NetworkApiVersion values. */
+    /**
+     * Gets known NetworkApiVersion values.
+     *
+     * @return known NetworkApiVersion values.
+     */
     public static Collection<NetworkApiVersion> values() {
         return values(NetworkApiVersion.class);
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListExpressRouteCircuit API service call. */
 @Fluent
 public final class ExpressRouteCircuitListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitListResult.class);
-
     /*
      * A list of ExpressRouteCircuits in a resource group.
      */

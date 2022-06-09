@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for GalleryApplicationVersions Delete. */
 public final class GalleryApplicationVersionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/DeleteAGalleryApplicationVersion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Delete.json
      */
     /**
      * Sample code: Delete a gallery Application Version.

@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The routing intent child resource of a Virtual hub. */
 @Fluent
 public final class RoutingIntentInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingIntentInner.class);
-
     /*
      * Properties of the RoutingIntent resource.
      */

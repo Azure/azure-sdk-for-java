@@ -1,6 +1,6 @@
 # Azure Metrics Advisor client library for Java
 Azure Metrics Advisor is a new Cognitive  Service that uses time series based decision AI to identify and assist
-trouble shooting the incidents of online services, and monitor the business health by automating the slice and dice
+troubleshooting the incidents of online services, and monitor the business health by automating the slice and dice
 of business dataFeedMetrics.
 
 [Source code][source_code] | [Package (Maven)][mvn_package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples]
@@ -12,7 +12,40 @@ of business dataFeedMetrics.
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
 
-### Include the Package
+### Include the package
+
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-ai-metricsadvisor</artifactId>
+    </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 **Note:** This version targets Azure Metrics Advisor service API version v1.0.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-metricsadvisor;current})
@@ -20,7 +53,7 @@ of business dataFeedMetrics.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -49,7 +82,6 @@ You will need two keys to authenticate the client:
 Once you have the two keys and endpoint, you can use the `MetricsAdvisorKeyCredential` class to authenticate the clients as follows:
 
 #### Create a Metrics Advisor client using MetricsAdvisorKeyCredential
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L65-L69-->
 ```java readme-sample-createMetricsAdvisorClient
 MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
 MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
@@ -59,7 +91,6 @@ MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
 ```
 
 #### Create a Metrics Administration client using MetricsAdvisorKeyCredential
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L76-L81 -->
 ```java readme-sample-createMetricsAdvisorAdministrationClient
 MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
 MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
@@ -81,7 +112,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.5</version>
+    <version>1.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -97,7 +128,6 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Metrics Advisor, please
 refer to [the associated documentation][aad_authorization].
 #### Create a Metrics Advisor client using AAD authentication
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L88-L92 -->
 ```java readme-sample-createMetricsAdvisorClientWithAAD
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
@@ -107,7 +137,6 @@ MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
 ```
 
 #### Create a Metrics Administration client using AAD authentication
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L99-L104 -->
 ```java readme-sample-createMetricsAdvisorAdministrationClientWithAAD
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
@@ -174,7 +203,6 @@ A notification hook is the entry point that allows the users to subscribe to rea
 
 ### Add a data feed from a sample or data source
 This example ingests the user specified `SQLServerDataFeedSource` data feed source data to the service.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L111-L148 -->
 ```java readme-sample-createDataFeed
 DataFeed dataFeed = new DataFeed()
     .setName("dataFeedName")
@@ -217,7 +245,6 @@ if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
 ```
 ### Check ingestion status
 This example checks the ingestion status of a previously provided data feed source.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L155-L166 -->
 ```java readme-sample-checkIngestionStatus
 String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -235,7 +262,6 @@ metricsAdvisorAdminClient.listDataFeedIngestionStatus(
 
 ### Configure anomaly detection configuration
 This example demonstrates how a user can configure an anomaly detection configuration for their data.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L173-L203 -->
 ```java readme-sample-createAnomalyDetectionConfiguration
 String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -272,11 +298,10 @@ final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
 
 ### Add hooks for receiving anomaly alerts
 This example creates an email hook that receives anomaly incident alerts.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L210-L222 -->
 ```java readme-sample-createHook
 NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
     .setDescription("my email Hook")
-    .setEmailsToAlert(new ArrayList<String>() {{ add("alertme@alertme.com"); }})
+    .setEmailsToAlert(Collections.singletonList("alertme@alertme.com"))
     .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
 final NotificationHook notificationHook = metricsAdvisorAdminClient.createHook(emailNotificationHook);
@@ -291,7 +316,6 @@ System.out.printf("Email Hook emails to alert: %s%n",
 
 ### Configure an anomaly alert configuration
 This example demonstrates how a user can configure an alerting configuration for detected anomalies in their data.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L229-L249 -->
 ```java readme-sample-createAnomalyAlertConfiguration
 String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
 String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
@@ -317,7 +341,6 @@ final AnomalyAlertConfiguration anomalyAlertConfiguration
 ```
 ### Query anomaly detection results
 This example demonstrates how a user can query alerts triggered for an anomaly detection configuration and get anomalies for that anomalyAlert.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L276 -->
 ```java readme-sample-listAnomaliesForAlert
 String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
 final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
@@ -348,7 +371,6 @@ Metrics Advisor clients raises `HttpResponseException` [exceptions][http_respons
 to provide a non existing feedback Id an `HttpResponseException` would be raised with an error indicating the failure cause.
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L283-L287 -->
 ```java readme-sample-handlingException
 try {
     metricsAdvisorClient.getFeedback("non_existing_feedback_id");
@@ -373,7 +395,6 @@ For more details see the [samples README][samples_readme].
 ### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `MetricsAdvisorAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L294-L298 -->
 ```java readme-sample-asyncClient
 MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
 MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()

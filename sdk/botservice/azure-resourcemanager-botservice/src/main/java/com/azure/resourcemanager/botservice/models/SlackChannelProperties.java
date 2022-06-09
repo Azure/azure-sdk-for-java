@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Slack channel. */
 @Fluent
 public final class SlackChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlackChannelProperties.class);
-
     /*
      * The Slack client id
      */
@@ -68,7 +64,7 @@ public final class SlackChannelProperties {
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IsValidated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValidated;
 
     /*

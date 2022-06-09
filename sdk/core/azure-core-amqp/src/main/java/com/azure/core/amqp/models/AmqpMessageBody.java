@@ -51,7 +51,7 @@ import java.util.Objects;
  *
  */
 public final class AmqpMessageBody {
-    private final ClientLogger logger = new ClientLogger(AmqpMessageBody.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AmqpMessageBody.class);
     private AmqpMessageBodyType bodyType;
 
     // We expect user to call `getFirstData()` more because we support one byte[] as present.
@@ -192,7 +192,7 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "This method can only be called if AMQP Message body type is 'DATA'."));
         }
         if (dataList ==  null) {
@@ -239,7 +239,7 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format(Locale.US, "This method can be called if AMQP Message body type is 'DATA'. "
                     + "The actual type is [%s].", bodyType)));
         }
@@ -288,7 +288,7 @@ public final class AmqpMessageBody {
      */
     public List<Object> getSequence() {
         if (bodyType != AmqpMessageBodyType.SEQUENCE) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format(Locale.US, "This method can be called if AMQP Message body type is 'SEQUENCE'. "
                     + "The actual type is [%s].", bodyType)));
         }
@@ -336,7 +336,7 @@ public final class AmqpMessageBody {
      */
     public Object getValue() {
         if (bodyType != AmqpMessageBodyType.VALUE) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
                     + "The actual type is [%s].", bodyType)));
         }

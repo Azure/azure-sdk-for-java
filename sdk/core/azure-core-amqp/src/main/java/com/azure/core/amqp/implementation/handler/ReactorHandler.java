@@ -10,6 +10,8 @@ import org.apache.qpid.proton.reactor.Reactor;
 
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
+
 /**
  * Handler that sets the timeout period for waiting for Selectables.
  */
@@ -20,17 +22,16 @@ public class ReactorHandler extends BaseHandler {
      */
     private static final int REACTOR_IO_POLL_TIMEOUT = 20;
 
-    private final ClientLogger logger = new ClientLogger(ReactorHandler.class);
-    private final String connectionId;
+    private final ClientLogger logger;
 
     public ReactorHandler(final String connectionId) {
         Objects.requireNonNull(connectionId);
-        this.connectionId = connectionId;
+        this.logger = new ClientLogger(ReactorHandler.class, createContextWithConnectionId(connectionId));
     }
 
     @Override
     public void onReactorInit(Event e) {
-        logger.info("connectionId[{}] reactor.onReactorInit", connectionId);
+        logger.info("reactor.onReactorInit");
 
         final Reactor reactor = e.getReactor();
         reactor.setTimeout(REACTOR_IO_POLL_TIMEOUT);
@@ -38,6 +39,6 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorFinal(Event e) {
-        logger.info("connectionId[{}] reactor.onReactorFinal. event: {}", connectionId, e);
+        logger.info("reactor.onReactorFinal. event: {}", e);
     }
 }

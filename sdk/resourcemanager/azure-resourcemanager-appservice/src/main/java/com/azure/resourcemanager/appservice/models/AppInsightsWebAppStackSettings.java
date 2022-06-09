@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** App Insights Web App stack settings. */
 @Immutable
 public final class AppInsightsWebAppStackSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppInsightsWebAppStackSettings.class);
-
     /*
      * <code>true</code> if remote Application Insights is supported for the
      * stack; otherwise, <code>false</code>.

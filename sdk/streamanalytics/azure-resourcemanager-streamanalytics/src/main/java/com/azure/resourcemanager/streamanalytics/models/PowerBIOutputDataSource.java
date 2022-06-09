@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.PowerBIOutputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,71 +15,145 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes a Power BI output data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PowerBI")
-@JsonFlatten
 @Fluent
-public class PowerBIOutputDataSource extends OutputDataSource {
+public final class PowerBIOutputDataSource extends OutputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerBIOutputDataSource.class);
 
     /*
-     * A refresh token that can be used to obtain a valid access token that can
-     * then be used to authenticate with the data source. A valid refresh token
-     * is currently only obtainable via the Azure Portal. It is recommended to
-     * put a dummy string value here when creating the data source and then
-     * going to the Azure Portal to authenticate the data source which will
-     * update this property with a valid refresh token. Required on PUT
-     * (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.refreshToken")
-    private String refreshToken;
-
-    /*
-     * The user principal name (UPN) of the user that was used to obtain the
-     * refresh token. Use this property to help remember which user was used to
-     * obtain the refresh token.
-     */
-    @JsonProperty(value = "properties.tokenUserPrincipalName")
-    private String tokenUserPrincipalName;
-
-    /*
-     * The user display name of the user that was used to obtain the refresh
-     * token. Use this property to help remember which user was used to obtain
-     * the refresh token.
-     */
-    @JsonProperty(value = "properties.tokenUserDisplayName")
-    private String tokenUserDisplayName;
-
-    /*
-     * The name of the Power BI dataset. Required on PUT (CreateOrReplace)
-     * requests.
-     */
-    @JsonProperty(value = "properties.dataset")
-    private String dataset;
-
-    /*
-     * The name of the Power BI table under the specified dataset. Required on
+     * The properties that are associated with a Power BI output. Required on
      * PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.table")
-    private String table;
+    @JsonProperty(value = "properties")
+    private PowerBIOutputDataSourceProperties innerProperties;
 
-    /*
-     * The ID of the Power BI group.
+    /**
+     * Get the innerProperties property: The properties that are associated with a Power BI output. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.groupId")
-    private String groupId;
+    private PowerBIOutputDataSourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The name of the Power BI group. Use this property to help remember which
-     * specific Power BI group id was used.
+    /**
+     * Get the dataset property: The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
+     *
+     * @return the dataset value.
      */
-    @JsonProperty(value = "properties.groupName")
-    private String groupName;
+    public String dataset() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataset();
+    }
 
-    /*
-     * Authentication Mode.
+    /**
+     * Set the dataset property: The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
+     *
+     * @param dataset the dataset value to set.
+     * @return the PowerBIOutputDataSource object itself.
      */
-    @JsonProperty(value = "properties.authenticationMode")
-    private AuthenticationMode authenticationMode;
+    public PowerBIOutputDataSource withDataset(String dataset) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withDataset(dataset);
+        return this;
+    }
+
+    /**
+     * Get the table property: The name of the Power BI table under the specified dataset. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @return the table value.
+     */
+    public String table() {
+        return this.innerProperties() == null ? null : this.innerProperties().table();
+    }
+
+    /**
+     * Set the table property: The name of the Power BI table under the specified dataset. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @param table the table value to set.
+     * @return the PowerBIOutputDataSource object itself.
+     */
+    public PowerBIOutputDataSource withTable(String table) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withTable(table);
+        return this;
+    }
+
+    /**
+     * Get the groupId property: The ID of the Power BI group.
+     *
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
+    }
+
+    /**
+     * Set the groupId property: The ID of the Power BI group.
+     *
+     * @param groupId the groupId value to set.
+     * @return the PowerBIOutputDataSource object itself.
+     */
+    public PowerBIOutputDataSource withGroupId(String groupId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withGroupId(groupId);
+        return this;
+    }
+
+    /**
+     * Get the groupName property: The name of the Power BI group. Use this property to help remember which specific
+     * Power BI group id was used.
+     *
+     * @return the groupName value.
+     */
+    public String groupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupName();
+    }
+
+    /**
+     * Set the groupName property: The name of the Power BI group. Use this property to help remember which specific
+     * Power BI group id was used.
+     *
+     * @param groupName the groupName value to set.
+     * @return the PowerBIOutputDataSource object itself.
+     */
+    public PowerBIOutputDataSource withGroupName(String groupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withGroupName(groupName);
+        return this;
+    }
+
+    /**
+     * Get the authenticationMode property: Authentication Mode.
+     *
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     *
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the PowerBIOutputDataSource object itself.
+     */
+    public PowerBIOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withAuthenticationMode(authenticationMode);
+        return this;
+    }
 
     /**
      * Get the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
@@ -91,7 +165,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
      * @return the refreshToken value.
      */
     public String refreshToken() {
-        return this.refreshToken;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshToken();
     }
 
     /**
@@ -105,7 +179,10 @@ public class PowerBIOutputDataSource extends OutputDataSource {
      * @return the PowerBIOutputDataSource object itself.
      */
     public PowerBIOutputDataSource withRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withRefreshToken(refreshToken);
         return this;
     }
 
@@ -116,7 +193,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
      * @return the tokenUserPrincipalName value.
      */
     public String tokenUserPrincipalName() {
-        return this.tokenUserPrincipalName;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenUserPrincipalName();
     }
 
     /**
@@ -127,7 +204,10 @@ public class PowerBIOutputDataSource extends OutputDataSource {
      * @return the PowerBIOutputDataSource object itself.
      */
     public PowerBIOutputDataSource withTokenUserPrincipalName(String tokenUserPrincipalName) {
-        this.tokenUserPrincipalName = tokenUserPrincipalName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withTokenUserPrincipalName(tokenUserPrincipalName);
         return this;
     }
 
@@ -138,7 +218,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
      * @return the tokenUserDisplayName value.
      */
     public String tokenUserDisplayName() {
-        return this.tokenUserDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenUserDisplayName();
     }
 
     /**
@@ -149,111 +229,10 @@ public class PowerBIOutputDataSource extends OutputDataSource {
      * @return the PowerBIOutputDataSource object itself.
      */
     public PowerBIOutputDataSource withTokenUserDisplayName(String tokenUserDisplayName) {
-        this.tokenUserDisplayName = tokenUserDisplayName;
-        return this;
-    }
-
-    /**
-     * Get the dataset property: The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
-     *
-     * @return the dataset value.
-     */
-    public String dataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
-     *
-     * @param dataset the dataset value to set.
-     * @return the PowerBIOutputDataSource object itself.
-     */
-    public PowerBIOutputDataSource withDataset(String dataset) {
-        this.dataset = dataset;
-        return this;
-    }
-
-    /**
-     * Get the table property: The name of the Power BI table under the specified dataset. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @return the table value.
-     */
-    public String table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The name of the Power BI table under the specified dataset. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @param table the table value to set.
-     * @return the PowerBIOutputDataSource object itself.
-     */
-    public PowerBIOutputDataSource withTable(String table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Get the groupId property: The ID of the Power BI group.
-     *
-     * @return the groupId value.
-     */
-    public String groupId() {
-        return this.groupId;
-    }
-
-    /**
-     * Set the groupId property: The ID of the Power BI group.
-     *
-     * @param groupId the groupId value to set.
-     * @return the PowerBIOutputDataSource object itself.
-     */
-    public PowerBIOutputDataSource withGroupId(String groupId) {
-        this.groupId = groupId;
-        return this;
-    }
-
-    /**
-     * Get the groupName property: The name of the Power BI group. Use this property to help remember which specific
-     * Power BI group id was used.
-     *
-     * @return the groupName value.
-     */
-    public String groupName() {
-        return this.groupName;
-    }
-
-    /**
-     * Set the groupName property: The name of the Power BI group. Use this property to help remember which specific
-     * Power BI group id was used.
-     *
-     * @param groupName the groupName value to set.
-     * @return the PowerBIOutputDataSource object itself.
-     */
-    public PowerBIOutputDataSource withGroupName(String groupName) {
-        this.groupName = groupName;
-        return this;
-    }
-
-    /**
-     * Get the authenticationMode property: Authentication Mode.
-     *
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     *
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the PowerBIOutputDataSource object itself.
-     */
-    public PowerBIOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PowerBIOutputDataSourceProperties();
+        }
+        this.innerProperties().withTokenUserDisplayName(tokenUserDisplayName);
         return this;
     }
 
@@ -265,5 +244,8 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

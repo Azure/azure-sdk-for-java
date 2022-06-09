@@ -11,6 +11,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.datafactory.models.AzureBlobDataset;
 import com.azure.resourcemanager.datafactory.models.AzureStorageLinkedService;
@@ -19,6 +21,7 @@ import com.azure.resourcemanager.datafactory.models.BlobSource;
 import com.azure.resourcemanager.datafactory.models.CopyActivity;
 import com.azure.resourcemanager.datafactory.models.CreateRunResponse;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
+import com.azure.resourcemanager.datafactory.models.Factory;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.PipelineResource;
 import com.azure.resourcemanager.datafactory.models.PipelineRun;
@@ -40,31 +43,37 @@ public class DataFactoryTests extends TestBase {
     private static final Random RANDOM = new Random();
 
     private static final Region REGION = Region.US_WEST2;
-    private static final String RESOURCE_GROUP = "rg" + randomPadding();
     private static final String STORAGE_ACCOUNT = "sa" + randomPadding();
     private static final String DATA_FACTORY = "df" + randomPadding();
+
+    private static String resourceGroup = "rg" + randomPadding();
 
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void dataFactoryTest() {
         StorageManager storageManager = StorageManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         DataFactoryManager manager = DataFactoryManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        storageManager.resourceManager().resourceGroups().define(RESOURCE_GROUP)
-            .withRegion(REGION)
-            .create();
+        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+        boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+        if (testEnv) {
+            resourceGroup = testResourceGroup;
+        } else {
+            storageManager.resourceManager().resourceGroups().define(resourceGroup)
+                .withRegion(REGION)
+                .create();
+        }
 
         try {
             // @embedmeStart
             // storage account
             StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
-                .withExistingResourceGroup(RESOURCE_GROUP)
+                .withExistingResourceGroup(resourceGroup)
                 .create();
             final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
             final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
@@ -72,7 +81,7 @@ public class DataFactoryTests extends TestBase {
             // container
             final String containerName = "adf";
             storageManager.blobContainers().defineContainer(containerName)
-                .withExistingBlobService(RESOURCE_GROUP, STORAGE_ACCOUNT)
+                .withExistingStorageAccount(resourceGroup, STORAGE_ACCOUNT)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
@@ -85,9 +94,9 @@ public class DataFactoryTests extends TestBase {
             blobClient.upload(BinaryData.fromString("data"));
 
             // data factory
-            manager.factories().define(DATA_FACTORY)
+            Factory dataFactory = manager.factories().define(DATA_FACTORY)
                 .withRegion(REGION)
-                .withExistingResourceGroup(RESOURCE_GROUP)
+                .withExistingResourceGroup(resourceGroup)
                 .create();
 
             // linked service
@@ -97,7 +106,7 @@ public class DataFactoryTests extends TestBase {
 
             final String linkedServiceName = "LinkedService";
             manager.linkedServices().define(linkedServiceName)
-                .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+                .withExistingFactory(resourceGroup, DATA_FACTORY)
                 .withProperties(new AzureStorageLinkedService()
                     .withConnectionString(connectionStringProperty))
                 .create();
@@ -105,7 +114,7 @@ public class DataFactoryTests extends TestBase {
             // input dataset
             final String inputDatasetName = "InputDataset";
             manager.datasets().define(inputDatasetName)
-                .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+                .withExistingFactory(resourceGroup, DATA_FACTORY)
                 .withProperties(new AzureBlobDataset()
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
                     .withFolderPath(containerName)
@@ -116,7 +125,7 @@ public class DataFactoryTests extends TestBase {
             // output dataset
             final String outputDatasetName = "OutputDataset";
             manager.datasets().define(outputDatasetName)
-                .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+                .withExistingFactory(resourceGroup, DATA_FACTORY)
                 .withProperties(new AzureBlobDataset()
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
                     .withFolderPath(containerName)
@@ -126,7 +135,7 @@ public class DataFactoryTests extends TestBase {
 
             // pipeline
             PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
-                .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+                .withExistingFactory(resourceGroup, DATA_FACTORY)
                 .withActivities(Collections.singletonList(new CopyActivity()
                     .withName("CopyBlob")
                     .withSource(new BlobSource())
@@ -139,20 +148,25 @@ public class DataFactoryTests extends TestBase {
             CreateRunResponse createRun = pipeline.createRun();
 
             // wait for completion
-            PipelineRun pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
+            PipelineRun pipelineRun = manager.pipelineRuns().get(resourceGroup, DATA_FACTORY, createRun.runId());
             String runStatus = pipelineRun.status();
             while ("InProgress".equals(runStatus)) {
                 sleepIfRunningAgainstService(10 * 1000);    // wait 10 seconds
-                pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
+                pipelineRun = manager.pipelineRuns().get(resourceGroup, DATA_FACTORY, createRun.runId());
                 runStatus = pipelineRun.status();
             }
             // @embedmeEnd
 
-            manager.linkedServices().listByFactory(RESOURCE_GROUP, DATA_FACTORY).stream().count();
-            manager.datasets().listByFactory(RESOURCE_GROUP, DATA_FACTORY).stream().count();
-            manager.pipelines().listByFactory(RESOURCE_GROUP, DATA_FACTORY).stream().count();
+            manager.linkedServices().listByFactory(resourceGroup, DATA_FACTORY).stream().count();
+            manager.datasets().listByFactory(resourceGroup, DATA_FACTORY).stream().count();
+            manager.pipelines().listByFactory(resourceGroup, DATA_FACTORY).stream().count();
+
+            manager.factories().deleteById(dataFactory.id());
+            storageManager.storageAccounts().deleteById(storageAccount.id());
         } finally {
-            storageManager.resourceManager().resourceGroups().beginDeleteByName(RESOURCE_GROUP);
+            if (!testEnv) {
+                storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+            }
         }
     }
 

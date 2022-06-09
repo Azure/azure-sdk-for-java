@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.LibrariesOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import com.azure.resourcemanager.synapse.models.LibraryListResponse;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LibrariesOperationsClient. */
 public final class LibrariesOperationsClientImpl implements LibrariesOperationsClient {
-    private final ClientLogger logger = new ClientLogger(LibrariesOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LibrariesOperationsService service;
 
@@ -93,7 +90,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceSinglePageAsync(
@@ -152,7 +149,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceSinglePageAsync(
@@ -207,7 +204,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LibraryResourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
@@ -225,7 +222,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LibraryResourceInner> listByWorkspaceAsync(
@@ -243,7 +240,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LibraryResourceInner> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -259,7 +256,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LibraryResourceInner> listByWorkspace(
@@ -274,7 +271,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -310,7 +307,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceNextSinglePageAsync(

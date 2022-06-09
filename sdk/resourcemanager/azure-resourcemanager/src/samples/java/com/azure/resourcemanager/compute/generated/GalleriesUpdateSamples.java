@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.GalleryUpdate;
 /** Samples for Galleries Update. */
 public final class GalleriesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/UpdateASimpleGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_Update.json
      */
     /**
      * Sample code: Update a simple gallery.

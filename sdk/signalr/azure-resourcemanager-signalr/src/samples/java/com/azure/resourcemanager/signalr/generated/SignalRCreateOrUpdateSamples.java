@@ -6,6 +6,8 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.resourcemanager.signalr.models.AclAction;
 import com.azure.resourcemanager.signalr.models.FeatureFlags;
+import com.azure.resourcemanager.signalr.models.LiveTraceCategory;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.ManagedIdentitySettings;
 import com.azure.resourcemanager.signalr.models.ManagedIdentityType;
@@ -30,7 +32,7 @@ import java.util.Map;
 /** Samples for SignalR CreateOrUpdate. */
 public final class SignalRCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/SignalR_CreateOrUpdate.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalR_CreateOrUpdate.
@@ -67,6 +69,11 @@ public final class SignalRCreateOrUpdateSamples {
                             .withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
                             .withValue("False")
                             .withProperties(mapOf())))
+            .withLiveTraceConfiguration(
+                new LiveTraceConfiguration()
+                    .withEnabled("false")
+                    .withCategories(
+                        Arrays.asList(new LiveTraceCategory().withName("ConnectivityLogs").withEnabled("true"))))
             .withCors(new SignalRCorsSettings().withAllowedOrigins(Arrays.asList("https://foo.com", "https://bar.com")))
             .withUpstream(
                 new ServerlessUpstreamSettings()

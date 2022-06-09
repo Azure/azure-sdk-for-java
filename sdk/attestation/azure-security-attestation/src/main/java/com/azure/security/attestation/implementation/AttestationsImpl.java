@@ -18,7 +18,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.security.attestation.implementation.models.AttestOpenEnclaveRequest;
 import com.azure.security.attestation.implementation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.implementation.models.AttestationResponse;
@@ -52,7 +51,7 @@ public final class AttestationsImpl {
      */
     @Host("{instanceUrl}")
     @ServiceInterface(name = "AttestationClientAtt")
-    private interface AttestationsService {
+    public interface AttestationsService {
         @Post("/attest/OpenEnclave")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -89,35 +88,6 @@ public final class AttestationsImpl {
      * attestation policy.
      *
      * @param request Request object containing the quote.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponseAsync(AttestOpenEnclaveRequest request) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.attestOpenEnclave(
-                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context));
-    }
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -140,114 +110,6 @@ public final class AttestationsImpl {
         final String accept = "application/json";
         return service.attestOpenEnclave(
                 this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
-    }
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse> attestOpenEnclaveAsync(AttestOpenEnclaveRequest request) {
-        return attestOpenEnclaveWithResponseAsync(request)
-                .flatMap(
-                        (Response<AttestationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse> attestOpenEnclaveAsync(AttestOpenEnclaveRequest request, Context context) {
-        return attestOpenEnclaveWithResponseAsync(request, context)
-                .flatMap(
-                        (Response<AttestationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse attestOpenEnclave(AttestOpenEnclaveRequest request) {
-        return attestOpenEnclaveAsync(request).block();
-    }
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResponse> attestOpenEnclaveWithResponse(
-            AttestOpenEnclaveRequest request, Context context) {
-        return attestOpenEnclaveWithResponseAsync(request, context).block();
-    }
-
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponseAsync(AttestSgxEnclaveRequest request) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.attestSgxEnclave(
-                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
@@ -280,114 +142,6 @@ public final class AttestationsImpl {
     }
 
     /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse> attestSgxEnclaveAsync(AttestSgxEnclaveRequest request) {
-        return attestSgxEnclaveWithResponseAsync(request)
-                .flatMap(
-                        (Response<AttestationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse> attestSgxEnclaveAsync(AttestSgxEnclaveRequest request, Context context) {
-        return attestSgxEnclaveWithResponseAsync(request, context)
-                .flatMap(
-                        (Response<AttestationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse attestSgxEnclave(AttestSgxEnclaveRequest request) {
-        return attestSgxEnclaveAsync(request).block();
-    }
-
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
-     *
-     * @param request Request object containing the quote.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResponse> attestSgxEnclaveWithResponse(
-            AttestSgxEnclaveRequest request, Context context) {
-        return attestSgxEnclaveWithResponseAsync(request, context).block();
-    }
-
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
-     *
-     * @param request Request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TpmAttestationResponse>> attestTpmWithResponseAsync(TpmAttestationRequest request) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.attestTpm(
-                                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context));
-    }
-
-    /**
      * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
      * produced is dependent upon the attestation policy.
      *
@@ -413,83 +167,5 @@ public final class AttestationsImpl {
         }
         final String accept = "application/json";
         return service.attestTpm(this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
-    }
-
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
-     *
-     * @param request Request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TpmAttestationResponse> attestTpmAsync(TpmAttestationRequest request) {
-        return attestTpmWithResponseAsync(request)
-                .flatMap(
-                        (Response<TpmAttestationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
-     *
-     * @param request Request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TpmAttestationResponse> attestTpmAsync(TpmAttestationRequest request, Context context) {
-        return attestTpmWithResponseAsync(request, context)
-                .flatMap(
-                        (Response<TpmAttestationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
-     *
-     * @param request Request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TpmAttestationResponse attestTpm(TpmAttestationRequest request) {
-        return attestTpmAsync(request).block();
-    }
-
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
-     *
-     * @param request Request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation response for Trusted Platform Module (TPM) attestation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TpmAttestationResponse> attestTpmWithResponse(TpmAttestationRequest request, Context context) {
-        return attestTpmWithResponseAsync(request, context).block();
     }
 }

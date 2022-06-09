@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Scripts Get. */
 public final class ScriptsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoScriptsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoScriptsGet.json
      */
     /**
      * Sample code: KustoScriptsGet.
@@ -17,8 +17,6 @@ public final class ScriptsGetSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .scripts()
-            .getWithResponse("kustorptest", "kustoclusterrptest4", "Kustodatabase8", "kustoScript1", Context.NONE);
+        manager.scripts().getWithResponse("kustorptest", "kustoCluster", "Kustodatabase8", "kustoScript", Context.NONE);
     }
 }

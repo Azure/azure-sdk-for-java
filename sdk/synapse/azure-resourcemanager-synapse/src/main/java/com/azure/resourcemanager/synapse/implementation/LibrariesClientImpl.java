@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LibrariesClient. */
 public final class LibrariesClientImpl implements LibrariesClient {
-    private final ClientLogger logger = new ClientLogger(LibrariesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LibrariesService service;
 
@@ -80,7 +77,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LibraryResourceInner>> getWithResponseAsync(
@@ -135,7 +132,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LibraryResourceInner>> getWithResponseAsync(
@@ -186,7 +183,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LibraryResourceInner> getAsync(String resourceGroupName, String libraryName, String workspaceName) {
@@ -227,7 +224,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInner> getWithResponse(

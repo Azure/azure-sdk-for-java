@@ -29,6 +29,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
+import java.util.Objects;
+
 /** Entry point to Azure Authorization and Graph RBAC management. */
 public final class AuthorizationManager implements HasServiceClient<MicrosoftGraphClient> {
     private final String tenantId;
@@ -56,6 +58,8 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
      * @return the AuthorizationManager instance
      */
     public static AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -63,11 +67,13 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
      * Creates an instance of AuthorizationManager that exposes Authorization
      * and Graph RBAC management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile used in Active Directory
      * @return the AuthorizationManager instance
      */
-    private static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new AuthorizationManager(httpPipeline, profile);
     }
 

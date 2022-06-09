@@ -58,7 +58,7 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response}.
      */
     Response<FirewallRule> getWithResponse(
         String resourceGroupName, String serverName, String firewallRuleName, Context context);
@@ -71,7 +71,7 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName);
 
@@ -84,7 +84,7 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules.
+     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName, Context context);
 
@@ -95,7 +95,7 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response}.
      */
     FirewallRule getById(String id);
 
@@ -107,7 +107,7 @@ public interface FirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server firewall rule.
+     * @return information about a server firewall rule along with {@link Response}.
      */
     Response<FirewallRule> getByIdWithResponse(String id, Context context);
 

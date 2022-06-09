@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Configures the Play Right in the PlayReady license. */
 @Fluent
 public final class ContentKeyPolicyPlayReadyPlayRight {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyPlayReadyPlayRight.class);
-
     /*
      * The amount of time that the license is valid after the license is first
      * used to play content.
@@ -397,11 +394,13 @@ public final class ContentKeyPolicyPlayReadyPlayRight {
             explicitAnalogTelevisionOutputRestriction().validate();
         }
         if (allowPassingVideoContentToUnknownOutput() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property allowPassingVideoContentToUnknownOutput in model"
                             + " ContentKeyPolicyPlayReadyPlayRight"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyPlayReadyPlayRight.class);
 }

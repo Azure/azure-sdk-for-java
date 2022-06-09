@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** API OAuth2 Authentication settings details. */
 @Fluent
 public final class OAuth2AuthenticationSettingsContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2AuthenticationSettingsContract.class);
-
     /*
      * OAuth authorization server identifier.
      */

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.CsvSerializationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,30 +15,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes how data from an input is serialized or how data is serialized when written to an output in CSV format. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Csv")
-@JsonFlatten
 @Fluent
-public class CsvSerialization extends Serialization {
+public final class CsvSerialization extends Serialization {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsvSerialization.class);
 
     /*
-     * Specifies the delimiter that will be used to separate comma-separated
-     * value (CSV) records. See
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input
-     * or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
-     * for a list of supported values. Required on PUT (CreateOrReplace)
-     * requests.
+     * The properties that are associated with the CSV serialization type.
+     * Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.fieldDelimiter")
-    private String fieldDelimiter;
+    @JsonProperty(value = "properties")
+    private CsvSerializationProperties innerProperties;
 
-    /*
-     * Specifies the encoding of the incoming data in the case of input and the
-     * encoding of outgoing data in the case of output. Required on PUT
-     * (CreateOrReplace) requests.
+    /**
+     * Get the innerProperties property: The properties that are associated with the CSV serialization type. Required on
+     * PUT (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.encoding")
-    private Encoding encoding;
+    private CsvSerializationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the fieldDelimiter property: Specifies the delimiter that will be used to separate comma-separated value
@@ -49,7 +45,7 @@ public class CsvSerialization extends Serialization {
      * @return the fieldDelimiter value.
      */
     public String fieldDelimiter() {
-        return this.fieldDelimiter;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldDelimiter();
     }
 
     /**
@@ -62,7 +58,10 @@ public class CsvSerialization extends Serialization {
      * @return the CsvSerialization object itself.
      */
     public CsvSerialization withFieldDelimiter(String fieldDelimiter) {
-        this.fieldDelimiter = fieldDelimiter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CsvSerializationProperties();
+        }
+        this.innerProperties().withFieldDelimiter(fieldDelimiter);
         return this;
     }
 
@@ -73,7 +72,7 @@ public class CsvSerialization extends Serialization {
      * @return the encoding value.
      */
     public Encoding encoding() {
-        return this.encoding;
+        return this.innerProperties() == null ? null : this.innerProperties().encoding();
     }
 
     /**
@@ -84,7 +83,10 @@ public class CsvSerialization extends Serialization {
      * @return the CsvSerialization object itself.
      */
     public CsvSerialization withEncoding(Encoding encoding) {
-        this.encoding = encoding;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CsvSerializationProperties();
+        }
+        this.innerProperties().withEncoding(encoding);
         return this;
     }
 
@@ -96,5 +98,8 @@ public class CsvSerialization extends Serialization {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

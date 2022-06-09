@@ -21,6 +21,8 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+
 /**
  * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
  * a specific consumer group.
@@ -75,7 +77,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerClient.class);
 
     private final EventHubConsumerAsyncClient consumer;
     private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
@@ -194,21 +196,21 @@ public class EventHubConsumerClient implements Closeable {
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime) {
         if (Objects.isNull(maximumWaitTime)) {
-            throw logger.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
         } else if (Objects.isNull(startingPosition)) {
-            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(partitionId)) {
-            throw logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
         }
 
         if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
@@ -242,23 +244,23 @@ public class EventHubConsumerClient implements Closeable {
     public IterableStream<PartitionEvent> receiveFromPartition(String partitionId, int maximumMessageCount,
         EventPosition startingPosition, Duration maximumWaitTime, ReceiveOptions receiveOptions) {
         if (Objects.isNull(maximumWaitTime)) {
-            throw logger.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'maximumWaitTime' cannot be null."));
         } else if (Objects.isNull(startingPosition)) {
-            throw logger.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'startingPosition' cannot be null."));
         } else if (Objects.isNull(partitionId)) {
-            throw logger.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'partitionId' cannot be null."));
         } else if (Objects.isNull(receiveOptions)) {
-            throw logger.logExceptionAsError(new NullPointerException("'receiveOptions' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'receiveOptions' cannot be null."));
         }
 
         if (partitionId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
@@ -287,7 +289,10 @@ public class EventHubConsumerClient implements Closeable {
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
             emitter);
         final SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
-        logger.info("Started synchronous event subscriber for partition '{}'.", partitionId);
+        LOGGER.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, partitionId)
+            .log("Started synchronous event subscriber.");
+
         consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }
 }

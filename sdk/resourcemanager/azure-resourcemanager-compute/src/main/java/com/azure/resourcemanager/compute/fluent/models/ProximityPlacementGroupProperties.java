@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a Proximity Placement Group. */
 @Fluent
 public final class ProximityPlacementGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupProperties.class);
-
     /*
      * Specifies the type of the proximity placement group. <br><br> Possible
      * values are: <br><br> **Standard** : Co-locate resources within an Azure
@@ -52,6 +49,12 @@ public final class ProximityPlacementGroupProperties {
      */
     @JsonProperty(value = "colocationStatus")
     private InstanceViewStatus colocationStatus;
+
+    /*
+     * Specifies the user intent of the proximity placement group.
+     */
+    @JsonProperty(value = "intent")
+    private ProximityPlacementGroupPropertiesIntent intent;
 
     /**
      * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
@@ -128,6 +131,26 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
+     * Get the intent property: Specifies the user intent of the proximity placement group.
+     *
+     * @return the intent value.
+     */
+    public ProximityPlacementGroupPropertiesIntent intent() {
+        return this.intent;
+    }
+
+    /**
+     * Set the intent property: Specifies the user intent of the proximity placement group.
+     *
+     * @param intent the intent value to set.
+     * @return the ProximityPlacementGroupProperties object itself.
+     */
+    public ProximityPlacementGroupProperties withIntent(ProximityPlacementGroupPropertiesIntent intent) {
+        this.intent = intent;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,6 +167,9 @@ public final class ProximityPlacementGroupProperties {
         }
         if (colocationStatus() != null) {
             colocationStatus().validate();
+        }
+        if (intent() != null) {
+            intent().validate();
         }
     }
 }

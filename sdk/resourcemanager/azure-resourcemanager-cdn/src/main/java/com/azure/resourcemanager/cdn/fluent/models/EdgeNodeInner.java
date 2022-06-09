@@ -5,26 +5,25 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.IpAddressGroup;
-import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users. */
-@JsonFlatten
 @Fluent
-public class EdgeNodeInner extends ProxyResource {
+public final class EdgeNodeInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeNodeInner.class);
 
     /*
-     * List of ip address groups.
+     * The JSON object that contains the properties required to create an
+     * edgenode.
      */
-    @JsonProperty(value = "properties.ipAddressGroups")
-    private List<IpAddressGroup> ipAddressGroups;
+    @JsonProperty(value = "properties")
+    private EdgeNodeProperties innerProperties;
 
     /*
      * Read only system data
@@ -33,23 +32,12 @@ public class EdgeNodeInner extends ProxyResource {
     private SystemData systemData;
 
     /**
-     * Get the ipAddressGroups property: List of ip address groups.
+     * Get the innerProperties property: The JSON object that contains the properties required to create an edgenode.
      *
-     * @return the ipAddressGroups value.
+     * @return the innerProperties value.
      */
-    public List<IpAddressGroup> ipAddressGroups() {
-        return this.ipAddressGroups;
-    }
-
-    /**
-     * Set the ipAddressGroups property: List of ip address groups.
-     *
-     * @param ipAddressGroups the ipAddressGroups value to set.
-     * @return the EdgeNodeInner object itself.
-     */
-    public EdgeNodeInner withIpAddressGroups(List<IpAddressGroup> ipAddressGroups) {
-        this.ipAddressGroups = ipAddressGroups;
-        return this;
+    private EdgeNodeProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -62,16 +50,36 @@ public class EdgeNodeInner extends ProxyResource {
     }
 
     /**
+     * Get the ipAddressGroups property: List of ip address groups.
+     *
+     * @return the ipAddressGroups value.
+     */
+    public List<IpAddressGroup> ipAddressGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddressGroups();
+    }
+
+    /**
+     * Set the ipAddressGroups property: List of ip address groups.
+     *
+     * @param ipAddressGroups the ipAddressGroups value to set.
+     * @return the EdgeNodeInner object itself.
+     */
+    public EdgeNodeInner withIpAddressGroups(List<IpAddressGroup> ipAddressGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EdgeNodeProperties();
+        }
+        this.innerProperties().withIpAddressGroups(ipAddressGroups);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ipAddressGroups() != null) {
-            ipAddressGroups().forEach(e -> e.validate());
-        }
-        if (systemData() != null) {
-            systemData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

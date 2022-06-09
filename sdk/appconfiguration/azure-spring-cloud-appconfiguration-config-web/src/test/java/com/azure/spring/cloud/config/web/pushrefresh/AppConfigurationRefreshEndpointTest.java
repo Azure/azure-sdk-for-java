@@ -269,7 +269,7 @@ public class AppConfigurationRefreshEndpointTest {
             + "  \"data\" : {\r\n"
             + "    \"key\" : \"trigger_key\",\r\n"
             + "    \"label\" : \"trigger_label\",\r\n"
-            + "    \"etag\" : \"r05tB2hfMQs0vo6ITcXu7ScIOhR\"\r\n"
+            + "    \"syncToken\" : \"zAJw6V16=MzoyMCMyODA3Mzc3;sn=2807377\"\r\n"
             + "  },\r\n"
             + "  \"eventType\" : \"Microsoft.AppConfiguration.KeyValueModified\",\r\n"
             + "  \"dataVersion\" : \"1\",\r\n"

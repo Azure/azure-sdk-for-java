@@ -10,10 +10,23 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.util.X509CertUtils;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
+import io.opentelemetry.context.propagation.ContextPropagators;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.provider.Arguments;
 
 import javax.security.auth.x500.X500Principal;
@@ -30,6 +43,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -48,9 +62,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Provides convenience methods for retrieving attestation client builders, verifying attestation tokens,
  * and accessing test environments.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class AttestationClientTestBase extends TestBase {
 
     protected final ClientLogger logger = new ClientLogger(AttestationClientTestBase.class);
+    protected Tracer tracer;
 
     enum ClientTypes {
         SHARED,
@@ -63,6 +79,40 @@ public class AttestationClientTestBase extends TestBase {
         TestBase.setupClass();
 //        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
+
+    @Override
+    @BeforeEach
+    public void setupTest(TestInfo testInfo) {
+        super.setupTest(testInfo);
+        String testMethod = testInfo.getTestMethod().isPresent()
+            ? testInfo.getTestMethod().get().getName()
+            : testInfo.getDisplayName();
+        tracer = configureLoggingExporter(testMethod);
+    }
+
+    @Override
+    @AfterEach
+    public void teardownTest(TestInfo testInfo) {
+        String testMethod = testInfo.getTestMethod().isPresent()
+            ? testInfo.getTestMethod().get().getName()
+            : testInfo.getDisplayName();
+        GlobalOpenTelemetry.resetForTest();
+        super.teardownTest(testInfo);
+    }
+
+    public static Tracer configureLoggingExporter(String testName) {
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+            .build();
+
+        return OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .setPropagators(ContextPropagators.create(W3CTraceContextPropagator.getInstance()))
+            .buildAndRegisterGlobal()
+            .getTracer(testName);
+    }
+
+
 
     /**
      * Determine the Attestation instance type based on the client URI provided.
@@ -142,6 +192,10 @@ public class AttestationClientTestBase extends TestBase {
                 .setValidateExpiresOn(false)
                 .setValidateNotBefore(false)
             );
+        } else {
+            // Otherwise, add a 10-second slack time to account for clock drift between the client and server.
+            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)));
         }
         if (!interceptorManager.isPlaybackMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
@@ -285,12 +339,12 @@ public class AttestationClientTestBase extends TestBase {
     protected KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
 
         KeyPairGenerator keyGen;
-        if (algorithm.equals("EC")) {
+        if ("EC".equals(algorithm)) {
             keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
         } else {
             keyGen = KeyPairGenerator.getInstance(algorithm);
         }
-        if (algorithm.equals("RSA")) {
+        if ("RSA".equals(algorithm)) {
             keyGen.initialize(2048); // Generate a reasonably strong key.
         }
         return keyGen.generateKeyPair();
@@ -358,7 +412,7 @@ public class AttestationClientTestBase extends TestBase {
      * @return a stream of Argument objects associated with each of the regions on which to run the attestation test.
      */
     static Stream<Arguments> getAttestationClients() {
-        // when this issues is closed, the newer version of junit will have better support for
+        // when this issue is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
 
         final String regionShortName = getLocationShortName();

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,34 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2022-01-04)
+
+- Azure Resource Manager NotificationHubs client library for Java. This package contains Microsoft Azure SDK for NotificationHubs Management SDK. Azure NotificationHub client. Package tag package-2017-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SharedAccessAuthorizationRuleListResult` was modified
+
+* `innerModel()` was removed
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+* `java.util.List value()` -> `java.util.List value()`
+
+#### `models.Namespaces` was modified
+
+* `models.SharedAccessAuthorizationRuleListResult listKeys(java.lang.String,java.lang.String,java.lang.String)` -> `models.ResourceListKeys listKeys(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.SharedAccessAuthorizationRuleResource` was modified
+
+* `models.SharedAccessAuthorizationRuleListResult listKeys()` -> `models.ResourceListKeys listKeys()`
+
+### Features Added
+
+#### `models.SharedAccessAuthorizationRuleListResult` was modified
+
+* `validate()` was added
+* `withNextLink(java.lang.String)` was added
+* `withValue(java.util.List)` was added
 
 ## 1.0.0-beta.2 (2021-11-03)
 

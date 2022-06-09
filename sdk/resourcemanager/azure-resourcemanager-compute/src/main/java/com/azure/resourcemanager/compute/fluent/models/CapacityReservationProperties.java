@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Properties of the Capacity reservation. */
 @Immutable
 public final class CapacityReservationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationProperties.class);
-
     /*
      * A unique id generated and assigned to the capacity reservation by the
      * platform which does not change throughout the lifetime of the resource.
@@ -49,6 +45,13 @@ public final class CapacityReservationProperties {
      */
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private CapacityReservationInstanceView instanceView;
+
+    /*
+     * Specifies the time at which the Capacity Reservation resource was
+     * created.<br><br>Minimum api-version: 2022-03-01.
+     */
+    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime timeCreated;
 
     /**
      * Get the reservationId property: A unique id generated and assigned to the capacity reservation by the platform
@@ -95,6 +98,16 @@ public final class CapacityReservationProperties {
      */
     public CapacityReservationInstanceView instanceView() {
         return this.instanceView;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
     }
 
     /**

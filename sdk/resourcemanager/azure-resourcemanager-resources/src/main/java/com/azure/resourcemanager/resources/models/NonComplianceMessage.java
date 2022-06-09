@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class NonComplianceMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NonComplianceMessage.class);
-
     /*
      * A message that describes why a resource is non-compliant with the
      * policy. This is shown in 'deny' error messages and on resource's
@@ -87,9 +84,11 @@ public final class NonComplianceMessage {
      */
     public void validate() {
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property message in model NonComplianceMessage"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NonComplianceMessage.class);
 }

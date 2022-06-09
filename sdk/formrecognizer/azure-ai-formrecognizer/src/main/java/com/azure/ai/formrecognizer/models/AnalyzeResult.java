@@ -39,11 +39,6 @@ public final class AnalyzeResult {
     private List<DocumentKeyValuePair> keyValuePairs;
 
     /*
-     * Extracted entities.
-     */
-    private List<DocumentEntity> entities;
-
-    /*
      * Extracted font styles.
      */
     private List<DocumentStyle> styles;
@@ -52,6 +47,31 @@ public final class AnalyzeResult {
      * Extracted documents.
      */
     private List<AnalyzedDocument> documents;
+
+    /*
+     * Detected languages.
+     */
+    private List<DocumentLanguage> languages;
+
+    private List<DocumentParagraph> paragraphs;
+
+    /**
+     * Get the paragraphs property: Extracted paragraphs.
+     *
+     * @return the paragraphs value.
+     */
+    public List<DocumentParagraph> getParagraphs() {
+        return this.paragraphs;
+    }
+
+    /**
+     * Set the paragraphs property: Extracted paragraphs.
+     *
+     * @param paragraphs the paragraphs value to set.
+     */
+    void setParagraphs(List<DocumentParagraph> paragraphs) {
+        this.paragraphs = paragraphs;
+    }
 
     /**
      * Get the modelId property: Model ID used to produce this result.
@@ -147,27 +167,7 @@ public final class AnalyzeResult {
     void setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
     }
-
-    /**
-     * Get the entities property: Extracted entities.
-     *
-     * @return the entities value.
-     */
-    public List<DocumentEntity> getEntities() {
-        return this.entities;
-    }
-
-    /**
-     * Set the entities property: Extracted entities.
-     *
-     * @param entities the entities value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    void setEntities(List<DocumentEntity> entities) {
-        this.entities = entities;
-    }
-
-    /**
+        /**
      * Get the styles property: Extracted font styles.
      *
      * @return the styles value.
@@ -205,6 +205,24 @@ public final class AnalyzeResult {
         this.documents = documents;
     }
 
+    /**
+     * Get the detected languages.
+     *
+     * @return the languages value.
+     */
+    public List<DocumentLanguage> getLanguages() {
+        return this.languages;
+    }
+
+    /**
+     * Set the detected languages.
+     *
+     * @param languages the languages value to set.
+     */
+    void setLanguages(List<DocumentLanguage> languages) {
+        this.languages = languages;
+    }
+
     static {
         AnalyzeResultHelper.setAccessor(new AnalyzeResultHelper.AnalyzeResultAccessor() {
             @Override
@@ -233,11 +251,6 @@ public final class AnalyzeResult {
             }
 
             @Override
-            public void setEntities(AnalyzeResult analyzeResult, List<DocumentEntity> entities) {
-                analyzeResult.setEntities(entities);
-            }
-
-            @Override
             public void setStyles(AnalyzeResult analyzeResult, List<DocumentStyle> styles) {
                 analyzeResult.setStyles(styles);
             }
@@ -245,6 +258,16 @@ public final class AnalyzeResult {
             @Override
             public void setDocuments(AnalyzeResult analyzeResult, List<AnalyzedDocument> documents) {
                 analyzeResult.setDocuments(documents);
+            }
+
+            @Override
+            public void setLanguages(AnalyzeResult analyzeResult, List<DocumentLanguage> languages) {
+                analyzeResult.setLanguages(languages);
+            }
+
+            @Override
+            public void setParagraphs(AnalyzeResult analyzeResult, List<DocumentParagraph> paragraphs) {
+                analyzeResult.setParagraphs(paragraphs);
             }
         });
     }

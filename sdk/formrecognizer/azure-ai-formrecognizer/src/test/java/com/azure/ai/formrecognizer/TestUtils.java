@@ -3,9 +3,11 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
@@ -17,7 +19,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -51,8 +55,15 @@ public final class TestUtils {
     static final String MULTIPAGE_BUSINESS_CARD_PDF = "business-card-multipage.pdf";
     static final String INVOICE_PDF = "Invoice_1.pdf";
     static final String MULTIPAGE_VENDOR_INVOICE_PDF = "multipage_vendor_invoice.pdf";
-    static final String LICENSE_CARD_JPG = "license.jpg";
+    static final String LICENSE_PNG = "license.png";
     static final String INVOICE_NO_SUB_LINE_PDF = "ErrorImage.tiff";
+    static final String W2_JPG = "w2-single.png";
+    static final String EXAMPLE_DOCX = "example.docx";
+    static final String EXAMPLE_PPT = "example.pptx";
+    static final String EXAMPLE_HTML = "example.html";
+
+    static final String EXAMPLE_XLSX = "example.xlsx";
+    static final String GERMAN_PNG = "read-german.png";
     static final String INVALID_URL = "htttttttps://localhost:8080";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
@@ -63,20 +74,33 @@ public final class TestUtils {
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
+    public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
+    static {
+        EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
+    }
+    public static final String EXPECTED_DESC = "optional desc";
 
+    static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
+    public static final String FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
-    public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION
-        = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY");
-    public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION
-        = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
+    public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
+    public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     public static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration()
-            .get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+    public static final String AZURE_CLIENT_ID
+        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
+    public static final String AZURE_TENANT_ID
+        = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
+    public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
+        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
 
     private TestUtils() {
     }
@@ -128,6 +152,10 @@ public final class TestUtils {
         testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
     }
 
+    public static void getErrorTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
+        testRunner.accept(getErrorTrainingFilesContainerUrl(isPlaybackMode));
+    }
+
     public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
     }
@@ -174,6 +202,15 @@ public final class TestUtils {
     }
 
     /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private static String getErrorTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
      * Get the multipage training data set SAS Url value based on the test running mode.
      *
      * @return the multipgae training data set Url
@@ -204,7 +241,7 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         List<DocumentAnalysisServiceVersion> serviceVersions = new ArrayList<>();
-        serviceVersions.add(DocumentAnalysisServiceVersion.V2021_09_30_PREVIEW);
+        serviceVersions.add(DocumentAnalysisServiceVersion.V2022_06_30_PREVIEW);
         getHttpClients()
             .forEach(httpClient -> serviceVersions.stream().filter(
                     TestUtils::shouldServiceVersionBeTested)
@@ -240,6 +277,43 @@ public final class TestUtils {
         String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
+    public static FormRecognizerAudience getAudience(String endpoint) {
+        String authority = getAuthority(endpoint);
+        switch (authority) {
+            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+
+            case AzureAuthorityHosts.AZURE_CHINA:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+
+            case AzureAuthorityHosts.AZURE_GOVERNMENT:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
+
+            default:
+                return null;
+        }
+    }
+
+    public static String getAuthority(String endpoint) {
+        if (endpoint == null) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".io")) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".cn")) {
+            return AzureAuthorityHosts.AZURE_CHINA;
+        }
+
+        if (endpoint.contains(".us")) {
+            return AzureAuthorityHosts.AZURE_GOVERNMENT;
+        }
+
+        // By default, we will assume that the authority is public
+        return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
 }
 

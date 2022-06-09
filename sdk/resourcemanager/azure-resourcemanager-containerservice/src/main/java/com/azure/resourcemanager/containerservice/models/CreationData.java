@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data used when creating a target resource from a source resource. */
 @Fluent
 public final class CreationData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);
-
     /*
      * This is the ARM ID of the source object to be used to create the target
      * object.

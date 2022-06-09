@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The exposure control request. */
 @Fluent
 public final class ExposureControlRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExposureControlRequest.class);
-
     /*
      * The feature name.
      */

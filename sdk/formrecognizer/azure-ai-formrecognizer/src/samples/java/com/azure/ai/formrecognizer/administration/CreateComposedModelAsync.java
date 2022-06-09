@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -42,19 +43,18 @@ public class CreateComposedModelAsync {
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModel> model1Poller =
-            client.beginBuildModel(model1TrainingFiles, null);
+            client.beginBuildModel(model1TrainingFiles, DocumentBuildMode.TEMPLATE, null);
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModel> model2Poller =
-            client.beginBuildModel(model2TrainingFiles, null);
+            client.beginBuildModel(model2TrainingFiles, DocumentBuildMode.TEMPLATE, null);
 
         String labeledModelId1 = model1Poller.getSyncPoller().getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getSyncPoller().getFinalResult().getModelId();
 
         client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
-                "my-composed-model",
                 new CreateComposedModelOptions().setDescription("my composed model desc"))
             .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)

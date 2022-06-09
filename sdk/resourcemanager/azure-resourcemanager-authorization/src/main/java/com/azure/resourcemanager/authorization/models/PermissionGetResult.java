@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.PermissionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Permissions information. */
 @Fluent
 public final class PermissionGetResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PermissionGetResult.class);
-
     /*
      * An array of permissions.
      */

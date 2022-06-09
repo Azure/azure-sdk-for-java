@@ -7,14 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of SSL certificates of application gateway. */
 @Fluent
 public final class VpnClientRootCertificatePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRootCertificatePropertiesFormat.class);
-
     /*
      * The certificate public data.
      */
@@ -63,10 +60,12 @@ public final class VpnClientRootCertificatePropertiesFormat {
      */
     public void validate() {
         if (publicCertData() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VpnClientRootCertificatePropertiesFormat.class);
 }

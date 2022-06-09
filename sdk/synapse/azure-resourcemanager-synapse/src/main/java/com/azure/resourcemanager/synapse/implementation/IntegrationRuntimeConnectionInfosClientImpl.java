@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeConnectionInfosClient;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeConnectionInfosClient.
  */
 public final class IntegrationRuntimeConnectionInfosClientImpl implements IntegrationRuntimeConnectionInfosClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeConnectionInfosClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeConnectionInfosService service;
 
@@ -86,7 +83,8 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection info for an integration runtime.
+     * @return connection info for an integration runtime along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeConnectionInfoInner>> getWithResponseAsync(
@@ -143,7 +141,8 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection info for an integration runtime.
+     * @return connection info for an integration runtime along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeConnectionInfoInner>> getWithResponseAsync(
@@ -196,7 +195,7 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection info for an integration runtime.
+     * @return connection info for an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeConnectionInfoInner> getAsync(
@@ -239,7 +238,7 @@ public final class IntegrationRuntimeConnectionInfosClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection info for an integration runtime.
+     * @return connection info for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeConnectionInfoInner> getWithResponse(

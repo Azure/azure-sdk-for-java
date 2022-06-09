@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CommonDataServiceForAppsEntityDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.Map;
 @JsonTypeName("CommonDataServiceForAppsEntity")
 @Fluent
 public final class CommonDataServiceForAppsEntityDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonDataServiceForAppsEntityDataset.class);
-
     /*
      * Common Data Service for Apps entity dataset properties.
      */

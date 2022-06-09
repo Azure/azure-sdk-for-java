@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of a single parameter for an entity. */
 @Fluent
 public final class GlobalParameterSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalParameterSpecification.class);
-
     /*
      * Global Parameter type.
      */
@@ -73,16 +70,18 @@ public final class GlobalParameterSpecification {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property type in model GlobalParameterSpecification"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model GlobalParameterSpecification"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GlobalParameterSpecification.class);
 }

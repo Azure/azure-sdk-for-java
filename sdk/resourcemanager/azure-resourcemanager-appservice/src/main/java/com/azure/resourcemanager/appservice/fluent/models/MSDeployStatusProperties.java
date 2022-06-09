@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.MSDeployProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** MSDeployStatus resource specific properties. */
 @Immutable
 public final class MSDeployStatusProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployStatusProperties.class);
-
     /*
      * Username of deployer
      */

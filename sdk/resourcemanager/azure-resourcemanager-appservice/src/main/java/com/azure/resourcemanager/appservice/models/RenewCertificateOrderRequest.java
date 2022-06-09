@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.RenewCertificateOrderRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing certificate renew request. */
 @Fluent
 public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RenewCertificateOrderRequest.class);
-
     /*
      * RenewCertificateOrderRequest resource specific properties
      */

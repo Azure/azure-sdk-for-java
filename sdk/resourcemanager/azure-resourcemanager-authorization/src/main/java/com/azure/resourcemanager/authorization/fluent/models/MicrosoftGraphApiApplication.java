@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.UUID;
 /** apiApplication. */
 @Fluent
 public final class MicrosoftGraphApiApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphApiApplication.class);
-
     /*
      * When true, allows an application to use claims mapping without
      * specifying a custom signing key.

@@ -13,7 +13,6 @@ import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
 import com.azure.resourcemanager.applicationinsights.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.applicationinsights.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.applicationinsights.models.RequestSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +21,6 @@ import java.util.Map;
 /** An Application Insights component definition. */
 @Fluent
 public final class ApplicationInsightsComponentInner extends ComponentsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentInner.class);
-
     /*
      * The kind of application that this component refers to, used to customize
      * UI. This value is a freeform string, values should typically be one of
@@ -31,6 +28,12 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
      */
     @JsonProperty(value = "kind", required = true)
     private String kind;
+
+    /*
+     * Resource etag
+     */
+    @JsonProperty(value = "etag")
+    private String etag;
 
     /*
      * Properties that define an Application Insights component resource.
@@ -57,6 +60,26 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
      */
     public ApplicationInsightsComponentInner withKind(String kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Resource etag.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Resource etag.
+     *
+     * @param etag the etag value to set.
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -100,6 +123,15 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
      */
     public String appId() {
         return this.innerProperties() == null ? null : this.innerProperties().appId();
+    }
+
+    /**
+     * Get the name property: Application name.
+     *
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**
@@ -354,6 +386,42 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
     }
 
     /**
+     * Get the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
+     * to. This property is required to create an application with this API version. Applications from older versions
+     * will not have this property.
+     *
+     * @return the workspaceResourceId value.
+     */
+    public String workspaceResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceResourceId();
+    }
+
+    /**
+     * Set the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
+     * to. This property is required to create an application with this API version. Applications from older versions
+     * will not have this property.
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withWorkspaceResourceId(String workspaceResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationInsightsComponentProperties();
+        }
+        this.innerProperties().withWorkspaceResourceId(workspaceResourceId);
+        return this;
+    }
+
+    /**
+     * Get the laMigrationDate property: The date which the component got migrated to LA, in ISO 8601 format.
+     *
+     * @return the laMigrationDate value.
+     */
+    public OffsetDateTime laMigrationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().laMigrationDate();
+    }
+
+    /**
      * Get the privateLinkScopedResources property: List of linked private link scope resources.
      *
      * @return the privateLinkScopedResources value.
@@ -436,6 +504,55 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
     }
 
     /**
+     * Get the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationInsightsComponentProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
+     * and debugger.
+     *
+     * @return the forceCustomerStorageForProfiler value.
+     */
+    public Boolean forceCustomerStorageForProfiler() {
+        return this.innerProperties() == null ? null : this.innerProperties().forceCustomerStorageForProfiler();
+    }
+
+    /**
+     * Set the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
+     * and debugger.
+     *
+     * @param forceCustomerStorageForProfiler the forceCustomerStorageForProfiler value to set.
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withForceCustomerStorageForProfiler(
+        Boolean forceCustomerStorageForProfiler) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationInsightsComponentProperties();
+        }
+        this.innerProperties().withForceCustomerStorageForProfiler(forceCustomerStorageForProfiler);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -444,7 +561,7 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
     public void validate() {
         super.validate();
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kind in model ApplicationInsightsComponentInner"));
@@ -453,4 +570,6 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationInsightsComponentInner.class);
 }

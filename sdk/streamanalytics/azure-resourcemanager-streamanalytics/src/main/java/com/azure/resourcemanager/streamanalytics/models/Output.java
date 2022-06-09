@@ -17,6 +17,20 @@ public interface Output {
     String id();
 
     /**
+     * Gets the name property: Resource name.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: Resource type.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * Gets the datasource property: Describes the data source that output will be written to. Required on PUT
      * (CreateOrReplace) requests.
      *
@@ -25,14 +39,14 @@ public interface Output {
     OutputDataSource datasource();
 
     /**
-     * Gets the timeWindow property: The timeWindow property.
+     * Gets the timeWindow property: The time frame for filtering Stream Analytics job outputs.
      *
      * @return the timeWindow value.
      */
     String timeWindow();
 
     /**
-     * Gets the sizeWindow property: The sizeWindow property.
+     * Gets the sizeWindow property: The size window to constrain a Stream Analytics output to.
      *
      * @return the sizeWindow value.
      */
@@ -62,20 +76,6 @@ public interface Output {
      * @return the etag value.
      */
     String etag();
-
-    /**
-     * Gets the name property: Resource name.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: Resource type.
-     *
-     * @return the type value.
-     */
-    String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner object.
@@ -109,11 +109,11 @@ public interface Output {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDatasource,
+            extends DefinitionStages.WithName,
+                DefinitionStages.WithDatasource,
                 DefinitionStages.WithTimeWindow,
                 DefinitionStages.WithSizeWindow,
                 DefinitionStages.WithSerialization,
-                DefinitionStages.WithName,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -131,6 +131,16 @@ public interface Output {
              */
             Output create(Context context);
         }
+        /** The stage of the Output definition allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Resource name.
+             *
+             * @param name Resource name.
+             * @return the next definition stage.
+             */
+            WithCreate withName(String name);
+        }
         /** The stage of the Output definition allowing to specify datasource. */
         interface WithDatasource {
             /**
@@ -146,9 +156,9 @@ public interface Output {
         /** The stage of the Output definition allowing to specify timeWindow. */
         interface WithTimeWindow {
             /**
-             * Specifies the timeWindow property: The timeWindow property..
+             * Specifies the timeWindow property: The time frame for filtering Stream Analytics job outputs..
              *
-             * @param timeWindow The timeWindow property.
+             * @param timeWindow The time frame for filtering Stream Analytics job outputs.
              * @return the next definition stage.
              */
             WithCreate withTimeWindow(String timeWindow);
@@ -156,9 +166,9 @@ public interface Output {
         /** The stage of the Output definition allowing to specify sizeWindow. */
         interface WithSizeWindow {
             /**
-             * Specifies the sizeWindow property: The sizeWindow property..
+             * Specifies the sizeWindow property: The size window to constrain a Stream Analytics output to..
              *
-             * @param sizeWindow The sizeWindow property.
+             * @param sizeWindow The size window to constrain a Stream Analytics output to.
              * @return the next definition stage.
              */
             WithCreate withSizeWindow(Float sizeWindow);
@@ -174,16 +184,6 @@ public interface Output {
              * @return the next definition stage.
              */
             WithCreate withSerialization(Serialization serialization);
-        }
-        /** The stage of the Output definition allowing to specify name. */
-        interface WithName {
-            /**
-             * Specifies the name property: Resource name.
-             *
-             * @param name Resource name.
-             * @return the next definition stage.
-             */
-            WithCreate withName(String name);
         }
         /** The stage of the Output definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -219,12 +219,12 @@ public interface Output {
 
     /** The template for Output update. */
     interface Update
-        extends UpdateStages.WithDatasource,
+        extends UpdateStages.WithName,
+            UpdateStages.WithDatasource,
             UpdateStages.WithTimeWindow,
             UpdateStages.WithSizeWindow,
             UpdateStages.WithSerialization,
-            UpdateStages.WithName,
-            UpdateStages.WithifMatch {
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -242,6 +242,16 @@ public interface Output {
     }
     /** The Output update stages. */
     interface UpdateStages {
+        /** The stage of the Output update allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Resource name.
+             *
+             * @param name Resource name.
+             * @return the next definition stage.
+             */
+            Update withName(String name);
+        }
         /** The stage of the Output update allowing to specify datasource. */
         interface WithDatasource {
             /**
@@ -257,9 +267,9 @@ public interface Output {
         /** The stage of the Output update allowing to specify timeWindow. */
         interface WithTimeWindow {
             /**
-             * Specifies the timeWindow property: The timeWindow property..
+             * Specifies the timeWindow property: The time frame for filtering Stream Analytics job outputs..
              *
-             * @param timeWindow The timeWindow property.
+             * @param timeWindow The time frame for filtering Stream Analytics job outputs.
              * @return the next definition stage.
              */
             Update withTimeWindow(String timeWindow);
@@ -267,9 +277,9 @@ public interface Output {
         /** The stage of the Output update allowing to specify sizeWindow. */
         interface WithSizeWindow {
             /**
-             * Specifies the sizeWindow property: The sizeWindow property..
+             * Specifies the sizeWindow property: The size window to constrain a Stream Analytics output to..
              *
-             * @param sizeWindow The sizeWindow property.
+             * @param sizeWindow The size window to constrain a Stream Analytics output to.
              * @return the next definition stage.
              */
             Update withSizeWindow(Float sizeWindow);
@@ -286,18 +296,8 @@ public interface Output {
              */
             Update withSerialization(Serialization serialization);
         }
-        /** The stage of the Output update allowing to specify name. */
-        interface WithName {
-            /**
-             * Specifies the name property: Resource name.
-             *
-             * @param name Resource name.
-             * @return the next definition stage.
-             */
-            Update withName(String name);
-        }
         /** The stage of the Output update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the output. Omit this value to always overwrite the current
              * output. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
@@ -306,7 +306,7 @@ public interface Output {
              *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**
@@ -323,4 +323,42 @@ public interface Output {
      * @return the refreshed resource.
      */
     Output refresh(Context context);
+
+    /**
+     * Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
+     *
+     * @param output If the output specified does not already exist, this parameter must contain the full output
+     *     definition intended to be tested. If the output specified already exists, this parameter can be left null to
+     *     test the existing output as is or if specified, the properties specified will overwrite the corresponding
+     *     properties in the existing output (exactly like a PATCH operation) and the resulting output will be tested.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test(OutputInner output);
+
+    /**
+     * Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test();
+
+    /**
+     * Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
+     *
+     * @param output If the output specified does not already exist, this parameter must contain the full output
+     *     definition intended to be tested. If the output specified already exists, this parameter can be left null to
+     *     test the existing output as is or if specified, the properties specified will overwrite the corresponding
+     *     properties in the existing output (exactly like a PATCH operation) and the resulting output will be tested.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test(OutputInner output, Context context);
 }

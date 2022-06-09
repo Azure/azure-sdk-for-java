@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level. */
 @Fluent
 public final class PipelineFolder {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineFolder.class);
-
     /*
      * The name of the folder that this Pipeline is in.
      */

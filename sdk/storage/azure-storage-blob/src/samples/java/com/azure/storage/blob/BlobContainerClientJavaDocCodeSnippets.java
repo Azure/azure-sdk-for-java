@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -16,6 +17,8 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
@@ -358,6 +361,22 @@ public class BlobContainerClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobContainerClient#findBlobsByTags(String)} and
+     * {@link BlobContainerClient#findBlobsByTags(FindBlobsOptions, Duration, Context)}
+     */
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#String
+        client.findBlobsByTags("where=tag=value").forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#String
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#FindBlobsOptions-Duration
+        Context context = new Context("Key", "Value");
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10), timeout, context)
+            .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#FindBlobsOptions-Duration
+    }
+
+    /**
      * Code snippet for {@link BlobContainerClient#getAccountInfo(Duration)}
      */
     public void getAccountInfo() {
@@ -439,6 +458,56 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#createIfNotExists()} and
+     * {@link BlobContainerClient#createIfNotExistsWithResponse(BlobContainerCreateOptions, Duration, Context)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExists
+        boolean result = client.createIfNotExists();
+        System.out.println("Create completed: " + result);
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Context context = new Context("Key", "Value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
+
+        Response<Boolean> response = client.createIfNotExistsWithResponse(options, timeout, context);
+        if (response.getStatusCode() == 409) {
+            System.out.println("Already existed.");
+        } else {
+            System.out.printf("Create completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.BlobContainerClient.createIfNotExistsWithResponse#BlobContainerCreateOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#deleteIfExists()} and
+     * {@link BlobContainerClient#deleteIfExistsWithResponse(BlobRequestConditions, Duration, Context)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExists
+        boolean result = client.deleteIfExists();
+        System.out.println("Delete completed: " + result);
+        // END: com.azure.storage.blob.BlobContainerClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("Key", "Value");
+
+        Response<Boolean> response = client.deleteIfExistsWithResponse(requestConditions, timeout, context);
+        if (response.getStatusCode() == 404) {
+            System.out.println("Does not exist.");
+        } else {
+            System.out.printf("Delete completed with status %d%n", response.getStatusCode());
+        }
+        // END: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
     }
 //
 //    /**

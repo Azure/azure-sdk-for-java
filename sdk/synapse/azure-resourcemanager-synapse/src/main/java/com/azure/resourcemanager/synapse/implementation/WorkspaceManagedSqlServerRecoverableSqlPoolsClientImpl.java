@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerRecoverableSqlPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.models.RecoverableSqlPoolInner;
 import com.azure.resourcemanager.synapse.models.RecoverableSqlPoolListResult;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
     implements WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspaceManagedSqlServerRecoverableSqlPoolsService service;
 
@@ -117,7 +114,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listSinglePageAsync(
@@ -176,7 +174,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listSinglePageAsync(
@@ -231,7 +230,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoverableSqlPoolInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -248,7 +248,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoverableSqlPoolInner> listAsync(
@@ -266,7 +267,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableSqlPoolInner> list(String resourceGroupName, String workspaceName) {
@@ -282,7 +284,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableSqlPoolInner> list(
@@ -299,7 +302,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoverable sql pools for workspace managed sql server.
+     * @return recoverable sql pools for workspace managed sql server along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableSqlPoolInner>> getWithResponseAsync(
@@ -354,7 +358,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoverable sql pools for workspace managed sql server.
+     * @return recoverable sql pools for workspace managed sql server along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableSqlPoolInner>> getWithResponseAsync(
@@ -405,7 +410,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoverable sql pools for workspace managed sql server.
+     * @return recoverable sql pools for workspace managed sql server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecoverableSqlPoolInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
@@ -446,7 +451,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoverable sql pools for workspace managed sql server.
+     * @return recoverable sql pools for workspace managed sql server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableSqlPoolInner> getWithResponse(
@@ -461,7 +466,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list recoverable sql pools request.
+     * @return the response to a list recoverable sql pools request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listNextSinglePageAsync(String nextLink) {
@@ -497,7 +503,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list recoverable sql pools request.
+     * @return the response to a list recoverable sql pools request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listNextSinglePageAsync(String nextLink, Context context) {

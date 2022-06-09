@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -13,7 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Sample to build a model with training data.
  * For instructions on setting up documents for training in an Azure Storage Blob Container, see
- * <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
+ * <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
  * <p>
  * For this sample, you can use the training documents found in
  * <a href="https://aka.ms/azsdk/formrecognizer/sampletrainingfiles">here</a>
@@ -42,8 +43,10 @@ public class BuildModel {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             client.beginBuildModel(trainingFilesUrl,
-                "my-build-model",
-                new BuildModelOptions().setDescription("model desc"),
+                DocumentBuildMode.TEMPLATE,
+                new BuildModelOptions()
+                    .setModelId("custom-model-id")
+                    .setDescription("model desc"),
                 Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();

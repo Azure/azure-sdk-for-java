@@ -7,10 +7,8 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,8 +19,6 @@ import java.util.List;
  */
 @Fluent
 public final class MaintenanceConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationInner.class);
-
     /*
      * The system metadata relating to this resource.
      */

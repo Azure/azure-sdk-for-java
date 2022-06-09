@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RBAC")
 @Fluent
 public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedIntegrationRuntimeType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedIntegrationRuntimeRbacAuthorization.class);
-
     /*
      * The resource identifier of the integration runtime to be shared.
      */
     @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
 
     /**
      * Get the resourceId property: The resource identifier of the integration runtime to be shared.
@@ -45,6 +48,26 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the LinkedIntegrationRuntimeRbacAuthorization object itself.
+     */
+    public LinkedIntegrationRuntimeRbacAuthorization withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -53,10 +76,15 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     public void validate() {
         super.validate();
         if (resourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
         }
+        if (credential() != null) {
+            credential().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedIntegrationRuntimeRbacAuthorization.class);
 }

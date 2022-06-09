@@ -76,5 +76,6 @@ public class WFConstants {
         public static final String IS_USER_REQUEST = "x-ms-cosmos-internal-is-user-request";
         public static final String BACKEND_REQUEST_DURATION_MILLISECONDS = "x-ms-request-duration-ms";
         public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
+        public static final String QUERY_EXECUTION_INFO = "x-ms-cosmos-query-execution-info";
     }
 }

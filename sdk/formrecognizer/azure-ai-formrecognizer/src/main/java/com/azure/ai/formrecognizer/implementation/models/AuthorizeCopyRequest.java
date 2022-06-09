@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Request body to authorize model copy. */
 @Fluent
@@ -21,6 +22,12 @@ public final class AuthorizeCopyRequest {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /*
+     * List of key-value tag attributes associated with the model.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the modelId property: Unique model name.
@@ -59,6 +66,26 @@ public final class AuthorizeCopyRequest {
      */
     public AuthorizeCopyRequest setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @param tags the tags value to set.
+     * @return the AuthorizeCopyRequest object itself.
+     */
+    public AuthorizeCopyRequest setTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 }

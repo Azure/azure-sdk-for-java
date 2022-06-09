@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = VideoTrackDescriptor.class)
 @JsonTypeName("#Microsoft.Media.VideoTrackDescriptor")
 @JsonSubTypes({
@@ -25,11 +22,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = SelectVideoTrackByAttribute.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.SelectVideoTrackById", value = SelectVideoTrackById.class)
 })
-@JsonFlatten
 @Immutable
 public class VideoTrackDescriptor extends TrackDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoTrackDescriptor.class);
-
     /**
      * Validates the instance.
      *

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of certificate orders. */
 @Fluent
 public final class AppServiceCertificateOrderCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateOrderCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,7 +61,7 @@ public final class AppServiceCertificateOrderCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model AppServiceCertificateOrderCollection"));
@@ -72,4 +69,6 @@ public final class AppServiceCertificateOrderCollection {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppServiceCertificateOrderCollection.class);
 }

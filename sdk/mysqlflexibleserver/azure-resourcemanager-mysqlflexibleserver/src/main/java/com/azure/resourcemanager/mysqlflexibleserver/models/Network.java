@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network related properties of a server. */
 @Fluent
 public final class Network {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Network.class);
-
     /*
      * Whether or not public network access is allowed for this server. Value
      * is 'Disabled' when server has VNet integration.

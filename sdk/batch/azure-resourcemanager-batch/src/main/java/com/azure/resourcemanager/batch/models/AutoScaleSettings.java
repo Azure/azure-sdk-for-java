@@ -6,15 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** AutoScale settings for the pool. */
 @Fluent
 public final class AutoScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleSettings.class);
-
     /*
      * A formula for the desired number of compute nodes in the pool.
      */
@@ -78,9 +75,11 @@ public final class AutoScaleSettings {
      */
     public void validate() {
         if (formula() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property formula in model AutoScaleSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoScaleSettings.class);
 }

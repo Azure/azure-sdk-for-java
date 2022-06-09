@@ -17,7 +17,7 @@ public interface BackupJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job resources.
+     * @return list of Job resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResource> list(String vaultName, String resourceGroupName);
 
@@ -32,7 +32,7 @@ public interface BackupJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job resources.
+     * @return list of Job resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobResource> list(
         String vaultName, String resourceGroupName, String filter, String skipToken, Context context);

@@ -33,7 +33,7 @@ public interface PipelineRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
+     * @return a list pipeline runs along with {@link Response}.
      */
     Response<PipelineRunsQueryResponse> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context);
@@ -61,7 +61,7 @@ public interface PipelineRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
+     * @return a pipeline run by its run ID along with {@link Response}.
      */
     Response<PipelineRun> getWithResponse(String resourceGroupName, String factoryName, String runId, Context context);
 
@@ -88,7 +88,7 @@ public interface PipelineRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> cancelWithResponse(
         String resourceGroupName, String factoryName, String runId, Boolean isRecursive, Context context);

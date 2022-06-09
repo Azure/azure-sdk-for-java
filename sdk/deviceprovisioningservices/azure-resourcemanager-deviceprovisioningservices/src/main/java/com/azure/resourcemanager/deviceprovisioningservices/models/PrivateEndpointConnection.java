@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateEndpointConnectionInner;
 
@@ -36,6 +37,20 @@ public interface PrivateEndpointConnection {
      * @return the properties value.
      */
     PrivateEndpointConnectionProperties properties();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateEndpointConnectionInner

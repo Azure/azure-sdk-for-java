@@ -14,7 +14,7 @@ import com.azure.storage.blob.BlobServiceClient;
  */
 @Fluent
 public final class ListBlobContainersOptions {
-    private final ClientLogger logger = new ClientLogger(ListBlobContainersOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ListBlobContainersOptions.class);
 
     private BlobContainerListDetails details;
 
@@ -85,7 +85,7 @@ public final class ListBlobContainersOptions {
      */
     public ListBlobContainersOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
         if (maxResultsPerPage != null && maxResultsPerPage <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
         return this;

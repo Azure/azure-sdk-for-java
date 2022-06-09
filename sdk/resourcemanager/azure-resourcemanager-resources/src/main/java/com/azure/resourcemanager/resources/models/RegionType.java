@@ -27,7 +27,11 @@ public final class RegionType extends ExpandableStringEnum<RegionType> {
         return fromString(name, RegionType.class);
     }
 
-    /** @return known RegionType values. */
+    /**
+     * Gets known RegionType values.
+     *
+     * @return known RegionType values.
+     */
     public static Collection<RegionType> values() {
         return values(RegionType.class);
     }

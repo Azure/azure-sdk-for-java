@@ -7,15 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Oracle Service Cloud linked service properties. */
 @Fluent
 public final class OracleServiceCloudLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OracleServiceCloudLinkedServiceTypeProperties.class);
-
     /*
      * The URL of the Oracle Service Cloud instance.
      */
@@ -225,19 +221,19 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model OracleServiceCloudLinkedServiceTypeProperties"));
@@ -245,4 +241,6 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OracleServiceCloudLinkedServiceTypeProperties.class);
 }

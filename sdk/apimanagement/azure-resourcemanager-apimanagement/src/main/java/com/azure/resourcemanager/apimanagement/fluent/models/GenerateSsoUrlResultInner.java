@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Generate SSO Url operations response details. */
 @Fluent
 public final class GenerateSsoUrlResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateSsoUrlResultInner.class);
-
     /*
      * Redirect Url containing the SSO URL value.
      */

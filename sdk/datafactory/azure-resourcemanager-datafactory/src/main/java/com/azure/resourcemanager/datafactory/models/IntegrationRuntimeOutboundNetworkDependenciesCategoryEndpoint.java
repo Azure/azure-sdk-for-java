@@ -5,18 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure-SSIS integration runtime outbound network dependency endpoints for one category. */
 @Fluent
 public final class IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.class);
-
     /*
      * The category of outbound network dependency.
      */

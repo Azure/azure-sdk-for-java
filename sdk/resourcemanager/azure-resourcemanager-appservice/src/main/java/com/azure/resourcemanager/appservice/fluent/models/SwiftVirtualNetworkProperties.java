@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SwiftVirtualNetwork resource specific properties. */
 @Fluent
 public final class SwiftVirtualNetworkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwiftVirtualNetworkProperties.class);
-
     /*
      * The Virtual Network subnet's resource ID. This is the subnet that this
      * Web App will join. This subnet must have a delegation to

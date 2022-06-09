@@ -7,9 +7,80 @@ package com.azure.resourcemanager.botservice.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
 
 /** Resource collection API of Channels. */
 public interface Channels {
+    /**
+     * Creates a Channel registration for a Bot Service.
+     *
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource.
+     * @param parameters The parameters to provide for the created bot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    BotChannel create(
+        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters);
+
+    /**
+     * Creates a Channel registration for a Bot Service.
+     *
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource.
+     * @param parameters The parameters to provide for the created bot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition along with {@link Response}.
+     */
+    Response<BotChannel> createWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        ChannelName channelName,
+        BotChannelInner parameters,
+        Context context);
+
+    /**
+     * Updates a Channel registration for a Bot Service.
+     *
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource.
+     * @param parameters The parameters to provide for the created bot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    BotChannel update(
+        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters);
+
+    /**
+     * Updates a Channel registration for a Bot Service.
+     *
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource.
+     * @param parameters The parameters to provide for the created bot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition along with {@link Response}.
+     */
+    Response<BotChannel> updateWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        ChannelName channelName,
+        BotChannelInner parameters,
+        Context context);
+
     /**
      * Deletes a Channel registration from a Bot Service.
      *
@@ -32,7 +103,7 @@ public interface Channels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String channelName, Context context);
@@ -60,7 +131,7 @@ public interface Channels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response}.
      */
     Response<BotChannel> getWithResponse(
         String resourceGroupName, String resourceName, String channelName, Context context);
@@ -74,9 +145,9 @@ public interface Channels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return the ARM channel of list channel with keys operation response.
      */
-    BotChannel listWithKeys(String resourceGroupName, String resourceName, ChannelName channelName);
+    ListChannelWithKeysResponse listWithKeys(String resourceGroupName, String resourceName, ChannelName channelName);
 
     /**
      * Lists a Channel registration for a Bot Service including secrets.
@@ -88,9 +159,9 @@ public interface Channels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return the ARM channel of list channel with keys operation response along with {@link Response}.
      */
-    Response<BotChannel> listWithKeysWithResponse(
+    Response<ListChannelWithKeysResponse> listWithKeysWithResponse(
         String resourceGroupName, String resourceName, ChannelName channelName, Context context);
 
     /**
@@ -101,7 +172,7 @@ public interface Channels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service channel operation response.
+     * @return the list of bot service channel operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BotChannel> listByResourceGroup(String resourceGroupName, String resourceName);
 
@@ -114,60 +185,7 @@ public interface Channels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service channel operation response.
+     * @return the list of bot service channel operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BotChannel> listByResourceGroup(String resourceGroupName, String resourceName, Context context);
-
-    /**
-     * Returns a BotService Channel registration specified by the parameters.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    BotChannel getById(String id);
-
-    /**
-     * Returns a BotService Channel registration specified by the parameters.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    Response<BotChannel> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Deletes a Channel registration from a Bot Service.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Deletes a Channel registration from a Bot Service.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new BotChannel resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new BotChannel definition.
-     */
-    BotChannel.DefinitionStages.Blank define(ChannelName name);
 }

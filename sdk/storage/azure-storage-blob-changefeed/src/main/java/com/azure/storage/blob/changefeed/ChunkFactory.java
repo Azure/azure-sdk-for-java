@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
  */
 class ChunkFactory {
 
-    private final ClientLogger logger = new ClientLogger(ChunkFactory.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChunkFactory.class);
     private static final long DEFAULT_HEADER_SIZE = 4 * Constants.KB;
     /* TODO (gapra): This should probably be configurable by a user. */
     private static final long DEFAULT_BODY_SIZE = Constants.MB;
@@ -83,7 +83,7 @@ class ChunkFactory {
             } else if (chunkLength == blockOffset) { /* We hit the end of the chunk, return 0 events. */
                 avroReader = Flux::empty;
             } else {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Cursor contains a blockOffset that"
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Cursor contains a blockOffset that"
                     + " is invalid."));
             }
         }

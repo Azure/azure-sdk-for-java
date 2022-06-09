@@ -18,7 +18,38 @@ the lifetime of remote rendering sessions.
 - [Azure Subscription][azure_subscription]
 - [Azure Remote Rendering account][remote_rendering_account] to use this package.
 
-### Install the package
+### Include the package
+
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-mixedreality-remoterendering</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
 
 **Note:** This version targets Azure Remote Rendering service API version v2021-01-01.
 
@@ -29,7 +60,7 @@ Add the following Maven dependency:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,7 +70,7 @@ Add the following Maven dependency:
 Constructing a remote rendering client requires an authenticated account, and a remote rendering endpoint.
 An account consists of its accountId and an account domain.
 For an account created in the eastus region, the account domain will have the form "eastus.mixedreality.azure.com".
-There are several different forms of authentication:
+There are several forms of authentication:
 
 - Account Key authentication
   - Account keys enable you to get started quickly with using Azure Remote Rendering. But before you deploy your application
@@ -68,8 +99,7 @@ An example is `https://remoterendering.eastus2.mixedreality.azure.com`.
 
 Use the `AzureKeyCredential` object to use an account identifier and account key to authenticate:
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L35-L42 -->
-```java
+```java readme-sample-createClientWithAccountKey
 AzureKeyCredential credential = new AzureKeyCredential(environment.getAccountKey());
 
 RemoteRenderingClient client = new RemoteRenderingClientBuilder()
@@ -84,8 +114,7 @@ RemoteRenderingClient client = new RemoteRenderingClientBuilder()
 
 Use the `ClientSecretCredential` object to perform client secret authentication.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L53-L65 -->
-```java
+```java readme-sample-createClientWithAAD
 ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .tenantId(environment.getTenantId())
     .clientId(environment.getClientId())
@@ -105,8 +134,7 @@ RemoteRenderingClient client = new RemoteRenderingClientBuilder()
 
 Use the `DeviceCodeCredential` object to perform device code authentication.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L76-L88 -->
-```java
+```java readme-sample-createClientWithDeviceCode
 DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
     .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
     .clientId(environment.getClientId())
@@ -129,8 +157,7 @@ information about using device code authentication flow.
 
 Use the `DefaultAzureCredential` object:
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L99-L106 -->
-```java
+```java readme-sample-createClientWithDefaultAzureCredential
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
 RemoteRenderingClient client = new RemoteRenderingClientBuilder()
@@ -147,8 +174,7 @@ You can pass a Mixed Reality access token as an `AccessToken` previously retriev
 [Mixed Reality STS service][sts_sdk]
 to be used with a Mixed Reality client library:
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateClients.java#L129-L140 -->
-```java
+```java readme-sample-createClientWithStaticAccessToken
 // GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
 // a Mixed Reality access token from a web service. The web service would use the
 // MixedRealityStsClient and credentials to obtain an access token to be returned
@@ -186,8 +212,7 @@ It provides methods to create and manage asset conversions and rendering session
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
 The following snippet describes how to request that "box.fbx", found at the root of the blob container at the given URL, gets converted.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertSimpleAsset.java#L31-L39 -->
-```java
+```java readme-sample-convertSimpleAsset
 AssetConversionOptions conversionOptions = new AssetConversionOptions()
     .setInputStorageContainerUrl(getStorageURL())
     .setInputRelativeAssetPath("box.fbx")
@@ -211,8 +236,7 @@ We want to convert the gltf so that it has access to the other files which share
 To keep things tidy, we also want the output files to be written to a different storage container and given a common prefix: "ConvertedBicycle".
 The code is as follows:
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L39-L48 -->
-```java
+```java readme-sample-convertMoreComplexAsset
 AssetConversionOptions conversionOptions = new AssetConversionOptions()
     .setInputStorageContainerUrl(inputStorageURL)
     .setInputRelativeAssetPath("bicycle.gltf")
@@ -235,8 +259,7 @@ This code uses an existing conversionOperation and polls regularly until the con
 The default polling period is 10 seconds.
 Note that a conversionOperation can be constructed from the conversionId of an existing conversion and a client.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ConvertMoreComplexAsset.java#L50-L57 -->
-```java
+```java readme-sample-convertMoreComplexAssetCheckStatus
 AssetConversion conversion = conversionOperation.getFinalResult();
 if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
     logger.info("Conversion succeeded: Output written to {}", conversion.getOutputAssetUrl());
@@ -253,8 +276,7 @@ You can get information about your conversions using the `listConversions` metho
 This method may return conversions which have yet to start, conversions which are running and conversions which have finished.
 In this example, we just list the output URLs of successful conversions started in the last day.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ListConversions.java#L32-L37 -->
-```java
+```java readme-sample-listConversions
 for (AssetConversion conversion : client.listConversions()) {
     if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
         && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1)))) {
@@ -268,8 +290,7 @@ for (AssetConversion conversion : client.listConversions()) {
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
 The following snippet describes how to request that a new rendering session be started.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateRenderingSession.java#L35-L42 -->
-```java
+```java readme-sample-createRenderingSession
 BeginSessionOptions options = new BeginSessionOptions()
     .setMaxLeaseTime(Duration.ofMinutes(30))
     .setSize(RenderingSessionSize.STANDARD);
@@ -289,8 +310,7 @@ This example shows how to query the current properties and then extend the lease
 > NOTE: The runtime SDKs also offer this functionality, and in many typical scenarios, you would use them to
 > extend the session lease.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/QueryAndUpdateASession.java#L43-L50 -->
-```java
+```java readme-sample-queryAndUpdateASession
 RenderingSession currentSession = client.getSession(sessionId);
 
 Duration sessionTimeAlive = Duration.between(OffsetDateTime.now(), currentSession.getCreationTime()).abs();
@@ -306,8 +326,7 @@ if (currentSession.getMaxLeaseTime().minus(sessionTimeAlive).toMinutes() < 2) {
 You can get information about your sessions using the `listSessions` method.
 This method may return sessions which have yet to start and sessions which are ready.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/ListRenderingSessions.java#L47-L57 -->
-```java
+```java readme-sample-listRenderingSessions
 for (RenderingSession session : client.listSessions()) {
     if (session.getStatus() == RenderingSessionStatus.STARTING) {
         logger.info("Session {} is starting.");
@@ -325,8 +344,7 @@ for (RenderingSession session : client.listSessions()) {
 
 The following code will stop a running session with given id.
 
-<!-- embedme src/samples/java/com/azure/mixedreality/remoterendering/CreateRenderingSession.java#L57-L57 -->
-```java
+```java readme-sample-stopASession
 client.endSession(sessionId);
 ```
 

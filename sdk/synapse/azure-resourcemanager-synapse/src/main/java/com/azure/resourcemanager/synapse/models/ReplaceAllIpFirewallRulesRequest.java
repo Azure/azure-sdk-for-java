@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Replace all IP firewall rules request. */
 @Fluent
 public final class ReplaceAllIpFirewallRulesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplaceAllIpFirewallRulesRequest.class);
-
     /*
      * IP firewall rule properties
      */

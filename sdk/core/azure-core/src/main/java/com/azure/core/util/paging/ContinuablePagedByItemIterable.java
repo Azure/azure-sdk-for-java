@@ -44,13 +44,16 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
 
     private static final class ContinuablePagedByItemIterator<C, T, P extends ContinuablePage<C, T>>
         extends ContinuablePagedByIteratorBase<C, T, P, T> {
+        // ContinuablePagedByItemIterator is a commonly used class, use a static logger.
+        private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedByItemIterator.class);
+
         private volatile Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
         private volatile Iterator<T> currentPage;
 
         ContinuablePagedByItemIterator(PageRetriever<C, P> pageRetriever, C continuationToken,
             Predicate<C> continuationPredicate, Integer preferredPageSize) {
             super(pageRetriever, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
-                new ClientLogger(ContinuablePagedByItemIterator.class));
+                LOGGER);
 
             requestPage();
         }

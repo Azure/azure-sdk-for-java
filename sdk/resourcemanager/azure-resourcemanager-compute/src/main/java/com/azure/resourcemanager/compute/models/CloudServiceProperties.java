@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cloud service properties. */
 @Fluent
 public final class CloudServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceProperties.class);
-
     /*
      * Specifies a URL that refers to the location of the service package in
      * the Blob service. The service package URL can be Shared Access Signature

@@ -30,7 +30,11 @@ public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
         return fromString(name, RootSquashType.class);
     }
 
-    /** @return known RootSquashType values. */
+    /**
+     * Gets known RootSquashType values.
+     *
+     * @return known RootSquashType values.
+     */
     public static Collection<RootSquashType> values() {
         return values(RootSquashType.class);
     }

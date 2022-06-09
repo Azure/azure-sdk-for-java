@@ -16,7 +16,7 @@ public final class GroupIdInformationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationInner.class);
 
     /*
-     * The properties for a group information object.
+     * The group information properties.
      */
     @JsonProperty(value = "properties", required = true)
     private GroupIdInformationProperties properties;
@@ -40,7 +40,7 @@ public final class GroupIdInformationInner {
     private String type;
 
     /**
-     * Get the properties property: The properties for a group information object.
+     * Get the properties property: The group information properties.
      *
      * @return the properties value.
      */
@@ -49,7 +49,7 @@ public final class GroupIdInformationInner {
     }
 
     /**
-     * Set the properties property: The properties for a group information object.
+     * Set the properties property: The group information properties.
      *
      * @param properties the properties value to set.
      * @return the GroupIdInformationInner object itself.

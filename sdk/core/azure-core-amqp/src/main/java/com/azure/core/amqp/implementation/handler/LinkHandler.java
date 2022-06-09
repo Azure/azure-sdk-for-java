@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.ExceptionUtil;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -15,6 +14,9 @@ import org.apache.qpid.proton.engine.Link;
 import java.util.Objects;
 
 import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
 /**
@@ -34,13 +36,12 @@ abstract class LinkHandler extends Handler {
      *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
      *     messages are brokered through an intermediary.
      * @param entityPath The address within the message broker for this link.
-     * @param logger Logger to use for messages.
      *
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
      * null.
      */
-    LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
-        super(connectionId, hostname, logger);
+    LinkHandler(String connectionId, String hostname, String entityPath) {
+        super(connectionId, hostname);
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
 
@@ -49,11 +50,10 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        logger.verbose("onLinkLocalClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            getConnectionId(),
-            link.getName(),
-            condition != null ? condition.getCondition() : NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : NOT_APPLICABLE);
+        addErrorCondition(logger.atVerbose(), condition)
+            .addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .log("onLinkLocalClose");
     }
 
     @Override
@@ -71,7 +71,10 @@ abstract class LinkHandler extends Handler {
         final String linkName = event != null && event.getLink() != null
             ? event.getLink().getName()
             : NOT_APPLICABLE;
-        logger.info("onLinkFinal connectionId[{}], linkName[{}]", getConnectionId(), linkName);
+        logger.atInfo()
+            .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .log("onLinkFinal");
 
         // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
         // releasing this link. So we want to complete the endpoint states.
@@ -93,14 +96,17 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
-        logger.info("{} connectionId[{}] linkName[{}], errorCondition[{}] errorDescription[{}]",
-            eventName, getConnectionId(), link.getName(),
-            condition != null ? condition.getCondition() : NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : NOT_APPLICABLE);
+        addErrorCondition(logger.atInfo(), condition)
+            .addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .log(eventName);
 
         if (link.getLocalState() != EndpointState.CLOSED) {
-            logger.info("connectionId[{}] linkName[{}] state[{}] Local link state is not closed.", getConnectionId(),
-                link.getName(), link.getLocalState());
+            logger.atInfo()
+                .addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue("state", link.getLocalState())
+                .log("Local link state is not closed.");
 
             link.setCondition(condition);
             link.close();

@@ -30,6 +30,7 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
             assertEquals(24, response.getValue().getIsAnomaly().size());
             assertEquals(24, response.getValue().getIsPositiveAnomaly().size());
             assertEquals(24, response.getValue().getIsPositiveAnomaly().size());
+            assertEquals(24, response.getValue().getSeverity().size());
 
             response.getValue().getIsAnomaly().forEach(Assertions::assertFalse);
             response.getValue().getIsPositiveAnomaly().forEach(Assertions::assertFalse);

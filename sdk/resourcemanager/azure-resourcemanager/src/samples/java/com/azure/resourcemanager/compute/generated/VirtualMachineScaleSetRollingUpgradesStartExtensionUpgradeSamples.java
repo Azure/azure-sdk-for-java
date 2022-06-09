@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineScaleSetRollingUpgrades StartExtensionUpgrade. */
 public final class VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/VMScaleSetExtensionRollingUpgrade.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_RollingUpgrade.json
      */
     /**
      * Sample code: Start an extension rolling upgrade.

@@ -12,9 +12,12 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.AzureException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.serializer.SerializerFactory;
@@ -22,6 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.KuduAuthenticationPolicy;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
@@ -142,13 +146,16 @@ class KuduClient {
 
         @Headers({"Content-Type: application/octet-stream"})
         @Post("api/publish")
-        Mono<Void> deploy(@HostParam("$host") String host,
+        Mono<Response<Void>> deploy(
+            @HostParam("$host") String host,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> file,
             @HeaderParam("content-length") long size,
             @QueryParam("type") DeployType type,
             @QueryParam("path") String path,
             @QueryParam("restart") Boolean restart,
-            @QueryParam("clean") Boolean clean);
+            @QueryParam("clean") Boolean clean,
+            @QueryParam("isAsync") Boolean isAsync,
+            @QueryParam("trackDeploymentProgress") Boolean trackDeploymentProgress);
 
         @Get("api/settings")
         Mono<Map<String, String>> settings(@HostParam("$host") String host);
@@ -298,7 +305,8 @@ class KuduClient {
                            InputStream file, long length,
                            String path, Boolean restart, Boolean clean) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean));
+        return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false))
+            .then();
     }
 
     Mono<Void> deployAsync(DeployType type,
@@ -306,7 +314,35 @@ class KuduClient {
                            String path, Boolean restart, Boolean clean) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            type, path, restart, clean))
+            type, path, restart, clean, false, false))
+            .then()
+            .doFinally(ignored -> {
+                try {
+                    fileChannel.close();
+                } catch (IOException e) {
+                    logger.logThrowableAsError(e);
+                }
+            });
+    }
+
+    Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, String path, Boolean restart,
+                                               Boolean clean, Boolean trackDeployment) throws IOException {
+        final boolean trackDeploymentProgress = trackDeployment == null || trackDeployment;
+
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
+        return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
+            type, path, restart, clean, true, trackDeployment))
+            .map(response -> {
+                HttpHeader deploymentIdHeader = response.getHeaders().get("SCM-DEPLOYMENT-ID");
+                if (trackDeploymentProgress && (deploymentIdHeader == null || deploymentIdHeader.getValue() == null
+                    || deploymentIdHeader.getValue().isEmpty())) {
+
+                    // error, deployment ID not available
+                    throw logger.logExceptionAsError(
+                        new AzureException("Deployment ID not found in response header 'SCM-DEPLOYMENT-ID'"));
+                }
+                return new KuduDeploymentResult(deploymentIdHeader == null ? null : deploymentIdHeader.getValue());
+            })
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
@@ -319,37 +355,6 @@ class KuduClient {
     Mono<Map<String, String>> settings() {
         return retryOnError(service.settings(host));
     }
-
-//    private InputStreamFlux fluxFromInputStream(InputStream inputStream) {
-//        try {
-//            InputStreamFlux inputStreamFlux = new InputStreamFlux();
-//            if (inputStream instanceof FileInputStream) {
-//                inputStreamFlux.size = ((FileInputStream) inputStream).getChannel().size();
-//                inputStreamFlux.flux = FluxUtil.toFluxByteBuffer(inputStream);
-//            } else if (inputStream instanceof ByteArrayInputStream) {
-//                inputStreamFlux.size = inputStream.available();
-//                inputStreamFlux.flux = FluxUtil.toFluxByteBuffer(inputStream);
-//            } else {
-//                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//                int nRead;
-//                byte[] data = new byte[16384];
-//                while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-//                    buffer.write(data, 0, nRead);
-//                }
-//                inputStreamFlux.bytes = buffer.toByteArray();
-//                inputStreamFlux.size = inputStreamFlux.bytes.length;
-//            }
-//            return inputStreamFlux;
-//        } catch (IOException e) {
-//            throw logger.logExceptionAsError(new IllegalStateException(e));
-//        }
-//    }
-//
-//    private static class InputStreamFlux {
-//        private Flux<ByteBuffer> flux;
-//        private byte[] bytes;
-//        private long size;
-//    }
 
     private <T> Mono<T> retryOnError(Mono<T> observable) {
         final int retryCount = 5 + 1;   // retryCount is 5, last 1 is guard

@@ -44,6 +44,7 @@ public class ListRenderingSessions extends SampleBase {
         } catch (InterruptedException ignored) {
         }
 
+        // BEGIN: readme-sample-listRenderingSessions
         for (RenderingSession session : client.listSessions()) {
             if (session.getStatus() == RenderingSessionStatus.STARTING) {
                 logger.info("Session {} is starting.");
@@ -55,6 +56,7 @@ public class ListRenderingSessions extends SampleBase {
                 logger.error("Session {} has unexpected status {}", session.getId(), session.getStatus());
             }
         }
+        // END: readme-sample-listRenderingSessions
 
         client.endSession(sessionId);
     }

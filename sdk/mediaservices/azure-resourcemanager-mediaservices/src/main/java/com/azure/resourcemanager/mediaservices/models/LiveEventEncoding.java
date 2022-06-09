@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Specifies the live event type and optional encoding settings for encoding live events. */
 @Fluent
 public final class LiveEventEncoding {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventEncoding.class);
-
     /*
-     * Live event type. When encodingType is set to None, the service simply
-     * passes through the incoming video and audio layer(s) to the output. When
-     * encodingType is set to Standard or Premium1080p, a live encoder
-     * transcodes the incoming stream into multiple bitrates or layers. See
+     * Live event type. When encodingType is set to PassthroughBasic or
+     * PassthroughStandard, the service simply passes through the incoming
+     * video and audio layer(s) to the output. When encodingType is set to
+     * Standard or Premium1080p, a live encoder transcodes the incoming stream
+     * into multiple bitrates or layers. See
      * https://go.microsoft.com/fwlink/?linkid=2095101 for more information.
      * This property cannot be modified after the live event is created.
      */
@@ -56,11 +53,11 @@ public final class LiveEventEncoding {
     private Duration keyFrameInterval;
 
     /**
-     * Get the encodingType property: Live event type. When encodingType is set to None, the service simply passes
-     * through the incoming video and audio layer(s) to the output. When encodingType is set to Standard or
-     * Premium1080p, a live encoder transcodes the incoming stream into multiple bitrates or layers. See
-     * https://go.microsoft.com/fwlink/?linkid=2095101 for more information. This property cannot be modified after the
-     * live event is created.
+     * Get the encodingType property: Live event type. When encodingType is set to PassthroughBasic or
+     * PassthroughStandard, the service simply passes through the incoming video and audio layer(s) to the output. When
+     * encodingType is set to Standard or Premium1080p, a live encoder transcodes the incoming stream into multiple
+     * bitrates or layers. See https://go.microsoft.com/fwlink/?linkid=2095101 for more information. This property
+     * cannot be modified after the live event is created.
      *
      * @return the encodingType value.
      */
@@ -69,11 +66,11 @@ public final class LiveEventEncoding {
     }
 
     /**
-     * Set the encodingType property: Live event type. When encodingType is set to None, the service simply passes
-     * through the incoming video and audio layer(s) to the output. When encodingType is set to Standard or
-     * Premium1080p, a live encoder transcodes the incoming stream into multiple bitrates or layers. See
-     * https://go.microsoft.com/fwlink/?linkid=2095101 for more information. This property cannot be modified after the
-     * live event is created.
+     * Set the encodingType property: Live event type. When encodingType is set to PassthroughBasic or
+     * PassthroughStandard, the service simply passes through the incoming video and audio layer(s) to the output. When
+     * encodingType is set to Standard or Premium1080p, a live encoder transcodes the incoming stream into multiple
+     * bitrates or layers. See https://go.microsoft.com/fwlink/?linkid=2095101 for more information. This property
+     * cannot be modified after the live event is created.
      *
      * @param encodingType the encodingType value to set.
      * @return the LiveEventEncoding object itself.

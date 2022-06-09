@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -19,8 +20,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client that exposes operations to managing container images and artifacts.
@@ -125,9 +128,9 @@ public final class ContainerRegistryAsyncClient {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context)
-                .map(res -> Utils.getPagedResponseWithContinuationToken(res))
-                .onErrorMap(Utils::mapException);
+            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res))
+                .onErrorMap(UtilsImpl::mapException);
             return pagedResponseMono;
 
         } catch (RuntimeException e) {
@@ -137,8 +140,8 @@ public final class ContainerRegistryAsyncClient {
 
     Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context);
-            return pagedResponseMono.map(res -> Utils.getPagedResponseWithContinuationToken(res));
+            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE));
+            return pagedResponseMono.map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -180,9 +183,9 @@ public final class ContainerRegistryAsyncClient {
                 return monoError(logger, new IllegalArgumentException("'repositoryName' cannot be empty."));
             }
 
-            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
-                .flatMap(Utils::deleteResponseToSuccess)
-                .onErrorMap(Utils::mapException);
+            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+                .flatMap(UtilsImpl::deleteResponseToSuccess)
+                .onErrorMap(UtilsImpl::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -253,12 +256,12 @@ public final class ContainerRegistryAsyncClient {
      * <!-- end com.azure.containers.containerregistry.containeregistryasyncclient.getArtifact -->
      *
      * @param repositoryName Name of the repository to reference.
-     * @param digest Either a tag or digest that uniquely identifies the artifact.
+     * @param tagOrDigest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifactAsync RegistryArtifactAsync} for the desired repository.
-     * @throws NullPointerException if {@code repositoryName} or {@code digest} is null.
-     * @throws IllegalArgumentException if {@code repositoryName} or {@code digest} is empty.
+     * @throws NullPointerException if {@code repositoryName} or {@code tagOrDigest} is null.
+     * @throws IllegalArgumentException if {@code repositoryName} or {@code tagOrDigest} is empty.
      */
-    public RegistryArtifactAsync getArtifact(String repositoryName, String digest) {
-        return new RegistryArtifactAsync(repositoryName, digest, httpPipeline, endpoint, apiVersion);
+    public RegistryArtifactAsync getArtifact(String repositoryName, String tagOrDigest) {
+        return new RegistryArtifactAsync(repositoryName, tagOrDigest, httpPipeline, endpoint, apiVersion);
     }
 }

@@ -27,6 +27,7 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
         Assertions.assertTrue(TestUtilities.getSize(vmSizes) > 0);
         for (VirtualMachineSize vmSize : vmSizes) {
             Assertions.assertNotNull(vmSize.name());
+            Assertions.assertNotNull(vmSize.virtualMachineSizeType());
         }
         return aset;
     }

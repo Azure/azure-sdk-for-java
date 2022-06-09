@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.List;
 /** The Storage Account ObjectReplicationPolicy properties. */
 @Fluent
 public final class ObjectReplicationPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyProperties.class);
-
     /*
      * A unique id for object replication policy.
      */
@@ -138,13 +135,13 @@ public final class ObjectReplicationPolicyProperties {
      */
     public void validate() {
         if (sourceAccount() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceAccount in model ObjectReplicationPolicyProperties"));
         }
         if (destinationAccount() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destinationAccount in model ObjectReplicationPolicyProperties"));
@@ -153,4 +150,6 @@ public final class ObjectReplicationPolicyProperties {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ObjectReplicationPolicyProperties.class);
 }

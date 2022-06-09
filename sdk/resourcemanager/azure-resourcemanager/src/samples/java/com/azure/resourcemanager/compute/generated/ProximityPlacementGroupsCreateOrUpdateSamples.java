@@ -6,12 +6,14 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
+import java.util.Arrays;
 
 /** Samples for ProximityPlacementGroups CreateOrUpdate. */
 public final class ProximityPlacementGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateAProximityPlacementGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a proximity placement group.
@@ -29,7 +31,11 @@ public final class ProximityPlacementGroupsCreateOrUpdateSamples {
                 "myProximityPlacementGroup",
                 new ProximityPlacementGroupInner()
                     .withLocation("westus")
-                    .withProximityPlacementGroupType(ProximityPlacementGroupType.STANDARD),
+                    .withZones(Arrays.asList("1"))
+                    .withProximityPlacementGroupType(ProximityPlacementGroupType.STANDARD)
+                    .withIntent(
+                        new ProximityPlacementGroupPropertiesIntent()
+                            .withVmSizes(Arrays.asList("Basic_A0", "Basic_A2"))),
                 Context.NONE);
     }
 }

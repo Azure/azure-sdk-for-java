@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for FileShares Update. */
 public final class FileSharesUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/FileSharesPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/FileSharesPatch.json
      */
     /**
      * Sample code: UpdateShares.
@@ -38,7 +38,7 @@ public final class FileSharesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/FileShareAclsPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/FileShareAclsPatch.json
      */
     /**
      * Sample code: UpdateShareAcls.

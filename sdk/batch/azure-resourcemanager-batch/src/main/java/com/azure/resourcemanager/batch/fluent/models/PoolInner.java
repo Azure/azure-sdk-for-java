@@ -6,7 +6,6 @@ package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.AllocationState;
 import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import com.azure.resourcemanager.batch.models.AutoScaleRun;
@@ -23,7 +22,6 @@ import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -31,8 +29,6 @@ import java.util.List;
 /** Contains information about a pool. */
 @Fluent
 public final class PoolInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolInner.class);
-
     /*
      * The properties associated with the pool.
      */
@@ -248,7 +244,7 @@ public final class PoolInner extends ProxyResource {
     }
 
     /**
-     * Get the currentLowPriorityNodes property: The number of low-priority compute nodes currently in the pool.
+     * Get the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
      *
      * @return the currentLowPriorityNodes value.
      */

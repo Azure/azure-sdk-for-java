@@ -69,7 +69,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
-    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlockBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -162,7 +162,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block
+     * Creates a new block blob. By default, this method will not overwrite an existing blob. Updating an existing block
      * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
      * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
      * PutBlock and PutBlockList. For more information, see the
@@ -189,11 +189,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
-        try {
-            return upload(data, length, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return upload(data, length, false);
     }
 
     /**
@@ -221,21 +217,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length, boolean overwrite) {
-        try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (!overwrite) {
-                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return uploadWithResponse(data, length, null, null, null, null, blobRequestConditions)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return uploadWithResponse(data, length, null, null, null, null, blobRequestConditions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -290,8 +282,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
-            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
+        try {
+            return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
+                .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -339,7 +335,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> uploadWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -396,11 +392,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl) {
-        try {
-            return uploadFromUrl(sourceUrl, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadFromUrl(sourceUrl, false);
     }
 
     /**
@@ -423,21 +415,22 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String-boolean -->
      *
      * @param sourceUrl The source URL to upload from.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> uploadFromUrl(String sourceUrl, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+
         try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (!overwrite) {
-                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
             return uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
                 .setDestinationRequestConditions(blobRequestConditions))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -483,7 +476,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> uploadFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -502,7 +495,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
@@ -516,7 +509,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
             null, options.getContentMd5(), tagsToString(options.getTags()),
-            options.isCopySourceBlobProperties(), sourceAuth, options.getHeaders(),
+            options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
@@ -557,11 +550,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlock(String base64BlockId, Flux<ByteBuffer> data, long length) {
-        try {
-            return stageBlockWithResponse(base64BlockId, data, length, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return stageBlockWithResponse(base64BlockId, data, length, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -602,7 +591,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
                 contentMd5, leaseId, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -643,12 +632,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlockFromUrl(String base64BlockId, String sourceUrl, BlobRange sourceRange) {
-        try {
-            return this.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -687,13 +672,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
-        try {
-            return this.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
-                .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
-                .setSourceRequestConditions(sourceRequestConditions));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
+            .setSourceRequestConditions(sourceRequestConditions));
     }
 
     /**
@@ -723,7 +704,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> stageBlockFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -735,7 +716,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null
@@ -775,11 +756,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockList> listBlocks(BlockListType listType) {
-        try {
-            return this.listBlocksWithResponse(listType, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.listBlocksWithResponse(listType, null).map(Response::getValue);
     }
 
     /**
@@ -809,11 +786,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
-        try {
-            return this.listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId));
     }
 
     /**
@@ -849,7 +822,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> listBlocksWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -884,11 +857,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds) {
-        try {
-            return commitBlockList(base64BlockIds, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return commitBlockList(base64BlockIds, false);
     }
 
     /**
@@ -910,21 +879,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds, boolean overwrite) {
-        try {
-            BlobRequestConditions requestConditions = null;
-            if (!overwrite) {
-                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return commitBlockListWithResponse(base64BlockIds, null, null, null, requestConditions)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        BlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return commitBlockListWithResponse(base64BlockIds, null, null, null, requestConditions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1012,7 +977,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> commitBlockListWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

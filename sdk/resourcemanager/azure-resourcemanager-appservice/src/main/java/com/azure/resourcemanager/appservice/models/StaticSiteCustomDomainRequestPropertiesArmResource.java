@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainRequestPropertiesArmResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static Site Custom Domain Request Properties ARM resource. */
 @Fluent
 public final class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnlyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StaticSiteCustomDomainRequestPropertiesArmResource.class);
-
     /*
      * StaticSiteCustomDomainRequestPropertiesARMResource resource specific
      * properties

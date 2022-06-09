@@ -13,7 +13,35 @@ import java.util.Map;
 /** Samples for RestorePointCollections CreateOrUpdate. */
 public final class RestorePointCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateARestorePointCollection.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
+     */
+    /**
+     * Sample code: Create or update a restore point collection for cross region copy.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateARestorePointCollectionForCrossRegionCopy(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
+            .createOrUpdateWithResponse(
+                "myResourceGroup",
+                "myRpc",
+                new RestorePointCollectionInner()
+                    .withLocation("norwayeast")
+                    .withTags(mapOf("myTag1", "tagValue1"))
+                    .withSource(
+                        new RestorePointCollectionSourceProperties()
+                            .withId(
+                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/sourceRpcName")),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a restore point collection.

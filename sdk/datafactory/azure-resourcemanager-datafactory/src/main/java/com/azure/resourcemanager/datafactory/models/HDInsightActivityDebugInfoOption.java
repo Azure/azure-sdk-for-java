@@ -30,7 +30,11 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
         return fromString(name, HDInsightActivityDebugInfoOption.class);
     }
 
-    /** @return known HDInsightActivityDebugInfoOption values. */
+    /**
+     * Gets known HDInsightActivityDebugInfoOption values.
+     *
+     * @return known HDInsightActivityDebugInfoOption values.
+     */
     public static Collection<HDInsightActivityDebugInfoOption> values() {
         return values(HDInsightActivityDebugInfoOption.class);
     }

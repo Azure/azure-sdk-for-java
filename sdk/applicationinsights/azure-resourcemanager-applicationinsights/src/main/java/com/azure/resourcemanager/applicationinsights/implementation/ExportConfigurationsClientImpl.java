@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ExportConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentExportConfigurationInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentExportRequest;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExportConfigurationsClient. */
 public final class ExportConfigurationsClientImpl implements ExportConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(ExportConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExportConfigurationsService service;
 
@@ -150,7 +147,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component.
+     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> listWithResponseAsync(
@@ -200,7 +198,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component.
+     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> listWithResponseAsync(
@@ -246,20 +245,13 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component.
+     * @return a list of Continuous Export configuration of an Application Insights component on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> listAsync(
         String resourceGroupName, String resourceName) {
-        return listWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentExportConfigurationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -287,7 +279,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component.
+     * @return a list of Continuous Export configuration of an Application Insights component along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentExportConfigurationInner>> listWithResponse(
@@ -305,7 +298,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations.
+     * @return a list of Continuous Export configurations along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> createWithResponseAsync(
@@ -364,7 +358,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations.
+     * @return a list of Continuous Export configurations along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentExportConfigurationInner>>> createWithResponseAsync(
@@ -422,20 +417,13 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations.
+     * @return a list of Continuous Export configurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> createAsync(
         String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, exportProperties)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentExportConfigurationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -467,7 +455,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configurations.
+     * @return a list of Continuous Export configurations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentExportConfigurationInner>> createWithResponse(
@@ -487,7 +475,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> deleteWithResponseAsync(
@@ -542,7 +531,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> deleteWithResponseAsync(
@@ -593,20 +583,13 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentExportConfigurationInner> deleteAsync(
         String resourceGroupName, String resourceName, String exportId) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, exportId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentExportConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -636,7 +619,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentExportConfigurationInner> deleteWithResponse(
@@ -653,7 +636,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id.
+     * @return the Continuous Export configuration for this export id along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> getWithResponseAsync(
@@ -708,7 +692,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id.
+     * @return the Continuous Export configuration for this export id along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> getWithResponseAsync(
@@ -759,20 +744,13 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id.
+     * @return the Continuous Export configuration for this export id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentExportConfigurationInner> getAsync(
         String resourceGroupName, String resourceName, String exportId) {
         return getWithResponseAsync(resourceGroupName, resourceName, exportId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentExportConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -802,7 +780,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id.
+     * @return the Continuous Export configuration for this export id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentExportConfigurationInner> getWithResponse(
@@ -820,7 +798,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> updateWithResponseAsync(
@@ -886,7 +865,8 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentExportConfigurationInner>> updateWithResponseAsync(
@@ -949,7 +929,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentExportConfigurationInner> updateAsync(
@@ -958,14 +938,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         String exportId,
         ApplicationInsightsComponentExportRequest exportProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, exportId, exportProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentExportConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1000,7 +973,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
+     * @return properties that define a Continuous Export configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentExportConfigurationInner> updateWithResponse(

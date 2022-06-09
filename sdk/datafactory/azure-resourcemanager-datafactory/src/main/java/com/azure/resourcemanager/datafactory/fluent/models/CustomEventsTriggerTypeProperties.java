@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Custom Events Trigger properties. */
 @Fluent
 public final class CustomEventsTriggerTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomEventsTriggerTypeProperties.class);
-
     /*
      * The event subject must begin with the pattern provided for trigger to
      * fire. At least one of these must be provided: subjectBeginsWith,
@@ -134,16 +131,18 @@ public final class CustomEventsTriggerTypeProperties {
      */
     public void validate() {
         if (events() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property events in model CustomEventsTriggerTypeProperties"));
         }
         if (scope() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scope in model CustomEventsTriggerTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomEventsTriggerTypeProperties.class);
 }

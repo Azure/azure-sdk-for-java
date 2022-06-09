@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Monitoring data for integration runtime node. */
 @Fluent
 public final class IntegrationRuntimeNodeMonitoringData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodeMonitoringData.class);
-
     /*
      * Name of the integration runtime node.
      */

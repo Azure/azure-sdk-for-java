@@ -31,6 +31,7 @@ public final class DocumentModelHelper {
 
         void setDocTypes(DocumentModel documentModel, Map<String, DocTypeInfo> docTypes);
 
+        void setTags(DocumentModel documentModel, Map<String, String> tags);
     }
 
     /**
@@ -56,5 +57,9 @@ public final class DocumentModelHelper {
 
     static void setDocTypes(DocumentModel documentModel, Map<String, DocTypeInfo> docTypes) {
         accessor.setDocTypes(documentModel, docTypes);
+    }
+
+    static void setTags(DocumentModel documentModel, Map<String, String> tags) {
+        accessor.setTags(documentModel, tags);
     }
 }

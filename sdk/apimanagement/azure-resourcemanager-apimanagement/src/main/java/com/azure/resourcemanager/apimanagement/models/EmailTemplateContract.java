@@ -60,7 +60,7 @@ public interface EmailTemplateContract {
     String description();
 
     /**
-     * Gets the isDefault property: Whether the template is the default template provided by Api Management or has been
+     * Gets the isDefault property: Whether the template is the default template provided by API Management or has been
      * edited.
      *
      * @return the isDefault value.

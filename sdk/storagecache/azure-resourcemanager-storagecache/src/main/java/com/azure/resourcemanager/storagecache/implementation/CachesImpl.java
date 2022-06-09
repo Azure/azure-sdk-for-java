@@ -13,10 +13,9 @@ import com.azure.resourcemanager.storagecache.fluent.CachesClient;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
 import com.azure.resourcemanager.storagecache.models.Cache;
 import com.azure.resourcemanager.storagecache.models.Caches;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CachesImpl implements Caches {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CachesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CachesImpl.class);
 
     private final CachesClient innerClient;
 
@@ -122,7 +121,7 @@ public final class CachesImpl implements Caches {
     public Cache getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -141,7 +140,7 @@ public final class CachesImpl implements Caches {
     public Response<Cache> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +148,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -160,7 +159,7 @@ public final class CachesImpl implements Caches {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -179,7 +178,7 @@ public final class CachesImpl implements Caches {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));

@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+  <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
   <name>Encryption Plugin for Azure Cosmos DB SDK</name>
   <description>This Package contains Encryption Plugin for Microsoft Azure Cosmos SDK</description>
   <packaging>jar</packaging>
@@ -35,11 +35,20 @@ Licensed under the MIT License.
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
+    <jacoco.min.linecoverage>0.09</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.02</jacoco.min.branchcoverage>
+
+    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
+    <revapi.skip>true</revapi.skip>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption=ALL-UNNAMED
+      --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.implementation=ALL-UNNAMED
+      --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.keyprovider=ALL-UNNAMED
+      --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.util=ALL-UNNAMED
+      --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.models=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -47,13 +56,14 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.24.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.32.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -69,8 +79,8 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
+      <version>1.5.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
-      <version>1.4.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -79,6 +89,10 @@ Licensed under the MIT License.
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>stax</groupId>
+          <artifactId>stax-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -100,7 +114,7 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
-      <version>4.2</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
+      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -127,21 +141,21 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.17.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.17.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -155,7 +169,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.12</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -172,55 +186,10 @@ Licensed under the MIT License.
       <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.68</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.data.encryption</groupId>
-      <artifactId>cryptography</artifactId>
-      <version>0.2.2.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.data.encryption</groupId>
-      <artifactId>azure-key-vault-keystoreprovider</artifactId>
-      <version>0.2.2.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.microsoft.data.encryption</groupId>
-          <artifactId>cryptography</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
-
-
-      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -247,15 +216,11 @@ Licensed under the MIT License.
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-                <include>com.microsoft.data.encryption:cryptography:[0.2.2.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
-                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.2.2.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
   <profiles>

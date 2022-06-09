@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProperties;
 import com.azure.resourcemanager.apimanagement.models.NamedValueEntityBaseParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NamedValue Contract properties. */
 @Fluent
 public final class NamedValueCreateContractProperties extends NamedValueEntityBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamedValueCreateContractProperties.class);
-
     /*
      * Unique name of NamedValue. It may contain only letters, digits, period,
      * dash, and underscore characters.
@@ -127,7 +124,7 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model NamedValueCreateContractProperties"));
@@ -136,4 +133,6 @@ public final class NamedValueCreateContractProperties extends NamedValueEntityBa
             keyVault().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NamedValueCreateContractProperties.class);
 }

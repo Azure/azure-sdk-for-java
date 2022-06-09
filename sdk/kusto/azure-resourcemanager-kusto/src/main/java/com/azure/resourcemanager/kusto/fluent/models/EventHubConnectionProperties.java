@@ -7,6 +7,7 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.Compression;
+import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.EventHubDataFormat;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -75,6 +76,19 @@ public final class EventHubConnectionProperties {
      */
     @JsonProperty(value = "managedIdentityResourceId")
     private String managedIdentityResourceId;
+
+    /*
+     * The object ID of the managedIdentityResourceId
+     */
+    @JsonProperty(value = "managedIdentityObjectId", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedIdentityObjectId;
+
+    /*
+     * Indication for database routing information from the data connection, by
+     * default only database routing information is allowed
+     */
+    @JsonProperty(value = "databaseRouting")
+    private DatabaseRouting databaseRouting;
 
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
@@ -250,6 +264,37 @@ public final class EventHubConnectionProperties {
      */
     public EventHubConnectionProperties withManagedIdentityResourceId(String managedIdentityResourceId) {
         this.managedIdentityResourceId = managedIdentityResourceId;
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityObjectId property: The object ID of the managedIdentityResourceId.
+     *
+     * @return the managedIdentityObjectId value.
+     */
+    public String managedIdentityObjectId() {
+        return this.managedIdentityObjectId;
+    }
+
+    /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.databaseRouting;
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the EventHubConnectionProperties object itself.
+     */
+    public EventHubConnectionProperties withDatabaseRouting(DatabaseRouting databaseRouting) {
+        this.databaseRouting = databaseRouting;
         return this;
     }
 

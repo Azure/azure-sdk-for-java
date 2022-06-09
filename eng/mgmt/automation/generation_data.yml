@@ -33,13 +33,13 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
-    ./eng/mgmt/automation/generate_data.py --input-file="$(INPUT_FILE)" --service="$(SERVICE)" --module="$(MODULE)" --credential-types="$(CREDENTIAL_TYPES)" --credential-scopes="$(CREDENTIAL_SCOPES)" --title="$(TITLE)"
+    ./eng/mgmt/automation/generate_data.py --readme="$(README)" --input-file="$(INPUT_FILE)" --service="$(SERVICE)" --module="$(MODULE)" --security="$(SECURITY)" --security-scopes="$(SECURITY_SCOPES)" --title="$(TITLE)"
   displayName: Generation
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    CommitMsg: '[Automation] Generate Data-plane SDK for $(MODULE)'
-    PRTitle: '[Automation] Generate Data-plane SDK for $(MODULE)'
+    CommitMsg: '[Automation] Generate Data-plane SDK for $(MODULE)#$(README)'
+    PRTitle: '[Automation] Generate Data-plane SDK for $(MODULE)#$(README)'
     PRLabels: 'LLC'
     OpenAsDraft: 'true'

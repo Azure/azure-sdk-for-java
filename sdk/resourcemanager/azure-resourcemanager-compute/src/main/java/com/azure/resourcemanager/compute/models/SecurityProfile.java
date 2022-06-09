@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the Security profile settings for the virtual machine or virtual machine scale set. */
 @Fluent
 public final class SecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityProfile.class);
-
     /*
      * Specifies the security settings like secure boot and vTPM used while
      * creating the virtual machine. <br><br>Minimum api-version: 2020-12-01
@@ -33,9 +29,9 @@ public final class SecurityProfile {
     private Boolean encryptionAtHost;
 
     /*
-     * Specifies the SecurityType of the virtual machine. It is set as
-     * TrustedLaunch to enable UefiSettings. <br><br> Default: UefiSettings
-     * will not be enabled unless this property is set as TrustedLaunch.
+     * Specifies the SecurityType of the virtual machine. It has to be set to
+     * any specified value to enable UefiSettings. <br><br> Default:
+     * UefiSettings will not be enabled unless this property is set.
      */
     @JsonProperty(value = "securityType")
     private SecurityTypes securityType;
@@ -89,9 +85,9 @@ public final class SecurityProfile {
     }
 
     /**
-     * Get the securityType property: Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to
-     * enable UefiSettings. &lt;br&gt;&lt;br&gt; Default: UefiSettings will not be enabled unless this property is set
-     * as TrustedLaunch.
+     * Get the securityType property: Specifies the SecurityType of the virtual machine. It has to be set to any
+     * specified value to enable UefiSettings. &lt;br&gt;&lt;br&gt; Default: UefiSettings will not be enabled unless
+     * this property is set.
      *
      * @return the securityType value.
      */
@@ -100,9 +96,9 @@ public final class SecurityProfile {
     }
 
     /**
-     * Set the securityType property: Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to
-     * enable UefiSettings. &lt;br&gt;&lt;br&gt; Default: UefiSettings will not be enabled unless this property is set
-     * as TrustedLaunch.
+     * Set the securityType property: Specifies the SecurityType of the virtual machine. It has to be set to any
+     * specified value to enable UefiSettings. &lt;br&gt;&lt;br&gt; Default: UefiSettings will not be enabled unless
+     * this property is set.
      *
      * @param securityType the securityType value to set.
      * @return the SecurityProfile object itself.

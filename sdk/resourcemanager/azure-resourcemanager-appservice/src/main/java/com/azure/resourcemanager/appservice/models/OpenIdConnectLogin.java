@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration settings of the login flow of the custom Open ID Connect provider. */
 @Fluent
 public final class OpenIdConnectLogin {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenIdConnectLogin.class);
-
     /*
      * The name of the claim that contains the users name.
      */

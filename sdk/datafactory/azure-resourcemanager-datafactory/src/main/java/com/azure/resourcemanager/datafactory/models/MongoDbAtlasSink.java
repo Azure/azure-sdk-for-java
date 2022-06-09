@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MongoDbAtlasSink")
 @Fluent
 public final class MongoDbAtlasSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbAtlasSink.class);
-
     /*
      * Specifies whether the document with same key to be overwritten (upsert)
      * rather than throw exception (insert). The default value is "insert".

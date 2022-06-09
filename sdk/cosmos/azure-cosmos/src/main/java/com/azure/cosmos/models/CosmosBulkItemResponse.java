@@ -25,7 +25,7 @@ public final class CosmosBulkItemResponse {
 
     private final String eTag;
     private final double requestCharge;
-    private final ObjectNode resourceObject;
+    private ObjectNode resourceObject;
     private final int statusCode;
     private final Duration retryAfter;
     private final int subStatusCode;
@@ -190,8 +190,7 @@ public final class CosmosBulkItemResponse {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.setCosmosBulkItemResponseAccessor(
             new ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.CosmosBulkItemResponseAccessor() {
 
@@ -199,6 +198,14 @@ public final class CosmosBulkItemResponse {
                 public ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse) {
                     return cosmosBulkItemResponse.getResourceObject();
                 }
+
+                @Override
+                public void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                              ObjectNode objectNode) {
+                    cosmosBulkItemResponse.resourceObject = objectNode;
+                }
             });
     }
+
+    static { initialize(); }
 }

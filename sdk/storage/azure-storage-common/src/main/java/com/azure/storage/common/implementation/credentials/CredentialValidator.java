@@ -26,7 +26,7 @@ public class CredentialValidator {
      * @param tokenCredential {@link TokenCredential} if present.
      * @param azureSasCredential {@link AzureSasCredential} if present.
      * @param sasToken {@link String} representing sas token if present.
-     * @param logger {@ClientLogger}. Mandatory.
+     * @param logger {@link ClientLogger}. Mandatory.
      */
     public static void validateSingleCredentialIsPresent(
         StorageSharedKeyCredential storageSharedKeyCredential,

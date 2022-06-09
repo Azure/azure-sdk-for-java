@@ -13,10 +13,9 @@ import com.azure.resourcemanager.storagecache.fluent.StorageTargetsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
 import com.azure.resourcemanager.storagecache.models.StorageTargets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageTargetsImpl implements StorageTargets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageTargetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageTargetsImpl.class);
 
     private final StorageTargetsClient innerClient;
 
@@ -87,7 +86,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     public StorageTarget getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,14 +94,14 @@ public final class StorageTargetsImpl implements StorageTargets {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
         }
         String storageTargetName = Utils.getValueFromIdByName(id, "storageTargets");
         if (storageTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     public Response<StorageTarget> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,14 +121,14 @@ public final class StorageTargetsImpl implements StorageTargets {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
         }
         String storageTargetName = Utils.getValueFromIdByName(id, "storageTargets");
         if (storageTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,14 +148,14 @@ public final class StorageTargetsImpl implements StorageTargets {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
         }
         String storageTargetName = Utils.getValueFromIdByName(id, "storageTargets");
         if (storageTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class StorageTargetsImpl implements StorageTargets {
     public void deleteByIdWithResponse(String id, String force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,14 +176,14 @@ public final class StorageTargetsImpl implements StorageTargets {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
         }
         String storageTargetName = Utils.getValueFromIdByName(id, "storageTargets");
         if (storageTargetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

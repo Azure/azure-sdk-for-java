@@ -6,14 +6,11 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** API Management service resource SKU properties. */
 @Fluent
 public final class ApiManagementServiceSkuProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementServiceSkuProperties.class);
-
     /*
      * Name of the Sku.
      */
@@ -76,10 +73,12 @@ public final class ApiManagementServiceSkuProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ApiManagementServiceSkuProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiManagementServiceSkuProperties.class);
 }

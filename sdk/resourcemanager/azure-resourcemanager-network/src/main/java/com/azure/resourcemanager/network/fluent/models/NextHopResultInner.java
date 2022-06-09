@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NextHopType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information about next hop from the specified VM. */
 @Fluent
 public final class NextHopResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopResultInner.class);
-
     /*
      * Next hop type.
      */

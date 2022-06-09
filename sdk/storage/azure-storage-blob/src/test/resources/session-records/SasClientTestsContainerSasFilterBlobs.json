@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/2d8c049702d8c0497e5315570fdd6a967bc1c44368b2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c3ca099a-16fe-48ca-9b42-d9527ad7c347"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "eTag" : "0x8D9B48037A85168",
+      "Last-Modified" : "Wed, 01 Dec 2021 04:08:23 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b9b45b81-201e-0000-5669-e6e568000000",
+      "x-ms-client-request-id" : "c3ca099a-16fe-48ca-9b42-d9527ad7c347",
+      "Date" : "Wed, 01 Dec 2021 04:08:22 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/2d8c049702d8c0497e5315570fdd6a967bc1c44368b2/2d8c049712d8c0497e5342256f36274def0204d19926",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3b9d3dc8-a696-4b6a-95e6-38889b085816",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "eTag" : "0x8D9B480383ACD65",
+      "Last-Modified" : "Wed, 01 Dec 2021 04:08:24 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b9b45b84-201e-0000-5769-e6e568000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "3b9d3dc8-a696-4b6a-95e6-38889b085816",
+      "Date" : "Wed, 01 Dec 2021 04:08:24 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/2d8c049702d8c0497e5315570fdd6a967bc1c44368b2/2d8c049712d8c0497e5342256f36274def0204d19926?comp=tags&sv=2021-06-08&se=2021-12-02T04%3A08%3A24Z&sr=c&sp=racwdxltf&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "de8b0301-ebbe-4d90-8312-93bac2af2b58",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-04-10",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "b9b45b85-201e-0000-5869-e6e568000000",
+      "x-ms-client-request-id" : "de8b0301-ebbe-4d90-8312-93bac2af2b58",
+      "Date" : "Wed, 01 Dec 2021 04:08:24 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/2d8c049702d8c0497e5315570fdd6a967bc1c44368b2?restype=container&comp=blobs&where=%22foo%22%3D%27bar%27",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c8a93ada-8fef-44a4-8be2-214a8e299cb5"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "b9b45b86-201e-0000-5969-e6e568000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<EnumerationResults ServiceEndpoint=\"https://fp8xscnapby3pev24a.blob.preprod.core.windows.net/\"><Where>&quot;foo&quot;=&apos;bar&apos;</Where><Blobs/><NextMarker/></EnumerationResults>",
+      "x-ms-client-request-id" : "c8a93ada-8fef-44a4-8be2-214a8e299cb5",
+      "Date" : "Wed, 01 Dec 2021 04:08:24 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "2d8c049702d8c0497e5315570fdd6a967bc1c44368b2", "2d8c049712d8c0497e5342256f36274def0204d19926", "2021-12-01T04:08:24.241891100Z" ]
+}

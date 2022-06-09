@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BlobContainers ObjectLevelWorm. */
 public final class BlobContainersObjectLevelWormSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/ObjectLevelWormContainerMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/ObjectLevelWormContainerMigration.json
      */
     /**
      * Sample code: VersionLevelWormContainerMigration.

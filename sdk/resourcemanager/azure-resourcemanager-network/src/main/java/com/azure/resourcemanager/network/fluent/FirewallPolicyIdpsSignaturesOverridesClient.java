@@ -26,7 +26,8 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SignaturesOverridesInner>> patchWithResponseAsync(
@@ -41,7 +42,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SignaturesOverridesInner> patchAsync(
@@ -72,7 +73,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesInner> patchWithResponse(
@@ -87,7 +88,8 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SignaturesOverridesInner>> putWithResponseAsync(
@@ -102,7 +104,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SignaturesOverridesInner> putAsync(
@@ -133,7 +135,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesInner> putWithResponse(
@@ -147,7 +149,8 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SignaturesOverridesInner>> getWithResponseAsync(String resourceGroupName, String firewallPolicyName);
@@ -160,7 +163,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SignaturesOverridesInner> getAsync(String resourceGroupName, String firewallPolicyName);
@@ -187,7 +190,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains all specific policy signatures overrides for the IDPS.
+     * @return contains all specific policy signatures overrides for the IDPS along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesInner> getWithResponse(
@@ -201,7 +204,8 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item.
+     * @return describes an object containing an array with a single item along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SignaturesOverridesListInner>> listWithResponseAsync(
@@ -215,7 +219,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item.
+     * @return describes an object containing an array with a single item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SignaturesOverridesListInner> listAsync(String resourceGroupName, String firewallPolicyName);
@@ -242,7 +246,7 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item.
+     * @return describes an object containing an array with a single item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SignaturesOverridesListInner> listWithResponse(

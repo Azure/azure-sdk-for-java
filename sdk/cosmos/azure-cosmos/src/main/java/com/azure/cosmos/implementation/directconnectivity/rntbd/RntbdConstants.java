@@ -22,6 +22,10 @@ public final class RntbdConstants {
     private RntbdConstants() {
     }
 
+    public static class RntbdHealthCheckResults {
+        public static final String SuccessValue = "Success";
+    }
+
     public enum RntbdConsistencyLevel {
 
         Strong((byte) 0x00),
@@ -584,7 +588,8 @@ public final class RntbdConstants {
         ReturnPreference((short) 0x0082, RntbdTokenType.Byte, false),
         PopulateIndexMetrics((short) 0x00A9, RntbdTokenType.Byte, false),
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
-        IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false);
+        IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false),
+        CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));
@@ -842,6 +847,7 @@ public final class RntbdConstants {
         IsRUPerMinuteUsed((short) 0x0027, RntbdTokenType.Byte, false),
         QueryMetrics((short) 0x0028, RntbdTokenType.String, false),
         IndexUtilization((short) 0x0044, RntbdTokenType.String, false),
+        QueryExecutionInfo((short) 0x0045, RntbdTokenType.String, false),
         GlobalCommittedLSN((short) 0x0029, RntbdTokenType.LongLong, false),
         NumberOfReadRegions((short) 0x0030, RntbdTokenType.ULong, false),
         OfferReplacePending((short) 0x0031, RntbdTokenType.Byte, false),
@@ -858,7 +864,8 @@ public final class RntbdConstants {
         ItemLocalLSN((short) 0x003C, RntbdTokenType.LongLong, false),
         HasTentativeWrites((short) 0x003D, RntbdTokenType.Byte, false),
         SessionToken((short) 0x003E, RntbdTokenType.String, false),
-        BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false);
+        BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
+        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false);
 
         public static final ImmutableMap<Short, RntbdResponseHeader> map;
         public static final ImmutableSet<RntbdResponseHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdResponseHeader.class));

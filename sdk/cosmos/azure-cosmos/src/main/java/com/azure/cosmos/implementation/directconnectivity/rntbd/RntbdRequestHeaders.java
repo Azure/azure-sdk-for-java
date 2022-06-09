@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.HttpConstants.HeaderValues;
@@ -117,6 +118,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addPopulateIndexMetrics(headers);
         this.addIsClientEncrypted(headers);
         this.addIntendedCollectionRid(headers);
+        this.addCorrelatedActivityId(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -158,6 +160,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::isBatchAtomic, HttpHeaders.IS_BATCH_ATOMIC);
         this.fillTokenFromHeader(headers, this::shouldBatchContinueOnError, HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR);
         this.fillTokenFromHeader(headers, this::isBatchOrdered, HttpHeaders.IS_BATCH_ORDERED);
+        this.fillTokenFromHeader(headers, this::getCorrelatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID);
 
         // Will be null in case of direct, which is fine - BE will use the value slice the connection context this.
         // When this is used in Gateway, the header value will be populated with the proxied HTTP request's header,
@@ -265,6 +268,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getContinuationToken() {
         return this.get(RntbdRequestHeader.ContinuationToken);
+    }
+
+    private RntbdToken getCorrelatedActivityId() {
+        return this.get(RntbdRequestHeader.CorrelatedActivityId);
     }
 
     private RntbdToken getDatabaseName() {
@@ -719,6 +726,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = request.getContinuation();
         if (StringUtils.isNotEmpty(value)) {
             this.getContinuationToken().setValue(value);
+        }
+    }
+
+    private void addCorrelatedActivityId(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.CORRELATED_ACTIVITY_ID);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getCorrelatedActivityId().setValue(UUID.fromString(value));
         }
     }
 
@@ -1272,6 +1286,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
                     final long aLong = parseLong(name, value);
                     token.setValue(aLong);
+                    break;
+                }
+                case Guid: {
+                    final UUID uuid = UUID.fromString(value);
+                    token.setValue(uuid);
                     break;
                 }
                 default: {

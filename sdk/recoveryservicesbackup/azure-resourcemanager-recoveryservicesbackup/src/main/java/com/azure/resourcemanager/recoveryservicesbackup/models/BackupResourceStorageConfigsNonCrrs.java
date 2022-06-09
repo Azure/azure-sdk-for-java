@@ -31,7 +31,7 @@ public interface BackupResourceStorageConfigsNonCrrs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details.
+     * @return the resource storage details along with {@link Response}.
      */
     Response<BackupResourceConfigResource> getWithResponse(String vaultName, String resourceGroupName, Context context);
 
@@ -59,7 +59,7 @@ public interface BackupResourceStorageConfigsNonCrrs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details.
+     * @return the resource storage details along with {@link Response}.
      */
     Response<BackupResourceConfigResource> updateWithResponse(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context);
@@ -86,7 +86,7 @@ public interface BackupResourceStorageConfigsNonCrrs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> patchWithResponse(
         String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context);

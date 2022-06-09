@@ -6,7 +6,12 @@ package com.azure.core.implementation;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -92,6 +97,47 @@ public final class ImplUtils {
         } catch (NumberFormatException ex) {
             return -1;
         }
+    }
+
+    /**
+     * Writes a {@link ByteBuffer} into an {@link OutputStream}.
+     * <p>
+     * This method provides writing optimization based on the type of {@link ByteBuffer} and {@link OutputStream}
+     * passed. For example, if the {@link ByteBuffer} has a backing {@code byte[]} this method will access that directly
+     * to write to the {@code stream} instead of buffering the contents of the {@link ByteBuffer} into a temporary
+     * buffer.
+     *
+     * @param buffer The {@link ByteBuffer} to write into the {@code stream}.
+     * @param stream The {@link OutputStream} where the {@code buffer} will be written.
+     * @throws IOException If an I/O occurs while writing the {@code buffer} into the {@code stream}.
+     */
+    public static void writeByteBufferToStream(ByteBuffer buffer, OutputStream stream) throws IOException {
+        // First check if the buffer has a backing byte[]. The backing byte[] can be accessed directly and written
+        // without an additional buffering byte[].
+        if (buffer.hasArray()) {
+            // Write the byte[] from the current view position to the length remaining in the view.
+            stream.write(buffer.array(), buffer.position(), buffer.remaining());
+
+            // Update the position of the ByteBuffer to treat this the same as getting from the buffer.
+            buffer.position(buffer.position() + buffer.remaining());
+            return;
+        }
+
+        // Next begin checking for specific instances of OutputStream that may provide better writing options for
+        // direct ByteBuffers.
+        if (stream instanceof FileOutputStream) {
+            FileOutputStream fileOutputStream = (FileOutputStream) stream;
+
+            // Writing to the FileChannel directly may provide native optimizations for moving the OS managed memory
+            // into the file.
+            // Write will move both the OutputStream's and ByteBuffer's position so there is no need to perform
+            // additional updates that are required when using the backing array.
+            fileOutputStream.getChannel().write(buffer);
+            return;
+        }
+
+        // All optimizations have been exhausted, fallback to buffering write.
+        stream.write(FluxUtil.byteBufferToArray(buffer));
     }
 
     private ImplUtils() {

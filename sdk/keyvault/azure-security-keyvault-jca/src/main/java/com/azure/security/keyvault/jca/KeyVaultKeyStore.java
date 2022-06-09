@@ -10,12 +10,12 @@ import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathC
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.Key;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
+import java.security.KeyStoreException;
 import java.security.UnrecoverableEntryException;
+import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure Key Vault implementation of the KeyStoreSpi.
+ *
+ * @see KeyStoreSpi
  */
 public final class KeyVaultKeyStore extends KeyStoreSpi {
 
@@ -118,6 +120,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * </p>
      */
     public KeyVaultKeyStore() {
+        LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
@@ -131,11 +134,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                     .map(Boolean::parseBoolean)
                     .orElse(false);
         jreCertificates = JreCertificates.getInstance();
+        LOGGER.log(FINE, String.format("Loaded jre certificates: %s.", jreCertificates.getAliases()));
         wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
+        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
+        LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
         keyVaultCertificates = new KeyVaultCertificates(
             refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+        LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
         classpathCertificates = new ClasspathCertificates();
+        LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
         allCertificates = Arrays.asList(
             jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
     }
@@ -171,26 +179,60 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         return keyStore;
     }
 
+    /**
+     * Lists all the alias names of this keystore.
+     *
+     * @return enumeration of the alias names
+     */
     @Override
     public Enumeration<String> engineAliases() {
         return Collections.enumeration(getAllAliases());
     }
 
+    /**
+     * Checks if the given alias exists in this keystore.
+     *
+     * @param alias the alias name
+     * @return true if the alias exists, false otherwise
+     */
     @Override
     public boolean engineContainsAlias(String alias) {
         return engineIsCertificateEntry(alias);
     }
 
+    /**
+     * Deletes the entry identified by the given alias from this keystore.
+     *
+     * @param alias the alias name
+     */
     @Override
     public void engineDeleteEntry(String alias) {
         allCertificates.forEach(a -> a.deleteEntry(alias));
     }
 
+    /**
+     * Determines if the keystore {@code Entry} for the specified
+     * {@code alias} is an instance or subclass of the specified
+     * {@code entryClass}.
+     *
+     * @param alias the alias name
+     * @param entryClass the entry class
+     * @return true if the keystore {@code Entry} for the specified
+     *          {@code alias} is an instance or subclass of the
+     *          specified {@code entryClass}, false otherwise
+     */
     @Override
     public boolean engineEntryInstanceOf(String alias, Class<? extends KeyStore.Entry> entryClass) {
         return super.engineEntryInstanceOf(alias, entryClass);
     }
 
+    /**
+     * Get the certificate associated with the given alias.
+     *
+     * @param alias the alias name
+     * @return the certificate, or null if the given alias does not exist or
+     * does not contain a certificate
+     */
     @Override
     public Certificate engineGetCertificate(String alias) {
         Certificate certificate = allCertificates.stream()
@@ -207,6 +249,13 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         return certificate;
     }
 
+    /**
+     * Get the (alias) name of the first keystore entry whose certificate matches the given certificate.
+     *
+     * @param cert the certificate to match with.
+     * @return the alias name of the first entry with matching certificate,
+     * or null if no such entry exists in this keystore
+     */
     @Override
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
@@ -227,6 +276,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         return alias;
     }
 
+    /**
+     * Get the certificate chain associated with the given alias.
+     *
+     * @param alias the alias name
+     * @return the certificate chain (ordered with the user's certificate first
+     * and the root certificate authority last), or null if the given alias
+     * does not exist or does not contain a certificate chain
+     */
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
         Certificate[] chain = null;
@@ -238,16 +295,39 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         return chain;
     }
 
+    /**
+     * Get the creation date of the entry identified by the given alias.
+     *
+     * @param alias the alias name
+     * @return the creation date of this entry, or null if the given alias does not exist
+     */
     @Override
     public Date engineGetCreationDate(String alias) {
         return new Date(creationDate.getTime());
     }
 
+    /**
+     * Gets a {@code KeyStore.Entry} for the specified alias with the specified protection parameter.
+     *
+     * @param alias the alias name
+     * @param protParam the protParam
+     * @return the {@code KeyStore.Entry} for the specified alias,or {@code null} if there is no such entry
+     * @exception KeyStoreException if the operation failed
+     * @exception NoSuchAlgorithmException if the algorithm for recovering the entry cannot be found
+     * @exception UnrecoverableEntryException if the specified {@code protParam} were insufficient or invalid
+     */
     @Override
     public KeyStore.Entry engineGetEntry(String alias, KeyStore.ProtectionParameter protParam) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableEntryException {
         return super.engineGetEntry(alias, protParam);
     }
 
+    /**
+     * Get key associated with the given alias.
+     *
+     * @param alias the alias name
+     * @param password the password for recovering the key
+     * @return the requested key, or null if the given alias does not exist or does not identify a key-related entry
+     */
     @Override
     public Key engineGetKey(String alias, char[] password) {
         return allCertificates.stream()
@@ -258,16 +338,35 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                               .orElse(null);
     }
 
+    /**
+     * Check whether the entry identified by the given alias contains a trusted certificate.
+     *
+     * @param alias the alias name
+     * @return true if the entry identified by the given alias contains a trusted certificate, false otherwise
+     */
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         return getAllAliases().contains(alias);
     }
 
+    /**
+     * Check whether the entry identified by the given alias is a key-related.
+     *
+     * @param alias the alias for the keystore entry to be checked
+     * @return true if the entry identified by the given alias is a key-related, false otherwise
+     */
     @Override
     public boolean engineIsKeyEntry(String alias) {
         return engineIsCertificateEntry(alias);
     }
 
+    /**
+     * Loads the keystore using the given {@code KeyStore.LoadStoreParameter}.
+     *
+     * @param param the {@code KeyStore.LoadStoreParameter}
+     *          that specifies how to load the keystore,
+     *          which may be {@code null}
+     */
     @Override
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
@@ -278,6 +377,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         classpathCertificates.loadCertificatesFromClasspath();
     }
 
+    /**
+     * Loads the keystore from the given input stream.
+     *
+     * @param stream the input stream from which the keystore is loaded,or {@code null}
+     * @param password the password
+     */
     @Override
     public void engineLoad(InputStream stream, char[] password) {
         classpathCertificates.loadCertificatesFromClasspath();
@@ -301,7 +406,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         return allAliases;
     }
 
-
+    /**
+     * Assigns the given certificate to the given alias.
+     *
+     * @param alias the alias name
+     * @param certificate the certificate
+     */
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (getAllAliases().contains(alias)) {
@@ -311,28 +421,69 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         classpathCertificates.setCertificateEntry(alias, certificate);
     }
 
+    /**
+     * Saves a {@code KeyStore.Entry} under the specified alias.
+     * The specified protection parameter is used to protect the
+     * {@code Entry}.
+     *
+     * @param alias the alias name
+     * @param entry the entry
+     * @param protParam the protParam
+     * @throws KeyStoreException if this operation fails
+     */
     @Override
     public void engineSetEntry(String alias, KeyStore.Entry entry, KeyStore.ProtectionParameter protParam) throws KeyStoreException {
         super.engineSetEntry(alias, entry, protParam);
     }
 
+    /**
+     * Assigns the given key to the given alias, protecting it with the given password.
+     *
+     * @param alias the alias name
+     * @param key the key to be associated with the alias
+     * @param password the password to protect the key
+     * @param chain the certificate chain
+     */
     @Override
     public void engineSetKeyEntry(String alias, Key key, char[] password, Certificate[] chain) {
     }
 
+    /**
+     * Assigns the given key (that has already been protected) to the given alias.
+     *
+     * @param alias the alias name
+     * @param key the key
+     * @param chain the certificate chain
+     */
     @Override
     public void engineSetKeyEntry(String alias, byte[] key, Certificate[] chain) {
     }
 
+    /**
+     * Retrieves the number of entries in this keystore.
+     *
+     * @return the number of entries in this keystore
+     */
     @Override
     public int engineSize() {
         return getAllAliases().size();
     }
 
+    /**
+     * Stores this keystore to the given output stream, and protects its integrity with the given password.
+     *
+     * @param stream the output stream to which this keystore is written
+     * @param password the password to generate the keystore integrity check
+     */
     @Override
     public void engineStore(OutputStream stream, char[] password) {
     }
 
+    /**
+     * Stores this keystore using the given.
+     *
+     * @param param the param
+     */
     @Override
     public void engineStore(KeyStore.LoadStoreParameter param) {
     }

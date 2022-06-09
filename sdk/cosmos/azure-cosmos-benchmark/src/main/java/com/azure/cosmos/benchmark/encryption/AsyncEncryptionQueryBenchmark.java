@@ -9,7 +9,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -53,7 +52,7 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
         }
     }
 
-    public AsyncEncryptionQueryBenchmark(Configuration cfg) throws IOException, MicrosoftDataEncryptionException {
+    public AsyncEncryptionQueryBenchmark(Configuration cfg) throws IOException {
         super(cfg);
     }
 

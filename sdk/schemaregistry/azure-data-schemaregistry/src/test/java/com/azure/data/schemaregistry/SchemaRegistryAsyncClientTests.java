@@ -47,15 +47,15 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
     @Override
     protected void beforeTest() {
-        final String endpoint;
         TokenCredential tokenCredential;
-
+        String endpoint;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
@@ -67,7 +67,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 });
             });
 
-            endpoint = "https://foo.servicebus.windows.net";
+            endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
@@ -190,7 +190,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertSchemaProperties(response, null, SchemaFormat.AVRO);
+                assertSchemaProperties(response, null, SchemaFormat.AVRO, schemaGroup, schemaName);
                 schemaId.set(response.getId());
             }).verifyComplete();
 
@@ -201,7 +201,9 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
-            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getId()))
+            .assertNext(schema -> {
+                assertSchemaProperties(schema, schemaIdToGet, SchemaFormat.AVRO, schemaGroup, schemaName);
+            })
             .verifyComplete();
     }
 
@@ -307,7 +309,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .verify();
     }
 
-
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
         String expectedContents) {
 
@@ -328,13 +329,16 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertEquals(expectedContentsNoWhitespace, actualContents);
     }
 
-    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat) {
+    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat,
+        String schemaGroup, String schemaName) {
         assertNotNull(actual);
 
         if (expectedSchemaId != null) {
             assertEquals(expectedSchemaId, actual.getId());
         }
 
+        assertEquals(schemaGroup, actual.getGroupName());
+        assertEquals(schemaName, actual.getName());
         assertEquals(schemaFormat, actual.getFormat());
     }
 }

@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionAlgorithm;
 import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionTarget;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Load Distribution Policy of an application gateway. */
 @Fluent
 public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ApplicationGatewayLoadDistributionPolicyPropertiesFormat.class);
-
     /*
      * Load Distribution Targets resource of an application gateway.
      */

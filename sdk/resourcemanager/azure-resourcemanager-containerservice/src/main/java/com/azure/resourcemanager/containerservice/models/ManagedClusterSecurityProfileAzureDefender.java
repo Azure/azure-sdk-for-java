@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Defender settings for the security profile. */
 @Fluent
 public final class ManagedClusterSecurityProfileAzureDefender {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterSecurityProfileAzureDefender.class);
-
     /*
      * Whether to enable Azure Defender
      */

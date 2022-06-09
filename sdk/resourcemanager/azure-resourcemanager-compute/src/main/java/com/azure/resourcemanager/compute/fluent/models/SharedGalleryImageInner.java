@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -15,7 +15,6 @@ import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PirSharedGalleryResource;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +22,6 @@ import java.util.List;
 /** Specifies information about the gallery image definition that you want to create or update. */
 @Fluent
 public final class SharedGalleryImageInner extends PirSharedGalleryResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageInner.class);
-
     /*
      * Describes the properties of a gallery image definition.
      */
@@ -263,6 +260,29 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
             this.innerProperties = new SharedGalleryImageProperties();
         }
         this.innerProperties().withPurchasePlan(purchasePlan);
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.innerProperties() == null ? null : this.innerProperties().architecture();
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the SharedGalleryImageInner object itself.
+     */
+    public SharedGalleryImageInner withArchitecture(Architecture architecture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withArchitecture(architecture);
         return this;
     }
 

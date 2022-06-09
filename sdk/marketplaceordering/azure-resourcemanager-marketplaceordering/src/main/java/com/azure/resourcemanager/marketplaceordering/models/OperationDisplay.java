@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.marketplaceordering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Service provider: Microsoft.MarketplaceOrdering
      */
@@ -32,6 +28,12 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "operation")
     private String operation;
+
+    /*
+     * Operation description.
+     */
+    @JsonProperty(value = "description")
+    private String description;
 
     /**
      * Get the provider property: Service provider: Microsoft.MarketplaceOrdering.
@@ -90,6 +92,26 @@ public final class OperationDisplay {
      */
     public OperationDisplay withOperation(String operation) {
         this.operation = operation;
+        return this;
+    }
+
+    /**
+     * Get the description property: Operation description.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Operation description.
+     *
+     * @param description the description value to set.
+     * @return the OperationDisplay object itself.
+     */
+    public OperationDisplay withDescription(String description) {
+        this.description = description;
         return this;
     }
 

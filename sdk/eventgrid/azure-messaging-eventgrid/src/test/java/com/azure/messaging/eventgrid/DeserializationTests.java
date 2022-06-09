@@ -1299,6 +1299,84 @@ public class DeserializationTests {
     }
     //end of web
 
+    // Healthcare FHIR
+    @Test
+    public void consumeFhirResourceCreatedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeFhirResourceUpdatedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeFhirResourceDeletedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceCreatedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceUpdatedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceDeletedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    // End of healthcare FHIR
+
     // TODO: When new event types are introduced, add one test here for each event type
     private String getTestPayloadFromFile(String fileName) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();

@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Windows Azure Search Service linked service properties. */
 @Fluent
 public final class AzureSearchLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSearchLinkedServiceTypeProperties.class);
-
     /*
      * URL for Azure Search service. Type: string (or Expression with
      * resultType string).
@@ -105,7 +102,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model AzureSearchLinkedServiceTypeProperties"));
@@ -114,4 +111,6 @@ public final class AzureSearchLinkedServiceTypeProperties {
             key().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSearchLinkedServiceTypeProperties.class);
 }

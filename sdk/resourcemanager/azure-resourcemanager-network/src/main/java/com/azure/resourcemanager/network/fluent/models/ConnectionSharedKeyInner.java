@@ -7,14 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response for GetConnectionSharedKey API service call. */
 @Fluent
 public final class ConnectionSharedKeyInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionSharedKeyInner.class);
-
     /*
      * The virtual network connection shared key value.
      */
@@ -55,9 +52,11 @@ public final class ConnectionSharedKeyInner extends SubResource {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ConnectionSharedKeyInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionSharedKeyInner.class);
 }

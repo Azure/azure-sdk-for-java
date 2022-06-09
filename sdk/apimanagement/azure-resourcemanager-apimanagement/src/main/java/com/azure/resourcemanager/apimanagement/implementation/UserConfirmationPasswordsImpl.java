@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.UserConfirmationPasswordsClient;
 import com.azure.resourcemanager.apimanagement.models.AppType;
 import com.azure.resourcemanager.apimanagement.models.UserConfirmationPasswords;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UserConfirmationPasswordsImpl implements UserConfirmationPasswords {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserConfirmationPasswordsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UserConfirmationPasswordsImpl.class);
 
     private final UserConfirmationPasswordsClient innerClient;
 

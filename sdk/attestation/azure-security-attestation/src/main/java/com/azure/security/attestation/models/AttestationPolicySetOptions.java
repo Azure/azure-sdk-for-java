@@ -42,7 +42,7 @@ public final class AttestationPolicySetOptions {
     }
 
     /**
-     * Gets the attestation policy which will be used to generate an policy set request.
+     * Gets the attestation policy which will be used to generate a policy set request.
      * @return Attestation Policy Token associated with this request.
      */
     public String getAttestationPolicy() {
@@ -50,7 +50,7 @@ public final class AttestationPolicySetOptions {
     }
 
     /**
-     * Sets the attestation policy which will be used to generate an policy set request.
+     * Sets the attestation policy which will be used to generate a policy set request.
      * @param policy Attestation Token to be set.
      * @return This {@link AttestationPolicySetOptions}.
      */

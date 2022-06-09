@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderPatchResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** ARM resource for a certificate order that is purchased through Azure. */
 @Fluent
 public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateOrderPatchResource.class);
-
     /*
      * AppServiceCertificateOrderPatchResource resource specific properties
      */

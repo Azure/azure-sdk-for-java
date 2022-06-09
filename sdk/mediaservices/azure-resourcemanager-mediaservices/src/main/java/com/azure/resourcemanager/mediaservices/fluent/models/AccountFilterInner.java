@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.FilterTrackSelection;
 import com.azure.resourcemanager.mediaservices.models.FirstQuality;
 import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An Account Filter. */
-@JsonFlatten
 @Fluent
-public class AccountFilterInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountFilterInner.class);
+public final class AccountFilterInner extends ProxyResource {
+    /*
+     * The Media Filter properties.
+     */
+    @JsonProperty(value = "properties")
+    private MediaFilterProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
@@ -28,23 +28,14 @@ public class AccountFilterInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The presentation time range.
+    /**
+     * Get the innerProperties property: The Media Filter properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.presentationTimeRange")
-    private PresentationTimeRange presentationTimeRange;
-
-    /*
-     * The first quality.
-     */
-    @JsonProperty(value = "properties.firstQuality")
-    private FirstQuality firstQuality;
-
-    /*
-     * The tracks selection conditions.
-     */
-    @JsonProperty(value = "properties.tracks")
-    private List<FilterTrackSelection> tracks;
+    private MediaFilterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
@@ -61,7 +52,7 @@ public class AccountFilterInner extends ProxyResource {
      * @return the presentationTimeRange value.
      */
     public PresentationTimeRange presentationTimeRange() {
-        return this.presentationTimeRange;
+        return this.innerProperties() == null ? null : this.innerProperties().presentationTimeRange();
     }
 
     /**
@@ -71,7 +62,10 @@ public class AccountFilterInner extends ProxyResource {
      * @return the AccountFilterInner object itself.
      */
     public AccountFilterInner withPresentationTimeRange(PresentationTimeRange presentationTimeRange) {
-        this.presentationTimeRange = presentationTimeRange;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MediaFilterProperties();
+        }
+        this.innerProperties().withPresentationTimeRange(presentationTimeRange);
         return this;
     }
 
@@ -81,7 +75,7 @@ public class AccountFilterInner extends ProxyResource {
      * @return the firstQuality value.
      */
     public FirstQuality firstQuality() {
-        return this.firstQuality;
+        return this.innerProperties() == null ? null : this.innerProperties().firstQuality();
     }
 
     /**
@@ -91,7 +85,10 @@ public class AccountFilterInner extends ProxyResource {
      * @return the AccountFilterInner object itself.
      */
     public AccountFilterInner withFirstQuality(FirstQuality firstQuality) {
-        this.firstQuality = firstQuality;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MediaFilterProperties();
+        }
+        this.innerProperties().withFirstQuality(firstQuality);
         return this;
     }
 
@@ -101,7 +98,7 @@ public class AccountFilterInner extends ProxyResource {
      * @return the tracks value.
      */
     public List<FilterTrackSelection> tracks() {
-        return this.tracks;
+        return this.innerProperties() == null ? null : this.innerProperties().tracks();
     }
 
     /**
@@ -111,7 +108,10 @@ public class AccountFilterInner extends ProxyResource {
      * @return the AccountFilterInner object itself.
      */
     public AccountFilterInner withTracks(List<FilterTrackSelection> tracks) {
-        this.tracks = tracks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MediaFilterProperties();
+        }
+        this.innerProperties().withTracks(tracks);
         return this;
     }
 
@@ -121,14 +121,8 @@ public class AccountFilterInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (presentationTimeRange() != null) {
-            presentationTimeRange().validate();
-        }
-        if (firstQuality() != null) {
-            firstQuality().validate();
-        }
-        if (tracks() != null) {
-            tracks().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

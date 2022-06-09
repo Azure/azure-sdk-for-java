@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.LocationMetadata;
 import com.azure.resourcemanager.resources.models.LocationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Location information. */
 @Fluent
 public final class LocationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationInner.class);
-
     /*
      * The fully qualified ID of the location. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.

@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolOperationResultsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient. */
 public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolOperationResultsService service;
 
@@ -82,7 +79,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a SQL pool operation.
+     * @return the status of a SQL pool operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> getLocationHeaderResultWithResponseAsync(
@@ -142,7 +139,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a SQL pool operation.
+     * @return the status of a SQL pool operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> getLocationHeaderResultWithResponseAsync(
@@ -198,7 +195,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a SQL pool operation.
+     * @return the status of a SQL pool operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Object> getLocationHeaderResultAsync(
@@ -243,7 +240,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a SQL pool operation.
+     * @return the status of a SQL pool operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> getLocationHeaderResultWithResponse(

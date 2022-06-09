@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeNodeIpAddressOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeNodeIpAddressInner;
 import reactor.core.publisher.Mono;
@@ -32,8 +31,6 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
     implements IntegrationRuntimeNodeIpAddressOperationsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeNodeIpAddressOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeNodeIpAddressOperationsService service;
 
@@ -90,7 +87,8 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of an integration runtime node.
+     * @return the IP address of an integration runtime node along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(
@@ -152,7 +150,8 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of an integration runtime node.
+     * @return the IP address of an integration runtime node along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getWithResponseAsync(
@@ -214,7 +213,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of an integration runtime node.
+     * @return the IP address of an integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeNodeIpAddressInner> getAsync(
@@ -259,7 +258,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP address of an integration runtime node.
+     * @return the IP address of an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(

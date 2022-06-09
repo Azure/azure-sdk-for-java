@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.Script;
 /** Samples for Scripts Update. */
 public final class ScriptsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoScriptsUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoScriptsUpdate.json
      */
     /**
      * Sample code: KustoScriptsUpdate.
@@ -21,7 +21,7 @@ public final class ScriptsUpdateSamples {
         Script resource =
             manager
                 .scripts()
-                .getWithResponse("kustorptest", "kustoclusterrptest4", "KustoDatabase8", "kustoScript1", Context.NONE)
+                .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", Context.NONE)
                 .getValue();
         resource
             .update()

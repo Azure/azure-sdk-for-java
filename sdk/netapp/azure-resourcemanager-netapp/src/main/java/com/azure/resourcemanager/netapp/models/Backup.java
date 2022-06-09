@@ -48,7 +48,7 @@ public interface Backup {
     String backupId();
 
     /**
-     * Gets the creationDate property: name The creation date of the backup.
+     * Gets the creationDate property: creationDate The creation date of the backup.
      *
      * @return the creationDate value.
      */

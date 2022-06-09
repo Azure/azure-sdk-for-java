@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,6 +17,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public final class ManagedCertificateParameters extends SecretParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedCertificateParameters.class);
+
+    /*
+     * Subject name in the certificate.
+     */
+    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
+    private String subject;
+
+    /*
+     * Certificate expiration date.
+     */
+    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String expirationDate;
+
+    /**
+     * Get the subject property: Subject name in the certificate.
+     *
+     * @return the subject value.
+     */
+    public String subject() {
+        return this.subject;
+    }
+
+    /**
+     * Get the expirationDate property: Certificate expiration date.
+     *
+     * @return the expirationDate value.
+     */
+    public String expirationDate() {
+        return this.expirationDate;
+    }
 
     /**
      * Validates the instance.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Identity for the virtual machine scale set. */
 @Fluent
 public class VirtualMachineScaleSetIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIdentity.class);
-
     /*
      * The principal id of virtual machine scale set identity. This property
      * will only be provided for a system assigned identity.
@@ -47,7 +43,7 @@ public class VirtualMachineScaleSetIdentity {
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
+    private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal id of virtual machine scale set identity. This property will only be
@@ -100,7 +96,7 @@ public class VirtualMachineScaleSetIdentity {
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -113,7 +109,7 @@ public class VirtualMachineScaleSetIdentity {
      * @return the VirtualMachineScaleSetIdentity object itself.
      */
     public VirtualMachineScaleSetIdentity withUserAssignedIdentities(
-        Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities) {
+        Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

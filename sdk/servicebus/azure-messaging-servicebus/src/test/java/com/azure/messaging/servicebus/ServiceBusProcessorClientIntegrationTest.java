@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 
 public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBase {
-    private final ClientLogger logger = new ClientLogger(ServiceBusProcessorClientIntegrationTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final Scheduler scheduler = Schedulers.parallel();
 
@@ -50,7 +50,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         try {
             dispose(processor, sender);
         } catch (Exception e) {
-            logger.warning("Error occurred when draining queue.", e);
+            LOGGER.warning("Error occurred when draining queue.", e);
         }
     }
 
@@ -107,7 +107,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         processor.start();
 
         if (countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS)) {
-            logger.info("Message lock has been renewed. Now closing processor");
+            LOGGER.info("Message lock has been renewed. Now closing processor");
         } else {
             Assertions.fail("Message not arrived, closing processor.");
         }
@@ -119,14 +119,14 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         String expectedMessageId, AtomicReference<OffsetTime> lastMessageReceivedTime, int lockTimeoutDurationSeconds) {
         ServiceBusReceivedMessage message = context.getMessage();
         if (message.getMessageId().equals(expectedMessageId)) {
-            logger.info("Processing message. Session: {}, Sequence #: {}. Contents: {}", message.getMessageId(),
+            LOGGER.info("Processing message. Session: {}, Sequence #: {}. Contents: {}", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
             if (lastMessageReceivedTime.get() ==  null) {
                 lastMessageReceivedTime.set(OffsetTime.now());
                 countDownLatch.countDown();
             } else {
                 long messageReceivedAfterSeconds = Duration.between(lastMessageReceivedTime.get(), OffsetTime.now()).getSeconds();
-                logger.info("Processing message again. Session: {}, Sequence #: {}. Contents: {}, message received after {} seconds.", message.getMessageId(),
+                LOGGER.info("Processing message again. Session: {}, Sequence #: {}. Contents: {}, message received after {} seconds.", message.getMessageId(),
                     message.getSequenceNumber(), message.getBody(), messageReceivedAfterSeconds);
                 // Ensure that the lock is renewed and message is received again after atlest one lock renew
                 if (messageReceivedAfterSeconds >= 2 * lockTimeoutDurationSeconds) {
@@ -134,13 +134,13 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 }
             }
         } else {
-            logger.info("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+            LOGGER.info("Received message, message id did not match. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
                 message.getSequenceNumber(), message.getBody());
         }
     }
 
     private void processError(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
-        logger.info("Error when receiving messages from namespace: {}. Entity: {}}",
+        LOGGER.info("Error when receiving messages from namespace: {}. Entity: {}}",
             context.getFullyQualifiedNamespace(), context.getEntityPath());
     }
 
@@ -162,7 +162,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
                 return builder.processor().topicName(topicName).subscriptionName(subscriptionName);
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
@@ -188,7 +188,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
                 return builder.sessionProcessor()
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
@@ -211,7 +211,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     private Mono<Void> sendMessage(ServiceBusMessage message) {
         return sender.sendMessage(message).doOnSuccess(aVoid -> {
             int number = messagesPending.incrementAndGet();
-            logger.info("Message Id {}. Number sent: {}", message.getMessageId(), number);
+            LOGGER.info("Message Id {}. Number sent: {}", message.getMessageId(), number);
         });
     }
 }

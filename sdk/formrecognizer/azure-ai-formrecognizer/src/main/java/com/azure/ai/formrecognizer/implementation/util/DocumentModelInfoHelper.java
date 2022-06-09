@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * The helper class to set the non-public properties of an {@link DocumentModelInfo} instance.
@@ -23,6 +24,7 @@ public final class DocumentModelInfoHelper {
         void setModelId(DocumentModelInfo documentModelInfo, String modelId);
         void setDescription(DocumentModelInfo documentModelInfo, String description);
         void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdDateTime);
+        void setTags(DocumentModelInfo documentModelInfo, Map<String, String> tags);
     }
 
     /**
@@ -44,5 +46,9 @@ public final class DocumentModelInfoHelper {
 
     static void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdDateTime) {
         accessor.setCreatedOn(documentModelInfo, createdDateTime);
+    }
+
+    static void setTags(DocumentModelInfo documentModelInfo, Map<String, String> tags) {
+        accessor.setTags(documentModelInfo, tags);
     }
 }

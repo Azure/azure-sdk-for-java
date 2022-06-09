@@ -32,7 +32,7 @@ public interface LiveTokensClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a live token query.
+     * @return the response to a live token query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LiveTokenResponseInner> getWithResponse(String resourceUri, Context context);

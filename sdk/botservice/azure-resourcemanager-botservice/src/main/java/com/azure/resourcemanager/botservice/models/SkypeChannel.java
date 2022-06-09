@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SkypeChannel")
 @Fluent
 public final class SkypeChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkypeChannel.class);
-
     /*
      * The set of properties specific to Skype channel resource
      */
@@ -41,6 +37,20 @@ public final class SkypeChannel extends Channel {
      */
     public SkypeChannel withProperties(SkypeChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SkypeChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SkypeChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

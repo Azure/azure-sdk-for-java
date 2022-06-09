@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters ListFollowerDatabases. */
 public final class ClustersListFollowerDatabasesSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterListFollowerDatabases.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterListFollowerDatabases.json
      */
     /**
      * Sample code: KustoClusterListFollowerDatabases.
@@ -17,6 +17,6 @@ public final class ClustersListFollowerDatabasesSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterListFollowerDatabases(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().listFollowerDatabases("kustorptest", "kustoclusterrptest4", Context.NONE);
+        manager.clusters().listFollowerDatabases("kustorptest", "kustoCluster", Context.NONE);
     }
 }

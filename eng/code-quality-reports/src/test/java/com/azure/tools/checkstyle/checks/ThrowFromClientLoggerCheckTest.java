@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 import static com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck.THROW_LOGGER_EXCEPTION_MESSAGE;
 
 public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
@@ -32,7 +33,8 @@ public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
     @Test
     public void directThrowExceptionTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(12, 9)
+            expectedErrorMessage(12, 9),
+            expectedErrorMessage(60, 9)
         };
         verify(checker, getPath("DirectThrowExceptionTestData.java"), expected);
     }

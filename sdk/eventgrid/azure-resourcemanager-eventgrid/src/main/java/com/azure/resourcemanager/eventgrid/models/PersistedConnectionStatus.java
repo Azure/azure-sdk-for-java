@@ -33,7 +33,11 @@ public final class PersistedConnectionStatus extends ExpandableStringEnum<Persis
         return fromString(name, PersistedConnectionStatus.class);
     }
 
-    /** @return known PersistedConnectionStatus values. */
+    /**
+     * Gets known PersistedConnectionStatus values.
+     *
+     * @return known PersistedConnectionStatus values.
+     */
     public static Collection<PersistedConnectionStatus> values() {
         return values(PersistedConnectionStatus.class);
     }

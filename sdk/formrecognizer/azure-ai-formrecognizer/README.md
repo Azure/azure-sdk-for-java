@@ -1,11 +1,12 @@
 # Azure Form Recognizer client library for Java
-Azure Cognitive Services Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
 It includes the following main features:
 
 * Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
 * Document - Analyze entities, key-value pairs, tables, and selection marks from documents using the general prebuilt document model.
-* Prebuilt - Analyze data from certain types of common documents (such as receipts, invoices, business cards, or identity documents) using prebuilt models.
+* Prebuilt - Analyze data from certain types of common documents (such as receipts, invoices, business cards, identity documents or US W2 tax forms) using prebuilt models.
 * Custom - Build custom models to extract text, field values, selection marks, and table data from documents. Custom models are built with your own data, so they're tailored to your documents.
+* Read - Read information about textual elements, such as page words and lines in addition to text language information.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -36,7 +37,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-Then, include the direct dependency in the dependencies section without the version tag.
+Then, include the direct dependency in the dependencies' section without the version tag.
 
 ```xml
 <dependencies>
@@ -56,11 +57,11 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.6</version>
+    <version>3.1.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-> Note: This version of the client library defaults to the `"2021-09-30-preview"` version of the service.
+> Note: This version of the client library defaults to the `"2022-01-30-preview"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
@@ -68,16 +69,16 @@ This table shows the relationship between SDK versions and supported API version
 |-|-
 |3.0.x | 2.0
 |3.1.X - 3.1.3| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest beta release| 2021-09-30-preview (default)
+|4.0.0-beta.1 - Latest beta release| 2022-01-30-preview (default)
 
-> Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features
+> Note: Starting with version 2022-01-30-preview, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
 > code from client library version 3.1.X or lower to the latest version. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
 |API version|Supported clients
 |-|-
-|2021-09-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-06-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -161,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.7</version>
+    <version>1.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -189,21 +190,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
 provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
-Use the `modelId` parameter to select the type of model for analysis.
-
-| Model                   | Features                                                                                                 |
-|-------------------------|----------------------------------------------------------------------------------------------------------|
-| "prebuilt-layout"       | Text extraction, selection marks, tables                                                                 |
-| "prebuilt-document"     | Text extraction, selection marks, tables, key-value pairs, and entities                                  |
-| "prebuilt-invoice"      | Text extraction, selection marks, tables, and prebuilt fields and values related to English invoices     |
-| "prebuilt-businessCard" | Text extraction and prebuilt fields, and values related to English business cards                        |
-| "prebuilt-idDocument"   | Text extraction and prebuilt fields and values related to US driver licenses and international passports |
-| "prebuilt-receipt"      | Text extraction and prebuilt fields and values related to English sales receipts                         |
-| "{custom-model-id}"     | Text extraction, selection marks, tables, labeled fields, and values from your custom documents          |
+See a full list of supported models [here][fr_models].
 
 Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
 More information about analyzing documents, including supported features, locales, and document types can be found
-[here][fr-models].
+[here][fr_models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -260,15 +251,15 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-        System.out.printf("Selection mark is %s and is within a bounding box %s with confidence %.2f.%n",
+        System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
-            documentSelectionMark.getBoundingBox().toString(),
+            documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
 
@@ -293,6 +284,7 @@ Supported prebuilt models are:
 - Analyze business cards using the `prebuilt-businessCard` model (fields recognized by the service can be found [here][service_analyze_business_cards_fields]).
 - Analyze invoices using the `prebuilt-invoice` model (fields recognized by the service can be found [here][service_analyze_invoices_fields]).
 - Analyze identity documents using the `prebuilt-idDocuments` model (fields recognized by the service can be found [here][service_analyze_identity_documents_fields]).
+- Analyze US W2 tax forms using the `prebuilt-tax.us.w2` model. [Supported fields][service_analyze_w2_documents_fields].
 
 For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocument` method:
 ```java readme-sample-analyzeReceiptFromUrl
@@ -386,9 +378,8 @@ String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-        "my-build-model",
-        new BuildModelOptions().setDescription("model desc"),
-        Context.NONE);
+        DocumentBuildMode.TEMPLATE,
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
 DocumentModel documentModel = buildOperationPoller.getFinalResult();
 
@@ -426,7 +417,7 @@ for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     analyzedDocument.getFields().forEach((key, documentField) -> {
         System.out.printf("Document Field content: %s%n", documentField.getContent());
         System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+        System.out.printf("Document Field Type: %s%n", documentField.getType());
         System.out.printf("Document Field found within bounding region: %s%n",
             documentField.getBoundingRegions().toString());
     });
@@ -440,13 +431,13 @@ analyzeResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
-        System.out.printf("Word %s has a confidence score of %.2f%n.",
+        System.out.printf("Word '%s' has a confidence score of %.2f.%n",
             documentWord.getContent(),
             documentWord.getConfidence()));
 });
@@ -605,10 +596,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [fr-studio]: https://aka.ms/azsdk/formrecognizer/formrecognizerstudio
-[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
+[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
+[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
 
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
@@ -646,6 +638,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_analyze_invoices_fields]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema
 [service_analyze_identity_documents_fields]: https://aka.ms/azsdk/formrecognizer/iddocumentfieldschema
 [service_analyze_receipt_fields]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
+[service_analyze_w2_documents_fields]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src
 [quickstart_training]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract#train-a-form-recognizer-model
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

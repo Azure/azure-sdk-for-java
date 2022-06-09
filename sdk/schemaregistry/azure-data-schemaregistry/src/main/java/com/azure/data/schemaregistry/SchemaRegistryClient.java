@@ -71,8 +71,13 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
-     * exists in this schema group, a new version with the updated schema string will be registered.
+     * Registers a new schema in the specified schema group with the given schema name. If a schema
+     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
+     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
+     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
+     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
+     * is assigned to it.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -92,8 +97,13 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
-     * exists in this schema group, a new version with the updated schema string will be registered.
+     * Registers a new schema in the specified schema group with the given schema name. If a schema
+     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
+     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
+     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
+     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
+     * is assigned to it.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -148,7 +158,8 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Gets the schema properties associated with the given schema id.
+     * Gets schema properties for a schema with matching {@code groupName}, {@code name}, {@code schemaDefinition}, and
+     * {@code format}.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -169,7 +180,8 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Gets the schema identifier associated with the given schema.
+     * Gets schema properties for a schema with matching {@code groupName}, {@code name}, {@code schemaDefinition}, and
+     * {@code format} along with its HTTP response.
      *
      * @param groupName The schema group.
      * @param name The schema name.

@@ -11,7 +11,7 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 /**
  * Sample to demonstrate using {@link LoggingSpanExporter} to export telemetry events when creating a configuration
@@ -41,7 +41,7 @@ public class CreateConfigurationSettingLoggingExporterSample {
         // the logging exporter.
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
-                .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
+                .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
                 .build();
 
         return OpenTelemetrySdk.builder()

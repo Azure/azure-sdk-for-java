@@ -15,10 +15,10 @@ public final class UrlRewriteActionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlRewriteActionParameters.class);
 
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleUrlRewriteActionParameters";
 
     /*
      * define a request URI pattern that identifies the type of requests that
@@ -42,26 +42,26 @@ public final class UrlRewriteActionParameters {
 
     /** Creates an instance of UrlRewriteActionParameters class. */
     public UrlRewriteActionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters";
+        typeName = "DeliveryRuleUrlRewriteActionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the UrlRewriteActionParameters object itself.
      */
-    public UrlRewriteActionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public UrlRewriteActionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 

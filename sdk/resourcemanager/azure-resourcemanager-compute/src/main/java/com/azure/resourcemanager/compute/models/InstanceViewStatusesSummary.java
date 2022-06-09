@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Instance view statuses. */
 @Immutable
 public final class InstanceViewStatusesSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceViewStatusesSummary.class);
-
     /*
      * The statusesSummary property.
      */

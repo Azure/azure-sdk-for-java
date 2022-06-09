@@ -1,18 +1,18 @@
 ***DISCLAIMER: The samples in this readme are for azure-authentication-msi-token-provider. This SDK has been deprecated.
-Please use [azure-identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/readme.md) for authentication support. If you have existing code that uses the library, please use the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/authorization/microsoft-azure-authentication-msi-token-provider/migration-guide.md) to migrate to `azure-identity`.***
+Please use [azure-identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md) for authentication support. If you have existing code that uses the library, please use the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/authorization/microsoft-azure-authentication-msi-token-provider/migration-guide.md) to migrate to `azure-identity`.***
 
 # What is this?
 
 The "msi-auth-token-provider" jar is a library that enables :
 * Azure VMs and container instances and
-* Web Apps (funcitons included)
-Retrieve authentication tokens for syatem/user assigned [managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview).
+* Web Apps (functions included)
+Retrieve authentication tokens for system/user assigned [managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview).
 
-This is a light weight library that does not have many dependencies. 
+This is a lightweight library that does not have many dependencies. 
 
 # Usage
 ## Dependency
-Take a dependency on the jar in you pom file like follows
+Take a dependency on the library in your pom file like the following
 ```xml
   <dependencies>
       <dependency>
@@ -25,7 +25,7 @@ Take a dependency on the jar in you pom file like follows
 
 ## Getting the token
 
-Add the folowing import statement to get in all the classes in the jar
+Add the following import statement to get in all the classes in the jar
 
 ```java
 import com.microsoft.azure.msiAuthTokenProvider.*;
@@ -45,7 +45,7 @@ Use the following code to get the auth token for System assigned identity :
 ### Getting a token for user assigned identity
 
 #### Using the client Id for the user assigned identity :
-Use the following code to get the auth token for an User assigned identity :
+Use the following code to get the auth token for a User assigned identity :
 ```java
 ...
     MSICredentials credsProvider = MSICredentials.getMSICredentials();

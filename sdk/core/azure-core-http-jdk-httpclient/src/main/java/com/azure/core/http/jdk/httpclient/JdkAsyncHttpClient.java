@@ -33,7 +33,7 @@ import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
  * HttpClient implementation for the JDK HttpClient.
  */
 class JdkAsyncHttpClient implements HttpClient {
-    private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JdkAsyncHttpClient.class);
 
     private final java.net.http.HttpClient jdkHttpClient;
 
@@ -43,12 +43,12 @@ class JdkAsyncHttpClient implements HttpClient {
         this.jdkHttpClient = httpClient;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
         }
 
         this.restrictedHeaders = restrictedHeaders;
-        logger.verbose("Effective restricted headers: {}", restrictedHeaders);
+        LOGGER.verbose("Effective restricted headers: {}", restrictedHeaders);
     }
 
     @Override
@@ -89,7 +89,7 @@ class JdkAsyncHttpClient implements HttpClient {
             try {
                 builder.uri(request.getUrl().toURI());
             } catch (URISyntaxException e) {
-                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
             final HttpHeaders headers = request.getHeaders();
             if (headers != null) {
@@ -98,7 +98,7 @@ class JdkAsyncHttpClient implements HttpClient {
                     if (!restrictedHeaders.contains(headerName)) {
                         header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
                     } else {
-                        logger.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
+                        LOGGER.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
                             + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
                             + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
                             + ".allowRestrictedHeaders' and a comma separated list of header names.");
@@ -152,16 +152,16 @@ class JdkAsyncHttpClient implements HttpClient {
         // 9 and above: 12, 14.1.1
         String version = System.getProperty("java.version");
         if (CoreUtils.isNullOrEmpty(version)) {
-            throw logger.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
         }
         if (version.startsWith("1.")) {
             if (version.length() < 3) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
             }
             try {
                 return Integer.parseInt(version.substring(2, 3));
-            } catch (Throwable t) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
+            } catch (Exception t) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
             }
         } else {
             int idx = version.indexOf(".");
@@ -171,8 +171,8 @@ class JdkAsyncHttpClient implements HttpClient {
             }
             try {
                 return Integer.parseInt(version.substring(0, idx));
-            } catch (Throwable t) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
+            } catch (Exception t) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
             }
         }
     }

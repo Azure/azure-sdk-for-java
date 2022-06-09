@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of the App Service plan scale options. */
 @Fluent
 public final class SkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapacity.class);
-
     /*
      * Minimum number of workers for this App Service plan SKU.
      */

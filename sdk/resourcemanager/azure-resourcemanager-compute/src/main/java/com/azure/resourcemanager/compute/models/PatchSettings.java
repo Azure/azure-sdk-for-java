@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies settings related to VM Guest Patching on Windows. */
 @Fluent
 public final class PatchSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchSettings.class);
-
     /*
      * Specifies the mode of VM Guest Patching to IaaS virtual machine or
      * virtual machines associated to virtual machine scale set with
@@ -48,6 +44,13 @@ public final class PatchSettings {
      */
     @JsonProperty(value = "assessmentMode")
     private WindowsPatchAssessmentMode assessmentMode;
+
+    /*
+     * Specifies additional settings for patch mode AutomaticByPlatform in VM
+     * Guest Patching on Windows.
+     */
+    @JsonProperty(value = "automaticByPlatformSettings")
+    private WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
     /**
      * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
@@ -134,10 +137,36 @@ public final class PatchSettings {
     }
 
     /**
+     * Get the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
+     * VM Guest Patching on Windows.
+     *
+     * @return the automaticByPlatformSettings value.
+     */
+    public WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings() {
+        return this.automaticByPlatformSettings;
+    }
+
+    /**
+     * Set the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
+     * VM Guest Patching on Windows.
+     *
+     * @param automaticByPlatformSettings the automaticByPlatformSettings value to set.
+     * @return the PatchSettings object itself.
+     */
+    public PatchSettings withAutomaticByPlatformSettings(
+        WindowsVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings) {
+        this.automaticByPlatformSettings = automaticByPlatformSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (automaticByPlatformSettings() != null) {
+            automaticByPlatformSettings().validate();
+        }
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Registries Update. */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/RegistryUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryUpdate.json
      */
     /**
      * Sample code: RegistryUpdate.

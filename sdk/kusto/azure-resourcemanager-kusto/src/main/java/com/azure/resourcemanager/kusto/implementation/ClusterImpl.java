@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
+import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import com.azure.resourcemanager.kusto.models.AzureSku;
 import com.azure.resourcemanager.kusto.models.Cluster;
@@ -23,7 +24,9 @@ import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
+import com.azure.resourcemanager.kusto.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.PublicIpType;
 import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
@@ -31,6 +34,7 @@ import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
     private ClusterInner innerObject;
@@ -186,6 +190,28 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         List<String> inner = this.innerModel().allowedFqdnList();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicIpType publicIpType() {
+        return this.innerModel().publicIpType();
+    }
+
+    public String virtualClusterGraduationProperties() {
+        return this.innerModel().virtualClusterGraduationProperties();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -566,6 +592,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateParameters.withAllowedFqdnList(allowedFqdnList);
             return this;
         }
+    }
+
+    public ClusterImpl withPublicIpType(PublicIpType publicIpType) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicIpType(publicIpType);
+            return this;
+        } else {
+            this.updateParameters.withPublicIpType(publicIpType);
+            return this;
+        }
+    }
+
+    public ClusterImpl withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties) {
+        this.innerModel().withVirtualClusterGraduationProperties(virtualClusterGraduationProperties);
+        return this;
     }
 
     public ClusterImpl withIfMatch(String ifMatch) {

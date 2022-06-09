@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.models.CheckResourceNameResultInner;
 import com.azure.resourcemanager.resources.models.ResourceName;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceNamesClient. */
 public final class ResourceNamesClientImpl implements ResourceNamesClient {
-    private final ClientLogger logger = new ClientLogger(ResourceNamesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceNamesService service;
 
@@ -76,7 +73,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckResourceNameResultInner>> checkResourceNameWithResponseAsync(
@@ -114,7 +111,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckResourceNameResultInner>> checkResourceNameWithResponseAsync(
@@ -144,19 +141,12 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition) {
         return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -166,20 +156,13 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckResourceNameResultInner> checkResourceNameAsync() {
         final ResourceName resourceNameDefinition = null;
         return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -207,7 +190,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckResourceNameResultInner> checkResourceNameWithResponse(

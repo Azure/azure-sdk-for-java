@@ -11,13 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.ChannelsClient;
 import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
+import com.azure.resourcemanager.botservice.fluent.models.ListChannelWithKeysResponseInner;
 import com.azure.resourcemanager.botservice.models.BotChannel;
 import com.azure.resourcemanager.botservice.models.ChannelName;
 import com.azure.resourcemanager.botservice.models.Channels;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.botservice.models.ListChannelWithKeysResponse;
 
 public final class ChannelsImpl implements Channels {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChannelsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChannelsImpl.class);
 
     private final ChannelsClient innerClient;
 
@@ -27,6 +28,64 @@ public final class ChannelsImpl implements Channels {
         ChannelsClient innerClient, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public BotChannel create(
+        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters) {
+        BotChannelInner inner = this.serviceClient().create(resourceGroupName, resourceName, channelName, parameters);
+        if (inner != null) {
+            return new BotChannelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<BotChannel> createWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        ChannelName channelName,
+        BotChannelInner parameters,
+        Context context) {
+        Response<BotChannelInner> inner =
+            this.serviceClient().createWithResponse(resourceGroupName, resourceName, channelName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new BotChannelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BotChannel update(
+        String resourceGroupName, String resourceName, ChannelName channelName, BotChannelInner parameters) {
+        BotChannelInner inner = this.serviceClient().update(resourceGroupName, resourceName, channelName, parameters);
+        if (inner != null) {
+            return new BotChannelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<BotChannel> updateWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        ChannelName channelName,
+        BotChannelInner parameters,
+        Context context) {
+        Response<BotChannelInner> inner =
+            this.serviceClient().updateWithResponse(resourceGroupName, resourceName, channelName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new BotChannelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String resourceName, String channelName) {
@@ -62,25 +121,27 @@ public final class ChannelsImpl implements Channels {
         }
     }
 
-    public BotChannel listWithKeys(String resourceGroupName, String resourceName, ChannelName channelName) {
-        BotChannelInner inner = this.serviceClient().listWithKeys(resourceGroupName, resourceName, channelName);
+    public ListChannelWithKeysResponse listWithKeys(
+        String resourceGroupName, String resourceName, ChannelName channelName) {
+        ListChannelWithKeysResponseInner inner =
+            this.serviceClient().listWithKeys(resourceGroupName, resourceName, channelName);
         if (inner != null) {
-            return new BotChannelImpl(inner, this.manager());
+            return new ListChannelWithKeysResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<BotChannel> listWithKeysWithResponse(
+    public Response<ListChannelWithKeysResponse> listWithKeysWithResponse(
         String resourceGroupName, String resourceName, ChannelName channelName, Context context) {
-        Response<BotChannelInner> inner =
+        Response<ListChannelWithKeysResponseInner> inner =
             this.serviceClient().listWithKeysWithResponse(resourceGroupName, resourceName, channelName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new BotChannelImpl(inner.getValue(), this.manager()));
+                new ListChannelWithKeysResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -99,119 +160,11 @@ public final class ChannelsImpl implements Channels {
         return Utils.mapPage(inner, inner1 -> new BotChannelImpl(inner1, this.manager()));
     }
 
-    public BotChannel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
-        if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
-        }
-        String channelName = Utils.getValueFromIdByName(id, "channels");
-        if (channelName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'channels'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, channelName, Context.NONE).getValue();
-    }
-
-    public Response<BotChannel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
-        if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
-        }
-        String channelName = Utils.getValueFromIdByName(id, "channels");
-        if (channelName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'channels'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, channelName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
-        if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
-        }
-        String channelName = Utils.getValueFromIdByName(id, "channels");
-        if (channelName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'channels'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, resourceName, channelName, Context.NONE).getValue();
-    }
-
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = Utils.getValueFromIdByName(id, "botServices");
-        if (resourceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
-        }
-        String channelName = Utils.getValueFromIdByName(id, "channels");
-        if (channelName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'channels'.", id)));
-        }
-        return this.deleteWithResponse(resourceGroupName, resourceName, channelName, context);
-    }
-
     private ChannelsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.botservice.BotServiceManager manager() {
         return this.serviceManager;
-    }
-
-    public BotChannelImpl define(ChannelName name) {
-        return new BotChannelImpl(name, this.manager());
     }
 }

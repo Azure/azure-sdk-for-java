@@ -27,7 +27,11 @@ public final class SupportedRuntimePlatform extends ExpandableStringEnum<Support
         return fromString(name, SupportedRuntimePlatform.class);
     }
 
-    /** @return known SupportedRuntimePlatform values. */
+    /**
+     * Gets known SupportedRuntimePlatform values.
+     *
+     * @return known SupportedRuntimePlatform values.
+     */
     public static Collection<SupportedRuntimePlatform> values() {
         return values(SupportedRuntimePlatform.class);
     }

@@ -40,6 +40,12 @@ public final class AcsRecordingChunkInfoProperties {
     @JsonProperty(value = "contentLocation")
     private String contentLocation;
 
+    /*
+     * The location to delete all chunk storage
+     */
+    @JsonProperty(value = "deleteLocation")
+    private String deleteLocation;
+
     /**
      * Get the documentId property: The documentId of the recording chunk.
      *
@@ -137,6 +143,26 @@ public final class AcsRecordingChunkInfoProperties {
      */
     public AcsRecordingChunkInfoProperties setContentLocation(String contentLocation) {
         this.contentLocation = contentLocation;
+        return this;
+    }
+
+    /**
+     * Get the deleteLocation property: The location to delete all chunk storage.
+     *
+     * @return the deleteLocation value.
+     */
+    public String getDeleteLocation() {
+        return this.deleteLocation;
+    }
+
+    /**
+     * Set the deleteLocation property: The location to delete all chunk storage.
+     *
+     * @param deleteLocation the deleteLocation value to set.
+     * @return the AcsRecordingChunkInfoProperties object itself.
+     */
+    public AcsRecordingChunkInfoProperties setDeleteLocation(String deleteLocation) {
+        this.deleteLocation = deleteLocation;
         return this;
     }
 }

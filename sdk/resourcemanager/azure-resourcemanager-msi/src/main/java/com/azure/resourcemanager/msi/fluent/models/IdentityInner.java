@@ -4,39 +4,48 @@
 
 package com.azure.resourcemanager.msi.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 import java.util.UUID;
 
 /** Describes an identity resource. */
-@JsonFlatten
-@Immutable
-public class IdentityInner extends Resource {
+@Fluent
+public final class IdentityInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityInner.class);
 
     /*
-     * The id of the tenant which the identity belongs to.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID tenantId;
-
-    /*
-     * The id of the service principal object associated with the created
+     * User Assigned Identity properties. The properties associated with the
      * identity.
      */
-    @JsonProperty(value = "properties.principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID principalId;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private UserAssignedIdentityProperties innerProperties;
 
-    /*
-     * The id of the app associated with the identity. This is a random
-     * generated UUID by MSI.
+    /**
+     * Get the innerProperties property: User Assigned Identity properties. The properties associated with the identity.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.clientId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID clientId;
+    private UserAssignedIdentityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IdentityInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IdentityInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.
@@ -44,7 +53,7 @@ public class IdentityInner extends Resource {
      * @return the tenantId value.
      */
     public UUID tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -53,7 +62,7 @@ public class IdentityInner extends Resource {
      * @return the principalId value.
      */
     public UUID principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -63,7 +72,7 @@ public class IdentityInner extends Resource {
      * @return the clientId value.
      */
     public UUID clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -72,5 +81,8 @@ public class IdentityInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

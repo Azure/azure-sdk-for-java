@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Package store for the SSIS integration runtime. */
 @Fluent
 public final class PackageStore {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PackageStore.class);
-
     /*
      * The name of the package store
      */
@@ -73,12 +70,12 @@ public final class PackageStore {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model PackageStore"));
         }
         if (packageStoreLinkedService() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property packageStoreLinkedService in model PackageStore"));
@@ -86,4 +83,6 @@ public final class PackageStore {
             packageStoreLinkedService().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PackageStore.class);
 }

@@ -24,11 +24,12 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class AuthorizationCodeCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredential.class);
+
     private final String authCode;
     private final URI redirectUri;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
-    private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredential.class);
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
@@ -70,7 +71,8 @@ public class AuthorizationCodeCredential implements TokenCredential {
                                         identityClient.getTenantId(), identityClient.getClientId())));
                    return (AccessToken) msalToken;
                })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 }

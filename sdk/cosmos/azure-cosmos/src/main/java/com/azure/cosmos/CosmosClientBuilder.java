@@ -3,20 +3,22 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.util.Beta;
-
-import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 /**
  * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
@@ -88,7 +92,10 @@ import java.util.Objects;
  * </pre>
  */
 @ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
-public class CosmosClientBuilder {
+public class CosmosClientBuilder implements
+    TokenCredentialTrait<CosmosClientBuilder>,
+    AzureKeyCredentialTrait<CosmosClientBuilder>,
+    EndpointTrait<CosmosClientBuilder> {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -110,7 +117,7 @@ public class CosmosClientBuilder {
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
-    private boolean clientTelemetryEnabled = false;
+    private final ClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
 
     /**
@@ -122,6 +129,7 @@ public class CosmosClientBuilder {
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.clientTelemetryConfig = ClientTelemetryConfig.getDefaultConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -265,6 +273,7 @@ public class CosmosClientBuilder {
      * @param endpoint the service endpoint
      * @return current Builder
      */
+    @Override
     public CosmosClientBuilder endpoint(String endpoint) {
         this.serviceEndpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
@@ -333,12 +342,15 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param credential {@link TokenCredential}.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return the updated CosmosClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public CosmosClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.keyOrResourceToken = null;
@@ -422,6 +434,7 @@ public class CosmosClientBuilder {
      * @param credential {@link AzureKeyCredential}
      * @return current cosmosClientBuilder
      */
+    @Override
     public CosmosClientBuilder credential(AzureKeyCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'cosmosKeyCredential' cannot be null.");
         this.keyOrResourceToken = null;
@@ -629,7 +642,7 @@ public class CosmosClientBuilder {
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        this.clientTelemetryConfig.setClientTelemetryEnabled(clientTelemetryEnabled);
         return this;
     }
 
@@ -731,7 +744,7 @@ public class CosmosClientBuilder {
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return clientTelemetryEnabled;
+        return this.clientTelemetryConfig.isClientTelemetryEnabled();
     }
 
     /**
@@ -748,6 +761,10 @@ public class CosmosClientBuilder {
      */
     boolean isReadRequestsFallbackEnabled() {
         return readRequestsFallbackEnabled;
+    }
+
+    ClientTelemetryConfig getClientTelemetryConfig() {
+        return this.clientTelemetryConfig;
     }
 
     /**
@@ -777,14 +794,12 @@ public class CosmosClientBuilder {
     //  Connection policy has to be built before it can be used by this builder
     private void buildConnectionPolicy() {
         if (this.directConnectionConfig != null) {
-            this.connectionPolicy = new ConnectionPolicy(directConnectionConfig);
             //  Check if the user passed additional gateway connection configuration
-            if (this.gatewayConnectionConfig != null) {
-                this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
-                this.connectionPolicy.setHttpNetworkRequestTimeout(this.gatewayConnectionConfig.getNetworkRequestTimeout());
-                this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
-                this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
+            //  If this is null, initialize with default values
+            if (this.gatewayConnectionConfig == null) {
+                this.gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
             }
+            this.connectionPolicy = new ConnectionPolicy(directConnectionConfig, gatewayConnectionConfig);
         } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
@@ -794,7 +809,6 @@ public class CosmosClientBuilder {
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
-        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {
@@ -851,8 +865,7 @@ public class CosmosClientBuilder {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
             new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {
 
@@ -876,6 +889,23 @@ public class CosmosClientBuilder {
                 public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
                     return builder.apiType();
                 }
+
+                @Override
+                public ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder) {
+                    return builder.getConnectionPolicy();
+                }
+
+                @Override
+                public Configs getConfigs(CosmosClientBuilder builder) {
+                    return builder.configs();
+                }
+
+                @Override
+                public ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder) {
+                    return builder.getConsistencyLevel();
+                }
             });
     }
+
+    static { initialize(); }
 }

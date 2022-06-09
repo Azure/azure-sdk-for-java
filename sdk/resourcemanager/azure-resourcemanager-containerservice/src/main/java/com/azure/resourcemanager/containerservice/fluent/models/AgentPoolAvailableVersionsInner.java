@@ -7,15 +7,12 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available versions for an agent pool. */
 @Fluent
 public final class AgentPoolAvailableVersionsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolAvailableVersionsInner.class);
-
     /*
      * The ID of the agent pool version list.
      */
@@ -107,7 +104,7 @@ public final class AgentPoolAvailableVersionsInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model AgentPoolAvailableVersionsInner"));
@@ -115,4 +112,6 @@ public final class AgentPoolAvailableVersionsInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolAvailableVersionsInner.class);
 }

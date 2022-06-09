@@ -4,16 +4,14 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.models.MessageContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 /**
  * Code samples for the README.md
@@ -28,27 +26,29 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createSchemaRegistryAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
+        // {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
+        // of the form "{your-namespace}.servicebus.windows.net"
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{your-event-hubs-namespace}.servicebus.windows.net")
             .credential(tokenCredential)
             .buildAsyncClient();
         // END: readme-sample-createSchemaRegistryAsyncClient
 
         // BEGIN: readme-sample-createSchemaRegistryAvroSerializer
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+        SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildSerializer();
         // END: readme-sample-createSchemaRegistryAvroSerializer
 
-        return schemaRegistryAvroSerializer;
+        return serializer;
     }
 
     /**
-     * Serialize a strongly-typed object into avro payload compatible with schema registry.
+     * Encode a strongly-typed object into avro payload compatible with schema registry.
      */
     public void serializeSample() {
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
+        SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
 
         // BEGIN: readme-sample-serializeSample
         PlayingCard playingCard = new PlayingCard();
@@ -56,31 +56,29 @@ public class ReadmeSamples {
         playingCard.setIsFaceCard(false);
         playingCard.setCardValue(5);
 
-        // write serialized data to ByteArrayOutputStream
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
+        MessageContent message = serializer.serialize(playingCard,
+            TypeReference.createInstance(MessageContent.class));
         // END: readme-sample-serializeSample
     }
 
     /**
-     * Deserialize avro payload compatible with schema registry into a strongly-type object.
+     * Decode avro payload compatible with schema registry into a strongly-type object.
      */
     public void deserializeSample() {
         // BEGIN: readme-sample-deserializeSample
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
-        InputStream inputStream = getSchemaRegistryAvroData();
-        PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
-            TypeReference.createInstance(PlayingCard.class));
+        SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
+        MessageContent message = getSchemaRegistryAvroMessage();
+        PlayingCard playingCard = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
         // END: readme-sample-deserializeSample
     }
 
     /**
      * Non-functional method not visible on README sample
-     * @return a new ByteArrayInputStream
+     * @return a new message.
      */
-    private InputStream getSchemaRegistryAvroData() {
-        return new ByteArrayInputStream(new byte[1]);
+    private MessageContent getSchemaRegistryAvroMessage() {
+        return new MessageContent()
+            .setBodyAsBinaryData(BinaryData.fromBytes(new byte[1]))
+            .setContentType("avro/binary+schema_id");
     }
-
 }

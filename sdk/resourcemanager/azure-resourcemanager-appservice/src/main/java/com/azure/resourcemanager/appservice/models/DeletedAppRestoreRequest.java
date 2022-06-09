@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.DeletedAppRestoreRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about restoring a deleted app. */
 @Fluent
 public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedAppRestoreRequest.class);
-
     /*
      * DeletedAppRestoreRequest resource specific properties
      */

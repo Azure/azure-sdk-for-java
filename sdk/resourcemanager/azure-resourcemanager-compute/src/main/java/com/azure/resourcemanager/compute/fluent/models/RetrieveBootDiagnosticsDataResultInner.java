@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SAS URIs of the console screenshot and serial log blobs. */
 @Immutable
 public final class RetrieveBootDiagnosticsDataResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetrieveBootDiagnosticsDataResultInner.class);
-
     /*
      * The console screenshot blob URI
      */

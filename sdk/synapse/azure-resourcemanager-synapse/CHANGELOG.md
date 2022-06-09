@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,116 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.6 (2022-04-25)
+
+- Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings` was added
+
+* `models.DedicatedSQLminimalTlsSettingsListResult` was added
+
+* `models.DedicatedSqlMinimalTlsSettingsName` was added
+
+* `models.DedicatedSQLminimalTlsSettings` was added
+
+#### `SynapseManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `SynapseManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+* `workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()` was added
+
+## 1.0.0-beta.5 (2022-01-24)
+
+- Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SqlPoolPatchInfo` was modified
+
+* `withStatus(java.lang.String)` was removed
+* `withCreationDate(java.time.OffsetDateTime)` was removed
+
+#### `models.SqlPool$Definition` was modified
+
+* `withStatus(java.lang.String)` was removed
+* `withCreationDate(java.time.OffsetDateTime)` was removed
+
+#### `models.BigDataPoolResourceInfo$Definition` was modified
+
+* `withCreationDate(java.time.OffsetDateTime)` was removed
+
+#### `models.SqlPool$Update` was modified
+
+* `withStatus(java.lang.String)` was removed
+* `withCreationDate(java.time.OffsetDateTime)` was removed
+* `withSourceDatabaseDeletionDate(java.time.OffsetDateTime)` was removed
+
+### Features Added
+
+* `models.PrincipalsModificationKind` was added
+
+* `models.ReadOnlyFollowingDatabase` was added
+
+#### `models.ServerBlobAuditingPolicy$Update` was modified
+
+* `withIsDevopsAuditEnabled(java.lang.Boolean)` was added
+
+#### `models.ServerBlobAuditingPolicy` was modified
+
+* `isDevopsAuditEnabled()` was added
+
+#### `models.SelfHostedIntegrationRuntimeStatus` was modified
+
+* `serviceRegion()` was added
+* `withServiceRegion(java.lang.String)` was added
+* `newerVersions()` was added
+* `withNewerVersions(java.util.List)` was added
+
+#### `models.ManagedIntegrationRuntime` was modified
+
+* `withTypeManagedVirtualNetworkType(java.lang.String)` was added
+* `typeManagedVirtualNetworkType()` was added
+* `withId(java.lang.String)` was added
+* `withReferenceName(java.lang.String)` was added
+* `referenceName()` was added
+* `id()` was added
+
+#### `models.ExtendedServerBlobAuditingPolicy$Update` was modified
+
+* `withIsDevopsAuditEnabled(java.lang.Boolean)` was added
+
+#### `models.Workspace` was modified
+
+* `trustedServiceBypassEnabled()` was added
+
+#### `models.ExtendedServerBlobAuditingPolicy` was modified
+
+* `isDevopsAuditEnabled()` was added
+
+#### `models.ServerBlobAuditingPolicy$Definition` was modified
+
+* `withIsDevopsAuditEnabled(java.lang.Boolean)` was added
+
+#### `models.DynamicExecutorAllocation` was modified
+
+* `withMaxExecutors(java.lang.Integer)` was added
+* `maxExecutors()` was added
+* `withMinExecutors(java.lang.Integer)` was added
+* `minExecutors()` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withTrustedServiceBypassEnabled(java.lang.Boolean)` was added
+
+#### `models.ExtendedServerBlobAuditingPolicy$Definition` was modified
+
+* `withIsDevopsAuditEnabled(java.lang.Boolean)` was added
 
 ## 1.0.0-beta.4 (2021-11-10)
 

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SsisPackageLocationTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSIS package location. */
 @Fluent
 public final class SsisPackageLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisPackageLocation.class);
-
     /*
      * The SSIS package path. Type: string (or Expression with resultType
      * string).

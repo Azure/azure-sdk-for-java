@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/info?api-version=2021-09-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/info?api-version=2022-06-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "495d625e-c59e-4193-a05f-1d9c01e2596f"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "10d73e4c-1825-4952-b84f-8df7f83d3516"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "257",
+      "x-envoy-upstream-service-time" : "309",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7bea5a69-00e9-4223-ad65-b9db89dd77e5",
+      "apim-request-id" : "cea68ac6-ab08-4597-946a-efbfe2e6b0d4",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\n  \"customDocumentModels\": {\n    \"count\": 4264,\n    \"limit\": 20000\n  }\n}",
-      "Date" : "Fri, 08 Oct 2021 20:52:41 GMT",
+      "Body" : "{\n  \"customDocumentModels\": {\n    \"count\": 4501,\n    \"limit\": 20000\n  }\n}",
+      "Date" : "Wed, 01 Jun 2022 19:35:20 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

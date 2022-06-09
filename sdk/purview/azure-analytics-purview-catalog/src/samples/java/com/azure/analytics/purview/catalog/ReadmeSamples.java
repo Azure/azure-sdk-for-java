@@ -14,10 +14,10 @@ public class ReadmeSamples {
      */
     public void createClient() {
         // BEGIN: readme-sample-createGlossaryClient
-        GlossaryClient client = new PurviewCatalogClientBuilder()
+        GlossaryClient client = new GlossaryClientBuilder()
             .endpoint(System.getenv("<account-name>.purview.azure.com"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildGlossaryClient();
+            .buildClient();
         // END: readme-sample-createGlossaryClient
     }
 }

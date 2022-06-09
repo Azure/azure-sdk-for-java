@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-02-12/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-06-08/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -30,7 +30,7 @@ context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode
 customization-class: src/main/java/ShareStorageCustomization.java
 ```
 
@@ -102,6 +102,30 @@ directive:
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}/{directory}?restype=directory&comp=rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}/{directory}?restype=directory&comp=rename"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}/{directory}/{fileName}?comp=rename
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}/{directory}/{fileName}?comp=rename"];
+        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
 ### /{shareName}/{directoryPath}?restype=directory&comp=properties
@@ -224,7 +248,7 @@ directive:
     $.enum = [ "2019-07-07" ];
 ```
 
-### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
+### Convert FileCreationTime and FileLastWriteTime and FileChangeTime to String to Support 'now'
 ``` yaml
 directive:
 - from: swagger-document
@@ -233,6 +257,10 @@ directive:
     delete $.format;
 - from: swagger-document
   where: $.parameters.FileLastWriteTime
+  transform: >
+    delete $.format;
+- from: swagger-document
+  where: $.parameters.FileChangeTime
   transform: >
     delete $.format;
 ```
@@ -351,5 +379,35 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
+### Remove CopyFileSmbInfoChangeTime from file copy
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=copy"];
+    op.put.parameters.splice(11,1);
+```
+
+### Change PutRange response file-last-write-time to ISO8601
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=range"];
+    op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+```
+
+### Change PutRangeFromUrl response file-last-write-time to ISO8601
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const op = $["/{shareName}/{fileName}?comp=range&fromURL"];
+    op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+```
+        
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
 

@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,9 +55,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
-    private static AtomicBoolean configloaded = new AtomicBoolean(false);
+    private static final AtomicBoolean configloaded = new AtomicBoolean(false);
 
-    private static AtomicBoolean startup = new AtomicBoolean(true);
+    static final AtomicBoolean startup = new AtomicBoolean(true);
 
     /**
      * Loads all Azure App Configuration Property Sources configured.
@@ -67,7 +66,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param clients Clients for connecting to Azure App Configuration.
      * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
      * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
-     * @param keyVaultSecretProvider optional provider for loading  secrets instead of connecting to Key Vault
+     * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -96,14 +95,14 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE_NAME);
-        Collections.reverse(configStores); // Last store has highest precedence
+        Collections.reverse(configStores); // Last store has the highest precedence
 
         Iterator<ConfigStore> configStoreIterator = configStores.iterator();
         // Feature Management needs to be set in the last config store.
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
 
-            Boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
+            boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
 
             if (configStore.isEnabled() && loadNewPropertySources) {
                 addPropertySource(composite, configStore, profiles, !configStoreIterator.hasNext());
@@ -113,8 +112,17 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
+
+        // If this configuration is set, a forced refresh will happen on the refresh interval.
+        if (properties.getRefreshInterval() != null) {
+            StateHolder.setNextForcedRefresh(properties.getRefreshInterval());
+        }
+
         configloaded.set(true);
         startup.set(false);
+
+        // Loading configurations worked. Setting attempts to zero.
+        StateHolder.clearAttempts();
         return composite;
     }
 
@@ -123,9 +131,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      *
      * @param composite PropertySource being added
      * @param store Config Store the PropertySource is being generated from
-     * @param applicationName Name of the application
      * @param profiles Active profiles in the Store
-     * @param storeContextsMap the Map storing the storeName -> List of contexts map
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
      * it needs to be in the last one.
      */
@@ -145,7 +151,18 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             LOGGER.debug("PropertySource context.");
         } catch (Exception e) {
-            if (store.isFailFast() || !startup.get()) {
+            if (!startup.get()) {
+                // Need to check for refresh first, or reset will never happen if fail fast is true.
+                LOGGER.error(
+                    "Refreshing failed while reading configuration from Azure App Configuration store "
+                        + store.getEndpoint() + ".");
+
+                if (properties.getRefreshInterval() != null) {
+                 // The next refresh will happen sooner if refresh interval is expired.
+                    StateHolder.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                }
+                ReflectionUtils.rethrowRuntimeException(e);
+            } else if (store.isFailFast()) {
                 LOGGER.error(
                     "Fail fast is set and there was an error reading configuration from Azure App "
                         + "Configuration store " + store.getEndpoint() + ".");
@@ -163,16 +180,15 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     }
 
     /**
-     * Creates a new set of AppConfigurationProertySources, 1 per Label.
+     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
      *
-     * @param context Context of the application, part of uniquely define a PropertySource
      * @param store Config Store the PropertySource is being generated from
-     * @param storeContextsMap the Map storing the storeName -> List of contexts map
      * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
-    private List<AppConfigurationPropertySource> create(ConfigStore store, List<String> profiles, boolean initFeatures, FeatureSet featureSet)
+    private List<AppConfigurationPropertySource> create(ConfigStore store, List<String> profiles, boolean initFeatures,
+        FeatureSet featureSet)
         throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
@@ -192,8 +208,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             }
 
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = new ArrayList<ConfigurationSetting>();
-            List<ConfigurationSetting> watchKeysFeatures = new ArrayList<ConfigurationSetting>();
+            List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
+            List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
 
             for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
                 ConfigurationSetting watchKey = clients.getWatchKey(trigger.getKey(), trigger.getLabel(),
@@ -213,9 +229,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 PagedIterable<ConfigurationSetting> watchKeys = clients.getFeatureFlagWatchKey(settingSelector,
                     store.getEndpoint());
 
-                watchKeys.forEach(watchKey -> {
-                    watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey));
-                });
+                watchKeys.forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
 
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
                     store.getMonitoring().getFeatureFlagRefreshInterval());
@@ -224,9 +238,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getRefreshInterval());
             StateHolder.setLoadState(store.getEndpoint(), true);
-        } catch (RuntimeException e) {
-            delayException();
-            throw e;
         } catch (Exception e) {
             delayException();
             throw e;
@@ -236,13 +247,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     }
 
     private void delayException() {
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(appProperties.getStartDate());
-        calendar.add(Calendar.SECOND, appProperties.getPrekillTime());
-        Date maxRetryDate = calendar.getTime();
-        if (currentDate.before(maxRetryDate)) {
-            long diffInMillies = Math.abs(maxRetryDate.getTime() - currentDate.getTime());
+        Instant currentDate = Instant.now();
+        Instant preKillTIme = appProperties.getStartDate().plusSeconds(appProperties.getPrekillTime());
+        if (currentDate.isBefore(preKillTIme)) {
+            long diffInMillies = Math.abs(preKillTIme.toEpochMilli() - currentDate.toEpochMilli());
             try {
                 Thread.sleep(diffInMillies);
             } catch (InterruptedException e) {

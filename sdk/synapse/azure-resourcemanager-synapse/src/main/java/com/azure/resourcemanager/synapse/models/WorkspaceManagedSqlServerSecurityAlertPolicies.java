@@ -34,7 +34,7 @@ public interface WorkspaceManagedSqlServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy along with {@link Response}.
      */
     Response<ServerSecurityAlertPolicy> getWithResponse(
         String resourceGroupName,
@@ -50,7 +50,8 @@ public interface WorkspaceManagedSqlServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's threat detection policies.
+     * @return workspace managed sql server's threat detection policies as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ServerSecurityAlertPolicy> list(String resourceGroupName, String workspaceName);
 
@@ -63,7 +64,8 @@ public interface WorkspaceManagedSqlServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's threat detection policies.
+     * @return workspace managed sql server's threat detection policies as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ServerSecurityAlertPolicy> list(String resourceGroupName, String workspaceName, Context context);
 
@@ -74,7 +76,7 @@ public interface WorkspaceManagedSqlServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy along with {@link Response}.
      */
     ServerSecurityAlertPolicy getById(String id);
 
@@ -86,7 +88,7 @@ public interface WorkspaceManagedSqlServerSecurityAlertPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's security alert policy.
+     * @return a workspace managed sql server's security alert policy along with {@link Response}.
      */
     Response<ServerSecurityAlertPolicy> getByIdWithResponse(String id, Context context);
 

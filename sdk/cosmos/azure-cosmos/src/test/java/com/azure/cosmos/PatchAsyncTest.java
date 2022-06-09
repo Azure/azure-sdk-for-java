@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -12,7 +13,9 @@ import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -22,6 +25,7 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -250,5 +254,36 @@ public class PatchAsyncTest extends BatchTestBase {
         testDocForPatch.setCost(costFinalValue);
         testDocForPatch.setDescription("xx");
         this.verifyByRead(container, testDocForPatch);
+    }
+
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
+    public void itemPatchSuccessForNullValue() {
+        // Null value should be allowed for add, set, and replace
+
+        ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
+        String id = UUID.randomUUID().toString();
+        String pkValue = "mypk";
+
+        String stringColumnName = "stringColumn";
+        String stringColumnName2 = "stringColumn2";
+        String newStringColumnName = "newStringColumn";
+
+        objectNode.put("id", id);
+        objectNode.put("mypk", pkValue);
+        objectNode.put(stringColumnName, UUID.randomUUID().toString());
+        objectNode.put(stringColumnName2, UUID.randomUUID().toString());
+
+        this.container.createItem(objectNode).block();
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+        patchOperations.add("/" + newStringColumnName, null);
+        patchOperations.replace("/" + stringColumnName, null);
+        patchOperations.set("/" + stringColumnName2, null);
+
+        ObjectNode patchedItem = this.container.patchItem(id, new PartitionKey(pkValue), patchOperations, ObjectNode.class).block().getItem();
+        assertThat(patchedItem).isNotNull();
+        assert(patchedItem.get(newStringColumnName)).isNull();
+        assert(patchedItem.get(stringColumnName)).isNull();
+        assert(patchedItem.get(stringColumnName2)).isNull();
     }
 }

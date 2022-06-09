@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a run command parameter. */
 @Fluent
 public final class RunCommandInputParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandInputParameter.class);
-
     /*
      * The run command parameter name.
      */
@@ -73,14 +70,16 @@ public final class RunCommandInputParameter {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunCommandInputParameter.class);
 }

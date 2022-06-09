@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.streamanalytics.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionInner;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.FunctionProperties;
+import com.azure.resourcemanager.streamanalytics.models.FunctionRetrieveDefaultDefinitionParameters;
+import com.azure.resourcemanager.streamanalytics.models.ResourceTestStatus;
 
 public final class FunctionImpl implements Function, Function.Definition, Function.Update {
     private FunctionInner innerObject;
@@ -153,6 +156,30 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
         return this;
     }
 
+    public ResourceTestStatus test(FunctionInner function) {
+        return serviceManager.functions().test(resourceGroupName, jobName, functionName, function);
+    }
+
+    public ResourceTestStatus test() {
+        return serviceManager.functions().test(resourceGroupName, jobName, functionName);
+    }
+
+    public ResourceTestStatus test(FunctionInner function, Context context) {
+        return serviceManager.functions().test(resourceGroupName, jobName, functionName, function, context);
+    }
+
+    public Function retrieveDefaultDefinition() {
+        return serviceManager.functions().retrieveDefaultDefinition(resourceGroupName, jobName, functionName);
+    }
+
+    public Response<Function> retrieveDefaultDefinitionWithResponse(
+        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context) {
+        return serviceManager
+            .functions()
+            .retrieveDefaultDefinitionWithResponse(
+                resourceGroupName, jobName, functionName, functionRetrieveDefaultDefinitionParameters, context);
+    }
+
     public FunctionImpl withProperties(FunctionProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
@@ -164,8 +191,13 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
     }
 
     public FunctionImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public FunctionImpl withIfNoneMatch(String ifNoneMatch) {
@@ -173,8 +205,7 @@ public final class FunctionImpl implements Function, Function.Definition, Functi
         return this;
     }
 
-    public FunctionImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Alexa channel. */
 @Fluent
 public final class AlexaChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlexaChannelProperties.class);
-
     /*
      * The Alexa skill Id
      */
@@ -103,10 +100,12 @@ public final class AlexaChannelProperties {
      */
     public void validate() {
         if (alexaSkillId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property alexaSkillId in model AlexaChannelProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AlexaChannelProperties.class);
 }

@@ -50,6 +50,18 @@ public final class ArtifactsClientImpl {
         return this.serializerAdapter;
     }
 
+    /** The LinkConnectionsImpl object to access its operations. */
+    private final LinkConnectionsImpl linkConnections;
+
+    /**
+     * Gets the LinkConnectionsImpl object to access its operations.
+     *
+     * @return the LinkConnectionsImpl object.
+     */
+    public LinkConnectionsImpl getLinkConnections() {
+        return this.linkConnections;
+    }
+
     /** The KqlScriptsImpl object to access its operations. */
     private final KqlScriptsImpl kqlScripts;
 
@@ -72,6 +84,18 @@ public final class ArtifactsClientImpl {
      */
     public KqlScriptsOperationsImpl getKqlScriptsOperations() {
         return this.kqlScriptsOperations;
+    }
+
+    /** The MetastoresImpl object to access its operations. */
+    private final MetastoresImpl metastores;
+
+    /**
+     * Gets the MetastoresImpl object to access its operations.
+     *
+     * @return the MetastoresImpl object.
+     */
+    public MetastoresImpl getMetastores() {
+        return this.metastores;
     }
 
     /** The SparkConfigurationsImpl object to access its operations. */
@@ -337,8 +361,10 @@ public final class ArtifactsClientImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.linkConnections = new LinkConnectionsImpl(this);
         this.kqlScripts = new KqlScriptsImpl(this);
         this.kqlScriptsOperations = new KqlScriptsOperationsImpl(this);
+        this.metastores = new MetastoresImpl(this);
         this.sparkConfigurations = new SparkConfigurationsImpl(this);
         this.bigDataPools = new BigDataPoolsImpl(this);
         this.dataFlows = new DataFlowsImpl(this);

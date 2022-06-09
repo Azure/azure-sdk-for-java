@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserArtifactManage model. */
 @Fluent
 public final class UserArtifactManage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserArtifactManage.class);
-
     /*
      * Required. The path and arguments to install the gallery application.
      * This is limited to 4096 characters.
@@ -112,14 +109,16 @@ public final class UserArtifactManage {
      */
     public void validate() {
         if (install() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property install in model UserArtifactManage"));
         }
         if (remove() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property remove in model UserArtifactManage"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserArtifactManage.class);
 }

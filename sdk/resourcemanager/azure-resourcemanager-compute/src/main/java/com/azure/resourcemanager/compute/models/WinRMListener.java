@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes Protocol and thumbprint of Windows Remote Management listener. */
 @Fluent
 public final class WinRMListener {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WinRMListener.class);
-
     /*
      * Specifies the protocol of WinRM listener. <br><br> Possible values are:
      * <br>**http** <br><br> **https**

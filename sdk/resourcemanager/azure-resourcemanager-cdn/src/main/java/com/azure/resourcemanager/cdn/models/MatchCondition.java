@@ -19,7 +19,7 @@ public final class MatchCondition {
      * Match variable to compare against.
      */
     @JsonProperty(value = "matchVariable", required = true)
-    private MatchVariable matchVariable;
+    private WafMatchVariable matchVariable;
 
     /*
      * Selector can used to match a specific key for QueryString, Cookies,
@@ -57,7 +57,7 @@ public final class MatchCondition {
      *
      * @return the matchVariable value.
      */
-    public MatchVariable matchVariable() {
+    public WafMatchVariable matchVariable() {
         return this.matchVariable;
     }
 
@@ -67,7 +67,7 @@ public final class MatchCondition {
      * @param matchVariable the matchVariable value to set.
      * @return the MatchCondition object itself.
      */
-    public MatchCondition withMatchVariable(MatchVariable matchVariable) {
+    public MatchCondition withMatchVariable(WafMatchVariable matchVariable) {
         this.matchVariable = matchVariable;
         return this;
     }

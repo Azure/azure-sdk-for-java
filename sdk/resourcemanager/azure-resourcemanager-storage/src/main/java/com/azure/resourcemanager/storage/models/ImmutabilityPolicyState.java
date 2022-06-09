@@ -27,7 +27,11 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
         return fromString(name, ImmutabilityPolicyState.class);
     }
 
-    /** @return known ImmutabilityPolicyState values. */
+    /**
+     * Gets known ImmutabilityPolicyState values.
+     *
+     * @return known ImmutabilityPolicyState values.
+     */
     public static Collection<ImmutabilityPolicyState> values() {
         return values(ImmutabilityPolicyState.class);
     }

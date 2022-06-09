@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 /** Samples for GalleryApplicationVersions Get. */
 public final class GalleryApplicationVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryApplicationVersion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Get.json
      */
     /**
      * Sample code: Get a gallery Application Version.
@@ -28,7 +28,7 @@ public final class GalleryApplicationVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryApplicationVersionWithReplicationStatus.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery Application Version with replication status.

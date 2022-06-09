@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Query parameters for triggers. */
 @Fluent
 public final class TriggerFilterParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerFilterParameters.class);
-
     /*
      * The continuation token for getting the next page of results. Null for
      * first page.

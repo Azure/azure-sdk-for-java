@@ -32,7 +32,7 @@ public interface ServerAdministrators {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a AAD server administrator.
+     * @return information about a AAD server administrator along with {@link Response}.
      */
     Response<ServerAdministratorResource> getWithResponse(String resourceGroupName, String serverName, Context context);
 

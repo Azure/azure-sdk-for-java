@@ -3,6 +3,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.util.Beta;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -44,6 +47,8 @@ public final class ChangeFeedProcessorOptions {
     private int minScaleCount;
     private int maxScaleCount;
 
+    private Scheduler scheduler;
+
     /**
      * Instantiates a new Change feed processor options.
      */
@@ -55,6 +60,8 @@ public final class ChangeFeedProcessorOptions {
         this.leaseExpirationInterval = DEFAULT_EXPIRATION_INTERVAL;
         this.feedPollDelay = DEFAULT_FEED_POLL_DELAY;
         this.maxScaleCount = 0; // unlimited
+
+        this.scheduler = Schedulers.boundedElastic();
     }
 
     /**
@@ -183,6 +190,11 @@ public final class ChangeFeedProcessorOptions {
 
     /**
      * Sets the maximum number of items to be returned in the enumeration operation.
+     * <p>
+     * NOTE: There are some cases where the number of items returned from the Change Feed can be higher than the specified value.
+     * If items in the container are being written through stored procedures, transactional batch, or bulk, they share the same
+     * <a href="https://docs.microsoft.com/azure/cosmos-db/sql/stored-procedures-triggers-udfs#transactions">transaction</a>
+     * and the same bookkeeping, so they will be returned together when read through the Change Feed.
      *
      * @param maxItemCount the maximum number of items to be returned in the enumeration operation.
      * @return the current ChangeFeedProcessorOptions instance.
@@ -332,6 +344,32 @@ public final class ChangeFeedProcessorOptions {
      */
     public ChangeFeedProcessorOptions setMaxScaleCount(int maxScaleCount) {
         this.maxScaleCount = maxScaleCount;
+        return this;
+    }
+
+    /**
+     * Gets the internal {@link Scheduler} that hosts a pool of ExecutorService-based workers for any change feed processor related tasks.
+     *
+     * @return a {@link Scheduler} that hosts a pool of ExecutorService-based workers..
+     */
+    @Beta(value = Beta.SinceVersion.V4_26_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Scheduler getScheduler() {
+        return this.scheduler;
+    }
+
+    /**
+     * Sets the internal {@link Scheduler} that hosts a pool of ExecutorService-based workers for any change feed processor related tasks.
+     *
+     * @param scheduler a {@link Scheduler} that hosts a pool of ExecutorService-based workers.
+     * {@link ChangeFeedProcessor} instance.
+     * @return the current ChangeFeedProcessorOptions instance.
+     */
+    @Beta(value = Beta.SinceVersion.V4_26_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedProcessorOptions setScheduler(Scheduler scheduler) {
+        if (scheduler == null) {
+            throw new IllegalArgumentException("scheduler");
+        }
+        this.scheduler = scheduler;
         return this;
     }
 }

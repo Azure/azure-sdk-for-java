@@ -30,7 +30,11 @@ public final class HiveThriftTransportProtocol extends ExpandableStringEnum<Hive
         return fromString(name, HiveThriftTransportProtocol.class);
     }
 
-    /** @return known HiveThriftTransportProtocol values. */
+    /**
+     * Gets known HiveThriftTransportProtocol values.
+     *
+     * @return known HiveThriftTransportProtocol values.
+     */
     public static Collection<HiveThriftTransportProtocol> values() {
         return values(HiveThriftTransportProtocol.class);
     }

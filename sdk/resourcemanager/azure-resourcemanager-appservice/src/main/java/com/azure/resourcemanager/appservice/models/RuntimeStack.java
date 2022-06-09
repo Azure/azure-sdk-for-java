@@ -23,6 +23,9 @@ public class RuntimeStack {
     /** JAVA JAVA 11. */
     public static final RuntimeStack JAVA_11_JAVA11 = COLLECTION.addValue(new RuntimeStack("JAVA", "11-java11"));
 
+    /** JAVA JAVA 17. */
+    public static final RuntimeStack JAVA_17_JAVA17 = COLLECTION.addValue(new RuntimeStack("JAVA", "17-java17"));
+
     /** Node.JS 10.1. */
     public static final RuntimeStack NODEJS_10_1 = COLLECTION.addValue(new RuntimeStack("NODE", "10.1"));
 
@@ -76,6 +79,15 @@ public class RuntimeStack {
 
     /** Tomcat 9.0-jre8 image with catalina root set to Azure wwwroot. */
     public static final RuntimeStack TOMCAT_9_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "9.0-jre8"));
+
+    /** Tomcat 10.0-java17 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JAVA17 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-java17"));
+
+    /** Tomcat 10.0-jre11 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JRE11 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-jre11"));
+
+    /** Tomcat 10.0-jre8 image with catalina root set to Azure wwwroot. */
+    public static final RuntimeStack TOMCAT_10_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "10.0-jre8"));
 
     /** JBOSS EAP 7.2-java8. */
     public static final RuntimeStack JBOSS_EAP_7_2_JAVA8 =

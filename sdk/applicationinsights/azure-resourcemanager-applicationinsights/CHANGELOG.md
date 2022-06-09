@@ -1,14 +1,128 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (2022-06-09)
 
-### Features Added
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.SharedTypeKind` was removed
 
-### Other Changes
+#### `models.WorkbookUpdateParameters` was modified
+
+* `models.SharedTypeKind kind()` -> `models.WorkbookUpdateSharedTypeKind kind()`
+* `withKind(models.SharedTypeKind)` was removed
+
+#### `models.WorkbookResource` was modified
+
+* `models.Kind kind()` -> `models.WorkbookSharedTypeKind kind()`
+* `withKind(models.Kind)` was removed
+
+#### `models.Workbook$Definition` was modified
+
+* `withKind(models.Kind)` was removed
+
+#### `models.Workbook$Update` was modified
+
+* `withKind(models.SharedTypeKind)` was removed
+
+#### `models.Workbook` was modified
+
+* `models.Kind kind()` -> `models.WorkbookSharedTypeKind kind()`
+
+### Features Added
+
+* `models.WorkbookUpdateSharedTypeKind` was added
+
+* `models.WorkbookSharedTypeKind` was added
+
+#### `models.WorkbookUpdateParameters` was modified
+
+* `withKind(models.WorkbookUpdateSharedTypeKind)` was added
+
+#### `models.ApplicationInsightsComponent` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ComponentLinkedStorageAccounts` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.WorkbookResource` was modified
+
+* `withKind(models.WorkbookSharedTypeKind)` was added
+
+#### `models.MyWorkbook` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Workbook$Definition` was modified
+
+* `withKind(models.WorkbookSharedTypeKind)` was added
+
+#### `models.WebTest` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Workbook$Update` was modified
+
+* `withKind(models.WorkbookUpdateSharedTypeKind)` was added
+
+#### `ApplicationInsightsManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.Workbook` was modified
+
+* `resourceGroupName()` was added
+
+#### `ApplicationInsightsManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.WorkbookTemplate` was modified
+
+* `resourceGroupName()` was added
+
+## 1.0.0-beta.4 (2022-03-24)
+
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Workbooks` was modified
+
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.Workbooks` was modified
+
+* `getByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+
+## 1.0.0-beta.3 (2022-01-30)
+
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-01-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.ApplicationInsightsComponent` was modified
+
+* `disableLocalAuth()` was added
+* `etag()` was added
+* `forceCustomerStorageForProfiler()` was added
+* `workspaceResourceId()` was added
+* `laMigrationDate()` was added
+* `namePropertiesName()` was added
+
+#### `models.ApplicationInsightsComponent$Definition` was modified
+
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withWorkspaceResourceId(java.lang.String)` was added
+* `withEtag(java.lang.String)` was added
+* `withForceCustomerStorageForProfiler(java.lang.Boolean)` was added
 
 ## 1.0.0-beta.2 (2021-12-13)
 

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 @JsonTypeName("VHD")
 @Fluent
 public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateVhdDistributor.class);
-
     /** {@inheritDoc} */
     @Override
     public ImageTemplateVhdDistributor withRunOutputName(String runOutputName) {

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeNodeInner;
 import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeStatusTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +20,6 @@ import java.util.Map;
 @JsonTypeName("SelfHosted")
 @Fluent
 public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntimeStatus.class);
-
     /*
      * Self-hosted integration runtime status type properties.
      */
@@ -228,6 +225,52 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     }
 
     /**
+     * Get the serviceRegion property: The service region of the integration runtime.
+     *
+     * @return the serviceRegion value.
+     */
+    public String serviceRegion() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceRegion();
+    }
+
+    /**
+     * Set the serviceRegion property: The service region of the integration runtime.
+     *
+     * @param serviceRegion the serviceRegion value to set.
+     * @return the SelfHostedIntegrationRuntimeStatus object itself.
+     */
+    public SelfHostedIntegrationRuntimeStatus withServiceRegion(String serviceRegion) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeStatusTypeProperties();
+        }
+        this.innerTypeProperties().withServiceRegion(serviceRegion);
+        return this;
+    }
+
+    /**
+     * Get the newerVersions property: The newer versions on download center.
+     *
+     * @return the newerVersions value.
+     */
+    public List<String> newerVersions() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().newerVersions();
+    }
+
+    /**
+     * Set the newerVersions property: The newer versions on download center.
+     *
+     * @param newerVersions the newerVersions value to set.
+     * @return the SelfHostedIntegrationRuntimeStatus object itself.
+     */
+    public SelfHostedIntegrationRuntimeStatus withNewerVersions(List<String> newerVersions) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeStatusTypeProperties();
+        }
+        this.innerTypeProperties().withNewerVersions(newerVersions);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -236,7 +279,7 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
@@ -244,4 +287,6 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SelfHostedIntegrationRuntimeStatus.class);
 }

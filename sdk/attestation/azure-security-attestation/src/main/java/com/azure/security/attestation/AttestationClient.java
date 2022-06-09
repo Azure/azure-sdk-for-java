@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationToken;
-
-import java.util.List;
 
 /**
  * The AttestationClient implements the functionality required by the "Attest" family of APIs.
@@ -214,8 +214,8 @@ public final class AttestationClient {
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationClient.getAttestationSigners -->
      * <pre>
-     * List&lt;AttestationSigner&gt; signers = client.listAttestationSigners&#40;&#41;;
-     * signers.forEach&#40;cert -&gt; &#123;
+     * AttestationSignerCollection signers = client.listAttestationSigners&#40;&#41;;
+     * signers.getAttestationSigners&#40;&#41;.forEach&#40;cert -&gt; &#123;
      *     System.out.println&#40;&quot;Found certificate.&quot;&#41;;
      *     if &#40;cert.getKeyId&#40;&#41; != null&#41; &#123;
      *         System.out.println&#40;&quot;    Certificate Key ID: &quot; + cert.getKeyId&#40;&#41;&#41;;
@@ -230,10 +230,10 @@ public final class AttestationClient {
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.getAttestationSigners -->
      *
-     * @return Returns an array of {@link AttestationSigner} objects which will be used to sign tokens returned from the attestation service.
+     * @return Returns a collection of {@link AttestationSigner} objects which will be used to sign tokens returned from the attestation service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AttestationSigner> listAttestationSigners() {
+    public AttestationSignerCollection listAttestationSigners() {
         return asyncClient.listAttestationSignersWithResponse()
             .map(Response::getValue).block();
     }
@@ -245,7 +245,7 @@ public final class AttestationClient {
      *
      * <!-- src_embed com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse -->
      * <pre>
-     * Response&lt;List&lt;AttestationSigner&gt;&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;Context.NONE&#41;;
+     * Response&lt;AttestationSignerCollection&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse -->
      *
@@ -254,7 +254,7 @@ public final class AttestationClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AttestationSigner>> listAttestationSignersWithResponse(Context context) {
+    public Response<AttestationSignerCollection> listAttestationSignersWithResponse(Context context) {
         return asyncClient.listAttestationSignersWithResponse(context).block();
     }
 
@@ -282,32 +282,6 @@ public final class AttestationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationResult attestOpenEnclave(BinaryData report) {
         return asyncClient.attestOpenEnclave(new AttestationOptions(report)).block();
-    }
-
-    /**
-     * Attest an OpenEnclave report.
-     *
-     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
-     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
-     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
-     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
-     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport -->
-     * <pre>
-     * Response&lt;AttestationResult&gt; responseWithReport = client.attestOpenEnclaveWithResponse&#40;openEnclaveReport, Context.NONE&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport -->
-     *
-     * @param report OpenEnclave generated report.
-     * @param context Context for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
-        BinaryData report, Context context) {
-        return asyncClient.attestOpenEnclaveWithResponse(new AttestationOptions(report), context).block();
     }
 
     /**
@@ -356,8 +330,9 @@ public final class AttestationClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse -->
      * <pre>
-     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;new AttestationOptions&#40;openEnclaveReport&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;openEnclaveReport&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse -->
@@ -370,7 +345,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestOpenEnclaveWithResponse(
         AttestationOptions options, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
     }
@@ -397,32 +372,6 @@ public final class AttestationClient {
     public AttestationResult attestSgxEnclave(BinaryData quote) {
         return asyncClient.attestSgxEnclave(quote).block();
     }
-
-    /**
-     * Attest an SGX Enclave Quote.
-     *
-     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
-     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
-     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
-     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
-     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport -->
-     * <pre>
-     * Response&lt;AttestationResult&gt; responseWithReport = client.attestSgxEnclaveWithResponse&#40;sgxQuote, Context.NONE&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport -->
-     *
-     * @param quote Intel SGX Quote to validate.
-     * @param context Context for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(BinaryData quote, Context context) {
-        return asyncClient.attestSgxEnclaveWithResponse(new AttestationOptions(quote), context).block();
-    }
-
 
     /**
      * Attest an SGX enclave quote, specifying RunTimeData and InitTimeData.
@@ -469,8 +418,9 @@ public final class AttestationClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse -->
      * <pre>
-     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;new AttestationOptions&#40;sgxQuote&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;sgxQuote&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse -->
@@ -483,7 +433,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestSgxEnclaveWithResponse(
         AttestationOptions request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }

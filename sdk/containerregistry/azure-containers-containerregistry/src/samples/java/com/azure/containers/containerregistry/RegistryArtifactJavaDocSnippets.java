@@ -5,7 +5,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -129,7 +129,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void listTagPropertiesWithOptionsNoContextCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptionsNoContext
-        client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING)
+        client.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_DESCENDING)
             .iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue()
@@ -142,7 +142,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void listTagPropertiesWithOptionsCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions
-        client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE)
+        client.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_DESCENDING, Context.NONE)
             .iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue()

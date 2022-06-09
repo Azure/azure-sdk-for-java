@@ -51,7 +51,7 @@ import java.util.Map;
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use
+ * For operations on a specific blob type (i.e. append, block, or page) use
  * {@link #getAppendBlobClient() getAppendBlobClient}, {@link #getBlockBlobClient()
  * getBlockBlobClient}, or {@link #getPageBlobClient() getPageBlobAsyncClient} to construct a client that
  * allows blob specific operations. Note, these types do not support client-side encryption, though decryption is
@@ -63,7 +63,7 @@ import java.util.Map;
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
 public class EncryptedBlobClient extends BlobClient {
-    private final ClientLogger logger = new ClientLogger(EncryptedBlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClient.class);
     private final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
 
     /**
@@ -117,14 +117,14 @@ public class EncryptedBlobClient extends BlobClient {
      * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         BlobRequestConditions requestConditions = null;
         if (!overwrite) {
             if (exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -219,13 +219,13 @@ public class EncryptedBlobClient extends BlobClient {
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path of the file to upload
-     * @param overwrite Whether or not to overwrite should data already exist on the blob
+     * @param overwrite Whether to overwrite should data already exist on the blob
      */
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
         }
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
@@ -331,7 +331,7 @@ public class EncryptedBlobClient extends BlobClient {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -340,7 +340,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public AppendBlobClient getAppendBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
             + " blob client"));
     }
 
@@ -349,7 +349,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public BlockBlobClient getBlockBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
             + " blob client"));
     }
 
@@ -358,7 +358,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public PageBlobClient getPageBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
             + " blob client"));
     }
 
@@ -367,7 +367,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public InputStream openQueryInputStream(String expression) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -376,7 +376,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -385,7 +385,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public void query(OutputStream stream, String expression) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -395,7 +395,7 @@ public class EncryptedBlobClient extends BlobClient {
     @Override
     public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
         Duration timeout, Context context) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 

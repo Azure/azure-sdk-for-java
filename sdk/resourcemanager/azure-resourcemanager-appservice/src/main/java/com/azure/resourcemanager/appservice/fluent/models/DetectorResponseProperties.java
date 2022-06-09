@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DataProviderMetadata;
 import com.azure.resourcemanager.appservice.models.DetectorInfo;
 import com.azure.resourcemanager.appservice.models.DiagnosticData;
 import com.azure.resourcemanager.appservice.models.QueryUtterancesResults;
 import com.azure.resourcemanager.appservice.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** DetectorResponse resource specific properties. */
 @Fluent
 public final class DetectorResponseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorResponseProperties.class);
-
     /*
      * metadata for the detector
      */

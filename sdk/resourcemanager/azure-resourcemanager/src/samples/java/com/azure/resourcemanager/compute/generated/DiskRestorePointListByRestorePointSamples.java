@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskRestorePoint ListByRestorePoint. */
 public final class DiskRestorePointListByRestorePointSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/ListDiskRestorePointsInVmRestorePoint.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
      */
     /**
      * Sample code: Get an incremental disk restorePoint resource.

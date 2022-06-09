@@ -5,7 +5,9 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -30,7 +32,7 @@ public class CryptographyClientBuilderTest {
     @BeforeEach
     public void setUp() {
         keyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey/someVersion";
-        serviceVersion = CryptographyServiceVersion.V7_2;
+        serviceVersion = CryptographyServiceVersion.V7_3;
     }
 
     @Test
@@ -59,7 +61,6 @@ public class CryptographyClientBuilderTest {
     @Test
     public void buildSyncClientWithoutKeyVersionTest() {
         String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
-
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .keyIdentifier(versionlessKeyIdentifier)
             .serviceVersion(serviceVersion)
@@ -73,7 +74,6 @@ public class CryptographyClientBuilderTest {
     @Test
     public void buildSyncClientWithPortInKeyIdentifierTest() {
         String keyIdentifierWithPort = "https://key-vault-url.vault.azure.net:443/keys/TestKey";
-
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .keyIdentifier(keyIdentifierWithPort)
             .serviceVersion(serviceVersion)
@@ -111,7 +111,6 @@ public class CryptographyClientBuilderTest {
     @Test
     public void buildAsyncClientWithoutKeyVersionTest() {
         String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
-
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier(versionlessKeyIdentifier)
             .credential(new TestUtils.TestCredential())
@@ -140,6 +139,7 @@ public class CryptographyClientBuilderTest {
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -171,11 +171,23 @@ public class CryptographyClientBuilderTest {
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
 
         assertThrows(RuntimeException.class, cryptographyClient::getKey);
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
@@ -188,9 +200,7 @@ public class CryptographyClientBuilderTest {
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
             .buildAsyncClient();
-
         HttpPipeline pipeline = cryptographyAsyncClient.getHttpPipeline();
-
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {

@@ -4,9 +4,9 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer;
-import com.azure.security.keyvault.keys.implementation.Base64UrlJsonSerializer;
-import com.azure.security.keyvault.keys.implementation.ByteExtensions;
+import com.azure.core.util.BinaryData;
+import com.azure.security.keyvault.keys.implementation.BinaryDataJsonDeserializer;
+import com.azure.security.keyvault.keys.implementation.BinaryDataJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -18,19 +18,30 @@ import java.util.Objects;
  */
 @Fluent
 public final class KeyReleasePolicy {
-    /*
-     * Blob encoding the policy rules under which the key can be released.
+    /**
+     * The policy rules under which the key can be released. Encoded based on the {@link KeyReleasePolicy#contentType}.
+     *
+     * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
+     * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+     * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
     @JsonProperty(value = "data")
-    @JsonSerialize(using = Base64UrlJsonSerializer.class)
-    @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
-    private byte[] data;
+    @JsonSerialize(using = BinaryDataJsonSerializer.class)
+    @JsonDeserialize(using = BinaryDataJsonDeserializer.class)
+    private BinaryData encodedPolicy;
 
     /*
      * Content type and version of key release policy.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
+
+    /*
+     * Defines the mutability state of the policy. Once marked immutable on the service side, this flag cannot be reset
+     * and the policy cannot be changed under any circumstances.
+     */
+    @JsonProperty(value = "immutable")
+    private Boolean immutable;
 
     KeyReleasePolicy() {
         // Empty constructor for Jackson Deserialization
@@ -39,21 +50,31 @@ public final class KeyReleasePolicy {
     /**
      * Creates an instance of {@link KeyReleasePolicy}.
      *
-     * @param data A blob encoding the policy rules under which the key can be released.
+     * @param encodedPolicy The policy rules under which the key can be released. Encoded based on the
+     * {@link KeyReleasePolicy#contentType}.
+     *
+     * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
+     * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+     * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
-    public KeyReleasePolicy(byte[] data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
+    public KeyReleasePolicy(BinaryData encodedPolicy) {
+        Objects.requireNonNull(encodedPolicy, "'encodedPolicy' cannot be null.");
 
-        this.data = ByteExtensions.clone(data);
+        this.encodedPolicy = encodedPolicy;
     }
 
     /**
      * Get a blob encoding the policy rules under which the key can be released.
      *
-     * @return A blob encoding the policy rules under which the key can be released.
+     * @return encodedPolicy The policy rules under which the key can be released. Encoded based on the
+     * {@link KeyReleasePolicy#contentType}.
+     *
+     * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
+     * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
+     * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
-    public byte[] getData() {
-        return ByteExtensions.clone(this.data);
+    public BinaryData getEncodedPolicy() {
+        return encodedPolicy;
     }
 
     /**
@@ -76,6 +97,30 @@ public final class KeyReleasePolicy {
      */
     public KeyReleasePolicy setContentType(String contentType) {
         this.contentType = contentType;
+
+        return this;
+    }
+
+    /**
+     * Get a value indicating if the policy is immutable. Once marked immutable on the service side, this flag cannot
+     * be reset and the policy cannot be changed under any circumstances.
+     *
+     * @return If the {@link KeyReleasePolicy} is immutable.
+     */
+    public Boolean isImmutable() {
+        return this.immutable;
+    }
+
+    /**
+     * Get a value indicating if the policy is immutable. Defines the mutability state of the policy. Once marked
+     * immutable on the service side, this flag cannot be reset and the policy cannot be changed under any
+     * circumstances.
+     *
+     * @param immutable The immutable value to set.
+     * @return The updated {@link KeyReleasePolicy} object.
+     */
+    public KeyReleasePolicy setImmutable(Boolean immutable) {
+        this.immutable = immutable;
 
         return this;
     }

@@ -9,9 +9,9 @@ If an SDK is being regenerated based on a new swagger spec, a link to the pull r
 - [ ] **CHANGELOG is updated for new features, bug fixes or other significant changes.**
 - [ ] **I have read the [contribution guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).**
 
-## [General Guidelines and Best Practices](https://github.com/Azure/azure-sdk-for-net/blob/main/CONTRIBUTING.md#general-guidelines)
+## [General Guidelines and Best Practices](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#developer-guide)
 - [ ] Title of the pull request is clear and informative.
 - [ ] There are a small number of commits, each of which have an informative message. This means that previously merged commits do not appear in the history of the PR. For more information on cleaning up the commits in your PR, [see this page](https://github.com/Azure/azure-powershell/blob/master/documentation/development-docs/cleaning-up-commits.md).
 
-### [Testing Guidelines](../../CONTRIBUTING.md#building-and-unit-testing)
+### [Testing Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#building-and-unit-testing)
 - [ ] Pull request includes test coverage for the included changes.

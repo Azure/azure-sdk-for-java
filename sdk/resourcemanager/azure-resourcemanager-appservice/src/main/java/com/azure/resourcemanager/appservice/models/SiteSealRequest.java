@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Site seal request. */
 @Fluent
 public final class SiteSealRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteSealRequest.class);
-
     /*
      * If <code>true</code> use the light color theme for site seal; otherwise,
      * use the default color theme.

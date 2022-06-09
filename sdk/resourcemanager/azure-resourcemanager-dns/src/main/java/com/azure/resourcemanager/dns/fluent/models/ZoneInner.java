@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -13,11 +12,11 @@ import com.azure.resourcemanager.dns.models.ZoneType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Describes a DNS zone. */
-@JsonFlatten
 @Fluent
-public class ZoneInner extends Resource {
+public final class ZoneInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneInner.class);
 
     /*
@@ -27,46 +26,10 @@ public class ZoneInner extends Resource {
     private String etag;
 
     /*
-     * The maximum number of record sets that can be created in this DNS zone.
-     * This is a read-only property and any attempt to set this value will be
-     * ignored.
+     * The properties of the zone.
      */
-    @JsonProperty(value = "properties.maxNumberOfRecordSets", access = JsonProperty.Access.WRITE_ONLY)
-    private Long maxNumberOfRecordSets;
-
-    /*
-     * The current number of record sets in this DNS zone.  This is a read-only
-     * property and any attempt to set this value will be ignored.
-     */
-    @JsonProperty(value = "properties.numberOfRecordSets", access = JsonProperty.Access.WRITE_ONLY)
-    private Long numberOfRecordSets;
-
-    /*
-     * The name servers for this DNS zone. This is a read-only property and any
-     * attempt to set this value will be ignored.
-     */
-    @JsonProperty(value = "properties.nameServers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> nameServers;
-
-    /*
-     * The type of this DNS zone (Public or Private).
-     */
-    @JsonProperty(value = "properties.zoneType")
-    private ZoneType zoneType;
-
-    /*
-     * A list of references to virtual networks that register hostnames in this
-     * DNS zone. This is a only when ZoneType is Private.
-     */
-    @JsonProperty(value = "properties.registrationVirtualNetworks")
-    private List<SubResource> registrationVirtualNetworks;
-
-    /*
-     * A list of references to virtual networks that resolve records in this
-     * DNS zone. This is a only when ZoneType is Private.
-     */
-    @JsonProperty(value = "properties.resolutionVirtualNetworks")
-    private List<SubResource> resolutionVirtualNetworks;
+    @JsonProperty(value = "properties")
+    private ZoneProperties innerProperties;
 
     /**
      * Get the etag property: The etag of the zone.
@@ -89,13 +52,46 @@ public class ZoneInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the zone.
+     *
+     * @return the innerProperties value.
+     */
+    private ZoneProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ZoneInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ZoneInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this DNS zone.
      * This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the maxNumberOfRecordSets value.
      */
     public Long maxNumberOfRecordSets() {
-        return this.maxNumberOfRecordSets;
+        return this.innerProperties() == null ? null : this.innerProperties().maxNumberOfRecordSets();
+    }
+
+    /**
+     * Get the maxNumberOfRecordsPerRecordSet property: The maximum number of records per record set that can be created
+     * in this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+     *
+     * @return the maxNumberOfRecordsPerRecordSet value.
+     */
+    public Long maxNumberOfRecordsPerRecordSet() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxNumberOfRecordsPerRecordSet();
     }
 
     /**
@@ -105,7 +101,7 @@ public class ZoneInner extends Resource {
      * @return the numberOfRecordSets value.
      */
     public Long numberOfRecordSets() {
-        return this.numberOfRecordSets;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfRecordSets();
     }
 
     /**
@@ -115,7 +111,7 @@ public class ZoneInner extends Resource {
      * @return the nameServers value.
      */
     public List<String> nameServers() {
-        return this.nameServers;
+        return this.innerProperties() == null ? null : this.innerProperties().nameServers();
     }
 
     /**
@@ -124,7 +120,7 @@ public class ZoneInner extends Resource {
      * @return the zoneType value.
      */
     public ZoneType zoneType() {
-        return this.zoneType;
+        return this.innerProperties() == null ? null : this.innerProperties().zoneType();
     }
 
     /**
@@ -134,7 +130,10 @@ public class ZoneInner extends Resource {
      * @return the ZoneInner object itself.
      */
     public ZoneInner withZoneType(ZoneType zoneType) {
-        this.zoneType = zoneType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ZoneProperties();
+        }
+        this.innerProperties().withZoneType(zoneType);
         return this;
     }
 
@@ -145,7 +144,7 @@ public class ZoneInner extends Resource {
      * @return the registrationVirtualNetworks value.
      */
     public List<SubResource> registrationVirtualNetworks() {
-        return this.registrationVirtualNetworks;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationVirtualNetworks();
     }
 
     /**
@@ -156,7 +155,10 @@ public class ZoneInner extends Resource {
      * @return the ZoneInner object itself.
      */
     public ZoneInner withRegistrationVirtualNetworks(List<SubResource> registrationVirtualNetworks) {
-        this.registrationVirtualNetworks = registrationVirtualNetworks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ZoneProperties();
+        }
+        this.innerProperties().withRegistrationVirtualNetworks(registrationVirtualNetworks);
         return this;
     }
 
@@ -167,7 +169,7 @@ public class ZoneInner extends Resource {
      * @return the resolutionVirtualNetworks value.
      */
     public List<SubResource> resolutionVirtualNetworks() {
-        return this.resolutionVirtualNetworks;
+        return this.innerProperties() == null ? null : this.innerProperties().resolutionVirtualNetworks();
     }
 
     /**
@@ -178,7 +180,10 @@ public class ZoneInner extends Resource {
      * @return the ZoneInner object itself.
      */
     public ZoneInner withResolutionVirtualNetworks(List<SubResource> resolutionVirtualNetworks) {
-        this.resolutionVirtualNetworks = resolutionVirtualNetworks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ZoneProperties();
+        }
+        this.innerProperties().withResolutionVirtualNetworks(resolutionVirtualNetworks);
         return this;
     }
 
@@ -188,5 +193,8 @@ public class ZoneInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

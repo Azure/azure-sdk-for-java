@@ -9,9 +9,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -27,23 +27,21 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
-import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
@@ -74,8 +72,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = ShareFileClientBuilder.class)
 public class ShareFileClient {
-    private final ClientLogger logger = new ClientLogger(ShareFileClient.class);
-
     private final ShareFileAsyncClient shareFileAsyncClient;
 
     /**
@@ -414,8 +410,8 @@ public class ShareFileClient {
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param filePermissionCopyMode Mode of file permission acquisition.
-     * @param ignoreReadOnly Whether or not to copy despite target being read only. (default is false)
-     * @param setArchiveAttribute Whether or not the archive attribute is to be set on the target. (default is true)
+     * @param ignoreReadOnly Whether to copy despite target being read only. (default is false)
+     * @param setArchiveAttribute Whether the archive attribute is to be set on the target. (default is true)
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
@@ -793,14 +789,8 @@ public class ShareFileClient {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
-            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
-                try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new ShareFileDownloadResponse(response)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                .thenReturn(new ShareFileDownloadResponse(response)));
 
         return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
     }
@@ -894,7 +884,67 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
+     * <pre>
+     * boolean result = fileClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the file associate with the client if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Response&lt;Boolean&gt; response = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        Mono<Response<Boolean>> response = shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -919,7 +969,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -950,7 +1000,7 @@ public class ShareFileClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * Retrieves the properties of the storage account's file. The properties include file metadata, last modified
      * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1568,7 +1618,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrl#long-long-long-String -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1576,7 +1626,6 @@ public class ShareFileClient {
      * @param sourceUrl Specifies the URL of the source file.
      * @return The {@link ShareFileUploadRangeFromUrlInfo file upload range from url info}
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
                                                               String sourceUrl) {
@@ -1600,7 +1649,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1613,7 +1662,6 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, Duration timeout, Context context) {
@@ -1638,7 +1686,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#long-long-long-String-ShareRequestConditions-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
@@ -1652,7 +1700,6 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, ShareRequestConditions requestConditions, Duration timeout,
@@ -1679,7 +1726,7 @@ public class ShareFileClient {
      * <!-- end com.azure.storage.file.share.ShareFileClient.uploadRangeFromUrlWithResponse#ShareFileUploadRangeFromUrlOptions-Duration-Context -->
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range-from-url">Azure Docs</a>.</p>
      *
      * @param options argument collection
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -1689,7 +1736,6 @@ public class ShareFileClient {
      * headers and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(
         ShareFileUploadRangeFromUrlOptions options, Duration timeout, Context context) {
@@ -2156,6 +2202,73 @@ public class ShareFileClient {
             .stream().reduce(new CloseHandlesInfo(0, 0),
                 (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
                     accu.getFailedHandles() + next.getFailedHandles()));
+    }
+
+    /**
+     * Moves the file to another location within the share.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-file">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.rename#String -->
+     * <pre>
+     * ShareFileClient renamedClient = client.rename&#40;destinationPath&#41;;
+     * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.rename#String -->
+     *
+     * @param destinationPath Relative path from the share to rename the file to.
+     * @return A {@link ShareFileClient} used to interact with the new file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareFileClient rename(String destinationPath) {
+        return renameWithResponse(new ShareFileRenameOptions(destinationPath), null, Context.NONE).getValue();
+    }
+
+    /**
+     * Moves the file to another location within the share.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-file">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * ShareFileRenameOptions options = new ShareFileRenameOptions&#40;destinationPath&#41;
+     *     .setDestinationRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setSourceRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setIgnoreReadOnly&#40;false&#41;
+     *     .setReplaceIfExists&#40;false&#41;
+     *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;;
+     *
+     * ShareFileClient newRenamedClient = client.renameWithResponse&#40;options, timeout, new Context&#40;key1, value1&#41;&#41;
+     *     .getValue&#40;&#41;;
+     * System.out.println&#40;&quot;File Client has been renamed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
+     *
+     * @param options {@link ShareFileRenameOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A  {@link Response} whose {@link Response#getValue() value} contains a {@link ShareFileClient} used to
+     * interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareFileAsyncClient>> mono = shareFileAsyncClient.renameWithResponse(options, context);
+        Response<ShareFileAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
+        return new SimpleResponse<>(response, new ShareFileClient(response.getValue()));
     }
 
     /**

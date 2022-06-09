@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** KeyPolicy assigned to the storage account. */
 @Fluent
 public final class KeyPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyPolicy.class);
-
     /*
      * The key expiration period in days.
      */

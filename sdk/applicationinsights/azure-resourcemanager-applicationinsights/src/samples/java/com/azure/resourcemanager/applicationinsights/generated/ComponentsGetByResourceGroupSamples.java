@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Components GetByResourceGroup. */
 public final class ComponentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsGet.json
      */
     /**
      * Sample code: ComponentGet.

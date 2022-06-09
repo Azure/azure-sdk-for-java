@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The value of a parameter. */
 @Fluent
 public final class ParameterValuesValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterValuesValue.class);
-
     /*
      * The value of the parameter.
      */

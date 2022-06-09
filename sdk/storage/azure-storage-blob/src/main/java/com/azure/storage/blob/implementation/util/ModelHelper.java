@@ -13,9 +13,12 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
+import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -24,7 +27,6 @@ import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
@@ -49,25 +51,28 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * This class provides helper methods for common model patterns.
  *
  * RESERVED FOR INTERNAL USE.
  */
-public class ModelHelper {
+public final class ModelHelper {
 
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+    private static final Pattern UNDERSCORE = Pattern.compile("_");
 
+    public static final Pattern FORWARD_SLASH = Pattern.compile("/");
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
      */
-    private static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+    public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
 
     /**
-     * Determines whether or not the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
+     * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
      *
      * @param authority The authority of a URL.
      * @throws MalformedURLException If the authority is malformed.
@@ -180,85 +185,14 @@ public class ModelHelper {
      * @param internalHeaders {@link BlobsDownloadHeaders}
      * @return {@link BlobDownloadHeaders}
      */
-    public static BlobDownloadHeaders populateBlobDownloadHeaders(
-        BlobsDownloadHeaders internalHeaders, String errorCode) {
+    public static BlobDownloadHeaders populateBlobDownloadHeaders(BlobsDownloadHeaders internalHeaders,
+        String errorCode) {
         /*
         We have these two types because we needed to update this interface in a way that could not be generated
         (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
         wrapping it. Because it's headers type, we couldn't change the name of the generated type.
          */
-        com.azure.storage.blob.models.BlobDownloadHeaders headers =
-            new com.azure.storage.blob.models.BlobDownloadHeaders();
-        headers.setLastModified(internalHeaders.getLastModified());
-        headers.setMetadata(internalHeaders.getXMsMeta());
-        headers.setETag(internalHeaders.getETag());
-        headers.setContentLength(internalHeaders.getContentLength());
-        headers.setContentType(internalHeaders.getContentType());
-        headers.setContentRange(internalHeaders.getContentRange());
-        headers.setContentEncoding(internalHeaders.getContentEncoding());
-        headers.setContentLanguage(internalHeaders.getContentLanguage());
-        headers.setContentMd5(internalHeaders.getContentMD5());
-        headers.setContentDisposition(internalHeaders.getContentDisposition());
-        headers.setCacheControl(internalHeaders.getCacheControl());
-        headers.setBlobSequenceNumber(internalHeaders.getXMsBlobSequenceNumber());
-        headers.setBlobType(internalHeaders.getXMsBlobType());
-        headers.setLeaseStatus(internalHeaders.getXMsLeaseStatus());
-        headers.setLeaseState(internalHeaders.getXMsLeaseState());
-        headers.setLeaseDuration(internalHeaders.getXMsLeaseDuration());
-        headers.setCopyId(internalHeaders.getXMsCopyId());
-        headers.setCopyStatus(internalHeaders.getXMsCopyStatus());
-        headers.setCopySource(internalHeaders.getXMsCopySource());
-        headers.setCopyProgress(internalHeaders.getXMsCopyProgress());
-        headers.setCopyCompletionTime(internalHeaders.getXMsCopyCompletionTime());
-        headers.setCopyStatusDescription(internalHeaders.getXMsCopyStatusDescription());
-        headers.setIsServerEncrypted(internalHeaders.isXMsServerEncrypted());
-        headers.setClientRequestId(internalHeaders.getXMsClientRequestId());
-        headers.setRequestId(internalHeaders.getXMsRequestId());
-        headers.setVersion(internalHeaders.getXMsVersion());
-        headers.setVersionId(internalHeaders.getXMsVersionId());
-        headers.setAcceptRanges(internalHeaders.getAcceptRanges());
-        headers.setDateProperty(internalHeaders.getDateProperty());
-        headers.setBlobCommittedBlockCount(internalHeaders.getXMsBlobCommittedBlockCount());
-        headers.setEncryptionKeySha256(internalHeaders.getXMsEncryptionKeySha256());
-        headers.setEncryptionScope(internalHeaders.getXMsEncryptionScope());
-        headers.setBlobContentMD5(internalHeaders.getXMsBlobContentMd5());
-        headers.setContentCrc64(internalHeaders.getXMsContentCrc64());
-        headers.setErrorCode(errorCode);
-        headers.setTagCount(internalHeaders.getXMsTagCount());
-
-        Map<String, String> objectReplicationStatus = internalHeaders.getXMsOr();
-        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
-        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
-        headers.setObjectReplicationDestinationPolicyId(objectReplicationStatus.getOrDefault("policy-id", null));
-        if (headers.getObjectReplicationDestinationPolicyId() == null) {
-            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
-                String[] split = entry.getKey().split("_");
-                String policyId = split[0];
-                String ruleId = split[1];
-                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
-                    ObjectReplicationStatus.fromString(entry.getValue()));
-                if (!internalSourcePolicies.containsKey(policyId)) {
-                    internalSourcePolicies.put(policyId, new ArrayList<>());
-                }
-                internalSourcePolicies.get(policyId).add(rule);
-            }
-        }
-        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
-        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
-            objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
-        }
-        headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
-        headers.setSealed(internalHeaders.isXMsBlobSealed());
-        headers.setLastAccessedTime(internalHeaders.getXMsLastAccessTime());
-        headers.setCurrentVersion(internalHeaders.isXMsIsCurrentVersion());
-
-        headers.setImmutabilityPolicy(new BlobImmutabilityPolicy()
-            .setPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
-            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
-            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate()));
-        headers.setHasLegalHold(internalHeaders.isXMsLegalHold());
-
-        return headers;
+        return BlobDownloadHeadersConstructorProxy.create(internalHeaders).setErrorCode(errorCode);
     }
 
     /**
@@ -372,7 +306,7 @@ public class ModelHelper {
         for (Map.Entry<String, String> entry : objectReplicationMetadata.entrySet()) {
             String orString = entry.getKey();
             String str = orString.startsWith("or-") ? orString.substring(3) : orString;
-            String[] split = str.split("_");
+            String[] split = UNDERSCORE.split(str, 2);
             String policyId = split[0];
             String ruleId = split[1];
             ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
@@ -462,7 +396,7 @@ public class ModelHelper {
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         if (getObjectReplicationDestinationPolicyId(objectReplicationStatus) == null) {
             for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
-                String[] split = entry.getKey().split("_");
+                String[] split = UNDERSCORE.split(entry.getKey(), 2);
                 String policyId = split[0];
                 String ruleId = split[1];
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
@@ -481,36 +415,34 @@ public class ModelHelper {
     }
 
     public static String getErrorCode(HttpHeaders headers) {
-        if (headers == null) {
-            return null;
-        }
-        return headers.getValue("x-ms-error-code");
+        return getHeaderValue(headers, "x-ms-error-code");
     }
 
     public static String getETag(HttpHeaders headers) {
+        return getHeaderValue(headers, "ETag");
+    }
+
+    private static String getHeaderValue(HttpHeaders headers, String headerName) {
         if (headers == null) {
             return null;
         }
-        return headers.getValue("ETag");
+        return headers.getValue(headerName);
     }
 
     public static BlobsDownloadHeaders transformBlobDownloadHeaders(HttpHeaders headers) {
-        if (headers == null) {
-            return null;
-        }
-        try {
-            return SERIALIZER.deserialize(headers, BlobsDownloadHeaders.class);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        return transformHeadersToClass(headers, BlobsDownloadHeaders.class);
     }
 
     public static BlobQueryHeaders transformQueryHeaders(HttpHeaders headers) {
+        return transformHeadersToClass(headers, BlobQueryHeaders.class);
+    }
+
+    private static <T> T transformHeadersToClass(HttpHeaders headers, Class<T> clazz) {
         if (headers == null) {
             return null;
         }
         try {
-            return SERIALIZER.deserialize(headers, BlobQueryHeaders.class);
+            return SERIALIZER.deserialize(headers, clazz);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -580,24 +512,15 @@ public class ModelHelper {
     }
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
-        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        BlobDownloadHeaders hd = response.getDeserializedHeaders();
-        long blobSize = getBlobLength(hd);
-        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
-            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
-            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
-            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
-            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
-            hd.isServerEncrypted(), null, null, null, null, null,
-            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
-            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
-            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BlobPropertiesConstructorProxy.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {
         return headers.getContentRange() == null ? headers.getContentLength()
             : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
+    }
+
+    private ModelHelper() {
     }
 }

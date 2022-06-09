@@ -28,7 +28,16 @@ import java.util.Map;
  */
 public class ReadmeSamples {
 
-    private FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"),
+    private static final String CONTAINER_STORES = "container1,container2"; // A comma separated list of container names
+    private static final StorageSharedKeyCredential SHARE_KEY_CREDENTIAL
+        = new StorageSharedKeyCredential("<account_name>", "<account_key>");
+    private static final Map<String, Object> CONFIG = new HashMap<String, Object>() {
+        {
+            put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, SHARE_KEY_CREDENTIAL);
+            put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, CONTAINER_STORES);
+        }
+    };
+    private FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?endpoint=<your_account_name"),
         Collections.emptyMap());
     private Path dirPath = myFs.getPath("dir");
     private Path filePath = myFs.getPath("file");

@@ -39,9 +39,11 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        createRsaKeyRunner((expected) -> StepVerifier.create(client.createRsaKey(expected))
-            .assertNext(response -> assertKeyEquals(expected, response))
-            .verifyComplete());
+
+        createRsaKeyRunner((keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createRsaKey(keyToCreate))
+                .assertNext(response -> assertKeyEquals(keyToCreate, response))
+                .verifyComplete());
     }
 
     /**
@@ -51,15 +53,15 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) ->
-            StepVerifier.create(client.createRsaKey(createRsaKeyOptions))
+
+        createRsaKeyWithPublicExponentRunner((keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createRsaKey(keyToCreate))
                 .assertNext(rsaKey -> {
-                    assertKeyEquals(createRsaKeyOptions, rsaKey);
-                    assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
+                    assertKeyEquals(keyToCreate, rsaKey);
+                    assertEquals(BigInteger.valueOf(keyToCreate.getPublicExponent()),
                         toBigInteger(rsaKey.getKey().getE()));
-                    assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
-                })
-                .verifyComplete());
+                    assertEquals(keyToCreate.getKeySize(), rsaKey.getKey().getN().length * 8);
+                }).verifyComplete());
     }
 
     /**
@@ -69,16 +71,16 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void createOctKeyWithDefaultSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        createOctKeyRunner(null, (createOctKeyOptions) ->
-            StepVerifier.create(client.createOctKey(createOctKeyOptions))
+
+        createOctKeyRunner(null, (keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createOctKey(keyToCreate))
                 .assertNext(octKey -> {
-                    assertEquals(createOctKeyOptions.getName(), octKey.getName());
+                    assertEquals(keyToCreate.getName(), octKey.getName());
                     assertEquals(KeyType.OCT_HSM, octKey.getKey().getKeyType());
-                    assertEquals(createOctKeyOptions.getExpiresOn(), octKey.getProperties().getExpiresOn());
-                    assertEquals(createOctKeyOptions.getNotBefore(), octKey.getProperties().getNotBefore());
-                    assertEquals(createOctKeyOptions.getTags(), octKey.getProperties().getTags());
-                })
-                .verifyComplete());
+                    assertEquals(keyToCreate.getExpiresOn(), octKey.getProperties().getExpiresOn());
+                    assertEquals(keyToCreate.getNotBefore(), octKey.getProperties().getNotBefore());
+                    assertEquals(keyToCreate.getTags(), octKey.getProperties().getTags());
+                }).verifyComplete());
     }
 
     /**
@@ -88,16 +90,16 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void createOctKeyWithValidSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        createOctKeyRunner(256, (createOctKeyOptions) ->
-            StepVerifier.create(client.createOctKey(createOctKeyOptions))
+
+        createOctKeyRunner(256, (keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createOctKey(keyToCreate))
                 .assertNext(octKey -> {
-                    assertEquals(createOctKeyOptions.getName(), octKey.getName());
+                    assertEquals(keyToCreate.getName(), octKey.getName());
                     assertEquals(KeyType.OCT_HSM, octKey.getKey().getKeyType());
-                    assertEquals(createOctKeyOptions.getExpiresOn(), octKey.getProperties().getExpiresOn());
-                    assertEquals(createOctKeyOptions.getNotBefore(), octKey.getProperties().getNotBefore());
-                    assertEquals(createOctKeyOptions.getTags(), octKey.getProperties().getTags());
-                })
-                .verifyComplete());
+                    assertEquals(keyToCreate.getExpiresOn(), octKey.getProperties().getExpiresOn());
+                    assertEquals(keyToCreate.getNotBefore(), octKey.getProperties().getNotBefore());
+                    assertEquals(keyToCreate.getTags(), octKey.getProperties().getTags());
+                }).verifyComplete());
     }
 
     /**
@@ -107,10 +109,11 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void createOctKeyWithInvalidSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        createOctKeyRunner(64, (createOctKeyOptions) ->
-            StepVerifier.create(client.createOctKey(createOctKeyOptions))
-                .verifyErrorSatisfies(ex ->
-                    assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST)));
+
+        createOctKeyRunner(64, (keyToCreate) ->
+            StepVerifier.create(keyAsyncClient.createOctKey(keyToCreate))
+                .verifyErrorSatisfies(e ->
+                    assertRestException(e, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST)));
     }
 
     /**
@@ -120,9 +123,10 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
+
         getRandomBytesRunner((count) ->
-            StepVerifier.create(client.getRandomBytes(count))
-                .assertNext(randomBytes -> assertEquals(count, randomBytes.getBytes().length))
+            StepVerifier.create(keyAsyncClient.getRandomBytes(count))
+                .assertNext(randomBytes -> assertEquals(count, randomBytes.length))
                 .verifyComplete());
     }
 

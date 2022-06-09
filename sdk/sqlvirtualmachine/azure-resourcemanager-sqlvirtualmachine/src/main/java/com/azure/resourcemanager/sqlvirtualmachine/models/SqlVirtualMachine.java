@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
 import java.util.Map;
@@ -52,6 +53,13 @@ public interface SqlVirtualMachine {
      * @return the identity value.
      */
     ResourceIdentity identity();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the virtualMachineResourceId property: ARM Resource id of underlying virtual machine created from SQL
@@ -149,6 +157,13 @@ public interface SqlVirtualMachine {
     StorageConfigurationSettings storageConfigurationSettings();
 
     /**
+     * Gets the assessmentSettings property: Assessment Settings.
+     *
+     * @return the assessmentSettings value.
+     */
+    AssessmentSettings assessmentSettings();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -222,13 +237,13 @@ public interface SqlVirtualMachine {
                 DefinitionStages.WithSqlServerLicenseType,
                 DefinitionStages.WithSqlManagement,
                 DefinitionStages.WithSqlImageSku,
-                DefinitionStages.WithSqlVirtualMachineGroupResourceId,
                 DefinitionStages.WithWsfcDomainCredentials,
                 DefinitionStages.WithAutoPatchingSettings,
                 DefinitionStages.WithAutoBackupSettings,
                 DefinitionStages.WithKeyVaultCredentialSettings,
                 DefinitionStages.WithServerConfigurationsManagementSettings,
-                DefinitionStages.WithStorageConfigurationSettings {
+                DefinitionStages.WithStorageConfigurationSettings,
+                DefinitionStages.WithAssessmentSettings {
             /**
              * Executes the create request.
              *
@@ -316,18 +331,6 @@ public interface SqlVirtualMachine {
              */
             WithCreate withSqlImageSku(SqlImageSku sqlImageSku);
         }
-        /** The stage of the SqlVirtualMachine definition allowing to specify sqlVirtualMachineGroupResourceId. */
-        interface WithSqlVirtualMachineGroupResourceId {
-            /**
-             * Specifies the sqlVirtualMachineGroupResourceId property: ARM resource id of the SQL virtual machine group
-             * this SQL virtual machine is or will be part of..
-             *
-             * @param sqlVirtualMachineGroupResourceId ARM resource id of the SQL virtual machine group this SQL virtual
-             *     machine is or will be part of.
-             * @return the next definition stage.
-             */
-            WithCreate withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId);
-        }
         /** The stage of the SqlVirtualMachine definition allowing to specify wsfcDomainCredentials. */
         interface WithWsfcDomainCredentials {
             /**
@@ -394,6 +397,16 @@ public interface SqlVirtualMachine {
              */
             WithCreate withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings);
         }
+        /** The stage of the SqlVirtualMachine definition allowing to specify assessmentSettings. */
+        interface WithAssessmentSettings {
+            /**
+             * Specifies the assessmentSettings property: Assessment Settings..
+             *
+             * @param assessmentSettings Assessment Settings.
+             * @return the next definition stage.
+             */
+            WithCreate withAssessmentSettings(AssessmentSettings assessmentSettings);
+        }
     }
     /**
      * Begins update for the SqlVirtualMachine resource.
@@ -446,4 +459,40 @@ public interface SqlVirtualMachine {
      * @return the refreshed resource.
      */
     SqlVirtualMachine refresh(Context context);
+
+    /**
+     * Uninstalls and reinstalls the SQL Iaas Extension.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void redeploy();
+
+    /**
+     * Uninstalls and reinstalls the SQL Iaas Extension.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void redeploy(Context context);
+
+    /**
+     * Starts Assessment on SQL virtual machine.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startAssessment();
+
+    /**
+     * Starts Assessment on SQL virtual machine.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startAssessment(Context context);
 }

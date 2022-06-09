@@ -7,7 +7,13 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -16,9 +22,11 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
@@ -33,7 +41,8 @@ import java.util.Objects;
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
- * The client needs the service endpoint of the Azure Document Analysis to access the resource service.
+ * The client needs the service endpoint of the Azure Document Analysis to access the resource service and the audience
+ * for the service region that you want to target.
  * {@link #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} gives
  * the builder access credential.
  * </p>
@@ -86,7 +95,12 @@ import java.util.Objects;
  * @see DocumentAnalysisClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
-public final class DocumentAnalysisClientBuilder {
+public final class DocumentAnalysisClientBuilder implements
+    AzureKeyCredentialTrait<DocumentAnalysisClientBuilder>,
+    ConfigurationTrait<DocumentAnalysisClientBuilder>,
+    EndpointTrait<DocumentAnalysisClientBuilder>,
+    HttpTrait<DocumentAnalysisClientBuilder>,
+    TokenCredentialTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -94,14 +108,16 @@ public final class DocumentAnalysisClientBuilder {
 
     private ClientOptions clientOptions;
     private String endpoint;
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private TokenCredential tokenCredential;
     private DocumentAnalysisServiceVersion version;
+    private FormRecognizerAudience audience;
 
     /**
      * Creates a {@link DocumentAnalysisClient} based on options set in the builder. Every time
@@ -114,9 +130,12 @@ public final class DocumentAnalysisClientBuilder {
      * </p>
      *
      * @return A DocumentAnalysisClient with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #credential(AzureKeyCredential)} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set or If {@code audience} has not been set.
+     * You can set it by calling {@link #audience(FormRecognizerAudience)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentAnalysisClient buildClient() {
         return new DocumentAnalysisClient(buildAsyncClient());
@@ -134,13 +153,19 @@ public final class DocumentAnalysisClientBuilder {
      *
      * @return A DocumentAnalysisAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
-     * has not been set.
+     * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
+     * You can set the values by calling {@link #endpoint(String)} and {@link #audience(FormRecognizerAudience)}
+     * respectively.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentAnalysisAsyncClient buildAsyncClient() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
-
+        if (audience == null) {
+            audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+        }
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
@@ -152,9 +177,20 @@ public final class DocumentAnalysisClientBuilder {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration,
-                retryPolicy, credential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient);
+            pipeline = Utility.buildHttpPipeline(
+                clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                retryOptions,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
         }
+
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
@@ -173,6 +209,7 @@ public final class DocumentAnalysisClientBuilder {
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
+    @Override
     public DocumentAnalysisClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
@@ -200,33 +237,44 @@ public final class DocumentAnalysisClientBuilder {
      * @return The updated DocumentAnalysisClientBuilder object.
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
+    @Override
     public DocumentAnalysisClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
+        this.azureKeyCredential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link DocumentAnalysisClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public DocumentAnalysisClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p>If {@code logOptions} isn't provided, the default options will use {@link HttpLogDetailLevel#NONE}
-     * which will prevent logging.</p>
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -243,24 +291,45 @@ public final class DocumentAnalysisClientBuilder {
     }
 
     /**
-     * Sets the client options such as application ID and custom headers to set on a request.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * @param clientOptions The client options.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated DocumentAnalysisClientBuilder object.
+     * @see HttpClientOptions
      */
+    @Override
     public DocumentAnalysisClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param policy The retry policy for service requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public DocumentAnalysisClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -273,12 +342,20 @@ public final class DocumentAnalysisClientBuilder {
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param client The HTTP client to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param client The {@link HttpClient} to use for requests.
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -289,16 +366,24 @@ public final class DocumentAnalysisClientBuilder {
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
+     * Sets the {@link HttpPipeline} to use for the service client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from
      * {@link DocumentAnalysisClientBuilder#endpoint(String) endpoint} to build {@link DocumentAnalysisAsyncClient} or
      * {@link DocumentAnalysisClient}.
      *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -318,6 +403,7 @@ public final class DocumentAnalysisClientBuilder {
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -328,6 +414,8 @@ public final class DocumentAnalysisClientBuilder {
      * <p>
      * The default retry policy will be used if not provided {@link DocumentAnalysisClientBuilder#buildAsyncClient()}
      * to build {@link DocumentAnalysisAsyncClient} or {@link DocumentAnalysisClient}.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
@@ -335,6 +423,28 @@ public final class DocumentAnalysisClientBuilder {
      */
     public DocumentAnalysisClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     *
+     * @return The updated DocumentModelAdministrationClientBuilder object.
+     */
+    @Override
+    public DocumentAnalysisClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 
@@ -351,6 +461,20 @@ public final class DocumentAnalysisClientBuilder {
      */
     public DocumentAnalysisClientBuilder serviceVersion(DocumentAnalysisServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the audience for the Azure Form Recognizer service.
+     * The default audience is {@link FormRecognizerAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     *
+     * @param audience ARM management audience associated with the given form recognizer resource.
+     * @throws NullPointerException If {@code audience} is null.
+     * @return The updated {@link DocumentAnalysisClientBuilder} object.
+     */
+    public DocumentAnalysisClientBuilder audience(FormRecognizerAudience audience) {
+        Objects.requireNonNull(audience, "'audience' is required and can not be null");
+        this.audience = audience;
         return this;
     }
 }

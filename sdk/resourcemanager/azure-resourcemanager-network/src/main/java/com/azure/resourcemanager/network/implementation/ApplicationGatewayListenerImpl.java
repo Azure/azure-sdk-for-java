@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
@@ -16,6 +17,9 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /** Implementation for ApplicationGatewayListener. */
 class ApplicationGatewayListenerImpl
@@ -61,7 +65,24 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public String hostname() {
-        return this.innerModel().hostname();
+        if (this.innerModel().hostname() != null) {
+            return this.innerModel().hostname();
+        }
+        if (!CoreUtils.isNullOrEmpty(this.innerModel().hostNames())) {
+            return this.innerModel().hostNames().get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> hostnames() {
+        if (this.innerModel().hostname() != null) {
+            return Collections.singletonList(this.innerModel().hostname());
+        }
+        if (CoreUtils.isNullOrEmpty(this.innerModel().hostNames())) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.innerModel().hostNames());
     }
 
     @Override
@@ -237,7 +258,21 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
-        this.innerModel().withHostname(hostname);
+        if (hostname != null) {
+            this.innerModel().withHostname(null);
+            List<String> hostNames = new ArrayList<>();
+            hostNames.add(hostname);
+            this.innerModel().withHostNames(hostNames);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayListenerImpl withHostnames(List<String> hostnames) {
+        if (!CoreUtils.isNullOrEmpty(hostnames)) {
+            this.innerModel().withHostname(null);
+            this.innerModel().withHostNames(hostnames);
+        }
         return this;
     }
 

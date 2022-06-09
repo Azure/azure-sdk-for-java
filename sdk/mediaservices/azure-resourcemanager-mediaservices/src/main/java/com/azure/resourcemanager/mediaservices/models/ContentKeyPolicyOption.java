@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Represents a policy option. */
 @Fluent
 public final class ContentKeyPolicyOption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyOption.class);
-
     /*
      * The legacy Policy Option ID.
      */
@@ -116,7 +113,7 @@ public final class ContentKeyPolicyOption {
      */
     public void validate() {
         if (configuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property configuration in model ContentKeyPolicyOption"));
@@ -124,7 +121,7 @@ public final class ContentKeyPolicyOption {
             configuration().validate();
         }
         if (restriction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property restriction in model ContentKeyPolicyOption"));
@@ -132,4 +129,6 @@ public final class ContentKeyPolicyOption {
             restriction().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyOption.class);
 }

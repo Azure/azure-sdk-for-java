@@ -2,26 +2,31 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -102,19 +107,17 @@ import java.util.Objects;
 @ServiceClientBuilder(
     serviceClients = {
         ContainerRegistryClient.class,
-        ContainerRegistryAsyncClient.class
+        ContainerRegistryAsyncClient.class,
+        ContainerRepositoryAsync.class,
+        ContainerRepository.class,
+        RegistryArtifactAsync.class,
+        RegistryArtifact.class
     })
-public final class ContainerRegistryClientBuilder {
-    private static final String CLIENT_NAME;
-    private static final String CLIENT_VERSION;
-
-    static {
-        Map<String, String> properties =
-            CoreUtils.getProperties("azure-containers-containerregistry.properties");
-        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
-        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-    }
-
+public final class ContainerRegistryClientBuilder implements
+    ConfigurationTrait<ContainerRegistryClientBuilder>,
+    EndpointTrait<ContainerRegistryClientBuilder>,
+    HttpTrait<ContainerRegistryClientBuilder>,
+    TokenCredentialTrait<ContainerRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -126,6 +129,7 @@ public final class ContainerRegistryClientBuilder {
     private HttpPipeline httpPipeline;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private ContainerRegistryServiceVersion version;
     private ContainerRegistryAudience audience;
 
@@ -136,11 +140,12 @@ public final class ContainerRegistryClientBuilder {
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
+    @Override
     public ContainerRegistryClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
         this.endpoint = endpoint;
@@ -151,28 +156,36 @@ public final class ContainerRegistryClientBuilder {
      * Sets the audience for the Azure Container Registry service.
      *
      * @param audience ARM management scope associated with the given registry.
-     * @throws NullPointerException If {@code audience} is null.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
     public ContainerRegistryClientBuilder audience(ContainerRegistryAudience audience) {
-        Objects.requireNonNull(audience, "'audience' can't be null");
         this.audience = audience;
         return this;
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authenticate REST API calls.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param credential Azure token credentials used to authenticate HTTP requests.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = credential;
         return this;
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
+     * Sets the {@link HttpPipeline} to use for the service client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
      * If {@code pipeline} is set, all settings other than {@link #endpoint(String) endpoint} are ignored
      * to build {@link ContainerRegistryAsyncClient} or {@link ContainerRegistryClient}.<br>
@@ -183,9 +196,10 @@ public final class ContainerRegistryClientBuilder {
      *
      * {For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a> }.
      *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -209,11 +223,19 @@ public final class ContainerRegistryClientBuilder {
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient The HTTP client to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -223,16 +245,25 @@ public final class ContainerRegistryClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
-     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
-     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param clientOptions {@link ClientOptions}.
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
      *
      * @return the updated {@link ContainerRegistryClientBuilder} object
+     * @see HttpClientOptions
      */
+    @Override
     public ContainerRegistryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -247,19 +278,28 @@ public final class ContainerRegistryClientBuilder {
      * @param configuration The configuration store to be used.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p> If logLevel is not provided, HTTP request or response logging will not happen.</p>
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param httpLogOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests
+     * to and from the service.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -270,6 +310,8 @@ public final class ContainerRegistryClientBuilder {
      * <p>
      * The default retry policy will be used if not provided {@link #buildAsyncClient()} to
      * build {@link ContainerRegistryClient} or {@link ContainerRegistryAsyncClient}.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
      * {@link RetryPolicy} can be used to retry requests.
@@ -282,12 +324,42 @@ public final class ContainerRegistryClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
      *
-     * @param policy The policy for service requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     *
+     * @return The updated ContainerRegistryClientBuilder object.
+     */
+    @Override
+    public ContainerRegistryClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated ContainerRegistryClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public ContainerRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -308,12 +380,13 @@ public final class ContainerRegistryClientBuilder {
      * are used to create the {@link ContainerRegistryAsyncClient client}. All other builder settings are ignored.
      *
      * @return A {@link ContainerRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code audience} is null.
+     * @throws NullPointerException If {@code endpoint} is null.
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public ContainerRegistryAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' can't be null");
-        Objects.requireNonNull(audience, "'audience' can't be null");
 
         // Service version
         ContainerRegistryServiceVersion serviceVersion = (version != null)
@@ -331,11 +404,12 @@ public final class ContainerRegistryClientBuilder {
             return httpPipeline;
         }
 
-        return Utils.buildHttpPipeline(
+        return UtilsImpl.buildHttpPipeline(
             this.clientOptions,
             this.httpLogOptions,
             this.configuration,
             this.retryPolicy,
+            this.retryOptions,
             this.credential,
             this.audience,
             this.perCallPolicies,
@@ -357,6 +431,8 @@ public final class ContainerRegistryClientBuilder {
      * @return A {@link ContainerRegistryClient} with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. You can set it by calling {@link #endpoint(String)}.
      * @throws NullPointerException If {@code audience} has not been set. You can set it by calling {@link #audience(ContainerRegistryAudience)}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public ContainerRegistryClient buildClient() {
         return new ContainerRegistryClient(buildAsyncClient());

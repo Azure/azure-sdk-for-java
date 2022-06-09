@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the Shared Image Gallery that you want to update. */
 @Fluent
 public final class GalleryUpdate extends UpdateResourceDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryUpdate.class);
-
     /*
      * Describes the properties of a Shared Image Gallery.
      */
@@ -85,12 +81,12 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery. The provisioning state, which only appears
-     * in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
+     * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -138,6 +134,15 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
         }
         this.innerProperties().withSoftDeletePolicy(softDeletePolicy);
         return this;
+    }
+
+    /**
+     * Get the sharingStatus property: Sharing status of current gallery.
+     *
+     * @return the sharingStatus value.
+     */
+    public SharingStatus sharingStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharingStatus();
     }
 
     /**

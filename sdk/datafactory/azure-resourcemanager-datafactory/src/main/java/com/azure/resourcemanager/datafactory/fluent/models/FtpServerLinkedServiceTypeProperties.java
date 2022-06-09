@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.FtpAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class FtpServerLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FtpServerLinkedServiceTypeProperties.class);
-
     /*
      * Host name of the FTP server. Type: string (or Expression with resultType
      * string).
@@ -249,7 +246,7 @@ public final class FtpServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model FtpServerLinkedServiceTypeProperties"));
@@ -258,4 +255,6 @@ public final class FtpServerLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FtpServerLinkedServiceTypeProperties.class);
 }

@@ -18,6 +18,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -41,6 +42,7 @@ import java.util.Map;
 public class ShareFileAsyncJavaDocCodeSamples {
     String leaseId = "leaseId";
     ShareFileAsyncClient client = createAsyncClientWithSASToken();
+    private String destinationPath = "destinationPath";
 
     /**
      * Generates code sample for {@link ShareFileAsyncClient} instantiation.
@@ -1037,6 +1039,35 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link ShareFileAsyncClient#rename(String)} and
+     * {@link ShareFileAsyncClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions)}
+     */
+    public void renameCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.rename#String
+        ShareFileAsyncClient renamedClient = client.rename(destinationPath).block();
+        System.out.println("File Client has been renamed");
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.rename#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareFileRenameOptions
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationPath)
+            .setDestinationRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setSourceRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setIgnoreReadOnly(false)
+            .setReplaceIfExists(false)
+            .setFilePermission("filePermission")
+            .setSmbProperties(smbProperties);
+
+        ShareFileAsyncClient newRenamedClient = client.renameWithResponse(options).block().getValue();
+        System.out.println("File Client has been renamed");
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.renameWithResponse#ShareFileRenameOptions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareFileAsyncClient#getShareSnapshotId()}
      */
     public void getShareSnapshotIdAsync() {
@@ -1107,5 +1138,34 @@ public class ShareFileAsyncJavaDocCodeSamples {
         // Client must be authenticated via StorageSharedKeyCredential
         shareFileAsyncClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#deleteIfExists()},
+     * {@link ShareFileAsyncClient#deleteIfExistsWithResponse()} and
+     * {@link ShareFileAsyncClient#deleteIfExistsWithResponse(ShareRequestConditions)}
+     */
+    public void deleteFileIfExistsCodeSnippets() {
+        ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
+        shareFileAsyncClient.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        shareFileAsyncClient.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
     }
 }

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the list schema operation. */
 @Fluent
 public final class SchemaCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaCollection.class);
-
     /*
-     * Api Schema Contract value.
+     * API Schema Contract value.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SchemaContractInner> value;
@@ -35,7 +31,7 @@ public final class SchemaCollection {
     private String nextLink;
 
     /**
-     * Get the value property: Api Schema Contract value.
+     * Get the value property: API Schema Contract value.
      *
      * @return the value value.
      */

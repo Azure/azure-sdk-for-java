@@ -18,7 +18,7 @@ public interface SnapshotPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SnapshotPolicy> list(String resourceGroupName, String accountName);
 
@@ -31,7 +31,7 @@ public interface SnapshotPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SnapshotPolicy> list(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +58,7 @@ public interface SnapshotPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy along with {@link Response}.
      */
     Response<SnapshotPolicy> getWithResponse(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
@@ -111,7 +111,7 @@ public interface SnapshotPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy.
+     * @return volumes associated with snapshot policy along with {@link Response}.
      */
     Response<SnapshotPolicyVolumeList> listVolumesWithResponse(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
@@ -123,7 +123,7 @@ public interface SnapshotPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy along with {@link Response}.
      */
     SnapshotPolicy getById(String id);
 
@@ -135,7 +135,7 @@ public interface SnapshotPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy along with {@link Response}.
      */
     Response<SnapshotPolicy> getByIdWithResponse(String id, Context context);
 

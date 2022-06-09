@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Microsoft Access linked service properties. */
 @Fluent
 public final class MicrosoftAccessLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftAccessLinkedServiceTypeProperties.class);
-
     /*
      * The non-access credential portion of the connection string as well as an
      * optional encrypted credential. Type: string, SecureString or
@@ -196,7 +193,7 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
@@ -209,4 +206,6 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftAccessLinkedServiceTypeProperties.class);
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AlexaChannel")
 @Fluent
 public final class AlexaChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlexaChannel.class);
-
     /*
      * The set of properties specific to Alexa channel resource
      */
@@ -41,6 +37,20 @@ public final class AlexaChannel extends Channel {
      */
     public AlexaChannel withProperties(AlexaChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AlexaChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AlexaChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

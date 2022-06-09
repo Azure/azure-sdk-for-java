@@ -302,4 +302,11 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3ReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

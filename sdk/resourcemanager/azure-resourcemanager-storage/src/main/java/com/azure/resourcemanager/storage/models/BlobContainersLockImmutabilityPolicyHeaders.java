@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BlobContainersLockImmutabilityPolicyHeaders model. */
 @Fluent
 public final class BlobContainersLockImmutabilityPolicyHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobContainersLockImmutabilityPolicyHeaders.class);
-
     /*
      * The Etag property.
      */

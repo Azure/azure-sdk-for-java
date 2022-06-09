@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -29,7 +27,7 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private final DiagnosticsClientContext diagnosticsClientContext;
+    private final DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig;
     private String activityId;
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
@@ -43,13 +41,11 @@ public class ClientSideRequestStatistics {
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
-    private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
-    private GlobalEndpointManager globalEndpointManager;
 
-    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
-        this.diagnosticsClientContext = diagnosticsClientContext;
+    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
+        this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -62,7 +58,24 @@ public class ClientSideRequestStatistics {
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
-        this.globalEndpointManager = globalEndpointManager;
+    }
+
+    public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
+        this.diagnosticsClientConfig = toBeCloned.diagnosticsClientConfig;
+        this.requestStartTimeUTC = toBeCloned.requestStartTimeUTC;
+        this.requestEndTimeUTC = toBeCloned.requestEndTimeUTC;
+        this.responseStatisticsList = new ArrayList<>(toBeCloned.responseStatisticsList);
+        this.supplementalResponseStatisticsList = new ArrayList<>(toBeCloned.supplementalResponseStatisticsList);
+        this.addressResolutionStatistics = new HashMap<>(toBeCloned.addressResolutionStatistics);
+        this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
+        this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
+        this.regionsContacted = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionsContacted));
+        this.locationEndpointsContacted = Collections.synchronizedSet(
+            new HashSet<>(toBeCloned.locationEndpointsContacted));
+        this.metadataDiagnosticsContext = new MetadataDiagnosticsContext(toBeCloned.metadataDiagnosticsContext);
+        this.serializationDiagnosticsContext =
+            new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
+        this.retryContext = new RetryContext(toBeCloned.retryContext);
     }
 
     public Duration getDuration() {
@@ -73,17 +86,17 @@ public class ClientSideRequestStatistics {
         return requestStartTimeUTC;
     }
 
-    public DiagnosticsClientContext getDiagnosticsClientContext() {
-        return diagnosticsClientContext;
+    public DiagnosticsClientContext.DiagnosticsClientConfig getDiagnosticsClientConfig() {
+        return diagnosticsClientConfig;
     }
 
-    public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
+    public void recordResponse(RxDocumentServiceRequest request, StoreResultDiagnostics storeResultDiagnostics, GlobalEndpointManager globalEndpointManager) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
         storeResponseStatistics.requestResponseTimeUTC = responseTime;
-        storeResponseStatistics.storeResult = storeResult;
+        storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         activityId = request.getActivityId().toString();
@@ -102,7 +115,7 @@ public class ClientSideRequestStatistics {
             }
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
@@ -116,8 +129,7 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordGatewayResponse(
-        RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
-        CosmosException exception) {
+        RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponseDiagnostics storeResponseDiagnostics, GlobalEndpointManager globalEndpointManager) {
         Instant responseTime = Instant.now();
 
         synchronized (this) {
@@ -132,7 +144,7 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
@@ -141,32 +153,16 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 this.gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
             }
-            if (storeResponse != null) {
-                this.gatewayStatistics.statusCode = storeResponse.getStatus();
-                this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-                this.gatewayStatistics.sessionToken = storeResponse
-                    .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
-                this.gatewayStatistics.requestCharge = storeResponse
-                    .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
-                this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
-                this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
-                this.activityId= storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
-            } else if (exception != null) {
-                this.gatewayStatistics.statusCode = exception.getStatusCode();
-                this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
-                this.gatewayStatistics.requestTimeline = this.gatewayRequestTimeline;
-                this.gatewayStatistics.requestCharge= String.valueOf(exception.getRequestCharge());
-                this.activityId=exception.getActivityId();
-            }
+            this.gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
+            this.gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
+            this.gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
+            this.gatewayStatistics.requestCharge = storeResponseDiagnostics.getRequestCharge();
+            this.gatewayStatistics.requestTimeline = storeResponseDiagnostics.getRequestTimeline();
+            this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
+            this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
+            this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
+            this.activityId = storeResponseDiagnostics.getActivityId();
         }
-    }
-
-    public void setGatewayRequestTimeline(RequestTimeline transportRequestTimeline) {
-        this.gatewayRequestTimeline = transportRequestTimeline;
-    }
-
-    public RequestTimeline getGatewayRequestTimeline() {
-        return this.gatewayRequestTimeline;
     }
 
     public String recordAddressResolutionStart(
@@ -191,7 +187,7 @@ public class ClientSideRequestStatistics {
         return identifier;
     }
 
-    public void recordAddressResolutionEnd(String identifier, String errorMessage) {
+    public void recordAddressResolutionEnd(String identifier, String exceptionMessage) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -209,7 +205,7 @@ public class ClientSideRequestStatistics {
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
             resolutionStatistics.endTimeUTC = responseTime;
-            resolutionStatistics.errorMessage = errorMessage;
+            resolutionStatistics.exceptionMessage = exceptionMessage;
             resolutionStatistics.inflightRequest = false;
         }
     }
@@ -279,8 +275,8 @@ public class ClientSideRequestStatistics {
     }
 
     public static class StoreResponseStatistics {
-        @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        private StoreResult storeResult;
+        @JsonSerialize(using = StoreResultDiagnostics.StoreResultDiagnosticsSerializer.class)
+        private StoreResultDiagnostics storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         private Instant requestResponseTimeUTC;
         @JsonSerialize
@@ -288,7 +284,7 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private OperationType requestOperationType;
 
-        public StoreResult getStoreResult() {
+        public StoreResultDiagnostics getStoreResult() {
             return storeResult;
         }
 
@@ -365,7 +361,7 @@ public class ClientSideRequestStatistics {
                 // Error while evaluating system information, do nothing
             }
 
-            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientContext);
+            generator.writeObjectField("clientCfgs", statistics.diagnosticsClientConfig);
             generator.writeEndObject();
         }
     }
@@ -391,7 +387,7 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private String targetEndpoint;
         @JsonSerialize
-        private String errorMessage;
+        private String exceptionMessage;
         @JsonSerialize
         private boolean forceRefresh;
         @JsonSerialize
@@ -415,8 +411,8 @@ public class ClientSideRequestStatistics {
             return targetEndpoint;
         }
 
-        public String getErrorMessage() {
-            return errorMessage;
+        public String getExceptionMessage() {
+            return exceptionMessage;
         }
 
         public boolean isInflightRequest() {
@@ -438,9 +434,11 @@ public class ClientSideRequestStatistics {
         private ResourceType resourceType;
         private int statusCode;
         private int subStatusCode;
-        private String requestCharge;
+        private double requestCharge;
         private RequestTimeline requestTimeline;
         private String partitionKeyRangeId;
+        private String exceptionMessage;
+        private String exceptionResponseHeaders;
 
         public String getSessionToken() {
             return sessionToken;
@@ -458,7 +456,7 @@ public class ClientSideRequestStatistics {
             return subStatusCode;
         }
 
-        public String getRequestCharge() {
+        public double getRequestCharge() {
             return requestCharge;
         }
 
@@ -472,6 +470,14 @@ public class ClientSideRequestStatistics {
 
         public String getPartitionKeyRangeId() {
             return partitionKeyRangeId;
+        }
+
+        public String getExceptionMessage() {
+            return exceptionMessage;
+        }
+
+        public String getExceptionResponseHeaders() {
+            return exceptionResponseHeaders;
         }
     }
 

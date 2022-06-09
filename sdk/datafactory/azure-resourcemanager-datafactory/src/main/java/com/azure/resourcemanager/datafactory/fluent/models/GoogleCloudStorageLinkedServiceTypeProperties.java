@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Google Cloud Storage linked service properties. */
 @Fluent
 public final class GoogleCloudStorageLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GoogleCloudStorageLinkedServiceTypeProperties.class);
-
     /*
      * The access key identifier of the Google Cloud Storage Identity and
      * Access Management (IAM) user. Type: string (or Expression with

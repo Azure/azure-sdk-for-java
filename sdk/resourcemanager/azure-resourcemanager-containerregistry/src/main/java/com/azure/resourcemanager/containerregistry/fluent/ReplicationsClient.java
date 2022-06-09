@@ -22,6 +22,46 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ReplicationsClient. */
 public interface ReplicationsClient {
     /**
+     * Lists all the replications for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ReplicationInner> listAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all the replications for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all the replications for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName, Context context);
+
+    /**
      * Gets the properties of the specified replication.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -440,44 +480,4 @@ public interface ReplicationsClient {
         String replicationName,
         ReplicationUpdateParameters replicationUpdateParameters,
         Context context);
-
-    /**
-     * Lists all the replications for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ReplicationInner> listAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all the replications for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all the replications for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName, Context context);
 }

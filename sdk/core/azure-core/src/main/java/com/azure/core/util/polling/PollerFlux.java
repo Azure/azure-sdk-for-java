@@ -235,8 +235,8 @@ import java.util.function.Supplier;
  * @param <U> The type of the final result of long running operation.
  */
 public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
-
-    private final ClientLogger logger = new ClientLogger(PollerFlux.class);
+    // PollerFlux is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(PollerFlux.class);
     private final PollingContext<T> rootContext = new PollingContext<>();
     private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
@@ -272,7 +272,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                       Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.compareTo(Duration.ZERO) <= 0) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
@@ -384,7 +384,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                        boolean ignored) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
@@ -428,7 +428,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     public PollerFlux<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
@@ -488,8 +488,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 // or duration specified in the last retry-after response header elapses.
                 return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
             })
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new IllegalStateException(
-                    "PollOperation returned Mono.empty()."))))
+                .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
@@ -589,12 +588,12 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                         //    1. remove guard so that future subscriber can retry activation.
                         //    2. forward error to current subscriber.
                         this.guardActivation.set(false);
-                        return FluxUtil.monoError(logger, e);
+                        return FluxUtil.monoError(LOGGER, e);
                     }
                     return activationMono
                         .map(this.activationPollResponseMapper)
-                        .switchIfEmpty(Mono.defer(() ->
-                            Mono.just(new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null))))
+                        .switchIfEmpty(Mono.fromSupplier(() ->
+                            new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null)))
                         .map(activationResponse -> {
                             this.rootContext.setOnetimeActivationResponse(activationResponse);
                             this.activated = true;

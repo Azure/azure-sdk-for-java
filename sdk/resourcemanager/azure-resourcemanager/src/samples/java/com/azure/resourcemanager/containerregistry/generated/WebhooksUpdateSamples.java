@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for Webhooks Update. */
 public final class WebhooksUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/WebhookUpdate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookUpdate.json
      */
     /**
      * Sample code: WebhookUpdate.

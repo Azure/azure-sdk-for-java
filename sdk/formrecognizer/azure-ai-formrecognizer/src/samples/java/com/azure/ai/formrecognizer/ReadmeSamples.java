@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationCli
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.administration.models.AccountProperties;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
@@ -34,12 +35,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- * <p>
  * Class containing code snippets that will be injected to README.md.
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
     private final DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
     private final DocumentModelAdministrationClient documentModelAdminClient =
@@ -110,13 +108,13 @@ public class ReadmeSamples {
             documentPage.getLines().forEach(documentLine ->
                 System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString()));
+                    documentLine.getBoundingPolygon().toString()));
 
             // selection marks
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
                 System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
                     documentSelectionMark.getState().toString(),
-                    documentSelectionMark.getBoundingBox().toString(),
+                    documentSelectionMark.getBoundingPolygon().toString(),
                     documentSelectionMark.getConfidence()));
         });
 
@@ -219,9 +217,8 @@ public class ReadmeSamples {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-                "my-build-model",
-                new BuildModelOptions().setDescription("model desc"),
-                Context.NONE);
+                DocumentBuildMode.TEMPLATE,
+                new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();
 
@@ -260,7 +257,7 @@ public class ReadmeSamples {
             analyzedDocument.getFields().forEach((key, documentField) -> {
                 System.out.printf("Document Field content: %s%n", documentField.getContent());
                 System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-                System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+                System.out.printf("Document Field Type: %s%n", documentField.getType());
                 System.out.printf("Document Field found within bounding region: %s%n",
                     documentField.getBoundingRegions().toString());
             });
@@ -276,7 +273,7 @@ public class ReadmeSamples {
             documentPage.getLines().forEach(documentLine ->
                 System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString()));
+                    documentLine.getBoundingPolygon().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
@@ -330,7 +327,7 @@ public class ReadmeSamples {
             documentPage.getLines().forEach(documentLine ->
                 System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString()));
+                    documentLine.getBoundingPolygon().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
@@ -352,14 +349,6 @@ public class ReadmeSamples {
             });
             System.out.println();
         }
-
-        // Entities
-        analyzeResult.getEntities().forEach(documentEntity -> {
-            System.out.printf("Entity category : %s, sub-category %s%n: ",
-                documentEntity.getCategory(), documentEntity.getSubCategory());
-            System.out.printf("Entity content: %s%n: ", documentEntity.getContent());
-            System.out.printf("Entity confidence: %.2f%n", documentEntity.getConfidence());
-        });
 
         // Key-value
         analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {

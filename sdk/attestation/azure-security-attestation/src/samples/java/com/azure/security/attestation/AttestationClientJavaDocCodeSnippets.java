@@ -15,7 +15,7 @@ import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
-import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
@@ -28,7 +28,6 @@ import reactor.core.publisher.Mono;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
-import java.util.List;
 
 public class AttestationClientJavaDocCodeSnippets {
     public static AttestationClient createSyncClient() {
@@ -43,9 +42,11 @@ public class AttestationClientJavaDocCodeSnippets {
         AttestationClient validatedClient = new AttestationClientBuilder()
             .endpoint(endpoint)
             .tokenValidationOptions(new AttestationTokenValidationOptions()
-                .setValidationSlack(Duration.ofSeconds(10)) // Allow 10 seconds of clock drift between attestation service and client.
+                // Allow 10 seconds of clock drift between attestation service and client.
+                .setValidationSlack(Duration.ofSeconds(10))
                 .setValidationCallback((token, signer) -> { // Perform custom validation steps.
-                    System.out.printf("Validate token signed by signer %s\n", signer.getCertificates().get(0).getSubjectDN().toString());
+                    System.out.printf("Validate token signed by signer %s\n",
+                        signer.getCertificates().get(0).getSubjectDN().toString());
                 }))
             .buildClient();
         // END: com.azure.security.attestation.AttestationClientBuilder.buildClientWithValidation
@@ -87,9 +88,11 @@ public class AttestationClientJavaDocCodeSnippets {
         AttestationAdministrationClient validatedClient = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
             .tokenValidationOptions(new AttestationTokenValidationOptions()
-                .setValidationSlack(Duration.ofSeconds(10)) // Allow 10 seconds of clock drift between attestation service and client.
+                // Allow 10 seconds of clock drift between attestation service and client.
+                .setValidationSlack(Duration.ofSeconds(10))
                 .setValidationCallback((token, signer) -> { // Perform custom validation steps.
-                    System.out.printf("Validate token signed by signer %s\n", signer.getCertificates().get(0).getSubjectDN().toString());
+                    System.out.printf("Validate token signed by signer %s\n",
+                        signer.getCertificates().get(0).getSubjectDN().toString());
                 }))
             .buildClient();
         // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation
@@ -131,9 +134,9 @@ public class AttestationClientJavaDocCodeSnippets {
     }
 
     public static void attestationOptionsSnippets2() {
-        BinaryData runtimeData = null;
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
         BinaryData inittimeData = null;
-        BinaryData openEnclaveReport = null;
+        BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
 
         AttestationOptions attestationOptions = new AttestationOptions(openEnclaveReport)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON));
@@ -187,8 +190,8 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationClient.getAttestationSigners
-        List<AttestationSigner> signers = client.listAttestationSigners();
-        signers.forEach(cert -> {
+        AttestationSignerCollection signers = client.listAttestationSigners();
+        signers.getAttestationSigners().forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
@@ -203,17 +206,12 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationClient.getAttestationSigners
 
         // BEGIN: com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse
-        Response<List<AttestationSigner>> responseOfSigners = client.listAttestationSignersWithResponse(Context.NONE);
+        Response<AttestationSignerCollection> responseOfSigners = client.listAttestationSignersWithResponse(Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse
 
         // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport
         AttestationResult resultWithReport = client.attestOpenEnclave(openEnclaveReport);
         // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport
-
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport
-        Response<AttestationResult> responseWithReport = client.attestOpenEnclaveWithResponse(openEnclaveReport, Context.NONE);
-        // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport
-
 
         // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclave
         AttestationResult result = client.attestOpenEnclave(new AttestationOptions(openEnclaveReport)
@@ -222,8 +220,9 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationClient.attestOpenEnclave
 
         // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse
-        Response<AttestationResult> openEnclaveResponse = client.attestOpenEnclaveWithResponse(new AttestationOptions(openEnclaveReport)
-            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+        Response<AttestationResult> openEnclaveResponse = client.attestOpenEnclaveWithResponse(
+            new AttestationOptions(openEnclaveReport)
+                .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
 
         // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse
 
@@ -248,8 +247,8 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
-        Mono<List<AttestationSigner>> signersMono = client.listAttestationSigners();
-        signersMono.subscribe(signers -> signers.forEach(cert -> {
+        Mono<AttestationSignerCollection> signersMono = client.listAttestationSigners();
+        signersMono.subscribe(signers -> signers.getAttestationSigners().forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
@@ -264,18 +263,13 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
-        Mono<Response<List<AttestationSigner>>> responseOfSigners = client.listAttestationSignersWithResponse();
+        Mono<Response<AttestationSignerCollection>> responseOfSigners = client.listAttestationSignersWithResponse();
         responseOfSigners.subscribe();
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport
         Mono<AttestationResult> resultWithReport = client.attestOpenEnclave(openEnclaveReport);
         // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport
-
-        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponseWithReport
-        Mono<Response<AttestationResult>> responseWithReport = client.attestOpenEnclaveWithResponse(openEnclaveReport);
-        // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponseWithReport
-
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclave
         Mono<AttestationResult> result = client.attestOpenEnclave(new AttestationOptions(openEnclaveReport)
@@ -284,8 +278,9 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclave
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse
-        Mono<Response<AttestationResult>> openEnclaveResponse = client.attestOpenEnclaveWithResponse(new AttestationOptions(openEnclaveReport)
-            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+        Mono<AttestationResponse<AttestationResult>> openEnclaveResponse = client.attestOpenEnclaveWithResponse(
+            new AttestationOptions(openEnclaveReport)
+                .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
 
         // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse
 
@@ -306,11 +301,6 @@ public class AttestationClientJavaDocCodeSnippets {
         AttestationResult resultWithReport = client.attestSgxEnclave(sgxEnclaveReport);
         // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
 
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
-        Response<AttestationResult> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote, Context.NONE);
-        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
-
-
         // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclave
         AttestationResult result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
@@ -318,8 +308,9 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationClient.attestSgxEnclave
 
         // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
-        Response<AttestationResult> openEnclaveResponse = client.attestSgxEnclaveWithResponse(new AttestationOptions(sgxQuote)
-            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+        Response<AttestationResult> openEnclaveResponse = client.attestSgxEnclaveWithResponse(
+            new AttestationOptions(sgxQuote)
+                .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
 
         // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse
     }
@@ -338,11 +329,6 @@ public class AttestationClientJavaDocCodeSnippets {
         Mono<AttestationResult> resultWithReport = client.attestSgxEnclave(sgxQuote);
         // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithReport
 
-        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport
-        Mono<Response<AttestationResult>> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote);
-        // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport
-
-
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclave
         Mono<AttestationResult> result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
@@ -350,8 +336,9 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclave
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse
-        Mono<Response<AttestationResult>> openEnclaveResponse = client.attestSgxEnclaveWithResponse(new AttestationOptions(sgxQuote)
-            .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
+        Mono<AttestationResponse<AttestationResult>> openEnclaveResponse = client.attestSgxEnclaveWithResponse(
+            new AttestationOptions(sgxQuote)
+                .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON)), Context.NONE);
         // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse
 
 
@@ -370,8 +357,17 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicy
         System.out.printf("Current SGX policy: %s\n", policy);
 
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithOptions
+        String policy2 = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE,
+            new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)));
+        System.out.printf("Current SGX policy: %s\n", policy2);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithOptions
+
+
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
-        Response<String> response = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null, Context.NONE);
+        Response<String> response = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null,
+            Context.NONE);
         // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
         System.out.printf("Current SGX policy: %s\n", response.getValue());
     }
@@ -389,8 +385,16 @@ public class AttestationClientJavaDocCodeSnippets {
         policyMono.subscribe(policy -> System.out.printf("Current SGX policy: %s\n", policy));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
 
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithOptions
+        Mono<String> policyMono2 = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE,
+            new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)));
+        policyMono2.subscribe(policy -> System.out.printf("Current SGX policy: %s\n", policy));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithOptions
+
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
-        Mono<Response<String>> responseMono = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null);
+        Mono<AttestationResponse<String>> responseMono =
+            client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null);
         responseMono.subscribe(response -> System.out.printf("Current SGX policy: %s\n", response.getValue()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
     }
@@ -468,17 +472,14 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse
-        Mono<Response<PolicyResult>> resultWithResponseMono = client.setAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
-            new AttestationPolicySetOptions()
+        Mono<AttestationResponse<PolicyResult>> resultWithResponseMono = client.setAttestationPolicyWithResponse(
+            AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions()
                 .setAttestationPolicy(policyToSet)
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
         resultWithResponseMono.subscribe(response -> {
             // Retrieve the token returned by the service from the response object and dump the issuer of
             // that token.
-            if (response instanceof AttestationResponse) {
-                AttestationResponse<PolicyResult> attestationResponse = (AttestationResponse<PolicyResult>) response;
-                System.out.printf("Response token issuer: %s\n", attestationResponse.getToken().getIssuer());
-            }
+            System.out.printf("Response token issuer: %s\n", response.getToken().getIssuer());
         });
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse
     }
@@ -564,10 +565,11 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicy
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicyWithResponse
-        Mono<Response<PolicyResult>> resultWithResponseMono = client.resetAttestationPolicyWithResponse(AttestationType.OPEN_ENCLAVE,
-            new AttestationPolicySetOptions()
+        Mono<AttestationResponse<PolicyResult>> resultWithResponseMono = client.resetAttestationPolicyWithResponse(
+            AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions()
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
-        resultWithResponseMono.subscribe(resultWithResponse -> System.out.printf("Reset result: %s\n", resultWithResponse.getValue().getPolicyResolution().toString()));
+        resultWithResponseMono.subscribe(resultWithResponse -> System.out.printf("Reset result: %s\n",
+            resultWithResponse.getValue().getPolicyResolution().toString()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicyWithResponse
     }
 
@@ -605,14 +607,16 @@ public class AttestationClientJavaDocCodeSnippets {
             .buildClient();
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple
-        List<AttestationSigner> signers = client.listPolicyManagementCertificates();
-        System.out.printf("There are %d signers on the instance\n", signers.size());
+        AttestationSignerCollection signers = client.listPolicyManagementCertificates();
+        System.out.printf("There are %d signers on the instance\n", signers.getAttestationSigners().size());
         // END: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse
-        Response<List<AttestationSigner>> signersResponse = client.listPolicyManagementCertificatesWithResponse(new AttestationTokenValidationOptions()
-            .setValidationSlack(Duration.ofSeconds(10)), Context.NONE);
-        System.out.printf("There are %d signers on the instance\n", signersResponse.getValue().size());
+        AttestationResponse<AttestationSignerCollection> signersResponse =
+            client.listPolicyManagementCertificatesWithResponse(
+                new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)), Context.NONE);
+        System.out.printf("There are %d signers on the instance\n",
+            signersResponse.getValue().getAttestationSigners().size());
         // END: com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse
 
     }
@@ -626,14 +630,17 @@ public class AttestationClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesSimple
-        Mono<List<AttestationSigner>> signersMono = client.listPolicyManagementCertificates();
-        signersMono.subscribe(signers -> System.out.printf("There are %d signers on the instance\n", signers.size()));
+        Mono<AttestationSignerCollection> signersMono = client.listPolicyManagementCertificates();
+        signersMono.subscribe(signers -> System.out.printf("There are %d signers on the instance\n",
+            signers.getAttestationSigners().size()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesSimple
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesWithResponse
-        Mono<Response<List<AttestationSigner>>> signersResponseMono = client.listPolicyManagementCertificatesWithResponse(new AttestationTokenValidationOptions()
-            .setValidationSlack(Duration.ofSeconds(10)));
-        signersResponseMono.subscribe(response -> System.out.printf("There are %d signers on the instance\n", response.getValue().size()));
+        Mono<AttestationResponse<AttestationSignerCollection>> signersResponseMono =
+            client.listPolicyManagementCertificatesWithResponse(
+                new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)));
+        signersResponseMono.subscribe(response -> System.out.printf("There are %d signers on the instance\n",
+            response.getValue().getAttestationSigners().size()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesWithResponse
     }
 
@@ -652,27 +659,31 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificate
         Mono<PolicyCertificatesModificationResult> addResultMono = client.addPolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
-        addResultMono.subscribe(addResult -> System.out.printf("Result: %s\n", addResult.getCertificateResolution().toString()));
+        addResultMono.subscribe(addResult -> System.out.printf("Result: %s\n",
+            addResult.getCertificateResolution().toString()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificate
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse
-        Mono<Response<PolicyCertificatesModificationResult>> addResponseMono = client.addPolicyManagementCertificateWithResponse(
-            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)),
-            Context.NONE);
-        addResponseMono.subscribe(addResponse -> System.out.printf("Result: %s\n", addResponse.getValue().getCertificateResolution().toString()));
+        Mono<AttestationResponse<PolicyCertificatesModificationResult>> addResponseMono = client
+            .addPolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions(certificateToAdd,
+                new AttestationSigningKey(certificate, privateKey)), Context.NONE);
+        addResponseMono.subscribe(addResponse -> System.out.printf("Result: %s\n",
+            addResponse.getValue().getCertificateResolution().toString()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate
-        Mono<PolicyCertificatesModificationResult> removeResultMono = client.removePolicyManagementCertificate(
+        Mono<PolicyCertificatesModificationResult> removeResultMono = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
-        removeResultMono.subscribe(removeResult -> System.out.printf("Result: %s\n", removeResult.getCertificateResolution().toString()));
+        removeResultMono.subscribe(removeResult -> System.out.printf("Result: %s\n",
+            removeResult.getCertificateResolution().toString()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse
-        Mono<Response<PolicyCertificatesModificationResult>> removeResponseMono = client.addPolicyManagementCertificateWithResponse(
-            new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)),
-            Context.NONE);
-        removeResponseMono.subscribe(removeResponse -> System.out.printf("Result: %s\n", removeResponse.getValue().getCertificateResolution().toString()));
+        Mono<AttestationResponse<PolicyCertificatesModificationResult>> removeResponseMono = client
+            .addPolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions(certificateToAdd,
+                new AttestationSigningKey(certificate, privateKey)), Context.NONE);
+        removeResponseMono.subscribe(removeResponse -> System.out.printf("Result: %s\n",
+            removeResponse.getValue().getCertificateResolution().toString()));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse
     }
 
@@ -704,7 +715,7 @@ public class AttestationClientJavaDocCodeSnippets {
 
         System.out.println("Remove Certificate Sync\n");
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate
-        PolicyCertificatesModificationResult removeResult = client.removePolicyManagementCertificate(
+        PolicyCertificatesModificationResult removeResult = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
         System.out.printf(" Result: %s\n", removeResult.getCertificateResolution().toString());
         // END: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate

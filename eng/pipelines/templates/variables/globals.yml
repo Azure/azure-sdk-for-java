@@ -1,9 +1,15 @@
 variables:
   DocWardenVersion: '0.7.1'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
-  JavaBuildVersion: '1.11'
+  JavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
-  JavaTestVersion: '1.11'
+  JavaTestVersion: '1.17'
+
+  # True if 'Enable system diagnostics' is checked when running a pipeline manually
+  IsDebug: $[coalesce(variables['System.Debug'], 'false')]
+
+  # Sets the Maven log level to either the LogLevel passed in the manual pipeline run or the default 'warn'
+  MavenLogLevel: $[coalesce(variables['LogLevel'], 'warn')]
 
   # Maven build/test options
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
@@ -11,13 +17,27 @@ variables:
   # If reports about Maven dependency downloads become more common investigate re-introducing "-Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false", or other iterations of the configurations.
   WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60'
   DefaultOptions: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=$(MavenLogLevel) -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx3072m'
-  DefaultTestOptions: '$(DefaultOptions) -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+  DefaultSkipOptions: '-Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false'
+  DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
+
+  # Exists if needed in coalesce situations.
+  DefaultTestGoals: 'surefire:test'
+  # This will be overwritten by the test matrix, if configured.
+  TestGoals: $(DefaultTestGoals)
+
+  # This will be overwritten by the test matrix, if configured.
+  TestOptions: ''
+  # TestFromSource is one of the cache keys but isn't set until the test matrix
+  # has been processed. Without a default value it'll be treated as a string literal
+  # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
+  # matrix has been processed
   TestFromSource: false
-  AdditionalTestGoals: ''
+  AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true
-  IsDebug: $[coalesce(variables['System.Debug'], 'false')]
+  DisableDockerDetector: true
+  Package.EnableSBOMSigning: true

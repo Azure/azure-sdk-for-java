@@ -43,6 +43,12 @@ public final class AnalyzeResult {
     private List<DocumentPage> pages;
 
     /*
+     * Extracted paragraphs.
+     */
+    @JsonProperty(value = "paragraphs")
+    private List<DocumentParagraph> paragraphs;
+
+    /*
      * Extracted tables.
      */
     @JsonProperty(value = "tables")
@@ -55,16 +61,16 @@ public final class AnalyzeResult {
     private List<DocumentKeyValuePair> keyValuePairs;
 
     /*
-     * Extracted entities.
-     */
-    @JsonProperty(value = "entities")
-    private List<DocumentEntity> entities;
-
-    /*
      * Extracted font styles.
      */
     @JsonProperty(value = "styles")
     private List<DocumentStyle> styles;
+
+    /*
+     * Detected languages.
+     */
+    @JsonProperty(value = "languages")
+    private List<DocumentLanguage> languages;
 
     /*
      * Extracted documents.
@@ -173,6 +179,26 @@ public final class AnalyzeResult {
     }
 
     /**
+     * Get the paragraphs property: Extracted paragraphs.
+     *
+     * @return the paragraphs value.
+     */
+    public List<DocumentParagraph> getParagraphs() {
+        return this.paragraphs;
+    }
+
+    /**
+     * Set the paragraphs property: Extracted paragraphs.
+     *
+     * @param paragraphs the paragraphs value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setParagraphs(List<DocumentParagraph> paragraphs) {
+        this.paragraphs = paragraphs;
+        return this;
+    }
+
+    /**
      * Get the tables property: Extracted tables.
      *
      * @return the tables value.
@@ -213,26 +239,6 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Get the entities property: Extracted entities.
-     *
-     * @return the entities value.
-     */
-    public List<DocumentEntity> getEntities() {
-        return this.entities;
-    }
-
-    /**
-     * Set the entities property: Extracted entities.
-     *
-     * @param entities the entities value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    public AnalyzeResult setEntities(List<DocumentEntity> entities) {
-        this.entities = entities;
-        return this;
-    }
-
-    /**
      * Get the styles property: Extracted font styles.
      *
      * @return the styles value.
@@ -249,6 +255,26 @@ public final class AnalyzeResult {
      */
     public AnalyzeResult setStyles(List<DocumentStyle> styles) {
         this.styles = styles;
+        return this;
+    }
+
+    /**
+     * Get the languages property: Detected languages.
+     *
+     * @return the languages value.
+     */
+    public List<DocumentLanguage> getLanguages() {
+        return this.languages;
+    }
+
+    /**
+     * Set the languages property: Detected languages.
+     *
+     * @param languages the languages value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setLanguages(List<DocumentLanguage> languages) {
+        this.languages = languages;
         return this;
     }
 

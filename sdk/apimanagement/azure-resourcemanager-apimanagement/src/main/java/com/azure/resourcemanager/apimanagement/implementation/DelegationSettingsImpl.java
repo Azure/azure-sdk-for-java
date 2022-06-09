@@ -16,10 +16,9 @@ import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetEntit
 import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PortalDelegationSettings;
 import com.azure.resourcemanager.apimanagement.models.PortalSettingValidationKeyContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DelegationSettingsImpl implements DelegationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegationSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DelegationSettingsImpl.class);
 
     private final DelegationSettingsClient innerClient;
 

@@ -7,6 +7,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Queue;
@@ -25,12 +26,15 @@ import java.util.Queue;
 public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGER_LOG_EXCEPTION_AS_ERROR = "logger.logExceptionAsError";
     private static final String LOGGER_LOG_THROWABLE_AS_ERROR = "logger.logThrowableAsError";
+    private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR = "logger.atError().log";    
     private static final String LOGGER_LOG_EXCEPTION_AS_WARNING = "logger.logExceptionAsWarning";
-    private static final String LOGGER_LOG_THROWABLE_AS_WARNING = "logger.logThrowableAsWarning";
+    private static final String LOGGER_LOG_THROWABLE_AS_WARNING = "logger.logThrowableAsWarning";    
+    private static final String LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING = "logger.atWarning().log";
+
     static final String THROW_LOGGER_EXCEPTION_MESSAGE = String.format("Directly throwing an exception is disallowed. "
-        + "Must throw through \"ClientLogger\" API, either of \"%s\", \"%s\", \"%s\", or \"%s\" where \"logger\" is "
+        + "Must throw through \"ClientLogger\" API, either of \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" where \"logger\" is "
         + "type of ClientLogger from Azure Core package.", LOGGER_LOG_EXCEPTION_AS_ERROR,
-        LOGGER_LOG_THROWABLE_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING, LOGGER_LOG_THROWABLE_AS_WARNING);
+        LOGGER_LOG_THROWABLE_AS_ERROR, LOGGING_BUILDER_LOG_THROWABLE_AS_ERROR, LOGGER_LOG_EXCEPTION_AS_WARNING, LOGGER_LOG_THROWABLE_AS_WARNING, LOGGING_BUILDER_LOG_THROWABLE_AS_WARNING);
 
     // A LIFO queue stores the static status of class, skip this ThrowFromClientLoggerCheck if the class is static
     private final Queue<Boolean> classStaticDeque = Collections.asLifoQueue(new ArrayDeque<>());
@@ -94,9 +98,11 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
             case TokenTypes.LITERAL_THROW:
                 // Skip check if the throw exception from static class, constructor or static method
                 if (classStaticDeque.isEmpty() || classStaticDeque.peek() || isInConstructor
-                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek()) {
+                    || methodStaticDeque.isEmpty() || methodStaticDeque.peek() 
+                    || findLogMethodIdentifier(token)) {
                     return;
                 }
+
                 DetailAST methodCallToken =
                     token.findFirstToken(TokenTypes.EXPR).findFirstToken(TokenTypes.METHOD_CALL);
                 if (methodCallToken == null) {
@@ -117,5 +123,28 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
                 // Checkstyle complains if there's no default block in switch
                 break;
         }
+    }
+
+    /*
+     * Checks if the expression includes call to log(), which verifies logging builder call 
+     * e.g. logger.atError().log(ex)
+     */
+    private static boolean findLogMethodIdentifier(DetailAST root) {
+        for (DetailAST ast = root.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+            if (ast.getType() == TokenTypes.METHOD_CALL) {
+                DetailAST dot = ast.findFirstToken(TokenTypes.DOT);
+                if (dot != null) {
+                    DetailAST ident = dot.findFirstToken(TokenTypes.IDENT);
+                    if ("log".equals(ident.getText())) {
+                        return true;
+                    }
+                }
+            }
+            if (findLogMethodIdentifier(ast)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

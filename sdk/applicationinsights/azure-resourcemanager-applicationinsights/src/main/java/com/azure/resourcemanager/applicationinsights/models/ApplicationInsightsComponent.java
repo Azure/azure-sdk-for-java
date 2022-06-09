@@ -58,6 +58,13 @@ public interface ApplicationInsightsComponent {
     String kind();
 
     /**
+     * Gets the etag property: Resource etag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the applicationId property: The unique ID of your application. This field mirrors the 'Name' field and
      * cannot be changed.
      *
@@ -71,6 +78,13 @@ public interface ApplicationInsightsComponent {
      * @return the appId value.
      */
     String appId();
+
+    /**
+     * Gets the namePropertiesName property: Application name.
+     *
+     * @return the namePropertiesName value.
+     */
+    String namePropertiesName();
 
     /**
      * Gets the applicationType property: Type of application being monitored.
@@ -180,6 +194,22 @@ public interface ApplicationInsightsComponent {
     Boolean immediatePurgeDataOn30Days();
 
     /**
+     * Gets the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
+     * to. This property is required to create an application with this API version. Applications from older versions
+     * will not have this property.
+     *
+     * @return the workspaceResourceId value.
+     */
+    String workspaceResourceId();
+
+    /**
+     * Gets the laMigrationDate property: The date which the component got migrated to LA, in ISO 8601 format.
+     *
+     * @return the laMigrationDate value.
+     */
+    OffsetDateTime laMigrationDate();
+
+    /**
      * Gets the privateLinkScopedResources property: List of linked private link scope resources.
      *
      * @return the privateLinkScopedResources value.
@@ -209,6 +239,21 @@ public interface ApplicationInsightsComponent {
     IngestionMode ingestionMode();
 
     /**
+     * Gets the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
+
+    /**
+     * Gets the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
+     * and debugger.
+     *
+     * @return the forceCustomerStorageForProfiler value.
+     */
+    Boolean forceCustomerStorageForProfiler();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -221,6 +266,13 @@ public interface ApplicationInsightsComponent {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentInner
@@ -291,6 +343,7 @@ public interface ApplicationInsightsComponent {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithEtag,
                 DefinitionStages.WithApplicationType,
                 DefinitionStages.WithFlowType,
                 DefinitionStages.WithRequestSource,
@@ -299,9 +352,12 @@ public interface ApplicationInsightsComponent {
                 DefinitionStages.WithRetentionInDays,
                 DefinitionStages.WithDisableIpMasking,
                 DefinitionStages.WithImmediatePurgeDataOn30Days,
+                DefinitionStages.WithWorkspaceResourceId,
                 DefinitionStages.WithPublicNetworkAccessForIngestion,
                 DefinitionStages.WithPublicNetworkAccessForQuery,
-                DefinitionStages.WithIngestionMode {
+                DefinitionStages.WithIngestionMode,
+                DefinitionStages.WithDisableLocalAuth,
+                DefinitionStages.WithForceCustomerStorageForProfiler {
             /**
              * Executes the create request.
              *
@@ -326,6 +382,16 @@ public interface ApplicationInsightsComponent {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the ApplicationInsightsComponent definition allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: Resource etag.
+             *
+             * @param etag Resource etag.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
         }
         /** The stage of the ApplicationInsightsComponent definition allowing to specify applicationType. */
         interface WithApplicationType {
@@ -416,6 +482,20 @@ public interface ApplicationInsightsComponent {
              */
             WithCreate withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days);
         }
+        /** The stage of the ApplicationInsightsComponent definition allowing to specify workspaceResourceId. */
+        interface WithWorkspaceResourceId {
+            /**
+             * Specifies the workspaceResourceId property: Resource Id of the log analytics workspace which the data
+             * will be ingested to. This property is required to create an application with this API version.
+             * Applications from older versions will not have this property..
+             *
+             * @param workspaceResourceId Resource Id of the log analytics workspace which the data will be ingested to.
+             *     This property is required to create an application with this API version. Applications from older
+             *     versions will not have this property.
+             * @return the next definition stage.
+             */
+            WithCreate withWorkspaceResourceId(String workspaceResourceId);
+        }
         /**
          * The stage of the ApplicationInsightsComponent definition allowing to specify publicNetworkAccessForIngestion.
          */
@@ -450,6 +530,30 @@ public interface ApplicationInsightsComponent {
              * @return the next definition stage.
              */
             WithCreate withIngestionMode(IngestionMode ingestionMode);
+        }
+        /** The stage of the ApplicationInsightsComponent definition allowing to specify disableLocalAuth. */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: Disable Non-AAD based Auth..
+             *
+             * @param disableLocalAuth Disable Non-AAD based Auth.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
+        /**
+         * The stage of the ApplicationInsightsComponent definition allowing to specify forceCustomerStorageForProfiler.
+         */
+        interface WithForceCustomerStorageForProfiler {
+            /**
+             * Specifies the forceCustomerStorageForProfiler property: Force users to create their own storage account
+             * for profiler and debugger..
+             *
+             * @param forceCustomerStorageForProfiler Force users to create their own storage account for profiler and
+             *     debugger.
+             * @return the next definition stage.
+             */
+            WithCreate withForceCustomerStorageForProfiler(Boolean forceCustomerStorageForProfiler);
         }
     }
     /**
@@ -533,7 +637,7 @@ public interface ApplicationInsightsComponent {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
+     * @return response containing operationId for a specific purge action along with {@link Response}.
      */
     Response<ComponentPurgeResponse> purgeWithResponse(ComponentPurgeBody body, Context context);
 }

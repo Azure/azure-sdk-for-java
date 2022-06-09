@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cdn.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.cdn.fluent.models.EndpointInner;
+import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
 import com.azure.resourcemanager.cdn.models.EndpointUpdateParameters;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
@@ -85,7 +86,7 @@ class CdnEndpointImpl
                             self.name(),
                             self.parent().manager().resourceManager().internalContext()
                                 .randomResourceName("CustomDomain", 50),
-                            customDomainInner.hostname()), 32, 32)
+                            new CustomDomainParameters().withHostname(customDomainInner.hostname())), 32, 32)
                     .then(self.parent().manager().serviceClient()
                         .getCustomDomains().listByEndpointAsync(
                             self.parent().resourceGroupName(),
@@ -141,7 +142,7 @@ class CdnEndpointImpl
                 this.name(),
                 self.parent().manager().resourceManager().internalContext()
                     .randomResourceName("CustomDomain", 50),
-                itemToCreate.hostname()
+                new CustomDomainParameters().withHostname(itemToCreate.hostname())
             ), 32, 32);
 
         Flux<CustomDomainInner> customDomainDeleteTask = Flux.fromIterable(this.deletedCustomDomainList)

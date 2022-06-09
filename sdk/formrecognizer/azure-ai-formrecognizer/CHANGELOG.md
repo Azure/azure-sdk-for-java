@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.3 (Unreleased)
+## 4.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,90 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.0-beta.5 (2022-06-07)
+
+### Features Added
+- Added support for address type field value.
+- Added support for vertex coordinates with model `Point` to represent polygon vertices in `boundingPolygon` property.
+- Added `paragraphs` property on `AnalyzeResult`.
+- Added a new `DocumentParagraph` model to represent document paragraphs.
+- Added `kind` property on `DocumentPage` to represent the document page kind.
+
+### Breaking Changes
+- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
+- Renamed method `beginCopyModel` to `beginCopyModelTo`
+- Renamed property `boundingBox` in model `BoundingRegion`, `DocumentLine`, `DocumentWord`, and `DocumentSelectionMark`
+to `boundingPolygon`.
+- Removed `entities` property on model `AnalyzeResult`
+- Renamed `code` property on `DocumentLanguage` model to `locale`
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
+
+## 3.1.11 (2022-05-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+
+## 3.1.10 (2022-04-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+
+## 3.1.9 (2022-03-08)
+### Bug Fixes
+- Fixed referencing selection mark form element from FormField element.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+
+## 4.0.0-beta.4 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `DocumentAnalysisClientBuilder`
+  and `DocumentModelAdministrationClientBuilder`
+- Added support for currency type field value.
+- Added support for users to optionally specify tags when building, copying 
+or creating a composed a model using `tags` attribute on `BuildModelOptions`, `CreateComposedModelOptions`
+and `CopyAuthorizationOptions` model.
+- Added `languages` property on `AnalyzeResult`.
+- Added model `DocumentLanguage` that includes information about the detected languages found in a document.
+
+### Breaking Changes
+- Added `DocumentBuildMode` on `beginBuildModel` APIs to support building models with techniques for diverse templates.
+
+## 3.1.8 (2022-02-08)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
+
+## 4.0.0-beta.3 (2022-01-13)
+### Bugs Fixed
+- Fixed confidence value returned on fields.
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
+
+## 3.1.7 (2022-01-13)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
 
 ## 4.0.0-beta.2 (2021-11-10)
 

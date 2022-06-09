@@ -7,16 +7,19 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -88,6 +91,8 @@ public class RntbdTransportClient extends TransportClient {
     private final RntbdEndpoint.Provider endpointProvider;
     private final long id;
     private final Tag tag;
+    private boolean channelAcquisitionContextEnabled;
+    private final GlobalEndpointManager globalEndpointManager;
 
     // endregion
 
@@ -106,33 +111,44 @@ public class RntbdTransportClient extends TransportClient {
         final Configs configs,
         final ConnectionPolicy connectionPolicy,
         final UserAgentContainer userAgent,
-        final IAddressResolver addressResolver) {
+        final IAddressResolver addressResolver,
+        final ClientTelemetry clientTelemetry,
+        final GlobalEndpointManager globalEndpointManager) {
 
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
-            addressResolver);
+            addressResolver,
+            clientTelemetry, globalEndpointManager);
     }
 
+    //  TODO (kuthapar): This constructor sets the globalEndpointmManager to null, which is not ideal.
+    //  Figure out why we need this constructor, and if it can be avoided or can be fixed.
     RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
         this.endpointProvider = endpointProvider;
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
+        this.globalEndpointManager = null;
     }
 
     RntbdTransportClient(
         final Options options,
         final SslContext sslContext,
-        final IAddressResolver addressResolver) {
+        final IAddressResolver addressResolver,
+        final ClientTelemetry clientTelemetry,
+        final GlobalEndpointManager globalEndpointManager) {
 
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
             this,
             options,
             checkNotNull(sslContext, "expected non-null sslContext"),
-            addressResolver);
+            addressResolver,
+            clientTelemetry);
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
+        this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     // endregion
@@ -161,6 +177,11 @@ public class RntbdTransportClient extends TransportClient {
         }
 
         logger.debug("already closed {}", this);
+    }
+
+    @Override
+    protected GlobalEndpointManager getGlobalEndpointManager() {
+        return this.globalEndpointManager;
     }
 
     /**
@@ -229,7 +250,9 @@ public class RntbdTransportClient extends TransportClient {
                 response.setRequestPayloadLength(request.getContentLength());
                 response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
                 response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
-                response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
+                if(this.channelAcquisitionContextEnabled) {
+                    response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
+                }
             }
 
         })).onErrorMap(throwable -> {
@@ -263,7 +286,9 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-            BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
+            if(this.channelAcquisitionContextEnabled) {
+                BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
+            }
 
             return cosmosException;
         });
@@ -323,6 +348,18 @@ public class RntbdTransportClient extends TransportClient {
                     }
                 });
         }).subscriberContext(reactorContext);
+    }
+
+    @Override
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+
+        this.throwIfClosed();
+
+        final URI address = addressUri.getURI();
+
+        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        return Mono.fromFuture(endpoint.openConnection(addressUri));
     }
 
     /**
@@ -496,7 +533,7 @@ public class RntbdTransportClient extends TransportClient {
                 Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
             this.channelAcquisitionContextEnabled = false;
-            this.ioThreadPriority = Thread.NORM_PRIORITY;
+            this.ioThreadPriority = connectionPolicy.getIoThreadPriority();
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.preferTcpNative = true;
@@ -607,6 +644,17 @@ public class RntbdTransportClient extends TransportClient {
         @Override
         public String toString() {
             return RntbdObjectMapper.toJson(this);
+        }
+
+        public String toDiagnosticsString() {
+            return lenientFormat("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
+                connectTimeout,
+                tcpNetworkRequestTimeout,
+                idleChannelTimeout,
+                idleEndpointTimeout,
+                maxChannelsPerEndpoint,
+                maxRequestsPerChannel,
+                connectionEndpointRediscoveryEnabled);
         }
 
         // endregion

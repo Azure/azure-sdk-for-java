@@ -6,13 +6,14 @@ package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInner;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Replications Create. */
 public final class ReplicationsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/ReplicationCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationCreate.json
      */
     /**
      * Sample code: ReplicationCreate.
@@ -30,6 +31,32 @@ public final class ReplicationsCreateSamples {
                 "myRegistry",
                 "myReplication",
                 new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "value")),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationCreateZoneRedundant.json
+     */
+    /**
+     * Sample code: ReplicationCreateZoneRedundant.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void replicationCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .containerRegistries()
+            .manager()
+            .serviceClient()
+            .getReplications()
+            .create(
+                "myResourceGroup",
+                "myRegistry",
+                "myReplication",
+                new ReplicationInner()
+                    .withLocation("eastus")
+                    .withTags(mapOf("key", "value"))
+                    .withRegionEndpointEnabled(true)
+                    .withZoneRedundancy(ZoneRedundancy.ENABLED),
                 Context.NONE);
     }
 

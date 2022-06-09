@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EdgeUsageDataCollectionPolicy model. */
 @Fluent
 public final class EdgeUsageDataCollectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeUsageDataCollectionPolicy.class);
-
     /*
      * Usage data collection frequency in ISO 8601 duration format e.g. PT10M ,
      * PT5H.

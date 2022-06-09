@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: ./FR-v3.yml
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/181d0d178029b86140802835d11b0e47318a43e9/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-06-30-preview/FormRecognizer.json?token=GHSAT0AAAAAABJXDFRONLXHQWPPCNNJOISMYUXZFBA
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -33,4 +33,18 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
 service-interface-as-public: true
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
+
+### Change GetOperationResponse result from Object to ModelInfo
+
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.definitions.GetOperationResponse
+    transform: >
+      delete $.properties.result.type;
+      $.properties.result["$ref"] = "#/definitions/ModelInfo"; 
+```
+

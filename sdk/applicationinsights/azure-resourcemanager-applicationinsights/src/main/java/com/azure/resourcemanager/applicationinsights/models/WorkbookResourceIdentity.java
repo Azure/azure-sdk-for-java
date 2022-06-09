@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** Identity used for BYOS. */
 @Fluent
 public class WorkbookResourceIdentity extends ManagedServiceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookResourceIdentity.class);
-
     /** {@inheritDoc} */
     @Override
     public WorkbookResourceIdentity withType(ManagedServiceIdentityType type) {

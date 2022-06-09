@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Components ListByResourceGroup. */
 public final class ComponentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsListByResourceGroup.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsListByResourceGroup.json
      */
     /**
      * Sample code: ComponentListByResourceGroup.

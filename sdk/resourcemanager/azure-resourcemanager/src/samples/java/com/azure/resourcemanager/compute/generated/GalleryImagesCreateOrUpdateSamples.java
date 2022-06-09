@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 /** Samples for GalleryImages CreateOrUpdate. */
 public final class GalleryImagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/CreateOrUpdateASimpleGalleryImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImage_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery image.

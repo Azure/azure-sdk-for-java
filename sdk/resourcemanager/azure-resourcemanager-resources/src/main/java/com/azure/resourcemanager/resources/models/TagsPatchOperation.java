@@ -30,7 +30,11 @@ public final class TagsPatchOperation extends ExpandableStringEnum<TagsPatchOper
         return fromString(name, TagsPatchOperation.class);
     }
 
-    /** @return known TagsPatchOperation values. */
+    /**
+     * Gets known TagsPatchOperation values.
+     *
+     * @return known TagsPatchOperation values.
+     */
     public static Collection<TagsPatchOperation> values() {
         return values(TagsPatchOperation.class);
     }

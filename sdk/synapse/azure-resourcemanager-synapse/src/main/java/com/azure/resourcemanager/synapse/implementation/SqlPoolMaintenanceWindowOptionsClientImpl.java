@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolMaintenanceWindowOptionsClient;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowOptionsInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolMaintenanceWindowOptionsClient. */
 public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolMaintenanceWindowOptionsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolMaintenanceWindowOptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolMaintenanceWindowOptionsService service;
 
@@ -86,7 +83,8 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's available maintenance windows.
+     * @return list of SQL pool's available maintenance windows along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(
@@ -149,7 +147,8 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's available maintenance windows.
+     * @return list of SQL pool's available maintenance windows along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(
@@ -212,7 +211,7 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's available maintenance windows.
+     * @return list of SQL pool's available maintenance windows on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceWindowOptionsInner> getAsync(
@@ -257,7 +256,7 @@ public final class SqlPoolMaintenanceWindowOptionsClientImpl implements SqlPoolM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's available maintenance windows.
+     * @return list of SQL pool's available maintenance windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowOptionsInner> getWithResponse(

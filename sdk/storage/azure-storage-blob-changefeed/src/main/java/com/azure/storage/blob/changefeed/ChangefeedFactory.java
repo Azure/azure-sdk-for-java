@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
  */
 class ChangefeedFactory {
 
-    private final ClientLogger logger = new ClientLogger(ChangefeedFactory.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChangefeedFactory.class);
 
     private final SegmentFactory segmentFactory;
     private final BlobContainerAsyncClient client;
@@ -47,7 +47,7 @@ class ChangefeedFactory {
     Changefeed getChangefeed(String cursor) {
         StorageImplUtils.assertNotNull("cursor", cursor);
 
-        ChangefeedCursor userCursor = ChangefeedCursor.deserialize(cursor, logger);
+        ChangefeedCursor userCursor = ChangefeedCursor.deserialize(cursor, LOGGER);
         OffsetDateTime start = TimeUtils.convertPathToTime(userCursor.getCurrentSegmentCursor().getSegmentPath());
         OffsetDateTime end = userCursor.getEndTime();
 

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters ListSkus. */
 public final class ClustersListSkusSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersListSkus.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersListSkus.json
      */
     /**
      * Sample code: KustoClustersListSkus.

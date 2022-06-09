@@ -193,7 +193,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainInner>> listByEndpointSinglePageAsync(
@@ -243,7 +244,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -256,7 +257,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainInner>> listByEndpointSinglePageAsync(
@@ -315,7 +317,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomDomainInner> listByEndpointAsync(
@@ -335,7 +337,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomDomainInner> listByEndpointAsync(
@@ -354,7 +356,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainInner> listByEndpoint(
@@ -372,7 +374,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainInner> listByEndpoint(
@@ -390,7 +392,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint.
+     * @return an existing custom domain within an endpoint along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomDomainInner>> getWithResponseAsync(
@@ -436,7 +439,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -450,7 +453,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint.
+     * @return an existing custom domain within an endpoint along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomDomainInner>> getWithResponseAsync(
@@ -506,7 +510,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint.
+     * @return an existing custom domain within an endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> getAsync(
@@ -551,7 +555,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing custom domain within an endpoint.
+     * @return an existing custom domain within an endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainInner> getWithResponse(
@@ -566,16 +570,20 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostname) {
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainParameters customDomainProperties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -602,9 +610,14 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (customDomainProperties == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter customDomainProperties is required and cannot be null."));
+        } else {
+            customDomainProperties.validate();
+        }
         final String accept = "application/json";
-        CustomDomainParameters customDomainProperties = new CustomDomainParameters();
-        customDomainProperties.withHostname(hostname);
         return FluxUtil
             .withContext(
                 context ->
@@ -620,7 +633,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             customDomainProperties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -630,13 +643,13 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -644,7 +657,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String profileName,
         String endpointName,
         String customDomainName,
-        String hostname,
+        CustomDomainParameters customDomainProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -672,9 +685,14 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (customDomainProperties == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter customDomainProperties is required and cannot be null."));
+        } else {
+            customDomainProperties.validate();
+        }
         final String accept = "application/json";
-        CustomDomainParameters customDomainProperties = new CustomDomainParameters();
-        customDomainProperties.withHostname(hostname);
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -697,18 +715,23 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostname) {
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainParameters customDomainProperties) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname);
+            createWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties);
         return this
             .client
             .<CustomDomainInner, CustomDomainInner>getLroResult(
@@ -726,25 +749,26 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateAsync(
         String resourceGroupName,
         String profileName,
         String endpointName,
         String customDomainName,
-        String hostname,
+        CustomDomainParameters customDomainProperties,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname, context);
+            createWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, context);
         return this
             .client
             .<CustomDomainInner, CustomDomainInner>getLroResult(
@@ -758,44 +782,21 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostname) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(
         String resourceGroupName,
         String profileName,
         String endpointName,
         String customDomainName,
-        String hostname,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname, context)
+        CustomDomainParameters customDomainProperties) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties)
             .getSyncPoller();
     }
 
@@ -806,17 +807,49 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreate(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainParameters customDomainProperties,
+        Context context) {
+        return beginCreateAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a new custom domain within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostname) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname)
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainParameters customDomainProperties) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -828,35 +861,13 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        final String hostname = null;
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomDomainInner> createAsync(
@@ -864,9 +875,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String profileName,
         String endpointName,
         String customDomainName,
-        String hostname,
+        CustomDomainParameters customDomainProperties,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname, context)
+        return beginCreateAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -878,53 +890,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Properties required to create a new custom domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainInner create(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName, String hostname) {
-        return createAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname).block();
-    }
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainInner create(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        final String hostname = null;
-        return createAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname).block();
-    }
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @param hostname The host name of the custom domain. Must be a domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
+     *     e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner create(
@@ -932,9 +903,37 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String profileName,
         String endpointName,
         String customDomainName,
-        String hostname,
+        CustomDomainParameters customDomainProperties) {
+        return createAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties)
+            .block();
+    }
+
+    /**
+     * Creates a new custom domain within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainProperties Properties required to create a new custom domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainInner create(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainParameters customDomainProperties,
         Context context) {
-        return createAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname, context).block();
+        return createAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, context)
+            .block();
     }
 
     /**
@@ -947,7 +946,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -993,7 +992,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1007,7 +1006,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1063,9 +1062,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1091,9 +1090,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
         context = this.client.mergeContext(context);
@@ -1115,9 +1114,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName).getSyncPoller();
@@ -1134,9 +1133,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
@@ -1153,7 +1152,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> deleteAsync(
@@ -1174,7 +1173,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomDomainInner> deleteAsync(
@@ -1231,7 +1230,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomDomainInner>> disableCustomHttpsWithResponseAsync(
@@ -1277,7 +1276,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1291,7 +1290,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomDomainInner>> disableCustomHttpsWithResponseAsync(
@@ -1347,7 +1346,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> disableCustomHttpsAsync(
@@ -1392,7 +1391,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainInner> disableCustomHttpsWithResponse(
@@ -1415,7 +1414,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomDomainInner>> enableCustomHttpsWithResponseAsync(
@@ -1469,7 +1468,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             customDomainHttpsParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1486,7 +1485,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomDomainInner>> enableCustomHttpsWithResponseAsync(
@@ -1554,7 +1553,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> enableCustomHttpsAsync(
@@ -1585,7 +1584,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> enableCustomHttpsAsync(
@@ -1638,7 +1637,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainInner> enableCustomHttpsWithResponse(
@@ -1660,7 +1659,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainInner>> listByEndpointNextSinglePageAsync(String nextLink) {
@@ -1685,7 +1685,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1696,7 +1696,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list custom domains.
+     * @return result of the request to list custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainInner>> listByEndpointNextSinglePageAsync(String nextLink, Context context) {

@@ -8,10 +8,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
@@ -20,6 +22,7 @@ import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.QueryTimeInterval;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -30,12 +33,14 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link LogsQueryClient}
@@ -94,6 +99,37 @@ public class LogsQueryClientTest extends TestBase {
         assertEquals(1, queryResults.getAllTables().size());
         assertEquals(1200, queryResults.getAllTables().get(0).getAllTableCells().size());
         assertEquals(100, queryResults.getAllTables().get(0).getRows().size());
+    }
+
+    @Test
+    public void testLogsQueryAllowPartialSuccess() {
+        Assumptions.assumeTrue(getTestMode() == TestMode.PLAYBACK,
+            "This test only executes in playback because the partial success condition requires pre-populated data.");
+
+        // Arrange
+        final String query = "AppTraces \n"
+            + "| where Properties !has \"PartitionPumpManager\"\n"
+            + "| where Properties has \"LoggerName\" and Properties has_cs \"com.azure\"\n"
+            + "| project TimeGenerated, Message, Properties\n"
+            + "| extend m = parse_json(Message)\n"
+            + "| extend p = parse_json(Properties)\n"
+            + " | project TimeGenerated, Thread=p.ThreadName, Logger=p.LoggerName, ConnectionId=m.connectionId, Message\n"
+            + "\n";
+
+        final LogsQueryOptions options = new LogsQueryOptions().setAllowPartialErrors(true);
+        final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
+
+        // Act
+        final Response<LogsQueryResult> response = client.queryWorkspaceWithResponse(WORKSPACE_ID, query, interval,
+            options, Context.NONE);
+
+        // Assert
+        final LogsQueryResult result = response.getValue();
+
+        assertEquals(LogsQueryResultStatus.PARTIAL_FAILURE, result.getQueryResultStatus());
+        assertNotNull(result.getError());
+        assertNotNull(result.getTable());
+        assertTrue(result.getTable().getRows().size() > 0, "Expected there to be rows returned.");
     }
 
     @Test
@@ -214,5 +250,26 @@ public class LogsQueryClientTest extends TestBase {
                 }
             }
         }
+    }
+
+    @Test
+    public void testVisualization() {
+        String query = "datatable (s: string, i: long) [ \"a\", 1, \"b\", 2, \"c\", 3 ] "
+                + "| render columnchart with (title=\"the chart title\", xtitle=\"the x axis title\")";
+        LogsQueryResult queryResults = client.queryWorkspaceWithResponse(WORKSPACE_ID,
+                query, null, new LogsQueryOptions().setIncludeStatistics(true).setIncludeVisualization(true),
+                Context.NONE).getValue();
+
+        assertEquals(1, queryResults.getAllTables().size());
+        assertNotNull(queryResults.getVisualization());
+
+        LinkedHashMap<String, Object> linkedHashMap =
+                queryResults.getVisualization().toObject(new TypeReference<LinkedHashMap<String, Object>>() { });
+        String title = linkedHashMap.get("title").toString();
+        String xTitle = linkedHashMap.get("xTitle").toString();
+
+        assertEquals("the chart title", title);
+        assertEquals("the x axis title", xTitle);
+
     }
 }

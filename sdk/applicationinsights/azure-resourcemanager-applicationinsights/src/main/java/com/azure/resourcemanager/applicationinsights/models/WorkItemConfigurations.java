@@ -19,7 +19,8 @@ public interface WorkItemConfigurations {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurationErrorException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName);
 
@@ -33,7 +34,8 @@ public interface WorkItemConfigurations {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurationErrorException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName, Context context);
 
@@ -63,7 +65,7 @@ public interface WorkItemConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
     Response<WorkItemConfiguration> createWithResponse(
         String resourceGroupName,
@@ -92,7 +94,7 @@ public interface WorkItemConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default work item configurations that exist for the application.
+     * @return default work item configurations that exist for the application along with {@link Response}.
      */
     Response<WorkItemConfiguration> getDefaultWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -121,7 +123,7 @@ public interface WorkItemConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String workItemConfigId, Context context);
@@ -151,7 +153,7 @@ public interface WorkItemConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified work item configuration for an Application Insights component.
+     * @return specified work item configuration for an Application Insights component along with {@link Response}.
      */
     Response<WorkItemConfiguration> getItemWithResponse(
         String resourceGroupName, String resourceName, String workItemConfigId, Context context);
@@ -189,7 +191,7 @@ public interface WorkItemConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
     Response<WorkItemConfiguration> updateItemWithResponse(
         String resourceGroupName,

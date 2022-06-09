@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -28,9 +29,14 @@ import static com.azure.ai.formrecognizer.TestUtils.BUSINESS_CARD_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.formrecognizer.TestUtils.EXAMPLE_DOCX;
+import static com.azure.ai.formrecognizer.TestUtils.EXAMPLE_HTML;
+import static com.azure.ai.formrecognizer.TestUtils.EXAMPLE_PPT;
+import static com.azure.ai.formrecognizer.TestUtils.EXAMPLE_XLSX;
+import static com.azure.ai.formrecognizer.TestUtils.GERMAN_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.LICENSE_CARD_JPG;
+import static com.azure.ai.formrecognizer.TestUtils.LICENSE_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_BUSINESS_CARD_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_RECEIPT_PDF;
@@ -38,6 +44,7 @@ import static com.azure.ai.formrecognizer.TestUtils.MULTIPAGE_VENDOR_INVOICE_PDF
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_CONTOSO_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.SELECTION_MARK_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.W2_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.damagedPdfDataRunner;
 import static com.azure.ai.formrecognizer.TestUtils.encodedBlankSpaceSourceUrlRunner;
 import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
@@ -63,7 +70,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
                                                                        DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentAnalysisBuilder(httpClient, serviceVersion, false).buildAsyncClient();
+        return getDocumentAnalysisBuilder(httpClient, serviceVersion, true).buildAsyncClient();
     }
 
     // Receipt recognition
@@ -75,6 +82,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -108,6 +116,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -162,6 +171,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29171")
     public void analyzeReceiptFromDataMultiPage(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -201,6 +211,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -257,6 +268,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("Until file available on main")
     public void analyzeReceiptSourceUrlWithPngFile(HttpClient httpClient,
                                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -273,6 +285,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29171")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(documentUrl -> {
@@ -294,6 +307,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContent(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -315,6 +329,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void analyzeContentResultWithNullData(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         assertThrows(NullPointerException.class,
             () -> client.beginAnalyzeDocument("prebuilt-layout", null, 0)
                 .setPollInterval(durationTestMode)
@@ -326,6 +341,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentResultWithContentTypeAutoDetection(HttpClient httpClient,
                                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -395,6 +411,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentWithSelectionMarks(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -464,6 +481,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentFromUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -544,6 +562,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentWithSelectionMarksFromUrl(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1063,7 +1082,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             syncPoller.waitForCompletion();
 
             validateIdentityData(syncPoller.getFinalResult());
-        }, LICENSE_CARD_JPG);
+        }, LICENSE_PNG);
     }
 
     /**
@@ -1098,7 +1117,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             syncPoller.waitForCompletion();
 
             validateIdentityData(syncPoller.getFinalResult());
-        }, LICENSE_CARD_JPG);
+        }, LICENSE_PNG);
     }
 
     /**
@@ -1151,6 +1170,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("Enable once file uploaded on github main")
     public void analyzeLicenseSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -1161,7 +1181,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
-        }, LICENSE_CARD_JPG);
+        }, LICENSE_PNG);
     }
 
     /**
@@ -1180,5 +1200,135 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
             Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
+    }
+
+    /**
+     * Verifies that languages are returned on analyze result when using "prebuilt-read".
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testDocumentLanguagePrebuiltRead(HttpClient httpClient,
+                                                 DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl)
+                .setPollInterval(durationTestMode)
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertNotNull(analyzeResult.getLanguages());
+            Assertions.assertEquals(9, analyzeResult.getLanguages().size());
+        }, INVOICE_PDF);
+    }
+
+    /**
+     * Verifies support for pptx when using "prebuilt-read".
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testPptDocumentPrebuiltRead(HttpClient httpClient,
+                                                 DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-read",
+                    Utility.toFluxByteBuffer(data),
+                    dataLength)
+                .setPollInterval(durationTestMode).getSyncPoller();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertEquals("This is a pptx example.", analyzeResult.getContent());
+        }, EXAMPLE_PPT);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testHtmlDocumentPrebuiltRead(HttpClient httpClient,
+                                             DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-read",
+                    Utility.toFluxByteBuffer(data),
+                    dataLength)
+                .setPollInterval(durationTestMode).getSyncPoller();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertTrue(analyzeResult.getContent().contains("html example."));
+        }, EXAMPLE_HTML);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testDocxDocumentPrebuiltRead(HttpClient httpClient,
+                                             DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-read",
+                    Utility.toFluxByteBuffer(data),
+                    dataLength)
+                .setPollInterval(durationTestMode).getSyncPoller();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertEquals("This is a docx example.", analyzeResult.getContent());
+        }, EXAMPLE_DOCX);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testXlsxDocumentPrebuiltRead(HttpClient httpClient,
+                                             DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-read",
+                    Utility.toFluxByteBuffer(data),
+                    dataLength)
+                .setPollInterval(durationTestMode).getSyncPoller();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
+        }, EXAMPLE_XLSX);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testGermanDocumentLanguagePrebuiltRead(HttpClient httpClient,
+                                             DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-read",
+                    Utility.toFluxByteBuffer(data),
+                    dataLength)
+                .setPollInterval(durationTestMode).getSyncPoller();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
+        }, GERMAN_PNG);
+    }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void analyzeW2Data(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocument("prebuilt-tax.us.w2",
+                    Utility.toFluxByteBuffer(data),
+                    dataLength)
+                .setPollInterval(durationTestMode).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateW2Data(syncPoller.getFinalResult());
+        }, W2_JPG);
     }
 }

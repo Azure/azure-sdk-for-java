@@ -7,7 +7,6 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.LoggerType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -18,8 +17,6 @@ import java.util.Map;
  */
 @Fluent
 public final class LoggerContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoggerContractProperties.class);
-
     /*
      * Logger type.
      */
@@ -168,10 +165,12 @@ public final class LoggerContractProperties {
      */
     public void validate() {
         if (loggerType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property loggerType in model LoggerContractProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoggerContractProperties.class);
 }

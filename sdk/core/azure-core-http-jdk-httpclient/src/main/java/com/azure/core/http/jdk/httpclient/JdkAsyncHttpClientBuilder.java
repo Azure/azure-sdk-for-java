@@ -55,7 +55,7 @@ public class JdkAsyncHttpClientBuilder {
         DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
 
-    private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JdkAsyncHttpClientBuilder.class);
 
     private java.net.http.HttpClient.Builder httpClientBuilder;
     private Duration connectionTimeout;
@@ -176,7 +176,7 @@ public class JdkAsyncHttpClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
+        ProxyOptions buildProxyOptions = (proxyOptions == null)
             ? ProxyOptions.fromConfiguration(buildConfiguration)
             : proxyOptions;
 
@@ -241,7 +241,7 @@ public class JdkAsyncHttpClientBuilder {
         try (Reader reader = Files.newBufferedReader(path)) {
             properties.load(reader);
         } catch (IOException e) {
-            logger.warning("Cannot read net properties file at path {}", path, e);
+            LOGGER.warning("Cannot read net properties file at path {}", path, e);
         }
         return properties;
     }

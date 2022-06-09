@@ -95,17 +95,19 @@ class DownloadResponseMockFlux {
                 });
 
             case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
-                if (this.subscribed) {
-                    return Flux.error(new IllegalStateException("Cannot subscribe to the same flux twice"));
-                }
-                this.subscribed = true;
-                // fall through to test data
-
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
+                // Java 8 compiler didn't like the previous fall-through case structure
+                if (this.scenario == DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION) {
+                    if (this.subscribed) {
+                        return Flux.error(new IllegalStateException("Cannot subscribe to the same flux twice"));
+                    }
+                    this.subscribed = true;
+                }
+
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (offset != (this.tryNumber - 1) * 256
-                        || count != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                    if (offset != (this.tryNumber - 1L) * 256
+                        || count != this.scenarioData.remaining() - (this.tryNumber - 1L) * 256) {
                         return Flux.error(new IllegalArgumentException("Info values are incorrect."));
                     }
 
@@ -120,8 +122,8 @@ class DownloadResponseMockFlux {
 
                     return dataStream.concatWith(Flux.error(e));
                 }
-                if (offset != (this.tryNumber - 1) * 256
-                    || count != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                if (offset != (this.tryNumber - 1L) * 256
+                    || count != this.scenarioData.remaining() - (this.tryNumber - 1L) * 256) {
                     return Flux.error(new IllegalArgumentException("Info values are incorrect."));
                 }
                 ByteBuffer toSend = this.scenarioData.duplicate();

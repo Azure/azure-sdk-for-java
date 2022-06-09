@@ -11,6 +11,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -39,6 +40,7 @@ import reactor.util.function.Tuple2;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
@@ -536,15 +538,30 @@ public final class BulkExecutor<TContext> {
                                 getThreadInfo());
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
-                            logger.error(
-                                "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status " +
-                                    "Code {}, Operation Status Code {}, {}, Context: {} {}",
-                                thresholds.getPartitionKeyRangeId(),
-                                response.getStatusCode(),
-                                operationResult.getStatusCode(),
-                                getItemOperationDiagnostics(itemOperation),
-                                this.operationContextText,
-                                getThreadInfo());
+                            // reduce log noise level for commonly expected/normal status codes
+                            if (response.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
+                                response.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED) {
+
+                                logger.debug(
+                                    "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status " +
+                                        "Code {}, Operation Status Code {}, {}, Context: {} {}",
+                                    thresholds.getPartitionKeyRangeId(),
+                                    response.getStatusCode(),
+                                    operationResult.getStatusCode(),
+                                    getItemOperationDiagnostics(itemOperation),
+                                    this.operationContextText,
+                                    getThreadInfo());
+                            } else {
+                                logger.error(
+                                    "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status " +
+                                        "Code {}, Operation Status Code {}, {}, Context: {} {}",
+                                    thresholds.getPartitionKeyRangeId(),
+                                    response.getStatusCode(),
+                                    operationResult.getStatusCode(),
+                                    getItemOperationDiagnostics(itemOperation),
+                                    this.operationContextText,
+                                    getThreadInfo());
+                            }
                             return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, actualContext));
                         }
@@ -682,6 +699,16 @@ public final class BulkExecutor<TContext> {
 
     private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         RequestOptions options = new RequestOptions();
+
+        //  This logic is to handle custom bulk options which can be passed through encryption or through some other project
+        Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getCustomOptions(cosmosBulkExecutionOptions);
+        if (customOptions != null && !customOptions.isEmpty()) {
+            for(Map.Entry<String, String> entry : customOptions.entrySet()) {
+                options.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
         options.setOperationContextAndListenerTuple(operationListener);
 
         // The request options here are used for the BulkRequest exchanged with the service

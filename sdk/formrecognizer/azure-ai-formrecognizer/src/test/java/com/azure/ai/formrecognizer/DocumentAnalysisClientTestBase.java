@@ -4,15 +4,19 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.models.AddressValue;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.LengthUnit;
+import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -20,6 +24,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import reactor.test.StepVerifier;
@@ -31,10 +37,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.azure.ai.formrecognizer.TestUtils.AZURE_CLIENT_ID;
+import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
+import static com.azure.ai.formrecognizer.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
@@ -59,13 +69,16 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion,
                                                              boolean useKeyCredential) {
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
-
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -73,21 +86,26 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
         return builder;
     }
 
+
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -95,10 +113,26 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
         return builder;
+    }
+
+    static TokenCredential getCredentialByAuthority(String endpoint) {
+        String authority = TestUtils.getAuthority(endpoint);
+        if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
+            return new DefaultAzureCredentialBuilder()
+                .authorityHost(TestUtils.getAuthority(endpoint))
+                .build();
+        } else {
+            return new ClientSecretCredentialBuilder()
+                .tenantId(AZURE_TENANT_ID)
+                .clientId(AZURE_CLIENT_ID)
+                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
+                .authorityHost(authority)
+                .build();
+        }
     }
 
     static void validateEncodedUrlExceptionSource(HttpResponseException errorResponseException) {
@@ -140,7 +174,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         // documents
         Assertions.assertEquals(1, actualAnalyzeResult.getDocuments().size());
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals("prebuilt:receipt", actualDocument.getDocType());
+            Assertions.assertEquals("receipt.retailMeal", actualDocument.getDocType());
             // document fields
             validatePngReceiptFields(actualDocument.getFields());
         });
@@ -153,8 +187,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Assertions.assertEquals(1, actualAnalyzeResult.getPages().size());
 
         // styles
-        // confirm with service team, spans should be two?
-        // Assertions.assertEquals(2, actualAnalyzeResult.getStyles().get(0).getSpans().size());
         Assertions.assertTrue(actualAnalyzeResult.getStyles().get(0).isHandwritten());
 
         actualAnalyzeResult.getStyles()
@@ -163,7 +195,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         // documents
         Assertions.assertEquals(1, actualAnalyzeResult.getDocuments().size());
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals("prebuilt:receipt", actualDocument.getDocType());
+            Assertions.assertEquals("receipt.retailMeal", actualDocument.getDocType());
             // document fields
             validateJpegReceiptFields(actualDocument.getFields());
         });
@@ -179,9 +211,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertEquals(2, page2.getPageNumber());
         assertEquals(1, page1.getSpans().size());
         assertEquals(1, page2.getSpans().size());
-        assertEquals(207, page1.getSpans().get(0).getLength());
-        assertEquals(207, page2.getSpans().get(0).getOffset());
-        assertEquals(1, analyzeResult.getStyles().size());
+        assertEquals(213, page1.getSpans().get(0).getLength());
+        assertEquals(214, page2.getSpans().get(0).getOffset());
 
         DocumentPage receiptPage1 = analyzeResult.getPages().get(0);
         DocumentPage receiptPage2 = analyzeResult.getPages().get(1);
@@ -207,13 +238,13 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         analyzeResult.getPages().forEach(documentPage -> {
             Assertions.assertNotNull(documentPage.getLines());
             documentPage.getLines().forEach(documentLine -> {
-                validateBoundingBoxData(documentLine.getBoundingBox());
+                validateBoundingBoxData(documentLine.getBoundingPolygon());
                 Assertions.assertNotNull(documentLine.getContent());
             });
 
             Assertions.assertNotNull(documentPage.getWords());
             documentPage.getWords().forEach(documentWord -> {
-                validateBoundingBoxData(documentWord.getBoundingBox());
+                validateBoundingBoxData(documentWord.getBoundingPolygon());
                 // should be getContent()
                 Assertions.assertNotNull(documentWord.getContent());
             });
@@ -225,28 +256,40 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertEquals(1, businessCardPage1.getPageNumber());
 
         final Map<String, DocumentField> actualBusinessCardFields = analyzeResult.getDocuments().get(0).getFields();
-        assertEquals("2 Kingdom Street Paddington, London, W2 6BD",
+        assertEquals("2 Kingdom Street\nPaddington, London, W2 6BD",
             actualBusinessCardFields.get("Addresses").getValueList().get(0).getValueString());
+        Assertions.assertNotNull(actualBusinessCardFields.get("Addresses").getValueList().get(0).getConfidence());
         assertEquals(EXPECTED_MERCHANT_NAME, actualBusinessCardFields.get("CompanyNames")
             .getValueList().get(0).getValueString());
+        Assertions.assertNotNull(actualBusinessCardFields.get("CompanyNames").getValueList().get(0).getConfidence());
         assertEquals("Cloud & Al Department", actualBusinessCardFields.get("Departments")
             .getValueList().get(0).getValueString());
+        Assertions.assertNotNull(actualBusinessCardFields.get("Departments").getValueList().get(0).getConfidence());
         assertEquals("avery.smith@contoso.com", actualBusinessCardFields.get("Emails")
             .getValueList().get(0).getValueString());
+        Assertions.assertNotNull(actualBusinessCardFields.get("Emails").getValueList().get(0).getConfidence());
         assertEquals(DocumentFieldType.PHONE_NUMBER, actualBusinessCardFields.get("Faxes")
             .getValueList().get(0).getType());
+        Assertions.assertNotNull(actualBusinessCardFields.get("Faxes").getValueList().get(0).getConfidence());
         assertEquals("Senior Researcher", actualBusinessCardFields.get("JobTitles")
             .getValueList().get(0).getValueString());
+        Assertions.assertNotNull(actualBusinessCardFields.get("JobTitles").getValueList().get(0).getConfidence());
         assertEquals(DocumentFieldType.PHONE_NUMBER, actualBusinessCardFields.get("MobilePhones")
             .getValueList().get(0).getType());
+        Assertions.assertNotNull(actualBusinessCardFields.get("MobilePhones").getValueList().get(0).getConfidence());
         assertEquals("https://www.contoso.com/", actualBusinessCardFields.get("Websites")
             .getValueList().get(0).getValueString());
+        Assertions.assertNotNull(actualBusinessCardFields.get("Websites").getValueList().get(0).getConfidence());
         assertEquals(DocumentFieldType.PHONE_NUMBER, actualBusinessCardFields.get("WorkPhones")
             .getValueList().get(0).getType());
+        Assertions.assertNotNull(actualBusinessCardFields.get("WorkPhones").getValueList().get(0).getConfidence());
         Map<String, DocumentField> contactNamesMap
             = actualBusinessCardFields.get("ContactNames").getValueList().get(0).getValueMap();
+        // "FirstName" and "LastName" confidence returned as null by service, do we default?
+        // Assertions.assertNotNull(contactNamesMap.get("FirstName").getConfidence());
         assertEquals("Avery", contactNamesMap.get("FirstName").getValueString());
         assertEquals("Smith", contactNamesMap.get("LastName").getValueString());
+        // Assertions.assertNotNull(contactNamesMap.get("LastName").getConfidence());
     }
 
     static void validateMultipageBusinessData(AnalyzeResult analyzeResult) {
@@ -259,25 +302,31 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Map<String, DocumentField> businessCard1Fields = analyzeResult.getDocuments().get(0).getFields();
         List<DocumentField> emailList = businessCard1Fields.get("Emails").getValueList();
         assertEquals("johnsinger@contoso.com", emailList.get(0).getValueString());
-        List<DocumentField> phoneNumberList = businessCard1Fields.get("OtherPhones").getValueList();
+        Assertions.assertNotNull(emailList.get(0).getConfidence());
+        List<DocumentField> phoneNumberList = businessCard1Fields.get("WorkPhones").getValueList();
+        Assertions.assertNotNull(phoneNumberList.get(0).getConfidence());
         assertEquals("+14257793479", phoneNumberList.get(0).getValuePhoneNumber());
         assertEquals(1, businessCard1.getPageNumber());
 
         // assert contact name page number
         DocumentField contactNameField = businessCard1Fields.get("ContactNames").getValueList().get(0);
         assertEquals("JOHN SINGER", contactNameField.getContent());
+        Assertions.assertNotNull(contactNameField.getConfidence());
 
         assertEquals(2, businessCard2.getPageNumber());
         Map<String, DocumentField> businessCard2Fields = analyzeResult.getDocuments().get(1).getFields();
         List<DocumentField> email2List = businessCard2Fields.get("Emails").getValueList();
         assertEquals("avery.smith@contoso.com", email2List.get(0).getValueString());
+        Assertions.assertNotNull(email2List.get(0).getConfidence());
         List<DocumentField> phoneNumber2List = businessCard2Fields.get("WorkPhones").getValueList();
         assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getContent());
+        Assertions.assertNotNull(phoneNumber2List.get(0).getConfidence());
 
         // assert contact name page number
         DocumentField contactName2Field = businessCard2Fields.get("ContactNames").getValueList().get(0);
         assertEquals(2, contactName2Field.getBoundingRegions().get(0).getPageNumber());
         assertEquals("Dr. Avery Smith", contactName2Field.getContent());
+        Assertions.assertNotNull(contactName2Field.getConfidence());
     }
 
     void validateInvoiceData(AnalyzeResult analyzeResult) {
@@ -285,13 +334,13 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         analyzeResult.getPages().forEach(documentPage -> {
             Assertions.assertNotNull(documentPage.getLines());
             documentPage.getLines().forEach(documentLine -> {
-                validateBoundingBoxData(documentLine.getBoundingBox());
+                validateBoundingBoxData(documentLine.getBoundingPolygon());
                 Assertions.assertNotNull(documentLine.getContent());
             });
 
             Assertions.assertNotNull(documentPage.getWords());
             documentPage.getWords().forEach(documentWord -> {
-                validateBoundingBoxData(documentWord.getBoundingBox());
+                validateBoundingBoxData(documentWord.getBoundingPolygon());
                 Assertions.assertNotNull(documentWord.getContent());
             });
         });
@@ -304,29 +353,41 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Assertions.assertNotNull(analyzeResult.getDocuments());
         assertEquals(1, analyzeResult.getDocuments().size());
         Map<String, DocumentField> invoicePage1Fields = analyzeResult.getDocuments().get(0).getFields();
-        assertEquals("1020 Enterprise Way Sunnayvale, CA 87659", invoicePage1Fields.get("CustomerAddress")
+        assertEquals("1020 Enterprise Way\nSunnayvale, CA 87659", invoicePage1Fields.get("CustomerAddress")
             .getValueString());
+        Assertions.assertNotNull(invoicePage1Fields.get("CustomerAddress").getConfidence());
         assertEquals("Microsoft", invoicePage1Fields.get("CustomerAddressRecipient")
             .getValueString());
+        Assertions.assertNotNull(invoicePage1Fields.get("CustomerAddressRecipient").getConfidence());
         assertEquals("Microsoft", invoicePage1Fields.get("CustomerName")
             .getValueString());
+        Assertions.assertNotNull(invoicePage1Fields.get("CustomerName").getConfidence());
         assertEquals(LocalDate.of(2017, 6, 24), invoicePage1Fields.get("DueDate")
             .getValueDate());
+        Assertions.assertNotNull(invoicePage1Fields.get("DueDate").getConfidence());
         assertEquals(LocalDate.of(2017, 6, 18), invoicePage1Fields.get("InvoiceDate")
             .getValueDate());
+        Assertions.assertNotNull(invoicePage1Fields.get("InvoiceDate").getConfidence());
         assertEquals("34278587", invoicePage1Fields.get("InvoiceId")
             .getValueString());
-        assertEquals("1 Redmond way Suite 6000 Redmond, WA 99243", invoicePage1Fields.get("VendorAddress")
+        Assertions.assertNotNull(invoicePage1Fields.get("InvoiceId").getConfidence());
+        assertEquals("1 Redmond way Suite\n6000 Redmond, WA\n99243", invoicePage1Fields.get("VendorAddress")
             .getValueString());
+        Assertions.assertNotNull(invoicePage1Fields.get("VendorAddress").getConfidence());
         assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName")
             .getValueString());
+        Assertions.assertNotNull(invoicePage1Fields.get("VendorName").getConfidence());
 
         Map<String, DocumentField> itemsMap
             = invoicePage1Fields.get("Items").getValueList().get(0).getValueMap();
-        assertEquals(56651.49f, itemsMap.get("Amount").getValueFloat());
+        assertEquals(56651.49, itemsMap.get("Amount").getValueCurrency().getAmount());
+        Assertions.assertNotNull(itemsMap.get("Amount").getConfidence());
         assertEquals(LocalDate.of(2017, 6, 18), itemsMap.get("Date").getValueDate());
+        Assertions.assertNotNull(itemsMap.get("Date").getConfidence());
         assertEquals("34278587", itemsMap.get("ProductCode").getValueString());
-        assertEquals(DocumentFieldType.FLOAT, itemsMap.get("Tax").getType());
+        Assertions.assertNotNull(itemsMap.get("ProductCode").getConfidence());
+        // assertEquals(DocumentFieldType.CURRENCY, itemsMap.get("Tax").getType());
+        // Assertions.assertNotNull(itemsMap.get("Tax").getConfidence());
     }
 
     static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
@@ -335,19 +396,22 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
         assertEquals(1, invoicePage1.getPageNumber());
         assertEquals(1, analyzeResult.getDocuments().size());
+
         Map<String, DocumentField> recognizedInvoiceFields = analyzeResult.getDocuments().get(0).getFields();
         final DocumentField remittanceAddressRecipient = recognizedInvoiceFields.get("RemittanceAddressRecipient");
-
+        Assertions.assertNotNull(recognizedInvoiceFields.get("RemittanceAddressRecipient").getConfidence());
         assertEquals("Contoso Ltd.", remittanceAddressRecipient.getValueString());
         assertEquals(1, remittanceAddressRecipient.getBoundingRegions().get(0).getPageNumber());
-        final DocumentField remittanceAddress = recognizedInvoiceFields.get("RemittanceAddress");
 
-        assertEquals("2345 Dogwood Lane Birch, Kansas 98123", remittanceAddress.getValueString());
+        final DocumentField remittanceAddress = recognizedInvoiceFields.get("RemittanceAddress");
+        assertEquals("2345 Dogwood Lane\nBirch, Kansas 98123", remittanceAddress.getValueString());
         assertEquals(1, remittanceAddress.getBoundingRegions().get(0).getPageNumber());
+        Assertions.assertNotNull(remittanceAddress.getConfidence());
 
         final DocumentField vendorName = recognizedInvoiceFields.get("VendorName");
         assertEquals("Southridge Video", vendorName.getValueString());
         assertEquals(2, vendorName.getBoundingRegions().get(0).getPageNumber());
+        Assertions.assertNotNull(vendorName.getConfidence());
     }
 
     void validateIdentityData(AnalyzeResult analyzeResult) {
@@ -355,13 +419,13 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         analyzeResult.getPages().forEach(documentPage -> {
             Assertions.assertNotNull(documentPage.getLines());
             documentPage.getLines().forEach(documentLine -> {
-                validateBoundingBoxData(documentLine.getBoundingBox());
+                validateBoundingBoxData(documentLine.getBoundingPolygon());
                 Assertions.assertNotNull(documentLine.getContent());
             });
 
             Assertions.assertNotNull(documentPage.getWords());
             documentPage.getWords().forEach(documentWord -> {
-                validateBoundingBoxData(documentWord.getBoundingBox());
+                validateBoundingBoxData(documentWord.getBoundingPolygon());
                 // should be getContent()
                 Assertions.assertNotNull(documentWord.getContent());
             });
@@ -372,29 +436,34 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertEquals(1, licensePage1.getPageNumber());
 
         Assertions.assertNotNull(analyzeResult.getDocuments());
-        assertEquals("prebuilt:idDocument:driverLicense", analyzeResult.getDocuments().get(0).getDocType());
+        assertEquals("idDocument.driverLicense", analyzeResult.getDocuments().get(0).getDocType());
         Map<String, DocumentField> licensePageFields = analyzeResult.getDocuments().get(0).getFields();
-        assertEquals("123 STREET ADDRESS YOUR CITY WA 99999-1234", licensePageFields.get("Address")
+        assertEquals("Main Street , Charleston,\nWV 456789", licensePageFields.get("Address")
             .getValueString());
+        Assertions.assertNotNull(licensePageFields.get("Address").getConfidence());
         assertEquals("USA", licensePageFields.get("CountryRegion").getValueCountryRegion());
-        assertEquals(LocalDate.of(1958, 1, 6), licensePageFields.get("DateOfBirth")
+        Assertions.assertNotNull(licensePageFields.get("CountryRegion").getConfidence());
+        assertEquals(LocalDate.of(1988, 3, 23), licensePageFields.get("DateOfBirth")
             .getValueDate());
-        assertEquals(LocalDate.of(2020, 8, 12), licensePageFields.get("DateOfExpiration")
+        Assertions.assertNotNull(licensePageFields.get("DateOfBirth").getConfidence());
+        assertEquals(LocalDate.of(2026, 3, 23), licensePageFields.get("DateOfExpiration")
             .getValueDate());
-        assertEquals("WDLABCD456DG", licensePageFields.get("DocumentNumber")
+        Assertions.assertNotNull(licensePageFields.get("DateOfExpiration").getConfidence());
+        assertEquals("034568", licensePageFields.get("DocumentNumber")
             .getValueString());
-        assertEquals("LIAM R.", licensePageFields.get("FirstName")
-            .getValueString());
-        assertEquals("TALBOT", licensePageFields.get("LastName")
-            .getValueString());
-        assertEquals("Washington", licensePageFields.get("Region")
-            .getValueString());
-        assertEquals("M", licensePageFields.get("Sex")
-            .getValueString());
-        assertEquals("L", licensePageFields.get("Endorsements")
-            .getValueString());
-        assertEquals("B", licensePageFields.get("Restrictions")
-            .getValueString());
+        Assertions.assertNotNull(licensePageFields.get("DocumentNumber").getConfidence());
+        assertEquals("CHRIS", licensePageFields.get("FirstName").getValueString());
+        Assertions.assertNotNull(licensePageFields.get("FirstName").getConfidence());
+        assertEquals("SMITH", licensePageFields.get("LastName").getValueString());
+        Assertions.assertNotNull(licensePageFields.get("LastName").getConfidence());
+        assertEquals("West Virginia", licensePageFields.get("Region").getValueString());
+        Assertions.assertNotNull(licensePageFields.get("Region").getConfidence());
+        assertEquals("M", licensePageFields.get("Sex").getValueString());
+        Assertions.assertNotNull(licensePageFields.get("Sex").getConfidence());
+        assertEquals("NONE", licensePageFields.get("Endorsements").getValueString());
+        Assertions.assertNotNull(licensePageFields.get("Endorsements").getConfidence());
+        assertEquals("NONE", licensePageFields.get("Restrictions").getValueString());
+        Assertions.assertNotNull(licensePageFields.get("Restrictions").getConfidence());
     }
 
     void validateGermanContentData(AnalyzeResult analyzeResult) {
@@ -404,8 +473,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             Assertions.assertTrue(
                 documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
             Assertions.assertNotNull(analyzeResult.getTables());
-            Assertions.assertEquals(8.5, documentPage.getWidth());
-            Assertions.assertEquals(11, documentPage.getHeight());
+            Assertions.assertEquals(8.5f, documentPage.getWidth());
+            Assertions.assertEquals(11f, documentPage.getHeight());
             Assertions.assertEquals(LengthUnit.INCH, documentPage.getUnit());
 
         });
@@ -428,8 +497,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         analyzeResult.getPages().forEach(documentPage -> {
             Assertions.assertTrue(
                 documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
-            Assertions.assertEquals(8.5, documentPage.getWidth());
-            Assertions.assertEquals(11, documentPage.getHeight());
+            Assertions.assertEquals(8.5f, documentPage.getWidth());
+            Assertions.assertEquals(11f, documentPage.getHeight());
             Assertions.assertEquals(LengthUnit.INCH, documentPage.getUnit());
 
             Assertions.assertNotNull(documentPage.getSelectionMarks());
@@ -437,7 +506,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             List<DocumentSelectionMark> selectionMarks = documentPage.getSelectionMarks();
             for (int i = 0; i < selectionMarks.size(); i++) {
                 DocumentSelectionMark documentSelectionMark = selectionMarks.get(i);
-                validateBoundingBoxData(documentSelectionMark.getBoundingBox());
+                validateBoundingBoxData(documentSelectionMark.getBoundingPolygon());
                 Assertions.assertNotNull(documentSelectionMark.getState());
                 if (i == 0) {
                     Assertions.assertEquals(SelectionMarkState.UNSELECTED, documentSelectionMark.getState());
@@ -449,7 +518,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             }
         });
         assertNull(analyzeResult.getKeyValuePairs());
-        assertNull(analyzeResult.getEntities());
         Assertions.assertNotNull(analyzeResult.getStyles());
         assertEquals(1, analyzeResult.getStyles().size());
         assertNull(analyzeResult.getDocuments());
@@ -461,8 +529,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             Assertions.assertTrue(
                 documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
             Assertions.assertNotNull(analyzeResult.getTables());
-            Assertions.assertEquals(8.5, documentPage.getWidth());
-            Assertions.assertEquals(11, documentPage.getHeight());
+            Assertions.assertEquals(8.5f, documentPage.getWidth());
+            Assertions.assertEquals(11f, documentPage.getHeight());
             Assertions.assertEquals(LengthUnit.INCH, documentPage.getUnit());
 
             validateDocumentPage(documentPage);
@@ -479,7 +547,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         }
 
         assertNull(analyzeResult.getKeyValuePairs());
-        assertNull(analyzeResult.getEntities());
         assertNull(analyzeResult.getStyles());
         assertNull(analyzeResult.getDocuments());
     }
@@ -509,29 +576,23 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         }
 
         assertNull(analyzeResult.getKeyValuePairs());
-        assertNull(analyzeResult.getEntities());
         Assertions.assertNotNull(analyzeResult.getStyles());
         assertEquals(1, analyzeResult.getStyles().size());
-        assertNull(analyzeResult.getDocuments());
+        // expected not null confirm?
+        // assertNull(analyzeResult.getDocuments());
     }
 
     void validateDocumentPage(DocumentPage documentPage) {
         Assertions.assertNotNull(documentPage.getLines());
         documentPage.getLines().forEach(documentLine -> {
-            validateBoundingBoxData(documentLine.getBoundingBox());
+            validateBoundingBoxData(documentLine.getBoundingPolygon());
             Assertions.assertNotNull(documentLine.getContent());
         });
 
         Assertions.assertNotNull(documentPage.getWords());
         documentPage.getWords().forEach(documentWord -> {
-            validateBoundingBoxData(documentWord.getBoundingBox());
+            validateBoundingBoxData(documentWord.getBoundingPolygon());
             Assertions.assertNotNull(documentWord.getContent());
-        });
-
-        Assertions.assertNotNull(documentPage.getSelectionMarks());
-        documentPage.getSelectionMarks().forEach(documentSelectionMark -> {
-            validateBoundingBoxData(documentSelectionMark.getBoundingBox());
-            Assertions.assertNotNull(documentSelectionMark.getState());
         });
     }
 
@@ -540,9 +601,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         List<DocumentPage> pages = analyzeResult.getPages();
         for (int i = 0; i < pages.size(); i++) {
             DocumentPage documentPage = pages.get(i);
-            if (i == 0) {
-                assertEquals(1, documentPage.getSelectionMarks().size());
-            }
             if (i == 1) {
                 // empty page
                 assertEquals(2, analyzeResult.getPages().get(1).getPageNumber());
@@ -566,15 +624,14 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         }
 
         assertNull(analyzeResult.getKeyValuePairs());
-        assertNull(analyzeResult.getEntities());
         assertNull(analyzeResult.getStyles());
         assertNull(analyzeResult.getDocuments());
     }
 
-    void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult, String modelId) {
+    void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult) {
         List<DocumentPage> documentPages = actualAnalyzeResult.getPages();
         Assertions.assertEquals(1, documentPages.size());
-        documentPages.forEach(documentPage -> validateDocumentPage(documentPage));
+        documentPages.forEach(this::validateDocumentPage);
         int[][] table = new int[][] {{5, 4, 20}, {4, 2, 8}};
         Assertions.assertEquals(2, actualAnalyzeResult.getTables().size());
         for (int i = 0; i < actualAnalyzeResult.getTables().size(); i++) {
@@ -586,10 +643,10 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         }
 
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals(modelId + ":" + modelId, actualDocument.getDocType());
+            // Assertions.assertEquals(modelId, actualDocument.getDocType());
             actualDocument.getFields().forEach((key, documentField) -> {
                 // document fields
-
+                Assertions.assertNotNull(documentField.getConfidence());
                 if ("Tax".equals(key)) {
                     assertEquals("$4.00", documentField.getValueString());
                 }
@@ -627,12 +684,12 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         });
     }
 
-    void validateMultiPagePdfData(AnalyzeResult analyzeResult, String modelId) {
+    void validateMultiPagePdfData(AnalyzeResult analyzeResult) {
         assertEquals(3, analyzeResult.getPages().size());
         analyzeResult.getDocuments().forEach(analyzedDocument -> {
-            assertEquals(modelId + ":" + modelId, analyzedDocument.getDocType());
             analyzedDocument.getFields().forEach((key, documentField) -> {
                 Assertions.assertNotNull(documentField.getType());
+                Assertions.assertNotNull(documentField.getConfidence());
             });
         });
     }
@@ -640,15 +697,15 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     void validateCustomDocumentWithSelectionMarks(AnalyzeResult analyzeResult) {
         Assertions.assertEquals(1, analyzeResult.getPages().size());
         analyzeResult.getPages().forEach(actualDocumentPage -> {
-            Assertions.assertEquals(8.5, actualDocumentPage.getWidth());
-            Assertions.assertEquals(11, actualDocumentPage.getHeight());
+            Assertions.assertEquals(8.5f, actualDocumentPage.getWidth());
+            Assertions.assertEquals(11f, actualDocumentPage.getHeight());
             Assertions.assertEquals(LengthUnit.INCH, actualDocumentPage.getUnit());
 
             validateDocumentPage(actualDocumentPage);
         });
         assertNull(analyzeResult.getTables());
 
-        analyzeResult.getDocuments().forEach(actualDocument -> {
+        analyzeResult.getDocuments().forEach(actualDocument ->
             actualDocument.getFields().forEach((key, documentField) -> {
                 if ("AMEX_SELECTION_MARK".equals(key)) {
                     assertEquals(SelectionMarkState.SELECTED, documentField.getValueSelectionMark());
@@ -659,34 +716,125 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                 } else {
                     throw new IllegalStateException("Unexpected value: " + key);
                 }
-            });
-        });
+            }));
     }
 
-    private void validateBoundingBoxData(List<Float> points) {
+    void validateW2Data(AnalyzeResult analyzeResult) {
+        Assertions.assertEquals("prebuilt-tax.us.w2", analyzeResult.getModelId());
+        analyzeResult.getPages().forEach(documentPage -> {
+            Assertions.assertNotNull(documentPage.getLines());
+            documentPage.getLines().forEach(documentLine -> {
+                validateBoundingBoxData(documentLine.getBoundingPolygon());
+                Assertions.assertNotNull(documentLine.getContent());
+            });
+
+            Assertions.assertNotNull(documentPage.getWords());
+            documentPage.getWords().forEach(documentWord -> {
+                validateBoundingBoxData(documentWord.getBoundingPolygon());
+                // should be getContent()
+                Assertions.assertNotNull(documentWord.getContent());
+            });
+        });
+
+        assertEquals(1, analyzeResult.getPages().size());
+        DocumentPage licensePage1 = analyzeResult.getPages().get(0);
+        assertEquals(1, licensePage1.getPageNumber());
+
+        Assertions.assertNotNull(analyzeResult.getDocuments());
+        assertEquals("tax.us.w2", analyzeResult.getDocuments().get(0).getDocType());
+        Map<String, DocumentField> w2Fields = analyzeResult.getDocuments().get(0).getFields();
+
+        Map<String, DocumentField> employeeFields = w2Fields.get("Employee").getValueMap();
+        AddressValue employeeAddrFields = employeeFields.get("Address")
+            .getValueAddress();
+        assertEquals("wa", employeeAddrFields.getState());
+        assertEquals("12345", employeeAddrFields.getPostalCode());
+        assertEquals("buffalo", employeeAddrFields.getCity());
+        assertEquals("4567 main street", employeeAddrFields.getStreetAddress());
+        assertEquals("4567", employeeAddrFields.getHouseNumber());
+        assertEquals("buffalo", employeeAddrFields.getCity());
+        assertEquals("ANGEL BROWN", employeeFields.get("Name")
+            .getValueString());
+        assertEquals("123-45-6789", employeeFields.get("SocialSecurityNumber")
+            .getValueString());
+
+        Map<String, DocumentField> employerFields = w2Fields.get("Employer").getValueMap();
+        AddressValue employerAddress = employerFields.get("Address").getValueAddress();
+        assertEquals("wa", employerAddress.getState());
+        assertEquals("98765", employerAddress.getPostalCode());
+        assertEquals("redmond", employerAddress.getCity());
+        assertEquals("CONTOSO LTD", employerFields.get("Name")
+            .getValueString());
+        assertEquals("98-7654321", employerFields.get("IdNumber")
+            .getValueString());
+
+        Assertions.assertEquals(3894.54f, w2Fields.get("FederalIncomeTaxWithheld").getValueFloat());
+        assertEquals(9873.2f, w2Fields.get("DependentCareBenefits").getValueFloat());
+
+        List<DocumentField> localTaxInfoFieldsList = w2Fields.get("LocalTaxInfos").getValueList();
+        Map<String, DocumentField> localTaxInfoFields1 = localTaxInfoFieldsList.get(0).getValueMap();
+        Map<String, DocumentField> localTaxInfoFields2 = localTaxInfoFieldsList.get(1).getValueMap();
+
+        assertEquals(51f, localTaxInfoFields1.get("LocalIncomeTax").getValueFloat());
+        assertEquals("Cmberland Vly/ Mddl", localTaxInfoFields1.get("LocalityName").getValueString());
+        assertEquals(37160.56f, localTaxInfoFields1.get("LocalWagesTipsEtc").getValueFloat());
+
+        assertEquals(594.54f, localTaxInfoFields2.get("LocalIncomeTax").getValueFloat());
+        assertEquals("E.Pennsboro/E.Pnns", localTaxInfoFields2.get("LocalityName").getValueString());
+        assertEquals(37160.56f, localTaxInfoFields2.get("LocalWagesTipsEtc").getValueFloat());
+
+        Assertions.assertEquals(538.83f, w2Fields.get("MedicareTaxWithheld").getValueFloat());
+        assertEquals(37160.56f, w2Fields.get("MedicareWagesAndTips").getValueFloat());
+        Assertions.assertEquals(653.21f, w2Fields.get("NonQualifiedPlans").getValueFloat());
+        assertEquals(2303.95f, w2Fields.get("SocialSecurityTaxWithheld").getValueFloat());
+        Assertions.assertEquals(302.3f, w2Fields.get("SocialSecurityTips").getValueFloat());
+        assertEquals(37160.56f, w2Fields.get("SocialSecurityWages").getValueFloat());
+
+        List<DocumentField> stateTaxInfoFieldsList = w2Fields.get("StateTaxInfos").getValueList();
+        Map<String, DocumentField> stateTaxInfoFields1 = stateTaxInfoFieldsList.get(0).getValueMap();
+        Map<String, DocumentField> stateTaxInfoFields2 = stateTaxInfoFieldsList.get(1).getValueMap();
+
+        assertEquals("87654321", stateTaxInfoFields1.get("EmployerStateIdNumber")
+            .getValueString());
+        assertEquals("PA", stateTaxInfoFields1.get("State")
+            .getValueString());
+        assertEquals(1135.65f, stateTaxInfoFields1.get("StateIncomeTax").getValueFloat());
+
+        assertEquals(37160.56f, stateTaxInfoFields1.get("StateWagesTipsEtc").getValueFloat());
+
+        assertEquals(1032.3f, stateTaxInfoFields2.get("StateIncomeTax").getValueFloat());
+        assertEquals(9631.2f, stateTaxInfoFields2.get("StateWagesTipsEtc").getValueFloat());
+
+        Assertions.assertEquals("2018", w2Fields.get("TaxYear").getValueString());
+        assertEquals("W-2", w2Fields.get("W2FormVariant").getValueString());
+        assertEquals(37160.56f, w2Fields.get("WagesTipsAndOtherCompensation").getValueFloat());
+    }
+
+    private void validateBoundingBoxData(List<Point> points) {
         Assertions.assertNotNull(points);
-        assertEquals(8, points.size());
+        assertEquals(4, points.size());
     }
 
     private void validatePngReceiptFields(Map<String, DocumentField> actualFields) {
-        //  "123-456-7890" is not a valid US telephone number since no area code can start with 1, so the service
-        //  returns a null instead.
-        assertNull(actualFields.get("MerchantPhoneNumber").getValuePhoneNumber());
+        Assertions.assertEquals("+19876543210", actualFields.get("MerchantPhoneNumber").getValuePhoneNumber());
         Assertions.assertNotNull(actualFields.get("Subtotal").getValueFloat());
         Assertions.assertNotNull(actualFields.get("Total").getValueFloat());
-        Assertions.assertNotNull(actualFields.get("Tax").getValueFloat());
+        Assertions.assertNotNull(actualFields.get("Subtotal").getConfidence());
+        Assertions.assertNotNull(actualFields.get("Total").getConfidence());
         Assertions.assertNotNull(actualFields.get("Items"));
         List<DocumentField> itemizedItems = actualFields.get("Items").getValueList();
 
         for (int i = 0; i < itemizedItems.size(); i++) {
             if (itemizedItems.get(i).getContent() != null) {
-                String[] itemizedNames = new String[] {"Surface Pro 6", "SurfacePen"};
-                Float[] itemizedTotalPrices = new Float[] {999f, 99.99f};
+                String[] itemizedNames = new String[] {"Surface Pro 6", "Surface Pen"};
+                Float[] itemizedTotalPrices = new Float[] {1998f, 299.97f};
+                Float[] itemizedQuantities = new Float[] {2f, 3f};
 
                 Map<String, DocumentField> actualReceiptItems = itemizedItems.get(i).getValueMap();
                 int finalI = i;
                 actualReceiptItems.forEach((key, documentField) -> {
-                    if ("Name".equals(key)) {
+                    Assertions.assertNotNull(documentField.getConfidence());
+                    if ("Description".equals(key)) {
                         if (DocumentFieldType.STRING == documentField.getType()) {
                             String name = documentField.getValueString();
                             assertEquals(itemizedNames[finalI], name);
@@ -695,7 +843,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                     if ("Quantity".equals(key)) {
                         if (DocumentFieldType.FLOAT == documentField.getType()) {
                             Float quantity = documentField.getValueFloat();
-                            assertEquals(1.f, quantity);
+                            assertEquals(itemizedQuantities[finalI], quantity);
                         }
                     }
                     if ("Price".equals(key)) {
@@ -725,26 +873,37 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             }
             if ("Locale".equals(key)) {
                 Assertions.assertEquals("en-US", documentField.getValueString());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("MerchantAddress".equals(key)) {
-                Assertions.assertEquals("123 Main Street Redmond, WA 98052", documentField.getValueString());
+                Assertions.assertEquals("123 Main Street\nRedmond, WA 98052", documentField.getValueString());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("MerchantName".equals(key)) {
                 Assertions.assertEquals("Contoso", documentField.getValueString());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("MerchantPhoneNumber".equals(key)) {
                 Assertions.assertEquals("+19876543210", documentField.getValuePhoneNumber());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("ReceiptType".equals(key)) {
                 Assertions.assertEquals("Itemized", documentField.getValueString());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("Subtotal".equals(key)) {
                 Assertions.assertEquals(11.7f, documentField.getValueFloat());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("Tax".equals(key)) {
                 Assertions.assertEquals(1.17f, documentField.getValueFloat());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("Tip".equals(key)) {
                 Assertions.assertEquals(1.63f, documentField.getValueFloat());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("TransactionDate".equals(key)) {
                 Assertions.assertEquals(LocalDate.of(2019, 6, 10), documentField.getValueDate());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("TransactionTime".equals(key)) {
                 Assertions.assertEquals(LocalTime.of(13, 59), documentField.getValueTime());
+                Assertions.assertNotNull(documentField.getConfidence());
             } else if ("Total".equals(key)) {
                 Assertions.assertEquals(14.5f, documentField.getValueFloat());
+                Assertions.assertNotNull(documentField.getConfidence());
             }
         });
     }

@@ -16,11 +16,12 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected final BlobServiceClient blobServiceClient;
     protected final BlobServiceAsyncClient blobServiceAsyncClient;
     private final Configuration configuration;
+    protected String connectionString;
 
     public ServiceTest(TOptions options) {
         super(options);
         configuration = Configuration.getGlobalConfiguration().clone();
-        String connectionString = configuration.get("STORAGE_CONNECTION_STRING");
+        connectionString = configuration.get("STORAGE_CONNECTION_STRING");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");

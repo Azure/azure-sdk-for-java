@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for upgrading an agentpool. */
 @Fluent
 public final class AgentPoolUpgradeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeSettings.class);
-
     /*
      * The maximum number or percentage of nodes that are surged during
      * upgrade. This can either be set to an integer (e.g. '5') or a percentage

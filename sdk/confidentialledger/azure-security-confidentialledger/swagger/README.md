@@ -10,7 +10,7 @@ namespace: com.azure.security.confidentialledger
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-low-level-client: true
+data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerClient

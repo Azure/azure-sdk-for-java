@@ -22,6 +22,6 @@ public abstract class MyFileChannel extends FileChannel {
     }
 
     @Override
-    protected void implCloseChannel() throws IOException {
+    public void implCloseChannel() throws IOException {
     }
 }

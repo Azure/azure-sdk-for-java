@@ -5,15 +5,23 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for a Connection Setting Item. */
 @Fluent
 public final class ConnectionSettingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionSettingProperties.class);
+    /*
+     * Id associated with the Connection Setting.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
+    /*
+     * Name associated with the Connection Setting.
+     */
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
      * Client Id associated with the Connection Setting.
@@ -56,6 +64,52 @@ public final class ConnectionSettingProperties {
      */
     @JsonProperty(value = "parameters")
     private List<ConnectionSettingParameter> parameters;
+
+    /*
+     * Provisioning state of the resource
+     */
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
+
+    /**
+     * Get the id property: Id associated with the Connection Setting.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Id associated with the Connection Setting.
+     *
+     * @param id the id value to set.
+     * @return the ConnectionSettingProperties object itself.
+     */
+    public ConnectionSettingProperties withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the name property: Name associated with the Connection Setting.
+     *
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Name associated with the Connection Setting.
+     *
+     * @param name the name value to set.
+     * @return the ConnectionSettingProperties object itself.
+     */
+    public ConnectionSettingProperties withName(String name) {
+        this.name = name;
+        return this;
+    }
 
     /**
      * Get the clientId property: Client Id associated with the Connection Setting.
@@ -185,6 +239,26 @@ public final class ConnectionSettingProperties {
      */
     public ConnectionSettingProperties withParameters(List<ConnectionSettingParameter> parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ConnectionSettingProperties object itself.
+     */
+    public ConnectionSettingProperties withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.Cluster;
 /** Samples for Clusters Update. */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersUpdate.json
      */
     /**
      * Sample code: KustoClustersUpdate.
@@ -19,10 +19,7 @@ public final class ClustersUpdateSamples {
      */
     public static void kustoClustersUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
         Cluster resource =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("kustorptest", "kustoclusterrptest4", Context.NONE)
-                .getValue();
+            manager.clusters().getByResourceGroupWithResponse("kustorptest", "kustoCluster2", Context.NONE).getValue();
         resource.update().withIfMatch("*").apply();
     }
 }

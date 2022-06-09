@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/oep/ci.yml
+      - sdk/oep/azure-resourcemanager-oep/
+    exclude:
+      - sdk/oep/pom.xml
+      - sdk/oep/azure-resourcemanager-oep/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/oep/ci.yml
+      - sdk/oep/azure-resourcemanager-oep/
+    exclude:
+      - sdk/oep/pom.xml
+      - sdk/oep/azure-resourcemanager-oep/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: oep
+    Artifacts:
+      - name: azure-resourcemanager-oep
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageroep

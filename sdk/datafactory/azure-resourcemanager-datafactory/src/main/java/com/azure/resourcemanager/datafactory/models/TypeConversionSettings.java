@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Type conversion settings. */
 @Fluent
 public final class TypeConversionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TypeConversionSettings.class);
-
     /*
      * Whether to allow data truncation when converting the data. Type: boolean
      * (or Expression with resultType boolean).

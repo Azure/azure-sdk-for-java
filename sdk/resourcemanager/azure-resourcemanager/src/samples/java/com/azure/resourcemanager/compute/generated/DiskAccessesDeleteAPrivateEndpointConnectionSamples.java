@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskAccesses DeleteAPrivateEndpointConnection. */
 public final class DiskAccessesDeleteAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/DeleteAPrivateEndpointConnection.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskAccessExamples/DiskAccessPrivateEndpointConnection_Delete.json
      */
     /**
      * Sample code: Delete a private endpoint connection under a disk access resource.

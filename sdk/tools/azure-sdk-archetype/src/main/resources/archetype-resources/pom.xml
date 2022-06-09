@@ -14,8 +14,9 @@
         <maven.compiler.source>${javaVersion}</maven.compiler.source>
         <bom.version>1.0.2</bom.version>
         <graalvm.version>21.2.0</graalvm.version>
+        <buildtool.version>1.0.0-beta.1</buildtool.version>
 #if( ${junitVersion} == '4')
-        <junit4.version>4.12</junit4.version>
+        <junit4.version>4.13.2</junit4.version>
 #end
 #if( ${junitVersion} == '5')
         <junit5.version>5.7.2</junit5.version>
@@ -96,6 +97,11 @@
                     <mainClass>${package}.App</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.azure.tools</groupId>
+                <artifactId>azure-sdk-build-tool</artifactId>
+                <version>${buildtool.version}</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -106,15 +112,23 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.graalvm.nativeimage</groupId>
-                        <artifactId>native-image-maven-plugin</artifactId>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
                         <version>${graalvm.version}</version>
                         <executions>
                             <execution>
+                                <id>build-native</id>
                                 <goals>
-                                    <goal>native-image</goal>
+                                    <goal>build</goal>
                                 </goals>
                                 <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
                             </execution>
                         </executions>
                         <configuration>

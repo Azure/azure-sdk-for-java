@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
 @Fluent
 public final class PurchasePlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
-
     /*
      * The plan ID.
      */

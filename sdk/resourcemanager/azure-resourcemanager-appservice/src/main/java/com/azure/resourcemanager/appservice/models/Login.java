@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration settings of the login flow of users using App Service Authentication/Authorization. */
 @Fluent
 public final class Login {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Login.class);
-
     /*
      * The routes that specify the endpoints used for login and logout
      * requests.

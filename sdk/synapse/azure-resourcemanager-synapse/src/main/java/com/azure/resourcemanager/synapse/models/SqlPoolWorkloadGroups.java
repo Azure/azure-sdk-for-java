@@ -35,7 +35,7 @@ public interface SqlPoolWorkloadGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group along with {@link Response}.
      */
     Response<WorkloadGroup> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
@@ -77,7 +77,7 @@ public interface SqlPoolWorkloadGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkloadGroup> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -91,7 +91,7 @@ public interface SqlPoolWorkloadGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkloadGroup> list(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
@@ -103,7 +103,7 @@ public interface SqlPoolWorkloadGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group along with {@link Response}.
      */
     WorkloadGroup getById(String id);
 
@@ -115,7 +115,7 @@ public interface SqlPoolWorkloadGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group along with {@link Response}.
      */
     Response<WorkloadGroup> getByIdWithResponse(String id, Context context);
 

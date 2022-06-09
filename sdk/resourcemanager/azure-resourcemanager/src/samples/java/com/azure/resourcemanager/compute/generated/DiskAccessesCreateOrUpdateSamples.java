@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.fluent.models.DiskAccessInner;
 /** Samples for DiskAccesses CreateOrUpdate. */
 public final class DiskAccessesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/CreateADiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskAccessExamples/DiskAccess_Create.json
      */
     /**
      * Sample code: Create a disk access resource.

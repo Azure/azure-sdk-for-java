@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.HostSettingsClient;
 import com.azure.resourcemanager.botservice.fluent.models.HostSettingsResponseInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HostSettingsClient. */
 public final class HostSettingsClientImpl implements HostSettingsClient {
-    private final ClientLogger logger = new ClientLogger(HostSettingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final HostSettingsService service;
 
@@ -71,7 +68,8 @@ public final class HostSettingsClientImpl implements HostSettingsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return per subscription settings needed to host bot in compute resource such as Azure App Service.
+     * @return per subscription settings needed to host bot in compute resource such as Azure App Service along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HostSettingsResponseInner>> getWithResponseAsync() {
@@ -108,7 +106,8 @@ public final class HostSettingsClientImpl implements HostSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return per subscription settings needed to host bot in compute resource such as Azure App Service.
+     * @return per subscription settings needed to host bot in compute resource such as Azure App Service along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HostSettingsResponseInner>> getWithResponseAsync(Context context) {
@@ -140,7 +139,8 @@ public final class HostSettingsClientImpl implements HostSettingsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return per subscription settings needed to host bot in compute resource such as Azure App Service.
+     * @return per subscription settings needed to host bot in compute resource such as Azure App Service on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HostSettingsResponseInner> getAsync() {
@@ -174,7 +174,8 @@ public final class HostSettingsClientImpl implements HostSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return per subscription settings needed to host bot in compute resource such as Azure App Service.
+     * @return per subscription settings needed to host bot in compute resource such as Azure App Service along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HostSettingsResponseInner> getWithResponse(Context context) {

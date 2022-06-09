@@ -19,16 +19,19 @@ import org.apache.avro.specific.SpecificData;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.util.ByteBufferInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Class containing implementation of Apache Avro serializer
@@ -41,7 +44,6 @@ class AvroSerializer {
 
     private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
     private final boolean avroSpecificReader;
-    private final Schema.Parser parser;
     private final EncoderFactory encoderFactory;
     private final DecoderFactory decoderFactory;
 
@@ -88,32 +90,22 @@ class AvroSerializer {
      *
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
-     * @param parser Schema parser to use.
      * @param encoderFactory Encoder factory
      * @param decoderFactory Decoder factory
      */
-    AvroSerializer(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
+    AvroSerializer(boolean avroSpecificReader, EncoderFactory encoderFactory,
         DecoderFactory decoderFactory) {
 
         this.avroSpecificReader = avroSpecificReader;
-        this.parser = Objects.requireNonNull(parser, "'parser' cannot be null.");
         this.encoderFactory = Objects.requireNonNull(encoderFactory, "'encoderFactory' cannot be null.");
         this.decoderFactory = Objects.requireNonNull(decoderFactory, "'decoderFactory' cannot be null.");
-    }
-
-    /**
-     * @param schemaString string representation of schema
-     *
-     * @return avro schema
-     */
-    Schema parseSchemaString(String schemaString) {
-        return this.parser.parse(schemaString);
     }
 
     /**
      * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
+     * @param schemaId Identifier of the schema trying to be encoded.
      *
      * @return A set of bytes that represent the object.
      *
@@ -121,7 +113,7 @@ class AvroSerializer {
      * @throws IllegalStateException if the object could not be serialized to an object stream or there was a
      *     runtime exception during serialization.
      */
-    <T> byte[] encode(T object) {
+    <T> byte[] serialize(T object, String schemaId) {
         final Schema schema = getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -142,39 +134,39 @@ class AvroSerializer {
             return outputStream.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw logger.logExceptionAsError(new IllegalStateException("Error serializing Avro message", e));
+            throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
+                "An error occurred while attempting to serialize to Avro.", e, schemaId));
         }
     }
 
     /**
-     * @param bytes byte array containing encoded bytes
-     * @param schemaBytes schema content for Avro reader to read - fetched from Azure Schema Registry
+     * @param contents byte array containing encoded bytes
+     * @param schemaObject Schema to deserialize object.
      *
      * @return deserialized object
      */
-    <T> T decode(byte[] bytes, byte[] schemaBytes, TypeReference<T> typeReference) {
-        Objects.requireNonNull(bytes, "'bytes' must not be null.");
-        Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
+    <T> T deserialize(ByteBuffer contents, Schema schemaObject, TypeReference<T> typeReference) {
+        Objects.requireNonNull(contents, "'bytes' must not be null.");
 
-        String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
-        Schema schemaObject = parseSchemaString(schemaString);
-
-        if (isSingleObjectEncoded(bytes)) {
+        if (isSingleObjectEncoded(contents)) {
             final BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);
 
             try {
-                return messageDecoder.decode(bytes);
+                return messageDecoder.decode(contents);
             } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
             }
         } else {
             final DatumReader<T> reader = getDatumReader(schemaObject, typeReference);
 
             try {
-                return reader.read(null, decoderFactory.binaryDecoder(bytes, null));
+                try (ByteBufferInputStream input = new ByteBufferInputStream(Collections.singletonList(contents))) {
+                    return reader.read(null, decoderFactory.binaryDecoder(input, null));
+                }
             } catch (IOException | RuntimeException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
+                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
+                    "Error deserializing raw Avro message.", e));
             }
         }
     }
@@ -215,18 +207,66 @@ class AvroSerializer {
      *     <li>8 byte little-endian CRC-64-AVRO fingerprint of the object's schema</li>
      * </ul>
      *
-     * @param schemaBytes Bytes to read from.
+     * @param byteBuffer Bytes to read from.
      *
      * @return true if the object has the single object payload header; false otherwise.
      *
      * @see <a href="https://avro.apache.org/docs/current/spec.html#single_object_encoding">Single Object Encoding</a>
      */
-    static boolean isSingleObjectEncoded(byte[] schemaBytes) {
-        if (schemaBytes.length < V1_HEADER_LENGTH) {
+    static boolean isSingleObjectEncoded(ByteBuffer byteBuffer) {
+        if (byteBuffer.remaining() < V1_HEADER_LENGTH) {
             return false;
         }
 
-        return V1_HEADER[0] == schemaBytes[0] && V1_HEADER[1] == schemaBytes[1];
+        // Before we started moving the position in the buffer.
+        byteBuffer.mark();
+
+        final byte[] contents = new byte[V1_HEADER_LENGTH];
+        byteBuffer.get(contents);
+        byteBuffer.reset();
+
+        return V1_HEADER[0] == contents[0] && V1_HEADER[1] == contents[1];
+    }
+
+    /**
+     * Gets the type's schema if there is one.
+     *
+     * @param clazz Class to get schema.
+     * @param <T> The type of object.
+     *
+     * @return The {@link Schema} or {@code null} if it was not a GenericContainer, could not instantiate the type, or
+     *     there was no default constructor.
+     */
+    <T> Schema getSchemaFromTypeReference(Class<T> clazz) {
+        if (!GenericContainer.class.isAssignableFrom(clazz)) {
+            return null;
+        }
+
+        final Optional<Constructor<?>> defaultConstructor;
+        try {
+            defaultConstructor = Arrays.stream(clazz.getDeclaredConstructors())
+                .filter(constructor -> constructor.getParameterCount() == 0)
+                .findFirst();
+        } catch (SecurityException e) {
+            logger.info("Could not get declaring constructors for deserializing T ({}). Using writer schema.",
+                clazz, e);
+            return null;
+        }
+
+        if (!defaultConstructor.isPresent()) {
+            return null;
+        }
+
+        Object instance = null;
+        try {
+            instance = defaultConstructor.get().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            logger.info("Could not create new instance for deserializing T ({}). Using writer schema.", clazz, e);
+        }
+
+        return instance instanceof GenericContainer
+            ? ((GenericContainer) instance).getSchema()
+            : null;
     }
 
     /**
@@ -256,10 +296,8 @@ class AvroSerializer {
      *
      * @return correct Avro DatumReader object given encoder configuration
      */
-    @SuppressWarnings("unchecked")
     private <T> DatumReader<T> getDatumReader(Schema writerSchema, TypeReference<T> typeReference) {
-        // Suppressing this warning because we know that the Type is a representation of the Class<T>
-        final Class<T> clazz = (Class<T>) typeReference.getJavaType();
+        final Class<T> clazz = typeReference.getJavaClass();
         final Schema primitiveSchema = getPrimitiveSchema(clazz);
 
         if (primitiveSchema != null) {
@@ -268,6 +306,14 @@ class AvroSerializer {
             } else {
                 return new GenericDatumReader<>(writerSchema);
             }
+        }
+
+        final Schema readerSchema = getSchemaFromTypeReference(clazz);
+        if (readerSchema != null && !readerSchema.equals(writerSchema)) {
+            logger.verbose("The writer schema is different than reader schema. Using reader schema. "
+                + "Writer: '{}'. Reader: '{}'", writerSchema, readerSchema);
+
+            return new SpecificDatumReader<>(writerSchema, readerSchema);
         }
 
         if (SpecificRecord.class.isAssignableFrom(clazz)) {

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AgentPools UpgradeNodeImageVersion. */
 public final class AgentPoolsUpgradeNodeImageVersionSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/AgentPoolsUpgradeNodeImageVersion.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/AgentPoolsUpgradeNodeImageVersion.json
      */
     /**
      * Sample code: Upgrade Agent Pool Node Image Version.

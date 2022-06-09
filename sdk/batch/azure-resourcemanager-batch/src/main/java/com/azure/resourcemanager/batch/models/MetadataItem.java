@@ -6,14 +6,14 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Batch service does not assign any meaning to this metadata; it is solely for the use of user code. */
+/**
+ * A name-value pair associated with a Batch service resource. The Batch service does not assign any meaning to this
+ * metadata; it is solely for the use of user code.
+ */
 @Fluent
 public final class MetadataItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataItem.class);
-
     /*
      * The name of the metadata item.
      */
@@ -73,14 +73,16 @@ public final class MetadataItem {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model MetadataItem"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model MetadataItem"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetadataItem.class);
 }

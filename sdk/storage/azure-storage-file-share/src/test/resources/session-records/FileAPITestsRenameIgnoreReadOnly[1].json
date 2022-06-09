@@ -1,0 +1,101 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/c28496d9c28496d93fd70504dd3b98ea6a444d3184?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "618dec0b-8b61-4421-a799-af202103aff2"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "eTag" : "0x8D9C016082C47FE",
+      "Last-Modified" : "Wed, 15 Dec 2021 21:58:30 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f82e0a5f-601a-0002-7cfe-f1e805000000",
+      "x-ms-client-request-id" : "618dec0b-8b61-4421-a799-af202103aff2",
+      "Date" : "Wed, 15 Dec 2021 21:58:30 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/c28496d9c28496d93fd70504dd3b98ea6a444d3184/c28496d9c28496d93fd40094b4171220d2ae43f3a4",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "267a0fab-c51a-4542-a51c-c2060b80febd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-file-permission-key" : "17566099191294621851*1292734777967284221",
+      "x-ms-file-id" : "13835128424026341376",
+      "x-ms-file-creation-time" : "2021-12-15T21:58:31.3909406Z",
+      "Last-Modified" : "Wed, 15 Dec 2021 21:58:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 15 Dec 2021 21:58:31 GMT",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2021-12-15T21:58:31.3909406Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8D9C016087DC49E",
+      "x-ms-request-id" : "888eb708-a01a-0005-41fe-f1f0c9000000",
+      "x-ms-client-request-id" : "267a0fab-c51a-4542-a51c-c2060b80febd",
+      "x-ms-file-last-write-time" : "2021-12-15T21:58:31.3909406Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/c28496d9c28496d93fd70504dd3b98ea6a444d3184/c28496d90c28496d93fd61691bfa3284a754f4fa7a7f",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8e0c87f7-e4e6-4b5a-b453-d20cb9ebcbee"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-file-permission-key" : "17566099191294621851*1292734777967284221",
+      "x-ms-file-id" : "11529285414812647424",
+      "x-ms-file-creation-time" : "2021-12-15T21:58:31.5789505Z",
+      "Last-Modified" : "Wed, 15 Dec 2021 21:58:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 15 Dec 2021 21:58:31 GMT",
+      "x-ms-file-attributes" : "ReadOnly | Archive",
+      "x-ms-file-change-time" : "2021-12-15T21:58:31.5789505Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8D9C016089A74C1",
+      "x-ms-request-id" : "888eb70b-a01a-0005-42fe-f1f0c9000000",
+      "x-ms-client-request-id" : "8e0c87f7-e4e6-4b5a-b453-d20cb9ebcbee",
+      "x-ms-file-last-write-time" : "2021-12-15T21:58:31.5789505Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/c28496d9c28496d93fd70504dd3b98ea6a444d3184/c28496d90c28496d93fd61691bfa3284a754f4fa7a7f?comp=rename",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "011b8272-7ad8-46f7-bbef-8183093706f2"
+    },
+    "Response" : {
+      "content-length" : "258",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-error-code" : "ReadOnlyAttribute",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "888eb70c-a01a-0005-43fe-f1f0c9000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ReadOnlyAttribute</Code><Message>The specified resource is read-only and cannot be modified at this time.\nRequestId:888eb70c-a01a-0005-43fe-f1f0c9000000\nTime:2021-12-15T21:58:31.7095048Z</Message></Error>",
+      "x-ms-client-request-id" : "011b8272-7ad8-46f7-bbef-8183093706f2",
+      "Date" : "Wed, 15 Dec 2021 21:58:31 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "c28496d9c28496d93fd70504dd3b98ea6a444d3184", "c28496d9c28496d93fd40094b4171220d2ae43f3a4", "c28496d90c28496d93fd61691bfa3284a754f4fa7a7f" ]
+}

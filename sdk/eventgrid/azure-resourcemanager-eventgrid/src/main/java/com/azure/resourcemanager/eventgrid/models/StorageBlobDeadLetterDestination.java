@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.StorageBlobDeadLetterDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("StorageBlob")
 @Fluent
 public final class StorageBlobDeadLetterDestination extends DeadLetterDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageBlobDeadLetterDestination.class);
-
     /*
      * The properties of the Storage Blob based deadletter destination
      */

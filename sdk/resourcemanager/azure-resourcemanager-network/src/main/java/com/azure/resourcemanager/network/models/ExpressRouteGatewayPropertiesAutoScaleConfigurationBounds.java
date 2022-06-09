@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Minimum and maximum number of scale units to deploy. */
 @Fluent
 public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.class);
-
     /*
      * Minimum number of scale units deployed for ExpressRoute gateway.
      */

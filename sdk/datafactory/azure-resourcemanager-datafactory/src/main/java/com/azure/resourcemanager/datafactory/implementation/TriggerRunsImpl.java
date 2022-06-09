@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.TriggerRunsQueryRespo
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 import com.azure.resourcemanager.datafactory.models.TriggerRuns;
 import com.azure.resourcemanager.datafactory.models.TriggerRunsQueryResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TriggerRunsImpl implements TriggerRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerRunsImpl.class);
 
     private final TriggerRunsClient innerClient;
 

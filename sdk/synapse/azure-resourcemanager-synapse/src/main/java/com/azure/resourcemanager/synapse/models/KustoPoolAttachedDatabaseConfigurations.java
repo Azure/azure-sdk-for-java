@@ -19,7 +19,8 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list attached database configurations operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<AttachedDatabaseConfiguration> listByKustoPool(
         String workspaceName, String kustoPoolName, String resourceGroupName);
@@ -34,7 +35,8 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list attached database configurations operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<AttachedDatabaseConfiguration> listByKustoPool(
         String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
@@ -65,7 +67,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing an attached database configuration along with {@link Response}.
      */
     Response<AttachedDatabaseConfiguration> getWithResponse(
         String workspaceName,
@@ -114,7 +116,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing an attached database configuration along with {@link Response}.
      */
     AttachedDatabaseConfiguration getById(String id);
 
@@ -126,7 +128,7 @@ public interface KustoPoolAttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing an attached database configuration along with {@link Response}.
      */
     Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context);
 

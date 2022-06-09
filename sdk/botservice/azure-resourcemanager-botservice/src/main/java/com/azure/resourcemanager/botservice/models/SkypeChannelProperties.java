@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Microsoft Teams channel. */
 @Fluent
 public final class SkypeChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkypeChannelProperties.class);
-
     /*
      * Enable messaging for Skype channel
      */
@@ -61,6 +57,12 @@ public final class SkypeChannelProperties {
      */
     @JsonProperty(value = "callingWebHook")
     private String callingWebhook;
+
+    /*
+     * Incoming call route for Skype channel
+     */
+    @JsonProperty(value = "incomingCallRoute")
+    private String incomingCallRoute;
 
     /*
      * Whether this channel is enabled for the bot
@@ -225,6 +227,26 @@ public final class SkypeChannelProperties {
      */
     public SkypeChannelProperties withCallingWebhook(String callingWebhook) {
         this.callingWebhook = callingWebhook;
+        return this;
+    }
+
+    /**
+     * Get the incomingCallRoute property: Incoming call route for Skype channel.
+     *
+     * @return the incomingCallRoute value.
+     */
+    public String incomingCallRoute() {
+        return this.incomingCallRoute;
+    }
+
+    /**
+     * Set the incomingCallRoute property: Incoming call route for Skype channel.
+     *
+     * @param incomingCallRoute the incomingCallRoute value to set.
+     * @return the SkypeChannelProperties object itself.
+     */
+    public SkypeChannelProperties withIncomingCallRoute(String incomingCallRoute) {
+        this.incomingCallRoute = incomingCallRoute;
         return this;
     }
 

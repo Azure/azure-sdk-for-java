@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Blob index tag based filtering for blob objects. */
 @Fluent
 public final class TagFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagFilter.class);
-
     /*
      * This is the filter tag name, it can have 1 - 128 characters
      */
@@ -105,17 +102,19 @@ public final class TagFilter {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model TagFilter"));
         }
         if (op() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property op in model TagFilter"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model TagFilter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TagFilter.class);
 }

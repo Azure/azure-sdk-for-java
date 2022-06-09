@@ -21,8 +21,10 @@ import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
@@ -38,6 +40,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
 import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -53,6 +56,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
@@ -917,6 +921,19 @@ class BlockBlobAPITest extends APISpec {
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
         100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
+    @LiveOnly
+    // Reading from recordings will not allow for the timing of the test to work correctly.
+    def "Upload from file timeout"() {
+        setup:
+        def file = getRandomFile(1024)
+
+        when:
+        blobClient.uploadFromFile(file.getPath(), null, null, null, null, null, Duration.ofNanos(5L))
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Upload min"() {
@@ -2149,5 +2166,41 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10))    | BlobErrorCode.CONDITION_NOT_MET
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CONDITION_NOT_MET
         new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb")       | BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Upload from url copy source tags"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceTags = ["foo": "bar"]
+        def destTags = ["fizz": "buzz"]
+        blockBlobClient.setTags(sourceTags)
+
+        def sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)))
+
+        def bc2 = cc.getBlobClient(generateBlobName())
+
+        def options = new BlobCopyFromUrlOptions(blockBlobClient.getBlobUrl() + "?" + sas).setCopySourceTagsMode(mode)
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            options.setTags(destTags)
+        }
+
+        when:
+        bc2.copyFromUrlWithResponse(options, null, null)
+        def receivedTags = bc2.getTags()
+
+        then:
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            assert receivedTags == destTags
+        } else {
+            assert receivedTags == sourceTags
+        }
+
+        where:
+        mode                           | _
+        BlobCopySourceTagsMode.COPY    | _
+        BlobCopySourceTagsMode.REPLACE | _
     }
 }

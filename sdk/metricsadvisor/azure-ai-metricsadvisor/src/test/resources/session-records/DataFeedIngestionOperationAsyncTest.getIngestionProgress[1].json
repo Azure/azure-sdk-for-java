@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/151e5444-449f-441e-8b64-988f21c5d054/ingestionProgress",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionProgress",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2ae99bfd-387d-4f0a-80da-f953404506e3"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "14756f83-914b-4d97-a663-c28a69c5de8b"
     },
     "Response" : {
-      "x-request-id" : "c4f34e58-c6b9-4104-8766-68e745060ec9",
+      "x-request-id" : "c1264101-426d-45ea-9fa1-b898998009dc",
       "content-length" : "96",
-      "x-envoy-upstream-service-time" : "206",
+      "x-envoy-upstream-service-time" : "251",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c4f34e58-c6b9-4104-8766-68e745060ec9",
+      "apim-request-id" : "c1264101-426d-45ea-9fa1-b898998009dc",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"latestSuccessTimestamp\":\"2021-10-27T00:00:00Z\",\"latestActiveTimestamp\":\"2021-10-27T00:00:00Z\"}",
-      "Date" : "Thu, 28 Oct 2021 22:36:53 GMT",
+      "Body" : "{\"latestSuccessTimestamp\":\"2022-04-07T00:00:00Z\",\"latestActiveTimestamp\":\"2022-04-07T00:00:00Z\"}",
+      "Date" : "Fri, 08 Apr 2022 23:50:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

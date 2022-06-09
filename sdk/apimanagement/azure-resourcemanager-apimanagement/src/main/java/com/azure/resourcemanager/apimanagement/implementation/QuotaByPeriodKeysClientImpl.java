@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.QuotaByPeriodKeysClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterContractInner;
 import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateContract;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QuotaByPeriodKeysClient. */
 public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClient {
-    private final ClientLogger logger = new ClientLogger(QuotaByPeriodKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QuotaByPeriodKeysService service;
 
@@ -108,7 +105,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
+     *     service instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterContractInner>> getWithResponseAsync(
@@ -173,7 +170,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
+     *     service instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterContractInner>> getWithResponseAsync(
@@ -234,7 +231,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
+     *     service instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaCounterContractInner> getAsync(
@@ -289,7 +286,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
+     *     service instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaCounterContractInner> getWithResponse(
@@ -311,7 +308,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota counter details.
+     * @return quota counter details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterContractInner>> updateWithResponseAsync(
@@ -385,7 +382,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota counter details.
+     * @return quota counter details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaCounterContractInner>> updateWithResponseAsync(
@@ -456,7 +453,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota counter details.
+     * @return quota counter details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaCounterContractInner> updateAsync(
@@ -517,7 +514,7 @@ public final class QuotaByPeriodKeysClientImpl implements QuotaByPeriodKeysClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota counter details.
+     * @return quota counter details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaCounterContractInner> updateWithResponse(

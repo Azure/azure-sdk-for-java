@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,12 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ProtectionIntent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "RecoveryServiceVaultItem", value = AzureRecoveryServiceVaultProtectionIntent.class),
-    @JsonSubTypes.Type(name = "AzureResourceItem", value = AzureResourceProtectionIntent.class)
+    @JsonSubTypes.Type(name = "AzureResourceItem", value = AzureResourceProtectionIntent.class),
+    @JsonSubTypes.Type(
+        name = "AzureWorkloadContainerAutoProtectionIntent",
+        value = AzureWorkloadContainerAutoProtectionIntent.class)
 })
 @Fluent
 public class ProtectionIntent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionIntent.class);
-
     /*
      * Type of backup management for the backed up item.
      */

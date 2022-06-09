@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class HttpSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpSettings.class);
-
     /*
      * <code>false</code> if the authentication/authorization responses not
      * having the HTTPS scheme are permissible; otherwise, <code>true</code>.

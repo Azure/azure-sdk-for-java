@@ -45,24 +45,26 @@ public final class ConnectionPolicy {
     private Duration tcpNetworkRequestTimeout;
     private boolean tcpConnectionEndpointRediscoveryEnabled;
     private int ioThreadCountPerCoreFactor;
-
-
-    private boolean clientTelemetryEnabled;
+    private int ioThreadPriority;
 
     /**
      * Constructor.
      */
-    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
-        this(ConnectionMode.GATEWAY);
-        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
-        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
-        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
-        this.proxy = gatewayConnectionConfig.getProxy();
-        this.tcpConnectionEndpointRediscoveryEnabled = false;
+    public ConnectionPolicy(DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.DIRECT, directConnectionConfig, gatewayConnectionConfig);
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
-        this(ConnectionMode.DIRECT);
+        this(ConnectionMode.DIRECT, directConnectionConfig, GatewayConnectionConfig.getDefaultConfig());
+    }
+
+    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.GATEWAY, DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig);
+    }
+
+    private ConnectionPolicy(ConnectionMode connectionMode, DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        this();
+        this.connectionMode = connectionMode;
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
         this.idleTcpConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
@@ -74,17 +76,24 @@ public final class ConnectionPolicy {
             .DirectConnectionConfigHelper
             .getDirectConnectionConfigAccessor()
             .getIoThreadCountPerCoreFactor(directConnectionConfig);
+        this.ioThreadPriority = ImplementationBridgeHelpers
+            .DirectConnectionConfigHelper
+            .getDirectConnectionConfigAccessor()
+            .getIoThreadPriority(directConnectionConfig);
+        this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
+        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
+        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
+        this.proxy = gatewayConnectionConfig.getProxy();
     }
 
-    private ConnectionPolicy(ConnectionMode connectionMode) {
-        this.connectionMode = connectionMode;
+    private ConnectionPolicy() {
         //  Default values
         this.endpointDiscoveryEnabled = true;
-        this.maxConnectionPoolSize = defaultGatewayMaxConnectionPoolSize;
         this.multipleWriteRegionsEnabled = true;
         this.readRequestsFallbackEnabled = true;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
+        this.ioThreadPriority = Thread.NORM_PRIORITY;
     }
 
     /**
@@ -537,18 +546,17 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public boolean isClientTelemetryEnabled() {
-        return clientTelemetryEnabled;
-    }
-
-    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
-    }
-
     public int getIoThreadCountPerCoreFactor() { return this.ioThreadCountPerCoreFactor; }
+
+    public int getIoThreadPriority() { return this.ioThreadPriority; }
 
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
+        return this;
+    }
+
+    public ConnectionPolicy setIoThreadPriority(int ioThreadPriority) {
+        this.ioThreadPriority = ioThreadPriority;
         return this;
     }
 
@@ -574,7 +582,6 @@ public final class ConnectionPolicy {
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
-            ", clientTelemetryEnabled=" + clientTelemetryEnabled +
             '}';
     }
 }

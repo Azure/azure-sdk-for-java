@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-cognitiveservices</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for CognitiveServices Management</name>
-  <description>This package contains Microsoft Azure SDK for CognitiveServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Cognitive Services Management Client. Package tag package-2021-10.</description>
+  <description>This package contains Microsoft Azure SDK for CognitiveServices Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Cognitive Services Management Client. Package tag package-2022-03.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -39,43 +39,17 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.23.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.4.4</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfiguration>
-            <revapi.ignore>
-              <item>
-                <code>java.method.addedToInterface</code>
-              </item>
-              <item>
-                <regex>true</regex>
-                <code>.*</code>
-                <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>
-              </item>
-            </revapi.ignore>
-          </analysisConfiguration>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

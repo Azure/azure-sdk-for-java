@@ -23,10 +23,9 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetEntityTagR
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsListSecretsResponse;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsUpdateResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubscriptionsImpl implements Subscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionsImpl.class);
 
     private final SubscriptionsClient innerClient;
 

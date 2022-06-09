@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Images Update. */
 public final class ImagesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/UpdateImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_Update.json
      */
     /**
      * Sample code: Updates tags of an Image.

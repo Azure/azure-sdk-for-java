@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a data disk. */
 @Fluent
 public final class DataDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisk.class);
-
     /*
      * Specifies the logical unit number of the data disk. This value is used
      * to identify data disks within the VM and therefore must be unique for
@@ -456,7 +453,7 @@ public final class DataDisk {
             image().validate();
         }
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property createOption in model DataDisk"));
         }
@@ -464,4 +461,6 @@ public final class DataDisk {
             managedDisk().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataDisk.class);
 }

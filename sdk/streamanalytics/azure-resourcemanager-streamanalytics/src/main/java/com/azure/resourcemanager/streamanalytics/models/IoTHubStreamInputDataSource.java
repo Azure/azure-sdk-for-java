@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.IoTHubStreamInputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,47 +15,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes an IoT Hub input data source that contains stream data. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.Devices/IotHubs")
-@JsonFlatten
 @Fluent
-public class IoTHubStreamInputDataSource extends StreamInputDataSource {
+public final class IoTHubStreamInputDataSource extends StreamInputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTHubStreamInputDataSource.class);
 
     /*
-     * The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace)
-     * requests.
+     * The properties that are associated with an IoT Hub input containing
+     * stream data. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.iotHubNamespace")
-    private String iotHubNamespace;
+    @JsonProperty(value = "properties")
+    private IoTHubStreamInputDataSourceProperties innerProperties;
 
-    /*
-     * The shared access policy name for the IoT Hub. This policy must contain
-     * at least the Service connect permission. Required on PUT
-     * (CreateOrReplace) requests.
+    /**
+     * Get the innerProperties property: The properties that are associated with an IoT Hub input containing stream
+     * data. Required on PUT (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sharedAccessPolicyName")
-    private String sharedAccessPolicyName;
-
-    /*
-     * The shared access policy key for the specified shared access policy.
-     * Required on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.sharedAccessPolicyKey")
-    private String sharedAccessPolicyKey;
-
-    /*
-     * The name of an IoT Hub Consumer Group that should be used to read events
-     * from the IoT Hub. If not specified, the input uses the Iot Hub’s default
-     * consumer group.
-     */
-    @JsonProperty(value = "properties.consumerGroupName")
-    private String consumerGroupName;
-
-    /*
-     * The IoT Hub endpoint to connect to (ie. messages/events,
-     * messages/operationsMonitoringEvents, etc.).
-     */
-    @JsonProperty(value = "properties.endpoint")
-    private String endpoint;
+    private IoTHubStreamInputDataSourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
@@ -63,7 +42,7 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the iotHubNamespace value.
      */
     public String iotHubNamespace() {
-        return this.iotHubNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().iotHubNamespace();
     }
 
     /**
@@ -73,7 +52,10 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the IoTHubStreamInputDataSource object itself.
      */
     public IoTHubStreamInputDataSource withIotHubNamespace(String iotHubNamespace) {
-        this.iotHubNamespace = iotHubNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubStreamInputDataSourceProperties();
+        }
+        this.innerProperties().withIotHubNamespace(iotHubNamespace);
         return this;
     }
 
@@ -84,7 +66,7 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
-        return this.sharedAccessPolicyName;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessPolicyName();
     }
 
     /**
@@ -95,7 +77,10 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the IoTHubStreamInputDataSource object itself.
      */
     public IoTHubStreamInputDataSource withSharedAccessPolicyName(String sharedAccessPolicyName) {
-        this.sharedAccessPolicyName = sharedAccessPolicyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubStreamInputDataSourceProperties();
+        }
+        this.innerProperties().withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
@@ -106,7 +91,7 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
-        return this.sharedAccessPolicyKey;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessPolicyKey();
     }
 
     /**
@@ -117,7 +102,10 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the IoTHubStreamInputDataSource object itself.
      */
     public IoTHubStreamInputDataSource withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
-        this.sharedAccessPolicyKey = sharedAccessPolicyKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubStreamInputDataSourceProperties();
+        }
+        this.innerProperties().withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
@@ -128,7 +116,7 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the consumerGroupName value.
      */
     public String consumerGroupName() {
-        return this.consumerGroupName;
+        return this.innerProperties() == null ? null : this.innerProperties().consumerGroupName();
     }
 
     /**
@@ -139,7 +127,10 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the IoTHubStreamInputDataSource object itself.
      */
     public IoTHubStreamInputDataSource withConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubStreamInputDataSourceProperties();
+        }
+        this.innerProperties().withConsumerGroupName(consumerGroupName);
         return this;
     }
 
@@ -150,7 +141,7 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the endpoint value.
      */
     public String endpoint() {
-        return this.endpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
     }
 
     /**
@@ -161,7 +152,10 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
      * @return the IoTHubStreamInputDataSource object itself.
      */
     public IoTHubStreamInputDataSource withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubStreamInputDataSourceProperties();
+        }
+        this.innerProperties().withEndpoint(endpoint);
         return this;
     }
 
@@ -173,5 +167,8 @@ public class IoTHubStreamInputDataSource extends StreamInputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

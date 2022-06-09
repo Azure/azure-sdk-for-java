@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProtectionContainerOperationResultsClient.
  */
 public final class ProtectionContainerOperationResultsClientImpl implements ProtectionContainerOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionContainerOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionContainerOperationResultsService service;
 
@@ -91,7 +88,8 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items.
+     * @return base class for container with backup items along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionContainerResourceInner>> getWithResponseAsync(
@@ -155,7 +153,8 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items.
+     * @return base class for container with backup items along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionContainerResourceInner>> getWithResponseAsync(
@@ -220,20 +219,13 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items.
+     * @return base class for container with backup items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionContainerResourceInner> getAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, operationId)
-            .flatMap(
-                (Response<ProtectionContainerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -267,7 +259,7 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items.
+     * @return base class for container with backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionContainerResourceInner> getWithResponse(

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.StateValue;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of a active directory only authentication. */
 @Fluent
 public final class AzureADOnlyAuthenticationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureADOnlyAuthenticationProperties.class);
-
     /*
      * Azure Active Directory only Authentication enabled.
      */

@@ -34,7 +34,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of the provisioning service without SAS keys.
+     * @return the metadata of the provisioning service without SAS keys along with {@link Response}.
      */
     Response<ProvisioningServiceDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String provisioningServiceName, Context context);
@@ -70,7 +70,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of provisioning service descriptions.
+     * @return list of provisioning service descriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProvisioningServiceDescription> list();
 
@@ -82,7 +82,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of provisioning service descriptions.
+     * @return list of provisioning service descriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProvisioningServiceDescription> list(Context context);
 
@@ -94,7 +94,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all provisioning services in the given resource group.
+     * @return a list of all provisioning services in the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ProvisioningServiceDescription> listByResourceGroup(String resourceGroupName);
 
@@ -107,7 +108,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all provisioning services in the given resource group.
+     * @return a list of all provisioning services in the given resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<ProvisioningServiceDescription> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -141,7 +143,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running operation, such as create, update or delete a provisioning service.
+     * @return the status of a long running operation, such as create, update or delete a provisioning service along
+     *     with {@link Response}.
      */
     Response<AsyncOperationResult> getOperationResultWithResponse(
         String operationId,
@@ -159,7 +162,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs and tiers for a provisioning service.
+     * @return the list of valid SKUs and tiers for a provisioning service as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<IotDpsSkuDefinition> listValidSkus(String provisioningServiceName, String resourceGroupName);
 
@@ -173,7 +177,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs and tiers for a provisioning service.
+     * @return the list of valid SKUs and tiers for a provisioning service as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<IotDpsSkuDefinition> listValidSkus(
         String provisioningServiceName, String resourceGroupName, Context context);
@@ -203,7 +208,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of name availability.
+     * @return description of name availability along with {@link Response}.
      */
     Response<NameAvailabilityInfo> checkProvisioningServiceNameAvailabilityWithResponse(
         OperationInputs arguments, Context context);
@@ -217,7 +222,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of shared access keys.
+     * @return list of shared access keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(
         String provisioningServiceName, String resourceGroupName);
@@ -232,7 +237,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of shared access keys.
+     * @return list of shared access keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(
         String provisioningServiceName, String resourceGroupName, Context context);
@@ -263,7 +268,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the shared access key.
+     * @return description of the shared access key along with {@link Response}.
      */
     Response<SharedAccessSignatureAuthorizationRule> listKeysForKeyNameWithResponse(
         String provisioningServiceName, String keyName, String resourceGroupName, Context context);
@@ -291,7 +296,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service.
+     * @return the available private link resources for a provisioning service along with {@link Response}.
      */
     Response<PrivateLinkResources> listPrivateLinkResourcesWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -321,7 +326,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given provisioning service.
+     * @return the specified private link resource for the given provisioning service along with {@link Response}.
      */
     Response<GroupIdInformation> getPrivateLinkResourcesWithResponse(
         String resourceGroupName, String resourceName, String groupId, Context context);
@@ -349,7 +354,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private endpoint connections for a provisioning service.
+     * @return the list of private endpoint connections for a provisioning service along with {@link Response}.
      */
     Response<List<PrivateEndpointConnection>> listPrivateEndpointConnectionsWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -380,7 +385,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties.
+     * @return private endpoint connection properties along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getPrivateEndpointConnectionWithResponse(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
@@ -424,7 +429,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of the provisioning service without SAS keys.
+     * @return the metadata of the provisioning service without SAS keys along with {@link Response}.
      */
     ProvisioningServiceDescription getById(String id);
 
@@ -437,7 +442,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of the provisioning service without SAS keys.
+     * @return the metadata of the provisioning service without SAS keys along with {@link Response}.
      */
     Response<ProvisioningServiceDescription> getByIdWithResponse(String id, Context context);
 
@@ -449,7 +454,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties.
+     * @return private endpoint connection properties along with {@link Response}.
      */
     PrivateEndpointConnection getPrivateEndpointConnectionById(String id);
 
@@ -462,7 +467,7 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties.
+     * @return private endpoint connection properties along with {@link Response}.
      */
     Response<PrivateEndpointConnection> getPrivateEndpointConnectionByIdWithResponse(String id, Context context);
 

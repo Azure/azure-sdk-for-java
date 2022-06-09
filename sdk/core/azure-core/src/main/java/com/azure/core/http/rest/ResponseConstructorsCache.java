@@ -9,7 +9,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -18,8 +17,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A concurrent cache of {@link Response} {@link MethodHandle} constructors.
@@ -32,7 +29,7 @@ final class ResponseConstructorsCache {
 
     private static final Map<Class<?>, MethodHandle> CACHE = new ConcurrentHashMap<>();
 
-    private final ClientLogger logger = new ClientLogger(ResponseConstructorsCache.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResponseConstructorsCache.class);
 
     /**
      * Identify the suitable {@link MethodHandle} to construct the given response class.
@@ -42,7 +39,7 @@ final class ResponseConstructorsCache {
      * found.
      */
     MethodHandle get(Class<? extends Response<?>> responseClass) {
-        return CACHE.computeIfAbsent(responseClass, this::locateResponseConstructor);
+        return CACHE.computeIfAbsent(responseClass, ResponseConstructorsCache::locateResponseConstructor);
     }
 
     /**
@@ -63,12 +60,16 @@ final class ResponseConstructorsCache {
      * @return The {@link MethodHandle} that is capable of constructing an instance of the class or null if no handle is
      * found.
      */
-    private MethodHandle locateResponseConstructor(Class<?> responseClass) {
+    private static MethodHandle locateResponseConstructor(Class<?> responseClass) {
         MethodHandles.Lookup lookupToUse;
         try {
             lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);
-        } catch (Throwable t) {
-            throw logger.logExceptionAsError(new RuntimeException(t));
+        } catch (Exception ex) {
+            if (ex instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) ex);
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
 
         /*
@@ -93,12 +94,17 @@ final class ResponseConstructorsCache {
                      * as the SDK library.
                      */
                     return lookupToUse.unreflectConstructor(constructor);
-                } catch (Throwable t) {
-                    throw logger.logExceptionAsError(new RuntimeException(t));
+                } catch (IllegalAccessException ex) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ex));
                 }
             }
         }
-        return null;
+
+        // Before this was returning null, but in all cases where null is returned from this method an exception would
+        // be thrown later. Instead, just throw here to properly use computeIfAbsent by not inserting a null key-value
+        // pair that would cause the computation to always be performed.
+        throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class "
+            + responseClass));
     }
 
     /**
@@ -109,7 +115,7 @@ final class ResponseConstructorsCache {
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    Mono<Response<?>> invoke(final MethodHandle handle,
+    Response<?> invoke(final MethodHandle handle,
         final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
@@ -119,27 +125,32 @@ final class ResponseConstructorsCache {
         final int paramCount = handle.type().parameterCount();
         switch (paramCount) {
             case 3:
-                return constructResponse(handle, THREE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                return constructResponse(handle, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders);
             case 4:
-                return constructResponse(handle, FOUR_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                return constructResponse(handle, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject);
             case 5:
-                return constructResponse(handle, FIVE_PARAM_ERROR, logger, httpRequest, responseStatusCode,
+                return constructResponse(handle, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
-                return monoError(logger, new IllegalStateException(INVALID_PARAM_COUNT));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 
-    private static Mono<Response<?>> constructResponse(MethodHandle handle, String exceptionMessage,
-        ClientLogger logger, Object... params) {
-        return Mono.defer(() -> {
-            try {
-                return Mono.just((Response<?>) handle.invokeWithArguments(params));
-            } catch (Throwable throwable) {
-                return monoError(logger, new RuntimeException(exceptionMessage, throwable));
+    private static Response<?> constructResponse(MethodHandle handle, String exceptionMessage, Object... params) {
+        try {
+            return (Response<?>) handle.invokeWithArguments(params);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
             }
-        });
+
+            if (throwable instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
+            }
+
+            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
+        }
     }
 }

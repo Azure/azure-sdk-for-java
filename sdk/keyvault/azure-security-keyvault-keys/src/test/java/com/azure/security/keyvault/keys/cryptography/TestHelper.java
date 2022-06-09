@@ -6,11 +6,12 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import org.junit.jupiter.params.provider.Arguments;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
@@ -29,15 +30,15 @@ public class TestHelper {
      * @return A stream of HttpClient and service version combinations to test.
      */
     static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        // When this issues is closed, the newer version of junit will have better support for cartesian product of
+        // arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
         getHttpClients()
-            .forEach(httpClient -> {
+            .forEach(httpClient ->
                 Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+
         return argumentsList.stream();
     }
 
@@ -54,18 +55,22 @@ public class TestHelper {
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
      *
-     * @param serviceVersion ServiceVersion needs to check
+     * @param serviceVersion ServiceVersion needs to check.
+     *
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }
+
         if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
         }
+
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

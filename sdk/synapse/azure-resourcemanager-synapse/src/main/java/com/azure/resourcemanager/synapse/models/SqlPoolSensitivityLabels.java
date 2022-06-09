@@ -19,7 +19,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool sensitivity labels.
+     * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SensitivityLabel> listCurrent(String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -34,7 +34,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool sensitivity labels.
+     * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SensitivityLabel> listCurrent(
         String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context);
@@ -64,7 +64,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateWithResponse(
         String resourceGroupName,
@@ -82,7 +82,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sensitivity labels of a given SQL pool.
+     * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SensitivityLabel> listRecommended(String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -99,7 +99,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sensitivity labels of a given SQL pool.
+     * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SensitivityLabel> listRecommended(
         String resourceGroupName,
@@ -144,7 +144,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -193,7 +193,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response}.
      */
     Response<SensitivityLabel> getWithResponse(
         String resourceGroupName,
@@ -239,7 +239,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> enableRecommendationWithResponse(
         String resourceGroupName,
@@ -284,7 +284,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> disableRecommendationWithResponse(
         String resourceGroupName,
@@ -313,7 +313,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

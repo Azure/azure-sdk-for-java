@@ -33,6 +33,13 @@ public final class ContainerRegistryImagePushedEventData extends ContainerRegist
 
     /** {@inheritDoc} */
     @Override
+    public ContainerRegistryImagePushedEventData setLocation(String location) {
+        super.setLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ContainerRegistryImagePushedEventData setTarget(ContainerRegistryEventTarget target) {
         super.setTarget(target);
         return this;
@@ -56,6 +63,14 @@ public final class ContainerRegistryImagePushedEventData extends ContainerRegist
     @Override
     public ContainerRegistryImagePushedEventData setSource(ContainerRegistryEventSource source) {
         super.setSource(source);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerRegistryImagePushedEventData setConnectedRegistry(
+            ContainerRegistryEventConnectedRegistry connectedRegistry) {
+        super.setConnectedRegistry(connectedRegistry);
         return this;
     }
 }

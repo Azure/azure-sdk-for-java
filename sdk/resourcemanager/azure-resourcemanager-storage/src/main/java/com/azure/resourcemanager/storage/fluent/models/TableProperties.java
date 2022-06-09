@@ -4,21 +4,25 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The TableProperties model. */
-@Immutable
+@Fluent
 public final class TableProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableProperties.class);
-
     /*
      * Table name under the specified account
      */
     @JsonProperty(value = "tableName", access = JsonProperty.Access.WRITE_ONLY)
     private String tableName;
+
+    /*
+     * List of stored access policies specified on the table.
+     */
+    @JsonProperty(value = "signedIdentifiers")
+    private List<TableSignedIdentifier> signedIdentifiers;
 
     /**
      * Get the tableName property: Table name under the specified account.
@@ -30,10 +34,33 @@ public final class TableProperties {
     }
 
     /**
+     * Get the signedIdentifiers property: List of stored access policies specified on the table.
+     *
+     * @return the signedIdentifiers value.
+     */
+    public List<TableSignedIdentifier> signedIdentifiers() {
+        return this.signedIdentifiers;
+    }
+
+    /**
+     * Set the signedIdentifiers property: List of stored access policies specified on the table.
+     *
+     * @param signedIdentifiers the signedIdentifiers value to set.
+     * @return the TableProperties object itself.
+     */
+    public TableProperties withSignedIdentifiers(List<TableSignedIdentifier> signedIdentifiers) {
+        this.signedIdentifiers = signedIdentifiers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (signedIdentifiers() != null) {
+            signedIdentifiers().forEach(e -> e.validate());
+        }
     }
 }

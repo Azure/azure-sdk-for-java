@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for TableServices SetServiceProperties. */
 public final class TableServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/TableServicesPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/TableServicesPut.json
      */
     /**
      * Sample code: TableServicesPut.

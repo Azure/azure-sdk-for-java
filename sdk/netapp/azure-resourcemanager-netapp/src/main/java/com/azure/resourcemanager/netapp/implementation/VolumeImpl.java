@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
@@ -60,6 +62,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String fileSystemId() {
@@ -208,6 +214,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().defaultGroupQuotaInKiBs();
     }
 
+    public Long maximumNumberOfFiles() {
+        return this.innerModel().maximumNumberOfFiles();
+    }
+
     public String volumeGroupName() {
         return this.innerModel().volumeGroupName();
     }
@@ -235,6 +245,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public EnableSubvolumes enableSubvolumes() {
+        return this.innerModel().enableSubvolumes();
     }
 
     public Region region() {
@@ -549,8 +563,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withUnixPermissions(String unixPermissions) {
-        this.innerModel().withUnixPermissions(unixPermissions);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUnixPermissions(unixPermissions);
+            return this;
+        } else {
+            this.updateBody.withUnixPermissions(unixPermissions);
+            return this;
+        }
     }
 
     public VolumeImpl withAvsDataStore(AvsDataStore avsDataStore) {
@@ -605,6 +624,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withPlacementRules(List<PlacementKeyValuePairs> placementRules) {
         this.innerModel().withPlacementRules(placementRules);
+        return this;
+    }
+
+    public VolumeImpl withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
+        this.innerModel().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

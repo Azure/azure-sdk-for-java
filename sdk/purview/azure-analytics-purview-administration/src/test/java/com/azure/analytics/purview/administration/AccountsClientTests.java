@@ -11,10 +11,7 @@ public class AccountsClientTests extends PurviewAccountClientTestBase {
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new PurviewAccountClientBuilder()
-            .endpoint(getEndpoint())
-            .pipeline(httpPipeline)
-            .buildAccountsClient());
+        client = purviewAccountClientBuilderSetUp().endpoint(getEndpoint()).buildClient();
     }
 
     @Test

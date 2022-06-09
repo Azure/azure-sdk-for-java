@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProtectionPolicies Get. */
 public final class ProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-07-01/examples/AzureIaasVm/ProtectionPolicies_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
      * Sample code: Get Azure IaasVm Protection Policy Details.
@@ -19,5 +19,20 @@ public final class ProtectionPoliciesGetSamples {
     public static void getAzureIaasVmProtectionPolicyDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
         manager.protectionPolicies().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
+     */
+    /**
+     * Sample code: Get Azure IaasVm Enhanced Protection Policy Details.
+     *
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void getAzureIaasVmEnhancedProtectionPolicyDetails(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager
+            .protectionPolicies()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", Context.NONE);
     }
 }

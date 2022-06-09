@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FileServices List. */
 public final class FileServicesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/FileServicesList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/FileServicesList.json
      */
     /**
      * Sample code: ListFileServices.

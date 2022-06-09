@@ -19,7 +19,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import reactor.core.publisher.Mono;
 
 /**
- * Intercepter for Requests to check if they should be run.
+ * Interceptor for Requests to check if they should be run.
  */
 @Component
 public class FeatureHandler extends HandlerInterceptorAdapter {
@@ -33,9 +33,9 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
     private IDisabledFeaturesHandler disabledFeaturesHandler;
 
     /**
-     * Intercepter for Requests to check if they should be run.
+     * Interceptor for Requests to check if they should be run.
      * @param featureManager App Configuration Feature Manager
-     * @param featureManagerSnapshot App Configuraiton Feature Manager snapshot version
+     * @param featureManagerSnapshot App Configuration Feature Manager snapshot version
      * @param disabledFeaturesHandler optional handler for dealing with disabled endpoints.
      */
     public FeatureHandler(FeatureManager featureManager, FeatureManagerSnapshot featureManagerSnapshot,
@@ -77,6 +77,7 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
                         .orElse(false);
                     if (!isEnabled && !featureOn.fallback().isEmpty()) {
                         response.sendRedirect(featureOn.fallback());
+                        return false;
                     }
                 } catch (IOException e) {
                     LOGGER.info("Unable to send redirect.");

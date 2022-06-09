@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** SQL pool properties Properties of a SQL Analytics pool. */
 @Fluent
 public final class SqlPoolResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolResourceProperties.class);
-
     /*
      * Maximum size in bytes
      */
@@ -50,7 +46,7 @@ public final class SqlPoolResourceProperties {
     /*
      * Resource status
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
@@ -83,7 +79,7 @@ public final class SqlPoolResourceProperties {
     /*
      * Date the SQL pool was created
      */
-    @JsonProperty(value = "creationDate")
+    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
@@ -208,17 +204,6 @@ public final class SqlPoolResourceProperties {
     }
 
     /**
-     * Set the status property: Resource status.
-     *
-     * @param status the status value to set.
-     * @return the SqlPoolResourceProperties object itself.
-     */
-    public SqlPoolResourceProperties withStatus(String status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the restorePointInTime property: Snapshot time to restore.
      *
      * @return the restorePointInTime value.
@@ -289,17 +274,6 @@ public final class SqlPoolResourceProperties {
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
-    }
-
-    /**
-     * Set the creationDate property: Date the SQL pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the SqlPoolResourceProperties object itself.
-     */
-    public SqlPoolResourceProperties withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
     }
 
     /**

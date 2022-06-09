@@ -15,7 +15,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -54,15 +53,9 @@ class ContentDownloader {
         HttpRange httpRange,
         Context context) {
         return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
-            .flatMap(response -> response.getValue().reduce(destinationStream, (outputStream, buffer) -> {
-                try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), null)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), destinationStream)
+                .thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null)));
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(

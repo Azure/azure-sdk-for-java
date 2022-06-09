@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.TenantCategory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Tenant Id information. */
 @Immutable
 public final class TenantIdDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantIdDescriptionInner.class);
-
     /*
      * The fully qualified ID of the tenant. For example,
      * /tenants/00000000-0000-0000-0000-000000000000.

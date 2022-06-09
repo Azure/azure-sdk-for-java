@@ -4,19 +4,18 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.ComparatorUtils;
 import org.testng.annotations.AfterClass;
@@ -110,7 +109,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirectSession")
     public MultiOrderByQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -188,7 +187,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return document;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithMultiOrder() throws InterruptedException {
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
@@ -255,27 +254,39 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                                 .build();
 
                         validateQuerySuccess(queryObservable.byPage(), validator);
+                        validateQuerySuccessWithContinuationTokenAndSizes(query, documentCollection, new int[] { 5, 20, 100}, validator, InternalObjectNode.class);
                     }
                 }
             }
         }
+    }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    public void queryDocumentsWithUndefinedValueAndMultiOrderby() {
         // CREATE document with numberField not set.
         // This query should be valid too as we now support mixed null values
-        InternalObjectNode documentWithEmptyField = generateMultiOrderByDocument();
-        BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
-        documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
-        String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        CosmosPagedFlux<InternalObjectNode> queryObservable = documentCollection.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
 
-        FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(UnsupportedOperationException.class)
-                .build();
+        // created 6 documents so that when we test query with page size 5, we also test the scenario where continuation continued on undefined value.
+        int documentWithUndefinedFiledSize = 6;
+        List<String> documentWithEmptyFieldIds = new ArrayList<>();
+        for (int i = 0; i < documentWithUndefinedFiledSize; i++) {
+            InternalObjectNode documentWithEmptyField = generateMultiOrderByDocument();
+            BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
+            documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
+            documentWithEmptyFieldIds.add(documentWithEmptyField.getId());
+        }
+
+        String query = "SELECT * FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
+        CosmosPagedFlux<InternalObjectNode> queryObservable = documentCollection.queryItems(query, new CosmosQueryRequestOptions(), InternalObjectNode.class);
 
         FeedResponseListValidator<InternalObjectNode> feedResponseValidator =
-            new FeedResponseListValidator.Builder<InternalObjectNode>().totalSize(this.documents.size() + 1).build();
+            new FeedResponseListValidator.Builder<InternalObjectNode>()
+                .totalSize(this.documents.size() + documentWithUndefinedFiledSize)
+                .exactlyTopIdsInAnyOrder(documentWithEmptyFieldIds)
+                .build();
 
         validateQuerySuccess(queryObservable.byPage(), feedResponseValidator);
+        validateQuerySuccessWithContinuationTokenAndSizes(query, documentCollection, new int[] { 5, 20, 100 }, feedResponseValidator, InternalObjectNode.class);
     }
 
     private List<InternalObjectNode> top(List<InternalObjectNode> arrayList, boolean hasTop, int topCount) {

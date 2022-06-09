@@ -3,7 +3,7 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.util.Configuration;
+import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.junit.jupiter.api.AfterEach;
@@ -48,7 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 @ResourceLock(Resources.SYSTEM_OUT)
 public class ClientLoggerTests {
-    private String originalLogLevel;
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
     private Map<String, Object> globalContext;
@@ -72,7 +71,7 @@ public class ClientLoggerTests {
 
     @AfterEach
     public void revertLoggingConfiguration() {
-        setPropertyToOriginalOrClear(originalLogLevel);
+        clearTestLogLevel();
         System.setOut(originalSystemOut);
     }
 
@@ -927,16 +926,11 @@ public class ClientLoggerTests {
     }
 
     private void setupLogLevel(int logLevelToSet) {
-        originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
-        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
+        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
-    private void setPropertyToOriginalOrClear(String originalValue) {
-        if (CoreUtils.isNullOrEmpty(originalValue)) {
-            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
-        } else {
-            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalValue);
-        }
+    private void clearTestLogLevel() {
+        EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat, Object... arguments) {

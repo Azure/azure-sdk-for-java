@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Object to define the number of days after creation. */
+/** Object to define snapshot and version action conditions. */
 @Fluent
 public final class DateAfterCreation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DateAfterCreation.class);
-
     /*
      * Value indicating the age in days after creation
      */
     @JsonProperty(value = "daysAfterCreationGreaterThan", required = true)
     private float daysAfterCreationGreaterThan;
+
+    /*
+     * Value indicating the age in days after last blob tier change time. This
+     * property is only applicable for tierToArchive actions and requires
+     * daysAfterCreationGreaterThan to be set for snapshots and blob version
+     * based actions. The blob will be archived if both the conditions are
+     * satisfied.
+     */
+    @JsonProperty(value = "daysAfterLastTierChangeGreaterThan")
+    private Float daysAfterLastTierChangeGreaterThan;
 
     /**
      * Get the daysAfterCreationGreaterThan property: Value indicating the age in days after creation.
@@ -37,6 +43,30 @@ public final class DateAfterCreation {
      */
     public DateAfterCreation withDaysAfterCreationGreaterThan(float daysAfterCreationGreaterThan) {
         this.daysAfterCreationGreaterThan = daysAfterCreationGreaterThan;
+        return this;
+    }
+
+    /**
+     * Get the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
+     * time. This property is only applicable for tierToArchive actions and requires daysAfterCreationGreaterThan to be
+     * set for snapshots and blob version based actions. The blob will be archived if both the conditions are satisfied.
+     *
+     * @return the daysAfterLastTierChangeGreaterThan value.
+     */
+    public Float daysAfterLastTierChangeGreaterThan() {
+        return this.daysAfterLastTierChangeGreaterThan;
+    }
+
+    /**
+     * Set the daysAfterLastTierChangeGreaterThan property: Value indicating the age in days after last blob tier change
+     * time. This property is only applicable for tierToArchive actions and requires daysAfterCreationGreaterThan to be
+     * set for snapshots and blob version based actions. The blob will be archived if both the conditions are satisfied.
+     *
+     * @param daysAfterLastTierChangeGreaterThan the daysAfterLastTierChangeGreaterThan value to set.
+     * @return the DateAfterCreation object itself.
+     */
+    public DateAfterCreation withDaysAfterLastTierChangeGreaterThan(Float daysAfterLastTierChangeGreaterThan) {
+        this.daysAfterLastTierChangeGreaterThan = daysAfterLastTierChangeGreaterThan;
         return this;
     }
 

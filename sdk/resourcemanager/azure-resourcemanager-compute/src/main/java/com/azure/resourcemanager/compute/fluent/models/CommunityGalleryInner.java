@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Specifies information about the Community Gallery that you want to create or update. */
 @Fluent
 public final class CommunityGalleryInner extends PirCommunityGalleryResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunityGalleryInner.class);
-
     /** {@inheritDoc} */
     @Override
     public CommunityGalleryInner withUniqueId(String uniqueId) {

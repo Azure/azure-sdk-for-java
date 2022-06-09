@@ -27,6 +27,13 @@ class CnameRecordSetImpl extends PrivateDnsRecordSetImpl implements CnameRecordS
 
     @Override
     protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
+        if (resource.cnameRecord() == null) {
+            resource.withCnameRecord(new CnameRecord());
+        }
+        if (innerModel().cnameRecord().cname() != null) {
+            resource.cnameRecord().withCname(innerModel().cnameRecord().cname());
+        }
+        innerModel().withCnameRecord(new CnameRecord());
         return resource;
     }
 }

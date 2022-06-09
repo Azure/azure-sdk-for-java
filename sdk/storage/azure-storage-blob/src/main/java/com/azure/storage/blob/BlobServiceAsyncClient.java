@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -29,6 +30,7 @@ import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
@@ -37,6 +39,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -85,7 +88,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = BlobServiceClientBuilder.class, isAsync = true)
 public final class BlobServiceAsyncClient {
-    private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
 
@@ -108,7 +111,7 @@ public final class BlobServiceAsyncClient {
      * {@code null} to allow the service to use its own encryption.
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
-     * @param anonymousAccess Whether or not the client was built with anonymousAccess
+     * @param anonymousAccess Whether the client was built with anonymousAccess
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
@@ -118,7 +121,7 @@ public final class BlobServiceAsyncClient {
         try {
             URI.create(url);
         } catch (IllegalArgumentException ex) {
-            throw logger.logExceptionAsError(ex);
+            throw LOGGER.logExceptionAsError(ex);
         }
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
@@ -197,11 +200,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
-        try {
-            return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -235,7 +234,7 @@ public final class BlobServiceAsyncClient {
             return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -246,6 +245,83 @@ public final class BlobServiceAsyncClient {
 
         return blobContainerAsyncClient.createWithResponse(metadata, accessType, context)
             .map(response -> new SimpleResponse<>(response, blobContainerAsyncClient));
+    }
+
+    /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String -->
+     * <pre>
+     * BlobContainerAsyncClient blobContainerAsyncClient =
+     *     client.createBlobContainerIfNotExists&#40;&quot;containerName&quot;&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExists#String -->
+     *
+     * @param containerName Name of the container to create
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobContainerAsyncClient> createBlobContainerIfNotExists(String containerName) {
+        return createBlobContainerIfNotExistsWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
+     *
+     * client.createBlobContainerIfNotExistsWithResponse&#40;&quot;containerName&quot;, options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions -->
+     *
+     * @param containerName Name of the container to create
+     * @param options {@link BlobContainerCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * BlobContainerAsyncClient} used to interact with the container created. If {@link Response}'s status code is 201,
+     * a new container was successfully created. If status code is 409, a container with the same name already existed
+     * at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
+        BlobContainerCreateOptions options) {
+        try {
+            return withContext(context -> createBlobContainerIfNotExistsWithResponse(containerName, options,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<BlobContainerAsyncClient>> createBlobContainerIfNotExistsWithResponse(String containerName,
+        BlobContainerCreateOptions options, Context context) {
+        try {
+            options = options == null ? new BlobContainerCreateOptions() : options;
+            return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
+                context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
+                .getStatusCode() == 409, t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -263,15 +339,11 @@ public final class BlobServiceAsyncClient {
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String -->
      *
      * @param containerName Name of the container to delete
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBlobContainer(String containerName) {
-        try {
-            return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -290,20 +362,96 @@ public final class BlobServiceAsyncClient {
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context -->
      *
      * @param containerName Name of the container to delete
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
         try {
             return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
         throwOnAnonymousAccess();
         return getBlobContainerAsyncClient(containerName).deleteWithResponse(null, context);
+    }
+
+    /**
+     * Deletes the specified container in the storage account if it exists. For
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
+     * <pre>
+     * client.deleteBlobContainerIfExists&#40;&quot;containerName&quot;&#41;.subscribe&#40;deleted -&gt; &#123;
+     *     if &#40;deleted&#41; &#123;
+     *         System.out.println&#40;&quot;Successfully deleted.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExists#String -->
+     *
+     * @param containerName Name of the container to delete
+     * @return A reactive {@link Mono} signaling completion. {@code true} indicates that the container was deleted.
+     * {@code false} indicates the container does not exist at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteBlobContainerIfExists(String containerName) {
+        return deleteBlobContainerIfExistsWithResponse(containerName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified container in the storage account if it exists.
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse#String -->
+     *
+     * @param containerName Name of the container to delete
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the blob container was
+     * successfully deleted. If status code is 404, the blob container does not exist.
+     *
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteBlobContainerIfExistsWithResponse(String containerName) {
+        try {
+            return withContext(context -> deleteBlobContainerIfExistsWithResponse(containerName, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
+        try {
+            return deleteBlobContainerWithResponse(containerName, context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((BlobStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -331,11 +479,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobContainerItem> listBlobContainers() {
-        try {
-            return this.listBlobContainers(new ListBlobContainersOptions());
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return this.listBlobContainers(new ListBlobContainersOptions());
     }
 
     /**
@@ -362,7 +506,7 @@ public final class BlobServiceAsyncClient {
         try {
             return listBlobContainersWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -442,7 +586,7 @@ public final class BlobServiceAsyncClient {
         try {
             return findBlobsByTags(options, null);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -511,7 +655,7 @@ public final class BlobServiceAsyncClient {
             || blobContainerListDetails.getRetrieveDeleted()
             || blobContainerListDetails.getRetrieveSystemContainers());
         if (hasDetails) {
-            List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
+            List<ListBlobContainersIncludeType> flags = new ArrayList<>(3);
             if (blobContainerListDetails.getRetrieveDeleted()) {
                 flags.add(ListBlobContainersIncludeType.DELETED);
             }
@@ -546,11 +690,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServiceProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -576,7 +716,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -626,11 +766,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(BlobServiceProperties properties) {
-        try {
-            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -672,7 +808,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -794,12 +930,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -828,7 +959,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -836,7 +967,7 @@ public final class BlobServiceAsyncClient {
         Context context) {
         StorageImplUtils.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
         throwOnAnonymousAccess();
@@ -869,11 +1000,7 @@ public final class BlobServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobServiceStatistics> getStatistics() {
-        try {
-            return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -899,7 +1026,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(this::getStatisticsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -924,15 +1051,11 @@ public final class BlobServiceAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfo -->
      *
-     * @return A {@link Mono} containing containing the storage account info.
+     * @return A {@link Mono} containing the storage account info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInfo> getAccountInfo() {
-        try {
-            return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -957,7 +1080,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(this::getAccountInfoWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1052,7 +1175,7 @@ public final class BlobServiceAsyncClient {
      */
     private void throwOnAnonymousAccess() {
         if (anonymousAccess) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
                 + "credentials"));
         }
     }
@@ -1086,11 +1209,15 @@ public final class BlobServiceAsyncClient {
      * to interact with the restored container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
-        String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
-            deletedContainerVersion)
-        ).flatMap(FluxUtil::toMono);
+    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(String deletedContainerName,
+        String deletedContainerVersion) {
+        try {
+            return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
+                deletedContainerVersion))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1129,7 +1256,7 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context -> undeleteBlobContainerWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

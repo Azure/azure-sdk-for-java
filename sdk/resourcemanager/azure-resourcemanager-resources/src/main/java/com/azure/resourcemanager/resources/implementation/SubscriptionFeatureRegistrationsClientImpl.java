@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.SubscriptionFeatureRegistrationsClient;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionFeatureRegistrationInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
  */
 public final class SubscriptionFeatureRegistrationsClientImpl
     implements InnerSupportsDelete<Void>, SubscriptionFeatureRegistrationsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionFeatureRegistrationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubscriptionFeatureRegistrationsService service;
 
@@ -170,7 +167,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionFeatureRegistrationInner>> getWithResponseAsync(
@@ -219,7 +217,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionFeatureRegistrationInner>> getWithResponseAsync(
@@ -264,19 +263,11 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> getAsync(String providerNamespace, String featureName) {
-        return getWithResponseAsync(providerNamespace, featureName)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(providerNamespace, featureName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -303,7 +294,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionFeatureRegistrationInner> getWithResponse(
@@ -320,7 +311,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionFeatureRegistrationInner>> createOrUpdateWithResponseAsync(
@@ -376,7 +368,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionFeatureRegistrationInner>> createOrUpdateWithResponseAsync(
@@ -429,7 +422,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> createOrUpdateAsync(
@@ -437,14 +430,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         String featureName,
         SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType) {
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -455,21 +441,14 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> createOrUpdateAsync(
         String providerNamespace, String featureName) {
         final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
         return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
-            .flatMap(
-                (Response<SubscriptionFeatureRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -498,7 +477,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription feature registration details.
+     * @return subscription feature registration details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionFeatureRegistrationInner> createOrUpdateWithResponse(
@@ -519,7 +498,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String featureName) {
@@ -567,7 +546,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -612,11 +591,11 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String providerNamespace, String featureName) {
-        return deleteWithResponseAsync(providerNamespace, featureName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(providerNamespace, featureName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -642,7 +621,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, String featureName, Context context) {
@@ -656,7 +635,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listBySubscriptionSinglePageAsync(
@@ -709,7 +689,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listBySubscriptionSinglePageAsync(
@@ -758,7 +739,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionFeatureRegistrationInner> listBySubscriptionAsync(String providerNamespace) {
@@ -775,7 +756,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionFeatureRegistrationInner> listBySubscriptionAsync(
@@ -792,7 +773,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionFeatureRegistrationInner> listBySubscription(String providerNamespace) {
@@ -807,7 +788,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionFeatureRegistrationInner> listBySubscription(
@@ -820,7 +801,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listSinglePageAsync() {
@@ -866,7 +848,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listSinglePageAsync(Context context) {
@@ -907,7 +890,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionFeatureRegistrationInner> listAsync() {
@@ -922,7 +905,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionFeatureRegistrationInner> listAsync(Context context) {
@@ -936,7 +919,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionFeatureRegistrationInner> list() {
@@ -950,7 +933,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionFeatureRegistrationInner> list(Context context) {
@@ -964,7 +947,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listBySubscriptionNextSinglePageAsync(
@@ -1002,7 +986,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listBySubscriptionNextSinglePageAsync(
@@ -1038,7 +1023,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listAllBySubscriptionNextSinglePageAsync(
@@ -1076,7 +1062,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of subscription feature registrations.
+     * @return the list of subscription feature registrations along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionFeatureRegistrationInner>> listAllBySubscriptionNextSinglePageAsync(

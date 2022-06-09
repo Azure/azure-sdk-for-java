@@ -10,7 +10,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfil
 /** Samples for ManagedClusters ResetAadProfile. */
 public final class ManagedClustersResetAadProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersResetAADProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-04-01/examples/ManagedClustersResetAADProfile.json
      */
     /**
      * Sample code: Reset AAD Profile.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Office365 breakout categories. */
 @Fluent
 public final class O365BreakOutCategoryPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(O365BreakOutCategoryPolicies.class);
-
     /*
      * Flag to control allow category.
      */

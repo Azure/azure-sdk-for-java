@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
@@ -25,11 +27,11 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -74,7 +76,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceImpl service;
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
@@ -95,13 +98,31 @@ public final class TextAnalyticsAsyncClient {
      * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
      * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *
-     * @param service The proxy service used to perform REST calls.
+     * @param legacyService The proxy service used to perform REST calls. It applies to REST API version v3.0 and v3.1
      * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
      * @param defaultCountryHint The default country hint.
      * @param defaultLanguage The default language.
      */
-    TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
+    TextAnalyticsAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion,
         String defaultCountryHint, String defaultLanguage) {
+        this.legacyService = legacyService;
+        this.service = null;
+        this.serviceVersion = serviceVersion;
+        this.defaultCountryHint = defaultCountryHint;
+        this.defaultLanguage = defaultLanguage;
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(legacyService);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(legacyService);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(legacyService);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(legacyService);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(legacyService);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(legacyService);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService);
+    }
+
+    TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceImpl service, TextAnalyticsServiceVersion serviceVersion,
+        String defaultCountryHint, String defaultLanguage) {
+        this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
@@ -112,8 +133,8 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
-        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
-        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(service);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(new AnalyzeTextsImpl(service));
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service));
     }
 
     /**
@@ -269,7 +290,7 @@ public final class TextAnalyticsAsyncClient {
     public Mono<DetectLanguageResultCollection> detectLanguageBatch(
         Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
 
-        if (countryHint != null && countryHint.equalsIgnoreCase("none")) {
+        if (countryHint != null && "none".equalsIgnoreCase(countryHint)) {
             countryHint = "";
         }
         final String finalCountryHint = countryHint;
@@ -1876,7 +1897,7 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link AnalyzeActionsResultPagedFlux}.
      *
-     * @throws NullPointerException if {@code documents} is null.
+     * @throws NullPointerException if {@code documents} or {@code actions} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */

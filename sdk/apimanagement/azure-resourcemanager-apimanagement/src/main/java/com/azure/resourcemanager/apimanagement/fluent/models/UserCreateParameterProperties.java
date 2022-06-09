@@ -10,15 +10,12 @@ import com.azure.resourcemanager.apimanagement.models.AppType;
 import com.azure.resourcemanager.apimanagement.models.Confirmation;
 import com.azure.resourcemanager.apimanagement.models.UserEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters supplied to the Create User operation. */
 @Fluent
 public final class UserCreateParameterProperties extends UserEntityBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserCreateParameterProperties.class);
-
     /*
      * Email address. Must not be empty and must be unique within the service
      * instance.
@@ -212,22 +209,24 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     public void validate() {
         super.validate();
         if (email() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property email in model UserCreateParameterProperties"));
         }
         if (firstName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property firstName in model UserCreateParameterProperties"));
         }
         if (lastName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastName in model UserCreateParameterProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserCreateParameterProperties.class);
 }

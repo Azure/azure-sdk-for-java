@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,76 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.2 (2022-06-07)
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.29.1
+
+## 1.5.1 (2022-05-06)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` dependency to 1.12.0
+- Upgraded `azure-core` dependency to 1.28.0
+
+## 1.5.0 (2022-04-05)
+
+### Breaking Changes
+- Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
+- Replaced `identityLogOptions` setter with the `enableAccountIdentifierLogging` setter on the credential builders. This is not a breaking change from last GA.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.27.0
+
+### Bugs Fixed
+Correctly use an `AppServiceMsiCredential` in the case both `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` are set.
+
+## 1.5.0-beta.2 (2022-03-21)
+
+### Features Added
+- Added ability to configure `IdentityLogOptions` on Credential Builders to make account Identifier logging configurable.
+- Added the option `disableAuthoriyValidaionSafetyCheck` on Credential Builders.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+## 1.4.6 (2022-03-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+
+## 1.4.5 (2022-03-03)
+
+### Other Changes
+#### Behavioural Changes
+- Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
+
+
+## 1.5.0-beta.1 (2022-02-17)
+
+### Features Added
+- Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
+- Added `ClientAssertionCredential` for client assertion based authentication flows.
+
+### Other Changes
+- Upgraded App Service Managed Identity endpoint to `2019-08-01`.
+
+## 1.4.4 (2022-02-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.25.0
+
+## 1.4.3 (2022-01-11)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.24.1
+
 
 ## 1.4.2 (2021-11-24)
 

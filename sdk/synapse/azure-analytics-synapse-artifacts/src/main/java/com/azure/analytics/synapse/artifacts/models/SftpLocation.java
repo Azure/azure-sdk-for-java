@@ -12,4 +12,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SftpLocation")
 @Fluent
-public final class SftpLocation extends DatasetLocation {}
+public final class SftpLocation extends DatasetLocation {
+    /** {@inheritDoc} */
+    @Override
+    public SftpLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SftpLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
+        return this;
+    }
+}

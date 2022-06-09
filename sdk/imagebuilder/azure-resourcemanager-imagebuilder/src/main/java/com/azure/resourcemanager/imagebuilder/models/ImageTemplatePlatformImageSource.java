@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PlatformImage")
 @Fluent
 public final class ImageTemplatePlatformImageSource extends ImageTemplateSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplatePlatformImageSource.class);
-
     /*
      * Image Publisher in [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).

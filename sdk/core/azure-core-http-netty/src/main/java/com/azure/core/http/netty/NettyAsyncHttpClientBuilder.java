@@ -60,21 +60,21 @@ public class NettyAsyncHttpClientBuilder {
     private static final long DEFAULT_RESPONSE_TIMEOUT;
     private static final long DEFAULT_READ_TIMEOUT;
 
+    // NettyAsyncHttpClientBuilder may be instantiated many times, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+
     static {
-        ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
 
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger).toMillis();
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), logger).toMillis();
+            Duration.ofSeconds(60), LOGGER).toMillis();
         DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger).toMillis();
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), logger).toMillis();
+            Duration.ofSeconds(60), LOGGER).toMillis();
     }
-
-    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -128,12 +128,18 @@ public class NettyAsyncHttpClientBuilder {
      */
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
+
+        // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
+        // no-op address resolver to be set.
+        boolean addressResolverWasSetByBuilder = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
             nettyHttpClient = HttpClient.create(this.connectionProvider).resolver(DefaultAddressResolverGroup.INSTANCE);
+            addressResolverWasSetByBuilder = true;
         } else {
             nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
+            addressResolverWasSetByBuilder = true;
         }
 
         nettyHttpClient = nettyHttpClient
@@ -146,7 +152,7 @@ public class NettyAsyncHttpClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
+        ProxyOptions buildProxyOptions = proxyOptions == null
             ? ProxyOptions.fromConfiguration(buildConfiguration, true)
             : proxyOptions;
 
@@ -187,18 +193,18 @@ public class NettyAsyncHttpClientBuilder {
                                 handler, proxyChallengeHolder));
                     }
                 });
-
-                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-                if (resolver == null) {
-                    nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
-                }
             } else {
                 nettyHttpClient = nettyHttpClient.proxy(proxy ->
-                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
+                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), LOGGER))
                         .address(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+            }
+
+            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+            if (resolver == null || addressResolverWasSetByBuilder) {
+                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
 

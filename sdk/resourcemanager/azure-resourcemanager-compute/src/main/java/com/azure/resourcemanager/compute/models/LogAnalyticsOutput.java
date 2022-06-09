@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LogAnalytics output properties. */
 @Immutable
 public final class LogAnalyticsOutput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsOutput.class);
-
     /*
      * Output file Uri path to blob container.
      */

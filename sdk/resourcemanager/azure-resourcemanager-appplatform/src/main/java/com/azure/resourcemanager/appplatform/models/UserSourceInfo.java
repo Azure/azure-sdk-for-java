@@ -5,80 +5,29 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Source information for a deployment. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = UserSourceInfo.class)
+@JsonTypeName("UserSourceInfo")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "UploadedUserSourceInfo", value = UploadedUserSourceInfo.class),
+    @JsonSubTypes.Type(name = "BuildResult", value = BuildResultUserSourceInfo.class)
+})
 @Fluent
-public final class UserSourceInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSourceInfo.class);
-
-    /*
-     * Type of the source uploaded
-     */
-    @JsonProperty(value = "type")
-    private UserSourceType type;
-
-    /*
-     * Relative path of the storage which stores the source
-     */
-    @JsonProperty(value = "relativePath")
-    private String relativePath;
-
+public class UserSourceInfo {
     /*
      * Version of the source
      */
     @JsonProperty(value = "version")
     private String version;
-
-    /*
-     * Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be
-     * the relative path to the target module/project.
-     */
-    @JsonProperty(value = "artifactSelector")
-    private String artifactSelector;
-
-    /**
-     * Get the type property: Type of the source uploaded.
-     *
-     * @return the type value.
-     */
-    public UserSourceType type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Type of the source uploaded.
-     *
-     * @param type the type value to set.
-     * @return the UserSourceInfo object itself.
-     */
-    public UserSourceInfo withType(UserSourceType type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the relativePath property: Relative path of the storage which stores the source.
-     *
-     * @return the relativePath value.
-     */
-    public String relativePath() {
-        return this.relativePath;
-    }
-
-    /**
-     * Set the relativePath property: Relative path of the storage which stores the source.
-     *
-     * @param relativePath the relativePath value to set.
-     * @return the UserSourceInfo object itself.
-     */
-    public UserSourceInfo withRelativePath(String relativePath) {
-        this.relativePath = relativePath;
-        return this;
-    }
 
     /**
      * Get the version property: Version of the source.
@@ -97,28 +46,6 @@ public final class UserSourceInfo {
      */
     public UserSourceInfo withVersion(String version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Get the artifactSelector property: Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be the relative path to the target module/project.
-     *
-     * @return the artifactSelector value.
-     */
-    public String artifactSelector() {
-        return this.artifactSelector;
-    }
-
-    /**
-     * Set the artifactSelector property: Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be the relative path to the target module/project.
-     *
-     * @param artifactSelector the artifactSelector value to set.
-     * @return the UserSourceInfo object itself.
-     */
-    public UserSourceInfo withArtifactSelector(String artifactSelector) {
-        this.artifactSelector = artifactSelector;
         return this;
     }
 

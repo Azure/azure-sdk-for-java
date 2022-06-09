@@ -7,12 +7,13 @@ import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
+import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import java.util.List;
 
 /**
  * Shows how to get a CommunicationUserIdentifier using CommunicationIdentityClient
  * to later return a relay configuration using CommunicationRelayConfiguration
- * 
+ *
  * It iterates over the lis of CommunicationIceServer to print the urls, username and credential
  */
 public class CreateAndIssueRelayCredentialsExample {
@@ -21,17 +22,20 @@ public class CreateAndIssueRelayCredentialsExample {
         CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        
+
         CommunicationRelayClient communicationRelayClient = new CommunicationRelayClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        
+
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
 
+        GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+        options.setCommunicationUserIdentifier(user);
+
         // Define a list of communication token scopes
-        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
-        
+        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
+
         System.out.println("Expires on:" + config.getExpiresOn());
         List<CommunicationIceServer> iceServers = config.getIceServers();
 

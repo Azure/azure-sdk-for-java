@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated. */
 @Fluent
 public final class DedicatedHostUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostUpdate.class);
-
     /*
      * Properties of the dedicated host.
      */
@@ -161,6 +157,16 @@ public final class DedicatedHostUpdate extends UpdateResource {
      */
     public DedicatedHostInstanceView instanceView() {
         return this.innerProperties() == null ? null : this.innerProperties().instanceView();
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
     }
 
     /**

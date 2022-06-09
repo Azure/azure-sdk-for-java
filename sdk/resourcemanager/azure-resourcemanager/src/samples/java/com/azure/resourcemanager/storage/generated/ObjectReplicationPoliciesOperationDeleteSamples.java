@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ObjectReplicationPoliciesOperation Delete. */
 public final class ObjectReplicationPoliciesOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountDeleteObjectReplicationPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountDeleteObjectReplicationPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteObjectReplicationPolicies.

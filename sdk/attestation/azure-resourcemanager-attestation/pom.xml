@@ -39,23 +39,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.skip>true</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
-        <codesnippet.skip>false</codesnippet.skip>
-        <javadocDoclet></javadocDoclet>
-        <javadocDocletOptions></javadocDocletOptions>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.23.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
-            <version>1.4.4</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+            <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
         </dependency>
     </dependencies>
 </project>

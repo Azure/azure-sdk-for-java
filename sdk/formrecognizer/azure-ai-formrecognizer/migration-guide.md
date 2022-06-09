@@ -26,13 +26,13 @@ To improve the development experience and address the consistent feedback across
 version of the library replaces the previously existing clients `FormRecognizerClient` and `FormTrainingClient` with
 `DocumentAnalysisClient` and the `DocumentModelAdministrationClient` that provide unified methods for 
 analyzing documents and provide support for the new features added by the service in 
-API version `2021-09-30-preview` and later.
+API version `2022-01-30-preview` and later.
 
 The below table describes the relationship of each client and its supported API version(s):
 
 |API version|Supported clients
 |-|-
-|2021-09-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -70,8 +70,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 
 Instantiating DocumentAnalysisClient client with 4.x.x:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L52-L55 -->
-```java
+```java readme-sample-createDocumentAnalysisClient
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
@@ -90,8 +89,7 @@ FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
 ```
 
 Instantiating DocumentModelAdministrationClient client with 4.x.x:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L62-L65 -->
-```java
+```java readme-sample-createDocumentModelAdministrationClient
 DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
@@ -109,7 +107,7 @@ With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocument
 - provides the functionality of `beginRecognizeCustomForms`, `beginRecognizeContent`, `beginRecognizeReceipt`,
   `beginRecognizeReceipts`, `beginRecognizeInvoices` `beginRecognizeIdentityDocuments` and `beginRecognizeBusinessCards` from the previous (azure-ai-formrecognizer 3.1.X - below) package versions.
 - accepts unified `AnalyzeDocumentOptions` to specify pages and locale information for the outgoing request
-- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2021-09-30-preview` and later.
+- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-01-30-preview` and later.
 - the `readingOrder` parameter does not exist as the service uses `natural` reading order for the returned data.
 
 #### Using a prebuilt model
@@ -179,8 +177,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 ```
 
 Analyze receipt data using 4.x.x `beginAnalyzeDocumentFromUrl`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L134-L199-->
-```java
+```java readme-sample-analyzeReceiptFromUrl
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
@@ -283,8 +280,7 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ```
 
 Analyze layout using 4.x.x `beginAnalyzeDocument`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L85-L127-->
-```java
+```java readme-sample-extractLayout
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
@@ -306,13 +302,13 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
         System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
-            documentSelectionMark.getBoundingBox().toString(),
+            documentSelectionMark.getBoundingPolygon().toString(),
             documentSelectionMark.getConfidence()));
 });
 
@@ -354,8 +350,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 ```
 
 Analyze custom document using 4.x.x `beginAnalyzeDocumentFromUrl`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L235-L287-->
-```java
+```java readme-sample-analyzeCustomDocument
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -371,7 +366,7 @@ for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     analyzedDocument.getFields().forEach((key, documentField) -> {
         System.out.printf("Document Field content: %s%n", documentField.getContent());
         System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+        System.out.printf("Document Field Type: %s%n", documentField.getType());
         System.out.printf("Document Field found within bounding region: %s%n",
             documentField.getBoundingRegions().toString());
     });
@@ -387,7 +382,7 @@ analyzeResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
@@ -413,8 +408,7 @@ for (int i = 0; i < tables.size(); i++) {
 
 Analyzing general prebuilt document types with 4.x.x:
 > NOTE: Analyzing a document with the prebuilt-document model replaces training without labels in version 3.1.x of the library.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L294-L357-->
-```java
+```java readme-sample-analyzePrebuiltDocument
 String documentUrl = "{document-url}";
 String modelId = "prebuilt-document";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -439,7 +433,7 @@ analyzeResult.getPages().forEach(documentPage -> {
     documentPage.getLines().forEach(documentLine ->
         System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
-            documentLine.getBoundingBox().toString()));
+            documentLine.getBoundingPolygon().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
@@ -461,14 +455,6 @@ for (int i = 0; i < tables.size(); i++) {
     });
     System.out.println();
 }
-
-// Entities
-analyzeResult.getEntities().forEach(documentEntity -> {
-    System.out.printf("Entity category : %s, sub-category %s%n: ",
-        documentEntity.getCategory(), documentEntity.getSubCategory());
-    System.out.printf("Entity content: %s%n: ", documentEntity.getContent());
-    System.out.printf("Entity confidence: %.2f%n", documentEntity.getConfidence());
-});
 
 // Key-value
 analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
@@ -532,16 +518,14 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
 ```
 
 Build a custom document model using 4.x.x `beginBuildModel`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L206-L228 -->
-```java
+```java readme-sample-buildModel
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
 SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-        "my-build-model",
-        new BuildModelOptions().setDescription("model desc"),
-        Context.NONE);
+        DocumentBuildMode.TEMPLATE,
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
 DocumentModel documentModel = buildOperationPoller.getFinalResult();
 

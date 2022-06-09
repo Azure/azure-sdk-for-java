@@ -5,14 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DataFlowReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowStagingInfo;
 import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypePropertiesCompute;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySink;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySinkMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.Map;
 /** Execute power query data flow activity properties. */
 @Fluent
 public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFlowActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutePowerQueryActivityTypeProperties.class);
-
     /*
      * (Deprecated. Please use Queries). List of Power Query activity sinks
      * mapped to a queryName.

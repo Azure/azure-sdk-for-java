@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BlobContainers DeleteImmutabilityPolicy. */
 public final class BlobContainersDeleteImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/BlobContainersDeleteImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/BlobContainersDeleteImmutabilityPolicy.json
      */
     /**
      * Sample code: DeleteImmutabilityPolicy.

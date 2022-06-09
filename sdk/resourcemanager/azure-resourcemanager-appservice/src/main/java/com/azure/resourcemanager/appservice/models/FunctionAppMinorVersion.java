@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Function App stack minor version. */
 @Immutable
 public final class FunctionAppMinorVersion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionAppMinorVersion.class);
-
     /*
      * Function App stack (display only).
      */

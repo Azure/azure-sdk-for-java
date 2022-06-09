@@ -6,20 +6,17 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appservice.models.ArcConfiguration;
+import com.azure.resourcemanager.appservice.models.ContainerAppsConfiguration;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A Kubernetes cluster specialized for web workloads by Azure App Service. */
 @Fluent
 public final class KubeEnvironmentInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubeEnvironmentInner.class);
-
     /*
      * KubeEnvironment resource specific properties
      */
@@ -175,6 +172,31 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
+     * Get the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
+     * with value as Managed.
+     *
+     * @return the environmentType value.
+     */
+    public String environmentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentType();
+    }
+
+    /**
+     * Set the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
+     * with value as Managed.
+     *
+     * @param environmentType the environmentType value to set.
+     * @return the KubeEnvironmentInner object itself.
+     */
+    public KubeEnvironmentInner withEnvironmentType(String environmentType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KubeEnvironmentProperties();
+        }
+        this.innerProperties().withEnvironmentType(environmentType);
+        return this;
+    }
+
+    /**
      * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
      * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
      *
@@ -221,6 +243,31 @@ public final class KubeEnvironmentInner extends Resource {
             this.innerProperties = new KubeEnvironmentProperties();
         }
         this.innerProperties().withAppLogsConfiguration(appLogsConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @return the containerAppsConfiguration value.
+     */
+    public ContainerAppsConfiguration containerAppsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().containerAppsConfiguration();
+    }
+
+    /**
+     * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @param containerAppsConfiguration the containerAppsConfiguration value to set.
+     * @return the KubeEnvironmentInner object itself.
+     */
+    public KubeEnvironmentInner withContainerAppsConfiguration(ContainerAppsConfiguration containerAppsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KubeEnvironmentProperties();
+        }
+        this.innerProperties().withContainerAppsConfiguration(containerAppsConfiguration);
         return this;
     }
 

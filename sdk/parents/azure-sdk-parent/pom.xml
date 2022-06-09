@@ -252,6 +252,13 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
         </plugin>
+
+        <!-- This plugin is used to install the project into the .m2 cache. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>3.0.0-M1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-install-plugin;external_dependency} -->
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>

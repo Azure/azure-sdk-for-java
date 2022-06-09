@@ -7,6 +7,7 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
@@ -260,6 +261,13 @@ public final class VolumeProperties {
     private Long defaultGroupQuotaInKiBs;
 
     /*
+     * Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     */
+    @JsonProperty(value = "maximumNumberOfFiles", access = JsonProperty.Access.WRITE_ONLY)
+    private Long maximumNumberOfFiles;
+
+    /*
      * Volume Group Name
      */
     @JsonProperty(value = "volumeGroupName", access = JsonProperty.Access.WRITE_ONLY)
@@ -296,6 +304,12 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "placementRules")
     private List<PlacementKeyValuePairs> placementRules;
+
+    /*
+     * Flag indicating whether subvolume operations are enabled on the volume
+     */
+    @JsonProperty(value = "enableSubvolumes")
+    private EnableSubvolumes enableSubvolumes;
 
     /**
      * Get the fileSystemId property: FileSystem ID Unique FileSystem Identifier.
@@ -943,6 +957,16 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     *
+     * @return the maximumNumberOfFiles value.
+     */
+    public Long maximumNumberOfFiles() {
+        return this.maximumNumberOfFiles;
+    }
+
+    /**
      * Get the volumeGroupName property: Volume Group Name.
      *
      * @return the volumeGroupName value.
@@ -1041,6 +1065,26 @@ public final class VolumeProperties {
      */
     public VolumeProperties withPlacementRules(List<PlacementKeyValuePairs> placementRules) {
         this.placementRules = placementRules;
+        return this;
+    }
+
+    /**
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @return the enableSubvolumes value.
+     */
+    public EnableSubvolumes enableSubvolumes() {
+        return this.enableSubvolumes;
+    }
+
+    /**
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @param enableSubvolumes the enableSubvolumes value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
+        this.enableSubvolumes = enableSubvolumes;
         return this;
     }
 

@@ -26,7 +26,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
+     * @return the list of bot service providers response along with {@link Response}.
      */
     Response<ServiceProviderResponseList> listServiceProvidersWithResponse(Context context);
 
@@ -53,7 +53,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     Response<ConnectionSetting> listWithSecretsWithResponse(
         String resourceGroupName, String resourceName, String connectionName, Context context);
@@ -81,7 +81,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     Response<ConnectionSetting> getWithResponse(
         String resourceGroupName, String resourceName, String connectionName, Context context);
@@ -108,7 +108,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String connectionName, Context context);
@@ -121,7 +121,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectionSetting> listByBotService(String resourceGroupName, String resourceName);
 
@@ -134,7 +134,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConnectionSetting> listByBotService(String resourceGroupName, String resourceName, Context context);
 
@@ -145,7 +145,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     ConnectionSetting getById(String id);
 
@@ -157,7 +157,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     Response<ConnectionSetting> getByIdWithResponse(String id, Context context);
 
@@ -179,7 +179,7 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -6,6 +6,7 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.JavaType;
@@ -15,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.ParameterizedType;
@@ -30,9 +33,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- * Wraps {@link ObjectMapper} creation and proxies calls and provides diagnostics info in case
- * of potential version mismatch issues that manifest with {@link LinkageError}.
- *
+ * Wraps {@link ObjectMapper} creation and proxies calls and provides diagnostics info in case of potential version
+ * mismatch issues that manifest with {@link LinkageError}.
  */
 public final class ObjectMapperShim {
     private static final JacksonVersion JACKSON_VERSION = JacksonVersion.getInstance();
@@ -42,15 +44,22 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Type, MethodHandle> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
+        = new ConcurrentHashMap<>();
+
+    // Dummy constant that indicates an HttpHeaders-based constructor wasn't found for the Type.
+    private static final MethodHandle NO_CONSTRUCTOR_HANDLE = MethodHandles.identity(ObjectMapperShim.class);
 
     /**
-     * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and additional properties support.
+     * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and
+     * additional properties support.
      *
      * @param innerMapperShim inner mapper to use for non-azure specific serialization.
      * @param configure applies additional configuration to {@code ObjectMapper}.
      * @return Instance of shimmed {@code ObjectMapperShim}.
      */
-    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim.mapper);
             configure.accept(mapper, innerMapperShim.mapper);
@@ -98,7 +107,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createDefaultMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw  LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -237,6 +246,7 @@ public final class ObjectMapperShim {
 
     /**
      * Reads JSON tree from string.
+     *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
      * @throws IOException
@@ -251,6 +261,7 @@ public final class ObjectMapperShim {
 
     /**
      * Reads JSON tree from byte array.
+     *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
      */
@@ -275,16 +286,37 @@ public final class ObjectMapperShim {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return getFromCache(type, t -> mapper.getTypeFactory()
+            return getFromTypeCache(type, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return getFromCache(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromTypeCache(type, t -> mapper.getTypeFactory().constructType(t));
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         if (deserializedHeadersType == null) {
             return null;
+        }
+
+        try {
+            MethodHandle constructor = getFromHeadersConstructorCache(deserializedHeadersType);
+
+            if (constructor != NO_CONSTRUCTOR_HANDLE) {
+                return (T) constructor.invokeWithArguments(headers);
+            }
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
+            }
+
+            // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.
+            if (throwable instanceof RuntimeException) {
+                throw (RuntimeException) throwable;
+            }
+
+            LOGGER.verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
+                + deserializedHeadersType + ".");
         }
 
         T deserializedHeaders = mapper.convertValue(headers, createJavaType(deserializedHeadersType));
@@ -381,13 +413,43 @@ public final class ObjectMapperShim {
     }
 
     /*
-     * Helper method that gets the value for the given key from the cache.
+     * Helper methods that gets the value for the given key from the cache.
      */
-    private static JavaType getFromCache(Type key, Function<Type, JavaType> compute) {
+    private static JavaType getFromTypeCache(Type key, Function<Type, JavaType> compute) {
         if (TYPE_TO_JAVA_TYPE_CACHE.size() >= CACHE_SIZE_LIMIT) {
             TYPE_TO_JAVA_TYPE_CACHE.clear();
         }
 
         return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
+    }
+
+    private static MethodHandle getFromHeadersConstructorCache(Type key) {
+        if (TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.size() >= CACHE_SIZE_LIMIT) {
+            TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.clear();
+        }
+
+        return TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.computeIfAbsent(key, type -> {
+            try {
+                Class<?> headersClass = TypeUtil.getRawClass(type);
+                MethodHandles.Lookup lookup = ReflectionUtilsApi.INSTANCE.getLookupToUse(headersClass);
+                return lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class));
+            } catch (Throwable throwable) {
+                if (throwable instanceof Error) {
+                    throw (Error) throwable;
+                }
+
+                // In a previous implementation compute returned null here in an attempt to indicate that there is no
+                // HttpHeaders-based declared constructor. Unfortunately, null isn't a valid indicator to
+                // computeIfAbsent that a computation has been performed and this cache would never effectively be a
+                // cache as compute would always be performed when there was no matching constructor.
+                //
+                // Now the implementation returns a dummy constant when there is no matching HttpHeaders-based
+                // constructor. This now results in this case properly inserting into the cache and only running when a
+                // new type is seen or the cache is cleared due to reaching capacity.
+                //
+                // With this change, benchmarking deserialize(HttpHeaders, Type) saw a 20% performance improvement.
+                return NO_CONSTRUCTOR_HANDLE;
+            }
+        });
     }
 }

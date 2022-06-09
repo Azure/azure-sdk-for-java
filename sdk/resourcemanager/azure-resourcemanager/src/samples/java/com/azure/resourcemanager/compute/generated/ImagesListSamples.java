@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Images List. */
 public final class ImagesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListImagesInASubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_ListBySubscription.json
      */
     /**
      * Sample code: List all virtual machine images in a subscription.

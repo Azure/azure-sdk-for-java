@@ -6,14 +6,10 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Reference to container resource in remote resource provider. */
 @Fluent
 public final class Container extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Container.class);
-
     /** {@inheritDoc} */
     @Override
     public Container withId(String id) {

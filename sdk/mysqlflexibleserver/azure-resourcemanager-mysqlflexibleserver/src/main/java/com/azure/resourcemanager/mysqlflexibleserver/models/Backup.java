@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Storage Profile properties of a server. */
 @Fluent
 public final class Backup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Backup.class);
-
     /*
      * Backup retention days for the server.
      */

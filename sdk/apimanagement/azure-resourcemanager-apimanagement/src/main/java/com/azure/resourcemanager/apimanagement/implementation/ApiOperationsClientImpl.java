@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiOperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiOperationsCreateOrUpdateResponse;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApiOperationsClient. */
 public final class ApiOperationsClientImpl implements ApiOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ApiOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApiOperationsService service;
 
@@ -210,7 +207,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationContractInner>> listByApiSinglePageAsync(
@@ -294,7 +292,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationContractInner>> listByApiSinglePageAsync(
@@ -375,7 +374,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationContractInner> listByApiAsync(
@@ -401,7 +400,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationContractInner> listByApiAsync(
@@ -436,7 +435,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationContractInner> listByApiAsync(
@@ -463,7 +462,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationContractInner> listByApi(String resourceGroupName, String serviceName, String apiId) {
@@ -495,7 +494,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationContractInner> listByApi(
@@ -523,7 +522,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the API operation specified by its identifier.
+     * @return the entity state (Etag) version of the API operation specified by its identifier on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -584,7 +584,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the API operation specified by its identifier.
+     * @return the entity state (Etag) version of the API operation specified by its identifier on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -641,7 +642,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the API operation specified by its identifier.
+     * @return the entity state (Etag) version of the API operation specified by its identifier on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(
@@ -701,7 +703,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the API Operation specified by its identifier.
+     * @return the details of the API Operation specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsGetResponse> getWithResponseAsync(
@@ -762,7 +764,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the API Operation specified by its identifier.
+     * @return the details of the API Operation specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsGetResponse> getWithResponseAsync(
@@ -819,7 +821,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the API Operation specified by its identifier.
+     * @return the details of the API Operation specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationContractInner> getAsync(
@@ -889,7 +891,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -964,7 +966,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -1036,7 +1038,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationContractInner> createOrUpdateAsync(
@@ -1070,7 +1072,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationContractInner> createOrUpdateAsync(
@@ -1104,7 +1106,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationContractInner createOrUpdate(
@@ -1132,7 +1134,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiOperationsCreateOrUpdateResponse createOrUpdateWithResponse(
@@ -1163,7 +1165,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsUpdateResponse> updateWithResponseAsync(
@@ -1242,7 +1244,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiOperationsUpdateResponse> updateWithResponseAsync(
@@ -1318,7 +1320,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationContractInner> updateAsync(
@@ -1354,7 +1356,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationContractInner update(
@@ -1383,7 +1385,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api Operation details.
+     * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiOperationsUpdateResponse updateWithResponse(
@@ -1412,7 +1414,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1479,7 +1481,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1547,7 +1549,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1591,7 +1593,7 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1611,7 +1613,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationContractInner>> listByApiNextSinglePageAsync(String nextLink) {
@@ -1647,7 +1650,8 @@ public final class ApiOperationsClientImpl implements ApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Operation list representation.
+     * @return paged Operation list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationContractInner>> listByApiNextSinglePageAsync(String nextLink, Context context) {

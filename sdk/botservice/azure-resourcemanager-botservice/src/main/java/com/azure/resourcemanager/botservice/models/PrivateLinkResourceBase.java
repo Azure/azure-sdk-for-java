@@ -6,16 +6,12 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Private Link Resource Base Common fields that are returned in the response for all BotService Private Link Resources.
  */
 @Immutable
 public class PrivateLinkResourceBase extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceBase.class);
-
     /**
      * Validates the instance.
      *

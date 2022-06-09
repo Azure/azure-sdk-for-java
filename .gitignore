@@ -83,8 +83,12 @@ jacoco.exec
 ClientAggregatePom.xml
 ClientFromSourcePom.xml
 
+# Generated aggregate coverage reports pom file
+aggregate-coverage-pom.xml
+
 # Anaconda virtual env
 venv
+.venv
 
 # NetBeans
 nbproject
@@ -96,3 +100,7 @@ scalastyle-output.xml
 # Emacs #
 
 #changebundle.txt#
+
+# Flatten-pom
+.flattened-pom.xml
+flatter.pom

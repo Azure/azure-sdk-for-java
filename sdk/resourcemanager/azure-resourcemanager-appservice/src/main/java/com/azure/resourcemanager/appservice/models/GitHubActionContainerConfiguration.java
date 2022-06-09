@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GitHub action container configuration. */
 @Fluent
 public final class GitHubActionContainerConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GitHubActionContainerConfiguration.class);
-
     /*
      * The server URL for the container registry where the build will be
      * hosted.

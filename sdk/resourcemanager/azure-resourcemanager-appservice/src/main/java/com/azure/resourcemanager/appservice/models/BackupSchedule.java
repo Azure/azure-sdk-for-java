@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -16,8 +15,6 @@ import java.time.OffsetDateTime;
  */
 @Fluent
 public final class BackupSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupSchedule.class);
-
     /*
      * How often the backup should be executed (e.g. for weekly backup, this
      * should be set to 7 and FrequencyUnit should be set to Day)
@@ -180,9 +177,11 @@ public final class BackupSchedule {
      */
     public void validate() {
         if (frequencyUnit() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property frequencyUnit in model BackupSchedule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupSchedule.class);
 }

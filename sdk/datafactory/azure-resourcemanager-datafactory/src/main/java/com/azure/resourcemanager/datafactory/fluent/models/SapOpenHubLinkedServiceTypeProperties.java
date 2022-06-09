@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to SAP Business Warehouse Open Hub Destination linked service type. */
 @Fluent
 public final class SapOpenHubLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapOpenHubLinkedServiceTypeProperties.class);
-
     /*
      * Host name of the SAP BW instance where the open hub destination is
      * located. Type: string (or Expression with resultType string).

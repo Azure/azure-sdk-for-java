@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** API base contract details. */
 @Fluent
 public class ApiEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiEntityBaseContract.class);
-
     /*
      * Description of the API. May include HTML formatting tags.
      */
@@ -39,14 +35,14 @@ public class ApiEntityBaseContract {
     private ApiType apiType;
 
     /*
-     * Describes the Revision of the Api. If no value is provided, default
+     * Describes the revision of the API. If no value is provided, default
      * revision 1 is created
      */
     @JsonProperty(value = "apiRevision")
     private String apiRevision;
 
     /*
-     * Indicates the Version identifier of the API if the API is versioned
+     * Indicates the version identifier of the API if the API is versioned
      */
     @JsonProperty(value = "apiVersion")
     private String apiVersion;
@@ -64,13 +60,13 @@ public class ApiEntityBaseContract {
     private Boolean isOnline;
 
     /*
-     * Description of the Api Revision.
+     * Description of the API Revision.
      */
     @JsonProperty(value = "apiRevisionDescription")
     private String apiRevisionDescription;
 
     /*
-     * Description of the Api Version.
+     * Description of the API Version.
      */
     @JsonProperty(value = "apiVersionDescription")
     private String apiVersionDescription;
@@ -87,6 +83,25 @@ public class ApiEntityBaseContract {
      */
     @JsonProperty(value = "subscriptionRequired")
     private Boolean subscriptionRequired;
+
+    /*
+     * A URL to the Terms of Service for the API. MUST be in the format of a
+     * URL.
+     */
+    @JsonProperty(value = "termsOfServiceUrl")
+    private String termsOfServiceUrl;
+
+    /*
+     * Contact information for the API.
+     */
+    @JsonProperty(value = "contact")
+    private ApiContactInformation contact;
+
+    /*
+     * License information for the API.
+     */
+    @JsonProperty(value = "license")
+    private ApiLicenseInformation license;
 
     /**
      * Get the description property: Description of the API. May include HTML formatting tags.
@@ -170,7 +185,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Get the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
+     * Get the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
      *
      * @return the apiRevision value.
@@ -180,7 +195,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Set the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
+     * Set the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
      *
      * @param apiRevision the apiRevision value to set.
@@ -192,7 +207,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Get the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
+     * Get the apiVersion property: Indicates the version identifier of the API if the API is versioned.
      *
      * @return the apiVersion value.
      */
@@ -201,7 +216,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Set the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
+     * Set the apiVersion property: Indicates the version identifier of the API if the API is versioned.
      *
      * @param apiVersion the apiVersion value to set.
      * @return the ApiEntityBaseContract object itself.
@@ -241,7 +256,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Get the apiRevisionDescription property: Description of the Api Revision.
+     * Get the apiRevisionDescription property: Description of the API Revision.
      *
      * @return the apiRevisionDescription value.
      */
@@ -250,7 +265,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Set the apiRevisionDescription property: Description of the Api Revision.
+     * Set the apiRevisionDescription property: Description of the API Revision.
      *
      * @param apiRevisionDescription the apiRevisionDescription value to set.
      * @return the ApiEntityBaseContract object itself.
@@ -261,7 +276,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Get the apiVersionDescription property: Description of the Api Version.
+     * Get the apiVersionDescription property: Description of the API Version.
      *
      * @return the apiVersionDescription value.
      */
@@ -270,7 +285,7 @@ public class ApiEntityBaseContract {
     }
 
     /**
-     * Set the apiVersionDescription property: Description of the Api Version.
+     * Set the apiVersionDescription property: Description of the API Version.
      *
      * @param apiVersionDescription the apiVersionDescription value to set.
      * @return the ApiEntityBaseContract object itself.
@@ -323,6 +338,66 @@ public class ApiEntityBaseContract {
     }
 
     /**
+     * Get the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
+     *
+     * @return the termsOfServiceUrl value.
+     */
+    public String termsOfServiceUrl() {
+        return this.termsOfServiceUrl;
+    }
+
+    /**
+     * Set the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
+     *
+     * @param termsOfServiceUrl the termsOfServiceUrl value to set.
+     * @return the ApiEntityBaseContract object itself.
+     */
+    public ApiEntityBaseContract withTermsOfServiceUrl(String termsOfServiceUrl) {
+        this.termsOfServiceUrl = termsOfServiceUrl;
+        return this;
+    }
+
+    /**
+     * Get the contact property: Contact information for the API.
+     *
+     * @return the contact value.
+     */
+    public ApiContactInformation contact() {
+        return this.contact;
+    }
+
+    /**
+     * Set the contact property: Contact information for the API.
+     *
+     * @param contact the contact value to set.
+     * @return the ApiEntityBaseContract object itself.
+     */
+    public ApiEntityBaseContract withContact(ApiContactInformation contact) {
+        this.contact = contact;
+        return this;
+    }
+
+    /**
+     * Get the license property: License information for the API.
+     *
+     * @return the license value.
+     */
+    public ApiLicenseInformation license() {
+        return this.license;
+    }
+
+    /**
+     * Set the license property: License information for the API.
+     *
+     * @param license the license value to set.
+     * @return the ApiEntityBaseContract object itself.
+     */
+    public ApiEntityBaseContract withLicense(ApiLicenseInformation license) {
+        this.license = license;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -333,6 +408,12 @@ public class ApiEntityBaseContract {
         }
         if (subscriptionKeyParameterNames() != null) {
             subscriptionKeyParameterNames().validate();
+        }
+        if (contact() != null) {
+            contact().validate();
+        }
+        if (license() != null) {
+            license().validate();
         }
     }
 }

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSH configuration for Linux-based VMs running on Azure. */
 @Fluent
 public final class ContainerServiceSshConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceSshConfiguration.class);
-
     /*
      * The list of SSH public keys used to authenticate with Linux-based VMs. A
      * maximum of 1 key may be specified.
@@ -51,7 +48,7 @@ public final class ContainerServiceSshConfiguration {
      */
     public void validate() {
         if (publicKeys() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
@@ -59,4 +56,6 @@ public final class ContainerServiceSshConfiguration {
             publicKeys().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceSshConfiguration.class);
 }

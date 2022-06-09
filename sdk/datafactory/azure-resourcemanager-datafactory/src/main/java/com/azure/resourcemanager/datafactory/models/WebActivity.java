@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.WebActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("WebActivity")
 @Fluent
 public final class WebActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebActivity.class);
-
     /*
      * Web activity properties.
      */
@@ -199,6 +196,29 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the disableCertValidation property: When set to true, Certificate validation will be disabled.
+     *
+     * @return the disableCertValidation value.
+     */
+    public Boolean disableCertValidation() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().disableCertValidation();
+    }
+
+    /**
+     * Set the disableCertValidation property: When set to true, Certificate validation will be disabled.
+     *
+     * @param disableCertValidation the disableCertValidation value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withDisableCertValidation(Boolean disableCertValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDisableCertValidation(disableCertValidation);
+        return this;
+    }
+
+    /**
      * Get the datasets property: List of datasets passed to web endpoint.
      *
      * @return the datasets value.
@@ -276,11 +296,13 @@ public final class WebActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerTypeProperties in model WebActivity"));
         } else {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebActivity.class);
 }

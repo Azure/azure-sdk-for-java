@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC 13818-1) output video file(s). */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.TransportStreamFormat")
-@JsonFlatten
 @Fluent
-public class TransportStreamFormat extends MultiBitrateFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransportStreamFormat.class);
-
+public final class TransportStreamFormat extends MultiBitrateFormat {
     /** {@inheritDoc} */
     @Override
     public TransportStreamFormat withOutputFiles(List<OutputFile> outputFiles) {

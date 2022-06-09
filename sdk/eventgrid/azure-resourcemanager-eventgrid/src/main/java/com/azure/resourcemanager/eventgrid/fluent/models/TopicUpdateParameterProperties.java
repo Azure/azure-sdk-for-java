@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information of topic update parameter properties. */
 @Fluent
 public final class TopicUpdateParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameterProperties.class);
-
     /*
      * This determines if traffic is allowed over public network. By default it
      * is enabled.
@@ -41,6 +38,12 @@ public final class TopicUpdateParameterProperties {
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
+
+    /*
+     * The data residency boundary for the topic.
+     */
+    @JsonProperty(value = "dataResidencyBoundary")
+    private DataResidencyBoundary dataResidencyBoundary;
 
     /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
@@ -111,6 +114,26 @@ public final class TopicUpdateParameterProperties {
      */
     public TopicUpdateParameterProperties withDisableLocalAuth(Boolean disableLocalAuth) {
         this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the dataResidencyBoundary property: The data residency boundary for the topic.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.dataResidencyBoundary;
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: The data residency boundary for the topic.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the TopicUpdateParameterProperties object itself.
+     */
+    public TopicUpdateParameterProperties withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        this.dataResidencyBoundary = dataResidencyBoundary;
         return this;
     }
 

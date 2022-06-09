@@ -24,7 +24,7 @@ import java.util.Arrays;
 /** Samples for ManagementPolicies CreateOrUpdate. */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyWithSnapshotAndVersion.
@@ -100,7 +100,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyForBlockAndAppendBlobs.
@@ -157,7 +157,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.
@@ -217,7 +217,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicies.
@@ -308,6 +308,127 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
                                                                             .withName("tag2")
                                                                             .withOp("==")
                                                                             .withValue("val2")))))))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+     */
+    /**
+     * Sample code: StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountSetManagementPolicyBaseBlobDaysAfterCreationActions(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getManagementPolicies()
+            .createOrUpdateWithResponse(
+                "res7687",
+                "sto9699",
+                ManagementPolicyName.DEFAULT,
+                new ManagementPolicyInner()
+                    .withPolicy(
+                        new ManagementPolicySchema()
+                            .withRules(
+                                Arrays
+                                    .asList(
+                                        new ManagementPolicyRule()
+                                            .withEnabled(true)
+                                            .withName("olcmtest1")
+                                            .withType(RuleType.LIFECYCLE)
+                                            .withDefinition(
+                                                new ManagementPolicyDefinition()
+                                                    .withActions(
+                                                        new ManagementPolicyAction()
+                                                            .withBaseBlob(
+                                                                new ManagementPolicyBaseBlob()
+                                                                    .withTierToCool(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterCreationGreaterThan(30.0f))
+                                                                    .withTierToArchive(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterCreationGreaterThan(90.0f))
+                                                                    .withDelete(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterCreationGreaterThan(
+                                                                                1000.0f))))
+                                                    .withFilters(
+                                                        new ManagementPolicyFilter()
+                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+     */
+    /**
+     * Sample code: StorageAccountSetManagementPolicy_LastTierChangeTimeActions.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void storageAccountSetManagementPolicyLastTierChangeTimeActions(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .storageAccounts()
+            .manager()
+            .serviceClient()
+            .getManagementPolicies()
+            .createOrUpdateWithResponse(
+                "res7687",
+                "sto9699",
+                ManagementPolicyName.DEFAULT,
+                new ManagementPolicyInner()
+                    .withPolicy(
+                        new ManagementPolicySchema()
+                            .withRules(
+                                Arrays
+                                    .asList(
+                                        new ManagementPolicyRule()
+                                            .withEnabled(true)
+                                            .withName("olcmtest")
+                                            .withType(RuleType.LIFECYCLE)
+                                            .withDefinition(
+                                                new ManagementPolicyDefinition()
+                                                    .withActions(
+                                                        new ManagementPolicyAction()
+                                                            .withBaseBlob(
+                                                                new ManagementPolicyBaseBlob()
+                                                                    .withTierToCool(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                30.0f))
+                                                                    .withTierToArchive(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(90.0f)
+                                                                            .withDaysAfterLastTierChangeGreaterThan(
+                                                                                120.0f))
+                                                                    .withDelete(
+                                                                        new DateAfterModification()
+                                                                            .withDaysAfterModificationGreaterThan(
+                                                                                1000.0f)))
+                                                            .withSnapshot(
+                                                                new ManagementPolicySnapShot()
+                                                                    .withTierToArchive(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f)
+                                                                            .withDaysAfterLastTierChangeGreaterThan(
+                                                                                90.0f)))
+                                                            .withVersion(
+                                                                new ManagementPolicyVersion()
+                                                                    .withTierToArchive(
+                                                                        new DateAfterCreation()
+                                                                            .withDaysAfterCreationGreaterThan(30f)
+                                                                            .withDaysAfterLastTierChangeGreaterThan(
+                                                                                90.0f))))
+                                                    .withFilters(
+                                                        new ManagementPolicyFilter()
+                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer"))
+                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 Context.NONE);
     }
 }

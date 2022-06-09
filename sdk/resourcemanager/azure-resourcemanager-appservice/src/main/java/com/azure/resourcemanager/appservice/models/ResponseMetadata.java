@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResponseMetadata model. */
 @Fluent
 public final class ResponseMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponseMetadata.class);
-
     /*
      * Source of the Data
      */

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.SnapshotRestoreRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about app recovery operation. */
 @Fluent
 public final class SnapshotRestoreRequest extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotRestoreRequest.class);
-
     /*
      * SnapshotRestoreRequest resource specific properties
      */

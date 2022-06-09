@@ -24,7 +24,7 @@ There is one swagger for Container Registry APIs.
 
 ```ps
 cd <swagger-folder>
-autorest --java --use:@autorest/java@4.0.x
+autorest --java --use:@autorest/java@4.0.46
 ```
 
 ### Code generation settings
@@ -36,11 +36,12 @@ generate-client-as-impl: true
 namespace: com.azure.containers.containerregistry
 generate-client-interfaces: false
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+#add-context-parameter: true
+sync-methods: none
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactManifestOrderBy,ArtifactTagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties
+custom-types: ArtifactTagOrder,ArtifactManifestOrder,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties,OciManifest,OciBlobDescriptor,OciAnnotations
 custom-types-subpackage: models
 ```
 
@@ -50,6 +51,7 @@ directive:
 - from: swagger-document
   where: $.definitions.TagOrderBy
   transform: >
+    $["x-ms-enum"].name = "ArtifactTagOrder";
     $["x-ms-enum"].modelAsString = true;
 ```
 
@@ -59,6 +61,7 @@ directive:
 - from: swagger-document
   where: $.definitions.ManifestOrderBy
   transform: >
+    $["x-ms-enum"].name = "ArtifactManifestOrder";
     $["x-ms-enum"].modelAsString = true;
 ```
 
@@ -114,6 +117,76 @@ directive:
     $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
+```
+# Add content-type parameter
+```yaml
+directive:
+    from: swagger-document
+    where: $.paths["/v2/{name}/manifests/{reference}"].put
+    transform: >
+        $.parameters.push({
+            "name": "Content-Type",
+            "in": "header",
+            "type": "string",
+            "description": "The manifest's Content-Type."
+        });
+        delete $.responses["201"].schema;
+```
+
+# Change NextLink client name to nextLink
+```yaml
+directive:
+  from: swagger-document
+  where: $.parameters.NextLink
+  transform: >
+    $["x-ms-client-name"] = "nextLink"
+```
+
+# Updates to OciManifest
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.OCIManifest
+  transform: >
+    $["x-ms-client-name"] = "OciManifest";
+    delete $["x-accessibility"];
+    delete $["allOf"];
+    $.properties["schemaVersion"] = {
+          "type": "integer",
+          "description": "Schema version"
+        };
+```
+
+# Take stream as manifest body
+```yaml
+directive:
+  from: swagger-document
+  where: $.parameters.ManifestBody
+  transform: >
+    $.schema = {
+        "type": "string",
+        "format": "binary"
+      }
+```
+
+# Make ArtifactBlobDescriptor a public type
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Descriptor
+  transform: >
+    $["x-ms-client-name"] = "OciBlobDescriptor";
+    delete $["x-accessibility"]
+```
+
+# Make OciAnnotations a public type
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Annotations
+  transform: >
+    $["x-ms-client-name"] = "OciAnnotations";
+    delete $["x-accessibility"]
 ```
 
 

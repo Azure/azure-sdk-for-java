@@ -13,10 +13,7 @@ public class GlossaryClientTests extends PurviewCatalogClientTestBase {
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new PurviewCatalogClientBuilder()
-                .endpoint(getEndpoint())
-                .pipeline(httpPipeline)
-                .buildGlossaryClient());
+        client = builderSetUp().endpoint(getEndpoint()).buildClient();
     }
 
     @Test

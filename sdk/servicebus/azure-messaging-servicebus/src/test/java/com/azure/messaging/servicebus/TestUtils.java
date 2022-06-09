@@ -4,7 +4,9 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
@@ -16,11 +18,20 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -68,6 +79,7 @@ public class TestUtils {
     static final int USE_CASE_PROXY = 22;
     static final int USE_CASE_PROCESSOR_RECEIVE = 23;
     static final int USE_CASE_AMQP_TYPES = 24;
+    static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
@@ -84,10 +96,48 @@ public class TestUtils {
      * @return The namespace connection string.
      */
     public static String getConnectionString(boolean withSas) {
+        String connectionString = getPropertyValue("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
         if (withSas) {
-            return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING_WITH_SAS");
+            final String shareAccessSignatureFormat = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
+            String connectionStringWithSasAndEntityFormat = "Endpoint=%s;SharedAccessSignature=%s;EntityPath=%s";
+            String connectionStringWithSasFormat = "Endpoint=%s;SharedAccessSignature=%s";
+
+            ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+            URI endpoint = properties.getEndpoint();
+            String entityPath = properties.getEntityPath();
+            String resourceUrl = entityPath == null || entityPath.trim().length() == 0
+                ? endpoint.toString() : endpoint.toString() +  properties.getEntityPath();
+
+            String utf8Encoding = UTF_8.name();
+            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
+            String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
+
+            try {
+                String audienceUri = URLEncoder.encode(resourceUrl, utf8Encoding);
+                String secretToSign = audienceUri + "\n" + expiresOnEpochSeconds;
+                byte[] sasKeyBytes = properties.getSharedAccessKey().getBytes(utf8Encoding);
+
+                Mac hmacsha256 = Mac.getInstance("HMACSHA256");
+                hmacsha256.init(new SecretKeySpec(sasKeyBytes, "HMACSHA256"));
+
+                byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
+                String signature = Base64.getEncoder().encodeToString(signatureBytes);
+
+                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
+                    audienceUri,
+                    URLEncoder.encode(signature, utf8Encoding),
+                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+                    URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
+
+                if (entityPath == null) {
+                    return String.format(connectionStringWithSasFormat, endpoint, signatureValue);
+                }
+                return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        return connectionString;
     }
 
     /**
@@ -96,7 +146,11 @@ public class TestUtils {
      * @return The fully qualified domain name for the service bus resource.
      */
     public static String getFullyQualifiedDomainName() {
-        return System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+    }
+
+    public static String getEndpoint() {
+        return getPropertyValue("AZURE_SERVICEBUS_EDNPOINT_SUFFIX", ".servicebus.windows.net");
     }
 
     /**
@@ -105,7 +159,7 @@ public class TestUtils {
      * @return The Service Bus queue name.
      */
     public static String getQueueBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_QUEUE_NAME");
     }
 
     /**
@@ -114,7 +168,7 @@ public class TestUtils {
      * @return The Service Bus queue name.
      */
     public static String getSessionQueueBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
     }
 
     /**
@@ -123,7 +177,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getSubscriptionBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
     }
 
     /**
@@ -132,7 +186,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getTopicBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_TOPIC_NAME");
     }
 
     /**
@@ -141,7 +195,7 @@ public class TestUtils {
      * @return The Service Bus subscription name.
      */
     public static String getSessionSubscriptionBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
+        return getPropertyValue("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
     }
 
     /**
@@ -154,6 +208,37 @@ public class TestUtils {
      */
     public static String getEntityName(String baseName, int index) {
         return String.join("-", baseName, String.valueOf(index));
+    }
+
+    /**
+     * The azure application client id
+     *
+     * @return The application client id.
+     */
+    public static String getAzureClientId() {
+        return getPropertyValue("AZURE_CLIENT_ID");
+    }
+
+    /**
+     * The azure application client secret
+     *
+     * @return The application client secret.
+     */
+    public static String getAzureClientSecret() {
+        return getPropertyValue("AZURE_CLIENT_SECRET");
+    }
+
+    /**
+     * The azure application tenant id
+     *
+     * @return The application tenant id.
+     */
+    public static String getAzureTenantId() {
+        return getPropertyValue("AZURE_TENANT_ID");
+    }
+
+    public static Configuration getGlobalConfiguration() {
+        return GLOBAL_CONFIGURATION;
     }
 
     /**
@@ -285,5 +370,14 @@ public class TestUtils {
 
             assertAuthorizationRules(expectedItem, actualItem);
         }
+    }
+
+
+    public static String getPropertyValue(String propertyName) {
+        return GLOBAL_CONFIGURATION.get(propertyName, System.getenv(propertyName));
+    }
+
+    public static String getPropertyValue(String propertyName, String defaultValue) {
+        return GLOBAL_CONFIGURATION.get(propertyName, defaultValue);
     }
 }

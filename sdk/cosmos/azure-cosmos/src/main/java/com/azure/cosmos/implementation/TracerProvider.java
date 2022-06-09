@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
@@ -322,14 +321,14 @@ public class TracerProvider {
         Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc, thresholdForDiagnosticsOnTracer);
         return tracerMono
             .doOnSuccess(response -> {
-                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {
+                if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosItemResponse) {
                     @SuppressWarnings("unchecked")
                     CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
-                } else if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosBatchResponse) {
+                } else if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosBatchResponse) {
                     @SuppressWarnings("unchecked")
                     CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
                     fillClientTelemetry(client, cosmosBatchResponse.getDiagnostics(), cosmosBatchResponse.getStatusCode(),
@@ -338,7 +337,7 @@ public class TracerProvider {
                         (float) cosmosBatchResponse.getRequestCharge());
                 }
             }).doOnError(throwable -> {
-                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && throwable instanceof CosmosException) {
+                if (BridgeInternal.isClientTelemetryEnabled(client) && throwable instanceof CosmosException) {
                     CosmosException cosmosException = (CosmosException) throwable;
                     fillClientTelemetry(client, cosmosException.getDiagnostics(), cosmosException.getStatusCode(),
                         null, containerId,
@@ -452,8 +451,7 @@ public class TracerProvider {
             Iterator<RequestTimeline.Event> eventIterator = null;
             try {
                 if (storeResponseStatistics.getStoreResult() != null) {
-                    eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
+                    eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 }
             } catch (CosmosException ex) {
                 eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
@@ -483,8 +481,7 @@ public class TracerProvider {
             OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.getRequestResponseTimeUTC(),
                 ZoneOffset.UTC);
             if (statistics.getStoreResult() != null) {
-                Iterator<RequestTimeline.Event> eventIterator =
-                    DirectBridgeInternal.getRequestTimeline(statistics.getStoreResult().toResponse()).iterator();
+                Iterator<RequestTimeline.Event> eventIterator = statistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -566,7 +563,7 @@ public class TracerProvider {
         //adding clientCfgs
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
         this.addEvent("ClientCfgs", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
     }

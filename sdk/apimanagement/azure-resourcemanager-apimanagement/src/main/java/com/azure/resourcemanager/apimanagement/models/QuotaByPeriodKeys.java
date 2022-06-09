@@ -45,7 +45,7 @@ public interface QuotaByPeriodKeys {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
-     *     service instance.
+     *     service instance along with {@link Response}.
      */
     Response<QuotaCounterContract> getWithResponse(
         String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey, Context context);
@@ -88,7 +88,7 @@ public interface QuotaByPeriodKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota counter details.
+     * @return quota counter details along with {@link Response}.
      */
     Response<QuotaCounterContract> updateWithResponse(
         String resourceGroupName,

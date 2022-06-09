@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Common Data Service for Apps entity dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -40,6 +42,55 @@ public class CommonDataServiceForAppsEntityDataset extends Dataset {
      */
     public CommonDataServiceForAppsEntityDataset setEntityName(Object entityName) {
         this.entityName = entityName;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsEntityDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

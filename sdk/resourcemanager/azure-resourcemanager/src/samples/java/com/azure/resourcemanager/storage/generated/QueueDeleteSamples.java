@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Queue Delete. */
 public final class QueueDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/QueueOperationDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-09-01/examples/QueueOperationDelete.json
      */
     /**
      * Sample code: QueueOperationDelete.

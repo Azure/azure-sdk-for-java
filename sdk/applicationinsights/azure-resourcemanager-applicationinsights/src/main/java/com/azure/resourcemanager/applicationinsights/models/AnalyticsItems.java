@@ -42,7 +42,7 @@ public interface AnalyticsItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     Response<List<ApplicationInsightsComponentAnalyticsItem>> listWithResponse(
         String resourceGroupName,
@@ -81,7 +81,7 @@ public interface AnalyticsItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     Response<ApplicationInsightsComponentAnalyticsItem> getWithResponse(
         String resourceGroupName,
@@ -126,7 +126,8 @@ public interface AnalyticsItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return properties that define an Analytics item that is associated to an Application Insights component along
+     *     with {@link Response}.
      */
     Response<ApplicationInsightsComponentAnalyticsItem> putWithResponse(
         String resourceGroupName,
@@ -162,7 +163,7 @@ public interface AnalyticsItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,

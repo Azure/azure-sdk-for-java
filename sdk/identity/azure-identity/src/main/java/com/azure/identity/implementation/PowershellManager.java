@@ -48,10 +48,10 @@ public class PowershellManager {
 
         ProcessBuilder pb;
         if (Platform.isWindows()) {
-            pb = new ProcessBuilder(new String[]{"cmd.exe", "/c", "chcp", "65001", ">", "NUL", "&",
-                powershellPath, "-ExecutionPolicy", "Bypass", "-NoExit", "-NoProfile", "-Command", "-"});
+            pb = new ProcessBuilder("cmd.exe", "/c", "chcp", "65001", ">", "NUL", "&",
+                powershellPath, "-ExecutionPolicy", "Bypass", "-NoExit", "-NoProfile", "-Command", "-");
         } else {
-            pb = new ProcessBuilder(new String[]{powershellPath, "-nologo", "-noexit", "-Command", "-"});
+            pb = new ProcessBuilder(powershellPath, "-nologo", "-noexit", "-Command", "-");
         }
 
         pb.redirectErrorStream(true);
@@ -64,13 +64,13 @@ public class PowershellManager {
                     new OutputStreamWriter(new BufferedOutputStream(process.getOutputStream()), StandardCharsets.UTF_8),
                     true);
                 if (this.process.waitFor(4L, TimeUnit.SECONDS) && !this.process.isAlive()) {
-                    throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell."
-                        + " Please make sure that it is installed in your system."));
+                    throw new CredentialUnavailableException("Unable to execute PowerShell."
+                        + " Please make sure that it is installed in your system.");
                 }
                 this.closed = false;
             } catch (InterruptedException | IOException e) {
-                throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell. "
-                    + "Please make sure that it is installed in your system", e));
+                throw new CredentialUnavailableException("Unable to execute PowerShell. "
+                    + "Please make sure that it is installed in your system", e);
             }
             return this;
         };
@@ -113,8 +113,8 @@ public class PowershellManager {
                     return Mono.just(true);
                 }
             } catch (IOException e) {
-                return Mono.error(LOGGER.logExceptionAsError(
-                    new CredentialUnavailableException("Powershell reader not ready for reading", e)));
+                return Mono.error(
+                    new CredentialUnavailableException("Powershell reader not ready for reading", e));
             }
         }).repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
@@ -136,8 +136,7 @@ public class PowershellManager {
                     }
 
                 } catch (IOException | InterruptedException e) {
-                    throw LOGGER.logExceptionAsError(
-                        new CredentialUnavailableException("Powershell reader not ready for reading", e));
+                    throw new CredentialUnavailableException("Powershell reader not ready for reading", e);
                 }
             }
             return true;
@@ -153,7 +152,7 @@ public class PowershellManager {
                 try {
                     this.process.waitFor(maxWait, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
-                    LOGGER.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpcted"
+                    LOGGER.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpected"
                         + " error when closing.", e));
                 } finally {
                     this.commandWriter.close();
@@ -163,7 +162,7 @@ public class PowershellManager {
                             process.getInputStream().close();
                         }
                     } catch (IOException ex) {
-                        LOGGER.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpcted"
+                        LOGGER.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpected"
                             + " error when closing.", ex));
                     }
                     this.closed = true;

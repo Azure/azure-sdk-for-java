@@ -10,6 +10,7 @@ import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
+import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -105,12 +106,41 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             .credential(credential)
             .audience(audience);
 
-           // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+              // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential) {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
+    }
+
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient) {
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
+        return getBlobClientBuilder(repositoryName, httpClient, credential);
+    }
+
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient, TokenCredential credential) {
+        return getBlobClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
+    }
+
+    ContainerRegistryBlobClientBuilder getBlobClientBuilder(String repositoryName, HttpClient httpClient, TokenCredential credential, String endpoint) {
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+
+        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
+
+        ContainerRegistryBlobClientBuilder builder = new ContainerRegistryBlobClientBuilder()
+            .endpoint(getEndpoint(endpoint))
+            .repository(repositoryName)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .addPolicy(interceptorManager.getRecordPolicy(redactors))
+            .credential(credential)
+            .audience(audience);
+
+        // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+        // builder.httpClient(new OkHttpAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
+        return builder;
     }
 
     List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {

@@ -30,16 +30,18 @@ public class ReadmeSamples {
      * Sample for creating Azure Monitor Exporter.
      */
     public void createExporter() {
+        // BEGIN: readme-sample-createExporter
         AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
             .buildTraceExporter();
+        // END: readme-sample-createExporter
     }
 
     /**
      * Sample for setting up exporter to export traces to Azure Monitor
      */
     public void setupExporter() {
-
+        // BEGIN: readme-sample-setupExporter
         // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
         // This should be done just once when application starts up
         AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
@@ -55,7 +57,9 @@ public class ReadmeSamples {
             .buildAndRegisterGlobal();
 
         Tracer tracer = openTelemetrySdk.getTracer("Sample");
+        // END: readme-sample-setupExporter
 
+        // BEGIN: readme-sample-createSpans
         // Make service calls by adding new parent spans
         ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString("{app-config-connection-string}")
@@ -70,6 +74,7 @@ public class ReadmeSamples {
             span.end();
             scope.close();
         }
+        // END: readme-sample-createSpans
     }
 
     /**

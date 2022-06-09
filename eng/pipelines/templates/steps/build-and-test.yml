@@ -1,0 +1,150 @@
+parameters:
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: ''
+  - name: AdditionalBuildOptions
+    type: string
+    default: ''
+  - name: TestParallelization
+    type: string
+    default: '1C'
+  - name: ParallelTestPlayback
+    type: string
+    default: 'false'
+  - name: SkipAggregateReports
+    type: boolean
+    default: false
+  - name: TestResultsFiles
+    type: string
+    default: ''
+  - name: TestEnvVars
+    type: object
+    default: {}
+  - name: IsLiveTest
+    type: boolean
+    default: false
+
+steps:
+  - task: Maven@3
+    displayName: 'Build for non-From Source run'
+    inputs:
+      mavenPomFile: pom.xml
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }} -pl $(ProjectList) -am
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'install'
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+
+  - task: Maven@3
+    displayName: 'Run tests'
+    inputs:
+      mavenPomFile: pom.xml
+      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: ${{ parameters.TestGoals }}
+    env: ${{ parameters.TestEnvVars }}
+    # we want to run this when TestFromSource isn't true
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+
+  # Generate the pom file with all the modules required for creating an aggregate code coverage report
+  - task: PythonScript@0
+    displayName: 'Generate pom for aggregate code coverage report'
+    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+    inputs:
+      scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
+      arguments: '--project-list $(ProjectList)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - task: Maven@3
+    displayName: 'Generate aggregate code coverage report'
+    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+    inputs:
+      mavenPomFile: aggregate-coverage-pom.xml
+      options: '$(DefaultOptions)'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      goals: jacoco:report-aggregate
+
+  - task: Maven@3
+    displayName: 'Build for From Source run'
+    inputs:
+      mavenPomFile: ClientFromSourcePom.xml
+      goals: 'install'
+      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
+      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
+      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
+      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
+      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }}
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - task: Maven@3
+    displayName: 'Run tests for From Source run'
+    inputs:
+      mavenPomFile: ClientFromSourcePom.xml
+      # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
+      # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
+      ${{ if eq(parameters.IsLiveTest, 'true') }}:
+        options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
+      ${{ else }}:
+        options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      # The "From Source" runs only care about running tests for libraries within an SDK/area
+      # as well as libraries which depend on them and not the other stages in the Maven
+      # lifecycle that test or verify targets would execute. The libraries were already
+      # compiled and installed in the previous task, this tasks only runs tests.
+      goals: ${{ parameters.TestGoals }}
+    env: ${{ parameters.TestEnvVars }}
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
+  - template: ../steps/upload-repository-on-failure.yml
+
+  - template: ../steps/retain-heap-dump-hprofs.yml
+
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      mergeTestResults: true
+      testRunTitle: $(Agent.JobName)
+      ${{ if ne(parameters.TestResultsFiles, '') }}:
+        testResultsFiles: ${{ parameters.TestResultsFiles }}
+
+  # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
+  # Code coverage reporting is set up only for Track 2 modules.
+  - task: PublishCodeCoverageResults@1
+    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+    inputs:
+      codeCoverageTool: JaCoCo
+      summaryFileLocation: target/site/test-coverage/jacoco.xml
+      reportDirectory: target/site/test-coverage/
+      failIfCoverageEmpty: false

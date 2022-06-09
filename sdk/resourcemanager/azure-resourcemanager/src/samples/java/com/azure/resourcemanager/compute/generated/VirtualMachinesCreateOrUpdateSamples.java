@@ -25,6 +25,8 @@ import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.models.LinuxPatchAssessmentMode;
 import com.azure.resourcemanager.compute.models.LinuxPatchSettings;
+import com.azure.resourcemanager.compute.models.LinuxVMGuestPatchAutomaticByPlatformRebootSetting;
+import com.azure.resourcemanager.compute.models.LinuxVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.compute.models.LinuxVMGuestPatchMode;
 import com.azure.resourcemanager.compute.models.ManagedDiskParameters;
 import com.azure.resourcemanager.compute.models.NetworkApiVersion;
@@ -40,6 +42,7 @@ import com.azure.resourcemanager.compute.models.PublicIpAddressSkuName;
 import com.azure.resourcemanager.compute.models.PublicIpAddressSkuTier;
 import com.azure.resourcemanager.compute.models.PublicIpAllocationMethod;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
+import com.azure.resourcemanager.compute.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.SshConfiguration;
@@ -48,6 +51,7 @@ import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.TerminateNotificationProfile;
 import com.azure.resourcemanager.compute.models.UefiSettings;
+import com.azure.resourcemanager.compute.models.VMDiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.VMGalleryApplication;
 import com.azure.resourcemanager.compute.models.VMSizeProperties;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
@@ -57,13 +61,15 @@ import com.azure.resourcemanager.compute.models.VirtualMachinePublicIpAddressCon
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
+import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
+import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
 import java.util.Arrays;
 
 /** Samples for VirtualMachines CreateOrUpdate. */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmFromASharedGalleryImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a shared gallery image.
@@ -114,7 +120,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateAVmWithVMSizeProperties.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_CreateWithVMSizeProperties.json
      */
     /**
      * Sample code: Create a VM with VM Size Properties.
@@ -177,7 +183,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAPlatformImageVmWithUnmanagedOsAndDataDisks.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
      */
     /**
      * Sample code: Create a platform-image vm with unmanaged os and data disks.
@@ -251,7 +257,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateALinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Linux vm with a patch settings patchMode and assessmentMode set to AutomaticByPlatform.
@@ -312,7 +318,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Cache disk using placement property.
@@ -375,7 +381,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithAMarketplaceImagePlan.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
      */
     /**
      * Sample code: Create a vm with a marketplace image plan.
@@ -433,7 +439,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAWindowsVmWithPatchSettingModeOfAutomaticByOS.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByOS.
@@ -493,7 +499,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAWindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Windows vm with patch settings patchMode and assessmentMode set to AutomaticByPlatform.
@@ -555,7 +561,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAWindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting assessmentMode of ImageDefault.
@@ -616,7 +622,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithPremiumStorage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
      */
     /**
      * Sample code: Create a vm with premium storage.
@@ -669,7 +675,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateAVmWithCapacityReservation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
      */
     /**
      * Sample code: Create or update a VM with capacity reservation.
@@ -733,7 +739,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateALinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting assessmentMode of ImageDefault.
@@ -793,7 +799,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAWindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and enableHotpatching set
@@ -856,7 +862,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithExtensionsTimeBudget.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
      */
     /**
      * Sample code: Create a vm with an extensions time budget.
@@ -916,7 +922,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateACustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
      * Sample code: Create a custom-image vm from an unmanaged generalized os image.
@@ -970,7 +976,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithEncryptionAtHost.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
      */
     /**
      * Sample code: Create a vm with Host Encryption using encryptionAtHost property.
@@ -1030,7 +1036,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmInAnAvailabilitySet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
      */
     /**
      * Sample code: Create a vm in an availability set.
@@ -1087,7 +1093,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithEmptyDataDisks.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
      */
     /**
      * Sample code: Create a vm with empty data disks.
@@ -1151,7 +1157,70 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithNetworkInterfaceConfiguration.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+     */
+    /**
+     * Sample code: Create a VM with securityType ConfidentialVM with Platform Managed Keys.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithSecurityTypeConfidentialVMWithPlatformManagedKeys(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myVM",
+                new VirtualMachineInner()
+                    .withLocation("westus")
+                    .withHardwareProfile(
+                        new HardwareProfile().withVmSize(VirtualMachineSizeTypes.fromString("Standard_DC2as_v5")))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withPublisher("MicrosoftWindowsServer")
+                                    .withOffer("2019-datacenter-cvm")
+                                    .withSku("windows-cvm")
+                                    .withVersion("17763.2183.2109130127"))
+                            .withOsDisk(
+                                new OSDisk()
+                                    .withName("myVMosdisk")
+                                    .withCaching(CachingTypes.READ_ONLY)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(
+                                        new ManagedDiskParameters()
+                                            .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
+                                            .withSecurityProfile(
+                                                new VMDiskSecurityProfile()
+                                                    .withSecurityEncryptionType(
+                                                        SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)))))
+                    .withOsProfile(
+                        new OSProfile()
+                            .withComputerName("myVM")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("{your-password}"))
+                    .withNetworkProfile(
+                        new NetworkProfile()
+                            .withNetworkInterfaces(
+                                Arrays
+                                    .asList(
+                                        new NetworkInterfaceReference()
+                                            .withId(
+                                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                                            .withPrimary(true))))
+                    .withSecurityProfile(
+                        new SecurityProfile()
+                            .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
+                            .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
      */
     /**
      * Sample code: Create a VM with network interface configuration.
@@ -1222,7 +1291,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmFromACustomImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
      */
     /**
      * Sample code: Create a vm from a custom image.
@@ -1273,7 +1342,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateAVmWithHibernationEnabled.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
      */
     /**
      * Sample code: Create a VM with HibernationEnabled.
@@ -1333,7 +1402,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithUefiSettings.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
      */
     /**
      * Sample code: Create a VM with Uefi Settings of secureBoot and vTPM.
@@ -1391,7 +1460,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithApplicationProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
      */
     /**
      * Sample code: Create a vm with Application Profile.
@@ -1451,7 +1520,9 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                                             .withPackageReferenceId(
                                                 "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0")
                                             .withConfigurationReference(
-                                                "https://mystorageaccount.blob.core.windows.net/configurations/settings.config"),
+                                                "https://mystorageaccount.blob.core.windows.net/configurations/settings.config")
+                                            .withTreatFailureAsDeploymentFailure(false)
+                                            .withEnableAutomaticUpgrade(false),
                                         new VMGalleryApplication()
                                             .withPackageReferenceId(
                                                 "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1")))),
@@ -1459,7 +1530,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmFromASpecializedSharedImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a specialized shared image.
@@ -1505,7 +1576,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithPasswordAuthentication.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
      */
     /**
      * Sample code: Create a vm with password authentication.
@@ -1558,7 +1629,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMacine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
      */
     /**
      * Sample code: Create a vm in a Virtual Machine Scale Set with customer assigned platformFaultDomain.
@@ -1617,7 +1688,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithScheduledEventsProfile.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
      */
     /**
      * Sample code: Create a vm with Scheduled Events Profile.
@@ -1680,7 +1751,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithBootDiagnostics.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMacine_Create_WithBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with boot diagnostics.
@@ -1739,7 +1810,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithSshAuthentication.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
      */
     /**
      * Sample code: Create a vm with ssh authentication.
@@ -1804,7 +1875,58 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+     */
+    /**
+     * Sample code: Create a VM from a community gallery image.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMFromACommunityGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myVM",
+                new VirtualMachineInner()
+                    .withLocation("westus")
+                    .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withCommunityGalleryImageId(
+                                        "/CommunityGalleries/galleryPublicName/Images/communityGalleryImageName/Versions/communityGalleryImageVersionName"))
+                            .withOsDisk(
+                                new OSDisk()
+                                    .withName("myVMosdisk")
+                                    .withCaching(CachingTypes.READ_WRITE)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(
+                                        new ManagedDiskParameters()
+                                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                    .withOsProfile(
+                        new OSProfile()
+                            .withComputerName("myVM")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("{your-password}"))
+                    .withNetworkProfile(
+                        new NetworkProfile()
+                            .withNetworkInterfaces(
+                                Arrays
+                                    .asList(
+                                        new NetworkInterfaceReference()
+                                            .withId(
+                                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                                            .withPrimary(true)))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Resource disk using placement property.
@@ -1867,7 +1989,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithADiffOsDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk.
@@ -1926,7 +2048,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateAVmWithUserData.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
      */
     /**
      * Sample code: Create a VM with UserData.
@@ -1986,7 +2108,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmFromAGeneralizedSharedImage.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a generalized shared image.
@@ -2037,7 +2159,73 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAWindowsVmWithPatchSettingModeOfManual.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+     */
+    /**
+     * Sample code: Create a Linux vm with a patch setting patchMode of AutomaticByPlatform and
+     * AutomaticByPlatformSettings.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createALinuxVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myVM",
+                new VirtualMachineInner()
+                    .withLocation("westus")
+                    .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withPublisher("Canonical")
+                                    .withOffer("UbuntuServer")
+                                    .withSku("16.04-LTS")
+                                    .withVersion("latest"))
+                            .withOsDisk(
+                                new OSDisk()
+                                    .withName("myVMosdisk")
+                                    .withCaching(CachingTypes.READ_WRITE)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(
+                                        new ManagedDiskParameters()
+                                            .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                    .withOsProfile(
+                        new OSProfile()
+                            .withComputerName("myVM")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("{your-password}")
+                            .withLinuxConfiguration(
+                                new LinuxConfiguration()
+                                    .withProvisionVMAgent(true)
+                                    .withPatchSettings(
+                                        new LinuxPatchSettings()
+                                            .withPatchMode(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
+                                            .withAssessmentMode(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
+                                            .withAutomaticByPlatformSettings(
+                                                new LinuxVMGuestPatchAutomaticByPlatformSettings()
+                                                    .withRebootSetting(
+                                                        LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)))))
+                    .withNetworkProfile(
+                        new NetworkProfile()
+                            .withNetworkInterfaces(
+                                Arrays
+                                    .asList(
+                                        new NetworkInterfaceReference()
+                                            .withId(
+                                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                                            .withPrimary(true)))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of Manual.
@@ -2097,7 +2285,74 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateALinuxVmWithPatchSettingModeOfImageDefault.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
+     */
+    /**
+     * Sample code: Create a VM with securityType ConfidentialVM with Customer Managed Keys.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithSecurityTypeConfidentialVMWithCustomerManagedKeys(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myVM",
+                new VirtualMachineInner()
+                    .withLocation("westus")
+                    .withHardwareProfile(
+                        new HardwareProfile().withVmSize(VirtualMachineSizeTypes.fromString("Standard_DC2as_v5")))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withPublisher("MicrosoftWindowsServer")
+                                    .withOffer("2019-datacenter-cvm")
+                                    .withSku("windows-cvm")
+                                    .withVersion("17763.2183.2109130127"))
+                            .withOsDisk(
+                                new OSDisk()
+                                    .withName("myVMosdisk")
+                                    .withCaching(CachingTypes.READ_ONLY)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(
+                                        new ManagedDiskParameters()
+                                            .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
+                                            .withSecurityProfile(
+                                                new VMDiskSecurityProfile()
+                                                    .withSecurityEncryptionType(
+                                                        SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)
+                                                    .withDiskEncryptionSet(
+                                                        new DiskEncryptionSetParameters()
+                                                            .withId(
+                                                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSets/{existing-diskEncryptionSet-name}"))))))
+                    .withOsProfile(
+                        new OSProfile()
+                            .withComputerName("myVM")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("{your-password}"))
+                    .withNetworkProfile(
+                        new NetworkProfile()
+                            .withNetworkInterfaces(
+                                Arrays
+                                    .asList(
+                                        new NetworkInterfaceReference()
+                                            .withId(
+                                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                                            .withPrimary(true))))
+                    .withSecurityProfile(
+                        new SecurityProfile()
+                            .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
+                            .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of ImageDefault.
@@ -2156,7 +2411,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithManagedBootDiagnostics.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with managed boot diagnostics.
@@ -2211,7 +2466,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateAVmWithDiskEncryptionSetResource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
      */
     /**
      * Sample code: Create a vm with DiskEncryptionSet resource id in the os disk and data disk.
@@ -2283,6 +2538,73 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                             .withComputerName("myVM")
                             .withAdminUsername("{your-username}")
                             .withAdminPassword("{your-password}"))
+                    .withNetworkProfile(
+                        new NetworkProfile()
+                            .withNetworkInterfaces(
+                                Arrays
+                                    .asList(
+                                        new NetworkInterfaceReference()
+                                            .withId(
+                                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                                            .withPrimary(true)))),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+     */
+    /**
+     * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and
+     * AutomaticByPlatformSettings.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(
+                "myResourceGroup",
+                "myVM",
+                new VirtualMachineInner()
+                    .withLocation("westus")
+                    .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(
+                                new ImageReference()
+                                    .withPublisher("MicrosoftWindowsServer")
+                                    .withOffer("WindowsServer")
+                                    .withSku("2016-Datacenter")
+                                    .withVersion("latest"))
+                            .withOsDisk(
+                                new OSDisk()
+                                    .withName("myVMosdisk")
+                                    .withCaching(CachingTypes.READ_WRITE)
+                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                    .withManagedDisk(
+                                        new ManagedDiskParameters()
+                                            .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                    .withOsProfile(
+                        new OSProfile()
+                            .withComputerName("myVM")
+                            .withAdminUsername("{your-username}")
+                            .withAdminPassword("{your-password}")
+                            .withWindowsConfiguration(
+                                new WindowsConfiguration()
+                                    .withProvisionVMAgent(true)
+                                    .withEnableAutomaticUpdates(true)
+                                    .withPatchSettings(
+                                        new PatchSettings()
+                                            .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
+                                            .withAssessmentMode(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
+                                            .withAutomaticByPlatformSettings(
+                                                new WindowsVMGuestPatchAutomaticByPlatformSettings()
+                                                    .withRebootSetting(
+                                                        WindowsVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)))))
                     .withNetworkProfile(
                         new NetworkProfile()
                             .withNetworkInterfaces(

@@ -1,11 +1,11 @@
 ---
 page_type: sample
 languages:
-- java
-  products:
-- azure
-- azure-event-grid-cloudnative-cloudevents
-  urlFragment: eventgrid-cloudnative-cloudevents-samples
+  - java
+products:
+  - azure
+  - azure-event-grid 
+urlFragment: eventgrid-samples
 ---
 
 # Azure EventGrid Native Cloud Events Samples client library for Java

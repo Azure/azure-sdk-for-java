@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CloudServiceRoleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CloudServiceRoleListResult model. */
 @Fluent
 public final class CloudServiceRoleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceRoleListResult.class);
-
     /*
      * The value property.
      */
@@ -75,7 +72,7 @@ public final class CloudServiceRoleListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model CloudServiceRoleListResult"));
@@ -83,4 +80,6 @@ public final class CloudServiceRoleListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CloudServiceRoleListResult.class);
 }

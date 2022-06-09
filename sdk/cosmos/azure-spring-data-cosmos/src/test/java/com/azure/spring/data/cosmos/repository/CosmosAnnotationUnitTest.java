@@ -3,6 +3,8 @@
 package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.UniqueKey;
+import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
@@ -13,6 +15,8 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 
 public class CosmosAnnotationUnitTest {
@@ -26,6 +30,12 @@ public class CosmosAnnotationUnitTest {
     }
 
     @Test
+    public void testDefaultUniqueKeyPolicyAnnotation() {
+        final UniqueKeyPolicy uniqueKeyPolicy = personInfo.getUniqueKeyPolicy();
+        Assert.isNull(uniqueKeyPolicy, "NoDBAnnotationPerson class should not have CosmosUniqueKeyPolicy annotation");
+    }
+
+    @Test
     public void testDefaultIndexingPolicyAnnotation() {
         final IndexingPolicy policy = personInfo.getIndexingPolicy();
         final Container containerAnnotation = NoDBAnnotationPerson.class.getAnnotation(Container.class);
@@ -33,7 +43,7 @@ public class CosmosAnnotationUnitTest {
                 NoDBAnnotationPerson.class.getAnnotation(CosmosIndexingPolicy.class);
 
         Assert.isNull(containerAnnotation, "NoDBAnnotationPerson class should not have Container annotation");
-        Assert.isNull(policyAnnotation, "NoDBAnnotationPerson class should not have DocumentIndexingPolicy annotation");
+        Assert.isNull(policyAnnotation, "NoDBAnnotationPerson class should not have CosmosIndexingPolicy annotation");
         Assert.notNull(policy, "NoDBAnnotationPerson class collection policy should not be null");
 
         // ContainerName, RequestUnit, Automatic and IndexingMode
@@ -58,9 +68,9 @@ public class CosmosAnnotationUnitTest {
         final CosmosIndexingPolicy policyAnnotation = Role.class.getAnnotation(CosmosIndexingPolicy.class);
 
         // ContainerName, RequestUnit, Automatic and IndexingMode
-        Assert.notNull(containerAnnotation, "NoDBAnnotationPerson class should have Container annotation");
-        Assert.notNull(policyAnnotation, "NoDBAnnotationPerson class should have DocumentIndexingPolicy annotation");
-        Assert.notNull(policy, "NoDBAnnotationPerson class collection policy should not be null");
+        Assert.notNull(containerAnnotation, "Role class should have Container annotation");
+        Assert.notNull(policyAnnotation, "Role class should have CosmosIndexingPolicy annotation");
+        Assert.notNull(policy, "Role class collection policy should not be null");
 
         Assert.isTrue(roleInfo.getContainerName().equals(TestConstants.ROLE_COLLECTION_NAME),
                 "should be Role(class) collection name");
@@ -68,6 +78,25 @@ public class CosmosAnnotationUnitTest {
                 "should be Role(class) indexing policy automatic");
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
                 "should be Role(class) indexing policy mode");
+    }
+
+    @Test
+    public void testUniqueKeyPolicyAnnotation() {
+        final UniqueKeyPolicy uniqueKeyPolicy = roleInfo.getUniqueKeyPolicy();
+        Assert.notNull(uniqueKeyPolicy, "Role class should have CosmosUniqueKeyPolicy annotation");
+        List<UniqueKey> uniqueKeys = uniqueKeyPolicy.getUniqueKeys();
+
+        Assert.notNull(uniqueKeys, "Role class should have CosmosUniqueKey annotation");
+        Assert.notEmpty(uniqueKeys, "Role class should have non empty CosmosUniqueKey annotation");
+
+        Assert.isTrue(uniqueKeys.size() == 1, "Role class should have 1 set of unique keys");
+
+        UniqueKey uniqueKey = uniqueKeys.get(0);
+
+        Assert.isTrue(uniqueKey.getPaths().size() == 2, "Role class should have 1 set of unique keys with 2 paths");
+
+        Assert.isTrue(uniqueKey.getPaths().contains(TestConstants.DEFAULT_UNIQUE_KEY_LEVEL), "Role class should have path /level in unique keys");
+        Assert.isTrue(uniqueKey.getPaths().contains(TestConstants.DEFAULT_UNIQUE_KEY_NAME), "Role class should have path /name in unique keys");
     }
 
     @Test

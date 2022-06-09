@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProximityPlacementGroups ListByResourceGroup. */
 public final class ProximityPlacementGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/ListProximityPlacementGroupsInAResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/proximityPlacementGroupExamples/ProximityPlacementGroup_ListByResourceGroup.json
      */
     /**
      * Sample code: Create a proximity placement group.

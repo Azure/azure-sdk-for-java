@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -15,7 +15,6 @@ import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +22,6 @@ import java.util.List;
 /** Specifies information about the gallery image definition that you want to create or update. */
 @Fluent
 public final class CommunityGalleryImageInner extends PirCommunityGalleryResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunityGalleryImageInner.class);
-
     /*
      * Describes the properties of a gallery image definition.
      */
@@ -263,6 +260,75 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
             this.innerProperties = new CommunityGalleryImageProperties();
         }
         this.innerProperties().withPurchasePlan(purchasePlan);
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.innerProperties() == null ? null : this.innerProperties().architecture();
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the CommunityGalleryImageInner object itself.
+     */
+    public CommunityGalleryImageInner withArchitecture(Architecture architecture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryImageProperties();
+        }
+        this.innerProperties().withArchitecture(architecture);
+        return this;
+    }
+
+    /**
+     * Get the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @return the privacyStatementUri value.
+     */
+    public String privacyStatementUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().privacyStatementUri();
+    }
+
+    /**
+     * Set the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @param privacyStatementUri the privacyStatementUri value to set.
+     * @return the CommunityGalleryImageInner object itself.
+     */
+    public CommunityGalleryImageInner withPrivacyStatementUri(String privacyStatementUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryImageProperties();
+        }
+        this.innerProperties().withPrivacyStatementUri(privacyStatementUri);
+        return this;
+    }
+
+    /**
+     * Get the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @return the eula value.
+     */
+    public String eula() {
+        return this.innerProperties() == null ? null : this.innerProperties().eula();
+    }
+
+    /**
+     * Set the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @param eula the eula value to set.
+     * @return the CommunityGalleryImageInner object itself.
+     */
+    public CommunityGalleryImageInner withEula(String eula) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryImageProperties();
+        }
+        this.innerProperties().withEula(eula);
         return this;
     }
 

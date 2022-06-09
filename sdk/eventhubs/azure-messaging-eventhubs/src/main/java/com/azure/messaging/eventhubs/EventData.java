@@ -5,9 +5,13 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.models.MessageContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
@@ -28,7 +32,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * The data structure encapsulating the event being sent-to and received-from Event Hubs. Each Event Hub partition can
- * be visualized as a stream of {@link EventData}.
+ * be visualized as a stream of {@link EventData}. This class is not thread-safe.
  *
  * <p>
  * Here's how AMQP message sections map to {@link EventData}. For reference, the specification can be found here:
@@ -48,15 +52,17 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubProducerClient
  * @see EventHubProducerAsyncClient
  */
-public class EventData {
+public class EventData extends MessageContent {
     /*
      * These are properties owned by the service and set when a message is received.
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
+    static final AmqpAnnotatedMessage EMPTY_MESSAGE = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(new byte[0]));
 
+    private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final SystemProperties systemProperties;
-    private final AmqpAnnotatedMessage annotatedMessage;
+    private AmqpAnnotatedMessage annotatedMessage;
     private Context context;
 
     static {
@@ -68,6 +74,16 @@ public class EventData {
         properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
+    }
+
+    /**
+     * Creates an event with an empty body.
+     */
+    public EventData() {
+        this.context = Context.NONE;
+        this.annotatedMessage = EMPTY_MESSAGE;
+        this.properties = annotatedMessage.getApplicationProperties();
+        this.systemProperties = new SystemProperties();
     }
 
     /**
@@ -95,7 +111,12 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(ByteBuffer body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
+        // Extract the ByteBuffer as it isn't guaranteed that the ByteBuffer will be a HeapByteBuffer and using
+        // .array() on a DirectByteBuffer or read-only ByteBuffer will throw an exception. Additionally, even if the
+        // ByteBuffer was a HeapByteBuffer the entire backing array may not have been written.
+        //
+        // Duplicate the ByteBuffer so the original body won't have its read position mutated.
+        this(FluxUtil.byteBufferToArray(Objects.requireNonNull(body, "'body' cannot be null.").duplicate()));
     }
 
     /**
@@ -140,11 +161,11 @@ public class EventData {
                 break;
             case SEQUENCE:
             case VALUE:
-                new ClientLogger(EventData.class).warning("Message body type '{}' is not supported in EH. "
+                LOGGER.warning("Message body type '{}' is not supported in EH. "
                     + " Getting contents of body may throw.", annotatedMessage.getBody().getBodyType());
                 break;
             default:
-                throw new ClientLogger(EventData.class).logExceptionAsError(new IllegalArgumentException(
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Body type not valid " + annotatedMessage.getBody().getBodyType()));
         }
     }
@@ -216,8 +237,52 @@ public class EventData {
      *
      * @return the {@link BinaryData} payload associated with this event.
      */
+    @Override
     public BinaryData getBodyAsBinaryData() {
         return BinaryData.fromBytes(annotatedMessage.getBody().getFirstData());
+    }
+
+    /**
+     * Sets a new binary body and corresponding {@link AmqpAnnotatedMessage} on the event. Contents from
+     * {@link #getRawAmqpMessage()} are shallow copied to the new underlying message.
+     */
+    @Override
+    public EventData setBodyAsBinaryData(BinaryData binaryData) {
+        final AmqpAnnotatedMessage current = this.annotatedMessage;
+        this.annotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(binaryData.toBytes()));
+
+        if (current == null) {
+            return this;
+        }
+
+        this.annotatedMessage.getApplicationProperties().putAll(current.getApplicationProperties());
+        this.annotatedMessage.getDeliveryAnnotations().putAll(current.getDeliveryAnnotations());
+        this.annotatedMessage.getFooter().putAll(current.getFooter());
+        this.annotatedMessage.getMessageAnnotations().putAll(current.getMessageAnnotations());
+
+        final AmqpMessageHeader header = this.annotatedMessage.getHeader();
+        header.setDeliveryCount(current.getHeader().getDeliveryCount())
+            .setDurable(current.getHeader().isDurable())
+            .setFirstAcquirer(current.getHeader().isFirstAcquirer())
+            .setPriority(current.getHeader().getPriority())
+            .setTimeToLive(current.getHeader().getTimeToLive());
+
+        final AmqpMessageProperties props = this.annotatedMessage.getProperties();
+        props.setAbsoluteExpiryTime(current.getProperties().getAbsoluteExpiryTime())
+            .setContentEncoding(current.getProperties().getContentEncoding())
+            .setContentType(current.getProperties().getContentType())
+            .setCorrelationId(current.getProperties().getCorrelationId())
+            .setCreationTime(current.getProperties().getCreationTime())
+            .setGroupId(current.getProperties().getGroupId())
+            .setGroupSequence(current.getProperties().getGroupSequence())
+            .setMessageId(current.getProperties().getMessageId())
+            .setReplyTo(current.getProperties().getReplyTo())
+            .setReplyToGroupId(current.getProperties().getReplyToGroupId())
+            .setSubject(current.getProperties().getSubject())
+            .setTo(current.getProperties().getTo())
+            .setUserId(current.getProperties().getUserId());
+
+        return this;
     }
 
     /**

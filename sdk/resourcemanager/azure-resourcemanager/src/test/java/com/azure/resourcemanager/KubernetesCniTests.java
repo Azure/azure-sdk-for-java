@@ -93,8 +93,6 @@ public class KubernetesCniTests extends ResourceManagerTestBase {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
-            .withRootUsername("testaks")
-            .withSshKey(sshPublicKey())
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)

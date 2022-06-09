@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DataMasking model. */
 @Fluent
 public final class DataMasking {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMasking.class);
-
     /*
      * Masking settings for Url query parameters
      */

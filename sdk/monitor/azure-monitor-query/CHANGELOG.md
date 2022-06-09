@@ -1,14 +1,60 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.7 (2022-06-07)
 
 ### Bugs Fixed
 
+- Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+
 ### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` to version `1.12.2`.
+
+## 1.0.6 (2022-05-12)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.0`.
+
+## 1.0.5 (2022-04-08)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` to version `1.11.9`.
+
+## 1.0.4 (2022-03-11)
+
+### Bugs Fixed
+- [Fixed metrics aggregation enum value](https://github.com/Azure/azure-sdk-for-java/issues/27454)
+
+### Other Changes
+
+#### Dependency updates 
+- Upgraded `azure-core` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` to version `1.11.8`.
+
+## 1.0.3 (2022-02-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+
+## 1.0.2 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` to `1.24.1`
+- Upgraded `azure-core-http-netty` to `1.11.6`
 
 ## 1.0.1 (2021-11-10)
 
