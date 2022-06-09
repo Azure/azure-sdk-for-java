@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.administration.generated;
 
 import com.azure.analytics.purview.administration.MetadataPolicyClient;
-import com.azure.analytics.purview.administration.PurviewMetadataClientBuilder;
+import com.azure.analytics.purview.administration.MetadataPolicyClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,12 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MetadataPolicyGet {
     public static void main(String[] args) {
-        MetadataPolicyClient client =
-                new PurviewMetadataClientBuilder()
+        MetadataPolicyClient metadataPolicyClient =
+                new MetadataPolicyClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildMetadataPolicyClient();
+                        .buildClient();
+        // BEGIN:com.azure.analytics.purview.administration.generated.metadatapolicyget.metadatapolicyget
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
+        Response<BinaryData> response =
+                metadataPolicyClient.getWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
+        // END:com.azure.analytics.purview.administration.generated.metadatapolicyget.metadatapolicyget
     }
 }
