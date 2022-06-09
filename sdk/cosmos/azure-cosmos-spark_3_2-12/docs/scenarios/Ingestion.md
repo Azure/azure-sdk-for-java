@@ -27,9 +27,21 @@ Each `BulkWriter` will buffer data in-memory for each physical partition in Cosm
 The benefit of this model where each `BulkWriter` can write data across all Cosmos partitions independently is that it maintains the isolation of Spark tasks and partitions, and plays well with built-in Spark retry policies and its scalability behaviour. On the other hand, the drawback is that when ingesting a large data volume into a target Cosmos DB container with many physical partitions (significantly above 100 physical partitions or 5 TB of data), there is a relatively large client-side compute overhead, because each Spark Task will create its own `BulkWriter` which will have to buffer data for hundreds of partitions. As an example, when using a Spark Cluster with Executor nodes with 16 or 32 cores - there will be 16 (or 32) `BulkWriter` instances all buffering data (and processing it in separate reactor pipelines) for several hundred partitions. In this use case it can be beneficial to repartition the input data first - to avoid that each Spark partition contains data for all Cosmos partitions (see the [Optimization recommendations when migrating  into large containers (>> 100 physical partitions or >> 5 TB of data)](#optimization-recommendations-when-migrating-into-large-containers--100-physical-partitions-or--5-tb-of-data) section below)
 
 ### Throughput control
-The client-throughput control capability in the `cosmos.oltp` data source allows you to limit the "RU budget" that can be used for a certain Spark job from the client-side, it is a best effort enforcement and no hard guarantee - usually you will see that the average RU consumption follows the configured restrictions very well (plus/minus a few single digit percent). The client-side throughput control happens across all Spark executors and the driver - so, it is a global throughput enforcement. To be able to coordinate the "RU budget" each executor can consume, a dedicated Cosmos DB container is used, to store the meta-data and balance the load and RU-usage between executors.
+The client-throughput control capability in the `cosmos.oltp` data source allows you to limit the "RU budget" that can be used for a certain Spark job from the client-side, it is a best effort enforcement and no hard guarantee - usually you will see that the average RU consumption follows the configured restrictions very well (plus/minus a few single digit percent). The client-side throughput control happens across all Spark executors and the driver - so, it is a global throughput enforcement. To be able to coordinate the "RU budget" each executor can consume, a dedicated Cosmos DB container is used, to store the meta-data and balance the load and RU-usage between executors. NOTE - this extra container for metadata to allow limiting the throughput needs to be created by customers upfront with certain settings (partition key must be `groupId`, default indexing policy should be used and TTL needs to be disabled (with default TTL of -1 - so, unless specified otherwise no document would be automatically deleted))
 
-The below sample configuration would limit the "RU budget" for a Spark job to 60% of the total provisioned throughput (manually provisioned RU or max. AutoScale RU) of the container.
+**The below SQL statement can be used to create such a throughput control container**
+
+```
+%sql
+CREATE TABLE IF NOT EXISTS cosmosCatalog.SampleDatabase.ThroughputControl
+USING cosmos.oltp
+TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
+```
+
+
+
+**The below sample configuration would limit the "RU budget" for a Spark job to 60% of the total provisioned throughput (manually provisioned RU or max. AutoScale RU) of the container.**
+
 ```
 df \
    .write \
