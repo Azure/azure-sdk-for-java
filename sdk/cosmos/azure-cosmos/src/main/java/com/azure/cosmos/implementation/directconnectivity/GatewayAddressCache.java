@@ -39,6 +39,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -83,7 +84,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI addressEndpoint;
 
-    private final AsyncCache<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
+    private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
     private final long suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -127,7 +128,7 @@ public class GatewayAddressCache implements IAddressCache {
             throw new IllegalStateException(e);
         }
         this.tokenProvider = tokenProvider;
-        this.serverPartitionAddressCache = new AsyncCache<>();
+        this.serverPartitionAddressCache = new AsyncCacheNonBlocking<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
         this.suboptimalMasterPartitionTimestamp = Instant.MAX;
 
@@ -270,24 +271,16 @@ public class GatewayAddressCache implements IAddressCache {
         final boolean forceRefreshPartitionAddressesModified = forceRefreshPartitionAddresses;
 
         if (forceRefreshPartitionAddressesModified) {
-            logger.debug("refresh serverPartitionAddressCache for {}", partitionKeyRangeIdentity);
-            this.serverPartitionAddressCache.refresh(
-                partitionKeyRangeIdentity,
-                () -> this.getAddressesForRangeId(
-                    request,
-                    partitionKeyRangeIdentity,
-                    true));
-
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
         }
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.serverPartitionAddressCache.getAsync(
             partitionKeyRangeIdentity,
-            null,
-            () -> this.getAddressesForRangeId(
+            addressInformation -> this.getAddressesForRangeId(
                 request,
                 partitionKeyRangeIdentity,
-                false)).map(Utils.ValueHolder::new);
+                forceRefreshPartitionAddressesModified),
+            forceRefreshPartitionAddressesModified).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
             addressesValueHolder -> {
