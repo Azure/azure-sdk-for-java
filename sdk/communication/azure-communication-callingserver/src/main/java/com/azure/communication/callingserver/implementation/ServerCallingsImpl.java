@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequest;
 import com.azure.communication.callingserver.implementation.models.AnswerCallResponse;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
+import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallResultInternal;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequest;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequest;
@@ -63,7 +63,7 @@ public final class ServerCallingsImpl {
         Mono<Response<CreateCallResultInternal>> createCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateCallRequest createCallRequest,
+                @BodyParam("application/json") CreateCallRequestInternal createCallRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -119,7 +119,8 @@ public final class ServerCallingsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResultInternal>> createCallWithResponseAsync(CreateCallRequest createCallRequest) {
+    public Mono<Response<CreateCallResultInternal>> createCallWithResponseAsync(
+            CreateCallRequestInternal createCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -145,7 +146,7 @@ public final class ServerCallingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateCallResultInternal>> createCallWithResponseAsync(
-            CreateCallRequest createCallRequest, Context context) {
+            CreateCallRequestInternal createCallRequest, Context context) {
         final String accept = "application/json";
         return service.createCall(
                 this.client.getEndpoint(), this.client.getApiVersion(), createCallRequest, accept, context);
@@ -163,7 +164,7 @@ public final class ServerCallingsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResultInternal> createCallAsync(CreateCallRequest createCallRequest) {
+    public Mono<CreateCallResultInternal> createCallAsync(CreateCallRequestInternal createCallRequest) {
         return createCallWithResponseAsync(createCallRequest)
                 .flatMap(
                         (Response<CreateCallResultInternal> res) -> {
@@ -188,7 +189,8 @@ public final class ServerCallingsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResultInternal> createCallAsync(CreateCallRequest createCallRequest, Context context) {
+    public Mono<CreateCallResultInternal> createCallAsync(
+            CreateCallRequestInternal createCallRequest, Context context) {
         return createCallWithResponseAsync(createCallRequest, context)
                 .flatMap(
                         (Response<CreateCallResultInternal> res) -> {
@@ -212,7 +214,7 @@ public final class ServerCallingsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResultInternal createCall(CreateCallRequest createCallRequest) {
+    public CreateCallResultInternal createCall(CreateCallRequestInternal createCallRequest) {
         return createCallAsync(createCallRequest).block();
     }
 
@@ -230,7 +232,7 @@ public final class ServerCallingsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateCallResultInternal> createCallWithResponse(
-            CreateCallRequest createCallRequest, Context context) {
+            CreateCallRequestInternal createCallRequest, Context context) {
         return createCallWithResponseAsync(createCallRequest, context).block();
     }
 

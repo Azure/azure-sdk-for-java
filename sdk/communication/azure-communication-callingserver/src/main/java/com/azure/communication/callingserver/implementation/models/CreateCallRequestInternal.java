@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload for create call. */
 @Fluent
-public final class CreateCallRequest {
+public final class CreateCallRequestInternal {
     /*
      * The alternate identity of the source of the call if dialing out to a
      * pstn number
@@ -56,9 +56,9 @@ public final class CreateCallRequest {
      * number.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the CreateCallRequest object itself.
+     * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public CreateCallRequestInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
@@ -76,9 +76,9 @@ public final class CreateCallRequest {
      * Set the target property: The targets of the call.
      *
      * @param target the target value to set.
-     * @return the CreateCallRequest object itself.
+     * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequest setTarget(CommunicationIdentifierModel target) {
+    public CreateCallRequestInternal setTarget(CommunicationIdentifierModel target) {
         this.target = target;
         return this;
     }
@@ -96,9 +96,9 @@ public final class CreateCallRequest {
      * Set the source property: The source of the call.
      *
      * @param source the source value to set.
-     * @return the CreateCallRequest object itself.
+     * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequest setSource(CommunicationIdentifierModel source) {
+    public CreateCallRequestInternal setSource(CommunicationIdentifierModel source) {
         this.source = source;
         return this;
     }
@@ -116,9 +116,9 @@ public final class CreateCallRequest {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the CreateCallRequest object itself.
+     * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequest setSubject(String subject) {
+    public CreateCallRequestInternal setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -136,9 +136,9 @@ public final class CreateCallRequest {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the CreateCallRequest object itself.
+     * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequest setCallbackUri(String callbackUri) {
+    public CreateCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

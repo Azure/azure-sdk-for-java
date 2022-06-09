@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallingsImpl;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
+import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -68,7 +68,7 @@ public final class CallingServerAsyncClient {
         String callbackUri,
         CreateCallOptions createCallOptions) {
         try {
-            CreateCallRequest request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
+            CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return callConnectionInternal.createCallAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
