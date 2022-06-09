@@ -514,4 +514,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
+
+  <!-- Suppress checks on AutoRest generated Azure Maps service code -->
+  <suppress checks="WhitespaceAround" files="com.azure.maps.route.implementation.models.*\.java"/>
+  <suppress checks="WhitespaceAround" files="com.azure.maps.search.implementation.models.*\.java"/>
 </suppressions>
