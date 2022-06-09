@@ -5,31 +5,18 @@ package com.azure.maps.route.samples;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.models.GeoCollection;
-import com.azure.core.models.GeoLinearRing;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPointCollection;
-import com.azure.core.models.GeoPolygon;
-import com.azure.core.models.GeoPolygonCollection;
-import com.azure.core.models.GeoPosition;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.RouteClient;
 import com.azure.maps.route.RouteClientBuilder;
-import com.azure.maps.route.models.RouteDirections;
-import com.azure.maps.route.models.RouteDirectionsBatchResult;
-import com.azure.maps.route.models.RouteDirectionsOptions;
-import com.azure.maps.route.models.RouteDirectionsParameters;
 import com.azure.maps.route.models.RouteMatrixOptions;
 import com.azure.maps.route.models.RouteMatrixQuery;
-import com.azure.maps.route.models.RouteRangeOptions;
-import com.azure.maps.route.models.RouteType;
-import com.azure.maps.route.models.TravelMode;
 
 public class RouteSample {
 
