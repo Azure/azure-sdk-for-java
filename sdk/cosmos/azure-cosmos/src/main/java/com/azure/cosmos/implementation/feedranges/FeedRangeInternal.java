@@ -265,30 +265,34 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         String minRange = effectiveRange.getMin();
         long diff = max - min;
         List<FeedRangeEpkImpl> splitFeedRanges = new ArrayList<>(targetedSplitCount);
-        for (int i = 1; i < targetedSplitCount; i++) {
-            long splitPoint = min + (i * (diff / targetedSplitCount));
-            String maxRange = PartitionKeyInternalHelper.toHexEncodedBinaryString(
-                new NumberPartitionKeyComponent[] {
-                    new NumberPartitionKeyComponent(splitPoint)
-                });
+        if (diff < targetedSplitCount) {
+            splitFeedRanges.add(new FeedRangeEpkImpl(effectiveRange));
+        } else {
+            for (int i = 1; i < targetedSplitCount; i++) {
+                long splitPoint = min + (i * (diff / targetedSplitCount));
+                String maxRange = PartitionKeyInternalHelper.toHexEncodedBinaryString(
+                    new NumberPartitionKeyComponent[] {
+                        new NumberPartitionKeyComponent(splitPoint)
+                    });
+                splitFeedRanges.add(
+                    new FeedRangeEpkImpl(
+                        new Range<>(
+                            minRange,
+                            maxRange,
+                            i > 1 || effectiveRange.isMinInclusive(),
+                            false)));
+
+                minRange = maxRange;
+            }
+
             splitFeedRanges.add(
                 new FeedRangeEpkImpl(
                     new Range<>(
                         minRange,
-                        maxRange,
-                        i > 1 || effectiveRange.isMinInclusive(),
-                        false)));
-
-            minRange = maxRange;
+                        effectiveRange.getMax(),
+                        true,
+                        effectiveRange.isMaxInclusive())));
         }
-
-        splitFeedRanges.add(
-            new FeedRangeEpkImpl(
-                new Range<>(
-                    minRange,
-                    effectiveRange.getMax(),
-                    true,
-                    effectiveRange.isMaxInclusive())));
 
         return splitFeedRanges;
     }
