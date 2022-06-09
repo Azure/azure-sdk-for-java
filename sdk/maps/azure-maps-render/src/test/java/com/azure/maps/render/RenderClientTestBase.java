@@ -26,6 +26,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.maps.render.models.Copyright;
@@ -168,10 +169,10 @@ public class RenderClientTestBase extends TestBase {
         assertTrue(actual.length > 0);
     }
 
-    static void validateGetMapStaticImageWithResponse(int expectedStatusCode, Response<Void> response, ByteArrayOutputStream stream) throws IOException {
+    static void validateGetMapStaticImageWithResponse(int expectedStatusCode, Response<BinaryData> response) throws IOException {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
-        validateGetMapStaticImage(stream.toByteArray());
+        validateGetMapStaticImage(response.getValue().toBytes());
     }
 
     static void validateGetCopyrightForTile(Copyright expected, Copyright actual) {
@@ -193,12 +194,11 @@ public class RenderClientTestBase extends TestBase {
         assertNotNull(expected);
         assertEquals(expected.getFormatVersion(), actual.getFormatVersion());
         assertEquals(expected.getGeneralCopyrights().size(), actual.getGeneralCopyrights().size());
-        assertEquals(expected.getRegions().size(), actual.getRegions().size());
     }
 
     static void validateGetCopyrightForWorldWithResponse(Copyright expected, int expectedStatusCode, Response<Copyright> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
-        validateGetCopyrightForTile(expected, response.getValue());
+        validateGetCopyrightForWorld(expected, response.getValue());
     }
 }
