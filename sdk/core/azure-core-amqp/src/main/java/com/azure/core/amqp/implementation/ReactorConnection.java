@@ -411,6 +411,8 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .log("Emitting new response channel.");
             })
+            // Create channel only when connection is active, to avoid repeatedly requesting and closing channels
+            // after connection emits the shutdown signal.
             .repeat(() -> !this.isDisposed());
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
