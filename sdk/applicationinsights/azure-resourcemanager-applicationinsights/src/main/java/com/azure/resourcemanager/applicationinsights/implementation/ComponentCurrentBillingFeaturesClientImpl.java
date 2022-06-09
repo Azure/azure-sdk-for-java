@@ -200,15 +200,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentBillingFeaturesInner> getAsync(
         String resourceGroupName, String resourceName) {
-        return getWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<ApplicationInsightsComponentBillingFeaturesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -386,14 +378,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
         String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, billingFeaturesProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentBillingFeaturesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

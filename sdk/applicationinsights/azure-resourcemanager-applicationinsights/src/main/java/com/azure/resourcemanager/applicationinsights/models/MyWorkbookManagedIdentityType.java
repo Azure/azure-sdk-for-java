@@ -27,7 +27,11 @@ public final class MyWorkbookManagedIdentityType extends ExpandableStringEnum<My
         return fromString(name, MyWorkbookManagedIdentityType.class);
     }
 
-    /** @return known MyWorkbookManagedIdentityType values. */
+    /**
+     * Gets known MyWorkbookManagedIdentityType values.
+     *
+     * @return known MyWorkbookManagedIdentityType values.
+     */
     public static Collection<MyWorkbookManagedIdentityType> values() {
         return values(MyWorkbookManagedIdentityType.class);
     }
