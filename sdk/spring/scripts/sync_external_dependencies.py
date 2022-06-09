@@ -3,10 +3,11 @@
 # to `eng/versioning/external_dependencies.txt`.
 #
 # How to use this script.
-#  1. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
+#  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
+#  2. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
-#  2. Update `SPRING_BOOT_VERSION` in this script manually.
-#  3. Run command `python .\sdk\spring\scripts\sync_external_dependencies.py`.
+#  3. Run command, sample: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.0`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.0`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
 # Please refer to ./README.md to get more information about this script.
@@ -16,25 +17,43 @@ import in_place
 import time
 import os
 import unittest
+import argparse
 from itertools import takewhile
 
 from log import log
 
-
-SPRING_BOOT_VERSION = '2.6.7'
-
-SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(SPRING_BOOT_VERSION)
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
 ]
 
 
+def get_spring_boot_managed_external_dependencies_file_name(spring_boot_version):
+    return 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
+    parser.add_argument(
+        '--log',
+        type = str,
+        choices = ['debug', 'info', 'warn', 'error', 'none'],
+        required = False,
+        default = 'info',
+        help = 'Set log level.'
+    )
+    args = parser.parse_args()
+    log.set_log_level(args.log)
+    return args
+
+
 def main():
     start_time = time.time()
     change_to_root_dir()
+    args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    sync_external_dependencies(SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME, EXTERNAL_DEPENDENCIES_FILE)
+    sync_external_dependencies(get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version), EXTERNAL_DEPENDENCIES_FILE)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 

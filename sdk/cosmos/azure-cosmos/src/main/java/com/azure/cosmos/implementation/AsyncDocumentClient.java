@@ -92,6 +92,7 @@ public interface AsyncDocumentClient {
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
         private ApiType apiType;
+        ClientTelemetryConfig clientTelemetryConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -210,6 +211,18 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        /***
+         * Set the client telemetry config.
+         *
+         * @param clientTelemetryConfig the {@link ClientTelemetryConfig}.
+         *
+         * @return the current builder.
+         */
+        public Builder withClientTelemetryConfig(ClientTelemetryConfig clientTelemetryConfig) {
+            this.clientTelemetryConfig = clientTelemetryConfig;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -240,7 +253,8 @@ public interface AsyncDocumentClient {
                 transportClientSharing,
                 contentResponseOnWriteEnabled,
                 state,
-                apiType);
+                apiType,
+                clientTelemetryConfig);
 
             client.init(state, null);
             return client;

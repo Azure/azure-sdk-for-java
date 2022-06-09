@@ -311,14 +311,7 @@ public final class BuildpackBindingsClientImpl implements BuildpackBindingsClien
         String builderName,
         String buildpackBindingName) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName, buildpackBindingName)
-            .flatMap(
-                (Response<BuildpackBindingResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

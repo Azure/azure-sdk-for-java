@@ -23,7 +23,6 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
-import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
@@ -1439,8 +1438,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions(), null,
-            Context.NONE).getValue();
+        return deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -1474,7 +1472,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
-        return this.deleteFileIfExistsWithResponse(fileName, new ShareDeleteOptions(), timeout, context);
+        return this.deleteFileIfExistsWithResponse(fileName, null, timeout, context);
     }
 
     /**
@@ -1484,12 +1482,11 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context -->
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * ShareDeleteOptions options = new ShareDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Boolean&gt; fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, options,
+     * Response&lt;Boolean&gt; fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, requestConditions,
      *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;fileResponse.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1497,13 +1494,13 @@ public class ShareDirectoryClient {
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareDeleteOptions-Duration-Context -->
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @param options {@link ShareDeleteOptions}
+     * @param requestConditions {@link ShareRequestConditions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1511,10 +1508,10 @@ public class ShareDirectoryClient {
      * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, ShareDeleteOptions options, Duration timeout,
-        Context context) {
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
         return  StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient
-            .deleteFileIfExistsWithResponse(fileName, options, context), timeout);
+            .deleteFileIfExistsWithResponse(fileName, requestConditions, context), timeout);
     }
 
     /**

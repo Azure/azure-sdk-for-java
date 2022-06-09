@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.actuator.storage;
 
 import com.azure.core.http.rest.Response;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.models.BlobServiceProperties;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -13,6 +13,7 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
+import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_EXISTING_CONTAINER;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
 
 /**
@@ -35,18 +36,23 @@ public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
     protected void doHealthCheck(Health.Builder builder) throws Exception {
         if (blobServiceAsyncClient == null) {
             builder.status(NOT_CONFIGURED_STATUS);
-        } else {
-            builder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
-            final Response<BlobServiceProperties> info = blobServiceAsyncClient.getPropertiesWithResponse()
-                                                                               .block(timeout);
-            if (info != null) {
-                builder.up();
-            }
+            return;
         }
+
+        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(
+            NOT_EXISTING_CONTAINER);
+        Response<Boolean> exists = containerAsyncClient.existsWithResponse().block(timeout);
+        if (exists == null) {
+            throw new RuntimeException("Error occurred checking the container existence!");
+        }
+
+        builder.up()
+               .withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
     }
 
     /**
      * Set health check request timeout.
+     *
      * @param timeout the duration value.
      */
     public void setTimeout(Duration timeout) {

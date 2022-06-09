@@ -9,17 +9,16 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.util.Beta;
-
-import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 /**
  * Helper class to build CosmosAsyncClient {@link CosmosAsyncClient} and CosmosClient {@link CosmosClient}
@@ -116,7 +117,7 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
-    private boolean clientTelemetryEnabled = false;
+    private final ClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
 
     /**
@@ -128,6 +129,7 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.clientTelemetryConfig = ClientTelemetryConfig.getDefaultConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -640,7 +642,7 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        this.clientTelemetryConfig.setClientTelemetryEnabled(clientTelemetryEnabled);
         return this;
     }
 
@@ -742,7 +744,7 @@ public class CosmosClientBuilder implements
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return clientTelemetryEnabled;
+        return this.clientTelemetryConfig.isClientTelemetryEnabled();
     }
 
     /**
@@ -759,6 +761,10 @@ public class CosmosClientBuilder implements
      */
     boolean isReadRequestsFallbackEnabled() {
         return readRequestsFallbackEnabled;
+    }
+
+    ClientTelemetryConfig getClientTelemetryConfig() {
+        return this.clientTelemetryConfig;
     }
 
     /**
@@ -803,7 +809,6 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
-        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {
@@ -860,14 +865,7 @@ public class CosmosClientBuilder implements
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Should not be called from user-code. This method is a no-op and is just used internally
-     * to force loading this class
-     */
-    public static void doNothingButEnsureLoadingClass() { initialize(); }
-
-    private static void initialize() {
+    static void initialize() {
         CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
             new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {
 

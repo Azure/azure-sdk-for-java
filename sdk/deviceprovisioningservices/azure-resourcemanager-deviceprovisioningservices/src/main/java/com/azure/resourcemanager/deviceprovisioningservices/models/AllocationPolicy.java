@@ -30,7 +30,11 @@ public final class AllocationPolicy extends ExpandableStringEnum<AllocationPolic
         return fromString(name, AllocationPolicy.class);
     }
 
-    /** @return known AllocationPolicy values. */
+    /**
+     * Gets known AllocationPolicy values.
+     *
+     * @return known AllocationPolicy values.
+     */
     public static Collection<AllocationPolicy> values() {
         return values(AllocationPolicy.class);
     }

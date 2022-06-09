@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.compute.models.CopyCompletionError;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
@@ -540,6 +541,31 @@ public final class SnapshotInner extends Resource {
             this.innerProperties = new SnapshotProperties();
         }
         this.innerProperties().withCompletionPercent(completionPercent);
+        return this;
+    }
+
+    /**
+     * Get the copyCompletionError property: Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     *
+     * @return the copyCompletionError value.
+     */
+    public CopyCompletionError copyCompletionError() {
+        return this.innerProperties() == null ? null : this.innerProperties().copyCompletionError();
+    }
+
+    /**
+     * Set the copyCompletionError property: Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     *
+     * @param copyCompletionError the copyCompletionError value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withCopyCompletionError(CopyCompletionError copyCompletionError) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotProperties();
+        }
+        this.innerProperties().withCopyCompletionError(copyCompletionError);
         return this;
     }
 

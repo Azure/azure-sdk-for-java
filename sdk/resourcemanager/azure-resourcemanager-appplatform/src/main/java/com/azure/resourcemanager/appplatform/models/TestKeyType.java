@@ -27,7 +27,11 @@ public final class TestKeyType extends ExpandableStringEnum<TestKeyType> {
         return fromString(name, TestKeyType.class);
     }
 
-    /** @return known TestKeyType values. */
+    /**
+     * Gets known TestKeyType values.
+     *
+     * @return known TestKeyType values.
+     */
     public static Collection<TestKeyType> values() {
         return values(TestKeyType.class);
     }

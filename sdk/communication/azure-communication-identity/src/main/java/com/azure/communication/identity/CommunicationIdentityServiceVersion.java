@@ -15,9 +15,9 @@ public enum CommunicationIdentityServiceVersion implements ServiceVersion {
     V2021_03_07("2021-03-07"),
 
     /**
-     * Service version {@code 2021-10-31-preview}.
+     * Service version {@code 2022-06-01}.
      */
-    V2021_10_31_PREVIEW("2021-10-31-preview");
+    V2022_06_01("2022-06-01");
 
     private final String version;
 
@@ -40,6 +40,6 @@ public enum CommunicationIdentityServiceVersion implements ServiceVersion {
      * @return the latest {@link CommunicationIdentityServiceVersion}
      */
     public static CommunicationIdentityServiceVersion getLatest() {
-        return V2021_10_31_PREVIEW;
+        return V2022_06_01;
     }
 }

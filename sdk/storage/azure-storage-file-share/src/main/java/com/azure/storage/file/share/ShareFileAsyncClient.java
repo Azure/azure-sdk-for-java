@@ -1252,41 +1252,7 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes the file associate with the client if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the file</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
-     * <pre>
-     * shareFileAsyncClient.deleteIfExistsWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     *
-     * @return A reactive response signaling completion. If {@link Response}'s status code is 202, the file was
-     * successfully deleted. If status code is 404, the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> deleteIfExistsWithResponse() {
-        try {
-            return deleteIfExistsWithResponse(null);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1327,6 +1293,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<Boolean>> deleteIfExistsWithResponse(ShareRequestConditions requestConditions, Context context) {
         try {
+            requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
             return deleteWithResponse(requestConditions, context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,

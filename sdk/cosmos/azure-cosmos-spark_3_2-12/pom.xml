@@ -35,6 +35,8 @@
     <cosmos.spark.skip>true</cosmos.spark.skip>
     <maven.main.skip>${cosmos.spark.skip}</maven.main.skip>
     <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
+
+    <cosmos-spark-version>3.1</cosmos-spark-version>
   </properties>
 
   <developers>
@@ -61,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.32.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -380,6 +382,9 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
+              <systemProperties>
+                <cosmos-spark-version>${cosmos-spark-version}</cosmos-spark-version>
+              </systemProperties>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>

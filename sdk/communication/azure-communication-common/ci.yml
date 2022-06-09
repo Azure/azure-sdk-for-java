@@ -33,4 +33,10 @@ extends:
       - name: azure-communication-common
         groupId: com.azure
         safeName: azurecommunicationcommon
+    AdditionalModules:
+      - name: azure-communication-common-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure
 

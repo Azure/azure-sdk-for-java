@@ -4,41 +4,35 @@
 
 package com.azure.analytics.purview.administration;
 
-import com.azure.analytics.purview.administration.implementation.MetadataRolesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous PurviewMetadataClient type. */
-@ServiceClient(builder = PurviewMetadataClientBuilder.class)
+@ServiceClient(builder = MetadataRolesClientBuilder.class)
 public final class MetadataRolesClient {
-    @Generated private final MetadataRolesImpl serviceClient;
+    @Generated private final MetadataRolesAsyncClient client;
 
     /**
-     * Initializes an instance of MetadataRoles client.
+     * Initializes an instance of MetadataRolesClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    MetadataRolesClient(MetadataRolesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    MetadataRolesClient(MetadataRolesAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Lists roles for Purview Account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -84,11 +78,14 @@ public final class MetadataRolesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return list of Metadata roles.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of Metadata roles as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+        return new PagedIterable<>(this.client.list(requestOptions));
     }
 }

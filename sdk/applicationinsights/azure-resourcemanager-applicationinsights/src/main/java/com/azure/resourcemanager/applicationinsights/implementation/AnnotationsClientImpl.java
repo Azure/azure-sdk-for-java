@@ -460,14 +460,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
     private Mono<List<AnnotationInner>> createAsync(
         String resourceGroupName, String resourceName, AnnotationInner annotationProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, annotationProperties)
-            .flatMap(
-                (Response<List<AnnotationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -622,8 +615,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String annotationId) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, annotationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName, annotationId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -779,14 +771,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<AnnotationInner>> getAsync(String resourceGroupName, String resourceName, String annotationId) {
         return getWithResponseAsync(resourceGroupName, resourceName, annotationId)
-            .flatMap(
-                (Response<List<AnnotationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

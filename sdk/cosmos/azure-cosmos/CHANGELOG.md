@@ -1,11 +1,31 @@
 ## Release History
 
-### 4.30.0-beta.1 (Unreleased)
+### 4.32.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.31.0 (2022-06-08)
+
+#### Bugs Fixed
+* Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
+
+#### Other Changes
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. 
+
+### 4.30.1 (2022-06-01)
+
+#### Other Changes
+* Made CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
+* Added system property to allow overriding proxy setting for client telemetry endpoint. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
+* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
+
+### 4.30.0 (2022-05-20)
 #### Bugs Fixed
 * Fixed bubbling of Errors in case of any `java.lang.Error` - See [PR 28620](https://github.com/Azure/azure-sdk-for-java/pull/28620)
 * Fixed an issue with creating new Throughput control client item when `enableThroughputControlGroup` is being called multiple times with the same throughput control group. - See [PR 28905](https://github.com/Azure/azure-sdk-for-java/pull/28905)

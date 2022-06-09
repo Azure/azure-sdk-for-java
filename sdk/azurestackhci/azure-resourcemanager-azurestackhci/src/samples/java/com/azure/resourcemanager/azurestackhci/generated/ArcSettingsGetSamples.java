@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ArcSettings Get. */
 public final class ArcSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-01-01/examples/GetArcSetting.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/GetArcSetting.json
      */
     /**
      * Sample code: Get ArcSetting.

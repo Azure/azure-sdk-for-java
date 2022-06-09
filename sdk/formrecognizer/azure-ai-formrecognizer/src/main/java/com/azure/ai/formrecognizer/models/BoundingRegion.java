@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.implementation.util.BoundingRegionHelper;
 import java.util.List;
 
 /**
- * Bounding box on a specific page of the input.
+ * Bounding polygon on a specific page of the input.
  */
 public final class BoundingRegion {
     /*
@@ -17,9 +17,9 @@ public final class BoundingRegion {
     private int pageNumber;
 
     /*
-     * Bounding box on the page, or the entire page if not specified.
+     * The list of coordinates of bounding polygon, or the entire page if not specified.
      */
-    private List<Float> boundingBox;
+    private List<Point> boundingPolygon;
 
     /**
      * Get the pageNumber property: 1-based page number of page containing the bounding region.
@@ -41,22 +41,26 @@ public final class BoundingRegion {
     }
 
     /**
-     * Get the boundingBox property: Bounding box on the page, or the entire page if not specified.
+     * Get the list of coordinates of bounding polygon, or the entire page if not specified.
+     * The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees inclusive)
+     * relative to the element orientation.
      *
-     * @return the boundingBox value.
+     * @return the boundingPolygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Point> getBoundingPolygon() {
+        return this.boundingPolygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box on the page, or the entire page if not specified.
+     * Set the list of coordinates of bounding polygon, or the entire page if not specified.
+     * The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees inclusive)
+     * relative to the element orientation.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param boundingPolygon the boundingPolygon value to set.
      * @return the BoundingRegion object itself.
      */
-    void setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    void setBoundingPolygon(List<Point> boundingPolygon) {
+        this.boundingPolygon = boundingPolygon;
     }
 
     static {
@@ -67,8 +71,8 @@ public final class BoundingRegion {
             }
 
             @Override
-            public void setBoundingBox(BoundingRegion boundingRegion, List<Float> boundingBox) {
-                boundingRegion.setBoundingBox(boundingBox);
+            public void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> boundingPolygon) {
+                boundingRegion.setBoundingPolygon(boundingPolygon);
             }
         });
     }
