@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -24,6 +29,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -53,7 +59,10 @@ import com.azure.maps.search.implementation.SearchClientImplBuilder;
  * <!-- end com.azure.maps.search.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {MapsSearchClient.class, MapsSearchAsyncClient.class})
-public final class MapsSearchClientBuilder {
+public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<MapsSearchClientBuilder>,
+    TokenCredentialTrait<MapsSearchClientBuilder>, HttpTrait<MapsSearchClientBuilder>,
+    ConfigurationTrait<MapsSearchClientBuilder>, EndpointTrait<MapsSearchClientBuilder> {
+
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
@@ -77,6 +86,7 @@ public final class MapsSearchClientBuilder {
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
 
     // credentials
     private AzureKeyCredential keyCredential;
@@ -228,6 +238,17 @@ public final class MapsSearchClientBuilder {
      */
     public MapsSearchClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets retry options
+     * @param retryOptions the retry options for the client
+     * @return a reference to this {@code MapsSearchClientBuilder}
+     */
+    @Override
+    public MapsSearchClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 
