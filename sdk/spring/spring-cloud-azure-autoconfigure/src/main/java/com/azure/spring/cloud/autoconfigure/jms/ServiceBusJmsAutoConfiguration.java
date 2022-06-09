@@ -46,15 +46,9 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
     AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties(JmsProperties.class)
+@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
-
-    @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
-    @Bean
-    AzureServiceBusJmsProperties azureServiceBusJmsProperties() {
-        return new AzureServiceBusJmsProperties();
-    }
 
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")

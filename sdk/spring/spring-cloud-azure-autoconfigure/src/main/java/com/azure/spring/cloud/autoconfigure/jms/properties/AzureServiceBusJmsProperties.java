@@ -16,6 +16,7 @@ import java.time.Duration;
 /**
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
+@ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
 public class AzureServiceBusJmsProperties implements InitializingBean {
 
     /**
@@ -24,7 +25,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     public static final String PREFIX = "spring.jms.servicebus";
 
     /**
-     * Whether to enable Servive Bus autoconfiguration.
+     * Whether to enable Servive Bus JMS autoconfiguration.
      */
     private boolean enabled = true;
 
@@ -71,7 +72,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     private String password;
 
     /**
-     * Whether to enable Service Bus autoconfiguration.
+     * Whether to enable Service Bus JMS autoconfiguration.
      * @return Whether to enable Service Bus autoconfiguration
      */
     public boolean isEnabled() {
@@ -79,7 +80,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
     /**
-     * Set whether to enable Service Bus autoconfiguation.
+     * Set whether to enable Service Bus JMS autoconfiguation.
      * @param enabled whether to enable Service Bus autoconfiguration.
      */
     public void setEnabled(boolean enabled) {

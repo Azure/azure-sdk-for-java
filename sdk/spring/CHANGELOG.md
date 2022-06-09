@@ -21,13 +21,11 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
-### spring-cloud-azure-starter-servicebus-jms
-
 #### Features Added
 - Add `enabled` option in `AzureServiceBusJmsProperties` [#29232](https://github.com/Azure/azure-sdk-for-java/issues/29232).
 
 #### Bugs Fixed
-- Fix the Service Bus autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
+- Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
