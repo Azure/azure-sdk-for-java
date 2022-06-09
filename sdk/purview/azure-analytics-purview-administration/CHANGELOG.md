@@ -4,6 +4,8 @@
 
 ### Breaking Changes
 
+- Removed class `PurviewAccountClientBuilder`. It was replaced by `AccountsClientBuilder`, `CollectionsClient`, `ResourceSetRulesClientBuilder`.
+- Removed class `PurviewMetadataClientBuilder`. It was replaced by `MetadataPolicyClientBuilder`, `MetadataRolesClientBuilder`.
 - Merged the `Context` parameter into the `RequestOptions` parameter in methods of clients.
 
 ### Other Changes
