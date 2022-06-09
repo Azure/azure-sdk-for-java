@@ -198,7 +198,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     switch (encryptionData.getEncryptionAgent().getProtocol()) {
                         case ENCRYPTION_PROTOCOL_V1:
                             return decryptV1(encryptedFlux, encryptedBlobRange, padding,
-                                (EncryptionDataV1) encryptionData, requestUri, totalInputBytes, contentEncryptionKey);
+                                encryptionData, requestUri, totalInputBytes, contentEncryptionKey);
                         case ENCRYPTION_PROTOCOL_V2:
                             return decryptV2(encryptedFlux, encryptionData, contentEncryptionKey);
                         default:
@@ -303,13 +303,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Flux<ByteBuffer> decryptV2(Flux<ByteBuffer> encryptedFlux, EncryptionData encryptionData,
         byte[] contentEncryptionKey) {
         // Buffer an exact region with the nonce and tag
-        EncryptionDataV2 encryptionDataV2 = (EncryptionDataV2) encryptionData;
-        final int gcmEncryptionRegionLength = Integer.parseInt(encryptionDataV2
-            .getAuthenticationRegionInfo()
+        final int gcmEncryptionRegionLength = Integer.parseInt(encryptionData
+            .getEncryptedRegionInfo()
             .getEncryptionRegionLength());
         final int nonceLength =
-            Integer.parseInt(encryptionDataV2
-                .getAuthenticationRegionInfo()
+            Integer.parseInt(encryptionData
+                .getEncryptedRegionInfo()
                 .getNonceLength());
         BufferStagingArea stagingArea =
             new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
@@ -353,11 +352,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     }
 
     private Flux<ByteBuffer> decryptV1(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
-        boolean padding, EncryptionDataV1 encryptionData, String requestUri,
+        boolean padding, EncryptionData encryptionData, String requestUri,
         AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
         LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
             + "which is no longer secure. Uri: " + requestUri);
-        EncryptionDataV1 encryptionDataV1 = encryptionData;
         /*
          * Calculate the IV.
          *
@@ -377,7 +375,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
          * key is in the metadata.
          */
         if (encryptedBlobRange.getOffsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
-            iv = encryptionDataV1.getContentEncryptionIV();
+            iv = encryptionData.getContentEncryptionIV();
         } else {
             // Rather than try to buffer just the 16 bytes of the iv, we "decrypt" them with this garbage iv.
             // This makes counting easier.
@@ -388,7 +386,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
         Cipher cipher;
         try {
-            cipher = getCipher(contentEncryptionKey, encryptionDataV1, iv, padding);
+            cipher = getCipher(contentEncryptionKey, encryptionData, iv, padding);
         } catch (InvalidKeyException e) {
             throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
@@ -428,7 +426,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * Returns the key encryption key for blob. First tries to get key encryption key from KeyResolver, then falls back
      * to IKey stored on this EncryptionPolicy.
      *
-     * @param encryptionData A {@link EncryptionDataV1}
+     * @param encryptionData A {@link EncryptionData}
      * @return Key encryption key as a byte array
      */
     private Mono<byte[]> getKeyEncryptionKey(EncryptionData encryptionData) {
@@ -469,7 +467,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * Creates a {@link Cipher} using given content encryption key, encryption data, iv, and padding.
      *
      * @param contentEncryptionKey The content encryption key, used to decrypt the contents of the blob.
-     * @param encryptionData {@link EncryptionDataV1}
+     * @param encryptionData {@link EncryptionData}
      * @param iv IV used to initialize the Cipher.  If IV is null, encryptionData
      * @param padding If cipher should use padding. Padding is necessary to decrypt all the way to end of a blob.
      * Otherwise, don't use padding.

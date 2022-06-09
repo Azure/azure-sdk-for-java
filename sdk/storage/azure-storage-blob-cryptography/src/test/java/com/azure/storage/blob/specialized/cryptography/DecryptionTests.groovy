@@ -52,7 +52,7 @@ class DecryptionTests extends APISpec {
         def blobRange = new BlobRange(EncryptedFlux.DATA_OFFSET, EncryptedFlux.DATA_COUNT)
 
         when:
-        def encryptionData = EncryptionData.fromJsonString(encryptionDataString, EncryptionDataV1.class)
+        def encryptionData = EncryptionData.fromJsonString(encryptionDataString)
         def decryptedData = collectBytesInBuffer(
             blobDecryptionPolicy.decryptBlob(flow, new EncryptedBlobRange(blobRange, encryptionData), true,
                 encryptionData, ""))

@@ -68,4 +68,5 @@ public class FetchEncryptionVersionPolicy implements HttpPipelinePolicy {
             .then(Mono.defer(nextPolicy::process));
         }
     }
+
 }

@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.BlobUrlParts
@@ -328,7 +329,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def plaintextOutputStream = new ByteArrayOutputStream()
 
         def encryptionData = new ObjectMapper().readValue(downloadResponse.getDeserializedHeaders().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
-            EncryptionDataV2.class)
+            EncryptionData.class)
         def cek = fakeKey.unwrapKey(
             encryptionData.getWrappedContentKey().getAlgorithm(),
             encryptionData.getWrappedContentKey().getEncryptedKey()).block()
@@ -380,16 +381,73 @@ class EncyptedBlockBlobAPITest extends APISpec {
         return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
-    @Ignore
     def "Temp test for cross plat"() {
         setup:
-        def data = getRandomByteArray(20 * Constants.MB)
+        def kek = new NoOpKey()
 
-        def encryptedClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+        def downloadClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .blobName("python_plaintext_1")
+            .key(kek, "None")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient()
+
+        def decryptionClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .blobName("python_encrypted_1")
+            .key(kek, "None")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient()
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        downloadClient.downloadStream(outStream)
+        def decryptStream = new ByteArrayOutputStream()
+        decryptionClient.downloadStream(decryptStream)
+
+        then:
+        outStream.toByteArray() == decryptStream.toByteArray()
+
+        when:
+        def data = getRandomByteArray(20 * Constants.MB)
+        def uploadClient = new BlobClientBuilder()
+            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .blobName("java_plaintext_1")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildClient()
+        def encryptClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
             .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
             .blobName("java_encrypted_1")
+            .key(kek, "None")
             .credential(environment.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient()
 
+        then:
+        uploadClient.upload(BinaryData.fromBytes(data))
+        encryptClient.upload(BinaryData.fromBytes(data))
+    }
+
+    class NoOpKey implements AsyncKeyEncryptionKey {
+            @Override
+            Mono<String> getKeyId() {
+                return Mono.just("local:key1")
+            }
+
+            @Override
+            Mono<byte[]> wrapKey(String algorithm, byte[] key) {
+                if (algorithm != "None") {
+                    throw new IllegalArgumentException()
+                }
+                return Mono.just(key)
+            }
+
+            @Override
+            Mono<byte[]> unwrapKey(String algorithm, byte[] encryptedKey) {
+                if (algorithm != "None") {
+                    throw new IllegalArgumentException()
+                }
+                return Mono.just(encryptedKey)
+            }
     }
 
     @Unroll

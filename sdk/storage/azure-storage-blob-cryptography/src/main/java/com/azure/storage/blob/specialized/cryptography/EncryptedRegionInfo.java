@@ -5,12 +5,12 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-final class AuthenticationRegionInfo {
+final class EncryptedRegionInfo {
 
     /**
      * The cipher text length.
      */
-    @JsonProperty(value = "EncryptionRegionLength")
+    @JsonProperty(value = "DataLength")
     private String encryptionRegionLength;
 
     /**
@@ -19,7 +19,13 @@ final class AuthenticationRegionInfo {
     @JsonProperty(value = "NonceLength")
     private String nonceLength;
 
-    AuthenticationRegionInfo() {
+    /**
+     * The tag length
+     */
+    @JsonProperty(value = "TagLength")
+    private String tagLength;
+
+    EncryptedRegionInfo() {
     }
 
     /**
@@ -28,9 +34,10 @@ final class AuthenticationRegionInfo {
      * @param ciphertextLength The length of the cipher text.
      * @param nonceLength The length of the nonce.
      */
-    AuthenticationRegionInfo(String ciphertextLength, String nonceLength) {
+    EncryptedRegionInfo(String ciphertextLength, String nonceLength, String tagLength) {
         this.encryptionRegionLength = ciphertextLength;
         this.nonceLength = nonceLength;
+        this.tagLength = tagLength;
     }
 
     /**
@@ -49,5 +56,14 @@ final class AuthenticationRegionInfo {
      */
     public String getNonceLength() {
         return nonceLength;
+    }
+
+    /**
+     * Gets the tagLength property.
+     *
+     * @return The tagLength property.
+     */
+    public String getTagLength() {
+        return tagLength;
     }
 }

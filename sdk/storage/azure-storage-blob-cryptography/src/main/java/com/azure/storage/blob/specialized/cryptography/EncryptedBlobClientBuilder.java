@@ -165,6 +165,7 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder(EncryptionVersion version) {
         Objects.requireNonNull(version);
+        logOptions = getDefaultHttpLogOptions();
         this.encryptionVersion = version;
     }
 
@@ -263,7 +264,6 @@ public final class EncryptedBlobClientBuilder implements
             .containerName(containerName)
             .blobName(blobName)
             .snapshot(snapshot)
-            .httpLogOptions(this.logOptions)
             .customerProvidedKey(
                 customerProvidedKey == null ? null : new CustomerProvidedKey(customerProvidedKey.getEncryptionKey()))
             .encryptionScope(encryptionScope == null ? null : encryptionScope.getEncryptionScope())

@@ -24,7 +24,7 @@ class EncryptedBlobRangeTest extends APISpec {
 
         when:
         EncryptedBlobRange ebr = new EncryptedBlobRange(range,
-            new EncryptionDataV1().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1)))
+            new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1)))
 
         then:
         ebr.toBlobRange().toString() == expectedString
@@ -56,7 +56,7 @@ class EncryptedBlobRangeTest extends APISpec {
 
         when:
         EncryptedBlobRange ebr = new EncryptedBlobRange(range,
-            new EncryptionDataV1().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2)))
+            new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2)))
 
         then:
         ebr.toBlobRange().toString() == expectedString
@@ -77,9 +77,9 @@ class EncryptedBlobRangeTest extends APISpec {
     @Unroll
     def "Test from blob range header"() {
         setup:
-        def encryptionDataV1 = new EncryptionDataV1().setEncryptionAgent(
+        def encryptionDataV1 = new EncryptionData().setEncryptionAgent(
             new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1))
-        def encryptionDataV2 = new EncryptionDataV2().setEncryptionAgent(
+        def encryptionDataV2 = new EncryptionData().setEncryptionAgent(
             new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
         BlobRange range
         if (offset == null && count == null) {

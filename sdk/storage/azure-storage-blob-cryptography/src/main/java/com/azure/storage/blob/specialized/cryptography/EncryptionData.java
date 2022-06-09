@@ -4,31 +4,220 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-interface EncryptionData {
-    ObjectSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
-    ClientLogger LOGGER = new ClientLogger(EncryptionData.class);
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
 
-    String getEncryptionMode();
-    WrappedKey getWrappedContentKey();
-    EncryptionAgent getEncryptionAgent();
-    Map<String, String> getKeyWrappingMetadata();
-    String toJsonString() throws JsonProcessingException;
+/**
+ * Represents the encryption data that is stored on the service.
+ */
+final class EncryptionData {
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionData.class);
 
-    static EncryptionData fromJsonString(String jsonString, Class<? extends EncryptionData> clazz)
-        throws JsonProcessingException {
-        return SERIALIZER.deserializeFromBytes(jsonString.getBytes(StandardCharsets.UTF_8),
-            TypeReference.createInstance(clazz));
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    /**
+     * The blob encryption mode.
+     */
+    @JsonProperty(value = "EncryptionMode")
+    private String encryptionMode;
+
+    /**
+     * A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the encrypted key
+     */
+    @JsonProperty(value = "WrappedContentKey", required = true)
+    private WrappedKey wrappedContentKey;
+
+    /**
+     * The encryption agent.
+     */
+    @JsonProperty(value = "EncryptionAgent", required = true)
+    private EncryptionAgent encryptionAgent;
+
+    /**
+     * The content encryption IV.
+     */
+    @JsonProperty(value = "ContentEncryptionIV", required = true)
+    private byte[] contentEncryptionIV;
+
+    /**
+     * The authentication block info.
+     */
+    @JsonProperty(value = "EncryptedRegionInfo")
+    private EncryptedRegionInfo encryptedRegionInfo;
+
+    /**
+     * Metadata for encryption.  Currently used only for storing the encryption library, but may contain other data.
+     */
+    @JsonProperty(value = "KeyWrappingMetadata", required = true)
+    private Map<String, String> keyWrappingMetadata;
+
+    /**
+     * Initializes a new instance of the {@link EncryptionData} class.
+     */
+    EncryptionData() {
+    }
+
+    /**
+     * Initializes a new instance of the {@link EncryptionData} class using the specified wrappedContentKey,
+     * encryptionAgent, contentEncryptionIV, and keyWrappingMetadata.
+     *
+     * @param encryptionMode The blob encryption mode.
+     * @param wrappedContentKey The {@link WrappedKey}.
+     * @param encryptionAgent The {@link EncryptionAgent}.
+     * @param contentEncryptionIV The content encryption IV.
+     * @param encryptedRegionInfo The encrypted region info.
+     * @param keyWrappingMetadata Metadata for encryption.
+     */
+    EncryptionData(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
+        byte[] contentEncryptionIV, EncryptedRegionInfo encryptedRegionInfo,
+        Map<String, String> keyWrappingMetadata) {
+        this.encryptionMode = encryptionMode;
+        this.wrappedContentKey = wrappedContentKey;
+        this.encryptionAgent = encryptionAgent;
+        this.contentEncryptionIV = contentEncryptionIV;
+        this.encryptedRegionInfo = encryptedRegionInfo;
+        this.keyWrappingMetadata = keyWrappingMetadata;
+    }
+
+    /**
+     * Gets the encryption mode
+     *
+     * @return encryption mode
+     */
+    public String getEncryptionMode() {
+        return this.encryptionMode;
+    }
+
+    /**
+     * Gets the wrapped key that is used to store the wrapping algorithm, key identifier and the encrypted key bytes.
+     *
+     * @return A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the encrypted
+     *         key bytes.
+     */
+    public WrappedKey getWrappedContentKey() {
+        return this.wrappedContentKey;
+    }
+
+    /**
+     * Gets the encryption agent that is used to identify the encryption protocol version and encryption algorithm.
+     *
+     * @return an {@link EncryptionAgent}.
+     */
+    public EncryptionAgent getEncryptionAgent() {
+        return this.encryptionAgent;
+    }
+
+    /**
+     * Gets the content encryption IV.
+     *
+     * @return The content encryption IV.
+     */
+    byte[] getContentEncryptionIV() {
+        return this.contentEncryptionIV;
+    }
+
+    /**
+     * Gets the authenticationBlockInfo property.
+     *
+     * @return The authenticationBlockInfo property.
+     */
+    EncryptedRegionInfo getEncryptedRegionInfo() {
+        return encryptedRegionInfo;
+    }
+
+    /**
+     * Gets the metadata for encryption.
+     *
+     * @return A HashMap containing the encryption metadata in a key-value format.
+     */
+    public Map<String, String> getKeyWrappingMetadata() {
+        return this.keyWrappingMetadata;
+    }
+
+    /**
+     * Sets the encryption mode
+     *
+     * @param encryptionMode The encryption mode
+     *
+     * @return this
+     */
+    EncryptionData setEncryptionMode(String encryptionMode) {
+        this.encryptionMode = encryptionMode;
+        return this;
+    }
+
+    /**
+     * Sets the wrapped key that is used to store the wrapping algorithm, key identifier and the encrypted key bytes.
+     *
+     * @param wrappedContentKey A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the
+     *         encrypted key bytes.
+     *
+     * @return this
+     */
+    EncryptionData setWrappedContentKey(WrappedKey wrappedContentKey) {
+        this.wrappedContentKey = wrappedContentKey;
+        return this;
+    }
+
+    /**
+     * Sets the encryption agent that is used to identify the encryption protocol version and encryption algorithm.
+     *
+     * @param encryptionAgent The {@link EncryptionAgent}.
+     *
+     * @return this
+     */
+    EncryptionData setEncryptionAgent(EncryptionAgent encryptionAgent) {
+        this.encryptionAgent = encryptionAgent;
+        return this;
+    }
+
+    /**
+     * Sets the content encryption IV.
+     *
+     * @param contentEncryptionIV The content encryption IV.
+     *
+     * @return this
+     */
+    EncryptionData setContentEncryptionIV(byte[] contentEncryptionIV) {
+        this.contentEncryptionIV = contentEncryptionIV;
+        return this;
+    }
+
+    /**
+     * Sets the metadata for encryption.
+     *
+     * @param keyWrappingMetadata A HashMap containing the encryption metadata in a key-value format.
+     *
+     * @return this
+     */
+    EncryptionData setKeyWrappingMetadata(Map<String, String> keyWrappingMetadata) {
+        this.keyWrappingMetadata = keyWrappingMetadata;
+        return this;
+    }
+
+    /**
+     * Sets the authenticationBlockInfo property.
+     *
+     * @param encryptedRegionInfo The authenticationBlockInfo value to set.
+     * @return The updated object
+     */
+    EncryptionData setEncryptedRegionInfo(EncryptedRegionInfo encryptedRegionInfo) {
+        this.encryptedRegionInfo = encryptedRegionInfo;
+        return this;
+    }
+
+    public String toJsonString() throws JsonProcessingException {
+        return MAPPER.writeValueAsString(this);
     }
 
     static EncryptionData getAndValidateEncryptionData(String encryptionDataString, boolean requiresEncryption) {
@@ -41,15 +230,15 @@ interface EncryptionData {
         }
 
         try {
-            EncryptionData encryptionData;
-            if (encryptionDataString.contains("\"Protocol\":\"1.0\",")) {
-                encryptionData = EncryptionData.fromJsonString(encryptionDataString, EncryptionDataV1.class);
-                Objects.requireNonNull(((EncryptionDataV1) encryptionData).getContentEncryptionIV(),
+            EncryptionData encryptionData = MAPPER.readValue(encryptionDataString, EncryptionData.class);
+            if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)) {
+                Objects.requireNonNull(encryptionData.getContentEncryptionIV(),
                     "contentEncryptionIV in encryptionData cannot be null");
                 Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
                     + "encryptionData.wrappedContentKey cannot be null");
-            } else if (encryptionDataString.contains("\"Protocol\":\"2.0\",")) {
-                encryptionData = EncryptionData.fromJsonString(encryptionDataString, EncryptionDataV2.class);
+            } else if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V2)) {
+                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
+                    + "encryptionData.wrappedContentKey cannot be null");
             } else {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
                     "Invalid Encryption Agent. This version of the client library does not understand the "
@@ -61,5 +250,10 @@ interface EncryptionData {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    static EncryptionData fromJsonString(String jsonString)
+        throws JsonProcessingException {
+        return MAPPER.readValue(jsonString, EncryptionData.class);
     }
 }

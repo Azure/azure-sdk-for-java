@@ -616,7 +616,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                             }
                             // Build EncryptionData
-                            encryptionData = new EncryptionDataV1()
+                            encryptionData = new EncryptionData()
                                 .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
                                 .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
                                     EncryptionAlgorithm.AES_CBC_256))
@@ -628,13 +628,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                             break;
                         case V2:
                             // Build EncryptionData
-                            encryptionData = new EncryptionDataV2()
+                            encryptionData = new EncryptionData()
                                 .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
                                 .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V2,
                                     EncryptionAlgorithm.AES_GCM_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
-                                .setAuthenticationBlockInfo(new AuthenticationRegionInfo(
-                                    GCM_ENCRYPTION_REGION_LENGTH + "", NONCE_LENGTH + ""))
+                                .setEncryptedRegionInfo(new EncryptedRegionInfo(
+                                    GCM_ENCRYPTION_REGION_LENGTH + "", NONCE_LENGTH + "", TAG_LENGTH + ""))
                                 .setWrappedContentKey(wrappedKey);
 
                             encryptedTextFlux = encryptV2(plainTextFlux, aesKey);
