@@ -1,4 +1,7 @@
-package com.azure.maps.examples;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.maps.route.samples;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,7 +21,6 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.RouteClient;
 import com.azure.maps.route.RouteClientBuilder;
-import com.azure.maps.route.models.LatLong;
 import com.azure.maps.route.models.RouteDirections;
 import com.azure.maps.route.models.RouteDirectionsBatchResult;
 import com.azure.maps.route.models.RouteDirectionsOptions;
