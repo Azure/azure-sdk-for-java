@@ -664,8 +664,24 @@ class SparkE2EStructuredStreamingITest
   }
 
   "spark change feed micro batch (incremental)" can
-    "filter by feedRange" taggedAs(Retryable) in {
+    "filter by feedRange (Restrictive partitioning strategy)" taggedAs(Retryable) in {
 
+    runChangeFeedFeedRangeFilterTest("Restrictive")
+  }
+
+  "spark change feed micro batch (incremental)" can
+    "filter by feedRange (Default partitioning strategy)" taggedAs(Retryable) in {
+
+    runChangeFeedFeedRangeFilterTest("Default")
+  }
+
+  "spark change feed micro batch (incremental)" can
+    "filter by feedRange (Aggressive partitioning strategy)" taggedAs(Retryable) in {
+
+    runChangeFeedFeedRangeFilterTest("Aggressive")
+  }
+
+  private[this] def runChangeFeedFeedRangeFilterTest(partitioningStrategy: String): Unit = {
     val processedRecordCount = new AtomicLong(0)
     val forEachBatchRecordCount = new AtomicLong(0)
     var spark = this.createSparkSession(processedRecordCount)
@@ -693,7 +709,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.partitioning.strategy" -> partitioningStrategy,
       "spark.cosmos.partitioning.feedRangeFilter" -> feedRangeFilter
     )
 
