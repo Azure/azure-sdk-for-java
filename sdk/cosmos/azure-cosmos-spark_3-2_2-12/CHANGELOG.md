@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixes bug preventing usage of feedRangeFilter with change feed. - See [PR 29338](https://github.com/Azure/azure-sdk-for-java/pull/29338)
 
 #### Other Changes
 
