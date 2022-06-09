@@ -44,7 +44,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivilegedAction;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
@@ -395,12 +394,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
-    @SuppressWarnings("removal")
     private void setAccessible(final AccessibleObject accessibleObject) {
-        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            accessibleObject.setAccessible(true);
-            return null;
-        });
+        accessibleObject.setAccessible(true);
     }
 
     /**
