@@ -49,6 +49,7 @@
         <module>sdk/core/azure-core-amqp-experimental</module>
         <module>sdk/core/azure-core-experimental</module>
         <module>sdk/core/azure-core-http-jdk-httpclient</module>
+        <module>sdk/core/azure-core-http-apache</module>
         <module>sdk/core/azure-core-http-netty</module>
 <!--        <module>sdk/core/azure-core-http-okhttp</module>-->
         <module>sdk/core/azure-core-http-vertx</module>
@@ -214,6 +215,7 @@
         <module>sdk/core/azure-core-amqp-experimental</module>
         <module>sdk/core/azure-core-experimental</module>
         <module>sdk/core/azure-core-http-jdk-httpclient</module>
+        <module>sdk/core/azure-core-http-apache</module>
         <module>sdk/core/azure-core-http-netty</module>
         <module>sdk/core/azure-core-http-okhttp</module>
         <module>sdk/core/azure-core-http-vertx</module>
