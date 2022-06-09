@@ -186,6 +186,31 @@ public final class DiskEncryptionSetInner extends Resource {
     }
 
     /**
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
+    }
+
+    /**
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withFederatedClientId(String federatedClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
+        }
+        this.innerProperties().withFederatedClientId(federatedClientId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

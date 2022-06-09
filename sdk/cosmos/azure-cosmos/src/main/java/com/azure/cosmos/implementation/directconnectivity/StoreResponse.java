@@ -12,7 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.azure.cosmos.implementation.Utils;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Used internally to represents a response from the store.
@@ -39,7 +40,8 @@ public class StoreResponse {
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaders = new ConcurrentHashMap<>(headerMap);
+        responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+        responseHeaders.putAll(headerMap);
 
         this.status = status;
         this.content = content;

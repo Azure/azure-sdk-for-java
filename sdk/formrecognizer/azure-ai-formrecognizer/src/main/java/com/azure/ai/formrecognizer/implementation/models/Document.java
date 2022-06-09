@@ -33,7 +33,7 @@ public final class Document {
     /*
      * Dictionary of named field values.
      */
-    @JsonProperty(value = "fields", required = true)
+    @JsonProperty(value = "fields")
     private Map<String, DocumentField> fields;
 
     /*

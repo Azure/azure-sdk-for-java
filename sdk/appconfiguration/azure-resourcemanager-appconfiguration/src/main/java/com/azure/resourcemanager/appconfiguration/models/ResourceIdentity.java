@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** An identity that can be associated with a resource. */
 @Fluent
 public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
     /*
      * The type of managed identity used. The type 'SystemAssigned,
      * UserAssigned' includes both an implicitly created identity and a set of

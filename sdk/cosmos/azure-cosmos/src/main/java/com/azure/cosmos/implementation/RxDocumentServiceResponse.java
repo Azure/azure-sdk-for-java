@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 /**
@@ -33,7 +33,8 @@ public class RxDocumentServiceResponse {
     private CosmosDiagnostics cosmosDiagnostics;
 
     public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
-        this.headersMap = new HashMap<>(response.getResponseHeaders());
+        this.headersMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        this.headersMap.putAll(response.getResponseHeaders());
 
         // Gets status code.
         this.statusCode = response.getStatus();

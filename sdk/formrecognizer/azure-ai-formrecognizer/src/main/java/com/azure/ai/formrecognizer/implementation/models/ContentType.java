@@ -15,8 +15,23 @@ public enum ContentType {
     /** Enum value application/pdf. */
     APPLICATION_PDF("application/pdf"),
 
+    /** Enum value application/vnd.openxmlformats-officedocument.presentationml.presentation. */
+    APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION(
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+
+    /** Enum value application/vnd.openxmlformats-officedocument.spreadsheetml.sheet. */
+    APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+
+    /** Enum value application/vnd.openxmlformats-officedocument.wordprocessingml.document. */
+    APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT(
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
+
     /** Enum value image/bmp. */
     IMAGE_BMP("image/bmp"),
+
+    /** Enum value image/heif. */
+    IMAGE_HEIF("image/heif"),
 
     /** Enum value image/jpeg. */
     IMAGE_JPEG("image/jpeg"),

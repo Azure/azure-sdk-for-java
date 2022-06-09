@@ -3,10 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
-import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.fileshare.properties.AzureStorageFileShareProperties;
+import com.azure.spring.cloud.autoconfigure.storage.AzureStorageConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
@@ -28,26 +29,30 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Storage File Share support.
  *
  * @since 4.0.0
  */
+@Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties
 @ConditionalOnClass(ShareServiceClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.storage.fileshare.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.fileshare", name = { "account-name", "endpoint", "connection-string" })
-public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
-
-    AzureStorageFileShareAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.storage.fileshare", "spring.cloud.azure.storage" },
+    name = { "account-name", "endpoint", "connection-string" })
+@Import(AzureStorageConfiguration.class)
+public class AzureStorageFileShareAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
-    AzureStorageFileShareProperties azureStorageFileShareProperties() {
-        return loadProperties(getAzureGlobalProperties(), new AzureStorageFileShareProperties());
+    AzureStorageFileShareProperties azureStorageFileShareProperties(AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadStorageProperties(azureStorageProperties, new AzureStorageFileShareProperties());
     }
 
     /**
@@ -140,7 +145,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     }
 
     @Bean
-    @ConditionalOnProperty("spring.cloud.azure.storage.fileshare.connection-string")
+    @ConditionalOnAnyProperty(prefixes = { AzureStorageFileShareProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageFileShare> staticStorageFileShareConnectionStringProvider(
         AzureStorageFileShareProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_FILE_SHARE, properties.getConnectionString());

@@ -27,7 +27,11 @@ public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSi
         return fromString(name, DocumentSignatureType.class);
     }
 
-    /** @return known DocumentSignatureType values. */
+    /**
+     * Gets known DocumentSignatureType values.
+     *
+     * @return known DocumentSignatureType values.
+     */
     public static Collection<DocumentSignatureType> values() {
         return values(DocumentSignatureType.class);
     }
