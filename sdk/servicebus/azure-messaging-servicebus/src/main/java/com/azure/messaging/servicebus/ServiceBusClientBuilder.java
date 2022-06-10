@@ -299,7 +299,7 @@ public final class ServiceBusClientBuilder implements
             this.customEndpointAddress = new URL(customEndpointAddress);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(customEndpointAddress + " : is not a valid URL,", e));
+                new IllegalArgumentException(String.format("(%s) : is not a valid URL,", customEndpointAddress), e));
         }
 
         return this;
