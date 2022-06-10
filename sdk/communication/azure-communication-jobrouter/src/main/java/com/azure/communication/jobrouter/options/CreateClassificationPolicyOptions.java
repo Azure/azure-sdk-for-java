@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+/** A container for the rules that govern how jobs are classified. */
 @Fluent
 public class CreateClassificationPolicyOptions {
     /*
