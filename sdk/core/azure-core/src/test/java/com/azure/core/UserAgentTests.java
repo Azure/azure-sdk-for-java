@@ -3,6 +3,7 @@
 
 package com.azure.core;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -206,7 +207,7 @@ public class UserAgentTests {
         public Mono<HttpResponse> send(HttpRequest request) {
             if (retryCount < 5) {
                 retryCount++;
-                return Mono.error(new RuntimeException("Activating retry policy"));
+                return Mono.error(new AzureException("Activating retry policy"));
             }
 
             validator.accept(request);
