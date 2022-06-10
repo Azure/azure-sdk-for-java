@@ -9,6 +9,8 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -22,7 +24,41 @@ import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeOptions;
 import com.azure.maps.route.models.RouteRangeResult;
 
-/** Initializes a new instance of the synchronous RouteClient type. */
+/**
+ * Initializes a new instance of the synchronous RouteClient type.
+ * Creating a sync client using a {@link AzureKeyCredential}:
+ * <!-- src_embed com.azure.maps.route.sync.builder.key.instantiation -->
+ * <pre>
+ * &#47;&#47; Authenticates using subscription key
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creates a builder
+ * RouteClientBuilder builder = new RouteClientBuilder&#40;&#41;;
+ * builder.credential&#40;keyCredential&#41;;
+ * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+ *
+ * &#47;&#47; Builds the client
+ * RouteClient client = builder.buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.maps.route.sync.builder.key.instantiation -->
+ * Creating a sync client using a {@link TokenCredential}:
+ * <!-- src_embed com.azure.maps.route.sync.builder.ad.instantiation -->
+ * <pre>
+ * &#47;&#47; Authenticates using Azure AD building a default credential
+ * &#47;&#47; This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
+ * DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Creates a builder
+ * RouteClientBuilder builder = new RouteClientBuilder&#40;&#41;;
+ * builder.credential&#40;tokenCredential&#41;;
+ * builder.mapsClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;;
+ * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+ *
+ * &#47;&#47; Builds a client
+ * RouteClient client = builder.buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.maps.route.sync.builder.ad.instantiation -->
+*/
 @ServiceClient(builder = RouteClientBuilder.class)
 public final class RouteClient {
     @Generated private final RouteAsyncClient asyncClient;
@@ -98,6 +134,17 @@ public final class RouteClient {
 
     /**
      * Get Route Directions
+     *
+     * <!-- src_embed com.azure.maps.route.sync.get_route_directions -->
+     * <pre>
+     * List&lt;GeoPosition&gt; routePoints = Arrays.asList&#40;
+     *     new GeoPosition&#40;13.42936, 52.50931&#41;,
+     *     new GeoPosition&#40;13.43872, 52.50274&#41;&#41;;
+     * RouteDirectionsOptions routeOptions = new RouteDirectionsOptions&#40;routePoints&#41;;
+     * RouteDirections directions = client.getRouteDirections&#40;routeOptions&#41;;
+     * RouteReport report = directions.getReport&#40;&#41;; &#47;&#47; get the report and use it
+     * </pre>
+     * <!-- end com.azure.maps.route.sync.get_route_directions -->
      *
      * @param options the {@code RouteDirectionsOptions} applicable to this query
      * @throws IllegalArgumentException thrown if parameters fail the validation.
