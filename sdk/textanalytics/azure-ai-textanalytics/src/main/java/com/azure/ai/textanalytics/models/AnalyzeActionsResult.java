@@ -15,6 +15,7 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults;
     private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesResults;
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults;
+    private IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
     private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
@@ -42,6 +43,13 @@ public final class AnalyzeActionsResult {
                 public void setRecognizePiiEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults) {
                     analyzeActionsResult.setRecognizePiiEntitiesResults(recognizePiiEntitiesResults);
+                }
+
+                @Override
+                public void setAnalyzeHealthcareEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults) {
+                    analyzeActionsResult.setAnalyzeHealthcareEntitiesActionResults(
+                        analyzeHealthcareEntitiesActionResults);
                 }
 
                 @Override
@@ -113,6 +121,16 @@ public final class AnalyzeActionsResult {
     }
 
     /**
+     * Gets the {@code analyzeHealthcareEntitiesActionResults} property: The Healthcare entities actions results
+     * property.
+     *
+     * @return The analyzeHealthcareEntitiesActionResults value.
+     */
+    public IterableStream<AnalyzeHealthcareEntitiesActionResult> getAnalyzeHealthcareEntitiesResults() {
+        return this.analyzeHealthcareEntitiesActionResults;
+    }
+
+    /**
      * Gets the {@code extractKeyPhrasesResults} property: The key phrases extraction actions results property.
      *
      * @return The extractKeyPhrasesResults value.
@@ -181,6 +199,11 @@ public final class AnalyzeActionsResult {
     private void setRecognizePiiEntitiesResults(
         IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults) {
         this.recognizePiiEntitiesResults = recognizePiiEntitiesResults;
+    }
+
+    private void setAnalyzeHealthcareEntitiesActionResults(
+        IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults) {
+        this.analyzeHealthcareEntitiesActionResults = analyzeHealthcareEntitiesActionResults;
     }
 
     private void setExtractKeyPhrasesResults(IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {

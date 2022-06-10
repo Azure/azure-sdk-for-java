@@ -6,14 +6,18 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The PiiTaskResult model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("PiiEntityRecognitionResults")
 @Fluent
-public class PiiTaskResult {
+public final class PiiTaskResult extends AnalyzeTextTaskResult {
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
+    @JsonProperty(value = "results", required = true)
     private PiiResult results;
 
     /**

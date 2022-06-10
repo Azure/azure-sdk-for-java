@@ -27,7 +27,11 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
         return fromString(name, DocumentBuildMode.class);
     }
 
-    /** @return known DocumentBuildMode values. */
+    /**
+     * Gets known DocumentBuildMode values.
+     *
+     * @return known DocumentBuildMode values.
+     */
     public static Collection<DocumentBuildMode> values() {
         return values(DocumentBuildMode.class);
     }

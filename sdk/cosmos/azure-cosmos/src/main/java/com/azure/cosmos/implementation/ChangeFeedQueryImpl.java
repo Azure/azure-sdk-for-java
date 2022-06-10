@@ -126,6 +126,10 @@ class ChangeFeedQueryImpl<T> {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
 
+        if (this.client.getConsistencyLevel() != null) {
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
+        }
+
         return RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,

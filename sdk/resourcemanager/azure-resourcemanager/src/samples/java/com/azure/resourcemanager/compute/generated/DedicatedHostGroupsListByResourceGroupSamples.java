@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DedicatedHostGroups ListByResourceGroup. */
 public final class DedicatedHostGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHostGroups_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_ListByResourceGroup_MinimumSet_Gen.
@@ -27,7 +27,7 @@ public final class DedicatedHostGroupsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_ListByResourceGroup_MaximumSet_Gen.

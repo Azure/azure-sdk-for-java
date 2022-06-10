@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for GallerySharingProfile Update. */
 public final class GallerySharingProfileUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/EnableACommunityGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_EnableCommunityGallery.json
      */
     /**
      * Sample code: share a gallery to community.
@@ -35,7 +35,7 @@ public final class GallerySharingProfileUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/ResetSharingProfileInAGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_ResetSharingProfile.json
      */
     /**
      * Sample code: reset sharing profile of a gallery.
@@ -56,7 +56,7 @@ public final class GallerySharingProfileUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/AddToSharingProfileInAGallery.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/Gallery_AddToSharingProfile.json
      */
     /**
      * Sample code: Add sharing id to the sharing profile of a gallery.

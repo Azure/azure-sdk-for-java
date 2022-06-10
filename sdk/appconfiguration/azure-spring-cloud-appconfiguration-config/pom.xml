@@ -12,7 +12,7 @@
 
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
-    <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
+    <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
     <name>Azure Spring Cloud App Configuration Config</name>
     <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.28.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -73,17 +73,17 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.4.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-http-netty</artifactId>
-            <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+            <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -104,9 +104,9 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Added this dependency to include necessary annotations used 
-            by reactor core. Without this dependency, javadoc throws a warning as it 
-            cannot find enum When.MAYBE which is used in @Nullable annotation in reactor 
+        <!-- Added this dependency to include necessary annotations used
+            by reactor core. Without this dependency, javadoc throws a warning as it
+            cannot find enum When.MAYBE which is used in @Nullable annotation in reactor
             core classes -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -144,7 +144,7 @@
                                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                                 <include>org.springframework.cloud:spring-cloud-context:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
                                 <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
-                                <include>org.springframework:spring-web:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                                <include>org.springframework:spring-web:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>

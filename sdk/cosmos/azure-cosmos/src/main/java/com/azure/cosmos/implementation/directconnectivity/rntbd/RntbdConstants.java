@@ -22,6 +22,10 @@ public final class RntbdConstants {
     private RntbdConstants() {
     }
 
+    public static class RntbdHealthCheckResults {
+        public static final String SuccessValue = "Success";
+    }
+
     public enum RntbdConsistencyLevel {
 
         Strong((byte) 0x00),

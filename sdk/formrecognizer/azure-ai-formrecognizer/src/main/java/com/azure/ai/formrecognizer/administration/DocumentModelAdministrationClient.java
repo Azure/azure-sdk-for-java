@@ -368,7 +368,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list -->
      *
-     * @param componentModelIDs The list of models IDs to form the composed model.
+     * @param componentModelIds The list of models IDs to form the composed model.
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModel composed model}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
@@ -377,8 +377,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs) {
-        return beginCreateComposedModel(componentModelIDs, null, Context.NONE);
+        List<String> componentModelIds) {
+        return beginCreateComposedModel(componentModelIds, null, Context.NONE);
     }
 
     /**
@@ -423,7 +423,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context -->
      *
-     * @param componentModelIDs The list of models IDs to form the composed model.
+     * @param componentModelIds The list of models IDs to form the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -436,9 +436,9 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs, CreateComposedModelOptions createComposedModelOptions,
+        List<String> componentModelIds, CreateComposedModelOptions createComposedModelOptions,
         Context context) {
-        return client.beginCreateComposedModel(componentModelIDs, createComposedModelOptions, context).getSyncPoller();
+        return client.beginCreateComposedModel(componentModelIds, createComposedModelOptions, context).getSyncPoller();
     }
 
     /**

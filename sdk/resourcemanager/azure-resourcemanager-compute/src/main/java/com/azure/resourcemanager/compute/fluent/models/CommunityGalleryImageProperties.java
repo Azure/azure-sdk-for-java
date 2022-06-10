@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -81,6 +82,24 @@ public final class CommunityGalleryImageProperties {
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
+
+    /*
+     * The architecture of the image. Applicable to OS disks only.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
+
+    /*
+     * Privacy statement uri for the current community gallery image.
+     */
+    @JsonProperty(value = "privacyStatementUri")
+    private String privacyStatementUri;
+
+    /*
+     * End-user license agreement for the current community gallery image.
+     */
+    @JsonProperty(value = "eula")
+    private String eula;
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
@@ -271,6 +290,66 @@ public final class CommunityGalleryImageProperties {
      */
     public CommunityGalleryImageProperties withPurchasePlan(ImagePurchasePlan purchasePlan) {
         this.purchasePlan = purchasePlan;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
+     * Get the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @return the privacyStatementUri value.
+     */
+    public String privacyStatementUri() {
+        return this.privacyStatementUri;
+    }
+
+    /**
+     * Set the privacyStatementUri property: Privacy statement uri for the current community gallery image.
+     *
+     * @param privacyStatementUri the privacyStatementUri value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withPrivacyStatementUri(String privacyStatementUri) {
+        this.privacyStatementUri = privacyStatementUri;
+        return this;
+    }
+
+    /**
+     * Get the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @return the eula value.
+     */
+    public String eula() {
+        return this.eula;
+    }
+
+    /**
+     * Set the eula property: End-user license agreement for the current community gallery image.
+     *
+     * @param eula the eula value to set.
+     * @return the CommunityGalleryImageProperties object itself.
+     */
+    public CommunityGalleryImageProperties withEula(String eula) {
+        this.eula = eula;
         return this;
     }
 

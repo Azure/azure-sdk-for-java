@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.1 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.2.1`.
+
 ## 1.0.0 (2022-05-13)
 
 ### Features Added

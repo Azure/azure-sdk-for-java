@@ -27,7 +27,11 @@ public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime>
         return fromString(name, WorkloadRuntime.class);
     }
 
-    /** @return known WorkloadRuntime values. */
+    /**
+     * Gets known WorkloadRuntime values.
+     *
+     * @return known WorkloadRuntime values.
+     */
     public static Collection<WorkloadRuntime> values() {
         return values(WorkloadRuntime.class);
     }

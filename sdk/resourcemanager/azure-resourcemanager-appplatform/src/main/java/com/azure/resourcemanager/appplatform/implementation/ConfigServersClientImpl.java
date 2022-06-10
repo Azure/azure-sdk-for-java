@@ -237,15 +237,7 @@ public final class ConfigServersClientImpl implements ConfigServersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigServerResourceInner> getAsync(String resourceGroupName, String serviceName) {
-        return getWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(
-                (Response<ConfigServerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, serviceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

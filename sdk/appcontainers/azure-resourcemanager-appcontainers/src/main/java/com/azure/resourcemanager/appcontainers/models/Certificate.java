@@ -76,6 +76,13 @@ public interface Certificate {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.CertificateInner object.
      *
      * @return the inner object.
@@ -115,13 +122,13 @@ public interface Certificate {
         /** The stage of the Certificate definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, managedEnvironmentName.
+             * Specifies resourceGroupName, environmentName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param managedEnvironmentName Name of the Managed Environment.
+             * @param environmentName Name of the Managed Environment.
              * @return the next definition stage.
              */
-            WithCreate withExistingManagedEnvironment(String resourceGroupName, String managedEnvironmentName);
+            WithCreate withExistingManagedEnvironment(String resourceGroupName, String environmentName);
         }
         /**
          * The stage of the Certificate definition which contains all the minimum required properties for the resource

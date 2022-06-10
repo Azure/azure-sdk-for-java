@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Bounding box on a specific page of the input. */
+/** Bounding polygon on a specific page of the input. */
 @Fluent
 public final class BoundingRegion {
     /*
@@ -18,10 +18,10 @@ public final class BoundingRegion {
     private int pageNumber;
 
     /*
-     * Bounding box on the page, or the entire page if not specified.
+     * Bounding polygon on the page, or the entire page if not specified.
      */
-    @JsonProperty(value = "boundingBox", required = true)
-    private List<Float> boundingBox;
+    @JsonProperty(value = "polygon", required = true)
+    private List<Float> polygon;
 
     /**
      * Get the pageNumber property: 1-based page number of page containing the bounding region.
@@ -44,22 +44,22 @@ public final class BoundingRegion {
     }
 
     /**
-     * Get the boundingBox property: Bounding box on the page, or the entire page if not specified.
+     * Get the polygon property: Bounding polygon on the page, or the entire page if not specified.
      *
-     * @return the boundingBox value.
+     * @return the polygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Float> getPolygon() {
+        return this.polygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box on the page, or the entire page if not specified.
+     * Set the polygon property: Bounding polygon on the page, or the entire page if not specified.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param polygon the polygon value to set.
      * @return the BoundingRegion object itself.
      */
-    public BoundingRegion setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    public BoundingRegion setPolygon(List<Float> polygon) {
+        this.polygon = polygon;
         return this;
     }
 }

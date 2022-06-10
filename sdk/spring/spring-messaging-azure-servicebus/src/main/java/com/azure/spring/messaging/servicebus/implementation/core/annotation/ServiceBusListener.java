@@ -88,14 +88,8 @@ public @interface ServiceBusListener {
     String group() default "";
 
     /**
-     * The concurrency limits for the listener, if any. Overrides the value defined
-     * by the container factory used to create the listener container.
-     * <p>The concurrency limits can be a "lower-upper" String &mdash; for example,
-     * "5-10" &mdash; or a simple upper limit String &mdash; for example, "10", in
-     * which case the lower limit will be 1.
-     * <p>Note that the underlying container may or may not support all features.
-     * For instance, it may not be able to scale, in which case only the upper limit
-     * is used.
+     * Override the container factory's concurrency setting for the listener. It should
+     * be an int value.
      * @return String
      */
     String concurrency() default "";

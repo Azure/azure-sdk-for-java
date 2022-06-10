@@ -11,11 +11,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,6 +33,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -37,7 +41,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
@@ -57,6 +63,7 @@ import static org.mockito.Mockito.when;
  */
 public class BinaryDataTest {
     private static final ObjectSerializer CUSTOM_SERIALIZER = new MyJsonSerializer();
+    private static final Random RANDOM = new Random();
 
     @Test
     public void fromCustomObject() {
@@ -525,6 +532,53 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void testFromLargeFileFlux() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        int chunkSize = 100 * 1024 * 1024; // 100 MB
+        int numberOfChunks = 22; // 2200 MB total
+        byte[] bytes = new byte[chunkSize];
+        RANDOM.nextBytes(bytes);
+        for (int i = 0; i < numberOfChunks; i++) {
+            Files.write(file, bytes, StandardOpenOption.APPEND);
+        }
+        assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
+
+        AtomicInteger index = new AtomicInteger();
+        BinaryData.fromFile(file).toFluxByteBuffer()
+            .map(buffer -> {
+                while (buffer.hasRemaining()) {
+                    int idx = index.getAndUpdate(operand -> (operand + 1) % chunkSize);
+                    assertEquals(bytes[idx], buffer.get());
+                }
+                return buffer;
+            }).blockLast();
+    }
+
+    @Test
+    public void testFromLargeFileStream() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        int chunkSize = 100 * 1024 * 1024; // 100 MB
+        int numberOfChunks = 22; // 2200 MB total
+        byte[] bytes = new byte[chunkSize];
+        RANDOM.nextBytes(bytes);
+        for (int i = 0; i < numberOfChunks; i++) {
+            Files.write(file, bytes, StandardOpenOption.APPEND);
+        }
+        assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
+
+        try (InputStream is = BinaryData.fromFile(file).toStream()) {
+            int read;
+            int idx = 0;
+            while ((read = is.read()) >= 0) {
+                assertEquals(bytes[idx], (byte) read);
+                idx = (idx + 1) % chunkSize;
+            }
+        }
+    }
+
+    @Test
     public void testFromFileToFlux() throws Exception {
         Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();
@@ -536,6 +590,36 @@ public class BinaryDataTest {
                 .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
                         StandardCharsets.UTF_8.decode(bb).toString()))
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 10, 113, 1024, 1024 + 113, 10 * 1024 * 1024 + 13 })
+    public void testFromFileSegment(int size) throws Exception {
+        int leftPadding = 10 * 1024 + 13;
+        int rightPadding = 10 * 1024 + 27;
+        byte[] fullFile = new byte[size + leftPadding + rightPadding];
+        RANDOM.nextBytes(fullFile);
+        byte[] expectedBytes = Arrays.copyOfRange(fullFile, leftPadding, size + leftPadding);
+        Path file = Files.createTempFile("binaryDataFromFileSegment" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        Files.write(file, fullFile);
+
+        assertEquals(size, BinaryData.fromFile(file, (long) leftPadding, (long) size).getLength());
+        assertArrayEquals(expectedBytes, BinaryData.fromFile(file, (long) leftPadding, (long) size).toBytes());
+        assertArrayEquals(expectedBytes,
+            FluxUtil.collectBytesInByteBufferStream(
+                BinaryData.fromFile(file, (long) leftPadding, (long) size).toFluxByteBuffer()).block());
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(size);
+        try (InputStream is = BinaryData.fromFile(file, (long) leftPadding, (long) size).toStream()) {
+            int nRead;
+            byte[] buffer = new byte[1024];
+            while ((nRead = is.read(buffer, 0, buffer.length)) != -1) {
+                bos.write(buffer, 0, nRead);
+            }
+        }
+        assertArrayEquals(expectedBytes, bos.toByteArray());
+
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

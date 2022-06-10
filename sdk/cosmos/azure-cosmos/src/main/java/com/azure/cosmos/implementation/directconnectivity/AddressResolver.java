@@ -24,12 +24,15 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -87,6 +90,16 @@ public class AddressResolver implements IAddressResolver {
     @Override
     public int updateAddresses(URI serverKey) {
         throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return Flux.empty();
+    }
+
+    @Override
+    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler) {
+        throw new NotImplementedException("setOpenConnectionsHandler is not supported on AddressResolver");
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {
