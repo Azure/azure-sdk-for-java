@@ -62,7 +62,7 @@ public class ExceptionPolicyExample {
          */
         ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
         exceptionPolicy.setExceptionRules(Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
-        routerClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, exceptionPolicy);
+        routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
 
         System.out.printf("Successfully created exception policy with id: %s %n", exceptionPolicyId);
 
@@ -81,7 +81,7 @@ public class ExceptionPolicyExample {
         /**
          * Upsert policy using routerClient.
          */
-        routerClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, exceptionPolicy);
+        routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
 
         System.out.println("Exception policy has been successfully updated.");
     }
@@ -92,7 +92,7 @@ public class ExceptionPolicyExample {
             .connectionString(connectionString)
             .buildClient();
 
-        Response<ExceptionPolicy> exceptionPolicyResponse = routerClient.getExceptionPolicyWithResponse(exceptionPolicyId);
+        Response<ExceptionPolicy> exceptionPolicyResponse = routerClient.getExceptionPolicy(exceptionPolicyId);
         System.out.printf("Response headers are %s. Url %s  and status code %d %n", exceptionPolicyResponse.getHeaders(),
             exceptionPolicyResponse.getRequest().getUrl(), exceptionPolicyResponse.getStatusCode());
         System.out.printf("Successfully fetched exception policy with id: %s %n", exceptionPolicyResponse.getValue().getId());
@@ -119,7 +119,7 @@ public class ExceptionPolicyExample {
         RouterClient routerClient = new RouterClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        routerClient.deleteExceptionPolicyWithResponse(exceptionPolicyId);
+        routerClient.deleteExceptionPolicy(exceptionPolicyId);
     }
 
     public static void main() {
