@@ -18,7 +18,7 @@ import static com.azure.core.implementation.http.rest.RestProxyUtils.BODY_TOO_SM
  *
  * This implementation assumes that reader is going to read until EOF.
  */
-final class LengthValidatingInputStream extends InputStream {
+public final class LengthValidatingInputStream extends InputStream {
 
     private static final ClientLogger LOGGER = new ClientLogger(LengthValidatingInputStream.class);
 

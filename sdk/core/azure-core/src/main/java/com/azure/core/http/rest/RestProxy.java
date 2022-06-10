@@ -11,8 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.rest.ResponseConstructorsCache;
-import com.azure.core.implementation.http.rest.RestProxyUtils;
+import com.azure.core.implementation.http.rest.*;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
@@ -40,6 +39,8 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
@@ -106,7 +107,7 @@ public final class RestProxy implements InvocationHandler {
 
         try {
             final SwaggerMethodParser methodParser = getMethodParser(method);
-            final HttpRequest request = createHttpRequest(methodParser, args);
+            final HttpRequest request = RestProxyUtils.createHttpRequest(methodParser, serializer, true, args);
             Context context = methodParser.setContext(args);
 
             RequestOptions options = methodParser.setRequestOptions(args);
@@ -157,127 +158,6 @@ public final class RestProxy implements InvocationHandler {
         String spanName = interfaceParser.getServiceName() + "." + method.getName();
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
-    }
-
-    /**
-     * Create a HttpRequest for the provided Swagger method using the provided arguments.
-     *
-     * @param methodParser the Swagger method parser to use
-     * @param args the arguments to use to populate the method's annotation values
-     * @return a HttpRequest
-     * @throws IOException thrown if the body contents cannot be serialized
-     */
-    private HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
-        // This definitely happens in paging scenarios. In that case, just use the full URL and
-        // ignore the Host annotation.
-        final String path = methodParser.setPath(args);
-        final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
-
-        final UrlBuilder urlBuilder;
-        if (pathUrlBuilder.getScheme() != null) {
-            urlBuilder = pathUrlBuilder;
-        } else {
-            urlBuilder = new UrlBuilder();
-
-            methodParser.setSchemeAndHost(args, urlBuilder);
-
-            // Set the path after host, concatenating the path
-            // segment in the host.
-            if (path != null && !path.isEmpty() && !"/".equals(path)) {
-                String hostPath = urlBuilder.getPath();
-                if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
-                    urlBuilder.setPath(path);
-                } else {
-                    if (path.startsWith("/")) {
-                        urlBuilder.setPath(hostPath + path);
-                    } else {
-                        urlBuilder.setPath(hostPath + "/" + path);
-                    }
-                }
-            }
-        }
-
-        methodParser.setEncodedQueryParameters(args, urlBuilder);
-
-        final URL url = urlBuilder.toUrl();
-        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
-            methodParser, args);
-
-        // Headers from Swagger method arguments always take precedence over inferred headers from body types
-        HttpHeaders httpHeaders = request.getHeaders();
-        methodParser.setHeaders(args, httpHeaders);
-
-        return request;
-    }
-
-    @SuppressWarnings("unchecked")
-    private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
-        final Object[] args) throws IOException {
-        final Object bodyContentObject = methodParser.setBody(args);
-        if (bodyContentObject == null) {
-            request.getHeaders().set("Content-Length", "0");
-        } else {
-            // We read the content type from the @BodyParam annotation
-            String contentType = methodParser.getBodyContentType();
-
-            // If this is null or empty, the service interface definition is incomplete and should
-            // be fixed to ensure correct definitions are applied
-            if (contentType == null || contentType.isEmpty()) {
-                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
-                    contentType = ContentType.APPLICATION_OCTET_STREAM;
-                } else {
-                    contentType = ContentType.APPLICATION_JSON;
-                }
-            }
-
-            request.getHeaders().set("Content-Type", contentType);
-            if (bodyContentObject instanceof BinaryData) {
-                BinaryData binaryData = (BinaryData) bodyContentObject;
-                if (binaryData.getLength() != null) {
-                    request.setHeader("Content-Length", binaryData.getLength().toString());
-                }
-                // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
-                // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
-                // sending the request to the service. There is no memory copy that happens here. Sources like
-                // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
-                // by the HttpClient implementations.
-                request.setBody(binaryData);
-                return request;
-            }
-
-            // TODO(jogiles) this feels hacky
-            boolean isJson = false;
-            final String[] contentTypeParts = contentType.split(";");
-            for (final String contentTypePart : contentTypeParts) {
-                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
-                    isJson = true;
-                    break;
-                }
-            }
-
-            if (isJson) {
-                request.setBody(serializer.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
-            } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
-                // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
-                // Flowable<byte[]> is given for the body.
-                request.setBody((Flux<ByteBuffer>) bodyContentObject);
-            } else if (bodyContentObject instanceof byte[]) {
-                request.setBody((byte[]) bodyContentObject);
-            } else if (bodyContentObject instanceof String) {
-                final String bodyContentString = (String) bodyContentObject;
-                if (!bodyContentString.isEmpty()) {
-                    request.setBody(bodyContentString);
-                }
-            } else if (bodyContentObject instanceof ByteBuffer) {
-                request.setBody(Flux.just((ByteBuffer) bodyContentObject));
-            } else {
-                request.setBody(serializer.serializeToBytes(bodyContentObject,
-                    SerializerEncoding.fromHeaders(request.getHeaders())));
-            }
-        }
-
-        return request;
     }
 
     /**

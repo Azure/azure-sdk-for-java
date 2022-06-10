@@ -11,38 +11,39 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.TooManyRedirectsException;
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ResponseExceptionConstructorCache;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.*;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Utility methods that aid processing in RestProxy.
@@ -295,4 +296,168 @@ public final class RestProxyUtils {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
+
+    /**
+     * Create a HttpRequest for the provided Swagger method using the provided arguments.
+     *
+     * @param methodParser the Swagger method parser to use
+     * @param args the arguments to use to populate the method's annotation values
+     * @return a HttpRequest
+     * @throws IOException thrown if the body contents cannot be serialized
+     */
+    public static HttpRequest createHttpRequest(SwaggerMethodParser methodParser, SerializerAdapter serializerAdapter, boolean isAsync, Object[] args) throws IOException {
+        // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
+        // This definitely happens in paging scenarios. In that case, just use the full URL and
+        // ignore the Host annotation.
+        final String path = methodParser.setPath(args);
+        final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
+
+        final UrlBuilder urlBuilder;
+        if (pathUrlBuilder.getScheme() != null) {
+            urlBuilder = pathUrlBuilder;
+        } else {
+            urlBuilder = new UrlBuilder();
+
+            methodParser.setSchemeAndHost(args, urlBuilder);
+
+            // Set the path after host, concatenating the path
+            // segment in the host.
+            if (path != null && !path.isEmpty() && !"/".equals(path)) {
+                String hostPath = urlBuilder.getPath();
+                if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
+                    urlBuilder.setPath(path);
+                } else {
+                    if (path.startsWith("/")) {
+                        urlBuilder.setPath(hostPath + path);
+                    } else {
+                        urlBuilder.setPath(hostPath + "/" + path);
+                    }
+                }
+            }
+        }
+
+        methodParser.setEncodedQueryParameters(args, urlBuilder);
+
+        final URL url = urlBuilder.toUrl();
+        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
+            methodParser, serializerAdapter, isAsync, args);
+
+        // Headers from Swagger method arguments always take precedence over inferred headers from body types
+        HttpHeaders httpHeaders = request.getHeaders();
+        methodParser.setHeaders(args, httpHeaders);
+
+        return request;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
+                                             SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
+        final Object bodyContentObject = methodParser.setBody(args);
+        if (bodyContentObject == null) {
+            request.getHeaders().set("Content-Length", "0");
+        } else {
+            // We read the content type from the @BodyParam annotation
+            String contentType = methodParser.getBodyContentType();
+
+            // If this is null or empty, the service interface definition is incomplete and should
+            // be fixed to ensure correct definitions are applied
+            if (contentType == null || contentType.isEmpty()) {
+                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                } else {
+                    contentType = ContentType.APPLICATION_JSON;
+                }
+            }
+
+            request.getHeaders().set("Content-Type", contentType);
+            if (bodyContentObject instanceof BinaryData) {
+                BinaryData binaryData = (BinaryData) bodyContentObject;
+                if (binaryData.getLength() != null) {
+                    request.setHeader("Content-Length", binaryData.getLength().toString());
+                }
+                // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
+                // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
+                // sending the request to the service. There is no memory copy that happens here. Sources like
+                // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
+                // by the HttpClient implementations.
+                request.setBody(binaryData);
+                return request;
+            }
+
+            // TODO(jogiles) this feels hacky
+            boolean isJson = false;
+            final String[] contentTypeParts = contentType.split(";");
+            for (final String contentTypePart : contentTypeParts) {
+                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+                    isJson = true;
+                    break;
+                }
+            }
+
+            if (isAsync) {
+                updateRequestAsync(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject), serializerAdapter);
+            } else {
+                updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject), serializerAdapter);
+            }
+        }
+
+        return request;
+    }
+
+    private static void updateRequestAsync(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException {
+        boolean isJson = requestDataConfiguration.isJson();
+        HttpRequest request = requestDataConfiguration.getHttpRequest();
+        Object bodyContentObject = requestDataConfiguration.getBodyContent();
+        SwaggerMethodParser methodParser = requestDataConfiguration.getMethodParser();
+
+        if (isJson) {
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
+        } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
+            // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
+            // Flowable<byte[]> is given for the body.
+            request.setBody((Flux<ByteBuffer>) bodyContentObject);
+        } else if (bodyContentObject instanceof byte[]) {
+            request.setBody((byte[]) bodyContentObject);
+        } else if (bodyContentObject instanceof String) {
+            final String bodyContentString = (String) bodyContentObject;
+            if (!bodyContentString.isEmpty()) {
+                request.setBody(bodyContentString);
+            }
+        } else if (bodyContentObject instanceof ByteBuffer) {
+            request.setBody(Flux.just((ByteBuffer) bodyContentObject));
+        } else {
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject,
+                SerializerEncoding.fromHeaders(request.getHeaders())));
+        }
+    }
+
+    private static void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException {
+        boolean isJson = requestDataConfiguration.isJson();
+        HttpRequest request = requestDataConfiguration.getHttpRequest();
+        Object bodyContentObject = requestDataConfiguration.getBodyContent();
+
+        if (isJson) {
+            ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+            serializerAdapter.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
+
+            request.setHeader("Content-Length", String.valueOf(stream.size()));
+            request.setBody(BinaryData.fromStream(new ByteArrayInputStream(stream.toByteArray(), 0, stream.size())));
+        } else if (bodyContentObject instanceof byte[]) {
+            request.setBody((byte[]) bodyContentObject);
+        } else if (bodyContentObject instanceof String) {
+            final String bodyContentString = (String) bodyContentObject;
+            if (!bodyContentString.isEmpty()) {
+                request.setBody(bodyContentString);
+            }
+        } else if (bodyContentObject instanceof ByteBuffer) {
+            request.setBody(((ByteBuffer) bodyContentObject).array());
+        } else {
+            ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+            serializerAdapter.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()), stream);
+
+            request.setHeader("Content-Length", String.valueOf(stream.size()));
+            request.setBody(stream.toByteArray());
+        }
+    }
+
 }

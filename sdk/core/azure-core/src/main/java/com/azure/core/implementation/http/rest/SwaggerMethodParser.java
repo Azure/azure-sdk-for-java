@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -25,6 +25,7 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.rest.*;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -54,7 +55,7 @@ import java.util.stream.Collectors;
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in
  * {@link RestProxy}.
  */
-class SwaggerMethodParser implements HttpResponseDecodeData {
+public class SwaggerMethodParser implements HttpResponseDecodeData {
     private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
     private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
         Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
@@ -95,11 +96,11 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param rawHost the raw host value from the @Host annotation. Before this can be used as the host value in an HTTP
      * request, it must be processed through the possible host substitutions.
      */
-    SwaggerMethodParser(Method swaggerMethod, String rawHost) {
+    public SwaggerMethodParser(Method swaggerMethod, String rawHost) {
         this(swaggerMethod, rawHost, JacksonAdapter.createDefaultSerializerAdapter());
     }
 
-    SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
+    public SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
         this.serializer = serializer;
         this.rawHost = rawHost;
 

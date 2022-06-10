@@ -3,6 +3,8 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.implementation.http.rest.QuerySubstitution;
+import com.azure.core.implementation.http.rest.Substitution;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -28,6 +28,8 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.UnixTime;
+import com.azure.core.implementation.http.rest.MissingRequiredAnnotationException;
+import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;

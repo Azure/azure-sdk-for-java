@@ -3,6 +3,8 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.implementation.http.rest.PercentEscaper;
+import com.azure.core.implementation.http.rest.UrlEscapers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
