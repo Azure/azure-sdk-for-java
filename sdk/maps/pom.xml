@@ -22,17 +22,17 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-maps-search</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.maps:azure-maps-search;current} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-search;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-maps-route</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.maps:azure-maps-route;current} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-route;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-maps-render</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.maps:azure-maps-render;current} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
         </dependency>
       </dependencies>
 
