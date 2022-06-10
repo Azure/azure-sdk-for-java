@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 4.11.1 (2022-06-09)
+
+#### Bugs Fixed
+* Fixes bug preventing usage of feedRangeFilter with change feed. - See [PR 29338](https://github.com/Azure/azure-sdk-for-java/pull/29338)
+
 ### 4.11.0 (2022-06-08)
 #### Other Changes
 * Updated `azure-cosmos` to version `4.31.0`.
