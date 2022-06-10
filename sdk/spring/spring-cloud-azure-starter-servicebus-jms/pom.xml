@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
 
   <name>Spring Cloud Azure Starter Service Bus JMS</name>
   <description>Spring Cloud Azure Starter Service Bus JMS</description>
@@ -88,14 +88,14 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter</artifactId>
-      <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
 
     <!--Spring JMS-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.qpid</groupId>

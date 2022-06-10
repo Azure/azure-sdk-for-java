@@ -19,7 +19,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -74,7 +74,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.2.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[1.0.18]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
