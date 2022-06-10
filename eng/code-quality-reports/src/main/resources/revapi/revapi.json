@@ -221,6 +221,12 @@
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
         },
         {
+          "regex": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "new": "field com.google.gson.FieldNamingPolicy.(LOWER_CASE_WITH_DASHES|LOWER_CASE_WITH_DOTS|LOWER_CASE_WITH_UNDERSCORES)",
+          "justification": "Fix core-ci"
+        },
+        {
           "code": "java.method.added",
           "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
           "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
