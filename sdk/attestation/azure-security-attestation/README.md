@@ -127,18 +127,18 @@ clients to add, remove or enumerate the policy management certificates.
 
 ## Examples
 
-- [Create a synchronous attestation client](#create-a-synchronous-attestation-client)
-- [Retrieve Token Certificates](#retrieve-token-certificates)
+- [Instantiate a synchronous attestation client](#instantiate-a-synchronous-attestation-client)
+- [Retrieve token validation certificates](#retrieve-token-validation-certificates)
 - [Attest an SGX enclave](#attest-an-sgx-enclave)
-- [Create a synchronous administrative client](#create-a-synchronous-administrative-client)
-- [Retrieve current attestation policy for OpenEnclave](#retrieve-current-attestation-policy-for-openenclave)
-- [Set unsigned attestation policy (AAD clients only)](#set-unsigned-attestation-policy-aad-clients-only)
+- [Instantiate a synchronous administrative client](#instantiate-a-synchronous-administrative-client)
+- [Get attestation policy](#get-attestation-policy)
+- [Set unsigned attestation policy](#set-unsigned-attestation-policy)
 - [Set signed attestation policy](#set-signed-attestation-policy)
-- [List attestation signing certificates](#list-attestation-signing-certificates)
-- [Add attestation signing certificate](#add-attestation-signing-certificate)
+- [List policy management certificates](#list-policy-management-certificates)
+- [Add policy management certificate](#add-policy-management-certificate)
 - [Remove attestation signing certificate](#remove-attestation-signing-certificate)
 
-### Create a synchronous attestation client
+### Instantiate a synchronous attestation client
 
 The `AttestationClientBuilder` class is used to create instances of the attestation client:
 
@@ -150,7 +150,7 @@ AttestationClient client = attestationBuilder
     .buildClient();
 ```
 
-### Retrieve Token Certificates
+### Retrieve token validation certificates
 
 Use `listAttestationSigners` to retrieve the set of certificates, which can be used to validate the token returned from the attestation service.
 Normally, this information is not required as the attestation SDK will perform the validation as a part of the interaction with the
@@ -194,7 +194,7 @@ System.out.println("Attest Sgx Enclave completed. Issuer: " + issuer);
 System.out.printf("Runtime Data Length: %d\n", result.getEnclaveHeldData().getLength());
 ```
 
-### Create a synchronous administrative client
+### Instantiate a synchronous administrative client
 
 All administrative clients are authenticated.
 
@@ -207,7 +207,7 @@ AttestationAdministrationClient client = attestationBuilder
     .buildClient();
 ```
 
-### Retrieve current attestation policy for OpenEnclave
+### Get attestation policy
 
 Use the `getAttestationPolicy` API to retrieve the current attestation policy for a given TEE.
 
@@ -216,7 +216,7 @@ String currentPolicy = client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE)
 System.out.printf("Current policy for OpenEnclave is: %s\n", currentPolicy);
 ```
 
-### Set unsigned attestation policy (AAD clients only)
+### Set unsigned attestation policy
 
 When an attestation instance is in AAD mode, the caller can use a convenience method to set an unsigned attestation
 policy on the instance.
@@ -243,7 +243,7 @@ PolicyResult policyResult = client.setAttestationPolicy(AttestationType.SGX_ENCL
 System.out.printf("Policy set for Sgx result: %s\n", policyResult.getPolicyResolution());
 ```
 
-### List attestation signing certificates
+### List policy management certificates
 
 When an attestation instance is in `Isolated` mode, the policy APIs need additional proof of authorization. This proof is
 provided via the `AttestationSigningKey` parameter passed into the set and reset policy APIs.
@@ -264,7 +264,7 @@ for (AttestationSigner signer : signers.getAttestationSigners()) {
 }
 ```
 
-### Add attestation signing certificate
+### Add policy management certificate
 
 Adds a new certificate to the set of policy management certificates. The request to add the policy management certificate
 must be signed with the private key associated with one of the existing policy management certificates (this ensures that
