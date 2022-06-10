@@ -3,6 +3,10 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.exception.AzureException;
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -94,8 +98,8 @@ public class RetryPolicyTests {
     }
 
     @ParameterizedTest
-    @MethodSource("defaultRetryPolicyRetriesAllExceptionsSupplier")
-    public void defaultRetryPolicyRetriesAllExceptions(Throwable throwable) {
+    @MethodSource("defaultRetryPolicyRetriesSpecificExceptionsSupplier")
+    public void defaultRetryPolicyRetriesSpecificExceptions(Throwable throwable) {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -114,9 +118,72 @@ public class RetryPolicyTests {
             .verifyComplete();
     }
 
-    private static Stream<Throwable> defaultRetryPolicyRetriesAllExceptionsSupplier() {
+    private static Stream<Throwable> defaultRetryPolicyRetriesSpecificExceptionsSupplier() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://sometestaddress.com");
+        MockHttpResponse response = new MockHttpResponse(request, 500);
+
         return Stream.of(
-            new MalformedURLException(),
+            new IOException(),
+            new AzureException(),
+            new HttpRequestException(request),
+            new HttpResponseException(response),
+            new ServiceResponseException("Service Error")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("defaultRetryPolicyDoesNotRetryOnAuthErrorSupplier")
+    public void defaultRetryPolicyDoesNotRetryOnAuthError(Throwable throwable) {
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy())
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.error(throwable);
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+            .verifyError(throwable.getClass());
+    }
+
+    private static Stream<Throwable> defaultRetryPolicyDoesNotRetryOnAuthErrorSupplier() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://sometestaddress.com");
+        MockHttpResponse response401 = new MockHttpResponse(request, 401);
+        MockHttpResponse response403 = new MockHttpResponse(request, 401);
+
+        return Stream.of(
+            new HttpResponseException(response401),
+            new HttpResponseException(response403)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("defaultRetryPolicyRetriesDoesNotRetryOtherExceptionsSupplier")
+    public void defaultRetryPolicyRetriesDoesNotRetryOtherExceptions(Throwable throwable) {
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy())
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.error(throwable);
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+            .verifyError(throwable.getClass());
+    }
+
+    private static Stream<Throwable> defaultRetryPolicyRetriesDoesNotRetryOtherExceptionsSupplier() {
+        return Stream.of(
             new RuntimeException(),
             new IllegalStateException(),
             new TimeoutException()
